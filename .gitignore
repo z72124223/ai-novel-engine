@@ -6,6 +6,7 @@ data/*.db
 data/*.db-shm
 data/*.db-wal
 out/*.json
+out/*.txt
 *.db
 *.sqlite
 *.sqlite3

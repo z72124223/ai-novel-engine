@@ -60,6 +60,24 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎 
 - `apply-result --db <path> --context <path> --result <path>`
 - `run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>`
 - `show-state --db <path> --project <id>`
+- `start-session --db <path> --project <id> --scene <id>`
+- `prepare-turn --db <path> --session <id> --input <text> --out <path>`
+- `resolve-turn --db <path> --session <id> --result <path>`
+- `show-session --db <path> --session <id>`
+- `abort-pending-turn --db <path> --session <id> [--context <id>]`
+
+## Multi-Turn Flow
+
+MVP-2 adds reliable session-based turns:
+
+```powershell
+./gradlew.bat run --args="start-session --db data/story.db --project demo --scene scene-shrine-questioning"
+./gradlew.bat run --args="prepare-turn --db data/story.db --session SESSION_ID --input `"玩家輸入`" --out out/turn_001_context.json"
+./gradlew.bat run --args="resolve-turn --db data/story.db --session SESSION_ID --result out/turn_001_result.json"
+./gradlew.bat run --args="show-session --db data/story.db --session SESSION_ID"
+```
+
+`prepare-turn` writes a pending context row but does not change formal story state. `resolve-turn` validates `contextId`、`sessionId`、`turnNumber`、`baseStateVersion`、`contextHash` and `resultId` before applying all deltas in one SQLite transaction.
 
 ## Project Layout
 

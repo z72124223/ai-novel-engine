@@ -1,15 +1,16 @@
 # AGENTS.md
 
-本 repo 是「本地單進程互動小說引擎」v1。請保持以下邊界：
+本 repo 是「本地單進程互動小說引擎」。長期規則：
 
 - 只做 Kotlin/JVM CLI、SQLite、JSON 檔案協議。
 - 不建立 web server，不開 port。
 - 不使用 FastAPI、Express、Ktor server、Spring server、React、Next.js、Docker、Android UI 或 Rust。
 - 不接 OpenAI API；AI 回合結果由人工或外部工具產生 JSON 檔案。
 - 所有狀態變更必須走 `AiTurnResultValidator` 和 `StateReducer`。
+- 多回合 runtime 的協議、驗收與限制見 `docs/MVP2_RELIABLE_MULTI_TURN_SPEC.md`。
 
 常用檢查：
 
 ```powershell
-./gradlew test
+./gradlew.bat clean test
 ```

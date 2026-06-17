@@ -6,6 +6,7 @@ import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.ContextCompiler
+import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
 import com.localnovel.engine.service.TurnRunner
@@ -38,6 +39,11 @@ class Cli {
                 "apply-result" -> applyResult(options)
                 "run-manual-turn" -> runManualTurn(options)
                 "show-state" -> showState(options)
+                "start-session" -> startSession(options)
+                "prepare-turn" -> prepareTurn(options)
+                "resolve-turn" -> resolveTurn(options)
+                "show-session" -> showSession(options)
+                "abort-pending-turn" -> abortPendingTurn(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -155,8 +161,87 @@ class Cli {
         return 0
     }
 
+    private fun startSession(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val session = MultiTurnRuntime(repository).startSession(
+            projectId = options.required("project"),
+            sceneId = options.required("scene"),
+        )
+        println("sessionId=${session.id}")
+        println("currentSceneId=${session.currentSceneId}")
+        println("nextTurnNumber=${session.nextTurnNumber}")
+        println("stateVersion=${session.stateVersion}")
+        return 0
+    }
+
+    private fun prepareTurn(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val context = MultiTurnRuntime(repository).prepareTurn(
+            sessionId = options.required("session"),
+            playerInput = options.required("input"),
+        )
+        val out = Path.of(options.required("out"))
+        out.parent?.let { Files.createDirectories(it) }
+        Files.writeString(out, JsonSupport.json.encodeToString(context))
+        println("contextId=${context.contextId}")
+        println("contextHash=${context.contextHash}")
+        println("turnNumber=${context.turnNumber}")
+        println("baseStateVersion=${context.baseStateVersion}")
+        println("wrote=$out")
+        return 0
+    }
+
+    private fun resolveTurn(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val sessionId = options.required("session")
+        val result = readJson<AiTurnResult>(Path.of(options.required("result")))
+        val applied = MultiTurnRuntime(repository).resolveTurn(sessionId, result)
+        val session = repository.getSession(sessionId)
+        println(applied.narrative)
+        println()
+        println("turnLogId=${applied.turnLogId}")
+        println("stateVersion=${session?.stateVersion}")
+        println("nextTurnNumber=${session?.nextTurnNumber}")
+        return 0
+    }
+
+    private fun showSession(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val sessionId = options.required("session")
+        val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
+        val project = repository.getProject(session.projectId) ?: error("Project not found: ${session.projectId}")
+        val scene = repository.getActiveScene(session.projectId)
+        val shen = repository.getCharacterState(session.projectId, "char-shen-shuang")
+        println("sessionId=${session.id}")
+        println("project=${project.name}")
+        println("currentScene=${scene?.title ?: session.currentSceneId}")
+        println("nextTurnNumber=${session.nextTurnNumber}")
+        println("stateVersion=${session.stateVersion}")
+        println("recentTurnSummaries:")
+        repository.listRecentTurnSummaries(session.id, 3).forEach { println("- ${it.turnNumber}: ${it.summary}") }
+        println("shenShuangMood=${shen?.mood ?: "?"}")
+        println("shenShuangGoal=${shen?.flags?.get("current_goal") ?: "?"}")
+        println("idleTurnCount=${shen?.flags?.get("idle_turn_count") ?: "0"}")
+        println("revealedFacts:")
+        repository.listFacts(session.projectId).forEach { println("- ${it.content}") }
+        println("unrevealedSecrets=${repository.listSecrets(session.projectId).count { !it.revealed }}")
+        println("sceneProgress=${scene?.progress ?: "{}"}")
+        println("completedRequirements=${scene?.completedRequirements?.joinToString() ?: ""}")
+        return 0
+    }
+
+    private fun abortPendingTurn(options: Map<String, String>): Int {
+        val count = repository(options).abortPendingContext(
+            sessionId = options.required("session"),
+            contextId = options["context"],
+        )
+        println("aborted=$count")
+        return 0
+    }
+
     private fun repository(options: Map<String, String>): SqliteStoryRepository =
-        SqliteStoryRepository(Path.of(options.required("db")))
+        SqliteStoryRepository(Path.of(options["db"] ?: "data/story.db"))
 
     private fun runner(repository: SqliteStoryRepository): TurnRunner =
         TurnRunner(
@@ -166,7 +251,7 @@ class Cli {
         )
 
     private inline fun <reified T> readJson(path: Path): T =
-        JsonSupport.json.decodeFromString(Files.readString(path))
+        JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 
     private fun parseOptions(args: List<String>): Map<String, String> {
         val options = mutableMapOf<String, String>()
@@ -199,6 +284,11 @@ class Cli {
               apply-result --db <path> --context <path> --result <path>
               run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>
               show-state --db <path> --project <id>
+              start-session [--db <path>] --project <id> --scene <id>
+              prepare-turn [--db <path>] --session <id> --input <text> --out <path>
+              resolve-turn [--db <path>] --session <id> --result <path>
+              show-session [--db <path>] --session <id>
+              abort-pending-turn [--db <path>] --session <id> [--context <id>]
             """.trimIndent(),
         )
     }

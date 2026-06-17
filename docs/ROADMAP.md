@@ -10,6 +10,17 @@
 - Minimal stall detection。
 - Unit tests for schema、seed、context、validation、reducer、stall detector。
 
+## MVP-2
+
+- Session based multi-turn runtime.
+- Pending context lifecycle.
+- Stable context hash.
+- `resultId` idempotency.
+- Transaction rollback for resolve.
+- Recent turn summaries capped at three.
+- Stall pressure fields in context.
+- Five-turn local CLI acceptance.
+
 ## Later
 
 - Better conflict handling for state deltas.

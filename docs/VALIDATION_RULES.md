@@ -20,3 +20,13 @@ validator 會從 SQLite 載入未揭露 secrets。
 `narrative` 不得包含任何未揭露 secret 的完整 content，除非同一個 result 內存在合法的 `reveal_secret` operation 且該 secret 被 scene contract 允許。
 
 active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative。
+
+## MVP-2 Rules
+
+- `protocolVersion` must be `2`.
+- `contextId`、`sessionId`、`turnNumber`、`baseStateVersion`、`contextHash` must match the pending context.
+- `resultId` is required and cannot have been applied before.
+- `characterActions` are required; every action must use actors and memory/item/technique IDs present in the context.
+- `characterFitScore` must be at least `70`.
+- Forbidden reveals are scanned across narrative、turnSummary、revealedFacts、stateDeltas payloads、memoryEffects and newTasks.
+- `resolve-turn` applies all writes in one SQLite transaction; any failed write rolls back state deltas, facts, events, turn log update, scene progress and session state.

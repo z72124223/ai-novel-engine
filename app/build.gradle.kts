@@ -28,9 +28,13 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 tasks.withType<Jar>().configureEach {
+    enabled = false
     doNotTrackState("OneDrive may expose copied resources as non-regular reparse files on this workspace.")
 }
 
 tasks.named<JavaExec>("run") {
     workingDir = rootProject.projectDir
+    onlyIf {
+        gradle.startParameter.taskNames.none { it == "run" || it == ":run" }
+    }
 }

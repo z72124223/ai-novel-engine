@@ -48,3 +48,38 @@
 - `noop`
 
 `apply-result` 永遠先驗證 result，再套用 delta。
+
+## MVP-2 Session Protocol
+
+`ContextPacket` 新增：
+
+- `contextId`
+- `sessionId`
+- `baseStateVersion`
+- `contextHash`
+- `generatedAt`
+- `recentTurnSummaries`
+- `sceneProgress`
+- `directorPressure`
+- `outputRequirements`
+
+`AiTurnResult` 新增：
+
+- `resultId`
+- `contextId`
+- `sessionId`
+- `turnNumber`
+- `baseStateVersion`
+- `contextHash`
+- `turnSummary`
+- `characterActions`
+- `stateDeltas`
+- `revealedFacts`
+- `memoryEffects`
+- `sceneProgressUpdates`
+- `newTasks`
+- `validationNotes`
+
+Hash rule: the engine serializes `ContextPacket` with `contextHash = ""` using the repository JSON serializer, then computes SHA-256 over UTF-8 bytes. This uses Kotlin data-class property order and does not depend on map insertion order for protocol identity fields.
+
+`prepare-turn` stores pending context metadata in `turn_logs` with `validation_status = pending`. `resolve-turn` loads that pending context and refuses stale state versions, turn mismatches, hash mismatches, duplicate result IDs, unsupported protocol versions, and forbidden reveals.

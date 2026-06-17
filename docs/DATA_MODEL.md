@@ -22,7 +22,17 @@ SQLite schema 位於 `app/src/main/resources/migrations/001_init.sql`。
 - `state_deltas`：逐項記錄 result 內的 delta operation。
 - `dependency_edges`：素材之間的依賴關係。
 - `task_queue`：後續待辦、劇情任務或人工處理事項。
+- `story_sessions`：MVP-2 多回合 session，保存 current scene、next turn number、state version 與 status。
 
 ## JSON Columns
 
 v1 使用 JSON 欄位保存彈性資料，例如 inventory、flags、operation payload。這些欄位仍由 Kotlin model 控制讀寫形狀。
+
+## MVP-2 Runtime Columns
+
+`002_multi_turn_runtime.sql` 不修改 `001_init.sql`，而是新增 session 與 runtime 欄位：
+
+- `turn_logs.session_id/context_id/result_id/base_state_version/context_hash/turn_summary/validation_status`
+- `scenes.progress_json/completed_requirements_json`
+
+`result_id` 唯一；同一 `session_id + turn_number` 只能有一個正式 `applied` 回合。

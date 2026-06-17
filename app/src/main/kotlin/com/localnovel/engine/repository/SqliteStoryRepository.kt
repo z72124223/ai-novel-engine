@@ -1,6 +1,7 @@
 package com.localnovel.engine.repository
 
 import com.localnovel.engine.model.AiTurnResult
+import com.localnovel.engine.model.ApplyResult
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.CharacterProfile
 import com.localnovel.engine.model.CharacterState
@@ -16,18 +17,22 @@ import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
 import com.localnovel.engine.model.Secret
+import com.localnovel.engine.model.StorySession
 import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
 import com.localnovel.engine.model.WorldRule
+import com.localnovel.engine.model.allDeltaOperations
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import java.nio.file.Files
 import java.nio.file.Path
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
+import java.sql.SQLException
 import java.time.Instant
 import java.util.UUID
 
@@ -35,13 +40,13 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     override fun initialize() {
         dbPath.parent?.let { Files.createDirectories(it) }
         connect { connection ->
-            val migration = javaClass.classLoader.getResource("migrations/001_init.sql")
-                ?: error("Missing migration resource: migrations/001_init.sql")
             connection.createStatement().use { statement ->
                 statement.executeUpdate("PRAGMA foreign_keys = ON")
-                migration.readText().splitToStatements().forEach { sql ->
-                    if (sql.isNotBlank()) {
-                        statement.executeUpdate(sql)
+                listOf("001_init.sql", "002_multi_turn_runtime.sql").forEach { fileName ->
+                    val migration = javaClass.classLoader.getResource("migrations/$fileName")
+                        ?: error("Missing migration resource: migrations/$fileName")
+                    migration.readText().splitToStatements().forEach { sql ->
+                        executeMigrationStatement(statement, sql)
                     }
                 }
             }
@@ -94,7 +99,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         val activeSceneId = getProject(projectId)?.activeSceneId ?: return null
         return connect { connection ->
             connection.prepareStatement(
-                "SELECT id, project_id, title, summary, location_id, status FROM scenes WHERE project_id = ? AND id = ?",
+            "SELECT id, project_id, title, summary, location_id, status, progress_json, completed_requirements_json FROM scenes WHERE project_id = ? AND id = ?",
             ).use { statement ->
                 statement.setString(1, projectId)
                 statement.setString(2, activeSceneId)
@@ -283,6 +288,221 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         ) { it.toTask() }
     }
 
+    fun getSession(sessionId: String): StorySession? = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT id, project_id, current_scene_id, next_turn_number, state_version, status
+            FROM story_sessions
+            WHERE id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                if (rows.next()) rows.toStorySession() else null
+            }
+        }
+    }
+
+    fun startSession(projectId: String, sceneId: String): StorySession = connect { connection ->
+        val session = StorySession(
+            id = newId("session"),
+            projectId = projectId,
+            currentSceneId = sceneId,
+            nextTurnNumber = 1,
+            stateVersion = 0,
+        )
+        connection.prepareStatement(
+            """
+            INSERT INTO story_sessions(id, project_id, current_scene_id, next_turn_number, state_version, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, session.id)
+            statement.setString(2, session.projectId)
+            statement.setString(3, session.currentSceneId)
+            statement.setInt(4, session.nextTurnNumber)
+            statement.setInt(5, session.stateVersion)
+            statement.setString(6, session.status)
+            statement.setString(7, timestamp)
+            statement.setString(8, timestamp)
+            statement.executeUpdate()
+        }
+        session
+    }
+
+    fun savePendingContext(context: ContextPacket) {
+        connect { connection ->
+            connection.prepareStatement(
+                """
+                INSERT INTO turn_logs(
+                    id, project_id, turn_number, player_input, context_json, result_json, narrative,
+                    has_state_change, created_at, session_id, context_id, base_state_version, context_hash,
+                    turn_summary, validation_status
+                )
+                VALUES (?, ?, ?, ?, ?, '', '', 0, ?, ?, ?, ?, ?, '', 'pending')
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, newId("pending"))
+                statement.setString(2, context.project.id)
+                statement.setInt(3, context.turnNumber)
+                statement.setString(4, context.playerInput)
+                statement.setString(5, JsonSupport.json.encodeToString(context))
+                statement.setString(6, now())
+                statement.setString(7, context.sessionId)
+                statement.setString(8, context.contextId)
+                statement.setInt(9, context.baseStateVersion)
+                statement.setString(10, context.contextHash)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    fun getPendingContext(sessionId: String, contextId: String): ContextPacket? = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT context_json
+            FROM turn_logs
+            WHERE session_id = ? AND context_id = ? AND validation_status = 'pending'
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, contextId)
+            statement.executeQuery().use { rows ->
+                if (rows.next()) JsonSupport.json.decodeFromString(rows.getString("context_json")) else null
+            }
+        }
+    }
+
+    fun abortPendingContext(sessionId: String, contextId: String?): Int = connect { connection ->
+        val sql = if (contextId == null) {
+            "UPDATE turn_logs SET validation_status = 'aborted' WHERE session_id = ? AND validation_status = 'pending'"
+        } else {
+            "UPDATE turn_logs SET validation_status = 'aborted' WHERE session_id = ? AND context_id = ? AND validation_status = 'pending'"
+        }
+        connection.prepareStatement(sql).use { statement ->
+            statement.setString(1, sessionId)
+            if (contextId != null) statement.setString(2, contextId)
+            statement.executeUpdate()
+        }
+    }
+
+    fun listRecentTurnSummaries(sessionId: String, limit: Int): List<com.localnovel.engine.model.TurnSummary> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT turn_number, result_id, turn_summary
+            FROM turn_logs
+            WHERE session_id = ? AND validation_status = 'applied'
+            ORDER BY turn_number DESC
+            LIMIT ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setInt(2, limit)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            com.localnovel.engine.model.TurnSummary(
+                                turnNumber = rows.getInt("turn_number"),
+                                resultId = rows.getString("result_id") ?: "",
+                                summary = rows.getString("turn_summary") ?: "",
+                            ),
+                        )
+                    }
+                }.asReversed()
+            }
+        }
+    }
+
+    fun appliedResultExists(resultId: String): Boolean = connect { connection ->
+        connection.prepareStatement(
+            "SELECT 1 FROM turn_logs WHERE result_id = ? AND validation_status = 'applied' LIMIT 1",
+        ).use { statement ->
+            statement.setString(1, resultId)
+            statement.executeQuery().use { it.next() }
+        }
+    }
+
+    fun appliedTurnCount(sessionId: String): Int = connect { connection ->
+        connection.prepareStatement(
+            "SELECT COUNT(*) FROM turn_logs WHERE session_id = ? AND validation_status = 'applied'",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+    }
+
+    fun tableCount(tableName: String): Int = connect { connection ->
+        require(tableName.matches(Regex("[a-zA-Z_]+"))) { "Unsafe table name: $tableName" }
+        connection.prepareStatement("SELECT COUNT(*) FROM $tableName").use { statement ->
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+    }
+
+    fun resolvePendingTurn(context: ContextPacket, result: AiTurnResult, hasStateChange: Boolean): ApplyResult = connect { connection ->
+        connection.autoCommit = false
+        try {
+            val session = selectSession(connection, context.sessionId)
+                ?: error("Session not found: ${context.sessionId}")
+            require(session.stateVersion == context.baseStateVersion) { "Stale baseStateVersion: expected ${session.stateVersion}, got ${context.baseStateVersion}." }
+            require(session.nextTurnNumber == context.turnNumber) { "Stale turnNumber: expected ${session.nextTurnNumber}, got ${context.turnNumber}." }
+
+            val pendingId = selectPendingTurnLogId(connection, context.sessionId, context.contextId)
+                ?: error("Pending context not found: ${context.contextId}")
+            require(!result.resultId.isBlank()) { "resultId is required." }
+            require(!selectResultExists(connection, result.resultId)) { "Result already applied: ${result.resultId}" }
+
+            result.allDeltaOperations().forEach { operation ->
+                recordStateDelta(connection, context.project.id, context.turnId, operation.type.name.lowercase(), operation.targetType, operation.targetId, JsonSupport.json.encodeToString(operation.payload))
+                applyOperation(connection, context, operation)
+            }
+
+            applySceneProgressUpdates(connection, context, result)
+            connection.prepareStatement(
+                """
+                UPDATE turn_logs
+                SET result_json = ?, narrative = ?, has_state_change = ?, result_id = ?,
+                    turn_summary = ?, validation_status = 'applied'
+                WHERE id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, JsonSupport.json.encodeToString(result))
+                statement.setString(2, result.narrative)
+                statement.setInt(3, if (hasStateChange) 1 else 0)
+                statement.setString(4, result.resultId)
+                statement.setString(5, result.turnSummary.take(500))
+                statement.setString(6, pendingId)
+                statement.executeUpdate()
+            }
+            connection.prepareStatement(
+                """
+                UPDATE story_sessions
+                SET state_version = state_version + 1, next_turn_number = next_turn_number + 1, updated_at = ?
+                WHERE id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, now())
+                statement.setString(2, context.sessionId)
+                statement.executeUpdate()
+            }
+            updateProjectTurn(connection, context.project.id, context.turnNumber)
+            connection.commit()
+            ApplyResult(pendingId, result.narrative, hasStateChange)
+        } catch (error: Throwable) {
+            connection.rollback()
+            throw error
+        } finally {
+            connection.autoCommit = true
+        }
+    }
+
     override fun listTables(): Set<String> = connect { connection ->
         connection.prepareStatement(
             "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
@@ -424,6 +644,18 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             connection.createStatement().use { it.executeUpdate("PRAGMA foreign_keys = ON") }
             block(connection)
         }
+
+    private fun executeMigrationStatement(statement: java.sql.Statement, sql: String) {
+        if (sql.isBlank()) return
+        try {
+            statement.executeUpdate(sql)
+        } catch (error: SQLException) {
+            val message = error.message.orEmpty()
+            val duplicateColumn = sql.startsWith("ALTER TABLE", ignoreCase = true) &&
+                message.contains("duplicate column name", ignoreCase = true)
+            if (!duplicateColumn) throw error
+        }
+    }
 
     private fun clearProject(connection: Connection, projectId: String) {
         connection.prepareStatement("DELETE FROM projects WHERE id = ?").use { statement ->
@@ -583,7 +815,10 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
 
     private fun insertScene(connection: Connection, scene: Scene) {
         connection.prepareStatement(
-            "INSERT OR REPLACE INTO scenes(id, project_id, title, summary, location_id, status) VALUES (?, ?, ?, ?, ?, ?)",
+            """
+            INSERT OR REPLACE INTO scenes(id, project_id, title, summary, location_id, status, progress_json, completed_requirements_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
         ).use { statement ->
             statement.setString(1, scene.id)
             statement.setString(2, scene.projectId)
@@ -591,6 +826,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(4, scene.summary)
             statement.setString(5, scene.locationId)
             statement.setString(6, scene.status)
+            statement.setString(7, JsonSupport.json.encodeToString(scene.progress))
+            statement.setString(8, JsonSupport.json.encodeToString(scene.completedRequirements))
             statement.executeUpdate()
         }
     }
@@ -698,6 +935,173 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    private fun recordStateDelta(connection: Connection, projectId: String, turnId: String, operationType: String, targetType: String?, targetId: String?, payloadJson: String) {
+        connection.prepareStatement(
+            """
+            INSERT INTO state_deltas(id, project_id, turn_id, operation_type, target_type, target_id, payload_json, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("delta"))
+            statement.setString(2, projectId)
+            statement.setString(3, turnId)
+            statement.setString(4, operationType)
+            statement.setString(5, targetType)
+            statement.setString(6, targetId)
+            statement.setString(7, payloadJson)
+            statement.setString(8, now())
+            statement.executeUpdate()
+        }
+    }
+
+    private fun applyOperation(connection: Connection, context: ContextPacket, operation: com.localnovel.engine.model.DeltaOperation) {
+        when (operation.type) {
+            com.localnovel.engine.model.DeltaOperationType.UPDATE_CHARACTER_STATE -> {
+                val current = selectCharacterState(connection, context.project.id, operation.targetId ?: error("Missing character state target"))
+                    ?: error("Character state not found: ${operation.targetId}")
+                insertCharacterState(
+                    connection,
+                    CharacterState(
+                        characterId = current.characterId,
+                        projectId = current.projectId,
+                        locationId = operation.payload.stringValue("locationId") ?: operation.payload.stringValue("location_id") ?: current.locationId,
+                        mood = operation.payload.stringValue("mood") ?: current.mood,
+                        health = operation.payload.stringValue("health") ?: current.health,
+                        inventory = operation.payload.decodeValue("inventory") ?: current.inventory,
+                        flags = operation.payload.decodeValue("flags") ?: current.flags,
+                    ),
+                )
+            }
+            com.localnovel.engine.model.DeltaOperationType.ADD_FACT -> {
+                insertFact(
+                    connection,
+                    Fact(
+                        id = operation.targetId ?: operation.payload.stringValue("id") ?: newId("fact"),
+                        projectId = context.project.id,
+                        content = operation.payload.stringValue("content") ?: error("add_fact requires content"),
+                        visibility = operation.payload.stringValue("visibility") ?: "public",
+                        source = operation.payload.stringValue("source") ?: "ai_turn_result",
+                        createdTurn = context.turnNumber,
+                    ),
+                )
+            }
+            com.localnovel.engine.model.DeltaOperationType.REVEAL_SECRET -> {
+                connection.prepareStatement(
+                    "UPDATE secrets SET revealed = 1, revealed_turn = ? WHERE project_id = ? AND id = ?",
+                ).use { statement ->
+                    statement.setInt(1, context.turnNumber)
+                    statement.setString(2, context.project.id)
+                    statement.setString(3, operation.targetId ?: error("reveal_secret requires targetId"))
+                    statement.executeUpdate()
+                }
+            }
+            com.localnovel.engine.model.DeltaOperationType.ADD_EVENT -> {
+                insertEvent(
+                    connection,
+                    Event(
+                        id = operation.targetId ?: operation.payload.stringValue("id") ?: newId("event"),
+                        projectId = context.project.id,
+                        turnId = context.turnId,
+                        summary = operation.payload.stringValue("summary") ?: error("add_event requires summary"),
+                        payload = operation.payload,
+                    ),
+                )
+            }
+            com.localnovel.engine.model.DeltaOperationType.UPSERT_TASK -> {
+                val taskId = operation.targetId ?: operation.payload.stringValue("id") ?: newId("task")
+                val existing = selectTask(connection, context.project.id, taskId)
+                insertTask(
+                    connection,
+                    Task(
+                        id = taskId,
+                        projectId = context.project.id,
+                        title = operation.payload.stringValue("title") ?: existing?.title ?: error("upsert_task requires title"),
+                        status = operation.payload.stringValue("status") ?: existing?.status ?: "open",
+                        payload = operation.payload,
+                        createdTurn = existing?.createdTurn ?: context.turnNumber,
+                        updatedTurn = context.turnNumber,
+                    ),
+                )
+            }
+            com.localnovel.engine.model.DeltaOperationType.NOOP -> Unit
+        }
+    }
+
+    private fun applySceneProgressUpdates(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        val scene = context.activeScene ?: return
+        val completed = scene.completedRequirements.toMutableSet()
+        result.sceneProgressUpdates
+            .filter { it.status == "completed" }
+            .forEach { completed += it.requirement }
+        if (result.sceneProgressUpdates.isEmpty()) return
+        val progress = JsonObject(
+            result.sceneProgressUpdates.associate {
+                it.requirement to kotlinx.serialization.json.JsonPrimitive(it.status)
+            },
+        )
+        connection.prepareStatement(
+            "UPDATE scenes SET progress_json = ?, completed_requirements_json = ? WHERE project_id = ? AND id = ?",
+        ).use { statement ->
+            statement.setString(1, JsonSupport.json.encodeToString(progress))
+            statement.setString(2, JsonSupport.json.encodeToString(completed.toList()))
+            statement.setString(3, scene.projectId)
+            statement.setString(4, scene.id)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun updateProjectTurn(connection: Connection, projectId: String, turnNumber: Int) {
+        connection.prepareStatement("UPDATE projects SET current_turn = ?, updated_at = ? WHERE id = ?").use { statement ->
+            statement.setInt(1, turnNumber)
+            statement.setString(2, now())
+            statement.setString(3, projectId)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun selectSession(connection: Connection, sessionId: String): StorySession? =
+        connection.prepareStatement(
+            "SELECT id, project_id, current_scene_id, next_turn_number, state_version, status FROM story_sessions WHERE id = ?",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toStorySession() else null }
+        }
+
+    private fun selectPendingTurnLogId(connection: Connection, sessionId: String, contextId: String): String? =
+        connection.prepareStatement(
+            "SELECT id FROM turn_logs WHERE session_id = ? AND context_id = ? AND validation_status = 'pending'",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, contextId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("id") else null }
+        }
+
+    private fun selectResultExists(connection: Connection, resultId: String): Boolean =
+        connection.prepareStatement(
+            "SELECT 1 FROM turn_logs WHERE result_id = ? AND validation_status = 'applied' LIMIT 1",
+        ).use { statement ->
+            statement.setString(1, resultId)
+            statement.executeQuery().use { it.next() }
+        }
+
+    private fun selectCharacterState(connection: Connection, projectId: String, characterId: String): CharacterState? =
+        connection.prepareStatement(
+            "SELECT character_id, project_id, location_id, mood, health, inventory_json, flags_json FROM character_states WHERE project_id = ? AND character_id = ?",
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, characterId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toCharacterState() else null }
+        }
+
+    private fun selectTask(connection: Connection, projectId: String, taskId: String): Task? =
+        connection.prepareStatement(
+            "SELECT id, project_id, title, status, payload_json, created_turn, updated_turn FROM task_queue WHERE project_id = ? AND id = ?",
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, taskId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toTask() else null }
+        }
+
     private fun <T> Connection.queryMany(sql: String, projectId: String, mapper: (ResultSet) -> T): List<T> =
         prepareStatement(sql).use { statement ->
             statement.setString(1, projectId)
@@ -780,6 +1184,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         summary = getString("summary"),
         locationId = getString("location_id"),
         status = getString("status"),
+        progress = runCatching { JsonSupport.json.decodeFromString<JsonObject>(getString("progress_json")) }.getOrDefault(JsonObject(emptyMap())),
+        completedRequirements = runCatching { JsonSupport.json.decodeFromString<List<String>>(getString("completed_requirements_json")) }.getOrDefault(emptyList()),
     )
 
     private fun ResultSet.toSceneContract(): SceneContract = SceneContract(
@@ -832,6 +1238,15 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         updatedTurn = getInt("updated_turn"),
     )
 
+    private fun ResultSet.toStorySession(): StorySession = StorySession(
+        id = getString("id"),
+        projectId = getString("project_id"),
+        currentSceneId = getString("current_scene_id"),
+        nextTurnNumber = getInt("next_turn_number"),
+        stateVersion = getInt("state_version"),
+        status = getString("status"),
+    )
+
     private fun String.splitToStatements(): List<String> =
         lineSequence()
             .filterNot { it.trimStart().startsWith("--") }
@@ -844,4 +1259,12 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     companion object {
         fun newId(prefix: String): String = "$prefix-${UUID.randomUUID()}"
     }
+}
+
+private fun JsonObject.stringValue(key: String): String? =
+    this[key]?.let { runCatching { it.jsonPrimitive.content }.getOrNull() }
+
+private inline fun <reified T> JsonObject.decodeValue(key: String): T? {
+    val value = this[key] ?: return null
+    return runCatching { JsonSupport.json.decodeFromString<T>(JsonSupport.json.encodeToString(value)) }.getOrNull()
 }

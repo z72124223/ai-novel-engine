@@ -102,6 +102,8 @@ data class Scene(
     val summary: String,
     val locationId: String? = null,
     val status: String = "active",
+    val progress: JsonObject = JsonObject(emptyMap()),
+    val completedRequirements: List<String> = emptyList(),
 )
 
 @Serializable
@@ -203,7 +205,7 @@ data class Task(
 
 @Serializable
 data class ContextPacket(
-    val protocolVersion: String = "1",
+    val protocolVersion: String = "2",
     val project: Project,
     val turnId: String,
     val turnNumber: Int,
@@ -220,15 +222,38 @@ data class ContextPacket(
     val techniques: List<Technique> = emptyList(),
     val recentEvents: List<Event> = emptyList(),
     val openTasks: List<Task> = emptyList(),
+    val contextId: String = "",
+    val sessionId: String = "",
+    val baseStateVersion: Int = 0,
+    val contextHash: String = "",
+    val generatedAt: String = "",
+    val recentTurnSummaries: List<TurnSummary> = emptyList(),
+    val sceneProgress: JsonObject = JsonObject(emptyMap()),
+    val directorPressure: DirectorPressure? = null,
+    val outputRequirements: OutputRequirements = OutputRequirements(),
 )
 
 @Serializable
 data class AiTurnResult(
-    val protocolVersion: String = "1",
+    val protocolVersion: String = "2",
     val projectId: String,
     val turnId: String,
     val narrative: String,
     val stateDelta: StateDelta = StateDelta(),
+    val resultId: String = "",
+    val contextId: String = "",
+    val sessionId: String = "",
+    val turnNumber: Int = 0,
+    val baseStateVersion: Int = 0,
+    val contextHash: String = "",
+    val turnSummary: String = "",
+    val characterActions: List<CharacterAction> = emptyList(),
+    val stateDeltas: List<DeltaOperation> = emptyList(),
+    val revealedFacts: List<RevealedFact> = emptyList(),
+    val memoryEffects: List<MemoryEffect> = emptyList(),
+    val sceneProgressUpdates: List<SceneProgressUpdate> = emptyList(),
+    val newTasks: List<Task> = emptyList(),
+    val validationNotes: List<String> = emptyList(),
     val notes: String = "",
 )
 
@@ -252,6 +277,71 @@ data class DemoProjectSeed(
     val tasks: List<Task> = emptyList(),
 )
 
+@Serializable
+data class StorySession(
+    val id: String,
+    val projectId: String,
+    val currentSceneId: String,
+    val nextTurnNumber: Int,
+    val stateVersion: Int,
+    val status: String = "active",
+)
+
+@Serializable
+data class TurnSummary(
+    val turnNumber: Int,
+    val resultId: String = "",
+    val summary: String,
+)
+
+@Serializable
+data class DirectorPressure(
+    val enabled: Boolean = false,
+    val allowedPressureTypes: List<String> = emptyList(),
+    val mustProduceMeaningfulStateChange: Boolean = false,
+)
+
+@Serializable
+data class OutputRequirements(
+    val mustIncludeTurnSummary: Boolean = true,
+    val mustIncludeCharacterActions: Boolean = true,
+    val mustProduceMeaningfulStateChange: Boolean = false,
+)
+
+@Serializable
+data class CharacterAction(
+    val characterId: String,
+    val intent: String,
+    val visibleAction: String,
+    val hiddenMotive: String,
+    val triggeringConditions: List<String> = emptyList(),
+    val usedMemoryIds: List<String> = emptyList(),
+    val usedItemIds: List<String> = emptyList(),
+    val usedTechniqueIds: List<String> = emptyList(),
+    val characterFitScore: Int,
+    val storyProgressScore: Int,
+)
+
+@Serializable
+data class RevealedFact(
+    val factId: String,
+    val content: String,
+)
+
+@Serializable
+data class MemoryEffect(
+    val characterId: String,
+    val memoryId: String,
+    val effect: String,
+)
+
+@Serializable
+data class SceneProgressUpdate(
+    val requirement: String,
+    val status: String,
+    val evidence: String,
+)
+
 data class ValidationError(
     val code: String,
     val message: String,
@@ -268,3 +358,6 @@ data class ApplyResult(
     val narrative: String,
     val hasStateChange: Boolean,
 )
+
+fun AiTurnResult.allDeltaOperations(): List<DeltaOperation> =
+    stateDeltas.ifEmpty { stateDelta.operations }
