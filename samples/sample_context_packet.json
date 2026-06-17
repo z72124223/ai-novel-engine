@@ -1,0 +1,113 @@
+{
+  "protocolVersion": "1",
+  "project": {
+    "id": "demo",
+    "name": "霜祠夜問",
+    "summary": "玩家在沈家祠堂外質問沈霜，試圖逼近一個尚未解鎖的地底秘密。",
+    "activeSceneId": "scene-shrine-questioning",
+    "currentTurn": 0
+  },
+  "turnId": "demo-turn-1",
+  "turnNumber": 1,
+  "playerInput": "我質問沈霜：「你是不是早就知道祠堂下面有東西？」",
+  "activeScene": {
+    "id": "scene-shrine-questioning",
+    "projectId": "demo",
+    "title": "祠堂外廊的質問",
+    "summary": "玩家質問沈霜是否早知祠堂下方有異，沈霜必須在防備與失言之間做出反應。",
+    "locationId": "loc-shrine-corridor",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-shrine-questioning",
+    "projectId": "demo",
+    "sceneId": "scene-shrine-questioning",
+    "allowedSecretIds": ["secret-door-bolt-moved"],
+    "requiredBeats": ["沈霜不能無理由坦白。", "沈霜可以承認昨夜後殿門閂被人動過。"],
+    "forbiddenReveals": ["祠堂下面鎮著一口會呼吸的黑棺。"]
+  },
+  "characters": [
+    {
+      "id": "char-shen-shuang",
+      "projectId": "demo",
+      "name": "沈霜",
+      "role": "witness",
+      "description": "沈家年輕守祠人，冷靜、戒備，習慣先保護家族名聲再回答問題。",
+      "isPlayer": false,
+      "profile": {
+        "currentGoal": "阻止玩家靠近後殿，同時避免把自己知道的禁忌說破。",
+        "fear": "害怕玩家提到祠堂地底會引來族中長老追責。",
+        "knownInfo": ["昨夜有人動過後殿門閂", "祠堂地磚下有不能公開討論的異常"],
+        "legalActions": ["反問玩家消息來源", "承認後殿門閂被動過", "要求玩家留在外廊", "轉移話題到祠堂規矩"]
+      }
+    }
+  ],
+  "characterMemories": [
+    {
+      "id": "memory-shen-shuang-vow",
+      "projectId": "demo",
+      "characterId": "char-shen-shuang",
+      "summary": "沈霜記得父親交代過：外人追問地底時，只能承認門閂異常，不能說出被封住的東西。",
+      "salience": 5,
+      "visibility": "private",
+      "createdTurn": 0
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-shen-shuang",
+      "projectId": "demo",
+      "locationId": "loc-shrine-corridor",
+      "mood": "戒備",
+      "health": "steady",
+      "inventory": [],
+      "flags": {
+        "current_goal": "阻止玩家靠近後殿，同時避免把禁忌說破。",
+        "idle_turn_count": "0"
+      }
+    }
+  ],
+  "worldRules": [
+    {
+      "id": "rule-character-agency",
+      "projectId": "demo",
+      "title": "角色自主性",
+      "content": "角色只能依照自己的目標、恐懼、情緒、記憶與已知資訊行動，不得為了服務劇情目的無理由坦白。",
+      "priority": 10
+    }
+  ],
+  "facts": [
+    {
+      "id": "fact-night-sound",
+      "projectId": "demo",
+      "content": "祠堂夜裡曾傳出低沉聲響。",
+      "visibility": "public",
+      "source": "seed",
+      "createdTurn": 0
+    }
+  ],
+  "revealedSecrets": [],
+  "items": [
+    {
+      "id": "item-copper-token",
+      "projectId": "demo",
+      "name": "沈家銅牌",
+      "description": "一枚刻著沈字的舊銅牌，邊緣帶著泥痕。",
+      "ownerCharacterId": "char-player",
+      "locationId": null,
+      "tags": ["evidence"]
+    }
+  ],
+  "techniques": [
+    {
+      "id": "tech-listen-breath",
+      "projectId": "demo",
+      "name": "聽息辨位",
+      "description": "分辨木門、地磚與牆後細微聲響的江湖技巧。",
+      "ownerCharacterId": "char-player",
+      "tags": ["investigation"]
+    }
+  ],
+  "recentEvents": [],
+  "openTasks": []
+}

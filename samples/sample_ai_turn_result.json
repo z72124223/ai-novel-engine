@@ -1,0 +1,82 @@
+{
+  "protocolVersion": "1",
+  "projectId": "demo",
+  "turnId": "demo-turn-1",
+  "narrative": "沈霜的指節在袖中收緊，視線先落到你手裡那枚沈家銅牌，又立刻移開。她沒有正面承認你說的「下面有東西」，只壓低聲音說：「昨夜後殿門閂確實被人動過。你若只憑這點就往裡闖，我攔你不是心虛，是不想你把沈家的規矩踩碎。」",
+  "stateDelta": {
+    "summary": "沈霜在戒備中承認門閂異常，但沒有揭露禁忌。",
+    "operations": [
+      {
+        "type": "reveal_secret",
+        "targetType": "secret",
+        "targetId": "secret-door-bolt-moved",
+        "payload": {
+          "reason": "玩家直接質問祠堂異常，場景合約允許揭露門閂被動過。"
+        }
+      },
+      {
+        "type": "update_character_state",
+        "targetType": "character_state",
+        "targetId": "char-shen-shuang",
+        "payload": {
+          "old_value": {
+            "mood": "戒備",
+            "flags": {
+              "idle_turn_count": "0"
+            }
+          },
+          "new_value": {
+            "mood": "緊繃",
+            "flags": {
+              "idle_turn_count": "0",
+              "admitted_door_bolt": "true"
+            }
+          },
+          "reason": "沈霜被逼問後更緊張，但仍控制回答邊界。",
+          "mood": "緊繃",
+          "flags": {
+            "current_goal": "阻止玩家靠近後殿，同時避免把禁忌說破。",
+            "idle_turn_count": "0",
+            "admitted_door_bolt": "true"
+          }
+        }
+      },
+      {
+        "type": "add_fact",
+        "targetType": "fact",
+        "targetId": "fact-door-bolt-moved",
+        "payload": {
+          "old_value": null,
+          "new_value": "沈霜承認昨夜後殿門閂被人動過。",
+          "reason": "合法揭露 secret-door-bolt-moved 後保存為玩家可知事實。",
+          "content": "沈霜承認昨夜後殿門閂被人動過。",
+          "visibility": "public",
+          "source": "ai_turn_result"
+        }
+      },
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "payload": {
+          "old_value": null,
+          "new_value": "玩家質問沈霜，沈霜承認後殿門閂異常。",
+          "reason": "記錄本回合可回放事件。",
+          "summary": "玩家質問沈霜，沈霜承認後殿門閂異常。"
+        }
+      }
+    ]
+  },
+  "character_actions": [
+    {
+      "characterId": "char-shen-shuang",
+      "action": "避開地底問題，只承認後殿門閂被動過並要求玩家不要闖入。"
+    }
+  ],
+  "revealed_facts": [
+    {
+      "factId": "fact-door-bolt-moved",
+      "content": "沈霜承認昨夜後殿門閂被人動過。"
+    }
+  ],
+  "notes": "範例 result 使用目前協議的 stateDelta；character_actions 與 revealed_facts 是人工檢視用補充欄位，程式會忽略未知欄位。"
+}
