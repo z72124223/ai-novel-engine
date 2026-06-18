@@ -148,3 +148,14 @@ The final AI-facing context must not contain budget diagnostics. `explain-contex
 - Do not emit invalid JSON or arbitrary string truncation.
 - Do not allow forbidden secret content into compact views.
 - Always compute `contextHash` from the final compacted payload.
+
+## Semantic Coverage
+
+Budget forensics now includes a `semanticCoverage` sidecar section. It explains why the final context is not only byte-valid but usable for this turn:
+
+- `requirements` lists deterministic Tier 1 semantic requirements.
+- `satisfiedBy` gives candidate IDs, selected IDs, context paths, visibility checks and quality status.
+- `missingCriticalRequirements` and `qualityStatus=FAIL` mean the context must not be used for an AI result.
+- `tierBytes` estimates Tier 0 safety/protocol bytes, Tier 1 semantic-floor bytes, Tier 2 continuity bytes and Tier 3 optional enrichment bytes.
+
+The soft target is `22528` bytes. A context may pass at `22529..24576` only when Tier 0/Tier 1 data requires it; reports then mark `nearHardLimit=true`. Setting counts are not quotas: zero settings is valid when no referenced-setting requirement exists, and padding unrelated settings is a bug.

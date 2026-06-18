@@ -34,6 +34,7 @@ class ContextAuditService(
         val canonicalBytes = canonical.toByteArray(Charsets.UTF_8).size
         val actualBytes = actualFileBytes ?: canonicalBytes
         val recomputedHash = sha256(JsonSupport.json.encodeToString(context.copy(contextHash = "")).toByteArray(Charsets.UTF_8))
+        val semanticCoverage = ContextQualityGuard(maxBytes).evaluate(context, TurnSemanticPlanner().plan(context))
         val mandatoryFieldsPresent = context.project.id.isNotBlank() &&
             context.turnId.isNotBlank() &&
             context.contextId.isNotBlank() &&
@@ -60,6 +61,9 @@ class ContextAuditService(
             if (context.settingContextBudget.reasons.isNotEmpty()) {
                 add("legacy_setting_budget_reasons_present")
             }
+            if (semanticCoverage.qualityStatus != "PASS") {
+                add("semantic_coverage_failed:${semanticCoverage.missingCriticalRequirements.joinToString(",") { it.requirementId }}")
+            }
         }
         return ContextAuditReport(
             valid = violations.isEmpty(),
@@ -75,6 +79,7 @@ class ContextAuditService(
             violations = violations,
             sections = sections(context),
             forensics = ContextBudgetForensicsService(maxBytes).report(context.copy(contextHash = ""), context),
+            semanticCoverage = semanticCoverage,
         )
     }
 

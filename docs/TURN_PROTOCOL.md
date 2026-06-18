@@ -187,3 +187,14 @@ Final `ContextPacket` serialization now runs through a normalization pass before
 - `contextBudget` keeps only compact counts and `truncationReasonCodes`, not long natural-language trimming explanations.
 
 The hash rule is unchanged in spirit but stricter in order: normalize first, serialize with `contextHash = ""`, compute SHA-256 over those UTF-8 bytes, then converge `contextBudget.actualBytes` against the final serialized payload.
+
+## Pilot-1 Context Relevance Floor Protocol
+
+Final context fitting now includes a semantic coverage sidecar. It is not part of `ContextPacket`, but `explain-context-budget` and `audit-context` report:
+
+- `requirements`: deterministic Tier 1 needs for recall cues, relevant beliefs, transition/location constraints, character goals, hard world rules, and referenced item/technique legality.
+- `satisfiedBy`: the exact context path and selected ID that satisfies each requirement.
+- `qualityStatus`: `PASS` or `FAIL`.
+- `nearHardLimit`, `remainingBytes`, and Tier 0..3 byte estimates.
+
+`prepare-turn` still writes only a normal context JSON. If the required semantic floor cannot fit, it fails with `CONTEXT_QUALITY_UNSATISFIABLE` before saving a pending context.

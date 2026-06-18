@@ -254,3 +254,24 @@ Formal DB validation was read-only only:
 - formal Turn 8 was not prepared or resolved.
 
 Residual observation: Turn 8 still omitted all retrieved memories, knowledge claims and setting excerpts under the hard byte limit. This is now an explicit budget tradeoff rather than a metadata leak, but future Pilot review should monitor whether zero setting excerpts weakens character or scene fidelity.
+
+## Pilot-1 Context Relevance Floor Follow-Up
+
+Turn 8 showed that metadata normalization alone could produce a byte-valid context with `0 / 15` retrieved memories, `0 / 7` knowledge claims and `0 / 24` settings. The relevance-floor fix changes this from an accepted quality risk into an auditable semantic requirement.
+
+Copy-DB E2E on `data/pilot1-context-relevance-e2e.db` passed:
+
+- explain: `22617 / 24576` bytes, `qualityStatus=PASS`
+- audit: valid, hash valid, `remainingBytes=1959`, `nearHardLimit=true`
+- selected explicit memory: `memory-ai-chan-turn-007-quiet-with-player`
+- selected belief: `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`
+- pending context aborted
+- copy session remained `stateVersion=7`, `nextTurnNumber=8`
+
+Formal DB validation remained read-only only:
+
+- formal explain: `22617 / 24576`, `qualityStatus=PASS`
+- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+- formal Turn 8 was not prepared or resolved.
+
+Residual observation: the Turn 8 context is still above the `22528` soft target because retaining Tier 0 and Tier 1 coverage is prioritized over headroom. This is acceptable under the hard max but should be monitored before adding more long-running Pilot evidence.

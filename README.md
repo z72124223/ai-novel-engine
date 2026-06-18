@@ -171,6 +171,8 @@ Budget V2 keeps the same `24576` byte limit. It adds deterministic duplicate com
 
 Pilot-1 context metadata normalization keeps diagnostics out of the AI-facing `ContextPacket`. Final turn context now uses a top-level allowlist, omits empty/default optional fields, removes legacy aliases such as `characterMemories` when `retrievedMemories` is present, and stores detailed budget forensics only in `explain-context-budget` / `audit-context` report files. See `docs/CONTEXT_PACKET_NORMALIZATION.md`.
 
+Pilot-1 context relevance floor prevents a byte-valid but semantically empty turn context. `prepare-turn`, `audit-context`, and `explain-context-budget` now evaluate deterministic semantic requirements for explicit recall cues, relevant beliefs, transition/location questions, active character goals, hard world rules, and referenced item/technique constraints. If required memory, knowledge, or legality records cannot fit under `24576` bytes, the command fails with `CONTEXT_QUALITY_UNSATISFIABLE` before a pending turn is created. See `docs/CONTEXT_RELEVANCE_FLOOR.md`.
+
 ## Project Layout
 
 - `app/src/main/kotlin/com/localnovel/engine/model`：JSON protocol 與資料模型。

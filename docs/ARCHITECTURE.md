@@ -104,3 +104,12 @@ Normalization adds no migration and no new write path. The final AI-facing `Cont
 - `otherMetadata` is no longer used as a catch-all final section; forensics now reports exact JSON paths with semantic owner and byte counts.
 - Canonical runtime fields are preferred over legacy aliases. In finalized turn context, `retrievedMemories` is kept and the old `characterMemories` alias is omitted.
 - Active character views keep current goal, emotion, legal actions, inventory and constraints while dropping historical debug flags and duplicated runtime templates.
+
+## Pilot-1 Context Relevance Floor
+
+Relevance floor adds no migration and no write path. It sits between context construction, final byte fitting, and audit sidecars.
+
+- `TurnSemanticPlanner` derives deterministic semantic requirements from player input, active characters, current goals, beliefs, memories, inventory/techniques, scene transition questions, hard world rules, and continuity constraints.
+- `ContextQualityGuard` verifies that must-satisfy requirements are present in the final `ContextPacket`.
+- `ContextPacketFinalizer` protects Tier 1 records while trimming Tier 3 and Tier 2 material. If the protected semantic floor cannot fit under `24576` bytes, prepare/preview fails with `CONTEXT_QUALITY_UNSATISFIABLE`.
+- `ContextBudgetForensicsService` and `ContextAuditService` expose `semanticCoverage` only in sidecar reports; this coverage data is not serialized into the AI-facing context.

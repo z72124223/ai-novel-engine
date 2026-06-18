@@ -975,6 +975,7 @@ data class ContextAuditReport(
     val violations: List<String> = emptyList(),
     val sections: List<ContextSectionByteReport> = emptyList(),
     val forensics: ContextBudgetForensicsReport? = null,
+    val semanticCoverage: SemanticCoverageReport = SemanticCoverageReport(),
 )
 
 @Serializable
@@ -1004,6 +1005,55 @@ data class ContextMetadataPathReport(
     val canCompact: Boolean = false,
     val canMoveToAuditSidecar: Boolean = false,
     val inclusionReason: String = "",
+)
+
+@Serializable
+data class SemanticRequirement(
+    val requirementId: String,
+    val semanticType: String,
+    val source: String,
+    val targetCharacterIds: List<String> = emptyList(),
+    val referencedEntityIds: List<String> = emptyList(),
+    val referencedMemoryCandidates: List<String> = emptyList(),
+    val referencedKnowledgeCandidates: List<String> = emptyList(),
+    val referencedSettingCandidates: List<String> = emptyList(),
+    val priority: Int = 0,
+    val reason: String = "",
+    val mustBeSatisfied: Boolean = false,
+    val acceptableContextPaths: List<String> = emptyList(),
+)
+
+@Serializable
+data class SemanticCoverageItem(
+    val requirementId: String,
+    val semanticType: String,
+    val reason: String = "",
+    val candidateIds: List<String> = emptyList(),
+    val selectedId: String = "",
+    val selectedContextPath: String = "",
+    val bytes: Int = 0,
+    val omittedAlternatives: List<String> = emptyList(),
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val visibilityCheck: String = "PASS",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val qualityStatus: String = "PASS",
+)
+
+@Serializable
+data class SemanticCoverageReport(
+    val requirements: List<SemanticRequirement> = emptyList(),
+    val satisfiedCount: Int = 0,
+    val unsatisfiedCount: Int = 0,
+    val satisfiedBy: List<SemanticCoverageItem> = emptyList(),
+    val missingCriticalRequirements: List<SemanticRequirement> = emptyList(),
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val qualityStatus: String = "PASS",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val nearHardLimit: Boolean = false,
+    val remainingBytes: Int = 0,
+    val softTargetBytes: Int = 22528,
+    val maxBytes: Int = 24576,
+    val tierBytes: Map<String, Int> = emptyMap(),
 )
 
 @Serializable
@@ -1037,6 +1087,7 @@ data class ContextBudgetForensicsReport(
     val sessionId: String,
     val turnNumber: Int,
     val baseStateVersion: Int,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     val maxContextBytes: Int = 24576,
     val candidateBytesBeforeTrimming: Int,
     val candidateBytesAfterTrimming: Int,
@@ -1052,6 +1103,7 @@ data class ContextBudgetForensicsReport(
     val topLargestJsonPaths: List<ContextJsonPathByteReport> = emptyList(),
     val metadataPathBreakdown: List<ContextMetadataPathReport> = emptyList(),
     val duplicateContentGroups: List<ContextDuplicateContentGroup> = emptyList(),
+    val semanticCoverage: SemanticCoverageReport = SemanticCoverageReport(),
     val danglingReferenceCheck: ContextDanglingReferenceCheck = ContextDanglingReferenceCheck(true),
     val safetyFieldPresence: ContextSafetyFieldPresence,
     val unsatisfiedReason: String = "",
@@ -1089,6 +1141,7 @@ data class PilotPreflightReport(
     val contextAudit: ContextAuditReport? = null,
     val stateVersion: Int? = null,
     val nextTurnNumber: Int? = null,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     val pendingContextCount: Int = 0,
 )
 

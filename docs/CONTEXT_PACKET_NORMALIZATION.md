@@ -48,3 +48,9 @@ The order is strict:
 6. Save the pending context only after bytes and hash are stable.
 
 `audit-context` recomputes the same hash and byte count from the final file and rejects mismatches.
+
+## Relevance Floor Interaction
+
+Normalization must not strip Tier 1 semantic floor records. After compacting aliases and diagnostics, the finalizer checks semantic coverage for the current turn. Required memory, knowledge, transition/location, character-goal, world-rule, and referenced item/technique constraints are protected while optional Tier 3 and Tier 2 records are trimmed.
+
+`semanticCoverage` belongs in audit/explain sidecars only. It must not be serialized into the AI-facing `ContextPacket`.

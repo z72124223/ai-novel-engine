@@ -9,6 +9,7 @@ import com.localnovel.engine.model.ContextMetadataPathReport
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.ContextSafetyFieldPresence
 import com.localnovel.engine.model.ContextSectionByteReport
+import com.localnovel.engine.model.SemanticCoverageReport
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
@@ -27,6 +28,7 @@ class ContextBudgetForensicsService(
         before: ContextPacket,
         after: ContextPacket,
         unsatisfiedReason: String = "",
+        semanticCoverage: SemanticCoverageReport? = null,
     ): ContextBudgetForensicsReport {
         val beforeBytes = bytes(before.copy(contextHash = ""))
         val afterBytes = bytes(after)
@@ -35,6 +37,7 @@ class ContextBudgetForensicsService(
         val mandatoryBytes = afterSections.filter { it.section in mandatorySections }.sumOf { it.utf8Bytes }
         val duplicateGroups = duplicateGroups(after)
         val duplicatePaths = duplicateGroups.flatMap { it.paths }.toSet()
+        val coverage = semanticCoverage ?: ContextQualityGuard(maxContextBytes).evaluate(after, TurnSemanticPlanner().plan(before))
         val recomputedHash = sha256(JsonSupport.json.encodeToString(after.copy(contextHash = "")).toByteArray(Charsets.UTF_8))
         return ContextBudgetForensicsReport(
             sessionId = after.sessionId,
@@ -55,10 +58,11 @@ class ContextBudgetForensicsService(
             topLargestJsonPaths = largestPaths(after, duplicatePaths),
             metadataPathBreakdown = metadataPathBreakdown(after, duplicateGroups),
             duplicateContentGroups = duplicateGroups,
+            semanticCoverage = coverage,
             danglingReferenceCheck = danglingReferenceCheck(after),
             safetyFieldPresence = safetyFieldPresence(after),
             unsatisfiedReason = unsatisfiedReason,
-            canFit = afterBytes <= maxContextBytes && unsatisfiedReason.isBlank(),
+            canFit = afterBytes <= maxContextBytes && unsatisfiedReason.isBlank() && coverage.qualityStatus == "PASS",
             contextHash = after.contextHash,
             actualBytesMatchesSerializedPayload = after.contextBudget.actualBytes == afterBytes,
             hashValid = after.contextHash == recomputedHash,
