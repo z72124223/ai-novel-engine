@@ -89,6 +89,20 @@ object ContextPacketNormalizer {
         "prerequisites",
         "forbiddenUses",
         "effects",
+        "targetSceneId",
+        "targetLocationId",
+        "playerIntentRequired",
+        "prerequisitesSatisfied",
+        "unmetPrerequisites",
+        "travelMinutes",
+        "forcedAllowed",
+        "fromLocationId",
+        "toLocationId",
+        "connectionType",
+        "bidirectional",
+        "dueReason",
+        "allowedNarrativeUses",
+        "forbiddenCharacterUses",
     )
 
     fun normalizeForFinalContext(context: ContextPacket): ContextPacket {

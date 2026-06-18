@@ -30,6 +30,18 @@ A setting pack contains:
 
 Entities use stable IDs and `entityVersion`. Changing existing canon requires a higher `entityVersion`; same-version content changes are rejected.
 
+## Runtime Topology
+
+Setting packs may also carry runtime topology records. These are additive JSON fields on the pack root, not new database migrations:
+
+- `locationConnections`: reachability and travel time between locations.
+- `sceneTransitions`: formal scene-to-scene movement options.
+- `scheduledWorldEvents`: due-turn public pressure that can enter `pendingWorldEvents`.
+
+These records still go through parse, validate, diff, impact preview and transaction apply. Transitions must reference existing scenes, cross-location transitions must have a matching location connection, and `requiredPlayerIntent` must be explicit so player movement is never silently inferred. Scheduled world events must include `payload.publicEffect` and must not expose `author_only` secret content.
+
+When a turn references movement or a due world event is pending, the context compiler emits compact `relevantSettings` cards for the transition, location connection and world event. The full setting pack and full dependency graph are still excluded from turn context.
+
 ## Visibility
 
 Supported visibility values are:

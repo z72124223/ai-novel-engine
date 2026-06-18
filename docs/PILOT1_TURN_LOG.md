@@ -331,3 +331,107 @@ Use this section once per accepted turn.
   - Setting use 1..5: 3
   - Narrative momentum 1..5: 4
 - Notes: `show-session`, `show-scene`, `preview-transitions`, `explain-context-budget`, `prepare-turn`, `audit-context`, `resolve-turn`, `show-session`, `show-scene`, and `export-session-evidence` were executed in order. `audit-context` and `semanticCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No forced transition, invented location, actor relocation beyond the threshold, body movement, token contact, player dialogue, Turn 10 execution, or forbidden reveal was added.
+
+### Stabilized Rerun Turn 10
+
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Player input: 我停在門檻內側，不再後退。我只運起粗淺氣血調息，把呼吸和手腳的顫抖壓穩，不碰影子、不碰官差，也不碰趙無咎的腰牌。等氣息穩下來，我才低聲問趙無咎：「如果無籍之人和未登記的雪犬不能入城，你能不能給出一個不進城、不替愛醬契印，也暫時不把我們當犯人的合法處置？」「規矩若不允許，你就直接說。」
+- Narrative summary: 主角在門檻內側以粗淺氣血調息穩住呼吸與手腳顫抖，付出疲勞與保持冷靜觀察的代價；趙無咎未放行也未立即逮捕或契印，提出不入城、不離封控、不碰證物的城外現場留置待核處置。
+- Active character intent: 主角只想穩住自己並確認規矩邊界；趙無咎維持封控與律令，不把配合等同清白；愛醬貼身守護，壓住低吼但仍盯著影子。
+- `characterFitScore`: Player 94, Zhao Wujiu 92, Ai-chan 93.
+- Capability contract: `tech-basic-blood-breath` loaded from `pack-dog-slacker-base@1`, revision `entity-revision-424502a3-6566-46c9-b42c-22f7d89f775e`; authorized actor `char-player`; currentEligibility `ELIGIBLE`.
+- Capability prerequisites / requirements / costs / limitations / forbidden uses: prerequisites `NONE`; requirements `NONE`; costs `fatigue`, `requires calm observation`; limitations `cannot heal contract wounds`, `weak against trained cultivators`; forbidden uses `NONE`.
+- Capability result: 調息只穩住主角自身呼吸與顫抖，沒有辨識影子、治療、消除所有疲勞、強化愛醬或取得超自然答案。
+- State deltas: updated `char-player`, `char-zhao-wu-jiu`, `char-ai-chan`; added `fact-turn-010-basic-breath-limited-cost`; added `fact-turn-010-zhao-conditional-onsite-hold`; added `event-turn-010-blood-breath-legal-hold`.
+- Runtime memory created: `memory-player-turn-010-basic-breath-cost`; `memory-zhao-turn-010-conditional-hold`; `memory-ai-chan-turn-010-player-steadied`.
+- Knowledge / belief changes: `char-player` gained `tech-basic-blood-breath-has-limited-costly-scope=KNOWN`; `char-zhao-wu-jiu` gained `player-can-follow-conditional-onsite-hold=BELIEVED`; `char-ai-chan` gained `player-steady-but-tired-stay-close=BELIEVED`.
+- Scene changes: no transition proposal; no transition applied; the current scene remains `scene-abandoned-post`; world time advanced by 1 minute.
+- Thread changes: `thread-identity-and-shelter` progress +3, still `OPEN`.
+- Hard world rule used: `rule-identity-has-force` blocked treating an identity-less person as freely cleared for residence, passage, or clean legal status. Snow dog entry remained constrained by Zhao's loaded knowledge claim `know-zhao-snow-dog-law`.
+- Player autonomy: the player was not forced into the city, not forced to contract-imprint Ai-chan, not arrested, not separated from Ai-chan, and did not cross the threshold or touch the shadow, wounded officer, or token.
+- Shadow behavior: the shadow edge trembled slightly at the low voice but did not react to the breathing technique, retreat, or reveal its nature.
+- Semantic coverage: PASS. `CHARACTER_GOAL`, `WORLD_RULE`, `REFERENCED_TECHNIQUE`, `TRANSITION_CONSTRAINT`, `LOCATION_CONSTRAINT`, and `RELEVANT_BELIEF` were satisfied.
+- Capability coverage: PASS by context contract presence and resolve validation; `capabilityUseChecks` recorded `fatigue` and `requires calm observation` with a matching `char-player` state delta.
+- Context bytes: actual `22476 / 24576`; budget explain before trimming was `62448`, predicted after trimming `22476`; mandatoryBytes `10128`; hard max passed with 2100 bytes remaining.
+- Setting bytes: `2 / 8192`; 24 setting records were omitted.
+- Truncation: applied; omittedMemoryCount 19, omittedKnowledgeCount 7, omittedSettingCount 24.
+- Validator retry count: 0.
+- Next turn / state: nextTurnNumber 11, stateVersion 10.
+- Pending context count: 0.
+- Secret status: 2 unrevealed secrets remain unrevealed.
+- Quality scores:
+  - Character consistency 1..5: 5
+  - Consequence quality 1..5: 5
+  - Memory use 1..5: 4
+  - Setting use 1..5: 4
+  - Narrative momentum 1..5: 4
+- Notes: `show-session`, `explain-capability`, `explain-context-budget`, `prepare-turn`, `audit-context`, `resolve-turn`, `show-session`, and `export-session-evidence` were executed in order. `audit-context`, `semanticCoverage`, and `capabilityCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No invented capability, forced transition, player relocation, token contact, body contact, contract imprint, arrest, separation, external API, server, port, or forbidden reveal was added.
+
+### Stabilized Rerun Turn 11
+
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Player input: 我接受留在城外現場、配合查驗，也不碰傷者、證物或那片影子。但我看著趙無咎，把話說清楚：「我不進城，不讓愛醬被契印，也不接受和牠分開。」「如果這些條件讓你現在不能放行，那就把我們留在這裡，按你的程序往上通報。我不會逃，但這三件事我不答應。」
+- Narrative summary: 主角接受留在城外現場、配合查驗且不碰傷者、證物或影子，但明確拒絕進城、讓愛醬契印或與愛醬分開；趙無咎不放行，也不強迫當場契印或分開，只維持封控留置並把條件記入案中。
+- Active character intent: 主角把配合調查與三項拒絕切開；趙無咎接受可控留置但不承認問題已處置；愛醬把「不分開」理解成繼續貼身守住。
+- `characterFitScore`: Player 95, Zhao Wujiu 94, Ai-chan 94.
+- State deltas: updated `char-player`, `char-zhao-wu-jiu`, `char-ai-chan`; added `fact-turn-011-player-boundary-refusal`; added `fact-turn-011-zhao-hold-not-release`; added `event-turn-011-refusal-boundaries`.
+- Runtime memory created: `memory-player-turn-011-boundary-refusal`; `memory-zhao-turn-011-boundary-block`; `memory-ai-chan-turn-011-not-separated`.
+- Knowledge / belief changes: `char-player` gained `onsite-hold-accepted-but-three-boundaries-refused=KNOWN`; `char-zhao-wu-jiu` gained `player-cooperates-with-hold-but-refuses-release-conditions=KNOWN` and `identity-shelter-process-is-blocked-by-refusal=BELIEVED`; `char-ai-chan` gained `player-refuses-separation-and-imprint=BELIEVED`.
+- Scene changes: no transition proposal; no transition applied; all main actors remain in `loc-abandoned-post`; world time advanced by 1 minute.
+- Thread changes: `thread-identity-and-shelter` changed to `BLOCKED` with progress unchanged at 23, based on `event-turn-011-refusal-boundaries`, `fact-turn-011-player-boundary-refusal`, and `fact-turn-011-zhao-hold-not-release`.
+- Snow-dog thread: post-turn `show-threads` listed `thread-snow-dog-suspicion` as `OPEN` at progress 0. It was not present in the final context's `activeStoryThreads`, so no direct thread update was made; the refusal of imprint/separation was recorded as public fact and character belief evidence instead.
+- Formal resistance evidence: yes. The turn records that progress is blocked by both player choice and Zhao's procedural/legal resistance, without forcing a resolution.
+- Hard world rule used: `rule-identity-has-force` affected Zhao's refusal to treat the player as freely releasable or legally cleared.
+- Player autonomy: the player was not forced into the city, not forced to contract-imprint Ai-chan, not separated from Ai-chan, not moved across the threshold, and not treated as fleeing or attacking.
+- Ai-chan behavior: Ai-chan stayed close, softened slightly at the promise not to separate, but did not attack, flee, or approach the shadow.
+- Shadow behavior: minor tremor to Zhao's low voice; no pursuit toward the threshold, Ai-chan, or the player.
+- Semantic coverage: PASS. `CHARACTER_GOAL`, `WORLD_RULE`, and `RELEVANT_BELIEF` were satisfied.
+- Context bytes: actual `21968 / 24576`; budget explain before trimming was `64217`, predicted after trimming `21968`; mandatoryBytes `11215`; hard max passed with 2608 bytes remaining.
+- Setting bytes: `2 / 8192`; 24 setting records were omitted.
+- Truncation: applied; omittedMemoryCount 21, omittedKnowledgeCount 9, omittedSettingCount 24.
+- Validator retry count: 0.
+- Next turn / state: nextTurnNumber 12, stateVersion 11.
+- Pending context count: 0.
+- Secret status: 2 unrevealed secrets remain unrevealed.
+- Quality scores:
+  - Character consistency 1..5: 5
+  - Consequence quality 1..5: 5
+  - Memory use 1..5: 4
+  - Setting use 1..5: 4
+  - Narrative momentum 1..5: 4
+- Notes: `show-session`, `explain-context-budget`, `prepare-turn`, `audit-context`, `resolve-turn`, `show-session`, `show-threads`, and `export-session-evidence` were executed in order. `audit-context` and `semanticCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No invented law, invented transition, forced scene change, scheduled world event, player attack, escape, contract imprint, separation, external API, server, port, or forbidden reveal was added.
+
+### Stabilized Rerun Turn 12
+
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Player input: 我點頭，沒有再討價還價。「那就照你說的辦。你通報能驗的人或能擔責的人，我和愛醬留在你劃出的範圍內，不碰傷者、不碰證物、不碰影子，也不進城。」我低頭摸了摸愛醬的頸側，讓牠貼著我坐下。「但在對方來之前，我要知道一件事：如果有人要求先把愛醬帶走，或者先給牠契印，你會不會直接照辦？」我說完就停住，等趙無咎回答。
+- Narrative summary: 主角接受留在封控範圍並等待能驗或能擔責者，但追問若有人要求帶走或契印愛醬，趙無咎是否會直接照辦；趙無咎拒絕給絕對保證，也不承認安全或清白，但承諾不會在責任與理由未明前只憑旁人一句話直接帶走或契印愛醬。
+- Active character intent: 主角把等待封控與保護愛醬並行；趙無咎維持責任邊界，只給有限承諾；愛醬依主角摸頸側與過往安靜守位記憶貼身坐下。
+- `characterFitScore`: Player 95, Zhao Wujiu 94, Ai-chan 95.
+- State deltas: updated `char-player`, `char-zhao-wu-jiu`, `char-ai-chan`; added `fact-turn-012-zhao-limited-no-direct-action`; added `fact-turn-012-hold-continues-no-transition`; added `event-turn-012-final-boundary`.
+- Memory recalled: `memory-ai-chan-turn-004-shadow-shifts-to-zhao`; `memory-ai-chan-turn-007-quiet-with-player`; `memory-ai-chan-turn-006-quiet-watch`; `memory-zhao-turn-008-conditional-retreat`.
+- Runtime memory created: `memory-player-turn-012-limited-promise`; `memory-zhao-turn-012-limited-promise`; `memory-ai-chan-turn-012-sit-close`.
+- Memory effects: `memory-ai-chan-turn-006-quiet-watch` helped Ai-chan stay seated and close; `memory-zhao-turn-008-conditional-retreat` helped Zhao keep the answer conditional rather than granting release.
+- Knowledge / belief changes: `char-player` gained `zhao-offers-limited-no-direct-ai-chan-action-before-verifier=BELIEVED`; `char-zhao-wu-jiu` gained `limited-promise-not-to-directly-imprint-or-separate-ai-chan=KNOWN`; `char-ai-chan` gained `zhao-not-immediately-taking-ai-chan-but-danger-remains=BELIEVED`.
+- Scene changes: no transition proposal; no transition applied; all main actors remain in `loc-abandoned-post`; world time advanced by 1 minute.
+- Thread changes: `thread-identity-and-shelter` remained `BLOCKED` with progress unchanged at 23. `thread-snow-dog-suspicion` was not in final context `activeStoryThreads`, so it was not directly updated; Turn 12 added fact/belief/memory evidence about refusal of direct removal or imprint.
+- Formal resistance evidence: yes. Turn 12 records a limited no-direct-action promise but keeps the core legal/shelter problem blocked.
+- Hard world rule used: `rule-identity-has-force` continued to prevent Zhao from treating the player as freely releasable or cleared.
+- Player autonomy: the player was not forced into the city, not forced to contract-imprint Ai-chan, not separated from Ai-chan, not moved, and not treated as fleeing or attacking.
+- Ai-chan behavior: Ai-chan stayed close and sat by the player after a neck-side touch, using recalled quiet-watch memories; no attack, flight, or shadow approach.
+- Shadow behavior: minor tremor to Zhao's low voice; no pursuit and no reveal.
+- Semantic coverage: PASS. `CHARACTER_GOAL`, `EXPLICIT_MEMORY_CUE`, `WORLD_RULE`, `TRANSITION_CONSTRAINT`, `LOCATION_CONSTRAINT`, `RELEVANT_BELIEF`, and `RECENT_EVENT_CONTINUITY` were satisfied.
+- Context bytes: actual `23848 / 24576`; budget explain before trimming was `66380`, predicted after trimming `23848`; mandatoryBytes `10595`; hard max passed with 728 bytes remaining.
+- Setting bytes: `2 / 8192`; 24 setting records were omitted.
+- Truncation: applied; omittedMemoryCount 19, omittedKnowledgeCount 12, omittedSettingCount 24; near hard limit was true.
+- Validator retry count: 0.
+- Next turn / state: nextTurnNumber 13, stateVersion 12.
+- Pending context count: 0.
+- Secret status: 2 unrevealed secrets remain unrevealed.
+- Quality scores:
+  - Character consistency 1..5: 5
+  - Consequence quality 1..5: 5
+  - Memory use 1..5: 5
+  - Setting use 1..5: 4
+  - Narrative momentum 1..5: 4
+- Notes: `show-session`, `explain-context-budget`, `prepare-turn`, `audit-context`, `resolve-turn`, `show-session`, `show-threads`, and `export-session-evidence` were executed in order. `audit-context` and `semanticCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No Turn 13, invented law, invented transition, scheduled world event trigger, forced scene change, player attack, escape, contract imprint, separation, external API, server, port, or forbidden reveal was added.

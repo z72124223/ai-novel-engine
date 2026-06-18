@@ -111,11 +111,19 @@ class TurnSemanticPlanner {
         }
 
         if (transitionCue) {
+            val transitionIds = context.availableTransitions.map { it.transitionId }.toSet()
+            val transitionSettings = context.relevantSettings
+                .filter { setting ->
+                    setting.entityType == "location_connection" ||
+                        setting.entityType == "scene_transition" && setting.entityId in transitionIds
+                }
+                .map { "${it.entityType}:${it.entityId}" }
             requirements += SemanticRequirement(
                 requirementId = "req-transition-location-constraints",
                 semanticType = "TRANSITION_CONSTRAINT",
                 source = "playerInput",
                 referencedEntityIds = listOfNotNull(context.activeScene?.id, context.activeScene?.locationId),
+                referencedSettingCandidates = transitionSettings,
                 priority = 95,
                 reason = "Player asks whether withdrawal or movement is possible.",
                 mustBeSatisfied = true,
@@ -156,6 +164,20 @@ class TurnSemanticPlanner {
                 reason = "Hard world rules remain part of Tier 0 safety.",
                 mustBeSatisfied = true,
                 acceptableContextPaths = listOf("$.worldRules"),
+            )
+        }
+
+        if (context.pendingWorldEvents.isNotEmpty()) {
+            requirements += SemanticRequirement(
+                requirementId = "req-pending-world-events",
+                semanticType = "WORLD_EVENT_PRESSURE",
+                source = "pendingWorldEvents",
+                referencedEntityIds = context.pendingWorldEvents.map { it.eventId },
+                referencedSettingCandidates = context.pendingWorldEvents.map { "world_event:${it.eventId}" },
+                priority = 88,
+                reason = "A due scheduled world event must remain visible with public pressure and safety limits.",
+                mustBeSatisfied = true,
+                acceptableContextPaths = listOf("$.pendingWorldEvents", "$.relevantSettings[]"),
             )
         }
 
@@ -282,7 +304,8 @@ class ContextQualityGuard(
             "TRANSITION_CONSTRAINT" -> if (
                 context.continuityConstraints.currentSceneInstanceId.isNotBlank() &&
                     context.activeScene?.locationId != null &&
-                    context.sceneLifecycle.sceneInstanceId.isNotBlank()
+                    context.sceneLifecycle.sceneInstanceId.isNotBlank() &&
+                    requiredSettingsPresent(context, requirement)
             ) {
                 (context.activeScene?.id.orEmpty() to "$.continuityConstraints")
             } else {
@@ -300,6 +323,11 @@ class ContextQualityGuard(
                 .firstOrNull { it.flags["current_goal"].orEmpty().isNotBlank() }
                 ?.let { it.characterId to "$.characterStates[${context.characterStates.indexOf(it)}].flags.current_goal" }
             "WORLD_RULE" -> context.worldRules.firstOrNull()?.let { it.id to "$.worldRules[0]" }
+            "WORLD_EVENT_PRESSURE" -> if (context.pendingWorldEvents.isNotEmpty() && requiredSettingsPresent(context, requirement)) {
+                context.pendingWorldEvents.first().eventId to "$.pendingWorldEvents[0]"
+            } else {
+                null
+            }
             "RECENT_EVENT_CONTINUITY" -> context.recentEvents.firstOrNull()?.let { it.id to "$.recentEvents[0]" }
             else -> null
         }
@@ -326,6 +354,12 @@ class ContextQualityGuard(
     private fun hasLegalityMetadata(setting: RelevantSetting): Boolean =
         setting.metadata.keys.any { it in setOf("costs", "limitations", "requirements", "prerequisites", "forbiddenUses") } ||
             setting.summary.isNotBlank()
+
+    private fun requiredSettingsPresent(context: ContextPacket, requirement: SemanticRequirement): Boolean =
+        requirement.referencedSettingCandidates.isEmpty() ||
+            requirement.referencedSettingCandidates.all { key ->
+                context.relevantSettings.any { "${it.entityType}:${it.entityId}" == key && it.visibility != "author_only" }
+            }
 
     private fun tierBytes(context: ContextPacket, requirements: List<SemanticRequirement>): Map<String, Int> {
         val tier1 = requirements.filter { it.mustBeSatisfied }.sumOf { requirement ->
