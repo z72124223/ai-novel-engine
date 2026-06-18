@@ -92,3 +92,21 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - Trimming order must be deterministic and must not depend on session-specific or player-input-specific hard-coded exceptions.
 - `settingContextBudget.maxBytes` remains a maximum, not a reserved quota; settings must yield to higher-priority safety and runtime sections when the global context budget is tight.
 - `contextBudget.actualBytes` and `contextHash` must be computed from the final compacted payload.
+
+## Pilot-1 Context Metadata Normalization Rules
+
+- `audit-context` rejects unknown top-level fields instead of treating them as `otherMetadata`.
+- Final `ContextPacket` must not contain diagnostics such as `perSectionBytesBefore`, `topLargestJsonPaths`, `duplicateContentGroups`, `removedItems` or `retainedItems`.
+- Final `contextBudget` uses `truncationReasonCodes`; legacy `truncationReasons` and `settingContextBudget.reasons` are audit failures when present in a finalized context file.
+- `contextHash` and `contextBudget.actualBytes` must match the normalized serialized payload, not a pre-normalization candidate.
+- Removing legacy aliases must not weaken validation: result memory references still have to point at IDs present in canonical `retrievedMemories`, and item/technique references still have to be present in the final context.
+
+## Pilot-1 Context Relevance Floor Rules
+
+- A byte-valid context can still fail audit if must-satisfy semantic requirements are missing.
+- Explicit recall cues must be satisfied by real IDs in `retrievedMemories`; recent facts, events, or summaries cannot be reported as recalled memory.
+- Relevant belief requirements must be satisfied by context-visible `knowledgeClaims`.
+- Transition/location questions must retain current scene, current location, character locations, and continuity constraints.
+- Referenced item or technique requirements must retain visible requirements, costs, limitations, prerequisites, or forbidden-use metadata when such setting data exists.
+- Author-only settings cannot satisfy character-facing requirements.
+- If the semantic floor cannot fit under the hard max, `prepare-turn` and preview fail with `CONTEXT_QUALITY_UNSATISFIABLE` and must not create a pending context.

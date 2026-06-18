@@ -10,26 +10,41 @@ Pilot turn context is capped at `24576` actual UTF-8 bytes. The cap is intention
 - `playerInput`
 - `sceneLifecycle`
 - `sceneContract`
+- `projectSummary`
 - `activeCharacters`
+- `characterRuntimeStates`
 - `characterKnowledge`
 - `retrievedMemories`
 - `relevantSettings`
 - `storyThreads`
 - `recentTurnSummaries`
 - `worldRules`
+- `facts`
+- `items`
+- `techniques`
+- `recentEvents`
+- `openTasks`
 - `worldEvents`
+- `sceneRequirements`
+- `availableTransitions`
+- `worldClock`
 - `continuityConstraints`
 - `forbiddenReveals`
 - `outputRequirements`
 - `contextBudgetMetadata`
 - `canonRevisionSummary`
+- `sceneProgress`
+- `directorPressure`
+- `generatedAt`
 - `otherMetadata`
 
 The section totals are diagnostic accounting, not an alternate protocol. The final source of truth remains the serialized `ContextPacket` bytes and `contextHash`.
 
+`otherMetadata` is reserved for truly unclassified data and should be empty in finalized Pilot context. Existing protocol fields such as `project`, `activeScene`, `characterStates`, `facts`, `items`, `techniques`, `recentEvents`, `sceneRequirements`, `availableTransitions` and `worldClock` are reported under named sections instead of being hidden inside `otherMetadata`.
+
 ## Mandatory And Optional Bytes
 
-Mandatory sections include protocol identity, player input, scene lifecycle, scene contract, active characters, hard world rules, continuity constraints, forbidden reveals, output requirements and budget metadata.
+Mandatory sections include protocol identity, player input, scene lifecycle, scene contract, project summary, active characters, active character runtime states, hard world rules, continuity constraints, forbidden reveals, output requirements and budget metadata.
 
 Optional sections include retrieved memories, character knowledge, relevant settings, recent summaries, secondary threads, world events, canon revision provenance and public prose that can be represented by compact references.
 
@@ -103,10 +118,13 @@ The report includes:
 - `perSectionBytesBefore`
 - `perSectionBytesAfter`
 - `topLargestJsonPaths`
+- `metadataPathBreakdown`
 - `duplicateContentGroups`
 - `danglingReferenceCheck`
 - `safetyFieldPresence`
 - `unsatisfiedReason`
+
+`metadataPathBreakdown` expands formerly ambiguous metadata into exact JSON paths with UTF-8 bytes, value type, semantic owner, mandatory/optional status, duplicate paths, compactability and whether the data should live in an audit sidecar.
 
 ## Read-Only Explain
 
@@ -118,6 +136,10 @@ Use:
 
 This command is read-only. It does not create `turn_logs`, does not advance `stateVersion`, does not write recall logs and does not apply state deltas.
 
+## Normalization Boundary
+
+The final AI-facing context must not contain budget diagnostics. `explain-context-budget` and `audit-context` can include largest paths, duplicate groups, retained/removed items and metadata path breakdowns in their report JSON. The final `ContextPacket` keeps only compact byte/count accounting and reason codes.
+
 ## Safety Invariants
 
 - Do not raise `contextBudget.maxBytes`.
@@ -126,3 +148,14 @@ This command is read-only. It does not create `turn_logs`, does not advance `sta
 - Do not emit invalid JSON or arbitrary string truncation.
 - Do not allow forbidden secret content into compact views.
 - Always compute `contextHash` from the final compacted payload.
+
+## Semantic Coverage
+
+Budget forensics now includes a `semanticCoverage` sidecar section. It explains why the final context is not only byte-valid but usable for this turn:
+
+- `requirements` lists deterministic Tier 1 semantic requirements.
+- `satisfiedBy` gives candidate IDs, selected IDs, context paths, visibility checks and quality status.
+- `missingCriticalRequirements` and `qualityStatus=FAIL` mean the context must not be used for an AI result.
+- `tierBytes` estimates Tier 0 safety/protocol bytes, Tier 1 semantic-floor bytes, Tier 2 continuity bytes and Tier 3 optional enrichment bytes.
+
+The soft target is `22528` bytes. A context may pass at `22529..24576` only when Tier 0/Tier 1 data requires it; reports then mark `nearHardLimit=true`. Setting counts are not quotas: zero settings is valid when no referenced-setting requirement exists, and padding unrelated settings is a bug.

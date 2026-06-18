@@ -239,6 +239,7 @@ class ContextBudgeter(
                     includedKnowledgeCount = claims.size,
                     omittedKnowledgeCount = omittedKnowledgeCount + context.knowledgeClaims.size - claims.size,
                     truncationApplied = true,
+                    truncationReasonCodes = ContextPacketNormalizer.reasonCodes(reasons),
                     truncationReasons = reasons.distinct(),
                 ),
             )
@@ -249,6 +250,7 @@ class ContextBudgeter(
             contextBudget = candidate.contextBudget.copy(
                 actualBytes = size,
                 truncationApplied = reasons.isNotEmpty(),
+                truncationReasonCodes = ContextPacketNormalizer.reasonCodes(reasons),
                 truncationReasons = reasons.distinct(),
             ),
         )
@@ -265,32 +267,66 @@ class ContextBudgetUnsatisfiableException(
 
 class ContextPacketFinalizer(
     private val maxContextBytes: Int = 24576,
+    private val softTargetBytes: Int = 22528,
 ) {
     fun finalize(context: ContextPacket, hashContext: (ContextPacket) -> String): ContextPacket {
         var candidate = context.copy(contextHash = "")
         val before = candidate
-        val reasons = candidate.contextBudget.truncationReasons.toMutableList()
+        val requirements = TurnSemanticPlanner().plan(candidate)
+        val qualityGuard = ContextQualityGuard(maxContextBytes, softTargetBytes)
+        val protectedIds = qualityGuard.protectedIds(requirements)
+        val reasons = (candidate.contextBudget.truncationReasons + candidate.contextBudget.truncationReasonCodes).toMutableList()
         repeat(512) {
             val finalized = withStableAccounting(candidate, hashContext, reasons)
-            if (encodedSize(finalized) <= maxContextBytes) return finalized
-            val reduced = reduceOne(candidate, reasons)
-                ?: throw ContextBudgetUnsatisfiableException(
-                    "CONTEXT_BUDGET_UNSATISFIABLE: final ContextPacket is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
+            val size = encodedSize(finalized)
+            val coverage = qualityGuard.evaluate(finalized, requirements)
+            if (size <= maxContextBytes && coverage.qualityStatus == "PASS") {
+                if (size <= softTargetBytes) return finalized
+                val softReduced = reduceOne(candidate, reasons, protectedIds)
+                if (softReduced == null) return finalized
+                candidate = softReduced.copy(contextHash = "")
+                return@repeat
+            }
+            if (size <= maxContextBytes && coverage.qualityStatus == "FAIL") {
+                throw ContextBudgetUnsatisfiableException(
+                    "CONTEXT_QUALITY_UNSATISFIABLE: semantic floor cannot be satisfied within final ContextPacket.",
                     ContextBudgetForensicsService(maxContextBytes).report(
                         before = before,
                         after = finalized,
-                        unsatisfiedReason = "No optional or compactable context sections remain; final ContextPacket is ${encodedSize(finalized)} bytes.",
+                        unsatisfiedReason = "CONTEXT_QUALITY_UNSATISFIABLE: missing ${coverage.missingCriticalRequirements.size} critical semantic requirements.",
+                        semanticCoverage = coverage,
+                    ),
+                )
+            }
+            val reduced = reduceOne(candidate, reasons, protectedIds)
+                ?: throw ContextBudgetUnsatisfiableException(
+                    if (coverage.qualityStatus == "FAIL" || protectedIds.hasProtectedFloor()) {
+                        "CONTEXT_QUALITY_UNSATISFIABLE: semantic floor cannot fit; final ContextPacket is ${encodedSize(finalized)} bytes, max is $maxContextBytes"
+                    } else {
+                        "CONTEXT_BUDGET_UNSATISFIABLE: final ContextPacket is ${encodedSize(finalized)} bytes, max is $maxContextBytes"
+                    },
+                    ContextBudgetForensicsService(maxContextBytes).report(
+                        before = before,
+                        after = finalized,
+                        unsatisfiedReason = if (coverage.qualityStatus == "FAIL" || protectedIds.hasProtectedFloor()) {
+                            "CONTEXT_QUALITY_UNSATISFIABLE: no optional non-floor sections remain; missing ${coverage.missingCriticalRequirements.size} semantic requirements."
+                        } else {
+                            "No optional or compactable context sections remain; final ContextPacket is ${encodedSize(finalized)} bytes."
+                        },
+                        semanticCoverage = coverage,
                     ),
                 )
             candidate = reduced.copy(contextHash = "")
         }
         val finalized = withStableAccounting(candidate, hashContext, reasons)
+        val coverage = qualityGuard.evaluate(finalized, requirements)
         throw ContextBudgetUnsatisfiableException(
             "CONTEXT_BUDGET_UNSATISFIABLE: context budget did not converge, final size is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
             ContextBudgetForensicsService(maxContextBytes).report(
                 before = before,
                 after = finalized,
                 unsatisfiedReason = "Context budget reduction did not converge within 512 deterministic steps.",
+                semanticCoverage = coverage,
             ),
         )
     }
@@ -300,29 +336,41 @@ class ContextPacketFinalizer(
         hashContext: (ContextPacket) -> String,
         reasons: List<String>,
     ): ContextPacket {
-        var candidate = context.copy(contextHash = "")
+        var candidate = ContextPacketNormalizer.normalizeForFinalContext(context.copy(contextHash = ""))
         var previousBytes = -1
         var previousHash = ""
         repeat(24) {
-            val withHash = candidate.copy(contextHash = hashContext(candidate))
+            val normalized = ContextPacketNormalizer.normalizeForFinalContext(candidate.copy(contextHash = ""))
+            val withHash = normalized.copy(contextHash = hashContext(normalized))
             val actualBytes = encodedSize(withHash)
             val settingBytes = JsonSupport.json.encodeToString(withHash.relevantSettings).toByteArray(Charsets.UTF_8).size
+            val reasonCodes = ContextPacketNormalizer.reasonCodes(reasons)
+            val settingReasonCodes = ContextPacketNormalizer.reasonCodes(
+                withHash.settingContextBudget.reasons +
+                    withHash.settingContextBudget.reasonCodes +
+                    reasons.filter { it.contains("setting", ignoreCase = true) },
+            )
             val next = withHash.copy(
                 contextBudget = withHash.contextBudget.copy(
                     maxBytes = maxContextBytes,
                     actualBytes = actualBytes,
                     includedMemoryCount = withHash.retrievedMemories.size,
                     includedKnowledgeCount = withHash.knowledgeClaims.size,
+                    includedSettingCount = withHash.relevantSettings.size,
+                    omittedSettingCount = withHash.settingContextBudget.omittedSettingCount,
                     truncationApplied = reasons.isNotEmpty(),
-                    truncationReasons = reasons.distinct(),
+                    truncationReasonCodes = reasonCodes,
+                    truncationReasons = emptyList(),
                 ),
                 settingContextBudget = withHash.settingContextBudget.copy(
                     actualBytes = settingBytes,
                     includedSettingCount = withHash.relevantSettings.size,
                     truncationApplied = withHash.settingContextBudget.omittedSettingCount > 0 ||
                         withHash.settingContextBudget.reasons.isNotEmpty() ||
+                        withHash.settingContextBudget.reasonCodes.isNotEmpty() ||
                         reasons.any { it.contains("setting", ignoreCase = true) },
-                    reasons = (withHash.settingContextBudget.reasons + reasons.filter { it.contains("setting", ignoreCase = true) }).distinct(),
+                    reasonCodes = settingReasonCodes,
+                    reasons = emptyList(),
                 ),
             )
             if (actualBytes == previousBytes && next.contextHash == previousHash) return next
@@ -333,7 +381,11 @@ class ContextPacketFinalizer(
         return candidate.copy(contextHash = hashContext(candidate))
     }
 
-    private fun reduceOne(context: ContextPacket, reasons: MutableList<String>): ContextPacket? {
+    private fun reduceOne(
+        context: ContextPacket,
+        reasons: MutableList<String>,
+        protectedIds: ProtectedContextIds,
+    ): ContextPacket? {
         compactCanonRevisionSummary(context)?.let {
             reasons += "compacted canon revision provenance"
             return it
@@ -346,10 +398,11 @@ class ContextPacketFinalizer(
             reasons += "deduplicated relevant setting summaries"
             return it
         }
-        if (context.relevantSettings.isNotEmpty()) {
+        context.relevantSettings.indexOfLast { "${it.entityType}:${it.entityId}" !in protectedIds.settingKeys }.takeIf { it >= 0 }?.let { index ->
             reasons += "omitted lowest-priority relevant setting"
+            val settings = context.relevantSettings.toMutableList().also { it.removeAt(index) }
             return context.copy(
-                relevantSettings = context.relevantSettings.dropLast(1),
+                relevantSettings = settings,
                 settingContextBudget = context.settingContextBudget.copy(
                     omittedSettingCount = context.settingContextBudget.omittedSettingCount + 1,
                     truncationApplied = true,
@@ -357,8 +410,8 @@ class ContextPacketFinalizer(
                 ),
             )
         }
-        if (context.retrievedMemories.isNotEmpty()) {
-            val memories = context.retrievedMemories.dropLast(1)
+        context.retrievedMemories.indexOfLast { it.memoryId !in protectedIds.memoryIds }.takeIf { it >= 0 }?.let { index ->
+            val memories = context.retrievedMemories.toMutableList().also { it.removeAt(index) }
             reasons += "omitted lowest-ranked memory"
             return context.copy(
                 retrievedMemories = memories,
@@ -381,10 +434,11 @@ class ContextPacketFinalizer(
                 ),
             )
         }
-        if (context.knowledgeClaims.isNotEmpty()) {
+        context.knowledgeClaims.indexOfLast { it.claimId !in protectedIds.knowledgeClaimIds }.takeIf { it >= 0 }?.let { index ->
+            val claims = context.knowledgeClaims.toMutableList().also { it.removeAt(index) }
             reasons += "omitted lowest-priority knowledge claim"
             return context.copy(
-                knowledgeClaims = context.knowledgeClaims.dropLast(1),
+                knowledgeClaims = claims,
                 contextBudget = context.contextBudget.copy(
                     omittedKnowledgeCount = context.contextBudget.omittedKnowledgeCount + 1,
                     truncationApplied = true,
@@ -402,6 +456,10 @@ class ContextPacketFinalizer(
         if (context.pendingWorldEvents.size > 1) {
             reasons += "omitted lowest-priority pending world event"
             return context.copy(pendingWorldEvents = context.pendingWorldEvents.dropLast(1))
+        }
+        if (context.recentEvents.size > 1) {
+            reasons += "omitted lower-priority recent event"
+            return context.copy(recentEvents = context.recentEvents.dropLast(1))
         }
         if (context.availableTransitions.size > 3) {
             reasons += "omitted surplus transition previews"
@@ -423,9 +481,9 @@ class ContextPacketFinalizer(
             reasons += "omitted surplus open tasks"
             return context.copy(openTasks = context.openTasks.take(5))
         }
-        if (context.facts.size > 12) {
+        if (context.facts.size > 8) {
             reasons += "omitted surplus public facts"
-            return context.copy(facts = context.facts.takeLast(12))
+            return context.copy(facts = context.facts.takeLast(8))
         }
         if (context.worldRules.size > 6) {
             reasons += "omitted lower-priority world rules"
@@ -631,6 +689,9 @@ class ContextPacketFinalizer(
     private fun encodedSize(context: ContextPacket): Int =
         JsonSupport.json.encodeToString(context).toByteArray(Charsets.UTF_8).size
 }
+
+private fun ProtectedContextIds.hasProtectedFloor(): Boolean =
+    memoryIds.isNotEmpty() || knowledgeClaimIds.isNotEmpty() || settingKeys.isNotEmpty()
 
 private fun String.normalizedFragment(): String =
     trim().replace(Regex("\\s+"), " ")

@@ -220,3 +220,58 @@ Required next validation before continuing Pilot turns:
 - Run `explain-context-budget` on the formal DB only in read-only mode.
 - Reproduce prepare/audit/abort on `data/pilot1-budget-v2-e2e.db`, not on the formal Pilot DB.
 - Resume formal Turn 4 only after context bytes fit under `24576`, audit passes, and formal `stateVersion=3` / `nextTurnNumber=4` remain unchanged.
+
+## Pilot-1 Context Metadata Normalization Follow-Up
+
+After seven stabilized rerun turns, formal Turn 8 exposed a schema/metadata blocker in read-only `explain-context-budget`:
+
+- before trimming: `65854` bytes
+- after trimming: `24621 / 24576` bytes
+- over limit: `45` bytes
+- `otherMetadata`: `16997` bytes
+- `contextBudgetMetadata`: `1460` bytes
+
+The fix normalizes final `ContextPacket` output before byte/hash accounting:
+
+- unknown top-level fields are rejected by `audit-context`;
+- detailed forensics moved to explain/audit sidecars;
+- `otherMetadata` is no longer a catch-all for formal protocol fields;
+- legacy `characterMemories` output is omitted in finalized multi-turn context;
+- `contextBudget` uses compact reason codes instead of long diagnostic prose;
+- active character runtime state and setting/event records are compacted deterministically.
+
+Turn 8 copy-DB E2E passed on `data/pilot1-metadata-normalization-e2e.db`:
+
+- explain: `24350 / 24576` bytes
+- prepared context audit: `24347 / 24576`, hash valid
+- pending context aborted
+- copy session remained `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+
+Formal DB validation was read-only only:
+
+- formal explain: `24350 / 24576`, `otherMetadata=2`, `contextBudgetMetadata=859`
+- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+- formal Turn 8 was not prepared or resolved.
+
+Residual observation: Turn 8 still omitted all retrieved memories, knowledge claims and setting excerpts under the hard byte limit. This is now an explicit budget tradeoff rather than a metadata leak, but future Pilot review should monitor whether zero setting excerpts weakens character or scene fidelity.
+
+## Pilot-1 Context Relevance Floor Follow-Up
+
+Turn 8 showed that metadata normalization alone could produce a byte-valid context with `0 / 15` retrieved memories, `0 / 7` knowledge claims and `0 / 24` settings. The relevance-floor fix changes this from an accepted quality risk into an auditable semantic requirement.
+
+Copy-DB E2E on `data/pilot1-context-relevance-e2e.db` passed:
+
+- explain: `22617 / 24576` bytes, `qualityStatus=PASS`
+- audit: valid, hash valid, `remainingBytes=1959`, `nearHardLimit=true`
+- selected explicit memory: `memory-ai-chan-turn-007-quiet-with-player`
+- selected belief: `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`
+- pending context aborted
+- copy session remained `stateVersion=7`, `nextTurnNumber=8`
+
+Formal DB validation remained read-only only:
+
+- formal explain: `22617 / 24576`, `qualityStatus=PASS`
+- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+- formal Turn 8 was not prepared or resolved.
+
+Residual observation: the Turn 8 context is still above the `22528` soft target because retaining Tier 0 and Tier 1 coverage is prioritized over headroom. This is acceptable under the hard max but should be monitored before adding more long-running Pilot evidence.
