@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "pack-pilot1b-coverage",
+  "packVersion": 1,
+  "projectId": "pilot1b",
+  "name": "Pilot-1b Coverage Pack",
+  "description": "A narrow topology and pressure fixture for Pilot-1b coverage repair.",
+  "mode": "BASE",
+  "source": {
+    "author": "local-author",
+    "license": "CC0"
+  },
+  "dependencies": [],
+  "entities": {
+    "projects": [
+      {
+        "id": "pilot1b",
+        "name": "Pilot-1b",
+        "summary": "Coverage repair fixture.",
+        "metadata": {
+          "activeSceneId": "scene-abandoned-post"
+        }
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-abandoned-post",
+        "name": "Abandoned post",
+        "description": "The active investigation scene."
+      },
+      {
+        "id": "loc-abandoned-post-perimeter",
+        "name": "Outer control perimeter",
+        "description": "A marked holding area outside the post."
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-player",
+        "name": "Player",
+        "role": "player",
+        "description": "Player is present at the abandoned post.",
+        "metadata": {
+          "isPlayer": "true"
+        },
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-abandoned-post",
+          "initialGoal": "Protect Ai-chan and avoid unlawful handling.",
+          "dominantEmotion": "alert",
+          "emotionState": {
+            "alert": 60
+          },
+          "availableActions": [
+            "wait",
+            "speak",
+            "observe"
+          ],
+          "relationshipDefaults": {
+            "char-player": "self"
+          },
+          "initiativeLevel": 40
+        }
+      },
+      {
+        "id": "char-ai-chan",
+        "name": "Ai-chan",
+        "role": "npc",
+        "description": "Ai-chan is present at the abandoned post.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-abandoned-post",
+          "initialGoal": "Stay close to the player and avoid unsafe separation.",
+          "dominantEmotion": "alert",
+          "emotionState": {
+            "alert": 70
+          },
+          "availableActions": [
+            "wait",
+            "guard",
+            "observe"
+          ],
+          "relationshipDefaults": {
+            "char-player": "family"
+          },
+          "initiativeLevel": 55
+        }
+      },
+      {
+        "id": "char-zhao-wu-jiu",
+        "name": "Zhao Wujiu",
+        "role": "npc",
+        "description": "Zhao Wujiu is present at the abandoned post.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-abandoned-post",
+          "initialGoal": "Maintain safety and procedure from visible evidence.",
+          "dominantEmotion": "alert",
+          "emotionState": {
+            "alert": 60
+          },
+          "availableActions": [
+            "wait",
+            "speak",
+            "observe"
+          ],
+          "relationshipDefaults": {
+            "char-player": "unknown"
+          },
+          "initiativeLevel": 55
+        }
+      }
+    ],
+    "worldRules": [
+      {
+        "id": "rule-identity-has-force",
+        "title": "Identity has legal force",
+        "content": "Unregistered people and unregistered snow dogs cannot be freely released into town.",
+        "priority": 10,
+        "metadata": {
+          "severity": "hard",
+          "conflictKey": "identity-law"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene-abandoned-post",
+        "title": "Abandoned post",
+        "summary": "The investigation is still active.",
+        "locationId": "loc-abandoned-post"
+      },
+      {
+        "id": "scene-abandoned-post-perimeter",
+        "title": "Outer perimeter hold",
+        "summary": "A controlled holding area outside the post.",
+        "locationId": "loc-abandoned-post-perimeter"
+      }
+    ],
+    "sceneContracts": [
+      {
+        "id": "contract-abandoned-post",
+        "sceneId": "scene-abandoned-post",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "author-only truth"
+        ]
+      },
+      {
+        "id": "contract-perimeter",
+        "sceneId": "scene-abandoned-post-perimeter",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "author-only truth"
+        ]
+      }
+    ],
+    "storyThreads": [
+      {
+        "id": "thread-identity-and-shelter",
+        "title": "Identity and shelter",
+        "threadType": "plot",
+        "publicSummary": "The player needs lawful temporary handling without entering town.",
+        "directorGoal": "Test whether procedure can create bounded safety.",
+        "visibility": "director_only"
+      }
+    ],
+    "secrets": [
+      {
+        "id": "secret-author-only",
+        "content": "author-only truth",
+        "visibility": "author_only",
+        "revealCondition": "never in Pilot-1b"
+      }
+    ]
+  },
+  "locationConnections": [
+    {
+      "id": "conn-abandoned-post-to-perimeter",
+      "projectId": "pilot1b",
+      "fromLocationId": "loc-abandoned-post",
+      "toLocationId": "loc-abandoned-post-perimeter",
+      "connectionType": "walk",
+      "bidirectional": true,
+      "travelMinutes": 1
+    }
+  ],
+  "sceneTransitions": [
+    {
+      "id": "transition-abandoned-post-to-perimeter-hold",
+      "projectId": "pilot1b",
+      "fromSceneId": "scene-abandoned-post",
+      "toSceneId": "scene-abandoned-post-perimeter",
+      "transitionType": "controlled_withdrawal",
+      "requiredPlayerIntent": "move to perimeter",
+      "forcedTransitionAllowed": false
+    }
+  ],
+  "scheduledWorldEvents": [
+    {
+      "id": "world-event-verifier-arrival-pressure",
+      "projectId": "pilot1b",
+      "eventType": "verifier_arrival_pressure",
+      "dueTurnNumber": 1,
+      "payload": {
+        "publicEffect": "A verifier is approaching, forcing Zhao to tighten the holding procedure.",
+        "allowedNarrativeUses": [
+          "verifier pressure"
+        ],
+        "forbiddenCharacterUses": [
+          "force imprint",
+          "separate Ai-chan"
+        ]
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-player-located",
+      "fromType": "character",
+      "fromId": "char-player",
+      "toType": "location",
+      "toId": "loc-abandoned-post",
+      "relation": "LOCATED_IN"
+    },
+    {
+      "id": "rel-ai-located",
+      "fromType": "character",
+      "fromId": "char-ai-chan",
+      "toType": "location",
+      "toId": "loc-abandoned-post",
+      "relation": "LOCATED_IN"
+    },
+    {
+      "id": "rel-zhao-located",
+      "fromType": "character",
+      "fromId": "char-zhao-wu-jiu",
+      "toType": "location",
+      "toId": "loc-abandoned-post",
+      "relation": "LOCATED_IN"
+    },
+    {
+      "id": "rel-scene-location",
+      "fromType": "scene",
+      "fromId": "scene-abandoned-post",
+      "toType": "location",
+      "toId": "loc-abandoned-post",
+      "relation": "LOCATED_IN"
+    },
+    {
+      "id": "rel-perimeter-location",
+      "fromType": "scene",
+      "fromId": "scene-abandoned-post-perimeter",
+      "toType": "location",
+      "toId": "loc-abandoned-post-perimeter",
+      "relation": "LOCATED_IN"
+    },
+    {
+      "id": "rel-thread-player",
+      "fromType": "story_thread",
+      "fromId": "thread-identity-and-shelter",
+      "toType": "character",
+      "toId": "char-player",
+      "relation": "AFFECTS"
+    }
+  ]
+}

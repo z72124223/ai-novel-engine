@@ -85,6 +85,45 @@ class SettingPackSchemaValidator(private val repository: SqliteStoryRepository) 
                 issues += error("invalid_relation", "Relation requires fromType/fromId/toType/toId/relation.", "$.relations[$index]")
             }
         }
+        pack.locationConnections.forEachIndexed { index, connection ->
+            val path = "$.locationConnections[$index]"
+            if (!connection.id.matches(ID_REGEX)) issues += error("invalid_id", "Location connection id '${connection.id}' contains unsupported characters.", "$path.id")
+            if (connection.projectId != pack.projectId) issues += error("project_mismatch", "Location connection '${connection.id}' projectId must match pack.projectId.", "$path.projectId")
+            if (connection.fromLocationId.isBlank() || connection.toLocationId.isBlank()) {
+                issues += error("invalid_location_connection", "Location connection '${connection.id}' requires fromLocationId and toLocationId.", path)
+            }
+            if (connection.visibility !in VISIBILITIES) issues += error("invalid_visibility", "Unsupported visibility '${connection.visibility}'.", "$path.visibility")
+            if (connection.travelMinutes < 0) issues += error("invalid_travel_minutes", "Location connection '${connection.id}' travelMinutes must be >= 0.", "$path.travelMinutes")
+        }
+        pack.sceneTransitions.forEachIndexed { index, transition ->
+            val path = "$.sceneTransitions[$index]"
+            if (!transition.id.matches(ID_REGEX)) issues += error("invalid_id", "Scene transition id '${transition.id}' contains unsupported characters.", "$path.id")
+            if (transition.projectId != pack.projectId) issues += error("project_mismatch", "Scene transition '${transition.id}' projectId must match pack.projectId.", "$path.projectId")
+            if (transition.fromSceneId.isBlank() || transition.toSceneId.isBlank()) {
+                issues += error("invalid_scene_transition", "Scene transition '${transition.id}' requires fromSceneId and toSceneId.", path)
+            }
+            if (transition.requiredPlayerIntent.isBlank()) {
+                issues += error("missing_transition_intent", "Scene transition '${transition.id}' requires explicit requiredPlayerIntent.", "$path.requiredPlayerIntent")
+            }
+            if (transition.visibility !in VISIBILITIES) issues += error("invalid_visibility", "Unsupported visibility '${transition.visibility}'.", "$path.visibility")
+        }
+        pack.scheduledWorldEvents.forEachIndexed { index, event ->
+            val path = "$.scheduledWorldEvents[$index]"
+            if (!event.id.matches(ID_REGEX)) issues += error("invalid_id", "Scheduled world event id '${event.id}' contains unsupported characters.", "$path.id")
+            if (event.projectId != pack.projectId) issues += error("project_mismatch", "Scheduled world event '${event.id}' projectId must match pack.projectId.", "$path.projectId")
+            if (event.eventType.isBlank()) issues += error("missing_event_type", "Scheduled world event '${event.id}' requires eventType.", "$path.eventType")
+            if (event.dueTurnNumber < 1) issues += error("invalid_due_turn", "Scheduled world event '${event.id}' dueTurnNumber must be >= 1.", "$path.dueTurnNumber")
+            if (event.visibility !in VISIBILITIES || event.visibility == "author_only") {
+                issues += error("invalid_visibility", "Scheduled world event '${event.id}' must be runtime-visible and not author_only.", "$path.visibility")
+            }
+            val publicEffect = event.payload.stringValue("publicEffect") ?: event.payload.stringValue("public_effect")
+            if (publicEffect.isNullOrBlank()) {
+                issues += error("missing_public_effect", "Scheduled world event '${event.id}' requires payload.publicEffect.", "$path.payload.publicEffect")
+            }
+            if (event.status !in setOf("scheduled", "triggered")) {
+                issues += error("invalid_event_status", "Scheduled world event '${event.id}' status must be scheduled or triggered.", "$path.status")
+            }
+        }
         return report(pack, issues)
     }
 
@@ -189,6 +228,42 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
                 issues += error("unknown_reference", "Scene '${scene.id}' references unknown location '$it'.", "$.entities.scenes[${scene.id}].locationId")
             }
         }
+        pack.locationConnections.forEachIndexed { index, connection ->
+            if (!exists(pack, "location", connection.fromLocationId, localByType)) {
+                issues += error("unknown_reference", "Location connection '${connection.id}' references unknown fromLocationId '${connection.fromLocationId}'.", "$.locationConnections[$index].fromLocationId")
+            }
+            if (!exists(pack, "location", connection.toLocationId, localByType)) {
+                issues += error("unknown_reference", "Location connection '${connection.id}' references unknown toLocationId '${connection.toLocationId}'.", "$.locationConnections[$index].toLocationId")
+            }
+        }
+        pack.sceneTransitions.forEachIndexed { index, transition ->
+            if (!exists(pack, "scene", transition.fromSceneId, localByType)) {
+                issues += error("unknown_reference", "Scene transition '${transition.id}' references unknown fromSceneId '${transition.fromSceneId}'.", "$.sceneTransitions[$index].fromSceneId")
+            }
+            if (!exists(pack, "scene", transition.toSceneId, localByType)) {
+                issues += error("unknown_reference", "Scene transition '${transition.id}' references unknown toSceneId '${transition.toSceneId}'.", "$.sceneTransitions[$index].toSceneId")
+            }
+            val fromLocation = sceneLocation(pack, transition.fromSceneId)
+            val toLocation = sceneLocation(pack, transition.toSceneId)
+            if (fromLocation != null && toLocation != null && fromLocation != toLocation && !locationConnectionExists(pack, fromLocation, toLocation)) {
+                issues += error("missing_location_connection", "Scene transition '${transition.id}' requires a location connection from '$fromLocation' to '$toLocation'.", "$.sceneTransitions[$index]")
+            }
+            transition.prerequisites.stringValue("requiredFactId")?.let { factId ->
+                if (!exists(pack, "fact", factId, localByType)) {
+                    issues += error("unknown_reference", "Scene transition '${transition.id}' requires unknown fact '$factId'.", "$.sceneTransitions[$index].prerequisites.requiredFactId")
+                }
+            }
+        }
+        val authorOnlySecrets = pack.entities.secrets.filter { it.visibility == "author_only" }
+        pack.scheduledWorldEvents.forEachIndexed { index, event ->
+            val payloadText = event.payload.allStringValues().joinToString("\n")
+            authorOnlySecrets.forEach { secret ->
+                val secretText = secret.bodyText()
+                if (payloadText.contains(secret.id) || (secretText.isNotBlank() && payloadText.contains(secretText))) {
+                    issues += error("author_only_world_event_leak", "Scheduled world event '${event.id}' payload leaks author-only secret '${secret.id}'.", "$.scheduledWorldEvents[$index].payload")
+                }
+            }
+        }
         pack.entities.sceneContracts.forEach { contract ->
             val sceneId = contract.sceneId ?: contract.metadata.stringValue("sceneId")
             if (sceneId == null || !exists(pack, "scene", sceneId, localByType)) {
@@ -215,7 +290,10 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
             .filterValues { rules -> rules.map { it.bodyText() }.toSet().size > 1 }
             .forEach { (key, _) -> issues += error("hard_rule_conflict", "Hard world rules conflict on key '$key'.", "$.entities.worldRules") }
         if (pack.mode == "PATCH_CANON" && repository.activeSessionIds(pack.projectId).isNotEmpty()) {
-            val updatesExisting = pack.allTypedEntities().any { (type, entity) -> repository.latestEntityRevision(pack.projectId, type, entity.id) != null }
+            val updatesExisting = pack.allTypedEntities().any { (type, entity) -> repository.latestEntityRevision(pack.projectId, type, entity.id) != null } ||
+                pack.locationConnections.any { repository.targetExists(pack.projectId, "location_connection", it.id) } ||
+                pack.sceneTransitions.any { repository.targetExists(pack.projectId, "scene_transition", it.id) } ||
+                pack.scheduledWorldEvents.any { repository.targetExists(pack.projectId, "world_event", it.id) }
             if (updatesExisting) {
                 issues += error("active_session_patch_blocked", "PATCH_CANON cannot update existing canon while active sessions exist.", "$.mode")
             }
@@ -286,6 +364,25 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
         return id in localByType[canonical].orEmpty() || repository.targetExists(pack.projectId, canonical, id)
     }
 
+    private fun sceneLocation(pack: SettingPack, sceneId: String): String? =
+        pack.entities.scenes.firstOrNull { it.id == sceneId }?.locationId
+            ?: repository.tableRows("scenes").firstOrNull { it["project_id"] == pack.projectId && it["id"] == sceneId }?.get("location_id")
+
+    private fun locationConnectionExists(pack: SettingPack, fromLocationId: String, toLocationId: String): Boolean {
+        val local = pack.locationConnections.any {
+            it.fromLocationId == fromLocationId && it.toLocationId == toLocationId ||
+                it.bidirectional && it.fromLocationId == toLocationId && it.toLocationId == fromLocationId
+        }
+        if (local) return true
+        return repository.tableRows("location_connections").any {
+            it["project_id"] == pack.projectId &&
+                (
+                    it["from_location_id"] == fromLocationId && it["to_location_id"] == toLocationId ||
+                        it["bidirectional"] == "1" && it["from_location_id"] == toLocationId && it["to_location_id"] == fromLocationId
+                    )
+        }
+    }
+
     private fun compatible(relation: SettingPackRelation): Boolean =
         when (relation.relation.uppercase()) {
             "LOCATED_IN" -> relation.fromType.toCanonicalEntityType() in setOf("character", "item", "scene") && relation.toType.toCanonicalEntityType() == "location"
@@ -313,7 +410,7 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
 
 class SettingPackDiffService(private val repository: SqliteStoryRepository) {
     fun diff(pack: SettingPack, canonicalHash: String): SettingPackDiff {
-        val entries = pack.allTypedEntities().map { (type, entity) ->
+        val entityEntries = pack.allTypedEntities().map { (type, entity) ->
             val latest = repository.latestEntityRevision(pack.projectId, type, entity.id)
             val previousVersion = latest?.get("entity_version")?.toIntOrNull()
             val latestSnapshot = latest?.get("snapshot_json")
@@ -333,8 +430,23 @@ class SettingPackDiffService(private val repository: SqliteStoryRepository) {
                 sensitive = entity.visibility == "author_only" || type == "secret",
             )
         }
+        val topologyEntries =
+            pack.locationConnections.map { topologyDiffEntry(pack.projectId, "location_connection", it.id, it.visibility) } +
+                pack.sceneTransitions.map { topologyDiffEntry(pack.projectId, "scene_transition", it.id, it.visibility) } +
+                pack.scheduledWorldEvents.map { topologyDiffEntry(pack.projectId, "world_event", it.id, it.visibility) }
+        val entries = entityEntries + topologyEntries
         return SettingPackDiff(pack.packId, pack.packVersion, entries, canonicalHash)
     }
+
+    private fun topologyDiffEntry(projectId: String, type: String, id: String, visibility: String): SettingPackDiffEntry =
+        SettingPackDiffEntry(
+            action = if (repository.targetExists(projectId, type, id)) "NO_CHANGE" else "ADD",
+            entityType = type,
+            entityId = id,
+            previousVersion = if (repository.targetExists(projectId, type, id)) 1 else null,
+            newVersion = 1,
+            sensitive = visibility == "author_only",
+        )
 }
 
 class ImpactAnalyzer(private val repository: SqliteStoryRepository) {
@@ -357,7 +469,10 @@ class ImpactAnalyzer(private val repository: SqliteStoryRepository) {
             }
         }.distinctBy { listOf(it.rootType, it.rootId, it.impactedType, it.impactedId, it.relationPath.joinToString(">")).joinToString(":") }
             .sortedWith(compareBy<ImpactPath> { it.rootType }.thenBy { it.rootId }.thenBy { it.impactedType }.thenBy { it.impactedId })
-        val blockers = if (pack.mode == "PATCH_CANON" && activeSessions.isNotEmpty() && diff.entries.any { it.action == "UPDATE" }) {
+        val touchesRuntimeTopology = pack.locationConnections.isNotEmpty() ||
+            pack.sceneTransitions.isNotEmpty() ||
+            pack.scheduledWorldEvents.isNotEmpty()
+        val blockers = if (pack.mode == "PATCH_CANON" && activeSessions.isNotEmpty() && (diff.entries.any { it.action != "NO_CHANGE" } || touchesRuntimeTopology)) {
             listOf("active_session_patch_blocked")
         } else {
             emptyList()
@@ -546,7 +661,14 @@ class SettingContextResolver(private val repository: SqliteStoryRepository, priv
             }
             context.activeStoryThreads.forEach { add("story_thread:${it.threadId}") }
             context.sceneRequirements.forEach { add("scene_requirement:${it.requirementId}") }
+            context.availableTransitions.forEach { transition ->
+                add("scene_transition:${transition.transitionId}")
+                add("scene:${transition.toSceneId}")
+                transition.targetLocation?.let { add("location:$it") }
+            }
+            context.pendingWorldEvents.forEach { add("world_event:${it.eventId}") }
         }
+        val runtimeSettings = runtimeRelevantSettings(context)
         val dependencyRows = repository.listDependencyRows(projectId)
         val expandedIds = expandRelevantIds(relevantIds, dependencyRows)
         val revisions = repository.listEntityRevisionRows(projectId)
@@ -555,7 +677,7 @@ class SettingContextResolver(private val repository: SqliteStoryRepository, priv
             .groupBy { "${it["entity_type"]}:${it["entity_id"]}" }
             .mapNotNull { (_, rows) -> rows.maxByOrNull { it["entity_version"]?.toIntOrNull() ?: 0 } }
             .sortedWith(compareBy<Map<String, String>> { it["entity_type"] }.thenBy { it["entity_id"] })
-        return revisions.mapNotNull { revision ->
+        val revisionSettings = revisions.mapNotNull { revision ->
             val type = revision["entity_type"].orEmpty()
             val id = revision["entity_id"].orEmpty()
             val entity = revision["snapshot_json"]?.let { runCatching { JsonSupport.json.decodeFromString<SettingPackEntity>(it) }.getOrNull() }
@@ -581,7 +703,96 @@ class SettingContextResolver(private val repository: SqliteStoryRepository, priv
                 ),
             )
         }
+        return (runtimeSettings + revisionSettings).distinctBy { "${it.entityType}:${it.entityId}" }
     }
+
+    private fun runtimeRelevantSettings(context: ContextPacket): List<RelevantSetting> =
+        buildList {
+            val projectId = context.project.id
+            val sceneTitles = repository.tableRows("scenes")
+                .filter { it["project_id"] == projectId }
+                .associate { it["id"].orEmpty() to it["title"].orEmpty() }
+            context.availableTransitions.forEach { transition ->
+                add(
+                    RelevantSetting(
+                        entityType = "scene_transition",
+                        entityId = transition.transitionId,
+                        name = "Available transition to ${sceneTitles[transition.toSceneId].orEmpty().ifBlank { transition.toSceneId }}",
+                        summary = listOf(
+                            "Target scene: ${transition.toSceneId}",
+                            transition.targetLocation?.let { "Target location: $it" },
+                            transition.playerIntentRequired.takeIf { it.isNotBlank() }?.let { "Requires player intent: $it" },
+                            transition.visibleReason.takeIf { it.isNotBlank() }?.let { "Status: $it" },
+                        ).filterNotNull().joinToString("; "),
+                        visibility = "public",
+                        requiredRuntimeUse = true,
+                        metadata = JsonObject(
+                            mapOf(
+                                "targetSceneId" to JsonPrimitive(transition.toSceneId),
+                                "targetLocationId" to JsonPrimitive(transition.targetLocation.orEmpty()),
+                                "playerIntentRequired" to JsonPrimitive(transition.playerIntentRequired),
+                                "prerequisitesSatisfied" to JsonPrimitive(transition.prerequisitesSatisfied),
+                                "unmetPrerequisites" to JsonArray(transition.unmetPrerequisites.map(::JsonPrimitive)),
+                                "travelMinutes" to JsonPrimitive(transition.travelMinutes),
+                                "forcedAllowed" to JsonPrimitive(transition.forcedAllowed),
+                            ),
+                        ),
+                    ),
+                )
+                val fromLocation = context.activeScene?.locationId
+                val toLocation = transition.targetLocation
+                if (fromLocation != null && toLocation != null && fromLocation != toLocation) {
+                    findLocationConnection(projectId, fromLocation, toLocation)?.let { row ->
+                        add(
+                            RelevantSetting(
+                                entityType = "location_connection",
+                                entityId = row["id"].orEmpty(),
+                                name = "Location connection ${row["from_location_id"]} -> ${row["to_location_id"]}",
+                                summary = "Reachability between ${row["from_location_id"]} and ${row["to_location_id"]}; travel ${row["travel_minutes"] ?: "0"} minute(s).",
+                                visibility = row["visibility"].orEmpty().ifBlank { "public" },
+                                requiredRuntimeUse = true,
+                                metadata = JsonObject(
+                                    mapOf(
+                                        "fromLocationId" to JsonPrimitive(row["from_location_id"].orEmpty()),
+                                        "toLocationId" to JsonPrimitive(row["to_location_id"].orEmpty()),
+                                        "connectionType" to JsonPrimitive(row["connection_type"].orEmpty()),
+                                        "travelMinutes" to JsonPrimitive(row["travel_minutes"]?.toIntOrNull() ?: 0),
+                                        "bidirectional" to JsonPrimitive(row["bidirectional"] == "1"),
+                                    ),
+                                ),
+                            ),
+                        )
+                    }
+                }
+            }
+            context.pendingWorldEvents.forEach { event ->
+                add(
+                    RelevantSetting(
+                        entityType = "world_event",
+                        entityId = event.eventId,
+                        name = event.type,
+                        summary = event.publicEffect,
+                        visibility = "public",
+                        requiredRuntimeUse = true,
+                        metadata = JsonObject(
+                            mapOf(
+                                "dueReason" to JsonPrimitive(event.dueReason),
+                                "allowedNarrativeUses" to JsonArray(event.allowedNarrativeUses.map(::JsonPrimitive)),
+                                "forbiddenCharacterUses" to JsonArray(event.forbiddenCharacterUses.map(::JsonPrimitive)),
+                            ),
+                        ),
+                    ),
+                )
+            }
+        }
+
+    private fun findLocationConnection(projectId: String, fromLocationId: String, toLocationId: String): Map<String, String>? =
+        repository.tableRows("location_connections")
+            .filter { it["project_id"] == projectId && it["visibility"] != "hidden" }
+            .firstOrNull {
+                it["from_location_id"] == fromLocationId && it["to_location_id"] == toLocationId ||
+                    it["bidirectional"] == "1" && it["from_location_id"] == toLocationId && it["to_location_id"] == fromLocationId
+            }
 
     private fun expandRelevantIds(seed: Set<String>, rows: List<Map<String, String>>): Set<String> {
         val result = seed.toMutableSet()
@@ -641,6 +852,9 @@ private fun String.toCanonicalEntityType(): String =
         "scenes", "scene" -> "scene"
         "scene_contracts", "scenecontract", "scene_contract" -> "scene_contract"
         "story_threads", "storythread", "story_thread" -> "story_thread"
+        "location_connections", "locationconnection", "location_connection" -> "location_connection"
+        "scene_transitions", "scenetransition", "scene_transition" -> "scene_transition"
+        "scheduled_world_events", "worldevent", "world_event" -> "world_event"
         "character_memories", "memory", "character_memory" -> "character_memory"
         "character_knowledge", "knowledge", "character_knowledge_claim" -> "character_knowledge"
         else -> lowercase()
@@ -654,6 +868,14 @@ private fun error(code: String, message: String, path: String): SettingPackValid
 
 private fun JsonObject.stringValue(key: String): String? =
     this[key]?.jsonPrimitive?.contentOrNull
+
+private fun JsonElement.allStringValues(): List<String> =
+    when (this) {
+        is JsonObject -> values.flatMap { it.allStringValues() }
+        is JsonArray -> flatMap { it.allStringValues() }
+        is JsonPrimitive -> listOfNotNull(contentOrNull)
+        JsonNull -> emptyList()
+    }
 
 private fun SettingPackEntity.displayName(): String =
     name.ifBlank { title.ifBlank { id } }

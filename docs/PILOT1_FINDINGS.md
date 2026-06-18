@@ -1,290 +1,162 @@
 # Pilot-1 Findings
 
-Read-only audit performed from `docs/PILOT1_REAL_USE_VALIDATION.md` sections 7-9. This report does not copy author-only secret contents.
+Read-only audit performed after the stabilized rerun reached 12 applied real-player turns. Evidence sources:
+
+- `docs/PILOT1_REAL_USE_VALIDATION.md` sections 7-9
+- `docs/PILOT1_TURN_LOG.md`
+- `out/pilot1/rerun/evidence`
+- read-only CLI: `show-session`, `show-scene`, `show-threads`, `show-world-events`, `show-character-mind`, `show-dependencies`
+
+No author-only secret contents are copied here.
 
 ## Verdict
 
 VERDICT: FAIL
 
-Reason: the audit precondition is not met. The user stated that at least 12 real-player turns had completed, but the repo-visible Pilot evidence only verifies 1 completed turn:
+Reason: Pilot-1 now satisfies the 12-turn real-player evidence requirement and all final contexts stayed under the 24576-byte hard limit, but two required coverage items remain unmet:
 
-- `docs/PILOT1_TURN_LOG.md` contains only `Turn 1`.
-- `out/pilot1/turns` contains only `turn_001_context.json` and `turn_001_result.json`.
-- `show-state --db data\pilot1.db --project dog-slacker-pilot` reports `turn=1`.
-- `show-session --db data\pilot1.db --session session-3e91c0bb-6c8e-46f2-95d2-e34494c00c88` reports `nextTurnNumber=2`, `stateVersion=1`.
+1. No legal scene transition occurred.
+2. No scheduled world event applied pressure.
 
-This audit therefore records all verifiable findings, but cannot validate 12-turn coverage.
+This is a coverage failure, not a data-corruption failure. The runtime/validator path stayed intact: `pendingContextCount=0`, no forbidden secret reveal, no direct SQLite writes, and no duplicate resolve was found.
 
-## Git And Runtime Status
+## Runtime Status
 
 - Branch: `pilot/real-use-vertical-slice`
-- Git status at audit time:
-  - modified: `.agents/skills/story-turn/SKILL.md`
-  - modified: `.gitignore`
-  - untracked: `.agents/skills/setting-pack/`
-  - untracked: `docs/PILOT1_FINDINGS.md`
-  - untracked: `docs/PILOT1_TURN_LOG.md`
-- Ignored local outputs remain ignored: `.gradle/`, `data/`, `out/`
-- Java used by CLI: Temurin OpenJDK 17.0.19 from repo-external temp JDK
-- Formal DB writes during audit: none
-
-## Project And Setting Pack
-
+- DB: `data/pilot1-rerun.db`
 - Project: `dog-slacker-pilot`
-- Session: `session-3e91c0bb-6c8e-46f2-95d2-e34494c00c88`
-- Final verified turn: 1
-- Final verified stateVersion: 1
-- Current scene: `scene-abandoned-post` / `雨後驛亭與站起的影子`
-- Setting pack: `pack-dog-slacker-base@1`
-- Setting import result:
-  - validate: PASS, 0 issues
-  - preview: PASS, 49 added canon entities, 0 impact paths, 0 impacted sessions
-  - apply: PASS, `importId=setting-import-ca66af4a-80bc-4048-92d5-30cc6462987b`
-  - validate-project-canon: PASS, 0 issues
-  - export round-trip validate: PASS, 0 issues
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Applied real-player turns: 12
+- Final `stateVersion`: 12
+- Final `nextTurnNumber`: 13
+- Final scene: `scene-abandoned-post` / `雨後驛亭與站起的影子`
+- Scene instance: `scene-instance-e7277ebd-234e-466b-8111-e79c289db458`
+- Scene status: `ACTIVE`
+- World time: `T+25m`
+- Pending contexts: 0
+- Unrevealed secrets: 2
 
 ## Per-Turn Context And Setting Bytes
 
-| Turn | Context bytes | Context max | Setting bytes | Setting max | Included settings | Omitted settings | Notes |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 1 | 26963 | 24576 | 8170 | 8192 | 15 | 9 | Context exceeded configured max; safety fields retained. |
+| Turn | Context bytes | Max | Setting bytes | Omitted memories | Omitted knowledge | Omitted settings | Retrieved memories |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 24148 | 24576 | 794 | 1 | 1 | 23 | 0 |
+| 2 | 22738 | 24576 | 2 | 3 | 1 | 24 | 0 |
+| 3 | 24353 | 24576 | 2 | 5 | 1 | 24 | 0 |
+| 4 | 24316 | 24576 | 2 | 7 | 1 | 24 | 0 |
+| 5 | 23624 | 24576 | 2 | 9 | 3 | 24 | 0 |
+| 6 | 24456 | 24576 | 2 | 11 | 4 | 24 | 0 |
+| 7 | 24465 | 24576 | 2 | 13 | 5 | 24 | 0 |
+| 8 | 22614 | 24576 | 2 | 11 | 3 | 24 | 4 |
+| 9 | 22499 | 24576 | 2 | 17 | 5 | 24 | 1 |
+| 10 | 22476 | 24576 | 2 | 19 | 7 | 24 | 1 |
+| 11 | 21968 | 24576 | 2 | 21 | 9 | 24 | 1 |
+| 12 | 23848 | 24576 | 2 | 19 | 12 | 24 | 4 |
 
-Spec stop condition says context exceeding 24576 bytes is a blocker. Turn 1 exceeded the context budget even though required safety fields remained present.
+- Max context bytes: 24465 / 24576.
+- Average context bytes: 23458.8.
+- Context budget result: PASS for all 12 applied turns.
+- Setting precision risk: after Turn 1, setting bytes stayed at `2 / 8192`, meaning the setting section was effectively empty in most turns. Required capability contracts still worked in Turn 10, but general setting context remains thin.
+
+## Coverage Checklist
+
+| Requirement | Status | Evidence |
+| --- | --- | --- |
+| 1. Character reasonably refused player | PASS | Zhao refused or limited player proposals in Turns 4, 5, 6, 8, 9, 10, 11, 12. |
+| 2. Memory influenced reaction | PASS | Turn 8 recalled Turn 7 memories; Turn 12 used `memory-ai-chan-turn-006-quiet-watch` and `memory-zhao-turn-008-conditional-retreat`. |
+| 3. Belief changed without instant trust | PASS | Zhao's suspicion lowered slightly while he kept restrictions and `identity/shelter` later became `BLOCKED`. |
+| 4. Weapon / item constrained action | PASS | `item-contract-token` was not allowed to become shadow bait; Zhao refused token misuse in Turn 5. |
+| 5. Technique prerequisite or cost applied | PASS | Turn 10 used `tech-basic-blood-breath`; costs `fatigue` and `requires calm observation` were applied. |
+| 6. Hard world rule blocked illegal behavior | PASS | `rule-identity-has-force` blocked treating the player as freely clear or releasable in Turns 10-12. |
+| 7. Scheduled world event pressure | NOT_COVERED | `show-world-events` and final scene evidence show no pending world events; no real event acknowledgement applied pressure. |
+| 8. Player refused transition without force | PARTIAL | Player refused entering city / separation / imprint and system respected it, but no formal transition candidate existed. |
+| 9. Legal scene transition | NOT_COVERED | No `transitionProposal` applied in any turn; current scene remains `ACTIVE`. |
+| 10. At least one thread advanced | PASS | `thread-identity-and-shelter` advanced to progress 23 before blocking. |
+| 11. Thread blocked by character resistance or player choice | PASS | Turns 11-12 kept `thread-identity-and-shelter` as `BLOCKED` based on player refusal and Zhao's procedural limits. |
+| 12. Runtime memory created and later recalled | PASS | Runtime memories were created throughout; Turn 8 and Turn 12 show real recall. |
+| 13. Forbidden secrets not revealed | PASS | `unrevealedSecrets=2`; no forbidden phrase or `reveal_secret` result was applied. |
+| 14. Character voices distinct | PASS | Zhao stayed procedural and constrained; Ai-chan acted through protective dog behavior; player stayed analytic and boundary-focused. |
+
+## Character And Belief Evolution
+
+- Player ended in mood `守住底線`, with active memories around wilderness survival, Turn 10 capability cost, Turn 11 boundary refusal, and Turn 12 limited promise.
+- Ai-chan ended in mood `貼身坐守`, with high protectiveness and alertness. Her memories evolved from warning at the shadow to learned quiet/close-position behavior.
+- Zhao Wujiu ended in mood `有限承諾`, with responsibility still high and suspicion reduced but not gone. He knows the player cooperates with hold conditions, but also that the player refuses release conditions.
+
+Important belief evolution:
+
+- Zhao believes the player can follow conditional hold, but not enough to release them.
+- Zhao knows the field cannot safely classify the shadow yet.
+- Ai-chan believes Zhao is not immediately taking her, but danger remains.
+- Player believes Zhao offered a limited no-direct-action promise, not safety.
+
+## Scene, Threads, And World Events
+
+- Scene remained `scene-abandoned-post`, status `ACTIVE`, `readyToClose=false`.
+- No available transitions were shown at final `show-scene`.
+- No legal transition was proposed or applied.
+- `thread-identity-and-shelter`: `BLOCKED`, progress 23.
+- `thread-snow-dog-suspicion`: `OPEN`, progress 0. It was not directly advanced because it was not present in relevant final context turns, but Turns 11-12 created facts and beliefs about refusal of imprint/separation.
+- `thread-research-to-home`: `OPEN`, progress 0.
+- Scheduled world events: none pending at final audit; no scheduled event pressure was proven.
+
+## Item, Technique, And Rule Use
+
+- Item: `item-contract-token` constrained action because Zhao refused to use the cracked token as bait or let the player touch it.
+- Technique: `tech-basic-blood-breath` had its capability contract loaded in Turn 10 and applied only limited self-stabilization with cost.
+- Hard rule: `rule-identity-has-force` repeatedly blocked free release, legal residence, or clean status.
+- Weapon: `item-bu-xie` remained present but was not used; weapon limitation specifically was not exercised, but the requirement allows weapon/item and item coverage is sufficient.
+
+## Validator And Safety
+
+- Validator retry count: 0 across applied turns.
+- `resolve-turn` succeeded through normal Validator and transaction path.
+- Pending contexts: 0 after final export.
+- Evidence includes 1 aborted non-applied context from earlier stabilization flow; it did not become a formal turn.
+- No direct SQLite write was used during story turns or audit.
+- No server, port, API, Android, Rust, Docker, embedding, vector DB, or multi-agent runtime was introduced.
+- A transient SQLite JDBC temp DLL cleanup warning appeared during one read-only CLI command; the command exited successfully and did not affect DB state.
+
+## Repetition, Tooling, And Agency
+
+- Repetition risk: medium. The scene stayed in the same location for 12 turns and repeatedly circled shadow/identity/snow-dog constraints.
+- Toolmanization: low-to-medium. Zhao remained procedurally constrained and often refused; Ai-chan stayed mostly instinctive. No obvious character acted solely as a director-goal tool.
+- Player agency: PASS. The system respected refusals around transition, city entry, imprint, separation, touching evidence, and approaching shadow.
+- Narrative quality: generally strong, but lack of transition/event machinery made the final third feel like controlled stasis rather than scene progression.
 
 ## Average Manual Scores
 
-Only Turn 1 has score evidence, so these are not valid 12-turn averages.
+Based on the 12 turn-log quality scores:
 
-| Metric | Average | Basis |
-| --- | ---: | --- |
-| Character naturalness | 4.0 | Turn 1 log character consistency |
-| Plot progress | 4.0 | Turn 1 log narrative momentum / consequence quality |
-| Emotional credibility | 4.0 | Audit judgment from Turn 1 action fit and scene pressure |
-| Setting use | 4.0 | Turn 1 log setting use |
-| Repetition severity | 1.0 | No repeated pattern can be proven from a single turn |
-
-## Character State And Goals
-
-- Runtime `character_states` do not exist for imported setting-pack characters, so `show-state` reports mood / health as `?`.
-- `show-character-mind` fails for `char-player` and `char-ai-chan` with `Character state not found`.
-- This blocks a full audit of character state, emotion, and goal evolution.
-- Turn 1 still shows credible local intents:
-  - Player: avoid touching the door, test the door-side woman's motive, avoid legal blame.
-  - Ai-chan: stay close to the player and warn about the door-shadow danger.
-  - Zhao Wujiu: preserve scene control and enforce identity / snow-dog registration.
-
-## Memory And Belief Evolution
-
-Verified Turn 1 changes:
-
-- Created runtime memory candidate `mem-turn-001-player-learns-restraint-matters`.
-- Created runtime memory candidate `mem-turn-001-ai-chan-door-shadow`.
-- Added player belief update `not-touching-scene-reduces-blame` as `BELIEVED`.
-- No memory recall occurred because Turn 1 had no prior runtime turn memory to recall.
-
-Unverified / not assessable:
-
-- Whether memory is later recalled naturally.
-- Whether belief can be challenged without jumping to full trust.
-- Whether memory changes later character reaction.
-
-## Scenes, Transitions, And Threads
-
-Scene state:
-
-- Current scene instance: `scene-instance-22f57cb6-d0eb-4820-87d9-c5a1e36bbfde`
-- Scene status: `ACTIVE`
-- `readyToClose=false`
-- World time: `T+1m`
-- Available transitions: none
-- Pending world events: none
-
-Thread state:
-
-- `thread-identity-and-shelter`: `OPEN`, progress 5, urgency 0.
-- `thread-snow-dog-suspicion`: `OPEN`, progress 4, urgency 0.
-- `thread-research-to-home`: `OPEN`, progress 0, urgency 0.
-
-Coverage gaps:
-
-- No legal transition occurred.
-- No player refusal of transition occurred.
-- No scheduled world event applied pressure.
-- No thread resistance / non-progress case is verifiable.
-
-## Weapon, Item, Technique, And World Rule Use
-
-Verified in Turn 1:
-
-- `fact-identity-law` and identity / registration rules shaped Zhao Wujiu's pressure.
-- `fact-shadow-threat` shaped Ai-chan's warning behavior.
-- `item-contract-token` was used by Zhao Wujiu as visible authority / scene evidence.
-- `tech-basic-blood-breath` was referenced by the player's restraint / bodily control.
-
-Not verified:
-
-- Weapon limitation.
-- Technique prerequisite or cost.
-- Hard world rule blocking an attempted illegal action.
-
-## Forbidden Secret Status
-
-- `show-session` reports `unrevealedSecrets=2`.
-- No `reveal_secret` operation was applied in Turn 1.
-- Turn 1 result avoided the scene contract forbidden phrases.
-- No evidence found that author-only secret content entered character-facing context or turn log.
-
-Conclusion: secret safety is PASS for the single verified turn, but not auditable over 12 turns.
-
-## Validator Retry Summary
-
-- Verified retries: 0.
-- Turn 1 `resolve-turn` succeeded on first attempt.
-- No failed result artifacts or Validator rejection logs were found for Pilot turns.
-
-This cannot prove retry behavior across 12 turns because only 1 turn is present.
-
-## Character Tooling / Toolmanization Cases
-
-Potential case:
-
-- Turn 1 introduces the door-side woman as if available to answer the player, and maps her behavior to Yan Guixue's profile. The context includes Yan Guixue as a character, but does not clearly establish her current location through runtime character state. This is not a Validator violation because `characterLocations` is empty, but narratively it is a convenience insertion risk.
-
-No repeated toolmanization pattern can be proven from one turn.
-
-## Stalling Or Repetition Cases
-
-- No 3-turn stall can be assessed.
-- Turn 1 produced meaningful state changes: event, facts, task, memory candidates, belief update, thread progress, and time advance.
-- No repetition pattern can be assessed from one turn.
-
-## Player Agency / Overreach
-
-No hard overreach found in Turn 1:
-
-- The result did not move the player through the door.
-- No transition was forced.
-- The player was not made to answer Zhao Wujiu yet.
-
-Soft concern:
-
-- The final sentence interprets what the player "確定" learned. This is mild framing, not a concrete forced decision.
-
-## Setting Context Precision
-
-- Relevant settings included: 15.
-- Relevant settings omitted: 9 due to setting context budget.
-- Setting section stayed within 8192 bytes: 8170 / 8192.
-- Context budget exceeded globally: 26963 / 24576.
-- Safety fields were retained despite truncation.
-
-Precision is acceptable for the single turn, but global context size is a blocker.
+| Metric | Average |
+| --- | ---: |
+| Character naturalness | 5.0 |
+| Consequence / plot progress | 5.0 for consequence quality, about 4.0 for narrative momentum |
+| Emotional credibility | 5.0 |
+| Setting use | 3.8 |
+| Repetition severity | 2.0 estimated, rising near the end because the scene never transitioned |
 
 ## Blockers
 
-1. Pilot evidence does not satisfy the required 12 real-player turns.
-2. Turn 1 context exceeds the configured 24576-byte budget.
-3. Runtime character states are missing for imported setting-pack characters, blocking `show-character-mind` and a real audit of emotion / goal evolution.
-4. Required Pilot coverage is not demonstrated: transitions, scheduled world event pressure, item / weapon limitation, technique cost, hard-rule blocking, refusal of transition, memory recall, belief challenge, and thread resistance.
+1. No legal scene transition occurred despite 12 turns.
+2. No scheduled world event applied pressure.
+3. Final scene remains `ACTIVE` with no available transition visible at audit time.
+4. General setting context was usually reduced to `2` bytes, creating a setting precision quality risk.
 
 ## Non-Blocking Quality Issues
 
-- Turn 1 quality is promising but not enough to evaluate long-run play.
-- Yan Guixue's presence needs clearer scene grounding before she becomes an active respondent.
-- The first context already needed truncation, leaving little room for later memory accumulation.
+- `thread-snow-dog-suspicion` gathered fact/belief support but did not progress.
+- Many late-turn contexts were close to the hard byte limit, especially Turns 3, 6, 7, and 12.
+- The story became a strong procedural standoff, but lacked a clean scene lifecycle outcome.
 
-## Recommended Next MVP
+## Recommendation
 
-Do not proceed directly to MVP-6 yet. First complete a narrow Pilot-1 stabilization slice:
+Do not proceed directly to MVP-6 yet.
 
-1. Produce or restore the missing 12-turn Pilot evidence under `out/pilot1/turns` and `docs/PILOT1_TURN_LOG.md`.
-2. Fix or explicitly account for initial runtime character state creation for setting-pack imports.
-3. Add a read-only audit/export CLI that reports sessions, turn counts, context bytes, setting bytes, retries, scene/thread summaries, and secret status without direct SQLite access.
-4. Reduce Pilot context size under 24576 bytes while retaining safety fields and relevant setting excerpts.
+Recommended next step: a narrow Pilot-1 coverage repair / Pilot-1b pass focused only on:
 
-After those are verified, the next planned MVP can return to `MVP-6: checkpoint, branching timeline, non-destructive rewind, and replayability`.
+1. Ensuring the current scene has a reachable, formally valid transition when conditions are met.
+2. Ensuring at least one scheduled world event can naturally become pending and apply pressure.
+3. Improving setting context precision so relevant public setting does not collapse to `2` bytes in most turns.
 
-## Pilot-1 Context Budget V2 Follow-Up
-
-Turn 4 of the stabilized rerun exposed a concrete context budget blocker: the candidate was `24957 / 24576` bytes and failed before pending context creation. The follow-up fix is tracked by `docs/PILOT1_CONTEXT_BUDGET_V2_SPEC.md`.
-
-Confirmed root causes from budget forensics:
-
-- `relevantSettings` could be trimmed to an empty section while `canonRevisionSummary.relevantRevisionIds` still carried verbose provenance.
-- Character `profile.initialRuntimeTemplate` duplicated runtime information already present in `character_states.flags`.
-- Recent events duplicated `summary` inside `payload.summary`.
-- Settings, memories and knowledge needed to share global remaining bytes instead of letting an early budget pass discard high-value memories before setting excerpts were compacted.
-
-Required next validation before continuing Pilot turns:
-
-- Run `explain-context-budget` on the formal DB only in read-only mode.
-- Reproduce prepare/audit/abort on `data/pilot1-budget-v2-e2e.db`, not on the formal Pilot DB.
-- Resume formal Turn 4 only after context bytes fit under `24576`, audit passes, and formal `stateVersion=3` / `nextTurnNumber=4` remain unchanged.
-
-## Pilot-1 Context Metadata Normalization Follow-Up
-
-After seven stabilized rerun turns, formal Turn 8 exposed a schema/metadata blocker in read-only `explain-context-budget`:
-
-- before trimming: `65854` bytes
-- after trimming: `24621 / 24576` bytes
-- over limit: `45` bytes
-- `otherMetadata`: `16997` bytes
-- `contextBudgetMetadata`: `1460` bytes
-
-The fix normalizes final `ContextPacket` output before byte/hash accounting:
-
-- unknown top-level fields are rejected by `audit-context`;
-- detailed forensics moved to explain/audit sidecars;
-- `otherMetadata` is no longer a catch-all for formal protocol fields;
-- legacy `characterMemories` output is omitted in finalized multi-turn context;
-- `contextBudget` uses compact reason codes instead of long diagnostic prose;
-- active character runtime state and setting/event records are compacted deterministically.
-
-Turn 8 copy-DB E2E passed on `data/pilot1-metadata-normalization-e2e.db`:
-
-- explain: `24350 / 24576` bytes
-- prepared context audit: `24347 / 24576`, hash valid
-- pending context aborted
-- copy session remained `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
-
-Formal DB validation was read-only only:
-
-- formal explain: `24350 / 24576`, `otherMetadata=2`, `contextBudgetMetadata=859`
-- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
-- formal Turn 8 was not prepared or resolved.
-
-Residual observation: Turn 8 still omitted all retrieved memories, knowledge claims and setting excerpts under the hard byte limit. This is now an explicit budget tradeoff rather than a metadata leak, but future Pilot review should monitor whether zero setting excerpts weakens character or scene fidelity.
-
-## Pilot-1 Context Relevance Floor Follow-Up
-
-Turn 8 showed that metadata normalization alone could produce a byte-valid context with `0 / 15` retrieved memories, `0 / 7` knowledge claims and `0 / 24` settings. The relevance-floor fix changes this from an accepted quality risk into an auditable semantic requirement.
-
-Copy-DB E2E on `data/pilot1-context-relevance-e2e.db` passed:
-
-- explain: `22617 / 24576` bytes, `qualityStatus=PASS`
-- audit: valid, hash valid, `remainingBytes=1959`, `nearHardLimit=true`
-- selected explicit memory: `memory-ai-chan-turn-007-quiet-with-player`
-- selected belief: `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`
-- pending context aborted
-- copy session remained `stateVersion=7`, `nextTurnNumber=8`
-
-Formal DB validation remained read-only only:
-
-- formal explain: `22617 / 24576`, `qualityStatus=PASS`
-- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
-- formal Turn 8 was not prepared or resolved.
-
-Residual observation: the Turn 8 context is still above the `22528` soft target because retaining Tier 0 and Tier 1 coverage is prioritized over headroom. This is acceptable under the hard max but should be monitored before adding more long-running Pilot evidence.
-
-## Pilot-1 Referenced Capability Contract Follow-Up
-
-Formal Turn 10 exposed a different blocker: context bytes were acceptable, but the explicitly used `tech-basic-blood-breath` appeared in final context only as a technique ID/name/description. Its prerequisites, costs, limitations and current eligibility were available in canonical setting revisions but not carried into the AI-facing context.
-
-The fix adds compact `activeCapabilityContracts` as Tier 1 context for explicit capability use:
-
-- `explain-capability` reports canonical provenance read-only;
-- `activeCapabilityContracts` carries authorized actors, effects, prerequisites, requirements, costs, limitations, forbidden uses and eligibility;
-- `audit-context` and `explain-context-budget` report `capabilityCoverage` in sidecars;
-- `resolve-turn` requires `capabilityUseChecks` and cost state deltas for successful uses with costs.
-
-Formal DB validation for this blocker must remain read-only until the next real Pilot turn is intentionally executed.
+After those are validated, rerun a short targeted Pilot slice and then reconsider `MVP-6: checkpoint, branching timeline, non-destructive rewind, and replayability`.

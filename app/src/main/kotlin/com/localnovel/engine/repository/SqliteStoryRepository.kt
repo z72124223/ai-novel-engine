@@ -1009,6 +1009,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             insertSettingPackImport(connection, importId, pack, preview, sourcePath, "applying")
             insertSettingPackRecord(connection, pack, preview.canonicalHash)
             applyPackEntities(connection, pack, preview.canonicalHash)
+            pack.locationConnections.forEach { insertLocationConnection(connection, it) }
+            pack.sceneTransitions.forEach { insertSceneTransition(connection, it) }
+            pack.scheduledWorldEvents.forEach { insertScheduledWorldEvent(connection, it) }
             pack.relations.forEach { insertSettingPackRelation(connection, pack, it) }
             finishSettingPackImport(connection, importId, "applied")
             connection.commit()
@@ -1117,6 +1120,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             "knowledge", "character_knowledge" -> "character_knowledge"
             "scene_instance", "scene_instances" -> "scene_instances"
             "scene_requirement", "scene_requirements" -> "scene_requirements"
+            "location_connection", "location_connections" -> "location_connections"
             "story_thread", "story_threads" -> "story_threads"
             "scene_transition", "scene_transitions" -> "scene_transitions"
             "world_event", "scheduled_world_events" -> "scheduled_world_events"
