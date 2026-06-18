@@ -1,6 +1,6 @@
 # Local Interactive Fiction Engine
 
-Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎 v1。
+Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎。
 
 目標流程：
 
@@ -31,7 +31,7 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎 
 ## Build And Test
 
 ```powershell
-./gradlew test
+./gradlew.bat clean test --no-daemon
 ```
 
 ## Demo Flow
@@ -65,6 +65,9 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎 
 - `resolve-turn --db <path> --session <id> --result <path>`
 - `show-session --db <path> --session <id>`
 - `abort-pending-turn --db <path> --session <id> [--context <id>]`
+- `show-character-mind --db <path> --session <id> --character <id>`
+- `preview-recall --db <path> --session <id> --character <id> --input <text>`
+- `explain-context --file <path>`
 
 ## Multi-Turn Flow
 
@@ -79,11 +82,23 @@ MVP-2 adds reliable session-based turns:
 
 `prepare-turn` writes a pending context row but does not change formal story state. `resolve-turn` validates `contextId`、`sessionId`、`turnNumber`、`baseStateVersion`、`contextHash` and `resultId` before applying all deltas in one SQLite transaction.
 
+## Memory And Knowledge Runtime
+
+MVP-3 adds deterministic character memory retrieval, character-facing knowledge claims, context budgeting and emotion-causal validation.
+
+```powershell
+./gradlew.bat run --args="show-character-mind --db data/story.db --session SESSION_ID --character char-shen-shuang"
+./gradlew.bat run --args="preview-recall --db data/story.db --session SESSION_ID --character char-shen-shuang --input `"我展示沈家銅牌。`""
+./gradlew.bat run --args="explain-context --file out/turn_001_context.json"
+```
+
+`prepare-turn` may include `retrievedMemories` and `knowledgeClaims`, but it remains read-only: recall counts and recall logs are written only after a successful `resolve-turn`. AI output may propose `memoryCandidates` and `knowledgeUpdates`; the engine decides what to accept inside the same transaction as the turn resolution.
+
 ## Project Layout
 
 - `app/src/main/kotlin/com/localnovel/engine/model`：JSON protocol 與資料模型。
 - `app/src/main/kotlin/com/localnovel/engine/repository`：SQLite repository。
 - `app/src/main/kotlin/com/localnovel/engine/service`：context compiler、validator、reducer、stall detector、turn runner。
-- `app/src/main/resources/migrations/001_init.sql`：SQLite schema。
+- `app/src/main/resources/migrations`：SQLite schema migrations。
 - `samples`：demo seed、context packet、AI result 範例。
 - `docs`：架構、資料模型、回合協議、驗證規則、roadmap。

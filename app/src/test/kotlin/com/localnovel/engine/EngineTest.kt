@@ -2,27 +2,37 @@ package com.localnovel.engine
 
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.CharacterAction
+import com.localnovel.engine.model.CharacterKnowledgeClaim
+import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
+import com.localnovel.engine.model.ContextBudget
 import com.localnovel.engine.model.DeltaOperation
 import com.localnovel.engine.model.DeltaOperationType
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.KnowledgeUpdate
+import com.localnovel.engine.model.MemoryCandidate
 import com.localnovel.engine.model.RevealedFact
 import com.localnovel.engine.model.SceneProgressUpdate
 import com.localnovel.engine.model.StateDelta
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
+import com.localnovel.engine.service.ContextBudgeter
 import com.localnovel.engine.service.ContextCompiler
+import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -306,6 +316,445 @@ class EngineTest {
                     targetType = "fact",
                     targetId = "fact-x",
                     payload = JsonObject(mapOf("content" to JsonPrimitive(forbiddenPhrase))),
+                ),
+            ),
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertFalse(report.isValid)
+        assertTrue(report.errors.any { it.code == "forbidden_reveal" })
+    }
+
+    @Test
+    fun unknownSecretMemoryIsNotRetrieved() {
+        val repository = seededRepository()
+        repository.upsertCharacterMemory(
+            CharacterMemory(
+                id = "memory-hidden-secret",
+                projectId = "demo",
+                characterId = "char-shen-shuang",
+                memoryType = "SEMANTIC",
+                summary = "祠堂下面鎮著一口會呼吸的黑棺。",
+                salience = 100,
+                visibility = "private",
+            ),
+        )
+        val session = MultiTurnRuntime(repository).startSession("demo", "scene-shrine-questioning")
+
+        val context = MultiTurnRuntime(repository).prepareTurn(session.id, "我追問祠堂下面。")
+
+        assertFalse(context.retrievedMemories.any { it.memoryId == "memory-hidden-secret" })
+    }
+
+    @Test
+    fun authorOnlyMemoryDoesNotEnterCharacterContext() {
+        val repository = seededRepository()
+        repository.upsertCharacterMemory(
+            CharacterMemory(
+                id = "memory-author-only",
+                projectId = "demo",
+                characterId = "char-shen-shuang",
+                memoryType = "SEMANTIC",
+                summary = "作者才知道的真相。",
+                tags = listOf("沈家銅牌"),
+                salience = 100,
+                visibility = "author_only",
+            ),
+        )
+        val session = MultiTurnRuntime(repository).startSession("demo", "scene-shrine-questioning")
+
+        val context = MultiTurnRuntime(repository).prepareTurn(session.id, "我拿出沈家銅牌。")
+
+        assertFalse(context.retrievedMemories.any { it.memoryId == "memory-author-only" })
+        assertFalse(context.characterMemories.any { it.id == "memory-author-only" })
+    }
+
+    @Test
+    fun memoryRankingIsDeterministicForSameInputAndState() {
+        val repository = seededRepository()
+        val session = MultiTurnRuntime(repository).startSession("demo", "scene-shrine-questioning")
+        val retriever = MemoryRetriever(repository)
+
+        val first = retriever.preview(session.id, "char-shen-shuang", "我拿出沈家銅牌。")
+        val second = retriever.preview(session.id, "char-shen-shuang", "我拿出沈家銅牌。")
+
+        assertEquals(first.map { it.memoryId to it.retrievalScore }, second.map { it.memoryId to it.retrievalScore })
+    }
+
+    @Test
+    fun highlyRelevantOldMemoryBeatsRecentUnrelatedMemory() {
+        val repository = seededRepository()
+        repository.upsertCharacterMemory(
+            CharacterMemory(
+                id = "memory-old-token",
+                projectId = "demo",
+                characterId = "char-shen-shuang",
+                memoryType = "PROMISE",
+                summary = "很久以前，沈霜曾因沈家銅牌向父親立下守祠誓言。",
+                tags = listOf("沈家銅牌", "誓言"),
+                triggerTags = listOf("沈家銅牌"),
+                salience = 90,
+                createdTurn = 0,
+            ),
+        )
+        repository.upsertCharacterMemory(
+            CharacterMemory(
+                id = "memory-recent-unrelated",
+                projectId = "demo",
+                characterId = "char-shen-shuang",
+                memoryType = "EPISODIC",
+                summary = "上一回她整理了外廊雨具。",
+                tags = listOf("雨具"),
+                salience = 5,
+                createdTurn = 99,
+            ),
+        )
+        val session = MultiTurnRuntime(repository).startSession("demo", "scene-shrine-questioning")
+
+        val preview = MemoryRetriever(repository).preview(session.id, "char-shen-shuang", "我展示沈家銅牌。")
+
+        assertEquals("memory-old-token", preview.first().memoryId)
+        assertTrue(preview.first { it.memoryId == "memory-old-token" }.retrievalScore > preview.first { it.memoryId == "memory-recent-unrelated" }.retrievalScore)
+    }
+
+    @Test
+    fun contextBudgetTruncatesMemoryButKeepsSafetyFields() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我拿出沈家銅牌。")
+
+        val budgeted = ContextBudgeter(maxContextBytes = 900).applyBudget(context, omittedMemoryCount = 0, omittedKnowledgeCount = 0)
+
+        assertNotNull(budgeted.sceneContract)
+        assertTrue(budgeted.sceneContract!!.forbiddenReveals.isNotEmpty())
+        assertTrue(budgeted.worldRules.isNotEmpty())
+        assertTrue(budgeted.contextBudget.truncationApplied)
+    }
+
+    @Test
+    fun characterActionReferencingUnknownFactIsRejected() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我追問。")
+        val result = validMultiTurnResult(context, "result-unknown-fact").copy(
+            characterActions = validMultiTurnResult(context, "unused").characterActions.map {
+                it.copy(usedFactIds = listOf("fact-private-never-in-context"))
+            },
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertFalse(report.isValid)
+        assertTrue(report.errors.any { it.code == "unknown_fact" })
+    }
+
+    @Test
+    fun characterCanActFromWrongBeliefWithoutChangingCanonicalFact() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val beliefId = "claim-shen-player-bait"
+        val result = validMultiTurnResult(context, "result-belief").copy(
+            characterActions = validMultiTurnResult(context, "unused").characterActions.map {
+                it.copy(usedKnowledgeClaimIds = listOf(beliefId), hiddenMotive = "她仍相信玩家可能是誘餌，因此不願完全交底。")
+            },
+        )
+
+        val report = runtime.validate(context, result)
+        runtime.resolveTurn(session.id, result)
+
+        assertTrue(report.isValid, report.errors.joinToString { it.message })
+        assertFalse(repository.listFacts("demo").any { it.content.contains("誘餌") })
+    }
+
+    @Test
+    fun successfulTurnWritesMemoryCandidateInSameTransaction() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val result = validMultiTurnResult(context, "result-memory-write").copy(
+            stateDeltas = validMultiTurnResult(context, "unused").stateDeltas + DeltaOperation(
+                type = DeltaOperationType.ADD_EVENT,
+                targetType = "event",
+                targetId = "event-token-shown",
+                payload = JsonObject(mapOf("summary" to JsonPrimitive("玩家展示沈家銅牌，沈霜因此動搖。"))),
+            ),
+            memoryCandidates = listOf(
+                MemoryCandidate(
+                    candidateId = "memory-runtime-token-shown",
+                    ownerCharacterId = "char-shen-shuang",
+                    memoryType = "EPISODIC",
+                    summary = "沈霜記得玩家展示沈家銅牌時，她對誘餌的判斷開始鬆動。",
+                    sourceEventIds = listOf("event-token-shown"),
+                    tags = listOf("沈家銅牌", "誘餌", "動搖"),
+                    salience = 72,
+                    confidence = 70,
+                    reason = "這會影響沈霜後續是否繼續把玩家視為誘餌。",
+                ),
+            ),
+        )
+
+        runtime.resolveTurn(session.id, result)
+
+        assertNotNull(repository.getCharacterMemory("demo", "memory-runtime-token-shown"))
+    }
+
+    @Test
+    fun rejectedTurnLeavesNoMemoryKnowledgeRecallOrEmotionWrites() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val beforeMemories = repository.tableCount("character_memories")
+        val beforeKnowledge = repository.tableCount("character_knowledge")
+        val beforeRecall = repository.tableCount("memory_recall_logs")
+        val beforeState = repository.getCharacterState("demo", "char-shen-shuang")
+        val invalid = validMultiTurnResult(context, "result-rejected-memory").copy(
+            memoryCandidates = listOf(
+                MemoryCandidate(
+                    candidateId = "memory-should-not-write",
+                    ownerCharacterId = "char-shen-shuang",
+                    memoryType = "EPISODIC",
+                    summary = "祠堂下面鎮著一口會呼吸的黑棺。",
+                    reason = "故意違規。",
+                ),
+            ),
+            knowledgeUpdates = listOf(
+                KnowledgeUpdate(
+                    characterId = "char-shen-shuang",
+                    propositionKey = "hidden.secret",
+                    requestedState = "KNOWN",
+                    confidenceDelta = 50,
+                    reason = "祠堂下面鎮著一口會呼吸的黑棺。",
+                ),
+            ),
+        )
+
+        val report = runtime.validate(context, invalid)
+        assertFalse(report.isValid)
+        assertFailsWith<IllegalStateException> { runtime.resolveTurn(session.id, invalid) }
+        assertEquals(beforeMemories, repository.tableCount("character_memories"))
+        assertEquals(beforeKnowledge, repository.tableCount("character_knowledge"))
+        assertEquals(beforeRecall, repository.tableCount("memory_recall_logs"))
+        assertEquals(beforeState, repository.getCharacterState("demo", "char-shen-shuang"))
+    }
+
+    @Test
+    fun emotionDeltaOverLimitIsRejected() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val result = validMultiTurnResult(context, "result-emotion-over").copy(
+            stateDeltas = validMultiTurnResult(context, "unused").stateDeltas + DeltaOperation(
+                type = DeltaOperationType.UPDATE_CHARACTER_STATE,
+                targetType = "character_state",
+                targetId = "char-shen-shuang",
+                payload = JsonObject(
+                    mapOf(
+                        "emotionDeltas" to JsonArray(
+                            listOf(
+                                JsonObject(
+                                    mapOf(
+                                        "emotion" to JsonPrimitive("戒備"),
+                                        "delta" to JsonPrimitive(30),
+                                        "trigger" to JsonPrimitive("銅牌刺激"),
+                                        "sourceType" to JsonPrimitive("memory"),
+                                        "sourceId" to JsonPrimitive("memory-shen-shuang-vow"),
+                                        "reason" to JsonPrimitive("超界測試"),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertFalse(report.isValid)
+        assertTrue(report.errors.any { it.code == "emotion_delta_too_large" })
+    }
+
+    @Test
+    fun memoryReframeCreatesSupersedesRelationWithoutDeletingOldMemory() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val result = validMultiTurnResult(context, "result-reframe").copy(
+            memoryCandidates = listOf(
+                MemoryCandidate(
+                    candidateId = "memory-reframed-vow",
+                    ownerCharacterId = "char-shen-shuang",
+                    memoryType = "RELATIONAL",
+                    summary = "沈霜重新理解父親誓言：銅牌持有者未必只是誘餌，也可能帶來線索。",
+                    sourceFactIds = listOf("fact-night-sound"),
+                    tags = listOf("沈家銅牌", "誓言", "重估"),
+                    salience = 80,
+                    confidence = 68,
+                    reason = "新證據讓她重估舊誓言的含義。",
+                    lifecycleAction = "reframe",
+                    supersedesMemoryId = "memory-shen-shuang-vow",
+                ),
+            ),
+        )
+
+        runtime.resolveTurn(session.id, result)
+
+        assertNotNull(repository.getCharacterMemory("demo", "memory-shen-shuang-vow"))
+        assertEquals("memory-shen-shuang-vow", repository.getCharacterMemory("demo", "memory-reframed-vow")?.supersedesMemoryId)
+    }
+
+    @Test
+    fun previewRecallDoesNotModifyDatabase() {
+        val repository = seededRepository()
+        val session = MultiTurnRuntime(repository).startSession("demo", "scene-shrine-questioning")
+        val beforeLogs = repository.tableCount("memory_recall_logs")
+        val beforeMemory = repository.getCharacterMemory("demo", "memory-shen-shuang-vow")
+
+        MemoryRetriever(repository).preview(session.id, "char-shen-shuang", "我展示沈家銅牌。")
+
+        assertEquals(beforeLogs, repository.tableCount("memory_recall_logs"))
+        assertEquals(beforeMemory?.recallCount, repository.getCharacterMemory("demo", "memory-shen-shuang-vow")?.recallCount)
+    }
+
+    @Test
+    fun prepareTurnDoesNotIncreaseFormalRecallCount() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+
+        runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+
+        assertEquals(0, repository.tableCount("memory_recall_logs"))
+        assertEquals(0, repository.getCharacterMemory("demo", "memory-shen-shuang-vow")?.recallCount)
+    }
+
+    @Test
+    fun successfulResolveIncrementsRecallCountOnlyOnce() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+
+        runtime.resolveTurn(session.id, validMultiTurnResult(context, "result-recall-once"))
+
+        assertEquals(1, repository.tableCount("memory_recall_logs"))
+        assertEquals(1, repository.getCharacterMemory("demo", "memory-shen-shuang-vow")?.recallCount)
+    }
+
+    @Test
+    fun duplicateResultDoesNotRepeatRecallOrMemoryWrites() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val result = validMultiTurnResult(context, "result-dup-mvp3").copy(
+            memoryCandidates = listOf(
+                MemoryCandidate(
+                    candidateId = "memory-dup-candidate",
+                    ownerCharacterId = "char-shen-shuang",
+                    memoryType = "EPISODIC",
+                    summary = "沈霜記得自己第一次因銅牌對玩家產生遲疑。",
+                    sourceFactIds = listOf("fact-night-sound"),
+                    tags = listOf("沈家銅牌"),
+                    reason = "用來測試 duplicate result 不重複寫入。",
+                ),
+            ),
+        )
+
+        runtime.resolveTurn(session.id, result)
+        val memoryCount = repository.tableCount("character_memories")
+        val recallCount = repository.tableCount("memory_recall_logs")
+        runCatching { runtime.resolveTurn(session.id, result) }
+
+        assertEquals(memoryCount, repository.tableCount("character_memories"))
+        assertEquals(recallCount, repository.tableCount("memory_recall_logs"))
+    }
+
+    @Test
+    fun knowledgeConflictDoesNotSilentlyOverwriteBeliefAsKnown() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val result = validMultiTurnResult(context, "result-knowledge-conflict").copy(
+            knowledgeUpdates = listOf(
+                KnowledgeUpdate(
+                    characterId = "char-shen-shuang",
+                    propositionKey = "player.may_be_outsider_bait",
+                    requestedState = "KNOWN",
+                    confidenceDelta = 10,
+                    sourceMemoryIds = listOf("memory-shen-shuang-vow"),
+                    reason = "銅牌提供了相反線索，但不足以讓她完全信任玩家。",
+                ),
+            ),
+        )
+
+        runtime.resolveTurn(session.id, result)
+
+        val claim = repository.getKnowledgeClaim("demo", "char-shen-shuang", "player.may_be_outsider_bait")
+        assertNotNull(claim)
+        assertEquals("DOUBTED", claim.epistemicState)
+    }
+
+    @Test
+    fun runtimeMemoryDuplicateBecomesReinforcement() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val firstContext = runtime.prepareTurn(session.id, "我展示沈家銅牌。")
+        val candidate = MemoryCandidate(
+            candidateId = "memory-repeat-1",
+            ownerCharacterId = "char-shen-shuang",
+            memoryType = "EPISODIC",
+            summary = "沈霜記得玩家以沈家銅牌要求她重新考慮誘餌判斷。",
+            sourceFactIds = listOf("fact-night-sound"),
+            tags = listOf("沈家銅牌", "誘餌"),
+            salience = 60,
+            confidence = 60,
+            reason = "重複記憶應轉為 reinforcement。",
+        )
+        runtime.resolveTurn(firstContext.sessionId, validMultiTurnResult(firstContext, "result-repeat-1").copy(memoryCandidates = listOf(candidate)))
+
+        val secondContext = runtime.prepareTurn(session.id, "我再次提起沈家銅牌。")
+        runtime.resolveTurn(secondContext.sessionId, validMultiTurnResult(secondContext, "result-repeat-2").copy(memoryCandidates = listOf(candidate.copy(candidateId = "memory-repeat-2"))))
+
+        val duplicates = repository.listAllCharacterMemories("demo").filter { it.summary == candidate.summary }
+        assertEquals(1, duplicates.size)
+        assertTrue(duplicates.single().confidence >= 66)
+    }
+
+    @Test
+    fun forbiddenRevealInsideMemoryCandidatesOrKnowledgeUpdatesIsRejected() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-shrine-questioning")
+        val context = runtime.prepareTurn(session.id, "我追問。")
+        val result = validMultiTurnResult(context, "result-forbidden-mvp3").copy(
+            memoryCandidates = listOf(
+                MemoryCandidate(
+                    candidateId = "memory-forbidden",
+                    ownerCharacterId = "char-shen-shuang",
+                    memoryType = "EPISODIC",
+                    summary = "祠堂下面鎮著一口會呼吸的黑棺。",
+                    reason = "故意違規。",
+                ),
+            ),
+            knowledgeUpdates = listOf(
+                KnowledgeUpdate(
+                    characterId = "char-shen-shuang",
+                    propositionKey = "forbidden.secret",
+                    requestedState = "KNOWN",
+                    confidenceDelta = 80,
+                    reason = "祠堂下面鎮著一口會呼吸的黑棺。",
                 ),
             ),
         )

@@ -7,6 +7,7 @@ import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.MultiTurnRuntime
+import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
 import com.localnovel.engine.service.TurnRunner
@@ -44,6 +45,9 @@ class Cli {
                 "resolve-turn" -> resolveTurn(options)
                 "show-session" -> showSession(options)
                 "abort-pending-turn" -> abortPendingTurn(options)
+                "show-character-mind" -> showCharacterMind(options)
+                "preview-recall" -> previewRecall(options)
+                "explain-context" -> explainContext(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -240,6 +244,70 @@ class Cli {
         return 0
     }
 
+    private fun showCharacterMind(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val characterId = options.required("character")
+        val state = repository.getCharacterState(session.projectId, characterId) ?: error("Character state not found: $characterId")
+        val memories = repository.listAllCharacterMemories(session.projectId).filter { it.ownerCharacterId == characterId || it.characterId == characterId }
+        val activeMemories = memories
+            .filter { it.status == "active" && it.visibility != "author_only" && it.visibility != "inaccessible" }
+            .sortedWith(compareByDescending<com.localnovel.engine.model.CharacterMemory> { it.salience }.thenBy { it.id })
+            .take(5)
+        val claims = repository.listKnowledgeClaims(session.projectId, characterId)
+        println("characterId=$characterId")
+        println("currentGoal=${state.flags["current_goal"] ?: "?"}")
+        println("mood=${state.mood}")
+        println("dominantEmotions:")
+        state.flags.filterKeys { it.startsWith("emotion.") && !it.contains(".last_") }.forEach { (key, value) -> println("- ${key.removePrefix("emotion.")}=$value") }
+        println("topActiveMemories:")
+        activeMemories.forEach { println("- ${it.id} [${it.memoryType}] salience=${it.salience} confidence=${it.confidence}: ${it.summary}") }
+        println("knowledgeClaims:")
+        claims.forEach { println("- ${it.id} ${it.epistemicState}/${it.confidence}: ${it.statement}") }
+        println("suspectedOrDoubted:")
+        claims.filter { it.epistemicState in setOf("SUSPECTED", "DOUBTED", "BELIEVED", "MISREMEMBERED") }
+            .forEach { println("- ${it.propositionKey}: ${it.epistemicState}") }
+        println("relationshipState=${state.flags["relationship_state"] ?: "unknown"}")
+        println("inaccessibleMemoryCount=${memories.count { it.visibility in setOf("author_only", "inaccessible") || it.status != "active" }}")
+        return 0
+    }
+
+    private fun previewRecall(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val sessionId = options.required("session")
+        val characterId = options.required("character")
+        val input = options.required("input")
+        val memories = MemoryRetriever(repository).preview(sessionId, characterId, input)
+        println("candidateMemories:")
+        memories.forEachIndexed { index, memory ->
+            println("- ${memory.memoryId} score=${memory.retrievalScore} included=${index < 5}")
+            println("  reasons=${memory.retrievalReasons.joinToString("; ")}")
+        }
+        println("budgetImpact=included=${memories.take(5).size}, omitted=${(memories.size - 5).coerceAtLeast(0)}")
+        return 0
+    }
+
+    private fun explainContext(options: Map<String, String>): Int {
+        val context = readJson<ContextPacket>(Path.of(options.required("file")))
+        println("contextId=${context.contextId}")
+        println("contextBytes=${context.contextBudget.actualBytes}/${context.contextBudget.maxBytes}")
+        println("safetyFieldsComplete=${context.sceneContract?.forbiddenReveals != null && context.worldRules.isNotEmpty()}")
+        println("forbiddenReveals=${context.sceneContract?.forbiddenReveals?.size ?: 0}")
+        println("retrievedMemories:")
+        context.retrievedMemories.forEach {
+            println("- ${it.memoryId} owner=${it.ownerCharacterId} score=${it.retrievalScore} reasons=${it.retrievalReasons.joinToString("; ")}")
+        }
+        println("knowledgeClaims:")
+        context.knowledgeClaims.forEach {
+            println("- ${it.claimId} character=${it.characterId} state=${it.epistemicState} confidence=${it.confidence}")
+        }
+        println("omittedMemories=${context.contextBudget.omittedMemoryCount}")
+        println("omittedKnowledge=${context.contextBudget.omittedKnowledgeCount}")
+        println("truncationApplied=${context.contextBudget.truncationApplied}")
+        context.contextBudget.truncationReasons.forEach { println("- $it") }
+        return 0
+    }
+
     private fun repository(options: Map<String, String>): SqliteStoryRepository =
         SqliteStoryRepository(Path.of(options["db"] ?: "data/story.db"))
 
@@ -289,6 +357,9 @@ class Cli {
               resolve-turn [--db <path>] --session <id> --result <path>
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
+              show-character-mind [--db <path>] --session <id> --character <id>
+              preview-recall [--db <path>] --session <id> --character <id> --input <text>
+              explain-context --file <path>
             """.trimIndent(),
         )
     }

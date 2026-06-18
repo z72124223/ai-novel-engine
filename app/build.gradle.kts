@@ -1,8 +1,17 @@
+import java.io.File
+
 plugins {
     application
     kotlin("jvm")
     kotlin("plugin.serialization")
 }
+
+val externalBuildRoot = providers.environmentVariable("LOCALAPPDATA")
+    .orElse(providers.systemProperty("java.io.tmpdir"))
+
+layout.buildDirectory.set(
+    layout.dir(externalBuildRoot.map { File(it).resolve("local-interactive-fiction-engine-build/app") }),
+)
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")

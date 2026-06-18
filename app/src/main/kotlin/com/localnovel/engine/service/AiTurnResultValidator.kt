@@ -37,7 +37,20 @@ class AiTurnResultValidator(private val repository: StoryRepository) {
             validateOperation(context, operation, index, allowedSecretIds, errors)
         }
 
-        val operationPayloadText = result.stateDelta.operations.flatMap { it.payload.allStringValues() }
+        val operationPayloadText = buildList {
+            addAll(result.stateDelta.operations.flatMap { it.payload.allStringValues() })
+            result.memoryCandidates.forEach {
+                add(it.summary)
+                add(it.reason)
+                addAll(it.tags)
+                addAll(it.emotionalSignature.allStringValues())
+            }
+            result.knowledgeUpdates.forEach {
+                add(it.propositionKey)
+                add(it.requestedState)
+                add(it.reason)
+            }
+        }
 
         repository.listSecrets(context.project.id)
             .filterNot { it.revealed }

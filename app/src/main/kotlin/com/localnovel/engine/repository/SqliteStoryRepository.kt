@@ -2,9 +2,11 @@ package com.localnovel.engine.repository
 
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ApplyResult
+import com.localnovel.engine.model.CharacterKnowledgeClaim
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.CharacterProfile
 import com.localnovel.engine.model.CharacterState
+import com.localnovel.engine.model.ContextKnowledgeClaim
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DependencyEdge
@@ -13,7 +15,9 @@ import com.localnovel.engine.model.Fact
 import com.localnovel.engine.model.Faction
 import com.localnovel.engine.model.Item
 import com.localnovel.engine.model.Location
+import com.localnovel.engine.model.MemoryCandidate
 import com.localnovel.engine.model.Project
+import com.localnovel.engine.model.RetrievedMemory
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
 import com.localnovel.engine.model.Secret
@@ -26,6 +30,7 @@ import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.nio.file.Files
 import java.nio.file.Path
@@ -42,7 +47,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connect { connection ->
             connection.createStatement().use { statement ->
                 statement.executeUpdate("PRAGMA foreign_keys = ON")
-                listOf("001_init.sql", "002_multi_turn_runtime.sql").forEach { fileName ->
+                listOf("001_init.sql", "002_multi_turn_runtime.sql", "003_memory_knowledge_runtime.sql").forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
                     migration.readText().splitToStatements().forEach { sql ->
@@ -74,6 +79,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 seed.events.forEach { insertEvent(connection, it) }
                 seed.dependencyEdges.forEach { insertDependencyEdge(connection, it) }
                 seed.tasks.forEach { insertTask(connection, it) }
+                seed.knowledgeClaims.forEach { insertKnowledgeClaim(connection, it) }
                 connection.commit()
             } catch (error: Throwable) {
                 connection.rollback()
@@ -173,10 +179,30 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     override fun listCharacterMemories(projectId: String): List<CharacterMemory> = connect { connection ->
         connection.queryMany(
             """
-            SELECT id, project_id, character_id, summary, salience, visibility, created_turn
+            SELECT id, project_id, character_id, owner_character_id, memory_type, summary, details_json,
+                   source_type, source_id, subject_type, subject_id, tags_json, trigger_tags_json,
+                   emotional_signature_json, salience, confidence, reliability, visibility,
+                   created_turn, created_turn_number, last_recalled_turn_number, recall_count,
+                   decay_rate, status, is_canon, supersedes_memory_id
+            FROM character_memories
+            WHERE project_id = ? AND status = 'active' AND visibility != 'author_only'
+            ORDER BY salience DESC, created_turn_number DESC, id ASC
+            """.trimIndent(),
+            projectId,
+        ) { it.toCharacterMemory() }
+    }
+
+    fun listAllCharacterMemories(projectId: String): List<CharacterMemory> = connect { connection ->
+        connection.queryMany(
+            """
+            SELECT id, project_id, character_id, owner_character_id, memory_type, summary, details_json,
+                   source_type, source_id, subject_type, subject_id, tags_json, trigger_tags_json,
+                   emotional_signature_json, salience, confidence, reliability, visibility,
+                   created_turn, created_turn_number, last_recalled_turn_number, recall_count,
+                   decay_rate, status, is_canon, supersedes_memory_id
             FROM character_memories
             WHERE project_id = ?
-            ORDER BY salience DESC, created_turn DESC, id ASC
+            ORDER BY owner_character_id ASC, salience DESC, created_turn_number DESC, id ASC
             """.trimIndent(),
             projectId,
         ) { it.toCharacterMemory() }
@@ -286,6 +312,83 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             """.trimIndent(),
             projectId,
         ) { it.toTask() }
+    }
+
+    fun listKnowledgeClaims(projectId: String, characterId: String? = null): List<CharacterKnowledgeClaim> = connect { connection ->
+        val sql = if (characterId == null) {
+            """
+            SELECT id, project_id, character_id, proposition_key, statement, epistemic_state,
+                   confidence, source_fact_id, source_memory_id, acquired_turn_number,
+                   updated_turn_number, visibility, status
+            FROM character_knowledge
+            WHERE project_id = ? AND status = 'active'
+            ORDER BY character_id ASC, confidence DESC, id ASC
+            """.trimIndent()
+        } else {
+            """
+            SELECT id, project_id, character_id, proposition_key, statement, epistemic_state,
+                   confidence, source_fact_id, source_memory_id, acquired_turn_number,
+                   updated_turn_number, visibility, status
+            FROM character_knowledge
+            WHERE project_id = ? AND character_id = ? AND status = 'active'
+            ORDER BY confidence DESC, id ASC
+            """.trimIndent()
+        }
+        connection.prepareStatement(sql).use { statement ->
+            statement.setString(1, projectId)
+            if (characterId != null) statement.setString(2, characterId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) add(rows.toKnowledgeClaim())
+                }
+            }
+        }
+    }
+
+    fun listRecallLogs(sessionId: String): List<Map<String, String>> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT turn_number, context_id, character_id, memory_id, retrieval_score, retrieval_reasons_json, included_in_context
+            FROM memory_recall_logs
+            WHERE session_id = ?
+            ORDER BY turn_number ASC, character_id ASC, retrieval_score DESC, memory_id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            mapOf(
+                                "turnNumber" to rows.getInt("turn_number").toString(),
+                                "contextId" to rows.getString("context_id"),
+                                "characterId" to rows.getString("character_id"),
+                                "memoryId" to rows.getString("memory_id"),
+                                "score" to rows.getInt("retrieval_score").toString(),
+                                "reasons" to rows.getString("retrieval_reasons_json"),
+                                "included" to (rows.getInt("included_in_context") == 1).toString(),
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getCharacterMemory(projectId: String, memoryId: String): CharacterMemory? = connect { connection ->
+        selectCharacterMemory(connection, projectId, memoryId)
+    }
+
+    fun getKnowledgeClaim(projectId: String, characterId: String, propositionKey: String): CharacterKnowledgeClaim? = connect { connection ->
+        selectKnowledgeClaim(connection, projectId, characterId, propositionKey)
+    }
+
+    fun upsertCharacterMemory(memory: CharacterMemory) {
+        connect { connection -> insertCharacterMemory(connection, memory) }
+    }
+
+    fun upsertKnowledgeClaim(claim: CharacterKnowledgeClaim) {
+        connect { connection -> insertKnowledgeClaim(connection, claim) }
     }
 
     fun getSession(sessionId: String): StorySession? = connect { connection ->
@@ -465,6 +568,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             }
 
             applySceneProgressUpdates(connection, context, result)
+            applyMemoryCandidates(connection, context, result.memoryCandidates)
+            applyKnowledgeUpdates(connection, context, result)
+            recordSuccessfulRecall(connection, context)
             connection.prepareStatement(
                 """
                 UPDATE turn_logs
@@ -526,6 +632,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             "item", "items" -> "items"
             "technique", "techniques" -> "techniques"
             "scene", "scenes" -> "scenes"
+            "memory", "character_memory", "character_memories" -> "character_memories"
+            "knowledge", "character_knowledge" -> "character_knowledge"
             else -> return@connect false
         }
         val idColumn = if (table == "character_states") "character_id" else "id"
@@ -724,17 +832,82 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     private fun insertCharacterMemory(connection: Connection, memory: CharacterMemory) {
         connection.prepareStatement(
             """
-            INSERT OR REPLACE INTO character_memories(id, project_id, character_id, summary, salience, visibility, created_turn)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT OR REPLACE INTO character_memories(
+                id, project_id, character_id, owner_character_id, memory_type, summary, details_json,
+                source_type, source_id, subject_type, subject_id, tags_json, trigger_tags_json,
+                emotional_signature_json, salience, confidence, reliability, visibility, created_turn,
+                created_turn_number, last_recalled_turn_number, recall_count, decay_rate, status,
+                is_canon, supersedes_memory_id, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM character_memories WHERE id = ?), ?), ?)
             """.trimIndent(),
         ).use { statement ->
+            val timestamp = now()
             statement.setString(1, memory.id)
             statement.setString(2, memory.projectId)
             statement.setString(3, memory.characterId)
-            statement.setString(4, memory.summary)
-            statement.setInt(5, memory.salience)
-            statement.setString(6, memory.visibility)
-            statement.setInt(7, memory.createdTurn)
+            statement.setString(4, memory.ownerCharacterId)
+            statement.setString(5, memory.memoryType)
+            statement.setString(6, memory.summary)
+            statement.setString(7, JsonSupport.json.encodeToString(memory.details))
+            statement.setString(8, memory.sourceType)
+            statement.setString(9, memory.sourceId)
+            statement.setString(10, memory.subjectType)
+            statement.setString(11, memory.subjectId)
+            statement.setString(12, JsonSupport.json.encodeToString(memory.tags))
+            statement.setString(13, JsonSupport.json.encodeToString(memory.triggerTags))
+            statement.setString(14, JsonSupport.json.encodeToString(memory.emotionalSignature))
+            statement.setInt(15, memory.salience.coerceIn(0, 100))
+            statement.setInt(16, memory.confidence.coerceIn(0, 100))
+            statement.setInt(17, memory.reliability.coerceIn(0, 100))
+            statement.setString(18, memory.visibility)
+            statement.setInt(19, memory.createdTurn)
+            statement.setInt(20, memory.createdTurn)
+            if (memory.lastRecalledTurnNumber == null) {
+                statement.setNull(21, java.sql.Types.INTEGER)
+            } else {
+                statement.setInt(21, memory.lastRecalledTurnNumber)
+            }
+            statement.setInt(22, memory.recallCount)
+            statement.setDouble(23, memory.decayRate)
+            statement.setString(24, memory.status)
+            statement.setInt(25, if (memory.isCanon) 1 else 0)
+            statement.setString(26, memory.supersedesMemoryId)
+            statement.setString(27, memory.id)
+            statement.setString(28, timestamp)
+            statement.setString(29, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertKnowledgeClaim(connection: Connection, claim: CharacterKnowledgeClaim) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO character_knowledge(
+                id, project_id, character_id, proposition_key, statement, epistemic_state, confidence,
+                source_fact_id, source_memory_id, acquired_turn_number, updated_turn_number,
+                visibility, status, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM character_knowledge WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, claim.id)
+            statement.setString(2, claim.projectId)
+            statement.setString(3, claim.characterId)
+            statement.setString(4, claim.propositionKey)
+            statement.setString(5, claim.statement)
+            statement.setString(6, claim.epistemicState)
+            statement.setInt(7, claim.confidence.coerceIn(0, 100))
+            statement.setString(8, claim.sourceFactId)
+            statement.setString(9, claim.sourceMemoryId)
+            statement.setInt(10, claim.acquiredTurnNumber)
+            statement.setInt(11, claim.updatedTurnNumber)
+            statement.setString(12, claim.visibility)
+            statement.setString(13, claim.status)
+            statement.setString(14, claim.id)
+            statement.setString(15, timestamp)
+            statement.setString(16, timestamp)
             statement.executeUpdate()
         }
     }
@@ -959,6 +1132,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             com.localnovel.engine.model.DeltaOperationType.UPDATE_CHARACTER_STATE -> {
                 val current = selectCharacterState(connection, context.project.id, operation.targetId ?: error("Missing character state target"))
                     ?: error("Character state not found: ${operation.targetId}")
+                val nextFlags = current.flags.toMutableMap()
+                operation.payload.decodeValue<Map<String, String>>("flags")?.let { nextFlags.putAll(it) }
+                applyEmotionDeltasToFlags(operation.payload, nextFlags)
                 insertCharacterState(
                     connection,
                     CharacterState(
@@ -968,7 +1144,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                         mood = operation.payload.stringValue("mood") ?: current.mood,
                         health = operation.payload.stringValue("health") ?: current.health,
                         inventory = operation.payload.decodeValue("inventory") ?: current.inventory,
-                        flags = operation.payload.decodeValue("flags") ?: current.flags,
+                        flags = nextFlags,
                     ),
                 )
             }
@@ -1024,6 +1200,202 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 )
             }
             com.localnovel.engine.model.DeltaOperationType.NOOP -> Unit
+        }
+    }
+
+    private fun applyEmotionDeltasToFlags(payload: JsonObject, flags: MutableMap<String, String>) {
+        val deltas = payload["emotionDeltas"] ?: payload["emotion_deltas"] ?: return
+        val array = runCatching { deltas as kotlinx.serialization.json.JsonArray }.getOrNull() ?: return
+        array.forEach { element ->
+            val obj = runCatching { element.jsonObject }.getOrNull() ?: return@forEach
+            val emotion = obj.stringValue("emotion") ?: return@forEach
+            val delta = obj.stringValue("delta")?.toIntOrNull()
+                ?: runCatching { obj["delta"]?.jsonPrimitive?.content?.toInt() }.getOrNull()
+                ?: return@forEach
+            val key = "emotion.$emotion"
+            val oldValue = flags[key]?.toIntOrNull() ?: 50
+            flags[key] = (oldValue + delta).coerceIn(0, 100).toString()
+            flags["emotion.$emotion.last_trigger"] = obj.stringValue("trigger") ?: ""
+            flags["emotion.$emotion.last_source"] = listOfNotNull(obj.stringValue("sourceType"), obj.stringValue("sourceId")).joinToString(":")
+            flags["emotion.$emotion.last_reason"] = obj.stringValue("reason") ?: ""
+        }
+    }
+
+    private fun applyMemoryCandidates(connection: Connection, context: ContextPacket, candidates: List<MemoryCandidate>) {
+        candidates.forEach { candidate ->
+            when (candidate.lifecycleAction.lowercase()) {
+                "archive" -> {
+                    val targetId = candidate.supersedesMemoryId ?: candidate.candidateId
+                    connection.prepareStatement(
+                        "UPDATE character_memories SET status = 'archived', updated_at = ? WHERE project_id = ? AND id = ?",
+                    ).use { statement ->
+                        statement.setString(1, now())
+                        statement.setString(2, context.project.id)
+                        statement.setString(3, targetId)
+                        statement.executeUpdate()
+                    }
+                }
+                "reinforce" -> reinforceMemory(connection, context.project.id, candidate)
+                else -> {
+                    val duplicateId = selectDuplicateMemoryId(connection, context.project.id, candidate)
+                    if (duplicateId != null && candidate.lifecycleAction.lowercase() != "reframe") {
+                        reinforceExistingMemory(connection, context.project.id, duplicateId, candidate.salience, candidate.confidence)
+                    } else {
+                        insertCharacterMemory(
+                            connection,
+                            CharacterMemory(
+                                id = candidate.candidateId,
+                                projectId = context.project.id,
+                                characterId = candidate.ownerCharacterId,
+                                ownerCharacterId = candidate.ownerCharacterId,
+                                memoryType = candidate.memoryType,
+                                summary = candidate.summary,
+                                details = JsonObject(mapOf("reason" to kotlinx.serialization.json.JsonPrimitive(candidate.reason))),
+                                sourceType = when {
+                                    candidate.sourceEventIds.isNotEmpty() -> "event"
+                                    candidate.sourceFactIds.isNotEmpty() -> "fact"
+                                    else -> "turn"
+                                },
+                                sourceId = candidate.sourceEventIds.firstOrNull() ?: candidate.sourceFactIds.firstOrNull() ?: context.turnId,
+                                tags = candidate.tags,
+                                triggerTags = candidate.tags,
+                                emotionalSignature = candidate.emotionalSignature,
+                                salience = candidate.salience,
+                                confidence = candidate.confidence,
+                                reliability = candidate.confidence,
+                                visibility = "private",
+                                createdTurn = context.turnNumber,
+                                status = "active",
+                                isCanon = false,
+                                supersedesMemoryId = candidate.supersedesMemoryId,
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun reinforceMemory(connection: Connection, projectId: String, candidate: MemoryCandidate) {
+        val targetId = candidate.supersedesMemoryId ?: selectDuplicateMemoryId(connection, projectId, candidate) ?: return
+        reinforceExistingMemory(connection, projectId, targetId, candidate.salience, candidate.confidence)
+    }
+
+    private fun reinforceExistingMemory(connection: Connection, projectId: String, memoryId: String, salience: Int, confidence: Int) {
+        connection.prepareStatement(
+            """
+            UPDATE character_memories
+            SET salience = MIN(100, MAX(salience, ?)),
+                confidence = MIN(100, confidence + ?),
+                updated_at = ?
+            WHERE project_id = ? AND id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setInt(1, salience.coerceIn(0, 100))
+            statement.setInt(2, (confidence / 10).coerceAtLeast(1))
+            statement.setString(3, now())
+            statement.setString(4, projectId)
+            statement.setString(5, memoryId)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun selectDuplicateMemoryId(connection: Connection, projectId: String, candidate: MemoryCandidate): String? =
+        connection.prepareStatement(
+            """
+            SELECT id
+            FROM character_memories
+            WHERE project_id = ? AND owner_character_id = ? AND source_type = ?
+              AND COALESCE(source_id, '') = ? AND summary = ? AND status != 'archived'
+            LIMIT 1
+            """.trimIndent(),
+        ).use { statement ->
+            val sourceType = when {
+                candidate.sourceEventIds.isNotEmpty() -> "event"
+                candidate.sourceFactIds.isNotEmpty() -> "fact"
+                else -> "turn"
+            }
+            val sourceId = candidate.sourceEventIds.firstOrNull() ?: candidate.sourceFactIds.firstOrNull() ?: ""
+            statement.setString(1, projectId)
+            statement.setString(2, candidate.ownerCharacterId)
+            statement.setString(3, sourceType)
+            statement.setString(4, sourceId)
+            statement.setString(5, candidate.summary)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("id") else null }
+        }
+
+    private fun applyKnowledgeUpdates(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        result.knowledgeUpdates.forEach { update ->
+            val existing = selectKnowledgeClaim(connection, context.project.id, update.characterId, update.propositionKey)
+            val nextState = if (
+                existing != null &&
+                update.requestedState == "KNOWN" &&
+                existing.epistemicState in setOf("BELIEVED", "SUSPECTED", "DOUBTED", "MISREMEMBERED") &&
+                update.confidenceDelta < 50
+            ) {
+                "DOUBTED"
+            } else {
+                update.requestedState
+            }
+            val nextConfidence = ((existing?.confidence ?: 0) + update.confidenceDelta).coerceIn(0, 100)
+            insertKnowledgeClaim(
+                connection,
+                CharacterKnowledgeClaim(
+                    id = existing?.id ?: newId("claim"),
+                    projectId = context.project.id,
+                    characterId = update.characterId,
+                    propositionKey = update.propositionKey,
+                    statement = existing?.statement ?: update.reason,
+                    epistemicState = nextState,
+                    confidence = nextConfidence,
+                    sourceFactId = update.sourceFactIds.firstOrNull() ?: existing?.sourceFactId,
+                    sourceMemoryId = update.sourceMemoryIds.firstOrNull() ?: existing?.sourceMemoryId,
+                    acquiredTurnNumber = existing?.acquiredTurnNumber ?: context.turnNumber,
+                    updatedTurnNumber = context.turnNumber,
+                    visibility = existing?.visibility ?: "private",
+                    status = "active",
+                ),
+            )
+        }
+    }
+
+    private fun recordSuccessfulRecall(connection: Connection, context: ContextPacket) {
+        context.retrievedMemories.forEach { memory ->
+            connection.prepareStatement(
+                """
+                INSERT OR IGNORE INTO memory_recall_logs(
+                    id, session_id, turn_number, context_id, character_id, memory_id,
+                    retrieval_score, retrieval_reasons_json, included_in_context, created_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, newId("recall"))
+                statement.setString(2, context.sessionId)
+                statement.setInt(3, context.turnNumber)
+                statement.setString(4, context.contextId)
+                statement.setString(5, memory.ownerCharacterId)
+                statement.setString(6, memory.memoryId)
+                statement.setInt(7, memory.retrievalScore)
+                statement.setString(8, JsonSupport.json.encodeToString(memory.retrievalReasons))
+                statement.setString(9, now())
+                statement.executeUpdate()
+            }
+            connection.prepareStatement(
+                """
+                UPDATE character_memories
+                SET recall_count = recall_count + 1,
+                    last_recalled_turn_number = ?,
+                    updated_at = ?
+                WHERE project_id = ? AND id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setInt(1, context.turnNumber)
+                statement.setString(2, now())
+                statement.setString(3, context.project.id)
+                statement.setString(4, memory.memoryId)
+                statement.executeUpdate()
+            }
         }
     }
 
@@ -1102,6 +1474,39 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.executeQuery().use { rows -> if (rows.next()) rows.toTask() else null }
         }
 
+    private fun selectCharacterMemory(connection: Connection, projectId: String, memoryId: String): CharacterMemory? =
+        connection.prepareStatement(
+            """
+            SELECT id, project_id, character_id, owner_character_id, memory_type, summary, details_json,
+                   source_type, source_id, subject_type, subject_id, tags_json, trigger_tags_json,
+                   emotional_signature_json, salience, confidence, reliability, visibility,
+                   created_turn, created_turn_number, last_recalled_turn_number, recall_count,
+                   decay_rate, status, is_canon, supersedes_memory_id
+            FROM character_memories
+            WHERE project_id = ? AND id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, memoryId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toCharacterMemory() else null }
+        }
+
+    private fun selectKnowledgeClaim(connection: Connection, projectId: String, characterId: String, propositionKey: String): CharacterKnowledgeClaim? =
+        connection.prepareStatement(
+            """
+            SELECT id, project_id, character_id, proposition_key, statement, epistemic_state,
+                   confidence, source_fact_id, source_memory_id, acquired_turn_number,
+                   updated_turn_number, visibility, status
+            FROM character_knowledge
+            WHERE project_id = ? AND character_id = ? AND proposition_key = ? AND status = 'active'
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, characterId)
+            statement.setString(3, propositionKey)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toKnowledgeClaim() else null }
+        }
+
     private fun <T> Connection.queryMany(sql: String, projectId: String, mapper: (ResultSet) -> T): List<T> =
         prepareStatement(sql).use { statement ->
             statement.setString(1, projectId)
@@ -1130,14 +1535,51 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         profile = JsonSupport.json.decodeFromString(getString("profile_json")),
     )
 
-    private fun ResultSet.toCharacterMemory(): CharacterMemory = CharacterMemory(
+    private fun ResultSet.toCharacterMemory(): CharacterMemory {
+        val lastRecalled = getInt("last_recalled_turn_number")
+        return CharacterMemory(
+            id = getString("id"),
+            projectId = getString("project_id"),
+            characterId = getString("character_id"),
+            ownerCharacterId = getString("owner_character_id") ?: getString("character_id"),
+            memoryType = getString("memory_type") ?: "EPISODIC",
+            summary = getString("summary"),
+            details = decodeJsonObject(getString("details_json")),
+            sourceType = getString("source_type") ?: "seed",
+            sourceId = getString("source_id"),
+            subjectType = getString("subject_type"),
+            subjectId = getString("subject_id"),
+            tags = decodeList(getString("tags_json")),
+            triggerTags = decodeList(getString("trigger_tags_json")),
+            emotionalSignature = decodeJsonObject(getString("emotional_signature_json")),
+            salience = getInt("salience"),
+            confidence = getInt("confidence"),
+            reliability = getInt("reliability"),
+            visibility = getString("visibility"),
+            createdTurn = runCatching { getInt("created_turn_number") }.getOrElse { getInt("created_turn") },
+            lastRecalledTurnNumber = if (wasNull()) null else lastRecalled,
+            recallCount = getInt("recall_count"),
+            decayRate = getDouble("decay_rate"),
+            status = getString("status") ?: "active",
+            isCanon = getInt("is_canon") == 1,
+            supersedesMemoryId = getString("supersedes_memory_id"),
+        )
+    }
+
+    private fun ResultSet.toKnowledgeClaim(): CharacterKnowledgeClaim = CharacterKnowledgeClaim(
         id = getString("id"),
         projectId = getString("project_id"),
         characterId = getString("character_id"),
-        summary = getString("summary"),
-        salience = getInt("salience"),
+        propositionKey = getString("proposition_key"),
+        statement = getString("statement"),
+        epistemicState = getString("epistemic_state"),
+        confidence = getInt("confidence"),
+        sourceFactId = getString("source_fact_id"),
+        sourceMemoryId = getString("source_memory_id"),
+        acquiredTurnNumber = getInt("acquired_turn_number"),
+        updatedTurnNumber = getInt("updated_turn_number"),
         visibility = getString("visibility"),
-        createdTurn = getInt("created_turn"),
+        status = getString("status"),
     )
 
     private fun ResultSet.toCharacterState(): CharacterState = CharacterState(
@@ -1246,6 +1688,14 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         stateVersion = getInt("state_version"),
         status = getString("status"),
     )
+
+    private fun decodeJsonObject(value: String?): JsonObject =
+        value?.let { runCatching { JsonSupport.json.decodeFromString<JsonObject>(it) }.getOrNull() }
+            ?: JsonObject(emptyMap())
+
+    private fun decodeList(value: String?): List<String> =
+        value?.let { runCatching { JsonSupport.json.decodeFromString<List<String>>(it) }.getOrNull() }
+            ?: emptyList()
 
     private fun String.splitToStatements(): List<String> =
         lineSequence()

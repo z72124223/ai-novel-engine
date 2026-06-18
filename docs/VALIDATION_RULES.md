@@ -30,3 +30,14 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - `characterFitScore` must be at least `70`.
 - Forbidden reveals are scanned across narrative、turnSummary、revealedFacts、stateDeltas payloads、memoryEffects and newTasks.
 - `resolve-turn` applies all writes in one SQLite transaction; any failed write rolls back state deltas, facts, events, turn log update, scene progress and session state.
+
+## MVP-3 Rules
+
+- Forbidden reveals are also scanned across `memoryCandidates` and `knowledgeUpdates`.
+- `characterActions` may only reference memories in `retrievedMemories` owned by that actor, public facts or actor knowledge claims, and context-visible items/techniques.
+- `memoryCandidates` must have a valid owner, valid source event/fact evidence, character value, and must not copy the narrative wholesale.
+- Reframe candidates must set `supersedesMemoryId`; the old memory is retained.
+- `knowledgeUpdates` cannot use hidden canonical facts as automatic character knowledge.
+- If a requested update tries to jump a conflicted belief straight to `KNOWN` without strong evidence, the runtime keeps the conflict visible and transitions toward `DOUBTED` instead.
+- Emotion deltas require `emotion`、`delta`、`trigger`、`sourceType/sourceId` and `reason`; normal single-turn absolute change is capped at 25.
+- `prepare-turn` cannot write recall logs or increase recall counts. Successful `resolve-turn` records recall logs and increments each included memory once.

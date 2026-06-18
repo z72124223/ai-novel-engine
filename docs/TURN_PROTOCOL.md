@@ -83,3 +83,18 @@
 Hash rule: the engine serializes `ContextPacket` with `contextHash = ""` using the repository JSON serializer, then computes SHA-256 over UTF-8 bytes. This uses Kotlin data-class property order and does not depend on map insertion order for protocol identity fields.
 
 `prepare-turn` stores pending context metadata in `turn_logs` with `validation_status = pending`. `resolve-turn` loads that pending context and refuses stale state versions, turn mismatches, hash mismatches, duplicate result IDs, unsupported protocol versions, and forbidden reveals.
+
+## MVP-3 Memory And Knowledge Protocol
+
+`ContextPacket` 新增：
+
+- `retrievedMemories`：本回合可供角色使用的記憶摘要、owner、score、reasons 與 allowed uses。
+- `knowledgeClaims`：角色可見的命題認知，標示 epistemic state 與 confidence。
+- `contextBudget`：max bytes、actual bytes、memory/knowledge included/omitted counts、truncation 狀態與原因。
+
+`AiTurnResult` 新增：
+
+- `memoryCandidates`：AI 只能提出候選記憶，不能直接寫入 SQLite。
+- `knowledgeUpdates`：AI 只能提出認知狀態更新，engine 會檢查 evidence 與 conflict transition。
+
+`prepare-turn` 仍是 read-only。`resolve-turn` 成功後才正式寫入 memory、knowledge、recall logs 與 recall count。

@@ -61,10 +61,29 @@
       "id": "memory-shen-shuang-vow",
       "projectId": "demo",
       "characterId": "char-shen-shuang",
+      "ownerCharacterId": "char-shen-shuang",
+      "memoryType": "PROMISE",
       "summary": "沈霜記得父親交代過：外人追問地底時，只能承認門閂異常，不能說出被封住的東西。",
+      "details": {
+        "source": "父親臨終前的守祠誓言"
+      },
+      "sourceType": "seed",
+      "sourceId": "seed-vow",
+      "subjectType": "scene",
+      "subjectId": "scene-shrine-questioning",
+      "tags": ["沈家銅牌", "外人", "後殿", "門閂", "誓言"],
+      "triggerTags": ["沈家銅牌", "外人", "後殿"],
+      "emotionalSignature": {
+        "戒備": 70,
+        "愧疚": 45
+      },
       "salience": 5,
+      "confidence": 92,
+      "reliability": 85,
       "visibility": "private",
-      "createdTurn": 0
+      "createdTurn": 0,
+      "status": "active",
+      "isCanon": true
     }
   ],
   "worldRules": [
@@ -200,6 +219,22 @@
       "payload": {},
       "createdTurn": 0,
       "updatedTurn": 0
+    }
+  ],
+  "knowledgeClaims": [
+    {
+      "id": "claim-shen-player-bait",
+      "projectId": "demo",
+      "characterId": "char-shen-shuang",
+      "propositionKey": "player.may_be_outsider_bait",
+      "statement": "玩家可能是外人安排來試探沈家的誘餌。",
+      "epistemicState": "BELIEVED",
+      "confidence": 62,
+      "sourceMemoryId": "memory-shen-shuang-vow",
+      "acquiredTurnNumber": 0,
+      "updatedTurnNumber": 0,
+      "visibility": "private",
+      "status": "active"
     }
   ]
 }

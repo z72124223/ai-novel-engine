@@ -40,10 +40,28 @@ data class CharacterMemory(
     val id: String,
     val projectId: String,
     val characterId: String,
+    val ownerCharacterId: String = characterId,
+    val memoryType: String = "EPISODIC",
     val summary: String,
+    val details: JsonObject = JsonObject(emptyMap()),
+    val sourceType: String = "seed",
+    val sourceId: String? = null,
+    val subjectType: String? = null,
+    val subjectId: String? = null,
+    val tags: List<String> = emptyList(),
+    val triggerTags: List<String> = emptyList(),
+    val emotionalSignature: JsonObject = JsonObject(emptyMap()),
     val salience: Int = 1,
+    val confidence: Int = 100,
+    val reliability: Int = 100,
     val visibility: String = "private",
     val createdTurn: Int = 0,
+    val lastRecalledTurnNumber: Int? = null,
+    val recallCount: Int = 0,
+    val decayRate: Double = 0.0,
+    val status: String = "active",
+    val isCanon: Boolean = false,
+    val supersedesMemoryId: String? = null,
 )
 
 @Serializable
@@ -204,6 +222,62 @@ data class Task(
 )
 
 @Serializable
+data class CharacterKnowledgeClaim(
+    val id: String,
+    val projectId: String,
+    val characterId: String,
+    val propositionKey: String,
+    val statement: String,
+    val epistemicState: String = "UNKNOWN",
+    val confidence: Int = 0,
+    val sourceFactId: String? = null,
+    val sourceMemoryId: String? = null,
+    val acquiredTurnNumber: Int = 0,
+    val updatedTurnNumber: Int = 0,
+    val visibility: String = "private",
+    val status: String = "active",
+)
+
+@Serializable
+data class RetrievedMemory(
+    val memoryId: String,
+    val ownerCharacterId: String,
+    val type: String,
+    val summary: String,
+    val emotionalSignature: JsonObject = JsonObject(emptyMap()),
+    val confidence: Int,
+    val salience: Int,
+    val retrievalScore: Int,
+    val retrievalReasons: List<String> = emptyList(),
+    val allowedUses: List<String> = listOf("character_action", "emotion_trigger", "dialogue_subtext"),
+)
+
+@Serializable
+data class ContextKnowledgeClaim(
+    val claimId: String,
+    val characterId: String,
+    val propositionKey: String,
+    val statement: String,
+    val epistemicState: String,
+    val confidence: Int,
+    val sourceType: String,
+    val sourceFactId: String? = null,
+    val sourceMemoryId: String? = null,
+)
+
+@Serializable
+data class ContextBudget(
+    val maxBytes: Int = 24576,
+    val actualBytes: Int = 0,
+    val includedMemoryCount: Int = 0,
+    val omittedMemoryCount: Int = 0,
+    val includedKnowledgeCount: Int = 0,
+    val omittedKnowledgeCount: Int = 0,
+    val truncationApplied: Boolean = false,
+    val truncationReasons: List<String> = emptyList(),
+)
+
+@Serializable
 data class ContextPacket(
     val protocolVersion: String = "2",
     val project: Project,
@@ -231,6 +305,9 @@ data class ContextPacket(
     val sceneProgress: JsonObject = JsonObject(emptyMap()),
     val directorPressure: DirectorPressure? = null,
     val outputRequirements: OutputRequirements = OutputRequirements(),
+    val retrievedMemories: List<RetrievedMemory> = emptyList(),
+    val knowledgeClaims: List<ContextKnowledgeClaim> = emptyList(),
+    val contextBudget: ContextBudget = ContextBudget(),
 )
 
 @Serializable
@@ -253,6 +330,8 @@ data class AiTurnResult(
     val memoryEffects: List<MemoryEffect> = emptyList(),
     val sceneProgressUpdates: List<SceneProgressUpdate> = emptyList(),
     val newTasks: List<Task> = emptyList(),
+    val memoryCandidates: List<MemoryCandidate> = emptyList(),
+    val knowledgeUpdates: List<KnowledgeUpdate> = emptyList(),
     val validationNotes: List<String> = emptyList(),
     val notes: String = "",
 )
@@ -275,6 +354,7 @@ data class DemoProjectSeed(
     val events: List<Event> = emptyList(),
     val dependencyEdges: List<DependencyEdge> = emptyList(),
     val tasks: List<Task> = emptyList(),
+    val knowledgeClaims: List<CharacterKnowledgeClaim> = emptyList(),
 )
 
 @Serializable
@@ -316,6 +396,8 @@ data class CharacterAction(
     val hiddenMotive: String,
     val triggeringConditions: List<String> = emptyList(),
     val usedMemoryIds: List<String> = emptyList(),
+    val usedFactIds: List<String> = emptyList(),
+    val usedKnowledgeClaimIds: List<String> = emptyList(),
     val usedItemIds: List<String> = emptyList(),
     val usedTechniqueIds: List<String> = emptyList(),
     val characterFitScore: Int,
@@ -340,6 +422,35 @@ data class SceneProgressUpdate(
     val requirement: String,
     val status: String,
     val evidence: String,
+)
+
+@Serializable
+data class MemoryCandidate(
+    val candidateId: String,
+    val ownerCharacterId: String,
+    val memoryType: String,
+    val summary: String,
+    val sourceEventIds: List<String> = emptyList(),
+    val sourceFactIds: List<String> = emptyList(),
+    val tags: List<String> = emptyList(),
+    val emotionalSignature: JsonObject = JsonObject(emptyMap()),
+    val salience: Int = 50,
+    val confidence: Int = 50,
+    val reason: String,
+    val lifecycleAction: String = "create",
+    val supersedesMemoryId: String? = null,
+)
+
+@Serializable
+data class KnowledgeUpdate(
+    val characterId: String,
+    val propositionKey: String,
+    val requestedState: String,
+    val confidenceDelta: Int = 0,
+    val sourceEventIds: List<String> = emptyList(),
+    val sourceFactIds: List<String> = emptyList(),
+    val sourceMemoryIds: List<String> = emptyList(),
+    val reason: String,
 )
 
 data class ValidationError(

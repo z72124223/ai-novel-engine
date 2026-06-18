@@ -3,6 +3,7 @@ package com.localnovel.engine.service
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ApplyResult
 import com.localnovel.engine.model.CharacterAction
+import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DirectorPressure
 import com.localnovel.engine.model.OutputRequirements
@@ -38,7 +39,22 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         require(activeScene.id == session.currentSceneId) { "Session scene '${session.currentSceneId}' does not match project active scene '${activeScene.id}'." }
         val noChangeFlags = repository.lastTurnStateChangeFlags(session.projectId, 2)
         val stalled = noChangeFlags.size == 2 && noChangeFlags.all { !it }
-        val contextWithoutHash = ContextPacket(
+        val contextId = SqliteStoryRepository.newId("ctx")
+        val memorySelection = MemoryRetriever(repository).retrieve(session, playerInput)
+        val contextMemories = memorySelection.retrievedMemories.map {
+            CharacterMemory(
+                id = it.memoryId,
+                projectId = project.id,
+                characterId = it.ownerCharacterId,
+                ownerCharacterId = it.ownerCharacterId,
+                memoryType = it.type,
+                summary = it.summary,
+                emotionalSignature = it.emotionalSignature,
+                salience = it.salience,
+                confidence = it.confidence,
+            )
+        }
+        val baseContext = ContextPacket(
             protocolVersion = SUPPORTED_PROTOCOL_VERSION,
             project = project,
             turnId = "${session.id}-turn-${session.nextTurnNumber}",
@@ -47,7 +63,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             activeScene = activeScene,
             sceneContract = repository.getSceneContract(session.projectId, activeScene.id),
             characters = repository.listCharacters(session.projectId),
-            characterMemories = repository.listCharacterMemories(session.projectId),
+            characterMemories = contextMemories,
             characterStates = repository.listCharacterStates(session.projectId),
             worldRules = repository.listWorldRules(session.projectId),
             facts = repository.listFacts(session.projectId),
@@ -56,7 +72,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             techniques = repository.listTechniques(session.projectId),
             recentEvents = repository.listRecentEvents(session.projectId, 3),
             openTasks = repository.listOpenTasks(session.projectId),
-            contextId = SqliteStoryRepository.newId("ctx"),
+            contextId = contextId,
             sessionId = session.id,
             baseStateVersion = session.stateVersion,
             contextHash = "",
@@ -75,6 +91,13 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             outputRequirements = OutputRequirements(
                 mustProduceMeaningfulStateChange = stalled,
             ),
+            retrievedMemories = memorySelection.retrievedMemories,
+            knowledgeClaims = memorySelection.knowledgeClaims,
+        )
+        val contextWithoutHash = ContextBudgeter().applyBudget(
+            baseContext,
+            omittedMemoryCount = memorySelection.omittedMemoryCount,
+            omittedKnowledgeCount = memorySelection.omittedKnowledgeCount,
         )
         val context = contextWithoutHash.copy(contextHash = hashContext(contextWithoutHash))
         repository.savePendingContext(context)
@@ -130,6 +153,9 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         result.characterActions.forEachIndexed { index, action ->
             errors += validateCharacterAction(context, action, index)
         }
+        errors += KnowledgeBoundaryValidator(repository).validate(context, result)
+        errors += MemoryLifecycleService(repository).validate(context, result)
+        errors += EmotionReducer().validate(context, result)
         if (result.characterActions.isEmpty()) {
             errors += ValidationError("missing_character_actions", "At least one characterAction is required.")
         }
@@ -140,6 +166,17 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             addAll(result.revealedFacts.map { it.content })
             addAll(result.memoryEffects.map { it.effect })
             addAll(result.newTasks.map { it.title })
+            result.memoryCandidates.forEach {
+                add(it.summary)
+                add(it.reason)
+                addAll(it.tags)
+                addAll(it.emotionalSignature.allStringValues())
+            }
+            result.knowledgeUpdates.forEach {
+                add(it.propositionKey)
+                add(it.requestedState)
+                add(it.reason)
+            }
             result.allDeltaOperations().forEach { addAll(it.payload.allStringValues()) }
         }
         val requestedRevealIds = result.allDeltaOperations()
@@ -219,7 +256,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         if (action.characterFitScore < 70) {
             errors += ValidationError("low_character_fit", "characterActions[$index] characterFitScore must be >= 70.")
         }
-        val memoryIds = context.characterMemories.map { it.id }.toSet()
+        val memoryIds = (context.characterMemories.map { it.id } + context.retrievedMemories.map { it.memoryId }).toSet()
         val itemIds = context.items.map { it.id }.toSet()
         val techniqueIds = context.techniques.map { it.id }.toSet()
         action.usedMemoryIds.filterNot { it in memoryIds }.forEach {

@@ -60,6 +60,8 @@ class StateReducer(private val repository: StoryRepository) {
         val characterId = requireNotNull(operation.targetId) { "update_character_state requires targetId" }
         val current = repository.getCharacterState(context.project.id, characterId)
             ?: error("Character state not found: $characterId")
+        val nextFlags = current.flags.toMutableMap()
+        operation.payload.decodeField<Map<String, String>>("flags")?.let { nextFlags.putAll(it) }
         val next = CharacterState(
             characterId = current.characterId,
             projectId = current.projectId,
@@ -69,7 +71,7 @@ class StateReducer(private val repository: StoryRepository) {
             mood = operation.payload.stringField("mood") ?: current.mood,
             health = operation.payload.stringField("health") ?: current.health,
             inventory = operation.payload.decodeField("inventory") ?: current.inventory,
-            flags = operation.payload.decodeField("flags") ?: current.flags,
+            flags = nextFlags,
         )
         repository.updateCharacterState(next)
     }
