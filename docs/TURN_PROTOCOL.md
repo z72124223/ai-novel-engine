@@ -175,3 +175,15 @@ Both commands are read-only. `pilot-preflight` performs a dry-run context build 
 - dangling-reference and safety-field checks
 
 Budget V2 fitting is deterministic. It compacts duplicated provenance and runtime templates, lets settings share the remaining global budget with memories/knowledge/summaries, and computes `contextHash` only from the final fitted payload.
+
+## Pilot-1 Context Metadata Normalization
+
+Final `ContextPacket` serialization now runs through a normalization pass before byte accounting and hashing:
+
+- top-level fields must be in the explicit protocol allowlist;
+- empty/default optional fields are omitted when the parser can safely apply defaults;
+- `retrievedMemories` is the canonical memory surface for turn context, and the legacy `characterMemories` alias is not serialized in finalized multi-turn packets;
+- detailed diagnostics such as removed items, retained items, largest paths, duplicate groups and section forensics are written only to `explain-context-budget` or `audit-context` sidecar reports;
+- `contextBudget` keeps only compact counts and `truncationReasonCodes`, not long natural-language trimming explanations.
+
+The hash rule is unchanged in spirit but stricter in order: normalize first, serialize with `contextHash = ""`, compute SHA-256 over those UTF-8 bytes, then converge `contextBudget.actualBytes` against the final serialized payload.

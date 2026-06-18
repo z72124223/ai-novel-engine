@@ -169,6 +169,8 @@ When a Pilot turn is near the hard budget, run the read-only forensics command b
 
 Budget V2 keeps the same `24576` byte limit. It adds deterministic duplicate compaction, compact mandatory views, dynamic allocation across settings/memories/knowledge/summaries, and section-level failure reports. See `docs/CONTEXT_BUDGET_FORENSICS.md`.
 
+Pilot-1 context metadata normalization keeps diagnostics out of the AI-facing `ContextPacket`. Final turn context now uses a top-level allowlist, omits empty/default optional fields, removes legacy aliases such as `characterMemories` when `retrievedMemories` is present, and stores detailed budget forensics only in `explain-context-budget` / `audit-context` report files. See `docs/CONTEXT_PACKET_NORMALIZATION.md`.
+
 ## Project Layout
 
 - `app/src/main/kotlin/com/localnovel/engine/model`：JSON protocol 與資料模型。

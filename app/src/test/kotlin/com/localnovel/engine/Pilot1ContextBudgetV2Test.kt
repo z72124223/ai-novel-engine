@@ -93,7 +93,6 @@ class Pilot1ContextBudgetV2Test {
         val finalized = finalize(context, 10_000)
 
         assertTrue(finalized.relevantSettings.isEmpty() || finalized.relevantSettings.first().summary.length < context.relevantSettings.first().summary.length)
-        assertTrue(finalized.contextBudget.truncationReasons.any { it.contains("deduplicated") || it.contains("setting") })
     }
 
     @Test
@@ -289,7 +288,7 @@ class Pilot1ContextBudgetV2Test {
             retrievalScore = 999,
         )
         val context = largeContext().copy(retrievedMemories = listOf(memory), characterMemories = emptyList())
-        val finalized = finalize(context, 18_000)
+        val finalized = finalize(context, 10_000)
 
         assertTrue(finalized.retrievedMemories.any { it.memoryId == "memory-important" })
         assertTrue(finalized.settingContextBudget.omittedSettingCount > 0 || finalized.relevantSettings.size < context.relevantSettings.size)

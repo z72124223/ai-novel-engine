@@ -506,6 +506,7 @@ class SettingContextResolver(private val repository: SqliteStoryRepository, priv
             includedSettingCount = selected.size,
             omittedSettingCount = omitted,
             truncationApplied = omitted > 0,
+            reasonCodes = if (omitted > 0) listOf("setting_context_budget_exceeded") else emptyList(),
             reasons = if (omitted > 0) listOf("setting_context_budget_exceeded") else emptyList(),
         )
         val revisions = selected.mapNotNull { repository.latestEntityRevision(context.project.id, it.entityType, it.entityId)?.get("id") }.distinct().sorted()

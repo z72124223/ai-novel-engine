@@ -18,11 +18,18 @@ class ContextAuditService(
 ) {
     fun auditFile(path: Path): ContextAuditReport {
         val raw = Files.readAllBytes(path)
-        val context = JsonSupport.json.decodeFromString<ContextPacket>(raw.toString(Charsets.UTF_8).removePrefix("\uFEFF"))
-        return audit(context, path.toString(), raw.size)
+        val text = raw.toString(Charsets.UTF_8).removePrefix("\uFEFF")
+        val unknownTopLevelKeys = ContextPacketTopLevelAllowlist.unknownTopLevelKeys(text)
+        val context = JsonSupport.json.decodeFromString<ContextPacket>(text)
+        return audit(context, path.toString(), raw.size, unknownTopLevelKeys)
     }
 
-    fun audit(context: ContextPacket, file: String = "", actualFileBytes: Int? = null): ContextAuditReport {
+    fun audit(
+        context: ContextPacket,
+        file: String = "",
+        actualFileBytes: Int? = null,
+        unknownTopLevelKeys: List<String> = emptyList(),
+    ): ContextAuditReport {
         val canonical = JsonSupport.json.encodeToString(context)
         val canonicalBytes = canonical.toByteArray(Charsets.UTF_8).size
         val actualBytes = actualFileBytes ?: canonicalBytes
@@ -43,6 +50,16 @@ class ContextAuditService(
             if (context.contextHash != recomputedHash) add("context_hash_mismatch")
             if (!mandatoryFieldsPresent) add("mandatory_fields_missing")
             if (context.sceneContract?.forbiddenReveals == null) add("forbidden_reveals_missing")
+            unknownTopLevelKeys.forEach { add("unknown_top_level_field:$it") }
+            if (ContextPacketTopLevelAllowlist.diagnosticKeys.any { canonical.contains("\"$it\"") }) {
+                add("diagnostics_present_in_context")
+            }
+            if (context.contextBudget.truncationReasons.isNotEmpty()) {
+                add("legacy_context_budget_truncation_reasons_present")
+            }
+            if (context.settingContextBudget.reasons.isNotEmpty()) {
+                add("legacy_setting_budget_reasons_present")
+            }
         }
         return ContextAuditReport(
             valid = violations.isEmpty(),
@@ -57,6 +74,7 @@ class ContextAuditService(
             mandatoryFieldsPresent = mandatoryFieldsPresent,
             violations = violations,
             sections = sections(context),
+            forensics = ContextBudgetForensicsService(maxBytes).report(context.copy(contextHash = ""), context),
         )
     }
 

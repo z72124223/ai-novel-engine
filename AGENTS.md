@@ -46,6 +46,9 @@
 - Use `export-session-evidence` for read-only Pilot evidence.
 - Use `explain-context-budget` when `prepare-turn` is close to or over the 24576-byte ceiling; it is read-only and reports section bytes, duplicate fragments, mandatory bytes and trimming simulation.
 - Context budget fixes must use deterministic trimming, compact mandatory views and dynamic allocation; never raise `contextBudget.maxBytes` above 24576.
+- Final `ContextPacket` output must pass the top-level allowlist and must not include diagnostics such as largest paths, duplicate groups, removed/retained items, or budget-forensics traces. Those belong in `explain-context-budget` or `audit-context` sidecar reports.
+- Do not output legacy aliases beside canonical fields; `retrievedMemories` is the runtime memory surface and the old `characterMemories` alias is omitted from finalized turn context.
+- `contextHash` and `contextBudget.actualBytes` must be computed after normalization and after empty/default fields, legacy aliases, and diagnostics have been removed from the final payload.
 - Do not reuse old Pilot sessions as formal rerun evidence.
 - Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
 - See `docs/PILOT1_STABILIZATION_SPEC.md` and `docs/PILOT1_STABILIZATION.md`.

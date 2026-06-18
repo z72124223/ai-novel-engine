@@ -435,7 +435,7 @@ class Cli {
         println("omittedMemories=${context.contextBudget.omittedMemoryCount}")
         println("omittedKnowledge=${context.contextBudget.omittedKnowledgeCount}")
         println("truncationApplied=${context.contextBudget.truncationApplied}")
-        context.contextBudget.truncationReasons.forEach { println("- $it") }
+        context.contextBudget.truncationReasonCodes.forEach { println("- $it") }
         return 0
     }
 

@@ -239,6 +239,7 @@ class ContextBudgeter(
                     includedKnowledgeCount = claims.size,
                     omittedKnowledgeCount = omittedKnowledgeCount + context.knowledgeClaims.size - claims.size,
                     truncationApplied = true,
+                    truncationReasonCodes = ContextPacketNormalizer.reasonCodes(reasons),
                     truncationReasons = reasons.distinct(),
                 ),
             )
@@ -249,6 +250,7 @@ class ContextBudgeter(
             contextBudget = candidate.contextBudget.copy(
                 actualBytes = size,
                 truncationApplied = reasons.isNotEmpty(),
+                truncationReasonCodes = ContextPacketNormalizer.reasonCodes(reasons),
                 truncationReasons = reasons.distinct(),
             ),
         )
@@ -269,7 +271,7 @@ class ContextPacketFinalizer(
     fun finalize(context: ContextPacket, hashContext: (ContextPacket) -> String): ContextPacket {
         var candidate = context.copy(contextHash = "")
         val before = candidate
-        val reasons = candidate.contextBudget.truncationReasons.toMutableList()
+        val reasons = (candidate.contextBudget.truncationReasons + candidate.contextBudget.truncationReasonCodes).toMutableList()
         repeat(512) {
             val finalized = withStableAccounting(candidate, hashContext, reasons)
             if (encodedSize(finalized) <= maxContextBytes) return finalized
@@ -300,29 +302,41 @@ class ContextPacketFinalizer(
         hashContext: (ContextPacket) -> String,
         reasons: List<String>,
     ): ContextPacket {
-        var candidate = context.copy(contextHash = "")
+        var candidate = ContextPacketNormalizer.normalizeForFinalContext(context.copy(contextHash = ""))
         var previousBytes = -1
         var previousHash = ""
         repeat(24) {
-            val withHash = candidate.copy(contextHash = hashContext(candidate))
+            val normalized = ContextPacketNormalizer.normalizeForFinalContext(candidate.copy(contextHash = ""))
+            val withHash = normalized.copy(contextHash = hashContext(normalized))
             val actualBytes = encodedSize(withHash)
             val settingBytes = JsonSupport.json.encodeToString(withHash.relevantSettings).toByteArray(Charsets.UTF_8).size
+            val reasonCodes = ContextPacketNormalizer.reasonCodes(reasons)
+            val settingReasonCodes = ContextPacketNormalizer.reasonCodes(
+                withHash.settingContextBudget.reasons +
+                    withHash.settingContextBudget.reasonCodes +
+                    reasons.filter { it.contains("setting", ignoreCase = true) },
+            )
             val next = withHash.copy(
                 contextBudget = withHash.contextBudget.copy(
                     maxBytes = maxContextBytes,
                     actualBytes = actualBytes,
                     includedMemoryCount = withHash.retrievedMemories.size,
                     includedKnowledgeCount = withHash.knowledgeClaims.size,
+                    includedSettingCount = withHash.relevantSettings.size,
+                    omittedSettingCount = withHash.settingContextBudget.omittedSettingCount,
                     truncationApplied = reasons.isNotEmpty(),
-                    truncationReasons = reasons.distinct(),
+                    truncationReasonCodes = reasonCodes,
+                    truncationReasons = emptyList(),
                 ),
                 settingContextBudget = withHash.settingContextBudget.copy(
                     actualBytes = settingBytes,
                     includedSettingCount = withHash.relevantSettings.size,
                     truncationApplied = withHash.settingContextBudget.omittedSettingCount > 0 ||
                         withHash.settingContextBudget.reasons.isNotEmpty() ||
+                        withHash.settingContextBudget.reasonCodes.isNotEmpty() ||
                         reasons.any { it.contains("setting", ignoreCase = true) },
-                    reasons = (withHash.settingContextBudget.reasons + reasons.filter { it.contains("setting", ignoreCase = true) }).distinct(),
+                    reasonCodes = settingReasonCodes,
+                    reasons = emptyList(),
                 ),
             )
             if (actualBytes == previousBytes && next.contextHash == previousHash) return next

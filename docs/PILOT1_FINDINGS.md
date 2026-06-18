@@ -220,3 +220,37 @@ Required next validation before continuing Pilot turns:
 - Run `explain-context-budget` on the formal DB only in read-only mode.
 - Reproduce prepare/audit/abort on `data/pilot1-budget-v2-e2e.db`, not on the formal Pilot DB.
 - Resume formal Turn 4 only after context bytes fit under `24576`, audit passes, and formal `stateVersion=3` / `nextTurnNumber=4` remain unchanged.
+
+## Pilot-1 Context Metadata Normalization Follow-Up
+
+After seven stabilized rerun turns, formal Turn 8 exposed a schema/metadata blocker in read-only `explain-context-budget`:
+
+- before trimming: `65854` bytes
+- after trimming: `24621 / 24576` bytes
+- over limit: `45` bytes
+- `otherMetadata`: `16997` bytes
+- `contextBudgetMetadata`: `1460` bytes
+
+The fix normalizes final `ContextPacket` output before byte/hash accounting:
+
+- unknown top-level fields are rejected by `audit-context`;
+- detailed forensics moved to explain/audit sidecars;
+- `otherMetadata` is no longer a catch-all for formal protocol fields;
+- legacy `characterMemories` output is omitted in finalized multi-turn context;
+- `contextBudget` uses compact reason codes instead of long diagnostic prose;
+- active character runtime state and setting/event records are compacted deterministically.
+
+Turn 8 copy-DB E2E passed on `data/pilot1-metadata-normalization-e2e.db`:
+
+- explain: `24350 / 24576` bytes
+- prepared context audit: `24347 / 24576`, hash valid
+- pending context aborted
+- copy session remained `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+
+Formal DB validation was read-only only:
+
+- formal explain: `24350 / 24576`, `otherMetadata=2`, `contextBudgetMetadata=859`
+- formal preflight: PASS, `stateVersion=7`, `nextTurnNumber=8`, `pendingContextCount=0`
+- formal Turn 8 was not prepared or resolved.
+
+Residual observation: Turn 8 still omitted all retrieved memories, knowledge claims and setting excerpts under the hard byte limit. This is now an explicit budget tradeoff rather than a metadata leak, but future Pilot review should monitor whether zero setting excerpts weakens character or scene fidelity.

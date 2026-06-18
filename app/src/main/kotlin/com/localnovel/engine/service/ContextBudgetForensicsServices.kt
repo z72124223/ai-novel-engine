@@ -5,6 +5,7 @@ import com.localnovel.engine.model.ContextBudgetItemReport
 import com.localnovel.engine.model.ContextDanglingReferenceCheck
 import com.localnovel.engine.model.ContextDuplicateContentGroup
 import com.localnovel.engine.model.ContextJsonPathByteReport
+import com.localnovel.engine.model.ContextMetadataPathReport
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.ContextSafetyFieldPresence
 import com.localnovel.engine.model.ContextSectionByteReport
@@ -52,6 +53,7 @@ class ContextBudgetForensicsService(
             removedItems = removedItems(before, after),
             retainedItems = retainedItems(after),
             topLargestJsonPaths = largestPaths(after, duplicatePaths),
+            metadataPathBreakdown = metadataPathBreakdown(after, duplicateGroups),
             duplicateContentGroups = duplicateGroups,
             danglingReferenceCheck = danglingReferenceCheck(after),
             safetyFieldPresence = safetyFieldPresence(after),
@@ -77,14 +79,25 @@ class ContextBudgetForensicsService(
             section("playerInput", context.playerInput, 1),
             section("sceneLifecycle", context.sceneLifecycle, 1),
             section("sceneContract", context.sceneContract, if (context.sceneContract == null) 0 else 1),
+            section("projectSummary", context.project, 1),
+            section("activeScene", context.activeScene, if (context.activeScene == null) 0 else 1),
             section("activeCharacters", context.characters, context.characters.size),
+            section("characterRuntimeStates", context.characterStates, context.characterStates.size),
             section("characterKnowledge", context.knowledgeClaims, context.knowledgeClaims.size),
             section("retrievedMemories", context.retrievedMemories, context.retrievedMemories.size),
             section("relevantSettings", context.relevantSettings, context.relevantSettings.size),
             section("storyThreads", context.activeStoryThreads, context.activeStoryThreads.size),
             section("recentTurnSummaries", context.recentTurnSummaries, context.recentTurnSummaries.size),
             section("worldRules", context.worldRules, context.worldRules.size),
+            section("facts", context.facts, context.facts.size),
+            section("items", context.items, context.items.size),
+            section("techniques", context.techniques, context.techniques.size),
+            section("recentEvents", context.recentEvents, context.recentEvents.size),
+            section("openTasks", context.openTasks, context.openTasks.size),
             section("worldEvents", context.pendingWorldEvents, context.pendingWorldEvents.size),
+            section("sceneRequirements", context.sceneRequirements, context.sceneRequirements.size),
+            section("availableTransitions", context.availableTransitions, context.availableTransitions.size),
+            section("worldClock", context.worldClock, 1),
             section("continuityConstraints", context.continuityConstraints, 1),
             section("forbiddenReveals", context.sceneContract?.forbiddenReveals.orEmpty(), context.sceneContract?.forbiddenReveals?.size ?: 0),
             section("outputRequirements", context.outputRequirements, 1),
@@ -93,23 +106,10 @@ class ContextBudgetForensicsService(
                 "settingContextBudget" to jsonElement(context.settingContextBudget),
             )), 2),
             section("canonRevisionSummary", context.canonRevisionSummary, context.canonRevisionSummary.relevantRevisionIds.size),
-            section("otherMetadata", JsonObject(mapOf(
-                "project" to jsonElement(context.project),
-                "activeScene" to jsonElement(context.activeScene),
-                "characterStates" to jsonElement(context.characterStates),
-                "facts" to jsonElement(context.facts),
-                "revealedSecrets" to jsonElement(context.revealedSecrets),
-                "items" to jsonElement(context.items),
-                "techniques" to jsonElement(context.techniques),
-                "recentEvents" to jsonElement(context.recentEvents),
-                "openTasks" to jsonElement(context.openTasks),
-                "sceneProgress" to context.sceneProgress,
-                "directorPressure" to jsonElement(context.directorPressure),
-                "sceneRequirements" to jsonElement(context.sceneRequirements),
-                "availableTransitions" to jsonElement(context.availableTransitions),
-                "worldClock" to jsonElement(context.worldClock),
-                "generatedAt" to JsonPrimitive(context.generatedAt),
-            )), 1),
+            section("sceneProgress", context.sceneProgress, context.sceneProgress.size),
+            section("directorPressure", context.directorPressure, if (context.directorPressure == null) 0 else 1),
+            section("generatedAt", JsonPrimitive(context.generatedAt), 1),
+            section("otherMetadata", JsonObject(emptyMap()), 0),
         )
 
     private fun removedItems(before: ContextPacket, after: ContextPacket): List<ContextBudgetItemReport> {
@@ -125,7 +125,7 @@ class ContextBudgetForensicsService(
 
     private fun itemMap(context: ContextPacket): Map<String, String> = buildMap {
         context.characters.forEach { put("character:${it.id}", "activeCharacters") }
-        context.characterStates.forEach { put("character_state:${it.characterId}", "otherMetadata") }
+        context.characterStates.forEach { put("character_state:${it.characterId}", "characterRuntimeStates") }
         context.retrievedMemories.forEach { put("memory:${it.memoryId}", "retrievedMemories") }
         context.knowledgeClaims.forEach { put("knowledge:${it.claimId}", "characterKnowledge") }
         context.relevantSettings.forEach { put("setting:${it.entityType}:${it.entityId}", "relevantSettings") }
@@ -133,9 +133,51 @@ class ContextBudgetForensicsService(
         context.recentTurnSummaries.forEach { put("summary:${it.turnNumber}", "recentTurnSummaries") }
         context.worldRules.forEach { put("world_rule:${it.id}", "worldRules") }
         context.pendingWorldEvents.forEach { put("world_event:${it.eventId}", "worldEvents") }
-        context.facts.forEach { put("fact:${it.id}", "otherMetadata") }
-        context.items.forEach { put("item:${it.id}", "otherMetadata") }
-        context.techniques.forEach { put("technique:${it.id}", "otherMetadata") }
+        context.facts.forEach { put("fact:${it.id}", "facts") }
+        context.items.forEach { put("item:${it.id}", "items") }
+        context.techniques.forEach { put("technique:${it.id}", "techniques") }
+    }
+
+    private fun metadataPathBreakdown(
+        context: ContextPacket,
+        duplicateGroups: List<ContextDuplicateContentGroup>,
+    ): List<ContextMetadataPathReport> {
+        val root = JsonSupport.json.parseToJsonElement(JsonSupport.json.encodeToString(context))
+        val duplicatesByPath = duplicateGroups
+            .flatMap { group -> group.paths.map { path -> path to group.paths.filterNot { it == path } } }
+            .toMap()
+        val reports = mutableListOf<ContextMetadataPathReport>()
+        collectMetadataPaths(root, "$", reports, duplicatesByPath)
+        return reports
+            .filter { it.path != "$" }
+            .sortedWith(compareByDescending<ContextMetadataPathReport> { it.utf8Bytes }.thenBy { it.path })
+            .take(80)
+    }
+
+    private fun collectMetadataPaths(
+        element: JsonElement,
+        path: String,
+        out: MutableList<ContextMetadataPathReport>,
+        duplicatesByPath: Map<String, List<String>>,
+    ) {
+        if (path != "$" && isMetadataPath(path)) {
+            out += ContextMetadataPathReport(
+                path = path,
+                utf8Bytes = JsonSupport.json.encodeToString(element).toByteArray(Charsets.UTF_8).size,
+                valueType = valueType(element),
+                semanticOwner = semanticOwner(path),
+                mandatory = isMandatoryPath(path),
+                duplicatedWith = duplicatesByPath[path].orEmpty(),
+                canCompact = canCompact(path, element),
+                canMoveToAuditSidecar = canMoveToAuditSidecar(path),
+                inclusionReason = inclusionReason(path),
+            )
+        }
+        when (element) {
+            is JsonObject -> element.toSortedMap().forEach { (key, value) -> collectMetadataPaths(value, "$path.$key", out, duplicatesByPath) }
+            is JsonArray -> element.forEachIndexed { index, value -> collectMetadataPaths(value, "$path[$index]", out, duplicatesByPath) }
+            is JsonPrimitive -> Unit
+        }
     }
 
     private fun largestPaths(context: ContextPacket, duplicatePaths: Set<String>): List<ContextJsonPathByteReport> {
@@ -237,6 +279,65 @@ class ContextBudgetForensicsService(
             contextHash = context.contextHash.isNotBlank(),
         )
 
+    private fun isMetadataPath(path: String): Boolean =
+        metadataPathPrefixes.any { path == it || path.startsWith("$it.") || path.startsWith("$it[") }
+
+    private fun valueType(element: JsonElement): String =
+        when (element) {
+            is JsonObject -> "object"
+            is JsonArray -> "array"
+            is JsonPrimitive -> if (element.isString) "string" else "primitive"
+        }
+
+    private fun semanticOwner(path: String): String =
+        when {
+            path.startsWith("$.project") -> "project/session summary"
+            path.startsWith("$.activeScene") -> "scene lifecycle"
+            path.startsWith("$.characterStates") -> "active character runtime"
+            path.startsWith("$.characters") -> "active character compact profile"
+            path.startsWith("$.facts") -> "fact compact record"
+            path.startsWith("$.recentEvents") -> "event compact record"
+            path.startsWith("$.recentTurnSummaries") -> "turn summary reference"
+            path.startsWith("$.items") -> "item reference"
+            path.startsWith("$.techniques") -> "technique reference"
+            path.startsWith("$.worldRules") -> "hard world rule"
+            path.startsWith("$.relevantSettings") -> "setting compact view"
+            path.startsWith("$.contextBudget") || path.startsWith("$.settingContextBudget") -> "budget accounting"
+            path.startsWith("$.canonRevisionSummary") -> "canon provenance"
+            path.startsWith("$.sceneRequirements") -> "scene requirement compact view"
+            path.startsWith("$.availableTransitions") -> "transition preview"
+            path.startsWith("$.pendingWorldEvents") -> "world event preview"
+            path.startsWith("$.worldClock") -> "world clock"
+            else -> "protocol metadata"
+        }
+
+    private fun canCompact(path: String, element: JsonElement): Boolean {
+        if (path.startsWith("$.sceneContract.forbiddenReveals")) return false
+        if (path.startsWith("$.worldRules") || path.startsWith("$.continuityConstraints")) return false
+        if (path.contains("contextHash") || path.contains("contextId") || path.contains("turnId")) return false
+        val bytes = JsonSupport.json.encodeToString(element).toByteArray(Charsets.UTF_8).size
+        return bytes > 80 || path.contains("description") || path.contains("summary") || path.contains("profile") || path.contains("reason")
+    }
+
+    private fun canMoveToAuditSidecar(path: String): Boolean =
+        path.startsWith("$.contextBudget.truncationReasons") ||
+            path.startsWith("$.settingContextBudget.reasons") ||
+            path.startsWith("$.canonRevisionSummary.relevantRevisionIds") ||
+            path.contains("diagnostic", ignoreCase = true) ||
+            path.contains("debug", ignoreCase = true)
+
+    private fun inclusionReason(path: String): String =
+        when {
+            path.startsWith("$.contextBudget") -> "minimal byte/count accounting for audit and manual AI safety"
+            path.startsWith("$.settingContextBudget") -> "setting excerpt byte/count accounting"
+            path.startsWith("$.characterStates") -> "runtime goal, emotion, location, inventory, and action constraints"
+            path.startsWith("$.characters") -> "actor identity and compact public-facing role"
+            path.startsWith("$.relevantSettings") -> "bounded canon excerpt selected by dependency relevance"
+            path.startsWith("$.sceneContract") -> "forbidden reveal and scene contract safety"
+            path.startsWith("$.worldRules") -> "hard world rule safety"
+            else -> "formal ContextPacket protocol field"
+        }
+
     private fun isMandatoryPath(path: String): Boolean =
         mandatoryPathPrefixes.any { path == it || path.startsWith("$it.") || path.startsWith("$it[") }
 
@@ -258,7 +359,9 @@ class ContextBudgetForensicsService(
             "playerInput",
             "sceneLifecycle",
             "sceneContract",
+            "projectSummary",
             "activeCharacters",
+            "characterRuntimeStates",
             "worldRules",
             "continuityConstraints",
             "forbiddenReveals",
@@ -272,8 +375,19 @@ class ContextBudgetForensicsService(
             "relevantSettings",
             "storyThreads",
             "recentTurnSummaries",
+            "facts",
+            "items",
+            "techniques",
+            "recentEvents",
+            "openTasks",
             "worldEvents",
+            "sceneRequirements",
+            "availableTransitions",
+            "worldClock",
             "canonRevisionSummary",
+            "sceneProgress",
+            "directorPressure",
+            "generatedAt",
             "otherMetadata",
         )
 
@@ -288,10 +402,37 @@ class ContextBudgetForensicsService(
             "$.playerInput",
             "$.sceneLifecycle",
             "$.sceneContract",
+            "$.project",
             "$.characters",
+            "$.characterStates",
             "$.worldRules",
             "$.continuityConstraints",
             "$.outputRequirements",
+            "$.contextBudget",
+        )
+
+        private val metadataPathPrefixes = setOf(
+            "$.project",
+            "$.activeScene",
+            "$.characters",
+            "$.characterStates",
+            "$.facts",
+            "$.revealedSecrets",
+            "$.items",
+            "$.techniques",
+            "$.recentEvents",
+            "$.openTasks",
+            "$.recentTurnSummaries",
+            "$.sceneProgress",
+            "$.directorPressure",
+            "$.sceneRequirements",
+            "$.activeStoryThreads",
+            "$.availableTransitions",
+            "$.pendingWorldEvents",
+            "$.worldClock",
+            "$.relevantSettings",
+            "$.settingContextBudget",
+            "$.canonRevisionSummary",
             "$.contextBudget",
         )
     }

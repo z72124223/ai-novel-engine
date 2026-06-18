@@ -77,6 +77,7 @@ Codex may draft setting pack JSON, but formal canon writes must go through `appl
 Pilot stabilization adds no migration and no new framework.
 
 - `ContextPacketFinalizer` enforces the final serialized `ContextPacket` UTF-8 byte ceiling, stable byte accounting and final context hash.
+- `ContextPacketNormalizer` removes legacy aliases, empty/default optional fields and AI-irrelevant diagnostics before final byte/hash accounting.
 - `ContextBudgetForensicsService` produces read-only section accounting, largest JSON path, duplicate fragment and dangling-reference reports for context budget failures or previews.
 - `ContextAuditService` performs read-only JSON audit for context byte/hash/mandatory-field evidence.
 - `PilotPreflightService` performs read-only Pilot readiness checks and dry-runs context construction without saving a pending turn.
@@ -94,3 +95,12 @@ Budget V2 keeps the same hard `24576` byte ceiling. It does not add migrations o
 - `ContextPacketFinalizer` trims deterministically: duplicate/verbose provenance first, then setting excerpts, lower-priority memories/knowledge/summaries/threads, and finally compact public prose.
 - Mandatory compact views may remove duplicated `initialRuntimeTemplate` and provenance text already represented by `character_states`, but must retain current goals, emotions, legal actions, scene contract, forbidden reveals, world rules and continuity constraints.
 - Setting excerpts use remaining global budget; `8192` is a section maximum, not a reserved allocation.
+
+## Pilot-1 Context Metadata Normalization
+
+Normalization adds no migration and no new write path. The final AI-facing `ContextPacket` is constrained by a top-level allowlist and compact record rules before `contextHash` and `contextBudget.actualBytes` are computed.
+
+- Detailed diagnostics stay in `explain-context-budget` and `audit-context` sidecar reports.
+- `otherMetadata` is no longer used as a catch-all final section; forensics now reports exact JSON paths with semantic owner and byte counts.
+- Canonical runtime fields are preferred over legacy aliases. In finalized turn context, `retrievedMemories` is kept and the old `characterMemories` alias is omitted.
+- Active character views keep current goal, emotion, legal actions, inventory and constraints while dropping historical debug flags and duplicated runtime templates.
