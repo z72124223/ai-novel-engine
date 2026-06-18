@@ -35,3 +35,15 @@
 - Do not silently patch existing canon while a session is active; preview must report blockers and apply must reject.
 - Turn context may include relevant setting excerpts only, never the full setting pack or full dependency graph.
 - See `docs/MVP5_SETTING_PACK_DEPENDENCY_SPEC.md` and `docs/SETTING_PACKS_AND_DEPENDENCIES.md`.
+
+## Pilot-1 Stabilization
+
+- Do not move to MVP-6 while Pilot-1 is FAIL.
+- Keep final `ContextPacket` JSON at or below `24576` actual UTF-8 bytes; do not raise the limit.
+- Setting-pack opening characters must provide `initialRuntimeTemplate`; `start-session` initializes missing opening runtime states from it inside the session transaction.
+- Use `audit-context` before drafting a manual AI result.
+- Use `pilot-preflight` before handing a fresh Pilot session to the author.
+- Use `export-session-evidence` for read-only Pilot evidence.
+- Do not reuse old Pilot sessions as formal rerun evidence.
+- Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
+- See `docs/PILOT1_STABILIZATION_SPEC.md` and `docs/PILOT1_STABILIZATION.md`.

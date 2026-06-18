@@ -11,10 +11,13 @@ import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.ContextCompiler
+import com.localnovel.engine.service.ContextAuditService
 import com.localnovel.engine.service.DependencyGraphService
 import com.localnovel.engine.service.ImpactAnalyzer
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.MemoryRetriever
+import com.localnovel.engine.service.PilotPreflightService
+import com.localnovel.engine.service.SessionEvidenceExporter
 import com.localnovel.engine.service.SettingPackDiffService
 import com.localnovel.engine.service.SettingPackImportService
 import com.localnovel.engine.service.SettingPackParser
@@ -74,6 +77,9 @@ class Cli {
                 "impact-report" -> impactReport(options)
                 "show-dependencies" -> showDependencies(options)
                 "validate-project-canon" -> validateProjectCanon(options)
+                "audit-context" -> auditContext(options)
+                "export-session-evidence" -> exportSessionEvidence(options)
+                "pilot-preflight" -> pilotPreflight(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -419,6 +425,45 @@ class Cli {
         return 0
     }
 
+    private fun auditContext(options: Map<String, String>): Int {
+        val file = Path.of(options.required("file"))
+        val report = ContextAuditService().auditFile(file)
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("valid=${report.valid}")
+        println("actualBytes=${report.actualBytes}/${report.maxBytes}")
+        println("declaredActualBytes=${report.declaredActualBytes}")
+        println("hashValid=${report.hashValid}")
+        report.violations.forEach { println("violation=$it") }
+        return if (report.valid) 0 else 1
+    }
+
+    private fun exportSessionEvidence(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val export = SessionEvidenceExporter(repository).export(options.required("session"))
+        writeJson(Path.of(options.required("out")), export)
+        println("wrote=${options.required("out")}")
+        println("turnLogs=${export.turnLogs.size}")
+        println("stateDeltas=${export.stateDeltas.size}")
+        println("pendingContexts=${export.pendingContextCount}")
+        return 0
+    }
+
+    private fun pilotPreflight(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val report = PilotPreflightService(repository).run(
+            projectId = options.required("project"),
+            sessionId = options.required("session"),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("valid=${report.valid}")
+        report.checks.forEach { println("${it.name}=${it.passed} ${it.details}") }
+        report.contextAudit?.let {
+            println("contextBytes=${it.actualBytes}/${it.maxBytes}")
+            println("contextHashValid=${it.hashValid}")
+        }
+        return if (report.valid) 0 else 1
+    }
+
     private fun createSettingPackTemplate(options: Map<String, String>): Int {
         val projectId = options.required("project")
         val out = Path.of(options.required("out"))
@@ -627,6 +672,9 @@ class Cli {
               impact-report [--db <path>] --file <path> [--out <path>]
               show-dependencies [--db <path>] --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]
               validate-project-canon [--db <path>] --project <id> [--out <path>]
+              audit-context --file <path> [--out <path>]
+              export-session-evidence [--db <path>] --session <id> --out <path>
+              pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
             """.trimIndent(),
         )
     }

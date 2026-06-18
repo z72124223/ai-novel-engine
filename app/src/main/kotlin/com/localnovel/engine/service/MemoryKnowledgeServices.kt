@@ -256,6 +256,292 @@ class ContextBudgeter(
         JsonSupport.json.encodeToString(context.copy(contextHash = "")).toByteArray(Charsets.UTF_8).size
 }
 
+class ContextBudgetUnsatisfiableException(message: String) : IllegalStateException(message)
+
+class ContextPacketFinalizer(
+    private val maxContextBytes: Int = 24576,
+) {
+    fun finalize(context: ContextPacket, hashContext: (ContextPacket) -> String): ContextPacket {
+        var candidate = context.copy(contextHash = "")
+        val reasons = candidate.contextBudget.truncationReasons.toMutableList()
+        repeat(512) {
+            val finalized = withStableAccounting(candidate, hashContext, reasons)
+            if (encodedSize(finalized) <= maxContextBytes) return finalized
+            val reduced = reduceOne(candidate, reasons)
+                ?: throw ContextBudgetUnsatisfiableException(
+                    "CONTEXT_BUDGET_UNSATISFIABLE: final ContextPacket is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
+                )
+            candidate = reduced.copy(contextHash = "")
+        }
+        val finalized = withStableAccounting(candidate, hashContext, reasons)
+        throw ContextBudgetUnsatisfiableException(
+            "CONTEXT_BUDGET_UNSATISFIABLE: context budget did not converge, final size is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
+        )
+    }
+
+    private fun withStableAccounting(
+        context: ContextPacket,
+        hashContext: (ContextPacket) -> String,
+        reasons: List<String>,
+    ): ContextPacket {
+        var candidate = context.copy(contextHash = "")
+        var previousBytes = -1
+        var previousHash = ""
+        repeat(24) {
+            val withHash = candidate.copy(contextHash = hashContext(candidate))
+            val actualBytes = encodedSize(withHash)
+            val settingBytes = JsonSupport.json.encodeToString(withHash.relevantSettings).toByteArray(Charsets.UTF_8).size
+            val next = withHash.copy(
+                contextBudget = withHash.contextBudget.copy(
+                    maxBytes = maxContextBytes,
+                    actualBytes = actualBytes,
+                    includedMemoryCount = withHash.retrievedMemories.size,
+                    includedKnowledgeCount = withHash.knowledgeClaims.size,
+                    truncationApplied = reasons.isNotEmpty(),
+                    truncationReasons = reasons.distinct(),
+                ),
+                settingContextBudget = withHash.settingContextBudget.copy(
+                    actualBytes = settingBytes,
+                    includedSettingCount = withHash.relevantSettings.size,
+                    truncationApplied = withHash.settingContextBudget.omittedSettingCount > 0 ||
+                        withHash.settingContextBudget.reasons.isNotEmpty() ||
+                        reasons.any { it.contains("setting", ignoreCase = true) },
+                    reasons = (withHash.settingContextBudget.reasons + reasons.filter { it.contains("setting", ignoreCase = true) }).distinct(),
+                ),
+            )
+            if (actualBytes == previousBytes && next.contextHash == previousHash) return next
+            previousBytes = actualBytes
+            previousHash = next.contextHash
+            candidate = next.copy(contextHash = "")
+        }
+        return candidate.copy(contextHash = hashContext(candidate))
+    }
+
+    private fun reduceOne(context: ContextPacket, reasons: MutableList<String>): ContextPacket? {
+        if (context.relevantSettings.isNotEmpty()) {
+            reasons += "omitted lowest-priority relevant setting"
+            return context.copy(
+                relevantSettings = context.relevantSettings.dropLast(1),
+                settingContextBudget = context.settingContextBudget.copy(
+                    omittedSettingCount = context.settingContextBudget.omittedSettingCount + 1,
+                    truncationApplied = true,
+                    reasons = (context.settingContextBudget.reasons + "setting_context_budget_exceeded").distinct(),
+                ),
+            )
+        }
+        if (context.retrievedMemories.isNotEmpty()) {
+            val memories = context.retrievedMemories.dropLast(1)
+            reasons += "omitted lowest-ranked memory"
+            return context.copy(
+                retrievedMemories = memories,
+                characterMemories = memories.map {
+                    CharacterMemory(
+                        id = it.memoryId,
+                        projectId = context.project.id,
+                        characterId = it.ownerCharacterId,
+                        ownerCharacterId = it.ownerCharacterId,
+                        memoryType = it.type,
+                        summary = it.summary,
+                        emotionalSignature = it.emotionalSignature,
+                        salience = it.salience,
+                        confidence = it.confidence,
+                    )
+                },
+                contextBudget = context.contextBudget.copy(
+                    omittedMemoryCount = context.contextBudget.omittedMemoryCount + 1,
+                    truncationApplied = true,
+                ),
+            )
+        }
+        if (context.knowledgeClaims.isNotEmpty()) {
+            reasons += "omitted lowest-priority knowledge claim"
+            return context.copy(
+                knowledgeClaims = context.knowledgeClaims.dropLast(1),
+                contextBudget = context.contextBudget.copy(
+                    omittedKnowledgeCount = context.contextBudget.omittedKnowledgeCount + 1,
+                    truncationApplied = true,
+                ),
+            )
+        }
+        if (context.recentTurnSummaries.isNotEmpty()) {
+            reasons += "omitted oldest recent turn summary"
+            return context.copy(recentTurnSummaries = context.recentTurnSummaries.drop(1))
+        }
+        if (context.activeStoryThreads.size > 1) {
+            reasons += "omitted lowest-priority story thread view"
+            return context.copy(activeStoryThreads = context.activeStoryThreads.dropLast(1))
+        }
+        if (context.pendingWorldEvents.size > 1) {
+            reasons += "omitted lowest-priority pending world event"
+            return context.copy(pendingWorldEvents = context.pendingWorldEvents.dropLast(1))
+        }
+        if (context.availableTransitions.size > 3) {
+            reasons += "omitted surplus transition previews"
+            return context.copy(availableTransitions = context.availableTransitions.take(3))
+        }
+        if (context.sceneRequirements.size > 6) {
+            reasons += "omitted surplus scene requirement previews"
+            return context.copy(sceneRequirements = context.sceneRequirements.take(6))
+        }
+        shrinkDistantCharacters(context)?.let {
+            reasons += "omitted distant character profiles"
+            return it
+        }
+        shrinkDistantItemsAndTechniques(context)?.let {
+            reasons += "omitted distant item and technique profiles"
+            return it
+        }
+        if (context.openTasks.size > 5) {
+            reasons += "omitted surplus open tasks"
+            return context.copy(openTasks = context.openTasks.take(5))
+        }
+        if (context.facts.size > 12) {
+            reasons += "omitted surplus public facts"
+            return context.copy(facts = context.facts.takeLast(12))
+        }
+        if (context.worldRules.size > 6) {
+            reasons += "omitted lower-priority world rules"
+            return context.copy(worldRules = context.worldRules.take(6))
+        }
+        shrinkCharacterStateFlags(context, 160)?.let {
+            reasons += "trimmed character state flags"
+            return it
+        }
+        shrinkCharacterStateFlags(context, 80)?.let {
+            reasons += "trimmed character state flags aggressively"
+            return it
+        }
+        trimCharacters(context, 240)?.let {
+            reasons += "trimmed character public descriptions"
+            return it
+        }
+        trimCharacters(context, 80)?.let {
+            reasons += "trimmed character public descriptions aggressively"
+            return it
+        }
+        trimCharacters(context, 0)?.let {
+            reasons += "omitted character public descriptions"
+            return it
+        }
+        trimItems(context, 120)?.let {
+            reasons += "trimmed item and technique descriptions"
+            return it
+        }
+        trimWorldRules(context, 240)?.let {
+            reasons += "trimmed world rule public text"
+            return it
+        }
+        trimSceneAndProject(context, 320)?.let {
+            reasons += "trimmed project or scene summary"
+            return it
+        }
+        return null
+    }
+
+    private fun shrinkDistantCharacters(context: ContextPacket): ContextPacket? {
+        val currentLocation = context.activeScene?.locationId
+        val activeIds = context.characterStates
+            .filter { currentLocation == null || it.locationId == currentLocation }
+            .map { it.characterId }
+            .toSet()
+        val keepIds = activeIds + context.characters.filter { it.isPlayer }.map { it.id }
+        val kept = context.characters.filter { it.id in keepIds }
+        return if (kept.isNotEmpty() && kept.size < context.characters.size) context.copy(characters = kept) else null
+    }
+
+    private fun shrinkDistantItemsAndTechniques(context: ContextPacket): ContextPacket? {
+        val currentLocation = context.activeScene?.locationId
+        val activeCharacterIds = context.characterStates
+            .filter { currentLocation == null || it.locationId == currentLocation }
+            .map { it.characterId }
+            .toSet()
+        val inventoryIds = context.characterStates.flatMap { it.inventory }.toSet()
+        val items = context.items.filter { item ->
+            item.id in inventoryIds || item.ownerCharacterId in activeCharacterIds || item.locationId == currentLocation
+        }
+        val techniques = context.techniques.filter { it.ownerCharacterId in activeCharacterIds }
+        return if (items.size < context.items.size || techniques.size < context.techniques.size) {
+            context.copy(items = items, techniques = techniques)
+        } else {
+            null
+        }
+    }
+
+    private fun shrinkCharacterStateFlags(context: ContextPacket, maxChars: Int): ContextPacket? {
+        var changed = false
+        val states = context.characterStates.map { state ->
+            val flags = state.flags.mapValues { (key, value) ->
+                val keepFull = key in setOf("current_goal", "dominant_emotion", "idle_turn_count") || key.startsWith("emotion.")
+                val trimmed = if (keepFull) value else trimText(value, maxChars)
+                if (trimmed != value) changed = true
+                trimmed
+            }
+            state.copy(flags = flags)
+        }
+        return if (changed) context.copy(characterStates = states) else null
+    }
+
+    private fun trimCharacters(context: ContextPacket, maxChars: Int): ContextPacket? {
+        var changed = false
+        val characters = context.characters.map { character ->
+            val trimmed = trimText(character.description, maxChars)
+            if (trimmed != character.description) changed = true
+            character.copy(description = trimmed)
+        }
+        return if (changed) context.copy(characters = characters) else null
+    }
+
+    private fun trimItems(context: ContextPacket, maxChars: Int): ContextPacket? {
+        var changed = false
+        val items = context.items.map { item ->
+            val trimmed = trimText(item.description, maxChars)
+            if (trimmed != item.description) changed = true
+            item.copy(description = trimmed)
+        }
+        val techniques = context.techniques.map { technique ->
+            val trimmed = trimText(technique.description, maxChars)
+            if (trimmed != technique.description) changed = true
+            technique.copy(description = trimmed)
+        }
+        return if (changed) context.copy(items = items, techniques = techniques) else null
+    }
+
+    private fun trimWorldRules(context: ContextPacket, maxChars: Int): ContextPacket? {
+        var changed = false
+        val rules = context.worldRules.map { rule ->
+            val trimmed = trimText(rule.content, maxChars)
+            if (trimmed != rule.content) changed = true
+            rule.copy(content = trimmed)
+        }
+        return if (changed) context.copy(worldRules = rules) else null
+    }
+
+    private fun trimSceneAndProject(context: ContextPacket, maxChars: Int): ContextPacket? {
+        val projectSummary = trimText(context.project.summary, maxChars)
+        val sceneSummary = context.activeScene?.summary?.let { trimText(it, maxChars) }
+        val changed = projectSummary != context.project.summary || (sceneSummary != null && sceneSummary != context.activeScene?.summary)
+        return if (changed) {
+            context.copy(
+                project = context.project.copy(summary = projectSummary),
+                activeScene = context.activeScene?.copy(summary = sceneSummary ?: context.activeScene.summary),
+            )
+        } else {
+            null
+        }
+    }
+
+    private fun trimText(text: String, maxChars: Int): String =
+        when {
+            text.length <= maxChars -> text
+            maxChars <= 0 -> ""
+            maxChars <= 3 -> text.take(maxChars)
+            else -> text.take(maxChars - 3) + "..."
+        }
+
+    private fun encodedSize(context: ContextPacket): Int =
+        JsonSupport.json.encodeToString(context).toByteArray(Charsets.UTF_8).size
+}
+
 class KnowledgeBoundaryValidator(private val repository: SqliteStoryRepository) {
     fun validate(context: ContextPacket, result: AiTurnResult): List<ValidationError> {
         val errors = mutableListOf<ValidationError>()

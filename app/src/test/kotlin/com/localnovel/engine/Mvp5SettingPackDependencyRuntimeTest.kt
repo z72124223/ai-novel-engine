@@ -1,6 +1,7 @@
 package com.localnovel.engine
 
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.InitialRuntimeTemplate
 import com.localnovel.engine.model.SettingPack
 import com.localnovel.engine.model.SettingPackDependency
 import com.localnovel.engine.model.SettingPackEntities
@@ -542,7 +543,23 @@ class Mvp5SettingPackDependencyRuntimeTest {
                     SettingPackEntity("loc-archive", name = "藏卷室", description = "紙灰和銅鈴聲停在暗處。", parentLocationId = "loc-shrine"),
                 ),
                 characters = listOf(
-                    SettingPackEntity("char-shen", name = "沈霜", role = "守祠人", description = "她戒備但重諾。", startingItems = listOf("item-jade-bell"), startingTechniques = listOf("technique-frost-step")),
+                    SettingPackEntity(
+                        "char-shen",
+                        name = "沈霜",
+                        role = "守祠人",
+                        description = "她戒備但重諾。",
+                        startingItems = listOf("item-jade-bell"),
+                        startingTechniques = listOf("technique-frost-step"),
+                        initialRuntimeTemplate = InitialRuntimeTemplate(
+                            initialLocationId = "loc-archive",
+                            initialGoal = "守住藏卷室入口，先確認來者意圖。",
+                            dominantEmotion = "戒備",
+                            emotionState = mapOf("戒備" to 70, "疲憊" to 25),
+                            availableActions = listOf("詢問來意", "後退半步護住玉鈴", "用 technique-frost-step 拉開距離"),
+                            relationshipDefaults = mapOf("player" to "unknown"),
+                            initiativeLevel = 45,
+                        ),
+                    ),
                 ),
                 worldRules = listOf(
                     SettingPackEntity("rule-vows-bind", title = "誓言有代價", content = "硬誓會留下可追索的代價。", priority = 10, metadata = JsonObject(mapOf("severity" to JsonPrimitive("hard"), "conflictKey" to JsonPrimitive("vows")))),

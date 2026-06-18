@@ -733,6 +733,17 @@ data class SettingPackDependency(
 )
 
 @Serializable
+data class InitialRuntimeTemplate(
+    val initialLocationId: String = "",
+    val initialGoal: String = "",
+    val dominantEmotion: String = "",
+    val emotionState: Map<String, Int> = emptyMap(),
+    val availableActions: List<String> = emptyList(),
+    val relationshipDefaults: Map<String, String> = emptyMap(),
+    val initiativeLevel: Int = 0,
+)
+
+@Serializable
 data class SettingPackEntity(
     val id: String,
     val entityVersion: Int = 1,
@@ -776,6 +787,7 @@ data class SettingPackEntity(
     val unique: Boolean = false,
     val revealed: Boolean = false,
     val revealCondition: String = "",
+    val initialRuntimeTemplate: InitialRuntimeTemplate? = null,
     val metadata: JsonObject = JsonObject(emptyMap()),
 )
 
@@ -917,6 +929,57 @@ data class SettingPackApplyResult(
     val canonicalHash: String,
     val diff: SettingPackDiff,
     val impact: SettingPackImpactReport,
+)
+
+@Serializable
+data class ContextSectionByteReport(
+    val section: String,
+    val utf8Bytes: Int,
+    val itemCount: Int = 0,
+)
+
+@Serializable
+data class ContextAuditReport(
+    val valid: Boolean,
+    val file: String = "",
+    val maxBytes: Int = 24576,
+    val actualBytes: Int = 0,
+    val canonicalBytes: Int = 0,
+    val declaredActualBytes: Int = 0,
+    val contextHash: String = "",
+    val recomputedContextHash: String = "",
+    val hashValid: Boolean = false,
+    val mandatoryFieldsPresent: Boolean = false,
+    val violations: List<String> = emptyList(),
+    val sections: List<ContextSectionByteReport> = emptyList(),
+)
+
+@Serializable
+data class SessionEvidenceExport(
+    val session: StorySession,
+    val activeSceneInstanceCount: Int,
+    val characterStates: List<CharacterState> = emptyList(),
+    val turnLogs: List<Map<String, String>> = emptyList(),
+    val stateDeltas: List<Map<String, String>> = emptyList(),
+    val facts: List<Fact> = emptyList(),
+    val revealedSecrets: List<Secret> = emptyList(),
+    val pendingContextCount: Int = 0,
+)
+
+@Serializable
+data class PilotPreflightCheck(
+    val name: String,
+    val passed: Boolean,
+    val details: String = "",
+)
+
+@Serializable
+data class PilotPreflightReport(
+    val valid: Boolean,
+    val projectId: String,
+    val sessionId: String,
+    val checks: List<PilotPreflightCheck>,
+    val contextAudit: ContextAuditReport? = null,
 )
 
 data class ValidationError(

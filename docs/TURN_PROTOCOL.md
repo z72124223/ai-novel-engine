@@ -130,3 +130,29 @@ AI/Codex must only read the current context JSON when drafting a result. It must
 - `canonRevisionSummary`: imported packs and relevant revision IDs used by this context.
 
 The setting section is read-only context. It must not contain the full setting pack, the full dependency graph, or author-only secret content. AI/Codex still writes only `AiTurnResult` JSON for turns; setting pack JSON is handled by the separate setting-pack import commands.
+
+## Pilot-1 Stabilization Protocol
+
+`prepare-turn` now finalizes the complete `ContextPacket` against the hard UTF-8 byte budget:
+
+- `contextBudget.maxBytes` remains `24576`.
+- `contextBudget.actualBytes` is the exact number of UTF-8 bytes written for the final JSON payload.
+- `contextHash` is computed after byte-budget reduction and accounting converge.
+- If mandatory context cannot fit, `prepare-turn` fails with `CONTEXT_BUDGET_UNSATISFIABLE` and does not create a pending turn.
+
+Before drafting an `AiTurnResult`, run:
+
+```powershell
+./gradlew.bat run --args="audit-context --file out/context.json --out out/context_audit.json"
+```
+
+`audit-context` verifies exact bytes, declared bytes, hash, and mandatory fields. A failed audit is a hard stop.
+
+Pilot runs should also use:
+
+```powershell
+./gradlew.bat run --args="pilot-preflight --db data/pilot1-rerun.db --project <projectId> --session <sessionId> --out out/pilot1/preflight.json"
+./gradlew.bat run --args="export-session-evidence --db data/pilot1-rerun.db --session <sessionId> --out out/pilot1/evidence.json"
+```
+
+Both commands are read-only. `pilot-preflight` performs a dry-run context build without saving a pending turn.

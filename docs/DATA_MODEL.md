@@ -96,3 +96,13 @@ New tables:
 - `status`
 
 Core tables continue to hold the runtime-readable canon. `entity_revisions` records where each imported canon row came from and is the source for diff/export/impact/context relevance.
+
+## Pilot-1 Stabilization Runtime Data
+
+No migration is required for Pilot-1 stabilization.
+
+- `SettingPackEntity.initialRuntimeTemplate` is preserved in the imported character revision snapshot.
+- The same template is copied into `characters.profile_json.initialRuntimeTemplate` for runtime access.
+- `start-session` uses that template to create missing opening `character_states` in the session transaction.
+- `turn_logs` still stores pending contexts; `pilot-preflight` checks that no pending context exists before a fresh Pilot run.
+- `audit-context`, `pilot-preflight`, and `export-session-evidence` write JSON reports to files only and do not modify SQLite.

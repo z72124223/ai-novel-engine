@@ -71,3 +71,15 @@ MVP-5 keeps the local single-process boundary and adds only additive SQLite sche
 - `SettingContextResolver` adds only relevant setting excerpts to `ContextPacket`.
 
 Codex may draft setting pack JSON, but formal canon writes must go through `apply-setting-pack`; no direct SQL, `sqlite3`, scripts or network APIs are part of this runtime.
+
+## Pilot-1 Stabilization Boundary
+
+Pilot stabilization adds no migration and no new framework.
+
+- `ContextPacketFinalizer` enforces the final serialized `ContextPacket` UTF-8 byte ceiling, stable byte accounting and final context hash.
+- `ContextAuditService` performs read-only JSON audit for context byte/hash/mandatory-field evidence.
+- `PilotPreflightService` performs read-only Pilot readiness checks and dry-runs context construction without saving a pending turn.
+- `SessionEvidenceExporter` exports read-only session evidence for Pilot review.
+- `prepare-turn` builds context, resolves setting excerpts, applies budget reduction, finalizes exact UTF-8 bytes, computes `contextHash`, and only then saves a pending turn.
+- `start-session` initializes setting-pack opening character runtime states from `characters.profile_json.initialRuntimeTemplate` within the existing session transaction.
+- `audit-context`, `pilot-preflight`, and `export-session-evidence` write report JSON files only.

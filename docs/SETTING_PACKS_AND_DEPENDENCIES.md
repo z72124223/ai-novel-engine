@@ -61,6 +61,22 @@ The graph supports bounded traversal for impact reports and context relevance. T
 
 `PATCH_CANON` cannot silently modify existing canon while an active session exists. Preview reports impacted sessions and a blocker. Apply rejects the pack. After the session is closed, a patch with a higher `entityVersion` can be previewed and applied.
 
+## Pilot Stabilization Runtime Templates
+
+Opening-scene characters imported from setting packs must define `initialRuntimeTemplate`. The template is stored in the existing character `profile_json`; no migration is required.
+
+Required template fields:
+
+- `initialLocationId`: must reference an existing location and match the opening scene location for opening active characters.
+- `initialGoal`: character-local goal only; it must not copy a story thread `directorGoal`.
+- `dominantEmotion`: non-empty initial mood.
+- `emotionState`: emotion intensities from `0` to `100`.
+- `availableActions`: actions the character can take from visible knowledge only.
+- `relationshipDefaults`: initial relationship labels.
+- `initiativeLevel`: `0` to `100`.
+
+Validation rejects templates that leak unrevealed or author-only secrets, reference unknown `item-*`, `technique-*`, or `secret-*` IDs in available actions, or omit required opening-character runtime data. `start-session` creates missing `character_states` for opening active characters from the template inside the same SQLite transaction. If initialization fails, the session is rolled back.
+
 ## CLI
 
 ```powershell

@@ -82,6 +82,9 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `impact-report --db <path> --file <path> [--out <path>]`
 - `show-dependencies --db <path> --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]`
 - `validate-project-canon --db <path> --project <id> [--out <path>]`
+- `audit-context --file <path> [--out <path>]`
+- `export-session-evidence --db <path> --session <id> --out <path>`
+- `pilot-preflight --db <path> --project <id> --session <id> [--out <path>]`
 
 ## Multi-Turn Flow
 
@@ -138,6 +141,24 @@ MVP-5 adds local setting pack import, dependency graph traversal, impact preview
 The import path is always parse -> validate -> diff -> impact preview -> transaction apply. `PATCH_CANON` updates are blocked while active sessions exist. `prepare-turn` includes only relevant setting excerpts through `relevantSettings`, `settingContextBudget` and `canonRevisionSummary`; it never includes a full setting pack or full dependency graph.
 
 See `docs/SETTING_PACKS_AND_DEPENDENCIES.md`.
+
+## Pilot Stabilization
+
+Pilot-1 stabilization keeps the hard context ceiling at `24576` UTF-8 bytes. `prepare-turn` writes only a finalized context whose `contextBudget.actualBytes` matches the real JSON bytes and whose `contextHash` matches that finalized payload. If mandatory context cannot fit, it fails before creating a pending turn.
+
+Before writing an AI result for a manual turn:
+
+```powershell
+./gradlew.bat run --args="audit-context --file out/turn_001_context.json --out out/turn_001_context_audit.json"
+```
+
+Before starting a fresh Pilot rerun:
+
+```powershell
+./gradlew.bat run --args="pilot-preflight --db data/pilot1-rerun.db --project PROJECT_ID --session SESSION_ID --out out/pilot1/preflight.json"
+```
+
+`pilot-preflight` and `export-session-evidence` are read-only. Setting-pack opening characters must provide `initialRuntimeTemplate`; `start-session` uses it to create missing runtime `character_states` in the session transaction.
 
 ## Project Layout
 
