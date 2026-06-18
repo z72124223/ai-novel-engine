@@ -34,7 +34,9 @@ class ContextAuditService(
         val canonicalBytes = canonical.toByteArray(Charsets.UTF_8).size
         val actualBytes = actualFileBytes ?: canonicalBytes
         val recomputedHash = sha256(JsonSupport.json.encodeToString(context.copy(contextHash = "")).toByteArray(Charsets.UTF_8))
-        val semanticCoverage = ContextQualityGuard(maxBytes).evaluate(context, TurnSemanticPlanner().plan(context))
+        val requirements = TurnSemanticPlanner().plan(context)
+        val semanticCoverage = ContextQualityGuard(maxBytes).evaluate(context, requirements)
+        val capabilityCoverage = CapabilityCoverageAnalyzer().report(context, requirements)
         val mandatoryFieldsPresent = context.project.id.isNotBlank() &&
             context.turnId.isNotBlank() &&
             context.contextId.isNotBlank() &&
@@ -64,6 +66,9 @@ class ContextAuditService(
             if (semanticCoverage.qualityStatus != "PASS") {
                 add("semantic_coverage_failed:${semanticCoverage.missingCriticalRequirements.joinToString(",") { it.requirementId }}")
             }
+            if (capabilityCoverage.qualityStatus != "PASS") {
+                add("capability_coverage_failed:${capabilityCoverage.missingContracts.joinToString(",")}")
+            }
         }
         return ContextAuditReport(
             valid = violations.isEmpty(),
@@ -80,6 +85,7 @@ class ContextAuditService(
             sections = sections(context),
             forensics = ContextBudgetForensicsService(maxBytes).report(context.copy(contextHash = ""), context),
             semanticCoverage = semanticCoverage,
+            capabilityCoverage = capabilityCoverage,
         )
     }
 
@@ -96,6 +102,7 @@ class ContextAuditService(
             section("facts", context.facts, context.facts.size),
             section("items", context.items, context.items.size),
             section("techniques", context.techniques, context.techniques.size),
+            section("activeCapabilityContracts", context.activeCapabilityContracts, context.activeCapabilityContracts.size),
             section("recentEvents", context.recentEvents, context.recentEvents.size),
             section("activeStoryThreads", context.activeStoryThreads, context.activeStoryThreads.size),
             section("availableTransitions", context.availableTransitions, context.availableTransitions.size),

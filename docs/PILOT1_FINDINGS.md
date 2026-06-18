@@ -275,3 +275,16 @@ Formal DB validation remained read-only only:
 - formal Turn 8 was not prepared or resolved.
 
 Residual observation: the Turn 8 context is still above the `22528` soft target because retaining Tier 0 and Tier 1 coverage is prioritized over headroom. This is acceptable under the hard max but should be monitored before adding more long-running Pilot evidence.
+
+## Pilot-1 Referenced Capability Contract Follow-Up
+
+Formal Turn 10 exposed a different blocker: context bytes were acceptable, but the explicitly used `tech-basic-blood-breath` appeared in final context only as a technique ID/name/description. Its prerequisites, costs, limitations and current eligibility were available in canonical setting revisions but not carried into the AI-facing context.
+
+The fix adds compact `activeCapabilityContracts` as Tier 1 context for explicit capability use:
+
+- `explain-capability` reports canonical provenance read-only;
+- `activeCapabilityContracts` carries authorized actors, effects, prerequisites, requirements, costs, limitations, forbidden uses and eligibility;
+- `audit-context` and `explain-context-budget` report `capabilityCoverage` in sidecars;
+- `resolve-turn` requires `capabilityUseChecks` and cost state deltas for successful uses with costs.
+
+Formal DB validation for this blocker must remain read-only until the next real Pilot turn is intentionally executed.

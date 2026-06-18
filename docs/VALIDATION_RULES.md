@@ -110,3 +110,15 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - Referenced item or technique requirements must retain visible requirements, costs, limitations, prerequisites, or forbidden-use metadata when such setting data exists.
 - Author-only settings cannot satisfy character-facing requirements.
 - If the semantic floor cannot fit under the hard max, `prepare-turn` and preview fail with `CONTEXT_QUALITY_UNSATISFIABLE` and must not create a pending context.
+
+## Referenced Capability Contract Rules
+
+- Explicit technique, item, or weapon use requires a matching `activeCapabilityContracts` entry in the context.
+- `description` cannot satisfy capability legality. The contract must expose authorized actors, effects, prerequisites, requirements, costs, limitations, forbidden uses, and current eligibility or explicit `NONE` markers.
+- `characterActions.usedTechniqueIds` and `usedItemIds` require matching `capabilityUseChecks` when they represent active use.
+- The actor must be authorized by the contract.
+- Successful use cannot claim effects outside the contract scope.
+- Unsatisfied prerequisites may support a failed attempt, but not a successful effect.
+- Successful use with non-`NONE` costs requires a matching character-state delta that records the cost.
+- Forbidden uses are rejected when they appear in intended use or narrative.
+- Rejected capability results must not write cost, memory, knowledge, fact, event, or turn state.

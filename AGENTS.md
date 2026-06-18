@@ -51,6 +51,7 @@
 - `contextHash` and `contextBudget.actualBytes` must be computed after normalization and after empty/default fields, legacy aliases, and diagnostics have been removed from the final payload.
 - A turn context that fits bytes but drops a required semantic floor is not acceptable. Explicit memory cues must be satisfied by real `retrievedMemories`, relevant beliefs by `knowledgeClaims`, transition questions by location/continuity constraints, and referenced items/techniques by visible requirements/costs/limitations.
 - If the semantic floor cannot fit, fail with `CONTEXT_QUALITY_UNSATISFIABLE` before creating a pending context. Do not use recent facts/events as fake recalled memories, do not load unrelated settings to fill a quota, and do not raise the `24576` byte hard max.
+- If a turn explicitly uses a technique, item, or weapon, final context must include a Tier 1 `activeCapabilityContracts` card. Names/descriptions alone do not authorize use; `resolve-turn` must validate `capabilityUseChecks` and cost state deltas.
 - Do not reuse old Pilot sessions as formal rerun evidence.
 - Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
 - See `docs/PILOT1_STABILIZATION_SPEC.md`, `docs/PILOT1_STABILIZATION.md`, and `docs/CONTEXT_RELEVANCE_FLOOR.md`.

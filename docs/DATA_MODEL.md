@@ -106,3 +106,19 @@ No migration is required for Pilot-1 stabilization.
 - `start-session` uses that template to create missing opening `character_states` in the session transaction.
 - `turn_logs` still stores pending contexts; `pilot-preflight` checks that no pending context exists before a fresh Pilot run.
 - `audit-context`, `pilot-preflight`, and `export-session-evidence` write JSON reports to files only and do not modify SQLite.
+
+## Referenced Capability Data
+
+No migration is required for referenced capability contracts.
+
+Runtime-readable IDs, names, owners, and public descriptions remain in `techniques` and `items`. Full capability details are read from the latest `entity_revisions.snapshot_json` imported by setting packs:
+
+- effects
+- prerequisites
+- requirements from metadata when present
+- costs
+- limitations
+- forbidden uses
+- visibility and source revision
+
+`activeCapabilityContracts` is an AI-facing `ContextPacket` section, not a table. `capabilityUseChecks` is an `AiTurnResult` protocol section; accepted cost application is still recorded through existing `state_deltas` and `character_states`.

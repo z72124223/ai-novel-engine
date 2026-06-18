@@ -269,3 +269,65 @@ Use this section once per accepted turn.
   - Setting use 1..5: 4
   - Narrative momentum 1..5: 4
 - Notes: `explain-context-budget` passed before prepare; `audit-context` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No player dialogue, movement, technique use, shadow contact, scheduled event trigger, forced transition, or forbidden reveal was added.
+
+### Stabilized Rerun Turn 8
+
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Player input: 我摸了摸愛醬的頸側，讓牠知道我記得牠剛才忍住低吼守著我。「趙無咎，既然安靜時它沒有追過來，我們能不能不碰它，慢慢退到驛亭門外？」我仍留在原地，等他回答。
+- Narrative summary: 主角安撫愛醬並詢問能否不碰影子、慢慢退到驛亭門外；趙無咎承認可考慮撤離，但不同意立刻亂退，要求先噤聲、不碰影子、官差或腰牌，並確認站位與退路；本回合無人移動，也沒有轉場。
+- Active character intent: 愛醬把主角摸頸側理解為守位與克制的信號，繼續擋在主角前方；趙無咎在承認撤離可能性的同時，把撤離拆成可控條件，而不是因玩家提議就配合。
+- `characterFitScore`: Ai-chan 96, Zhao Wujiu 95.
+- State deltas: added `event-turn-008-conditional-retreat-question`; added `fact-turn-008-zhao-conditional-retreat-only`; added `fact-turn-008-shadow-minor-tremor-to-player-voice`; updated `char-zhao-wu-jiu` mood/goal/emotions/belief/player assessment/shadow assessment; updated `char-ai-chan` mood/goal/emotions/belief.
+- Memory recalled: `memory-ai-chan-turn-007-quiet-with-player`; `memory-ai-chan-turn-006-quiet-watch`; `memory-zhao-turn-007-silent-test`; `memory-zhao-turn-005-token-boundary`.
+- Runtime memory created: `memory-zhao-turn-008-conditional-retreat`; `memory-ai-chan-turn-008-soothed-hold-position`.
+- Knowledge / belief changes: `char-zhao-wu-jiu` gained `retreat_requires_silence_order_and_no_contact=BELIEVED`; `char-ai-chan` gained `player_soothing_neck_touch_means_hold_position=BELIEVED`; public facts `fact-turn-008-zhao-conditional-retreat-only` and `fact-turn-008-shadow-minor-tremor-to-player-voice` were added.
+- Scene changes: no transition proposal; no transition applied; all main actors remain in `scene-abandoned-post`; world time advanced from `T+20m` to `T+21m`.
+- Thread changes: `thread-identity-and-shelter` progress +2, still `OPEN`.
+- Semantic coverage: PASS. `EXPLICIT_MEMORY_CUE` satisfied by `memory-ai-chan-turn-007-quiet-with-player`; `TRANSITION_CONSTRAINT` satisfied by `scene-abandoned-post`; `LOCATION_CONSTRAINT` satisfied by `loc-abandoned-post`; `RELEVANT_BELIEF` satisfied by `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`.
+- Selected knowledge claims: `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`; `claim-fa901488-7d31-4472-a4d7-28acf2b6d6aa`; `claim-65948738-f806-4770-a886-4d6fe88bca0d`; `claim-852cbcc5-1c09-426f-9ca7-bbb728a5d171`.
+- Context bytes: actual `22614 / 24576`; budget explain before trimming was `56033`, predicted after trimming `22617`; soft target `22528` missed by 86 bytes but hard max passed.
+- Setting bytes: `2 / 8192`; no relevant setting excerpt included because this turn did not reference an item/technique setting requirement.
+- Truncation: applied; omittedMemoryCount 11, omittedKnowledgeCount 3, omittedSettingCount 24.
+- Validator retry count: 0.
+- Next turn / state: nextTurnNumber 9, stateVersion 8.
+- Pending context count: 0.
+- Secret status: 2 unrevealed secrets remain unrevealed.
+- Quality scores:
+  - Character consistency 1..5: 5
+  - Consequence quality 1..5: 5
+  - Memory use 1..5: 5
+  - Setting use 1..5: 3
+  - Narrative momentum 1..5: 4
+- Notes: `explain-context-budget` passed before prepare; `audit-context` passed before result generation; `semanticCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No player movement, actor relocation, shadow contact, body movement, forced transition, transition proposal, or forbidden reveal was added.
+
+### Stabilized Rerun Turn 9
+
+- Session: `session-75e1b190-542c-49c0-9a5a-6b242bed8e97`
+- Player input: 我點頭，照趙無咎提出的條件行動。我保持安靜，不碰影子、不碰倒地官差，也不碰腰牌，只用手勢讓愛醬貼著我。我面向影子，一步一步朝驛亭門口後退。如果趙無咎確認退路安全，我就跟著他的示意跨過門檻，退到門外後立刻停下。
+- Narrative summary: 主角依趙無咎條件保持安靜、不碰影子、官差或腰牌，帶著愛醬一步步退到驛亭門口內側；趙無咎只允許退到門檻前停下，未確認可跨出門外，因此沒有正式轉場。
+- Active character intent: 愛醬把主角手勢理解為貼身護主與安靜撤退，沒有自行衝向影子；趙無咎把撤退限制在門檻內側，先控住門外退路與現場證物，而不是直接放主角和雪犬離場。
+- `characterFitScore`: Ai-chan 96, Zhao Wujiu 95.
+- Preview transitions: no legal candidate transition was returned by `preview-transitions`; this turn could move only to the threshold inside the current scene.
+- State deltas: added `event-turn-009-retreat-to-threshold`; added `fact-turn-009-threshold-retreat-no-transition`; added `fact-turn-009-shadow-tremor-to-footstep`; updated `char-zhao-wu-jiu` mood/goal/emotions/belief/player assessment/shadow assessment; updated `char-ai-chan` mood/goal/emotion/belief.
+- Memory recalled: none. `retrievedMemories` was empty, so `memory-zhao-turn-008-conditional-retreat` and `memory-ai-chan-turn-008-soothed-hold-position` were not treated as recalled memories.
+- Runtime memory created: `memory-zhao-turn-009-threshold-hold`; `memory-ai-chan-turn-009-silent-retreat`.
+- Knowledge / belief changes: `char-zhao-wu-jiu` gained `threshold_retreat_not_safe_scene_exit_yet=BELIEVED`; `char-ai-chan` gained `silent_retreat_requires_staying_close_to_player=BELIEVED`; public facts `fact-turn-009-threshold-retreat-no-transition` and `fact-turn-009-shadow-tremor-to-footstep` were added.
+- Scene changes: no transition proposal; no transition applied; old scene instance `scene-instance-e7277ebd-234e-466b-8111-e79c289db458` remains the only active scene; all main actors remain in `loc-abandoned-post`; world time advanced from `T+21m` to `T+22m`.
+- Thread changes: `thread-identity-and-shelter` progress +1 to 20, still `OPEN`.
+- Shadow behavior: the first wet footstep caused a fine tremor at the shadow edge, but it did not stretch toward the player, Ai-chan, or the doorway.
+- Semantic coverage: PASS. `CHARACTER_GOAL`, `WORLD_RULE`, `TRANSITION_CONSTRAINT`, `LOCATION_CONSTRAINT`, and `RELEVANT_BELIEF` were satisfied.
+- Selected knowledge claims: `claim-47481e0f-9503-4bf7-9197-d9c9d04ca900`; `claim-fa901488-7d31-4472-a4d7-28acf2b6d6aa`; `claim-65948738-f806-4770-a886-4d6fe88bca0d`; `claim-852cbcc5-1c09-426f-9ca7-bbb728a5d171`.
+- Context bytes: actual `22499 / 24576`; budget explain before trimming was `58174`, predicted after trimming `22499`; mandatoryBytes `10569`; soft target `22528` passed by 29 bytes and hard max passed.
+- Setting bytes: `2 / 8192`; no setting excerpt was included and 24 setting records were omitted.
+- Truncation: applied; omittedMemoryCount 17, omittedKnowledgeCount 5, omittedSettingCount 24.
+- Validator retry count: 0.
+- Next turn / state: nextTurnNumber 10, stateVersion 9.
+- Pending context count: 0.
+- Secret status: 2 unrevealed secrets remain unrevealed.
+- Quality scores:
+  - Character consistency 1..5: 5
+  - Consequence quality 1..5: 5
+  - Memory use 1..5: 3
+  - Setting use 1..5: 3
+  - Narrative momentum 1..5: 4
+- Notes: `show-session`, `show-scene`, `preview-transitions`, `explain-context-budget`, `prepare-turn`, `audit-context`, `resolve-turn`, `show-session`, `show-scene`, and `export-session-evidence` were executed in order. `audit-context` and `semanticCoverage` passed before result generation; `resolve-turn` applied through Validator and transaction; no direct SQLite writes were used. No forced transition, invented location, actor relocation beyond the threshold, body movement, token contact, player dialogue, Turn 10 execution, or forbidden reveal was added.

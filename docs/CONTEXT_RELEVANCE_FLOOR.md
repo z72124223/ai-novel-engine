@@ -41,6 +41,7 @@ Trimming starts from Tier 3, then Tier 2. Tier 0 and the minimum records satisfy
 - item/technique references must keep visible requirements, costs, limitations, prerequisites, or forbidden-use data when present;
 - transition/location questions must keep scene and continuity constraints;
 - author-only settings cannot satisfy character-facing requirements.
+- explicit capability use must keep a complete `activeCapabilityContracts` card; item/technique descriptions or compact setting prose cannot satisfy the requirement.
 
 If the semantic floor cannot fit under `24576` UTF-8 bytes, `prepare-turn` fails with `CONTEXT_QUALITY_UNSATISFIABLE` before creating a pending context.
 

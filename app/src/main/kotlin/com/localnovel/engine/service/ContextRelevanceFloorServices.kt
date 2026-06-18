@@ -12,6 +12,7 @@ data class ProtectedContextIds(
     val memoryIds: Set<String> = emptySet(),
     val knowledgeClaimIds: Set<String> = emptySet(),
     val settingKeys: Set<String> = emptySet(),
+    val capabilityKeys: Set<String> = emptySet(),
 )
 
 class TurnSemanticPlanner {
@@ -83,6 +84,30 @@ class TurnSemanticPlanner {
             .mapNotNull { technique -> context.relevantSettings.firstOrNull { it.entityType == "technique" && it.entityId == technique.id } }
         referencedTechniqueSettings.forEach { setting ->
             requirements += settingRequirement("REFERENCED_TECHNIQUE", "req-technique-${setting.entityId}", setting)
+        }
+
+        detectReferences(context).forEach { reference ->
+            requirements += SemanticRequirement(
+                requirementId = "req-capability-${reference.entityType}-${reference.entityId}",
+                semanticType = when (reference.entityType) {
+                    "technique" -> "REFERENCED_TECHNIQUE"
+                    "weapon" -> "REFERENCED_WEAPON"
+                    else -> "REFERENCED_ITEM"
+                },
+                source = "playerInput",
+                targetCharacterIds = listOf(reference.actorId),
+                referencedEntityIds = listOf("${reference.entityType}:${reference.entityId}"),
+                priority = 98,
+                reason = "Player explicitly uses or depends on a capability; a compact capability contract is required.",
+                mustBeSatisfied = true,
+                acceptableContextPaths = listOf("$.activeCapabilityContracts[]"),
+                actorId = reference.actorId,
+                entityType = reference.entityType,
+                entityId = reference.entityId,
+                referenceReason = "explicit player input capability use",
+                requestedUse = reference.requestedUse,
+                requiredContractFields = capabilityRequiredFields,
+            )
         }
 
         if (transitionCue) {
@@ -203,6 +228,7 @@ class ContextQualityGuard(
             memoryIds = requirements.filter { it.mustBeSatisfied }.flatMap { it.referencedMemoryCandidates }.toSet(),
             knowledgeClaimIds = requirements.filter { it.mustBeSatisfied }.flatMap { it.referencedKnowledgeCandidates }.toSet(),
             settingKeys = requirements.filter { it.mustBeSatisfied }.flatMap { it.referencedSettingCandidates }.toSet(),
+            capabilityKeys = requirements.filter { it.mustBeSatisfied && it.entityId.isNotBlank() }.map { "${it.entityType}:${it.entityId}" }.toSet(),
         )
 
     fun evaluate(context: ContextPacket, requirements: List<SemanticRequirement>): SemanticCoverageReport {
@@ -234,13 +260,25 @@ class ContextQualityGuard(
             "RELEVANT_BELIEF" -> context.knowledgeClaims
                 .firstOrNull { it.claimId in requirement.referencedKnowledgeCandidates }
                 ?.let { it.claimId to "$.knowledgeClaims[${context.knowledgeClaims.indexOf(it)}]" }
-            "REFERENCED_ITEM", "REFERENCED_TECHNIQUE" -> context.relevantSettings
-                .firstOrNull {
-                    "${it.entityType}:${it.entityId}" in requirement.referencedSettingCandidates &&
-                        it.visibility != "author_only" &&
-                        hasLegalityMetadata(it)
+            "REFERENCED_ITEM", "REFERENCED_TECHNIQUE", "REFERENCED_WEAPON" -> {
+                if (requirement.requiredContractFields.isNotEmpty() || requirement.entityId.isNotBlank()) {
+                    context.activeCapabilityContracts
+                        .firstOrNull { contract ->
+                            contract.entityType == requirement.entityType &&
+                                contract.entityId == requirement.entityId &&
+                                capabilityContractComplete(contract, requirement)
+                        }
+                        ?.let { "${it.entityType}:${it.entityId}" to "$.activeCapabilityContracts[${context.activeCapabilityContracts.indexOf(it)}]" }
+                } else {
+                    context.relevantSettings
+                        .firstOrNull {
+                            "${it.entityType}:${it.entityId}" in requirement.referencedSettingCandidates &&
+                                it.visibility != "author_only" &&
+                                hasLegalityMetadata(it)
+                        }
+                        ?.let { "${it.entityType}:${it.entityId}" to "$.relevantSettings[${context.relevantSettings.indexOf(it)}]" }
                 }
-                ?.let { "${it.entityType}:${it.entityId}" to "$.relevantSettings[${context.relevantSettings.indexOf(it)}]" }
+            }
             "TRANSITION_CONSTRAINT" -> if (
                 context.continuityConstraints.currentSceneInstanceId.isNotBlank() &&
                     context.activeScene?.locationId != null &&
@@ -294,7 +332,13 @@ class ContextQualityGuard(
             when (requirement.semanticType) {
                 "EXPLICIT_MEMORY_CUE" -> context.retrievedMemories.filter { it.memoryId in requirement.referencedMemoryCandidates }.sumOf { bytes(it) }
                 "RELEVANT_BELIEF" -> context.knowledgeClaims.filter { it.claimId in requirement.referencedKnowledgeCandidates }.sumOf { bytes(it) }
-                "REFERENCED_ITEM", "REFERENCED_TECHNIQUE" -> context.relevantSettings.filter { "${it.entityType}:${it.entityId}" in requirement.referencedSettingCandidates }.sumOf { bytes(it) }
+            "REFERENCED_ITEM", "REFERENCED_TECHNIQUE", "REFERENCED_WEAPON" -> {
+                if (requirement.entityId.isNotBlank()) {
+                    context.activeCapabilityContracts.filter { "${it.entityType}:${it.entityId}" == "${requirement.entityType}:${requirement.entityId}" }.sumOf { bytes(it) }
+                } else {
+                    context.relevantSettings.filter { "${it.entityType}:${it.entityId}" in requirement.referencedSettingCandidates }.sumOf { bytes(it) }
+                }
+            }
                 else -> 0
             }
         }
@@ -326,9 +370,33 @@ class ContextQualityGuard(
             "$.retrievedMemories" -> bytes(context.retrievedMemories)
             "$.knowledgeClaims" -> bytes(context.knowledgeClaims)
             "$.relevantSettings" -> bytes(context.relevantSettings)
+            "$.activeCapabilityContracts" -> bytes(context.activeCapabilityContracts)
             "$.continuityConstraints" -> bytes(context.continuityConstraints)
             else -> 0
         }
+
+    private fun capabilityContractComplete(
+        contract: com.localnovel.engine.model.CapabilityContract,
+        requirement: SemanticRequirement,
+    ): Boolean {
+        if (requirement.actorId.isNotBlank() && requirement.actorId !in contract.authorizedActorIds) return false
+        if (contract.currentEligibility.isBlank()) return false
+        return requirement.requiredContractFields.all { field ->
+            when (field) {
+                "id" -> contract.entityId.isNotBlank()
+                "name" -> contract.name.isNotBlank()
+                "authorizedActorIds" -> contract.authorizedActorIds.isNotEmpty()
+                "effects" -> contract.effects.isNotEmpty()
+                "prerequisites" -> contract.prerequisites.isNotEmpty()
+                "requirements" -> contract.requirements.isNotEmpty()
+                "costs" -> contract.costs.isNotEmpty()
+                "limitations" -> contract.limitations.isNotEmpty()
+                "forbiddenUses" -> contract.forbiddenUses.isNotEmpty()
+                "currentEligibility" -> contract.currentEligibility.isNotBlank()
+                else -> true
+            }
+        }
+    }
 
     private inline fun <reified T> bytes(value: T): Int =
         JsonSupport.json.encodeToString(value).toByteArray(Charsets.UTF_8).size
