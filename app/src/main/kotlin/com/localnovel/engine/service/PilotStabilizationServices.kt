@@ -164,6 +164,9 @@ class PilotPreflightService(private val repository: SqliteStoryRepository) {
             sessionId = sessionId,
             checks = checks,
             contextAudit = contextAudit,
+            stateVersion = session.stateVersion,
+            nextTurnNumber = session.nextTurnNumber,
+            pendingContextCount = pendingCount,
         )
     }
 }

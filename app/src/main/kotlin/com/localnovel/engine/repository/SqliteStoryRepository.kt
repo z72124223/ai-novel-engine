@@ -788,9 +788,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
 
     fun abortPendingContext(sessionId: String, contextId: String?): Int = connect { connection ->
         val sql = if (contextId == null) {
-            "UPDATE turn_logs SET validation_status = 'aborted' WHERE session_id = ? AND validation_status = 'pending'"
+            "DELETE FROM turn_logs WHERE session_id = ? AND validation_status = 'pending'"
         } else {
-            "UPDATE turn_logs SET validation_status = 'aborted' WHERE session_id = ? AND context_id = ? AND validation_status = 'pending'"
+            "DELETE FROM turn_logs WHERE session_id = ? AND context_id = ? AND validation_status = 'pending'"
         }
         connection.prepareStatement(sql).use { statement ->
             statement.setString(1, sessionId)

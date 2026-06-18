@@ -77,9 +77,20 @@ Codex may draft setting pack JSON, but formal canon writes must go through `appl
 Pilot stabilization adds no migration and no new framework.
 
 - `ContextPacketFinalizer` enforces the final serialized `ContextPacket` UTF-8 byte ceiling, stable byte accounting and final context hash.
+- `ContextBudgetForensicsService` produces read-only section accounting, largest JSON path, duplicate fragment and dangling-reference reports for context budget failures or previews.
 - `ContextAuditService` performs read-only JSON audit for context byte/hash/mandatory-field evidence.
 - `PilotPreflightService` performs read-only Pilot readiness checks and dry-runs context construction without saving a pending turn.
 - `SessionEvidenceExporter` exports read-only session evidence for Pilot review.
 - `prepare-turn` builds context, resolves setting excerpts, applies budget reduction, finalizes exact UTF-8 bytes, computes `contextHash`, and only then saves a pending turn.
 - `start-session` initializes setting-pack opening character runtime states from `characters.profile_json.initialRuntimeTemplate` within the existing session transaction.
 - `audit-context`, `pilot-preflight`, and `export-session-evidence` write report JSON files only.
+
+## Pilot-1 Context Budget V2
+
+Budget V2 keeps the same hard `24576` byte ceiling. It does not add migrations or new runtime surfaces beyond CLI diagnostics.
+
+- `explain-context-budget` builds the same turn context in preview mode and writes a read-only forensics report without creating a pending turn.
+- `prepare-turn` writes a budget failure report when final context fitting is impossible, still before saving a pending turn.
+- `ContextPacketFinalizer` trims deterministically: duplicate/verbose provenance first, then setting excerpts, lower-priority memories/knowledge/summaries/threads, and finally compact public prose.
+- Mandatory compact views may remove duplicated `initialRuntimeTemplate` and provenance text already represented by `character_states`, but must retain current goals, emotions, legal actions, scene contract, forbidden reveals, world rules and continuity constraints.
+- Setting excerpts use remaining global budget; `8192` is a section maximum, not a reserved allocation.

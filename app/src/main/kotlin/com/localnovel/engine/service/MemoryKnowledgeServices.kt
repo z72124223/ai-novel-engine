@@ -5,6 +5,7 @@ import com.localnovel.engine.model.CharacterKnowledgeClaim
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.CharacterState
 import com.localnovel.engine.model.ContextBudget
+import com.localnovel.engine.model.ContextBudgetForensicsReport
 import com.localnovel.engine.model.ContextKnowledgeClaim
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DeltaOperationType
@@ -18,6 +19,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -206,7 +208,7 @@ class ContextBudgeter(
             ),
         )
         var size = encodedSize(candidate)
-        while (size > maxContextBytes && (memories.isNotEmpty() || claims.isNotEmpty())) {
+        while (size > maxContextBytes && context.relevantSettings.isEmpty() && (memories.isNotEmpty() || claims.isNotEmpty())) {
             if (memories.isNotEmpty()) {
                 memories = memories.dropLast(1)
                 reasons += "omitted lowest-ranked memory"
@@ -256,13 +258,17 @@ class ContextBudgeter(
         JsonSupport.json.encodeToString(context.copy(contextHash = "")).toByteArray(Charsets.UTF_8).size
 }
 
-class ContextBudgetUnsatisfiableException(message: String) : IllegalStateException(message)
+class ContextBudgetUnsatisfiableException(
+    message: String,
+    val report: ContextBudgetForensicsReport? = null,
+) : IllegalStateException(message)
 
 class ContextPacketFinalizer(
     private val maxContextBytes: Int = 24576,
 ) {
     fun finalize(context: ContextPacket, hashContext: (ContextPacket) -> String): ContextPacket {
         var candidate = context.copy(contextHash = "")
+        val before = candidate
         val reasons = candidate.contextBudget.truncationReasons.toMutableList()
         repeat(512) {
             val finalized = withStableAccounting(candidate, hashContext, reasons)
@@ -270,12 +276,22 @@ class ContextPacketFinalizer(
             val reduced = reduceOne(candidate, reasons)
                 ?: throw ContextBudgetUnsatisfiableException(
                     "CONTEXT_BUDGET_UNSATISFIABLE: final ContextPacket is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
+                    ContextBudgetForensicsService(maxContextBytes).report(
+                        before = before,
+                        after = finalized,
+                        unsatisfiedReason = "No optional or compactable context sections remain; final ContextPacket is ${encodedSize(finalized)} bytes.",
+                    ),
                 )
             candidate = reduced.copy(contextHash = "")
         }
         val finalized = withStableAccounting(candidate, hashContext, reasons)
         throw ContextBudgetUnsatisfiableException(
             "CONTEXT_BUDGET_UNSATISFIABLE: context budget did not converge, final size is ${encodedSize(finalized)} bytes, max is $maxContextBytes",
+            ContextBudgetForensicsService(maxContextBytes).report(
+                before = before,
+                after = finalized,
+                unsatisfiedReason = "Context budget reduction did not converge within 512 deterministic steps.",
+            ),
         )
     }
 
@@ -318,6 +334,18 @@ class ContextPacketFinalizer(
     }
 
     private fun reduceOne(context: ContextPacket, reasons: MutableList<String>): ContextPacket? {
+        compactCanonRevisionSummary(context)?.let {
+            reasons += "compacted canon revision provenance"
+            return it
+        }
+        compactCharacterProfiles(context)?.let {
+            reasons += "compacted character profile runtime templates"
+            return it
+        }
+        deduplicateRelevantSettings(context)?.let {
+            reasons += "deduplicated relevant setting summaries"
+            return it
+        }
         if (context.relevantSettings.isNotEmpty()) {
             reasons += "omitted lowest-priority relevant setting"
             return context.copy(
@@ -438,6 +466,68 @@ class ContextPacketFinalizer(
         return null
     }
 
+    private fun compactCanonRevisionSummary(context: ContextPacket): ContextPacket? {
+        if (context.canonRevisionSummary.relevantRevisionIds.isEmpty()) return null
+        return context.copy(
+            canonRevisionSummary = context.canonRevisionSummary.copy(
+                relevantRevisionIds = emptyList(),
+            ),
+        )
+    }
+
+    private fun compactCharacterProfiles(context: ContextPacket): ContextPacket? {
+        val stateByCharacter = context.characterStates.associateBy { it.characterId }
+        var changed = false
+        val characters = context.characters.map { character ->
+            val state = stateByCharacter[character.id]
+            val profile = character.profile.toMutableMap()
+            if (state != null && profile.remove("initialRuntimeTemplate") != null) changed = true
+            val compacted = profile.filterValues { element ->
+                val text = element.allStringValues().joinToString(" ")
+                text.isBlank() || !state?.flags.orEmpty().values.any { it == text }
+            }
+            if (compacted.size != profile.size) changed = true
+            if (changed) character.copy(profile = JsonObject(compacted)) else character
+        }
+        return if (changed) context.copy(characters = characters) else null
+    }
+
+    private fun deduplicateRelevantSettings(context: ContextPacket): ContextPacket? {
+        if (context.relevantSettings.isEmpty()) return null
+        val mandatoryTexts = buildSet {
+            add(context.project.summary.normalizedFragment())
+            context.activeScene?.let { add(it.summary.normalizedFragment()) }
+            context.characters.forEach {
+                add(it.description.normalizedFragment())
+                add(it.name.normalizedFragment())
+            }
+            context.worldRules.forEach {
+                add(it.content.normalizedFragment())
+                add(it.title.normalizedFragment())
+            }
+            context.facts.forEach { add(it.content.normalizedFragment()) }
+            context.items.forEach {
+                add(it.description.normalizedFragment())
+                add(it.name.normalizedFragment())
+            }
+            context.techniques.forEach {
+                add(it.description.normalizedFragment())
+                add(it.name.normalizedFragment())
+            }
+        }.filter { it.length >= 20 }.toSet()
+        var changed = false
+        val settings = context.relevantSettings.map { setting ->
+            val duplicate = setting.summary.normalizedFragment() in mandatoryTexts
+            if (duplicate && setting.summary.isNotBlank()) {
+                changed = true
+                setting.copy(summary = "", relationPath = setting.relationPath.take(1))
+            } else {
+                setting
+            }
+        }
+        return if (changed) context.copy(relevantSettings = settings) else null
+    }
+
     private fun shrinkDistantCharacters(context: ContextPacket): ContextPacket? {
         val currentLocation = context.activeScene?.locationId
         val activeIds = context.characterStates
@@ -541,6 +631,16 @@ class ContextPacketFinalizer(
     private fun encodedSize(context: ContextPacket): Int =
         JsonSupport.json.encodeToString(context).toByteArray(Charsets.UTF_8).size
 }
+
+private fun String.normalizedFragment(): String =
+    trim().replace(Regex("\\s+"), " ")
+
+private fun JsonElement.allStringValues(): List<String> =
+    when (this) {
+        is JsonObject -> values.flatMap { it.allStringValues() }
+        is JsonArray -> flatMap { it.allStringValues() }
+        is JsonPrimitive -> listOfNotNull(contentOrNull)
+    }
 
 class KnowledgeBoundaryValidator(private val repository: SqliteStoryRepository) {
     fun validate(context: ContextPacket, result: AiTurnResult): List<ValidationError> {

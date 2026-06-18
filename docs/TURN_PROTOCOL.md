@@ -156,3 +156,22 @@ Pilot runs should also use:
 ```
 
 Both commands are read-only. `pilot-preflight` performs a dry-run context build without saving a pending turn.
+
+## Pilot-1 Context Budget V2 Protocol
+
+`contextBudget.maxBytes` remains `24576`; the protocol does not allow a larger turn context.
+
+`prepare-turn` may also read player input from `--input-file` for exact UTF-8 multiline input. If final fitting fails, it emits a budget failure report and still does not save a pending context.
+
+`abort-pending-turn` deletes unresolved pending contexts only. It never deletes applied turn logs and never changes formal story state.
+
+`explain-context-budget` is read-only and uses the same context construction path as `prepare-turn`, but never writes `turn_logs`. Its report includes:
+
+- section-level UTF-8 bytes before and after trimming
+- mandatory versus optional bytes
+- largest JSON paths
+- duplicate content groups
+- removed and retained items
+- dangling-reference and safety-field checks
+
+Budget V2 fitting is deterministic. It compacts duplicated provenance and runtime templates, lets settings share the remaining global budget with memories/knowledge/summaries, and computes `contextHash` only from the final fitted payload.

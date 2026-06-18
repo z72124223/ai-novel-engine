@@ -12,6 +12,7 @@ import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
+import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
 import com.localnovel.engine.service.DependencyGraphService
 import com.localnovel.engine.service.ImpactAnalyzer
 import com.localnovel.engine.service.MultiTurnRuntime
@@ -80,6 +81,7 @@ class Cli {
                 "audit-context" -> auditContext(options)
                 "export-session-evidence" -> exportSessionEvidence(options)
                 "pilot-preflight" -> pilotPreflight(options)
+                "explain-context-budget" -> explainContextBudget(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -213,11 +215,23 @@ class Cli {
 
     private fun prepareTurn(options: Map<String, String>): Int {
         val repository = repository(options)
-        val context = MultiTurnRuntime(repository).prepareTurn(
-            sessionId = options.required("session"),
-            playerInput = options.required("input"),
-        )
+        val sessionId = options.required("session")
+        val playerInput = options["input"]
+            ?: options["input-file"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
+            ?: error("Missing required option --input or --input-file")
         val out = Path.of(options.required("out"))
+        val context = try {
+            MultiTurnRuntime(repository).prepareTurn(
+                sessionId = sessionId,
+                playerInput = playerInput,
+            )
+        } catch (error: ContextBudgetUnsatisfiableException) {
+            val report = error.report ?: MultiTurnRuntime(repository).explainContextBudget(sessionId, playerInput)
+            val reportPath = options["budget-report"]?.let { Path.of(it) } ?: out.budgetFailurePath()
+            writeJson(reportPath, report)
+            println("budgetFailureReport=$reportPath")
+            throw error
+        }
         out.parent?.let { Files.createDirectories(it) }
         Files.writeString(out, JsonSupport.json.encodeToString(context))
         println("contextId=${context.contextId}")
@@ -437,6 +451,27 @@ class Cli {
         return if (report.valid) 0 else 1
     }
 
+    private fun explainContextBudget(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val input = options["input"]
+            ?: options["input-file"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
+            ?: error("Missing required option --input or --input-file")
+        val report = MultiTurnRuntime(repository).explainContextBudget(
+            sessionId = options.required("session"),
+            playerInput = input,
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("canFit=${report.canFit}")
+        println("candidateBytesBeforeTrimming=${report.candidateBytesBeforeTrimming}")
+        println("candidateBytesAfterTrimming=${report.candidateBytesAfterTrimming}/${report.maxContextBytes}")
+        println("bytesOverLimit=${report.bytesOverLimit}")
+        println("mandatoryBytes=${report.mandatoryBytes}")
+        println("optionalBytesRemaining=${report.optionalBytesRemaining}")
+        println("duplicateGroups=${report.duplicateContentGroups.size}")
+        if (report.unsatisfiedReason.isNotBlank()) println("unsatisfiedReason=${report.unsatisfiedReason}")
+        return if (report.canFit) 0 else 1
+    }
+
     private fun exportSessionEvidence(options: Map<String, String>): Int {
         val repository = repository(options)
         val export = SessionEvidenceExporter(repository).export(options.required("session"))
@@ -456,6 +491,9 @@ class Cli {
         )
         options["out"]?.let { writeJson(Path.of(it), report) }
         println("valid=${report.valid}")
+        println("stateVersion=${report.stateVersion}")
+        println("nextTurnNumber=${report.nextTurnNumber}")
+        println("pendingContextCount=${report.pendingContextCount}")
         report.checks.forEach { println("${it.name}=${it.passed} ${it.details}") }
         report.contextAudit?.let {
             println("contextBytes=${it.actualBytes}/${it.maxBytes}")
@@ -651,7 +689,7 @@ class Cli {
               run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>
               show-state --db <path> --project <id>
               start-session [--db <path>] --project <id> --scene <id>
-              prepare-turn [--db <path>] --session <id> --input <text> --out <path>
+              prepare-turn [--db <path>] --session <id> (--input <text> | --input-file <path>) --out <path>
               resolve-turn [--db <path>] --session <id> --result <path>
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
@@ -675,7 +713,16 @@ class Cli {
               audit-context --file <path> [--out <path>]
               export-session-evidence [--db <path>] --session <id> --out <path>
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
+              explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
             """.trimIndent(),
         )
     }
+}
+
+private fun Path.budgetFailurePath(): Path {
+    val fileName = fileName.toString()
+    val dot = fileName.lastIndexOf('.')
+    val base = if (dot > 0) fileName.substring(0, dot) else fileName
+    val extension = if (dot > 0) fileName.substring(dot) else ".json"
+    return (parent ?: Path.of(".")).resolve("${base}_budget_failure$extension")
 }

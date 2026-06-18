@@ -83,3 +83,12 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - The template must not contain unrevealed secret content, author-only secret content, or a story-thread `directorGoal`.
 - `start-session` creates missing opening `character_states` from the template in one transaction and rolls back on initialization failure.
 - `pilot-preflight` and `export-session-evidence` are read-only commands.
+
+## Pilot-1 Context Budget V2 Rules
+
+- `explain-context-budget` must be read-only: it cannot create pending contexts, advance stateVersion, write recall logs, or apply state deltas.
+- `prepare-turn` may produce a budget failure report, but failed fitting must still leave no pending turn.
+- Compact mandatory views may remove duplicated prose and provenance, but must preserve protocol identity, scene contract, forbidden reveals, hard world rules, active character runtime state, continuity constraints, and item/technique legality data that remains in context.
+- Trimming order must be deterministic and must not depend on session-specific or player-input-specific hard-coded exceptions.
+- `settingContextBudget.maxBytes` remains a maximum, not a reserved quota; settings must yield to higher-priority safety and runtime sections when the global context budget is tight.
+- `contextBudget.actualBytes` and `contextHash` must be computed from the final compacted payload.

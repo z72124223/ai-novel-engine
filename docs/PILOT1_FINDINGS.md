@@ -203,3 +203,20 @@ Do not proceed directly to MVP-6 yet. First complete a narrow Pilot-1 stabilizat
 4. Reduce Pilot context size under 24576 bytes while retaining safety fields and relevant setting excerpts.
 
 After those are verified, the next planned MVP can return to `MVP-6: checkpoint, branching timeline, non-destructive rewind, and replayability`.
+
+## Pilot-1 Context Budget V2 Follow-Up
+
+Turn 4 of the stabilized rerun exposed a concrete context budget blocker: the candidate was `24957 / 24576` bytes and failed before pending context creation. The follow-up fix is tracked by `docs/PILOT1_CONTEXT_BUDGET_V2_SPEC.md`.
+
+Confirmed root causes from budget forensics:
+
+- `relevantSettings` could be trimmed to an empty section while `canonRevisionSummary.relevantRevisionIds` still carried verbose provenance.
+- Character `profile.initialRuntimeTemplate` duplicated runtime information already present in `character_states.flags`.
+- Recent events duplicated `summary` inside `payload.summary`.
+- Settings, memories and knowledge needed to share global remaining bytes instead of letting an early budget pass discard high-value memories before setting excerpts were compacted.
+
+Required next validation before continuing Pilot turns:
+
+- Run `explain-context-budget` on the formal DB only in read-only mode.
+- Reproduce prepare/audit/abort on `data/pilot1-budget-v2-e2e.db`, not on the formal Pilot DB.
+- Resume formal Turn 4 only after context bytes fit under `24576`, audit passes, and formal `stateVersion=3` / `nextTurnNumber=4` remain unchanged.

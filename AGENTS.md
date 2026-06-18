@@ -44,6 +44,8 @@
 - Use `audit-context` before drafting a manual AI result.
 - Use `pilot-preflight` before handing a fresh Pilot session to the author.
 - Use `export-session-evidence` for read-only Pilot evidence.
+- Use `explain-context-budget` when `prepare-turn` is close to or over the 24576-byte ceiling; it is read-only and reports section bytes, duplicate fragments, mandatory bytes and trimming simulation.
+- Context budget fixes must use deterministic trimming, compact mandatory views and dynamic allocation; never raise `contextBudget.maxBytes` above 24576.
 - Do not reuse old Pilot sessions as formal rerun evidence.
 - Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
 - See `docs/PILOT1_STABILIZATION_SPEC.md` and `docs/PILOT1_STABILIZATION.md`.
