@@ -16,3 +16,12 @@
 ```powershell
 ./gradlew.bat clean test
 ```
+
+## MVP-4 Scene Thread Runtime
+
+- Use only additive migration `004_scene_thread_runtime.sql`; do not edit `001`, `002`, or `003`.
+- Keep scene, thread, world-event, time and transition writes behind `resolve-turn` validation and the SQLite transaction.
+- Do not let `story_threads.director_goal` become a character goal, character knowledge, action intent, visible action, or hidden motive.
+- Scene `READY_TO_CLOSE` means a transition is allowed, not forced.
+- Characters may only act from their own goals, emotions, memories, knowledge, current location, reachable items and available actions.
+- AI/Codex may draft JSON result files, but must not write SQLite directly or bypass `contextHash`, `stateVersion`, `TransitionValidator`, or `NarrativeContinuityValidator`.

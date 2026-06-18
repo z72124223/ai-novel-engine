@@ -48,6 +48,11 @@ class Cli {
                 "show-character-mind" -> showCharacterMind(options)
                 "preview-recall" -> previewRecall(options)
                 "explain-context" -> explainContext(options)
+                "show-scene" -> showScene(options)
+                "show-threads" -> showThreads(options)
+                "preview-transitions" -> previewTransitions(options)
+                "show-world-events" -> showWorldEvents(options)
+                "explain-scene-state" -> explainSceneState(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -244,6 +249,91 @@ class Cli {
         return 0
     }
 
+    private fun showScene(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val scene = repository.getActiveScene(session.projectId)
+        val lifecycle = repository.getSceneLifecycle(session.id)
+        println("sceneInstanceId=${lifecycle.sceneInstanceId}")
+        println("sceneId=${lifecycle.sceneId}")
+        println("sceneTitle=${scene?.title ?: lifecycle.sceneId}")
+        println("status=${lifecycle.status}")
+        println("visitNumber=${lifecycle.visitNumber}")
+        println("readyToClose=${lifecycle.readyToClose}")
+        println("worldTime=${session.worldTime}")
+        println("elapsedMinutes=${session.elapsedMinutes}")
+        println("requirements:")
+        repository.listSceneRequirementViews(session.id).forEach {
+            println("- ${it.requirementId} [${it.type}] status=${it.status} progress=${it.progress}: ${it.description}")
+        }
+        println("availableTransitions:")
+        repository.listAvailableTransitions(session.id, options["input"].orEmpty()).forEach {
+            println("- ${it.transitionId} -> ${it.toSceneId} ok=${it.prerequisitesSatisfied} travel=${it.travelMinutes} forced=${it.forcedAllowed} reason=${it.visibleReason}")
+        }
+        println("activeThreads:")
+        repository.listActiveStoryThreadViews(session.id).forEach {
+            println("- ${it.threadId} [${it.type}] status=${it.status} progress=${it.progress} urgency=${it.urgency}: ${it.publicSummary}")
+        }
+        println("pendingWorldEvents:")
+        repository.listPendingWorldEventViews(session.id).forEach {
+            println("- ${it.eventId} [${it.type}] ${it.publicEffect}")
+        }
+        return 0
+    }
+
+    private fun showThreads(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        repository.listActiveStoryThreadViews(session.id).forEach {
+            println("${it.threadId} [${it.type}] status=${it.status} progress=${it.progress} urgency=${it.urgency}")
+            println("  publicSummary=${it.publicSummary}")
+            println("  directorOnlyGuidance=${it.directorGuidance}")
+        }
+        return 0
+    }
+
+    private fun previewTransitions(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val sessionId = options.required("session")
+        val input = options.required("input")
+        repository.listAvailableTransitions(sessionId, input).forEach {
+            println("${it.transitionId} -> ${it.toSceneId}")
+            println("  ok=${it.prerequisitesSatisfied}")
+            println("  requiredIntent=${it.playerIntentRequired}")
+            println("  unmet=${it.unmetPrerequisites.joinToString("; ")}")
+            println("  travelMinutes=${it.travelMinutes}")
+            println("  forcedAllowed=${it.forcedAllowed}")
+        }
+        return 0
+    }
+
+    private fun showWorldEvents(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        repository.tableRows("scheduled_world_events")
+            .filter { it["project_id"] == session.projectId && (it["session_id"].isNullOrBlank() || it["session_id"] == session.id) }
+            .sortedWith(compareBy<Map<String, String>> { it["due_turn_number"]?.toIntOrNull() ?: Int.MAX_VALUE }.thenBy { it["id"] })
+            .forEach {
+                println("${it["id"]} [${it["event_type"]}] status=${it["status"]} dueTurn=${it["due_turn_number"]} triggered=${it["triggered_turn_number"]} consumed=${it["consumed_turn_number"]}")
+            }
+        return 0
+    }
+
+    private fun explainSceneState(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val lifecycle = repository.getSceneLifecycle(session.id)
+        println("sceneInstanceId=${lifecycle.sceneInstanceId}")
+        println("status=${lifecycle.status}")
+        println("readyToClose=${lifecycle.readyToClose}")
+        println("closureReasons=${lifecycle.closureReasons.joinToString("; ")}")
+        repository.listSceneRequirementViews(session.id).forEach {
+            val blocking = it.type == "REQUIRED" && it.status != "COMPLETED"
+            println("- ${it.requirementId} type=${it.type} status=${it.status} progress=${it.progress} blocking=$blocking")
+        }
+        return 0
+    }
+
     private fun showCharacterMind(options: Map<String, String>): Int {
         val repository = repository(options)
         val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
@@ -360,6 +450,11 @@ class Cli {
               show-character-mind [--db <path>] --session <id> --character <id>
               preview-recall [--db <path>] --session <id> --character <id> --input <text>
               explain-context --file <path>
+              show-scene [--db <path>] --session <id> [--input <text>]
+              show-threads [--db <path>] --session <id>
+              preview-transitions [--db <path>] --session <id> --input <text>
+              show-world-events [--db <path>] --session <id>
+              explain-scene-state [--db <path>] --session <id>
             """.trimIndent(),
         )
     }

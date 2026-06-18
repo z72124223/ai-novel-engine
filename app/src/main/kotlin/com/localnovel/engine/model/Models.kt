@@ -278,6 +278,115 @@ data class ContextBudget(
 )
 
 @Serializable
+data class StoryThread(
+    val id: String,
+    val projectId: String,
+    val threadType: String,
+    val title: String,
+    val directorGoal: String = "",
+    val publicSummary: String,
+    val priority: Int = 0,
+    val visibility: String = "director_only",
+    val parentThreadId: String? = null,
+)
+
+@Serializable
+data class SessionThreadState(
+    val sessionId: String,
+    val threadId: String,
+    val status: String = "OPEN",
+    val progress: Int = 0,
+    val urgency: Int = 0,
+    val blockedReason: String = "",
+    val lastAdvancedTurn: Int = 0,
+    val evidence: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SceneRequirementDefinition(
+    val id: String,
+    val sceneId: String,
+    val requirementType: String,
+    val description: String,
+    val completionCondition: JsonObject = JsonObject(emptyMap()),
+    val failureCondition: JsonObject = JsonObject(emptyMap()),
+    val priority: Int = 0,
+    val visibility: String = "director_only",
+)
+
+@Serializable
+data class SceneRequirementView(
+    val requirementId: String,
+    val type: String,
+    val description: String,
+    val status: String = "OPEN",
+    val progress: Int = 0,
+    val remainingCondition: String = "",
+    val directorOnly: Boolean = true,
+)
+
+@Serializable
+data class SceneLifecycle(
+    val sceneInstanceId: String = "",
+    val sceneId: String = "",
+    val visitNumber: Int = 1,
+    val status: String = "ACTIVE",
+    val startedTurnNumber: Int = 1,
+    val readyToClose: Boolean = false,
+    val closureReasons: List<String> = emptyList(),
+)
+
+@Serializable
+data class ActiveStoryThreadView(
+    val threadId: String,
+    val type: String,
+    val publicSummary: String,
+    val status: String,
+    val progress: Int,
+    val urgency: Int,
+    val directorGuidance: String = "",
+)
+
+@Serializable
+data class AvailableTransition(
+    val transitionId: String,
+    val toSceneId: String,
+    val targetLocation: String? = null,
+    val playerIntentRequired: String = "",
+    val prerequisitesSatisfied: Boolean = true,
+    val unmetPrerequisites: List<String> = emptyList(),
+    val travelMinutes: Int = 0,
+    val forcedAllowed: Boolean = false,
+    val visibleReason: String = "",
+)
+
+@Serializable
+data class PendingWorldEventView(
+    val eventId: String,
+    val type: String,
+    val publicEffect: String,
+    val dueReason: String,
+    val allowedNarrativeUses: List<String> = emptyList(),
+    val forbiddenCharacterUses: List<String> = emptyList(),
+)
+
+@Serializable
+data class WorldClock(
+    val worldTime: String = "",
+    val elapsedMinutes: Int = 0,
+    val turnNumber: Int = 0,
+)
+
+@Serializable
+data class ContinuityConstraints(
+    val currentSceneInstanceId: String = "",
+    val currentSceneLocationId: String? = null,
+    val characterLocations: Map<String, String?> = emptyMap(),
+    val itemLocations: Map<String, String?> = emptyMap(),
+    val closedSceneSummaries: List<String> = emptyList(),
+)
+
+@Serializable
 data class ContextPacket(
     val protocolVersion: String = "2",
     val project: Project,
@@ -308,6 +417,13 @@ data class ContextPacket(
     val retrievedMemories: List<RetrievedMemory> = emptyList(),
     val knowledgeClaims: List<ContextKnowledgeClaim> = emptyList(),
     val contextBudget: ContextBudget = ContextBudget(),
+    val sceneLifecycle: SceneLifecycle = SceneLifecycle(),
+    val sceneRequirements: List<SceneRequirementView> = emptyList(),
+    val activeStoryThreads: List<ActiveStoryThreadView> = emptyList(),
+    val availableTransitions: List<AvailableTransition> = emptyList(),
+    val pendingWorldEvents: List<PendingWorldEventView> = emptyList(),
+    val worldClock: WorldClock = WorldClock(),
+    val continuityConstraints: ContinuityConstraints = ContinuityConstraints(),
 )
 
 @Serializable
@@ -332,6 +448,11 @@ data class AiTurnResult(
     val newTasks: List<Task> = emptyList(),
     val memoryCandidates: List<MemoryCandidate> = emptyList(),
     val knowledgeUpdates: List<KnowledgeUpdate> = emptyList(),
+    val sceneRequirementUpdates: List<SceneRequirementUpdate> = emptyList(),
+    val threadProgressUpdates: List<ThreadProgressUpdate> = emptyList(),
+    val transitionProposal: TransitionProposal? = null,
+    val worldEventAcknowledgements: List<WorldEventAcknowledgement> = emptyList(),
+    val timeAdvanceProposal: TimeAdvanceProposal? = null,
     val validationNotes: List<String> = emptyList(),
     val notes: String = "",
 )
@@ -355,6 +476,11 @@ data class DemoProjectSeed(
     val dependencyEdges: List<DependencyEdge> = emptyList(),
     val tasks: List<Task> = emptyList(),
     val knowledgeClaims: List<CharacterKnowledgeClaim> = emptyList(),
+    val storyThreads: List<StoryThread> = emptyList(),
+    val sceneRequirements: List<SceneRequirementDefinition> = emptyList(),
+    val locationConnections: List<LocationConnection> = emptyList(),
+    val sceneTransitions: List<SceneTransitionDefinition> = emptyList(),
+    val scheduledWorldEvents: List<ScheduledWorldEventSeed> = emptyList(),
 )
 
 @Serializable
@@ -365,6 +491,9 @@ data class StorySession(
     val nextTurnNumber: Int,
     val stateVersion: Int,
     val status: String = "active",
+    val currentSceneInstanceId: String? = null,
+    val worldTime: String = "",
+    val elapsedMinutes: Int = 0,
 )
 
 @Serializable
@@ -451,6 +580,98 @@ data class KnowledgeUpdate(
     val sourceFactIds: List<String> = emptyList(),
     val sourceMemoryIds: List<String> = emptyList(),
     val reason: String,
+)
+
+@Serializable
+data class SceneRequirementUpdate(
+    val requirementId: String,
+    val requestedStatus: String,
+    val progressDelta: Int = 0,
+    val evidenceEventIds: List<String> = emptyList(),
+    val evidenceFactIds: List<String> = emptyList(),
+    val evidenceStateDeltaIds: List<String> = emptyList(),
+    val reason: String,
+)
+
+@Serializable
+data class ThreadProgressUpdate(
+    val threadId: String,
+    val progressDelta: Int = 0,
+    val requestedStatus: String = "OPEN",
+    val evidenceEventIds: List<String> = emptyList(),
+    val evidenceFactIds: List<String> = emptyList(),
+    val reason: String,
+)
+
+@Serializable
+data class TransitionProposal(
+    val fromSceneInstanceId: String,
+    val transitionId: String,
+    val toSceneId: String,
+    val proposalType: String,
+    val playerIntentEvidence: String = "",
+    val worldEventEvidence: String? = null,
+    val participatingCharacterIds: List<String> = emptyList(),
+    val reason: String,
+)
+
+@Serializable
+data class WorldEventAcknowledgement(
+    val eventId: String,
+    val narrativeUse: String,
+    val perceivedByCharacterIds: List<String> = emptyList(),
+    val resultingEventIds: List<String> = emptyList(),
+    val reason: String,
+)
+
+@Serializable
+data class TimeAdvanceProposal(
+    val minutes: Int,
+    val sourceType: String,
+    val sourceId: String,
+    val reason: String,
+)
+
+@Serializable
+data class LocationConnection(
+    val id: String,
+    val projectId: String,
+    val fromLocationId: String,
+    val toLocationId: String,
+    val connectionType: String = "walk",
+    val bidirectional: Boolean = true,
+    val travelMinutes: Int = 0,
+    val prerequisites: JsonObject = JsonObject(emptyMap()),
+    val restrictions: JsonObject = JsonObject(emptyMap()),
+    val visibility: String = "public",
+)
+
+@Serializable
+data class SceneTransitionDefinition(
+    val id: String,
+    val projectId: String,
+    val fromSceneId: String,
+    val toSceneId: String,
+    val transitionType: String = "walk",
+    val prerequisites: JsonObject = JsonObject(emptyMap()),
+    val costs: JsonObject = JsonObject(emptyMap()),
+    val requiredPlayerIntent: String = "",
+    val forcedTransitionAllowed: Boolean = false,
+    val visibility: String = "public",
+)
+
+@Serializable
+data class ScheduledWorldEventSeed(
+    val id: String,
+    val projectId: String,
+    val sessionId: String? = null,
+    val eventType: String,
+    val dueTurnNumber: Int,
+    val dueWorldTime: String? = null,
+    val triggerConditions: JsonObject = JsonObject(emptyMap()),
+    val payload: JsonObject = JsonObject(emptyMap()),
+    val visibility: String = "public",
+    val status: String = "scheduled",
 )
 
 data class ValidationError(

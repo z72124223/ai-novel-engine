@@ -41,3 +41,17 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - If a requested update tries to jump a conflicted belief straight to `KNOWN` without strong evidence, the runtime keeps the conflict visible and transitions toward `DOUBTED` instead.
 - Emotion deltas require `emotion`、`delta`、`trigger`、`sourceType/sourceId` and `reason`; normal single-turn absolute change is capped at 25.
 - `prepare-turn` cannot write recall logs or increase recall counts. Successful `resolve-turn` records recall logs and increments each included memory once.
+
+## MVP-4 Scene Thread Rules
+
+- A session must have one current `ACTIVE` or `READY_TO_CLOSE` scene instance.
+- `sceneRequirementUpdates` must reference requirements in context and cite event, fact, or state-delta evidence for completion/failure.
+- Normal transitions require completed `REQUIRED` requirements, reachable locations, satisfied prerequisites, matching `fromSceneInstanceId`, and no explicit player refusal.
+- `WORLD_FORCED` transitions require a pending world event evidence id and a transition that allows forced movement.
+- Scene completion does not force player transition by itself.
+- `threadProgressUpdates` must reference active threads in context, cite evidence, and keep progress deltas bounded.
+- `story_threads.director_goal` must not become a character intent, visible action, hidden motive, or character knowledge.
+- `worldEventAcknowledgements` must reference due `pendingWorldEvents`; rejected, stale, or duplicate results must not consume events.
+- `timeAdvanceProposal` requires minutes, source and reason; accepted transition travel time is applied in the same transaction.
+- Character actions must respect current scene location and item owner/location reachability.
+- Forbidden reveals are scanned across MVP-4 result surfaces including requirement updates, thread updates, transition proposal, world event acknowledgements and time advance reason.

@@ -98,3 +98,25 @@ Hash rule: the engine serializes `ContextPacket` with `contextHash = ""` using t
 - `knowledgeUpdates`：AI 只能提出認知狀態更新，engine 會檢查 evidence 與 conflict transition。
 
 `prepare-turn` 仍是 read-only。`resolve-turn` 成功後才正式寫入 memory、knowledge、recall logs 與 recall count。
+
+## MVP-4 Scene Thread Protocol
+
+`ContextPacket` adds:
+
+- `sceneLifecycle`
+- `sceneRequirements`
+- `activeStoryThreads`
+- `availableTransitions`
+- `pendingWorldEvents`
+- `worldClock`
+- `continuityConstraints`
+
+`AiTurnResult` adds:
+
+- `sceneRequirementUpdates`
+- `threadProgressUpdates`
+- `transitionProposal`
+- `worldEventAcknowledgements`
+- `timeAdvanceProposal`
+
+AI/Codex must only read the current context JSON when drafting a result. It must not write SQLite directly. `resolve-turn` reloads the pending context and validates `contextId`, `sessionId`, `turnNumber`, `baseStateVersion`, `contextHash`, and `resultId` before accepting these fields.

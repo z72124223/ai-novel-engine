@@ -33,8 +33,20 @@
 - Recall logs and recall count updates only after successful resolve.
 - Four-turn local memory/knowledge acceptance.
 
+## MVP-4
+
+- Scene instances with visit numbers and lifecycle status.
+- Scene requirements with evidence-backed progress.
+- Story thread state without leaking director goals into character intent.
+- Location-aware transition preview and validation.
+- Scheduled world events and one-time acknowledgement/consume.
+- World clock and travel-time accounting inside resolve transaction.
+- Continuity constraints for actor location, item reachability and closed-scene summaries.
+- Seven-turn cross-scene acceptance and twenty-turn deterministic soak.
+
 ## Later
 
+- Non-blocking technical debt: `:app:installDist` currently generates scripts that cannot run because the app jar task is disabled to avoid OneDrive reparse-file issues during builds. CLI acceptance can still run through Gradle or the compiled `MainKt` classpath. Revisit packaging separately without changing MVP-4 runtime behavior.
 - Richer dependency graph queries.
 - More granular visibility levels for secrets and facts.
 - Replay/export tooling for turn logs.

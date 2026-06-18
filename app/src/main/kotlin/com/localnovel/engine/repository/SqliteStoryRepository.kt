@@ -8,6 +8,7 @@ import com.localnovel.engine.model.CharacterProfile
 import com.localnovel.engine.model.CharacterState
 import com.localnovel.engine.model.ContextKnowledgeClaim
 import com.localnovel.engine.model.ContextPacket
+import com.localnovel.engine.model.ContinuityConstraints
 import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DependencyEdge
 import com.localnovel.engine.model.Event
@@ -15,15 +16,26 @@ import com.localnovel.engine.model.Fact
 import com.localnovel.engine.model.Faction
 import com.localnovel.engine.model.Item
 import com.localnovel.engine.model.Location
+import com.localnovel.engine.model.LocationConnection
 import com.localnovel.engine.model.MemoryCandidate
 import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.RetrievedMemory
+import com.localnovel.engine.model.ScheduledWorldEventSeed
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
+import com.localnovel.engine.model.SceneLifecycle
+import com.localnovel.engine.model.SceneRequirementView
+import com.localnovel.engine.model.SceneRequirementDefinition
+import com.localnovel.engine.model.SceneTransitionDefinition
 import com.localnovel.engine.model.Secret
+import com.localnovel.engine.model.SessionThreadState
+import com.localnovel.engine.model.StoryThread
 import com.localnovel.engine.model.StorySession
 import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
+import com.localnovel.engine.model.ActiveStoryThreadView
+import com.localnovel.engine.model.AvailableTransition
+import com.localnovel.engine.model.PendingWorldEventView
 import com.localnovel.engine.model.WorldRule
 import com.localnovel.engine.model.allDeltaOperations
 import com.localnovel.engine.support.JsonSupport
@@ -47,7 +59,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connect { connection ->
             connection.createStatement().use { statement ->
                 statement.executeUpdate("PRAGMA foreign_keys = ON")
-                listOf("001_init.sql", "002_multi_turn_runtime.sql", "003_memory_knowledge_runtime.sql").forEach { fileName ->
+                listOf("001_init.sql", "002_multi_turn_runtime.sql", "003_memory_knowledge_runtime.sql", "004_scene_thread_runtime.sql").forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
                     migration.readText().splitToStatements().forEach { sql ->
@@ -80,6 +92,11 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 seed.dependencyEdges.forEach { insertDependencyEdge(connection, it) }
                 seed.tasks.forEach { insertTask(connection, it) }
                 seed.knowledgeClaims.forEach { insertKnowledgeClaim(connection, it) }
+                seed.storyThreads.forEach { insertStoryThread(connection, it) }
+                seed.sceneRequirements.forEach { insertSceneRequirement(connection, it) }
+                seed.locationConnections.forEach { insertLocationConnection(connection, it) }
+                seed.sceneTransitions.forEach { insertSceneTransition(connection, it) }
+                seed.scheduledWorldEvents.forEach { insertScheduledWorldEvent(connection, it) }
                 connection.commit()
             } catch (error: Throwable) {
                 connection.rollback()
@@ -391,10 +408,177 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connect { connection -> insertKnowledgeClaim(connection, claim) }
     }
 
+    fun getSceneLifecycle(sessionId: String): SceneLifecycle = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        val instanceId = session.currentSceneInstanceId ?: ensureActiveSceneInstance(connection, session)
+        connection.prepareStatement(
+            """
+            SELECT id, scene_id, visit_number, status, started_turn_number, summary
+            FROM scene_instances
+            WHERE id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, instanceId)
+            statement.executeQuery().use { rows ->
+                if (!rows.next()) return@connect SceneLifecycle()
+                val status = rows.getString("status")
+                val reasons = if (rows.getString("summary").isNullOrBlank()) emptyList() else listOf(rows.getString("summary"))
+                SceneLifecycle(
+                    sceneInstanceId = rows.getString("id"),
+                    sceneId = rows.getString("scene_id"),
+                    visitNumber = rows.getInt("visit_number"),
+                    status = status,
+                    startedTurnNumber = rows.getInt("started_turn_number"),
+                    readyToClose = status == "READY_TO_CLOSE",
+                    closureReasons = reasons,
+                )
+            }
+        }
+    }
+
+    fun listSceneRequirementViews(sessionId: String): List<SceneRequirementView> = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        val instanceId = session.currentSceneInstanceId ?: ensureActiveSceneInstance(connection, session)
+        connection.prepareStatement(
+            """
+            SELECT r.id, r.requirement_type, r.description, r.visibility, s.status, s.progress
+            FROM scene_requirements r
+            LEFT JOIN session_scene_requirement_states s
+              ON s.requirement_id = r.id AND s.session_id = ? AND s.scene_instance_id = ?
+            WHERE r.scene_id = ?
+            ORDER BY r.priority DESC, r.id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, session.id)
+            statement.setString(2, instanceId)
+            statement.setString(3, session.currentSceneId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        val status = rows.getString("status") ?: "OPEN"
+                        add(
+                            SceneRequirementView(
+                                requirementId = rows.getString("id"),
+                                type = rows.getString("requirement_type"),
+                                description = rows.getString("description"),
+                                status = status,
+                                progress = rows.getInt("progress"),
+                                remainingCondition = if (status == "COMPLETED") "" else rows.getString("description"),
+                                directorOnly = rows.getString("visibility") != "public",
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun listActiveStoryThreadViews(sessionId: String): List<ActiveStoryThreadView> = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        connection.prepareStatement(
+            """
+            SELECT t.id, t.thread_type, t.public_summary, s.status, s.progress, s.urgency
+            FROM story_threads t
+            JOIN session_thread_states s ON s.thread_id = t.id
+            WHERE s.session_id = ? AND t.project_id = ? AND s.status NOT IN ('RESOLVED', 'FAILED', 'ABANDONED')
+            ORDER BY t.priority DESC, t.id ASC
+            LIMIT 3
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, session.id)
+            statement.setString(2, session.projectId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            ActiveStoryThreadView(
+                                threadId = rows.getString("id"),
+                                type = rows.getString("thread_type"),
+                                publicSummary = rows.getString("public_summary"),
+                                status = rows.getString("status"),
+                                progress = rows.getInt("progress"),
+                                urgency = rows.getInt("urgency"),
+                                directorGuidance = "Use evidence; do not override character goals.",
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun listAvailableTransitions(sessionId: String, playerInput: String): List<AvailableTransition> = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        selectAvailableTransitions(connection, session, playerInput)
+    }
+
+    fun listPendingWorldEventViews(sessionId: String): List<PendingWorldEventView> = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        selectPendingWorldEvents(connection, session)
+    }
+
+    fun getContinuityConstraints(sessionId: String): ContinuityConstraints = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: error("Session not found: $sessionId")
+        val scene = getActiveScene(session.projectId)
+        val characters = listCharacterStates(session.projectId).associate { it.characterId to it.locationId }
+        val items = listItems(session.projectId).associate { it.id to (it.ownerCharacterId ?: it.locationId) }
+        val closedSummaries = connection.prepareStatement(
+            """
+            SELECT summary FROM scene_instances
+            WHERE session_id = ? AND status IN ('CLOSED', 'FAILED', 'ABORTED') AND summary != ''
+            ORDER BY ended_turn_number DESC, updated_at DESC
+            LIMIT 3
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, session.id)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) add(rows.getString("summary").take(240))
+                }
+            }
+        }
+        ContinuityConstraints(
+            currentSceneInstanceId = session.currentSceneInstanceId.orEmpty(),
+            currentSceneLocationId = scene?.locationId,
+            characterLocations = characters,
+            itemLocations = items,
+            closedSceneSummaries = closedSummaries,
+        )
+    }
+
+    fun activeSceneInstanceCount(sessionId: String): Int = connect { connection ->
+        connection.prepareStatement("SELECT COUNT(*) FROM scene_instances WHERE session_id = ? AND status IN ('ACTIVE', 'READY_TO_CLOSE')").use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+    }
+
+    fun tableRows(tableName: String): List<Map<String, String>> = connect { connection ->
+        require(tableName.matches(Regex("[a-zA-Z_]+"))) { "Unsafe table name: $tableName" }
+        connection.prepareStatement("SELECT * FROM $tableName").use { statement ->
+            statement.executeQuery().use { rows ->
+                val meta = rows.metaData
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            (1..meta.columnCount).associate { index ->
+                                meta.getColumnName(index) to (rows.getString(index) ?: "")
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun getSession(sessionId: String): StorySession? = connect { connection ->
         connection.prepareStatement(
             """
-            SELECT id, project_id, current_scene_id, next_turn_number, state_version, status
+            SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
+                   current_scene_instance_id, world_time, elapsed_minutes
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -407,31 +591,75 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     }
 
     fun startSession(projectId: String, sceneId: String): StorySession = connect { connection ->
-        val session = StorySession(
-            id = newId("session"),
-            projectId = projectId,
-            currentSceneId = sceneId,
-            nextTurnNumber = 1,
-            stateVersion = 0,
-        )
-        connection.prepareStatement(
-            """
-            INSERT INTO story_sessions(id, project_id, current_scene_id, next_turn_number, state_version, status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """.trimIndent(),
-        ).use { statement ->
+        connection.autoCommit = false
+        try {
+            val sessionId = newId("session")
+            val sceneInstanceId = newId("scene-instance")
+            val session = StorySession(
+                id = sessionId,
+                projectId = projectId,
+                currentSceneId = sceneId,
+                nextTurnNumber = 1,
+                stateVersion = 0,
+                currentSceneInstanceId = sceneInstanceId,
+                worldTime = "0001-01-01T00:00:00Z",
+                elapsedMinutes = 0,
+            )
             val timestamp = now()
-            statement.setString(1, session.id)
-            statement.setString(2, session.projectId)
-            statement.setString(3, session.currentSceneId)
-            statement.setInt(4, session.nextTurnNumber)
-            statement.setInt(5, session.stateVersion)
-            statement.setString(6, session.status)
-            statement.setString(7, timestamp)
-            statement.setString(8, timestamp)
-            statement.executeUpdate()
+            val startScene = selectScene(connection, projectId, sceneId)
+                ?: error("Scene not found: $sceneId")
+            connection.prepareStatement(
+                """
+                INSERT INTO story_sessions(
+                    id, project_id, current_scene_id, next_turn_number, state_version, status,
+                    current_scene_instance_id, world_time, elapsed_minutes, created_at, updated_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, session.id)
+                statement.setString(2, session.projectId)
+                statement.setString(3, session.currentSceneId)
+                statement.setInt(4, session.nextTurnNumber)
+                statement.setInt(5, session.stateVersion)
+                statement.setString(6, session.status)
+                statement.setString(7, sceneInstanceId)
+                statement.setString(8, session.worldTime)
+                statement.setInt(9, session.elapsedMinutes)
+                statement.setString(10, timestamp)
+                statement.setString(11, timestamp)
+                statement.executeUpdate()
+            }
+            connection.prepareStatement(
+                "UPDATE projects SET active_scene_id = ?, updated_at = ? WHERE id = ?",
+            ).use { statement ->
+                statement.setString(1, sceneId)
+                statement.setString(2, timestamp)
+                statement.setString(3, projectId)
+                statement.executeUpdate()
+            }
+            if (startScene.locationId != null) {
+                connection.prepareStatement(
+                    "UPDATE character_states SET location_id = ?, updated_at = ? WHERE project_id = ?",
+                ).use { statement ->
+                    statement.setString(1, startScene.locationId)
+                    statement.setString(2, timestamp)
+                    statement.setString(3, projectId)
+                    statement.executeUpdate()
+                }
+            }
+            insertSceneInstance(connection, session.id, sceneId, sceneInstanceId, 1, 1, "start-session")
+            initializeSceneRequirementStates(connection, session.id, sceneInstanceId, sceneId)
+            initializeSessionThreadStates(connection, session.id, projectId)
+            assignSessionlessWorldEvents(connection, projectId, session.id)
+            connection.commit()
+            session
+        } catch (error: Throwable) {
+            connection.rollback()
+            throw error
+        } finally {
+            connection.autoCommit = true
         }
-        session
     }
 
     fun savePendingContext(context: ContextPacket) {
@@ -570,6 +798,11 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             applySceneProgressUpdates(connection, context, result)
             applyMemoryCandidates(connection, context, result.memoryCandidates)
             applyKnowledgeUpdates(connection, context, result)
+            applySceneRequirementUpdates(connection, context, result)
+            applyThreadProgressUpdates(connection, context, result)
+            applyWorldEventAcknowledgements(connection, context, result)
+            applySceneTransition(connection, context, result)
+            applyWorldClock(connection, context, result)
             recordSuccessfulRecall(connection, context)
             connection.prepareStatement(
                 """
@@ -634,7 +867,33 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             "scene", "scenes" -> "scenes"
             "memory", "character_memory", "character_memories" -> "character_memories"
             "knowledge", "character_knowledge" -> "character_knowledge"
+            "scene_instance", "scene_instances" -> "scene_instances"
+            "scene_requirement", "scene_requirements" -> "scene_requirements"
+            "story_thread", "story_threads" -> "story_threads"
+            "scene_transition", "scene_transitions" -> "scene_transitions"
+            "world_event", "scheduled_world_events" -> "scheduled_world_events"
             else -> return@connect false
+        }
+        if (table == "scene_instances") {
+            return@connect connection.prepareStatement("SELECT 1 FROM scene_instances WHERE id = ? LIMIT 1").use { statement ->
+                statement.setString(1, targetId)
+                statement.executeQuery().use { it.next() }
+            }
+        }
+        if (table == "scene_requirements") {
+            return@connect connection.prepareStatement(
+                """
+                SELECT 1
+                FROM scene_requirements r
+                JOIN scenes s ON s.id = r.scene_id
+                WHERE s.project_id = ? AND r.id = ?
+                LIMIT 1
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, projectId)
+                statement.setString(2, targetId)
+                statement.executeQuery().use { it.next() }
+            }
         }
         val idColumn = if (table == "character_states") "character_id" else "id"
         connection.prepareStatement("SELECT 1 FROM $table WHERE project_id = ? AND $idColumn = ? LIMIT 1").use { statement ->
@@ -1108,6 +1367,346 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    private fun insertStoryThread(connection: Connection, thread: StoryThread) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO story_threads(
+                id, project_id, thread_type, title, director_goal, public_summary,
+                priority, visibility, parent_thread_id, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM story_threads WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, thread.id)
+            statement.setString(2, thread.projectId)
+            statement.setString(3, thread.threadType)
+            statement.setString(4, thread.title)
+            statement.setString(5, thread.directorGoal)
+            statement.setString(6, thread.publicSummary)
+            statement.setInt(7, thread.priority)
+            statement.setString(8, thread.visibility)
+            statement.setString(9, thread.parentThreadId)
+            statement.setString(10, thread.id)
+            statement.setString(11, timestamp)
+            statement.setString(12, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertSceneRequirement(connection: Connection, requirement: SceneRequirementDefinition) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO scene_requirements(
+                id, scene_id, requirement_type, description, completion_condition_json,
+                failure_condition_json, priority, visibility, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM scene_requirements WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, requirement.id)
+            statement.setString(2, requirement.sceneId)
+            statement.setString(3, requirement.requirementType)
+            statement.setString(4, requirement.description)
+            statement.setString(5, JsonSupport.json.encodeToString(requirement.completionCondition))
+            statement.setString(6, JsonSupport.json.encodeToString(requirement.failureCondition))
+            statement.setInt(7, requirement.priority)
+            statement.setString(8, requirement.visibility)
+            statement.setString(9, requirement.id)
+            statement.setString(10, timestamp)
+            statement.setString(11, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertLocationConnection(connection: Connection, connectionDef: LocationConnection) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO location_connections(
+                id, project_id, from_location_id, to_location_id, connection_type,
+                bidirectional, travel_minutes, prerequisites_json, restrictions_json,
+                visibility, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM location_connections WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, connectionDef.id)
+            statement.setString(2, connectionDef.projectId)
+            statement.setString(3, connectionDef.fromLocationId)
+            statement.setString(4, connectionDef.toLocationId)
+            statement.setString(5, connectionDef.connectionType)
+            statement.setInt(6, if (connectionDef.bidirectional) 1 else 0)
+            statement.setInt(7, connectionDef.travelMinutes)
+            statement.setString(8, JsonSupport.json.encodeToString(connectionDef.prerequisites))
+            statement.setString(9, JsonSupport.json.encodeToString(connectionDef.restrictions))
+            statement.setString(10, connectionDef.visibility)
+            statement.setString(11, connectionDef.id)
+            statement.setString(12, timestamp)
+            statement.setString(13, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertSceneTransition(connection: Connection, transition: SceneTransitionDefinition) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO scene_transitions(
+                id, project_id, from_scene_id, to_scene_id, transition_type, prerequisites_json,
+                costs_json, required_player_intent, forced_transition_allowed, visibility,
+                created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM scene_transitions WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, transition.id)
+            statement.setString(2, transition.projectId)
+            statement.setString(3, transition.fromSceneId)
+            statement.setString(4, transition.toSceneId)
+            statement.setString(5, transition.transitionType)
+            statement.setString(6, JsonSupport.json.encodeToString(transition.prerequisites))
+            statement.setString(7, JsonSupport.json.encodeToString(transition.costs))
+            statement.setString(8, transition.requiredPlayerIntent)
+            statement.setInt(9, if (transition.forcedTransitionAllowed) 1 else 0)
+            statement.setString(10, transition.visibility)
+            statement.setString(11, transition.id)
+            statement.setString(12, timestamp)
+            statement.setString(13, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertScheduledWorldEvent(connection: Connection, event: ScheduledWorldEventSeed) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO scheduled_world_events(
+                id, project_id, session_id, event_type, due_turn_number, due_world_time,
+                trigger_conditions_json, payload_json, visibility, status,
+                triggered_turn_number, consumed_turn_number, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, COALESCE((SELECT created_at FROM scheduled_world_events WHERE id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, event.id)
+            statement.setString(2, event.projectId)
+            statement.setString(3, event.sessionId)
+            statement.setString(4, event.eventType)
+            statement.setInt(5, event.dueTurnNumber)
+            statement.setString(6, event.dueWorldTime)
+            statement.setString(7, JsonSupport.json.encodeToString(event.triggerConditions))
+            statement.setString(8, JsonSupport.json.encodeToString(event.payload))
+            statement.setString(9, event.visibility)
+            statement.setString(10, event.status)
+            statement.setString(11, event.id)
+            statement.setString(12, timestamp)
+            statement.setString(13, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun ensureActiveSceneInstance(connection: Connection, session: StorySession): String {
+        val active = connection.prepareStatement(
+            "SELECT id FROM scene_instances WHERE session_id = ? AND status = 'ACTIVE' LIMIT 1",
+        ).use { statement ->
+            statement.setString(1, session.id)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("id") else null }
+        }
+        if (active != null) return active
+        val sceneInstanceId = newId("scene-instance")
+        insertSceneInstance(connection, session.id, session.currentSceneId, sceneInstanceId, nextVisitNumber(connection, session.id, session.currentSceneId), session.nextTurnNumber, "auto-created")
+        initializeSceneRequirementStates(connection, session.id, sceneInstanceId, session.currentSceneId)
+        connection.prepareStatement("UPDATE story_sessions SET current_scene_instance_id = ?, updated_at = ? WHERE id = ?").use { statement ->
+            statement.setString(1, sceneInstanceId)
+            statement.setString(2, now())
+            statement.setString(3, session.id)
+            statement.executeUpdate()
+        }
+        return sceneInstanceId
+    }
+
+    private fun insertSceneInstance(connection: Connection, sessionId: String, sceneId: String, sceneInstanceId: String, visitNumber: Int, startedTurn: Int, entryReason: String) {
+        connection.prepareStatement(
+            """
+            INSERT INTO scene_instances(
+                id, session_id, scene_id, visit_number, status, started_turn_number,
+                ended_turn_number, entry_reason, exit_reason, summary, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, 'ACTIVE', ?, NULL, ?, '', '', ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, sceneInstanceId)
+            statement.setString(2, sessionId)
+            statement.setString(3, sceneId)
+            statement.setInt(4, visitNumber)
+            statement.setInt(5, startedTurn)
+            statement.setString(6, entryReason)
+            statement.setString(7, timestamp)
+            statement.setString(8, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun initializeSceneRequirementStates(connection: Connection, sessionId: String, sceneInstanceId: String, sceneId: String) {
+        connection.prepareStatement(
+            "SELECT id FROM scene_requirements WHERE scene_id = ?",
+        ).use { statement ->
+            statement.setString(1, sceneId)
+            statement.executeQuery().use { rows ->
+                while (rows.next()) {
+                    connection.prepareStatement(
+                        """
+                        INSERT OR IGNORE INTO session_scene_requirement_states(
+                            session_id, scene_instance_id, requirement_id, status, progress,
+                            evidence_json, completed_turn_number, created_at, updated_at
+                        )
+                        VALUES (?, ?, ?, 'OPEN', 0, '{}', NULL, ?, ?)
+                        """.trimIndent(),
+                    ).use { insert ->
+                        val timestamp = now()
+                        insert.setString(1, sessionId)
+                        insert.setString(2, sceneInstanceId)
+                        insert.setString(3, rows.getString("id"))
+                        insert.setString(4, timestamp)
+                        insert.setString(5, timestamp)
+                        insert.executeUpdate()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initializeSessionThreadStates(connection: Connection, sessionId: String, projectId: String) {
+        connection.prepareStatement("SELECT id FROM story_threads WHERE project_id = ?").use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                while (rows.next()) {
+                    connection.prepareStatement(
+                        """
+                        INSERT OR IGNORE INTO session_thread_states(
+                            session_id, thread_id, status, progress, urgency, blocked_reason,
+                            last_advanced_turn, evidence_json, created_at, updated_at
+                        )
+                        VALUES (?, ?, 'OPEN', 0, 0, '', 0, '{}', ?, ?)
+                        """.trimIndent(),
+                    ).use { insert ->
+                        val timestamp = now()
+                        insert.setString(1, sessionId)
+                        insert.setString(2, rows.getString("id"))
+                        insert.setString(3, timestamp)
+                        insert.setString(4, timestamp)
+                        insert.executeUpdate()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun assignSessionlessWorldEvents(connection: Connection, projectId: String, sessionId: String) {
+        connection.prepareStatement(
+            "UPDATE scheduled_world_events SET session_id = ?, updated_at = ? WHERE project_id = ? AND session_id IS NULL",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, now())
+            statement.setString(3, projectId)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun nextVisitNumber(connection: Connection, sessionId: String, sceneId: String): Int =
+        connection.prepareStatement("SELECT COALESCE(MAX(visit_number), 0) + 1 FROM scene_instances WHERE session_id = ? AND scene_id = ?").use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, sceneId)
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+
+    private fun selectAvailableTransitions(connection: Connection, session: StorySession, playerInput: String): List<AvailableTransition> {
+        val currentScene = selectScene(connection, session.projectId, session.currentSceneId) ?: return emptyList()
+        return connection.prepareStatement(
+            """
+            SELECT t.id, t.to_scene_id, t.required_player_intent, t.forced_transition_allowed,
+                   t.prerequisites_json, s.location_id AS to_location_id
+            FROM scene_transitions t
+            JOIN scenes s ON s.id = t.to_scene_id
+            WHERE t.project_id = ? AND t.from_scene_id = ? AND t.visibility != 'hidden'
+            ORDER BY t.id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, session.projectId)
+            statement.setString(2, session.currentSceneId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        val toLocation = rows.getString("to_location_id")
+                        val connectionRow = currentScene.locationId?.let { from -> findLocationConnection(connection, session.projectId, from, toLocation) }
+                        val requirement = rows.getString("required_player_intent").orEmpty()
+                        val intentSatisfied = requirement.isBlank() || playerInput.contains(requirement, ignoreCase = true)
+                        val reachable = currentScene.locationId == null || toLocation == null || currentScene.locationId == toLocation || connectionRow != null
+                        val prereq = decodeJsonObject(rows.getString("prerequisites_json"))
+                        val unmet = buildList {
+                            if (!intentSatisfied) add("player intent '$requirement' not present")
+                            if (!reachable) add("target location is unreachable")
+                            val requiredFact = prereq.stringValue("requiredFactId")
+                            if (requiredFact != null && !targetExists(session.projectId, "fact", requiredFact)) add("missing required fact $requiredFact")
+                        }
+                        add(
+                            AvailableTransition(
+                                transitionId = rows.getString("id"),
+                                toSceneId = rows.getString("to_scene_id"),
+                                targetLocation = toLocation,
+                                playerIntentRequired = requirement,
+                                prerequisitesSatisfied = unmet.isEmpty(),
+                                unmetPrerequisites = unmet,
+                                travelMinutes = connectionRow?.get("travel_minutes")?.toIntOrNull() ?: 0,
+                                forcedAllowed = rows.getInt("forced_transition_allowed") == 1,
+                                visibleReason = if (unmet.isEmpty()) "reachable from current scene" else unmet.joinToString("; "),
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun selectPendingWorldEvents(connection: Connection, session: StorySession): List<PendingWorldEventView> =
+        connection.prepareStatement(
+            """
+            SELECT id, event_type, due_turn_number, payload_json
+            FROM scheduled_world_events
+            WHERE project_id = ? AND (session_id = ? OR session_id IS NULL)
+              AND status IN ('scheduled', 'triggered')
+              AND due_turn_number <= ?
+            ORDER BY due_turn_number ASC, id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, session.projectId)
+            statement.setString(2, session.id)
+            statement.setInt(3, session.nextTurnNumber)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        val payload = decodeJsonObject(rows.getString("payload_json"))
+                        add(
+                            PendingWorldEventView(
+                                eventId = rows.getString("id"),
+                                type = rows.getString("event_type"),
+                                publicEffect = payload.stringValue("publicEffect") ?: payload.stringValue("public_effect") ?: rows.getString("event_type"),
+                                dueReason = "due at turn ${rows.getInt("due_turn_number")}",
+                                allowedNarrativeUses = payload.decodeListField("allowedNarrativeUses"),
+                                forbiddenCharacterUses = payload.decodeListField("forbiddenCharacterUses"),
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+
     private fun recordStateDelta(connection: Connection, projectId: String, turnId: String, operationType: String, targetType: String?, targetId: String?, payloadJson: String) {
         connection.prepareStatement(
             """
@@ -1399,6 +1998,244 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    private fun applySceneRequirementUpdates(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        if (result.sceneRequirementUpdates.isEmpty()) return
+        result.sceneRequirementUpdates.forEach { update ->
+            val status = update.requestedStatus
+            connection.prepareStatement(
+                """
+                UPDATE session_scene_requirement_states
+                SET status = ?, progress = MIN(100, MAX(0, progress + ?)), evidence_json = ?,
+                    completed_turn_number = CASE WHEN ? = 'COMPLETED' THEN ? ELSE completed_turn_number END,
+                    updated_at = ?
+                WHERE session_id = ? AND scene_instance_id = ? AND requirement_id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, status)
+                statement.setInt(2, update.progressDelta)
+                statement.setString(3, JsonSupport.json.encodeToString(update))
+                statement.setString(4, status)
+                statement.setInt(5, context.turnNumber)
+                statement.setString(6, now())
+                statement.setString(7, context.sessionId)
+                statement.setString(8, context.sceneLifecycle.sceneInstanceId)
+                statement.setString(9, update.requirementId)
+                statement.executeUpdate()
+            }
+        }
+        refreshSceneLifecycleStatus(connection, context)
+    }
+
+    private fun refreshSceneLifecycleStatus(connection: Connection, context: ContextPacket) {
+        val requiredOpen = connection.prepareStatement(
+            """
+            SELECT COUNT(*)
+            FROM scene_requirements r
+            JOIN session_scene_requirement_states s ON s.requirement_id = r.id
+            WHERE s.session_id = ? AND s.scene_instance_id = ?
+              AND r.requirement_type = 'REQUIRED' AND s.status != 'COMPLETED'
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, context.sessionId)
+            statement.setString(2, context.sceneLifecycle.sceneInstanceId)
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+        val failureTriggered = connection.prepareStatement(
+            """
+            SELECT COUNT(*)
+            FROM scene_requirements r
+            JOIN session_scene_requirement_states s ON s.requirement_id = r.id
+            WHERE s.session_id = ? AND s.scene_instance_id = ?
+              AND r.requirement_type = 'FAILURE_GUARD' AND s.status = 'FAILED'
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, context.sessionId)
+            statement.setString(2, context.sceneLifecycle.sceneInstanceId)
+            statement.executeQuery().use { rows ->
+                rows.next()
+                rows.getInt(1)
+            }
+        }
+        val nextStatus = when {
+            failureTriggered > 0 -> "FAILED"
+            requiredOpen == 0 -> "READY_TO_CLOSE"
+            else -> null
+        }
+        if (nextStatus != null) {
+            connection.prepareStatement(
+                "UPDATE scene_instances SET status = ?, updated_at = ? WHERE id = ? AND status = 'ACTIVE'",
+            ).use { statement ->
+                statement.setString(1, nextStatus)
+                statement.setString(2, now())
+                statement.setString(3, context.sceneLifecycle.sceneInstanceId)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    private fun applyThreadProgressUpdates(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        result.threadProgressUpdates.forEach { update ->
+            connection.prepareStatement(
+                """
+                UPDATE session_thread_states
+                SET progress = MIN(100, MAX(0, progress + ?)),
+                    status = ?,
+                    last_advanced_turn = ?,
+                    evidence_json = ?,
+                    updated_at = ?
+                WHERE session_id = ? AND thread_id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setInt(1, update.progressDelta.coerceIn(-25, 25))
+                statement.setString(2, update.requestedStatus)
+                statement.setInt(3, context.turnNumber)
+                statement.setString(4, JsonSupport.json.encodeToString(update))
+                statement.setString(5, now())
+                statement.setString(6, context.sessionId)
+                statement.setString(7, update.threadId)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    private fun applyWorldEventAcknowledgements(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        result.worldEventAcknowledgements.forEach { acknowledgement ->
+            connection.prepareStatement(
+                """
+                UPDATE scheduled_world_events
+                SET status = 'consumed',
+                    triggered_turn_number = COALESCE(triggered_turn_number, ?),
+                    consumed_turn_number = ?,
+                    updated_at = ?
+                WHERE id = ? AND project_id = ? AND (session_id = ? OR session_id IS NULL) AND status != 'consumed'
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setInt(1, context.turnNumber)
+                statement.setInt(2, context.turnNumber)
+                statement.setString(3, now())
+                statement.setString(4, acknowledgement.eventId)
+                statement.setString(5, context.project.id)
+                statement.setString(6, context.sessionId)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    private fun applySceneTransition(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        val proposal = result.transitionProposal ?: return
+        selectTransition(connection, context.project.id, proposal.transitionId)
+            ?: error("Transition not found: ${proposal.transitionId}")
+        val toScene = selectScene(connection, context.project.id, proposal.toSceneId)
+            ?: error("Target scene not found: ${proposal.toSceneId}")
+        val currentInstanceId = context.sceneLifecycle.sceneInstanceId
+        val summary = result.turnSummary.take(240)
+        connection.prepareStatement(
+            """
+            INSERT INTO pending_scene_transitions(
+                id, session_id, result_id, from_scene_instance_id, to_scene_id, proposal_type,
+                reason, evidence_json, status, rejection_reason, created_turn_number, resolved_turn_number,
+                created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'accepted', '', ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, newId("transition-proposal"))
+            statement.setString(2, context.sessionId)
+            statement.setString(3, result.resultId)
+            statement.setString(4, currentInstanceId)
+            statement.setString(5, proposal.toSceneId)
+            statement.setString(6, proposal.proposalType)
+            statement.setString(7, proposal.reason)
+            statement.setString(8, JsonSupport.json.encodeToString(proposal))
+            statement.setInt(9, context.turnNumber)
+            statement.setInt(10, context.turnNumber)
+            statement.setString(11, timestamp)
+            statement.setString(12, timestamp)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            """
+            UPDATE scene_instances
+            SET status = 'CLOSED', ended_turn_number = ?, exit_reason = ?, summary = ?, updated_at = ?
+            WHERE id = ? AND session_id = ? AND status IN ('ACTIVE', 'READY_TO_CLOSE')
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setInt(1, context.turnNumber)
+            statement.setString(2, proposal.reason)
+            statement.setString(3, summary)
+            statement.setString(4, now())
+            statement.setString(5, currentInstanceId)
+            statement.setString(6, context.sessionId)
+            statement.executeUpdate()
+        }
+        val newInstanceId = newId("scene-instance")
+        val visitNumber = nextVisitNumber(connection, context.sessionId, proposal.toSceneId)
+        insertSceneInstance(connection, context.sessionId, proposal.toSceneId, newInstanceId, visitNumber, context.turnNumber, proposal.reason)
+        initializeSceneRequirementStates(connection, context.sessionId, newInstanceId, proposal.toSceneId)
+        connection.prepareStatement(
+            """
+            UPDATE story_sessions
+            SET current_scene_id = ?, current_scene_instance_id = ?, updated_at = ?
+            WHERE id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, toScene.id)
+            statement.setString(2, newInstanceId)
+            statement.setString(3, now())
+            statement.setString(4, context.sessionId)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            "UPDATE projects SET active_scene_id = ?, updated_at = ? WHERE id = ?",
+        ).use { statement ->
+            statement.setString(1, toScene.id)
+            statement.setString(2, now())
+            statement.setString(3, context.project.id)
+            statement.executeUpdate()
+        }
+        if (toScene.locationId != null) {
+            proposal.participatingCharacterIds.forEach { characterId ->
+                connection.prepareStatement(
+                    "UPDATE character_states SET location_id = ?, updated_at = ? WHERE project_id = ? AND character_id = ?",
+                ).use { statement ->
+                    statement.setString(1, toScene.locationId)
+                    statement.setString(2, now())
+                    statement.setString(3, context.project.id)
+                    statement.setString(4, characterId)
+                    statement.executeUpdate()
+                }
+            }
+        }
+    }
+
+    private fun applyWorldClock(connection: Connection, context: ContextPacket, result: AiTurnResult) {
+        val proposedMinutes = result.timeAdvanceProposal?.minutes ?: 5
+        val transitionMinutes = result.transitionProposal?.let { proposal ->
+            context.availableTransitions.firstOrNull { it.transitionId == proposal.transitionId }?.travelMinutes
+        } ?: 0
+        val minutes = (proposedMinutes + transitionMinutes).coerceAtLeast(0)
+        connection.prepareStatement(
+            """
+            UPDATE story_sessions
+            SET elapsed_minutes = elapsed_minutes + ?,
+                world_time = ?,
+                updated_at = ?
+            WHERE id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            val nextElapsed = context.worldClock.elapsedMinutes + minutes
+            statement.setInt(1, minutes)
+            statement.setString(2, "T+${nextElapsed}m")
+            statement.setString(3, now())
+            statement.setString(4, context.sessionId)
+            statement.executeUpdate()
+        }
+    }
+
     private fun applySceneProgressUpdates(connection: Connection, context: ContextPacket, result: AiTurnResult) {
         val scene = context.activeScene ?: return
         val completed = scene.completedRequirements.toMutableSet()
@@ -1433,7 +2270,12 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
 
     private fun selectSession(connection: Connection, sessionId: String): StorySession? =
         connection.prepareStatement(
-            "SELECT id, project_id, current_scene_id, next_turn_number, state_version, status FROM story_sessions WHERE id = ?",
+            """
+            SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
+                   current_scene_instance_id, world_time, elapsed_minutes
+            FROM story_sessions
+            WHERE id = ?
+            """.trimIndent(),
         ).use { statement ->
             statement.setString(1, sessionId)
             statement.executeQuery().use { rows -> if (rows.next()) rows.toStorySession() else null }
@@ -1472,6 +2314,71 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(1, projectId)
             statement.setString(2, taskId)
             statement.executeQuery().use { rows -> if (rows.next()) rows.toTask() else null }
+        }
+
+    private fun selectScene(connection: Connection, projectId: String, sceneId: String): Scene? =
+        connection.prepareStatement(
+            "SELECT id, project_id, title, summary, location_id, status, progress_json, completed_requirements_json FROM scenes WHERE project_id = ? AND id = ?",
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, sceneId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.toScene() else null }
+        }
+
+    private fun findLocationConnection(connection: Connection, projectId: String, fromLocationId: String, toLocationId: String?): Map<String, String>? {
+        if (toLocationId == null) return null
+        return connection.prepareStatement(
+            """
+            SELECT id, travel_minutes
+            FROM location_connections
+            WHERE project_id = ? AND (
+                (from_location_id = ? AND to_location_id = ?)
+                OR (bidirectional = 1 AND from_location_id = ? AND to_location_id = ?)
+            )
+            LIMIT 1
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, fromLocationId)
+            statement.setString(3, toLocationId)
+            statement.setString(4, toLocationId)
+            statement.setString(5, fromLocationId)
+            statement.executeQuery().use { rows ->
+                if (rows.next()) {
+                    mapOf("id" to rows.getString("id"), "travel_minutes" to rows.getInt("travel_minutes").toString())
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    private fun selectTransition(connection: Connection, projectId: String, transitionId: String): SceneTransitionDefinition? =
+        connection.prepareStatement(
+            """
+            SELECT id, project_id, from_scene_id, to_scene_id, transition_type, prerequisites_json,
+                   costs_json, required_player_intent, forced_transition_allowed, visibility
+            FROM scene_transitions
+            WHERE project_id = ? AND id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, transitionId)
+            statement.executeQuery().use { rows ->
+                if (!rows.next()) return@use null
+                SceneTransitionDefinition(
+                    id = rows.getString("id"),
+                    projectId = rows.getString("project_id"),
+                    fromSceneId = rows.getString("from_scene_id"),
+                    toSceneId = rows.getString("to_scene_id"),
+                    transitionType = rows.getString("transition_type"),
+                    prerequisites = decodeJsonObject(rows.getString("prerequisites_json")),
+                    costs = decodeJsonObject(rows.getString("costs_json")),
+                    requiredPlayerIntent = rows.getString("required_player_intent"),
+                    forcedTransitionAllowed = rows.getInt("forced_transition_allowed") == 1,
+                    visibility = rows.getString("visibility"),
+                )
+            }
         }
 
     private fun selectCharacterMemory(connection: Connection, projectId: String, memoryId: String): CharacterMemory? =
@@ -1687,6 +2594,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         nextTurnNumber = getInt("next_turn_number"),
         stateVersion = getInt("state_version"),
         status = getString("status"),
+        currentSceneInstanceId = runCatching { getString("current_scene_instance_id") }.getOrNull(),
+        worldTime = runCatching { getString("world_time") }.getOrNull().orEmpty(),
+        elapsedMinutes = runCatching { getInt("elapsed_minutes") }.getOrDefault(0),
     )
 
     private fun decodeJsonObject(value: String?): JsonObject =
@@ -1718,3 +2628,6 @@ private inline fun <reified T> JsonObject.decodeValue(key: String): T? {
     val value = this[key] ?: return null
     return runCatching { JsonSupport.json.decodeFromString<T>(JsonSupport.json.encodeToString(value)) }.getOrNull()
 }
+
+private fun JsonObject.decodeListField(key: String): List<String> =
+    decodeValue<List<String>>(key).orEmpty()

@@ -93,6 +93,17 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             ),
             retrievedMemories = memorySelection.retrievedMemories,
             knowledgeClaims = memorySelection.knowledgeClaims,
+            sceneLifecycle = SceneLifecycleService(repository).lifecycle(session.id),
+            sceneRequirements = repository.listSceneRequirementViews(session.id),
+            activeStoryThreads = repository.listActiveStoryThreadViews(session.id),
+            availableTransitions = TransitionPlanner(repository).plan(session.id, playerInput),
+            pendingWorldEvents = repository.listPendingWorldEventViews(session.id),
+            worldClock = com.localnovel.engine.model.WorldClock(
+                worldTime = session.worldTime,
+                elapsedMinutes = session.elapsedMinutes,
+                turnNumber = session.nextTurnNumber,
+            ),
+            continuityConstraints = repository.getContinuityConstraints(session.id),
         )
         val contextWithoutHash = ContextBudgeter().applyBudget(
             baseContext,
@@ -113,7 +124,12 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         }
         val hasStateChange = result.allDeltaOperations().any { it.type != com.localnovel.engine.model.DeltaOperationType.NOOP } ||
             result.revealedFacts.isNotEmpty() ||
-            result.sceneProgressUpdates.any { it.status == "completed" }
+            result.sceneProgressUpdates.any { it.status == "completed" } ||
+            result.sceneRequirementUpdates.isNotEmpty() ||
+            result.threadProgressUpdates.isNotEmpty() ||
+            result.transitionProposal != null ||
+            result.worldEventAcknowledgements.isNotEmpty() ||
+            result.timeAdvanceProposal != null
         return repository.resolvePendingTurn(context, result, hasStateChange)
     }
 
@@ -153,6 +169,13 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         result.characterActions.forEachIndexed { index, action ->
             errors += validateCharacterAction(context, action, index)
         }
+        errors += SceneLifecycleService(repository).validate(context)
+        errors += SceneRequirementEvaluator().validate(context, result)
+        errors += StoryThreadManager(repository).validate(context, result)
+        errors += TransitionValidator(repository).validate(context, result)
+        errors += WorldClockService().validate(result)
+        errors += ScheduledWorldEventService().validate(context, result)
+        errors += NarrativeContinuityValidator(repository).validate(context, result)
         errors += KnowledgeBoundaryValidator(repository).validate(context, result)
         errors += MemoryLifecycleService(repository).validate(context, result)
         errors += EmotionReducer().validate(context, result)
@@ -175,6 +198,34 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.knowledgeUpdates.forEach {
                 add(it.propositionKey)
                 add(it.requestedState)
+                add(it.reason)
+            }
+            result.sceneRequirementUpdates.forEach {
+                add(it.requirementId)
+                add(it.requestedStatus)
+                add(it.reason)
+            }
+            result.threadProgressUpdates.forEach {
+                add(it.threadId)
+                add(it.requestedStatus)
+                add(it.reason)
+            }
+            result.transitionProposal?.let {
+                add(it.transitionId)
+                add(it.toSceneId)
+                add(it.playerIntentEvidence)
+                add(it.worldEventEvidence.orEmpty())
+                add(it.reason)
+            }
+            result.worldEventAcknowledgements.forEach {
+                add(it.eventId)
+                add(it.narrativeUse)
+                add(it.reason)
+                addAll(it.resultingEventIds)
+            }
+            result.timeAdvanceProposal?.let {
+                add(it.sourceType)
+                add(it.sourceId)
                 add(it.reason)
             }
             result.allDeltaOperations().forEach { addAll(it.payload.allStringValues()) }

@@ -1,240 +1,507 @@
 {
-  "project": {
-    "id": "demo",
-    "name": "霜祠夜問",
-    "summary": "玩家在沈家祠堂外質問沈霜，試圖逼近一個尚未解鎖的地底秘密。",
-    "activeSceneId": "scene-shrine-questioning",
-    "currentTurn": 0
-  },
-  "characters": [
-    {
-      "id": "char-player",
-      "projectId": "demo",
-      "name": "玩家",
-      "role": "player",
-      "description": "追查沈家祠堂異響的外來調查者。",
-      "isPlayer": true,
-      "profile": {
-        "knownInfo": ["祠堂夜裡傳出過低沉聲響", "沈霜曾阻止村人靠近後殿"]
-      }
-    },
-    {
-      "id": "char-shen-shuang",
-      "projectId": "demo",
-      "name": "沈霜",
-      "role": "witness",
-      "description": "沈家年輕守祠人，冷靜、戒備，習慣先保護家族名聲再回答問題。",
-      "isPlayer": false,
-      "profile": {
-        "currentGoal": "阻止玩家靠近後殿，同時避免把自己知道的禁忌說破。",
-        "fear": "害怕玩家提到祠堂地底會引來族中長老追責。",
-        "knownInfo": ["昨夜有人動過後殿門閂", "祠堂地磚下有不能公開討論的異常"],
-        "legalActions": ["反問玩家消息來源", "承認後殿門閂被動過", "要求玩家留在外廊", "轉移話題到祠堂規矩"]
-      }
-    }
-  ],
-  "characterStates": [
-    {
-      "characterId": "char-player",
-      "projectId": "demo",
-      "locationId": "loc-shrine-corridor",
-      "mood": "pressing",
-      "health": "steady",
-      "inventory": ["item-copper-token"],
-      "flags": {}
-    },
-    {
-      "characterId": "char-shen-shuang",
-      "projectId": "demo",
-      "locationId": "loc-shrine-corridor",
-      "mood": "戒備",
-      "health": "steady",
-      "inventory": [],
-      "flags": {
-        "current_goal": "阻止玩家靠近後殿，同時避免把禁忌說破。",
-        "idle_turn_count": "0"
-      }
-    }
-  ],
-  "characterMemories": [
-    {
-      "id": "memory-shen-shuang-vow",
-      "projectId": "demo",
-      "characterId": "char-shen-shuang",
-      "ownerCharacterId": "char-shen-shuang",
-      "memoryType": "PROMISE",
-      "summary": "沈霜記得父親交代過：外人追問地底時，只能承認門閂異常，不能說出被封住的東西。",
-      "details": {
-        "source": "父親臨終前的守祠誓言"
-      },
-      "sourceType": "seed",
-      "sourceId": "seed-vow",
-      "subjectType": "scene",
-      "subjectId": "scene-shrine-questioning",
-      "tags": ["沈家銅牌", "外人", "後殿", "門閂", "誓言"],
-      "triggerTags": ["沈家銅牌", "外人", "後殿"],
-      "emotionalSignature": {
-        "戒備": 70,
-        "愧疚": 45
-      },
-      "salience": 5,
-      "confidence": 92,
-      "reliability": 85,
-      "visibility": "private",
-      "createdTurn": 0,
-      "status": "active",
-      "isCanon": true
-    }
-  ],
-  "worldRules": [
-    {
-      "id": "rule-character-agency",
-      "projectId": "demo",
-      "title": "角色自主性",
-      "content": "角色只能依照自己的目標、恐懼、情緒、記憶與已知資訊行動，不得為了服務劇情目的無理由坦白。",
-      "priority": 10
-    },
-    {
-      "id": "rule-no-forbidden-reveal",
-      "projectId": "demo",
-      "title": "禁止提前揭露",
-      "content": "未被場景合約允許的秘密不得出現在 narrative 或新增事實中。",
-      "priority": 9
-    }
-  ],
-  "factions": [
-    {
-      "id": "faction-shen-family",
-      "projectId": "demo",
-      "name": "沈家",
-      "description": "守著祠堂與族譜的地方家族。",
-      "stance": "defensive"
-    }
-  ],
-  "locations": [
-    {
-      "id": "loc-shrine-corridor",
-      "projectId": "demo",
-      "name": "祠堂外廊",
-      "description": "雨水沿著瓦口滴落，後殿木門緊閉。",
-      "parentLocationId": null
-    },
-    {
-      "id": "loc-shrine-rear-hall",
-      "projectId": "demo",
-      "name": "祠堂後殿",
-      "description": "沈家族人不許外人踏入的內室。",
-      "parentLocationId": "loc-shrine-corridor"
-    }
-  ],
-  "items": [
-    {
-      "id": "item-copper-token",
-      "projectId": "demo",
-      "name": "沈家銅牌",
-      "description": "一枚刻著沈字的舊銅牌，邊緣帶著泥痕。",
-      "ownerCharacterId": "char-player",
-      "locationId": null,
-      "tags": ["evidence"]
-    }
-  ],
-  "techniques": [
-    {
-      "id": "tech-listen-breath",
-      "projectId": "demo",
-      "name": "聽息辨位",
-      "description": "分辨木門、地磚與牆後細微聲響的江湖技巧。",
-      "ownerCharacterId": "char-player",
-      "tags": ["investigation"]
-    }
-  ],
-  "scenes": [
-    {
-      "id": "scene-shrine-questioning",
-      "projectId": "demo",
-      "title": "祠堂外廊的質問",
-      "summary": "玩家質問沈霜是否早知祠堂下方有異，沈霜必須在防備與失言之間做出反應。",
-      "locationId": "loc-shrine-corridor",
-      "status": "active"
-    }
-  ],
-  "sceneContracts": [
-    {
-      "id": "contract-shrine-questioning",
-      "projectId": "demo",
-      "sceneId": "scene-shrine-questioning",
-      "allowedSecretIds": ["secret-door-bolt-moved"],
-      "requiredBeats": ["沈霜不能無理由坦白。", "沈霜可以承認昨夜後殿門閂被人動過。"],
-      "forbiddenReveals": ["祠堂下面鎮著一口會呼吸的黑棺。"]
-    }
-  ],
-  "facts": [
-    {
-      "id": "fact-night-sound",
-      "projectId": "demo",
-      "content": "祠堂夜裡曾傳出低沉聲響。",
-      "visibility": "public",
-      "source": "seed",
-      "createdTurn": 0
-    }
-  ],
-  "secrets": [
-    {
-      "id": "secret-door-bolt-moved",
-      "projectId": "demo",
-      "content": "昨夜後殿門閂被人動過。",
-      "revealed": false,
-      "revealCondition": "沈霜被追問祠堂異常時可以承認。",
-      "createdTurn": 0,
-      "revealedTurn": null
-    },
-    {
-      "id": "secret-breathing-coffin",
-      "projectId": "demo",
-      "content": "祠堂下面鎮著一口會呼吸的黑棺。",
-      "revealed": false,
-      "revealCondition": "保留給後續場景。",
-      "createdTurn": 0,
-      "revealedTurn": null
-    }
-  ],
-  "events": [],
-  "dependencyEdges": [
-    {
-      "id": "edge-token-shrine",
-      "projectId": "demo",
-      "fromType": "item",
-      "fromId": "item-copper-token",
-      "toType": "scene",
-      "toId": "scene-shrine-questioning",
-      "relation": "relevant_evidence"
-    }
-  ],
-  "tasks": [
-    {
-      "id": "task-question-shen-shuang",
-      "projectId": "demo",
-      "title": "逼問沈霜祠堂異響的來源",
-      "status": "open",
-      "payload": {},
-      "createdTurn": 0,
-      "updatedTurn": 0
-    }
-  ],
-  "knowledgeClaims": [
-    {
-      "id": "claim-shen-player-bait",
-      "projectId": "demo",
-      "characterId": "char-shen-shuang",
-      "propositionKey": "player.may_be_outsider_bait",
-      "statement": "玩家可能是外人安排來試探沈家的誘餌。",
-      "epistemicState": "BELIEVED",
-      "confidence": 62,
-      "sourceMemoryId": "memory-shen-shuang-vow",
-      "acquiredTurnNumber": 0,
-      "updatedTurnNumber": 0,
-      "visibility": "private",
-      "status": "active"
-    }
-  ]
+    "project":  {
+                    "id":  "demo",
+                    "name":  "霜祠夜問",
+                    "summary":  "玩家在沈家祠堂外質問沈霜，試圖逼近一個尚未解鎖的地底秘密。",
+                    "activeSceneId":  "scene-shrine-questioning",
+                    "currentTurn":  0
+                },
+    "characters":  [
+                       {
+                           "id":  "char-player",
+                           "projectId":  "demo",
+                           "name":  "玩家",
+                           "role":  "player",
+                           "description":  "追查沈家祠堂異響的外來調查者。",
+                           "isPlayer":  true,
+                           "profile":  {
+                                           "knownInfo":  [
+                                                             "祠堂夜裡傳出過低沉聲響",
+                                                             "沈霜曾阻止村人靠近後殿"
+                                                         ]
+                                       }
+                       },
+                       {
+                           "id":  "char-shen-shuang",
+                           "projectId":  "demo",
+                           "name":  "沈霜",
+                           "role":  "witness",
+                           "description":  "沈家年輕守祠人，冷靜、戒備，習慣先保護家族名聲再回答問題。",
+                           "isPlayer":  false,
+                           "profile":  {
+                                           "currentGoal":  "阻止玩家靠近後殿，同時避免把自己知道的禁忌說破。",
+                                           "fear":  "害怕玩家提到祠堂地底會引來族中長老追責。",
+                                           "knownInfo":  [
+                                                             "昨夜有人動過後殿門閂",
+                                                             "祠堂地磚下有不能公開討論的異常"
+                                                         ],
+                                           "legalActions":  [
+                                                                "反問玩家消息來源",
+                                                                "承認後殿門閂被動過",
+                                                                "要求玩家留在外廊",
+                                                                "轉移話題到祠堂規矩"
+                                                            ]
+                                       }
+                       }
+                   ],
+    "characterStates":  [
+                            {
+                                "characterId":  "char-player",
+                                "projectId":  "demo",
+                                "locationId":  "loc-shrine-corridor",
+                                "mood":  "pressing",
+                                "health":  "steady",
+                                "inventory":  [
+                                                  "item-copper-token"
+                                              ],
+                                "flags":  {
+
+                                          }
+                            },
+                            {
+                                "characterId":  "char-shen-shuang",
+                                "projectId":  "demo",
+                                "locationId":  "loc-shrine-corridor",
+                                "mood":  "戒備",
+                                "health":  "steady",
+                                "inventory":  [
+
+                                              ],
+                                "flags":  {
+                                              "current_goal":  "阻止玩家靠近後殿，同時避免把禁忌說破。",
+                                              "idle_turn_count":  "0"
+                                          }
+                            }
+                        ],
+    "characterMemories":  [
+                              {
+                                  "id":  "memory-shen-shuang-vow",
+                                  "projectId":  "demo",
+                                  "characterId":  "char-shen-shuang",
+                                  "ownerCharacterId":  "char-shen-shuang",
+                                  "memoryType":  "PROMISE",
+                                  "summary":  "沈霜記得父親交代過：外人追問地底時，只能承認門閂異常，不能說出被封住的東西。",
+                                  "details":  {
+                                                  "source":  "父親臨終前的守祠誓言"
+                                              },
+                                  "sourceType":  "seed",
+                                  "sourceId":  "seed-vow",
+                                  "subjectType":  "scene",
+                                  "subjectId":  "scene-shrine-questioning",
+                                  "tags":  [
+                                               "沈家銅牌",
+                                               "外人",
+                                               "後殿",
+                                               "門閂",
+                                               "誓言"
+                                           ],
+                                  "triggerTags":  [
+                                                      "沈家銅牌",
+                                                      "外人",
+                                                      "後殿"
+                                                  ],
+                                  "emotionalSignature":  {
+                                                             "戒備":  70,
+                                                             "愧疚":  45
+                                                         },
+                                  "salience":  5,
+                                  "confidence":  92,
+                                  "reliability":  85,
+                                  "visibility":  "private",
+                                  "createdTurn":  0,
+                                  "status":  "active",
+                                  "isCanon":  true
+                              }
+                          ],
+    "worldRules":  [
+                       {
+                           "id":  "rule-character-agency",
+                           "projectId":  "demo",
+                           "title":  "角色自主性",
+                           "content":  "角色只能依照自己的目標、恐懼、情緒、記憶與已知資訊行動，不得為了服務劇情目的無理由坦白。",
+                           "priority":  10
+                       },
+                       {
+                           "id":  "rule-no-forbidden-reveal",
+                           "projectId":  "demo",
+                           "title":  "禁止提前揭露",
+                           "content":  "未被場景合約允許的秘密不得出現在 narrative 或新增事實中。",
+                           "priority":  9
+                       }
+                   ],
+    "factions":  [
+                     {
+                         "id":  "faction-shen-family",
+                         "projectId":  "demo",
+                         "name":  "沈家",
+                         "description":  "守著祠堂與族譜的地方家族。",
+                         "stance":  "defensive"
+                     }
+                 ],
+    "locations":  [
+                      {
+                          "id":  "loc-shrine-corridor",
+                          "projectId":  "demo",
+                          "name":  "祠堂外廊",
+                          "description":  "雨水沿著瓦口滴落，後殿木門緊閉。",
+                          "parentLocationId":  null
+                      },
+                      {
+                          "id":  "loc-shrine-rear-hall",
+                          "projectId":  "demo",
+                          "name":  "祠堂後殿",
+                          "description":  "沈家族人不許外人踏入的內室。",
+                          "parentLocationId":  "loc-shrine-corridor"
+                      },
+                      {
+                          "id":  "loc-shrine-steps",
+                          "projectId":  "demo",
+                          "name":  "祠堂下方石階",
+                          "description":  "一道潮濕石階向地底延伸，風從階縫裡往上吹。",
+                          "parentLocationId":  "loc-shrine-corridor"
+                      }
+                  ],
+    "items":  [
+                  {
+                      "id":  "item-copper-token",
+                      "projectId":  "demo",
+                      "name":  "沈家銅牌",
+                      "description":  "一枚刻著沈字的舊銅牌，邊緣帶著泥痕。",
+                      "ownerCharacterId":  "char-player",
+                      "locationId":  null,
+                      "tags":  [
+                                   "evidence"
+                               ]
+                  }
+              ],
+    "techniques":  [
+                       {
+                           "id":  "tech-listen-breath",
+                           "projectId":  "demo",
+                           "name":  "聽息辨位",
+                           "description":  "分辨木門、地磚與牆後細微聲響的江湖技巧。",
+                           "ownerCharacterId":  "char-player",
+                           "tags":  [
+                                        "investigation"
+                                    ]
+                       }
+                   ],
+    "scenes":  [
+                   {
+                       "id":  "scene-shrine-questioning",
+                       "projectId":  "demo",
+                       "title":  "祠堂外廊的質問",
+                       "summary":  "玩家質問沈霜是否早知祠堂下方有異，沈霜必須在防備與失言之間做出反應。",
+                       "locationId":  "loc-shrine-corridor",
+                       "status":  "active"
+                   },
+                   {
+                       "id":  "scene-rear-hall",
+                       "projectId":  "demo",
+                       "title":  "舊祠堂後殿",
+                       "summary":  "玩家與沈霜在後殿確認門閂、牌位與地面痕跡。",
+                       "locationId":  "loc-shrine-rear-hall",
+                       "status":  "active"
+                   },
+                   {
+                       "id":  "scene-stone-steps",
+                       "projectId":  "demo",
+                       "title":  "地下石階",
+                       "summary":  "後殿下方的石階通往未知的封存之處。",
+                       "locationId":  "loc-shrine-steps",
+                       "status":  "active"
+                   }
+               ],
+    "sceneContracts":  [
+                           {
+                               "id":  "contract-shrine-questioning",
+                               "projectId":  "demo",
+                               "sceneId":  "scene-shrine-questioning",
+                               "allowedSecretIds":  [
+                                                        "secret-door-bolt-moved"
+                                                    ],
+                               "requiredBeats":  [
+                                                     "沈霜不能無理由坦白。",
+                                                     "沈霜可以承認昨夜後殿門閂被人動過。"
+                                                 ],
+                               "forbiddenReveals":  [
+                                                        "祠堂下面鎮著一口會呼吸的黑棺。"
+                                                    ]
+                           },
+                           {
+                               "id":  "contract-rear-hall",
+                               "projectId":  "demo",
+                               "sceneId":  "scene-rear-hall",
+                               "allowedSecretIds":  [
+                                                        "secret-door-bolt-moved"
+                                                    ],
+                               "requiredBeats":  [
+                                                     "確認門閂被動過",
+                                                     "沈霜保留自己的恐懼而不直接坦白"
+                                                 ],
+                               "forbiddenReveals":  [
+                                                        "棺材裡有一道會呼吸的影子"
+                                                    ]
+                           },
+                           {
+                               "id":  "contract-stone-steps",
+                               "projectId":  "demo",
+                               "sceneId":  "scene-stone-steps",
+                               "allowedSecretIds":  [
+
+                                                    ],
+                               "requiredBeats":  [
+                                                     "保持未知壓力",
+                                                     "不得提前揭露地下真相"
+                                                 ],
+                               "forbiddenReveals":  [
+                                                        "棺材裡有一道會呼吸的影子"
+                                                    ]
+                           }
+                       ],
+    "facts":  [
+                  {
+                      "id":  "fact-night-sound",
+                      "projectId":  "demo",
+                      "content":  "祠堂夜裡曾傳出低沉聲響。",
+                      "visibility":  "public",
+                      "source":  "seed",
+                      "createdTurn":  0
+                  }
+              ],
+    "secrets":  [
+                    {
+                        "id":  "secret-door-bolt-moved",
+                        "projectId":  "demo",
+                        "content":  "昨夜後殿門閂被人動過。",
+                        "revealed":  false,
+                        "revealCondition":  "沈霜被追問祠堂異常時可以承認。",
+                        "createdTurn":  0,
+                        "revealedTurn":  null
+                    },
+                    {
+                        "id":  "secret-breathing-coffin",
+                        "projectId":  "demo",
+                        "content":  "祠堂下面鎮著一口會呼吸的黑棺。",
+                        "revealed":  false,
+                        "revealCondition":  "保留給後續場景。",
+                        "createdTurn":  0,
+                        "revealedTurn":  null
+                    }
+                ],
+    "events":  [
+
+               ],
+    "dependencyEdges":  [
+                            {
+                                "id":  "edge-token-shrine",
+                                "projectId":  "demo",
+                                "fromType":  "item",
+                                "fromId":  "item-copper-token",
+                                "toType":  "scene",
+                                "toId":  "scene-shrine-questioning",
+                                "relation":  "relevant_evidence"
+                            }
+                        ],
+    "tasks":  [
+                  {
+                      "id":  "task-question-shen-shuang",
+                      "projectId":  "demo",
+                      "title":  "逼問沈霜祠堂異響的來源",
+                      "status":  "open",
+                      "payload":  {
+
+                                  },
+                      "createdTurn":  0,
+                      "updatedTurn":  0
+                  }
+              ],
+    "knowledgeClaims":  [
+                            {
+                                "id":  "claim-shen-player-bait",
+                                "projectId":  "demo",
+                                "characterId":  "char-shen-shuang",
+                                "propositionKey":  "player.may_be_outsider_bait",
+                                "statement":  "玩家可能是外人安排來試探沈家的誘餌。",
+                                "epistemicState":  "BELIEVED",
+                                "confidence":  62,
+                                "sourceMemoryId":  "memory-shen-shuang-vow",
+                                "acquiredTurnNumber":  0,
+                                "updatedTurnNumber":  0,
+                                "visibility":  "private",
+                                "status":  "active"
+                            }
+                        ],
+    "storyThreads":  [
+                         {
+                             "id":  "thread-main-shrine-truth",
+                             "projectId":  "demo",
+                             "threadType":  "MAIN",
+                             "title":  "祠堂真相",
+                             "directorGoal":  "逐步逼近祠堂地下秘密但不得提前揭露",
+                             "publicSummary":  "祠堂的異聲與被動過的門閂仍未解釋。",
+                             "priority":  100,
+                             "visibility":  "director_only"
+                         },
+                         {
+                             "id":  "thread-character-shen-trust",
+                             "projectId":  "demo",
+                             "threadType":  "CHARACTER",
+                             "title":  "沈霜的信任",
+                             "directorGoal":  "讓沈霜在自保與信任之間逐步移動",
+                             "publicSummary":  "沈霜仍在防備玩家，但她的沉默開始鬆動。",
+                             "priority":  80,
+                             "visibility":  "director_only"
+                         },
+                         {
+                             "id":  "thread-mystery-underground",
+                             "projectId":  "demo",
+                             "threadType":  "MYSTERY",
+                             "title":  "地下入口",
+                             "directorGoal":  "以證據推進地下入口線索",
+                             "publicSummary":  "後殿下方似乎另有通路。",
+                             "priority":  70,
+                             "visibility":  "director_only"
+                         }
+                     ],
+    "sceneRequirements":  [
+                              {
+                                  "id":  "req-rear-door-bolt-evidence",
+                                  "sceneId":  "scene-rear-hall",
+                                  "requirementType":  "REQUIRED",
+                                  "description":  "取得門閂被移動的明確證據。",
+                                  "completionCondition":  {
+                                                              "evidence":  "fact-door-bolt-moved"
+                                                          },
+                                  "failureCondition":  {
+
+                                                       },
+                                  "priority":  100,
+                                  "visibility":  "director_only"
+                              },
+                              {
+                                  "id":  "req-rear-inscription-optional",
+                                  "sceneId":  "scene-rear-hall",
+                                  "requirementType":  "OPTIONAL",
+                                  "description":  "注意牌位後方被刮掉的半行字。",
+                                  "completionCondition":  {
+                                                              "evidence":  "fact-scraped-inscription"
+                                                          },
+                                  "failureCondition":  {
+
+                                                       },
+                                  "priority":  50,
+                                  "visibility":  "director_only"
+                              }
+                          ],
+    "locationConnections":  [
+                                {
+                                    "id":  "conn-rear-corridor",
+                                    "projectId":  "demo",
+                                    "fromLocationId":  "loc-shrine-rear-hall",
+                                    "toLocationId":  "loc-shrine-corridor",
+                                    "connectionType":  "walk",
+                                    "bidirectional":  true,
+                                    "travelMinutes":  3,
+                                    "prerequisites":  {
+
+                                                      },
+                                    "restrictions":  {
+
+                                                     },
+                                    "visibility":  "public"
+                                },
+                                {
+                                    "id":  "conn-corridor-steps",
+                                    "projectId":  "demo",
+                                    "fromLocationId":  "loc-shrine-corridor",
+                                    "toLocationId":  "loc-shrine-steps",
+                                    "connectionType":  "stairs",
+                                    "bidirectional":  true,
+                                    "travelMinutes":  4,
+                                    "prerequisites":  {
+
+                                                      },
+                                    "restrictions":  {
+
+                                                     },
+                                    "visibility":  "public"
+                                }
+                            ],
+    "sceneTransitions":  [
+                             {
+                                 "id":  "transition-rear-to-corridor",
+                                 "projectId":  "demo",
+                                 "fromSceneId":  "scene-rear-hall",
+                                 "toSceneId":  "scene-shrine-questioning",
+                                 "transitionType":  "walk",
+                                 "prerequisites":  {
+
+                                                   },
+                                 "costs":  {
+                                               "travelMinutes":  3
+                                           },
+                                 "requiredPlayerIntent":  "離開",
+                                 "forcedTransitionAllowed":  true,
+                                 "visibility":  "public"
+                             },
+                             {
+                                 "id":  "transition-corridor-to-steps",
+                                 "projectId":  "demo",
+                                 "fromSceneId":  "scene-shrine-questioning",
+                                 "toSceneId":  "scene-stone-steps",
+                                 "transitionType":  "stairs",
+                                 "prerequisites":  {
+
+                                                   },
+                                 "costs":  {
+                                               "travelMinutes":  4
+                                           },
+                                 "requiredPlayerIntent":  "石階",
+                                 "forcedTransitionAllowed":  false,
+                                 "visibility":  "public"
+                             },
+                             {
+                                 "id":  "transition-corridor-to-rear",
+                                 "projectId":  "demo",
+                                 "fromSceneId":  "scene-shrine-questioning",
+                                 "toSceneId":  "scene-rear-hall",
+                                 "transitionType":  "walk",
+                                 "prerequisites":  {
+
+                                                   },
+                                 "costs":  {
+                                               "travelMinutes":  3
+                                           },
+                                 "requiredPlayerIntent":  "後殿",
+                                 "forcedTransitionAllowed":  false,
+                                 "visibility":  "public"
+                             }
+                         ],
+    "scheduledWorldEvents":  [
+                                 {
+                                     "id":  "world-event-pursuers-turn4",
+                                     "projectId":  "demo",
+                                     "sessionId":  null,
+                                     "eventType":  "approaching_pursuers",
+                                     "dueTurnNumber":  4,
+                                     "dueWorldTime":  null,
+                                     "triggerConditions":  {
+                                                               "afterTurn":  3
+                                                           },
+                                     "payload":  {
+                                                     "publicEffect":  "祠堂外有火把逼近，腳步聲正在收束出口。",
+                                                     "allowedNarrativeUses":  [
+                                                                                  "火把逼近",
+                                                                                  "腳步聲",
+                                                                                  "出口受壓"
+                                                                              ],
+                                                     "forbiddenCharacterUses":  [
+                                                                                    "追兵知道地下入口"
+                                                                                ]
+                                                 },
+                                     "visibility":  "public",
+                                     "status":  "scheduled"
+                                 }
+                             ]
 }

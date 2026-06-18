@@ -68,6 +68,11 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `show-character-mind --db <path> --session <id> --character <id>`
 - `preview-recall --db <path> --session <id> --character <id> --input <text>`
 - `explain-context --file <path>`
+- `show-scene --db <path> --session <id> [--input <text>]`
+- `show-threads --db <path> --session <id>`
+- `preview-transitions --db <path> --session <id> --input <text>`
+- `show-world-events --db <path> --session <id>`
+- `explain-scene-state --db <path> --session <id>`
 
 ## Multi-Turn Flow
 
@@ -93,6 +98,21 @@ MVP-3 adds deterministic character memory retrieval, character-facing knowledge 
 ```
 
 `prepare-turn` may include `retrievedMemories` and `knowledgeClaims`, but it remains read-only: recall counts and recall logs are written only after a successful `resolve-turn`. AI output may propose `memoryCandidates` and `knowledgeUpdates`; the engine decides what to accept inside the same transaction as the turn resolution.
+
+## Scene Thread Runtime
+
+MVP-4 adds scene instances, requirements, story threads, location-aware transitions, scheduled world events, a world clock and continuity constraints.
+
+```powershell
+./gradlew.bat run --args="start-session --db data/story.db --project demo --scene scene-rear-hall"
+./gradlew.bat run --args="show-scene --db data/story.db --session SESSION_ID"
+./gradlew.bat run --args="preview-transitions --db data/story.db --session SESSION_ID --input `"我離開後殿。`""
+./gradlew.bat run --args="show-world-events --db data/story.db --session SESSION_ID"
+```
+
+`prepare-turn` now includes `sceneLifecycle`, `sceneRequirements`, `activeStoryThreads`, `availableTransitions`, `pendingWorldEvents`, `worldClock` and `continuityConstraints`. `resolve-turn` accepts the matching result fields only after Validator approval and applies scene/thread/time/world-event writes in the same transaction as the turn.
+
+See `docs/SCENE_THREAD_RUNTIME.md`.
 
 ## Project Layout
 

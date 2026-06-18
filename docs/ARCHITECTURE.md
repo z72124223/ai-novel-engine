@@ -42,3 +42,17 @@ AI/Codex 只能產生 `AiTurnResult` JSON；只有 `resolve-turn` 可以在 vali
 `prepare-turn` 讀取 session、scene、角色狀態、可見記憶與 knowledge claims，產生 `retrievedMemories`、`knowledgeClaims` 與 `contextBudget`。它不增加 `recall_count`，也不寫入 `memory_recall_logs`。
 
 `resolve-turn` 重新載入 pending context，驗證 result 身分、hash、知識邊界、forbidden reveal、memory candidate、knowledge update 與 emotion delta。通過後才在同一 transaction 內寫入 state deltas、facts、events、memory candidates、knowledge updates、recall logs、recall counts、session state 與 turn log。
+## MVP-4 Scene Thread Runtime
+
+MVP-4 keeps the same local single-process boundary and adds only additive SQLite schema in `004_scene_thread_runtime.sql`.
+
+- `SceneLifecycleService` exposes the current scene instance and enforces one current `ACTIVE` or `READY_TO_CLOSE` instance per session.
+- `SceneRequirementEvaluator` validates requirement progress and evidence.
+- `StoryThreadManager` validates thread progress while keeping `director_goal` out of character-facing actions.
+- `TransitionPlanner` emits location-aware `availableTransitions`.
+- `TransitionValidator` accepts only context-listed transition proposals and rejects unmet exit gates, missing world-event evidence, player refusals and stale scene instances.
+- `WorldClockService` validates time advance proposals; travel time is applied with accepted transitions.
+- `ScheduledWorldEventService` exposes due events and consumes acknowledged events only after a successful resolve.
+- `NarrativeContinuityValidator` checks actor location, item reachability and world-event knowledge boundaries.
+
+Scene/thread/time/world-event writes happen inside the existing `resolve-turn` transaction after protocol, stateVersion and contextHash validation.

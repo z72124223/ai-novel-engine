@@ -46,3 +46,27 @@ v1 使用 JSON 欄位保存彈性資料，例如 inventory、flags、operation p
 - 新增 `memory_recall_logs`：successful resolve 後記錄每回合哪些記憶被選入 context、分數與 reasons。
 
 World facts 是 canonical truth；character knowledge 是角色認知；character memory 是角色經驗或聽聞，可能偏誤或不完整。世界資料庫知道的 fact 不會自動成為角色 knowledge。
+
+## MVP-4 Scene Thread Runtime
+
+`004_scene_thread_runtime.sql` is additive and does not modify migrations `001`, `002`, or `003`.
+
+New tables:
+
+- `story_threads`
+- `session_thread_states`
+- `scene_requirements`
+- `session_scene_requirement_states`
+- `scene_instances`
+- `location_connections`
+- `scene_transitions`
+- `pending_scene_transitions`
+- `scheduled_world_events`
+
+`story_sessions` gains:
+
+- `current_scene_instance_id`
+- `world_time`
+- `elapsed_minutes`
+
+`scenes` remain definitions; `scene_instances` store per-session visits. Re-entering a scene creates a new instance and increments `visit_number`.
