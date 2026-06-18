@@ -428,6 +428,96 @@ data class RelevantSetting(
 )
 
 @Serializable
+data class CapabilityContract(
+    val entityType: String,
+    val entityId: String,
+    val name: String = "",
+    val authorizedActorIds: List<String> = emptyList(),
+    val intendedUse: String = "",
+    val effects: List<String> = emptyList(),
+    val prerequisites: List<String> = emptyList(),
+    val requirements: List<String> = emptyList(),
+    val costs: List<String> = emptyList(),
+    val limitations: List<String> = emptyList(),
+    val forbiddenUses: List<String> = emptyList(),
+    val currentEligibility: String = "UNCERTAIN",
+    val eligibilityReasons: List<String> = emptyList(),
+    val allowedNarrativeClaims: List<String> = emptyList(),
+    val forbiddenNarrativeClaims: List<String> = emptyList(),
+    val sourceRevision: String = "",
+)
+
+@Serializable
+data class CapabilityUseCheck(
+    val actorId: String,
+    val entityType: String,
+    val entityId: String,
+    val intendedUse: String,
+    val eligibilityClaim: String,
+    val satisfiedPrerequisites: List<String> = emptyList(),
+    val unsatisfiedPrerequisites: List<String> = emptyList(),
+    val appliedCosts: List<String> = emptyList(),
+    val observedLimitations: List<String> = emptyList(),
+    val resultScope: String = "",
+    val evidenceStateDeltaIds: List<String> = emptyList(),
+    val reason: String,
+)
+
+@Serializable
+data class CapabilityCoverageReport(
+    val referencedCapabilities: List<String> = emptyList(),
+    val selectedContracts: List<CapabilityCoverageSelection> = emptyList(),
+    val missingContracts: List<String> = emptyList(),
+    val authorizationChecks: List<String> = emptyList(),
+    val prerequisiteChecks: List<String> = emptyList(),
+    val costCoverage: List<String> = emptyList(),
+    val limitationCoverage: List<String> = emptyList(),
+    val qualityStatus: String = "PASS",
+)
+
+@Serializable
+data class CapabilityCoverageSelection(
+    val entityId: String,
+    val actorId: String = "",
+    val selectedContextPath: String = "",
+    val bytes: Int = 0,
+    val sourceProvenance: String = "",
+    val requiredFieldsPresent: List<String> = emptyList(),
+    val currentEligibility: String = "UNCERTAIN",
+    val omittedAlternatives: List<String> = emptyList(),
+    val visibilityStatus: String = "public",
+)
+
+@Serializable
+data class CapabilityProvenanceReport(
+    val projectId: String,
+    val sessionId: String = "",
+    val entityType: String,
+    val entityId: String,
+    val canonicalEntitySource: String = "",
+    val tableRow: JsonObject = JsonObject(emptyMap()),
+    val entityRevisionId: String = "",
+    val sourcePackId: String? = null,
+    val sourcePackVersion: Int? = null,
+    val sourceRevision: String = "",
+    val dependencyRelations: List<String> = emptyList(),
+    val owner: String? = null,
+    val authorizedActorIds: List<String> = emptyList(),
+    val effects: List<String> = emptyList(),
+    val prerequisites: List<String> = emptyList(),
+    val requirements: List<String> = emptyList(),
+    val costs: List<String> = emptyList(),
+    val limitations: List<String> = emptyList(),
+    val forbiddenUses: List<String> = emptyList(),
+    val visibility: String = "public",
+    val currentSessionAccessibility: String = "UNKNOWN",
+    val currentEligibility: String = "UNCERTAIN",
+    val eligibilityReasons: List<String> = emptyList(),
+    val status: String = "OK",
+    val missingFields: List<String> = emptyList(),
+)
+
+@Serializable
 data class SettingContextBudget(
     val maxBytes: Int = 8192,
     val actualBytes: Int = 0,
@@ -486,6 +576,7 @@ data class ContextPacket(
     val worldClock: WorldClock = WorldClock(),
     val continuityConstraints: ContinuityConstraints = ContinuityConstraints(),
     val relevantSettings: List<RelevantSetting> = emptyList(),
+    val activeCapabilityContracts: List<CapabilityContract> = emptyList(),
     val settingContextBudget: SettingContextBudget = SettingContextBudget(),
     val canonRevisionSummary: CanonRevisionSummary = CanonRevisionSummary(),
 )
@@ -517,6 +608,7 @@ data class AiTurnResult(
     val transitionProposal: TransitionProposal? = null,
     val worldEventAcknowledgements: List<WorldEventAcknowledgement> = emptyList(),
     val timeAdvanceProposal: TimeAdvanceProposal? = null,
+    val capabilityUseChecks: List<CapabilityUseCheck> = emptyList(),
     val validationNotes: List<String> = emptyList(),
     val notes: String = "",
 )
@@ -976,6 +1068,7 @@ data class ContextAuditReport(
     val sections: List<ContextSectionByteReport> = emptyList(),
     val forensics: ContextBudgetForensicsReport? = null,
     val semanticCoverage: SemanticCoverageReport = SemanticCoverageReport(),
+    val capabilityCoverage: CapabilityCoverageReport = CapabilityCoverageReport(),
 )
 
 @Serializable
@@ -1012,6 +1105,12 @@ data class SemanticRequirement(
     val requirementId: String,
     val semanticType: String,
     val source: String,
+    val actorId: String = "",
+    val entityType: String = "",
+    val entityId: String = "",
+    val referenceReason: String = "",
+    val requestedUse: String = "",
+    val requiredContractFields: List<String> = emptyList(),
     val targetCharacterIds: List<String> = emptyList(),
     val referencedEntityIds: List<String> = emptyList(),
     val referencedMemoryCandidates: List<String> = emptyList(),
@@ -1104,6 +1203,7 @@ data class ContextBudgetForensicsReport(
     val metadataPathBreakdown: List<ContextMetadataPathReport> = emptyList(),
     val duplicateContentGroups: List<ContextDuplicateContentGroup> = emptyList(),
     val semanticCoverage: SemanticCoverageReport = SemanticCoverageReport(),
+    val capabilityCoverage: CapabilityCoverageReport = CapabilityCoverageReport(),
     val danglingReferenceCheck: ContextDanglingReferenceCheck = ContextDanglingReferenceCheck(true),
     val safetyFieldPresence: ContextSafetyFieldPresence,
     val unsatisfiedReason: String = "",

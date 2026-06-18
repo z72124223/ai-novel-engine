@@ -56,6 +56,7 @@ object ContextPacketTopLevelAllowlist {
         "worldClock",
         "continuityConstraints",
         "relevantSettings",
+        "activeCapabilityContracts",
         "settingContextBudget",
         "canonRevisionSummary",
     )
@@ -99,7 +100,13 @@ object ContextPacketNormalizer {
             facts = context.facts.distinctBy { it.id },
             revealedSecrets = emptyList(),
             items = context.items.distinctBy { it.id },
-            techniques = context.techniques.distinctBy { it.id },
+            techniques = context.techniques.map { technique ->
+                if (context.activeCapabilityContracts.any { it.entityType == "technique" && it.entityId == technique.id }) {
+                    technique.copy(description = "", tags = emptyList())
+                } else {
+                    technique
+                }
+            }.distinctBy { it.id },
             recentEvents = context.recentEvents.map(::compactEvent).distinctBy { it.id },
             openTasks = context.openTasks.distinctBy { it.id },
             recentTurnSummaries = context.recentTurnSummaries.distinctBy { it.turnNumber },
@@ -108,6 +115,7 @@ object ContextPacketNormalizer {
                 it.enabled || it.mustProduceMeaningfulStateChange || it.allowedPressureTypes.isNotEmpty()
             },
             relevantSettings = context.relevantSettings.map { compactSetting(it, mandatoryTexts) }.distinctBy { "${it.entityType}:${it.entityId}" },
+            activeCapabilityContracts = context.activeCapabilityContracts.distinctBy { "${it.entityType}:${it.entityId}:${it.authorizedActorIds.joinToString(",")}" },
             contextBudget = context.contextBudget.withoutLegacyDiagnostics(),
             settingContextBudget = context.settingContextBudget.withoutLegacyDiagnostics(),
             canonRevisionSummary = context.canonRevisionSummary.copy(

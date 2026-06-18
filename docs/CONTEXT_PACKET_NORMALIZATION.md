@@ -6,7 +6,7 @@ Final Pilot turn context is the JSON payload read by the manual AI window. It mu
 
 Final `ContextPacket` top-level fields must be in the versioned allowlist represented by `ContextPacketTopLevelAllowlist`. Unknown top-level keys fail `audit-context`.
 
-The allowlist contains protocol identity, player input, project and scene summaries, scene contract, active character views, runtime states, world rules, facts, items, techniques, recent events, session/hash fields, memories, knowledge claims, scene/thread/world-event views, continuity constraints, relevant settings and compact budget summaries.
+The allowlist contains protocol identity, player input, project and scene summaries, scene contract, active character views, runtime states, world rules, facts, items, techniques, recent events, session/hash fields, memories, knowledge claims, scene/thread/world-event views, continuity constraints, relevant settings, `activeCapabilityContracts` and compact budget summaries.
 
 There is no final `otherMetadata` catch-all. Forensics may still report an `otherMetadata` diagnostic section, but it should be empty for finalized Pilot context.
 
@@ -32,6 +32,8 @@ Active character records keep only turn-relevant public profile data. Runtime st
 
 Facts, events, summaries and settings are compacted so the same prose is not repeated across multiple sections. Event payloads drop duplicated `summary` and debug data. Setting excerpts keep current requirements, costs, limitations and other legality data while trimming repeated public prose and long relation paths.
 
+When an `activeCapabilityContracts` entry exists for a technique, the legacy `techniques` list keeps only a compact reference. Requirements, costs, limitations and forbidden uses live in the contract so the same capability prose is not duplicated.
+
 ## Empty And Default Omission
 
 The JSON serializer omits empty/default optional fields when Kotlin defaults can restore the value on read. Required protocol fields and compact budget summaries remain explicit.
@@ -51,6 +53,6 @@ The order is strict:
 
 ## Relevance Floor Interaction
 
-Normalization must not strip Tier 1 semantic floor records. After compacting aliases and diagnostics, the finalizer checks semantic coverage for the current turn. Required memory, knowledge, transition/location, character-goal, world-rule, and referenced item/technique constraints are protected while optional Tier 3 and Tier 2 records are trimmed.
+Normalization must not strip Tier 1 semantic floor records. After compacting aliases and diagnostics, the finalizer checks semantic coverage for the current turn. Required memory, knowledge, transition/location, character-goal, world-rule, and referenced item/technique constraints are protected while optional Tier 3 and Tier 2 records are trimmed. Explicit capability contracts are protected Tier 1 records and are not moved into diagnostics.
 
 `semanticCoverage` belongs in audit/explain sidecars only. It must not be serialized into the AI-facing `ContextPacket`.

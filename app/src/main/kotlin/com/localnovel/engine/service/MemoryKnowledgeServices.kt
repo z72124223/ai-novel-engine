@@ -691,7 +691,7 @@ class ContextPacketFinalizer(
 }
 
 private fun ProtectedContextIds.hasProtectedFloor(): Boolean =
-    memoryIds.isNotEmpty() || knowledgeClaimIds.isNotEmpty() || settingKeys.isNotEmpty()
+    memoryIds.isNotEmpty() || knowledgeClaimIds.isNotEmpty() || settingKeys.isNotEmpty() || capabilityKeys.isNotEmpty()
 
 private fun String.normalizedFragment(): String =
     trim().replace(Regex("\\s+"), " ")
@@ -708,8 +708,8 @@ class KnowledgeBoundaryValidator(private val repository: SqliteStoryRepository) 
         val errors = mutableListOf<ValidationError>()
         val memoryById = context.retrievedMemories.associateBy { it.memoryId }
         val contextMemoryIds = memoryById.keys + context.characterMemories.map { it.id }
-        val itemIds = context.items.map { it.id }.toSet()
-        val techniqueIds = context.techniques.map { it.id }.toSet()
+        val itemIds = (context.items.map { it.id } + context.activeCapabilityContracts.filter { it.entityType in setOf("item", "weapon") }.map { it.entityId }).toSet()
+        val techniqueIds = (context.techniques.map { it.id } + context.activeCapabilityContracts.filter { it.entityType == "technique" }.map { it.entityId }).toSet()
         val knowledgeById = context.knowledgeClaims.associateBy { it.claimId }
         val factIds = context.facts.map { it.id }.toSet()
         val revealedFactIds = result.revealedFacts.map { it.factId }.toSet() +

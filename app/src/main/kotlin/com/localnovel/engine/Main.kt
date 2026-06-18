@@ -10,6 +10,7 @@ import com.localnovel.engine.model.SettingPackSource
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CanonConsistencyValidator
+import com.localnovel.engine.service.CapabilityContractResolver
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
 import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
@@ -82,6 +83,7 @@ class Cli {
                 "export-session-evidence" -> exportSessionEvidence(options)
                 "pilot-preflight" -> pilotPreflight(options)
                 "explain-context-budget" -> explainContextBudget(options)
+                "explain-capability" -> explainCapability(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -472,6 +474,38 @@ class Cli {
         return if (report.canFit) 0 else 1
     }
 
+    private fun explainCapability(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val sessionId = options.required("session")
+        val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
+        val report = CapabilityContractResolver(repository).explain(
+            projectId = session.projectId,
+            sessionId = sessionId,
+            entityType = options.required("entity-type"),
+            entityId = options.required("entity-id"),
+            actorId = options["actor"],
+            intendedUse = options["intended-use"].orEmpty(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("status=${report.status}")
+        println("entity=${report.entityType}:${report.entityId}")
+        println("canonicalEntitySource=${report.canonicalEntitySource}")
+        println("entityRevisionId=${report.entityRevisionId}")
+        println("sourcePack=${report.sourcePackId}@${report.sourcePackVersion ?: 0}")
+        println("owner=${report.owner ?: ""}")
+        println("authorizedActorIds=${report.authorizedActorIds.joinToString(",")}")
+        println("effects=${report.effects.joinToString("; ")}")
+        println("prerequisites=${report.prerequisites.joinToString("; ")}")
+        println("requirements=${report.requirements.joinToString("; ")}")
+        println("costs=${report.costs.joinToString("; ")}")
+        println("limitations=${report.limitations.joinToString("; ")}")
+        println("forbiddenUses=${report.forbiddenUses.joinToString("; ")}")
+        println("currentEligibility=${report.currentEligibility}")
+        println("eligibilityReasons=${report.eligibilityReasons.joinToString("; ")}")
+        report.missingFields.forEach { println("missing=$it") }
+        return if (report.status == "OK") 0 else 1
+    }
+
     private fun exportSessionEvidence(options: Map<String, String>): Int {
         val repository = repository(options)
         val export = SessionEvidenceExporter(repository).export(options.required("session"))
@@ -714,6 +748,7 @@ class Cli {
               export-session-evidence [--db <path>] --session <id> --out <path>
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
               explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
+              explain-capability [--db <path>] --session <id> --entity-type <technique|item|weapon> --entity-id <id> [--actor <character-id>] [--intended-use <text>] [--out <path>]
             """.trimIndent(),
         )
     }

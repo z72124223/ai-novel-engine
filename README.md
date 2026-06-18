@@ -86,6 +86,7 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `export-session-evidence --db <path> --session <id> --out <path>`
 - `pilot-preflight --db <path> --project <id> --session <id> [--out <path>]`
 - `explain-context-budget --db <path> --session <id> (--input <text> | --input-file <path>) [--out <path>]`
+- `explain-capability --db <path> --session <id> --entity-type <technique|item|weapon> --entity-id <id> [--actor <character-id>] [--out <path>]`
 
 ## Multi-Turn Flow
 
@@ -172,6 +173,8 @@ Budget V2 keeps the same `24576` byte limit. It adds deterministic duplicate com
 Pilot-1 context metadata normalization keeps diagnostics out of the AI-facing `ContextPacket`. Final turn context now uses a top-level allowlist, omits empty/default optional fields, removes legacy aliases such as `characterMemories` when `retrievedMemories` is present, and stores detailed budget forensics only in `explain-context-budget` / `audit-context` report files. See `docs/CONTEXT_PACKET_NORMALIZATION.md`.
 
 Pilot-1 context relevance floor prevents a byte-valid but semantically empty turn context. `prepare-turn`, `audit-context`, and `explain-context-budget` now evaluate deterministic semantic requirements for explicit recall cues, relevant beliefs, transition/location questions, active character goals, hard world rules, and referenced item/technique constraints. If required memory, knowledge, or legality records cannot fit under `24576` bytes, the command fails with `CONTEXT_QUALITY_UNSATISFIABLE` before a pending turn is created. See `docs/CONTEXT_RELEVANCE_FLOOR.md`.
+
+Referenced capability contracts prevent AI results from using a technique, item, or weapon from name/description alone. Explicit capability use must keep a Tier 1 `activeCapabilityContracts` card with authorization, effects, prerequisites, requirements, costs, limitations, forbidden uses, and current eligibility. `resolve-turn` requires matching `capabilityUseChecks` and a cost state delta when a successful use has costs. Use `explain-capability` for read-only provenance. See `docs/REFERENCED_CAPABILITY_CONTRACTS.md`.
 
 ## Project Layout
 

@@ -38,6 +38,7 @@ class ContextBudgetForensicsService(
         val duplicateGroups = duplicateGroups(after)
         val duplicatePaths = duplicateGroups.flatMap { it.paths }.toSet()
         val coverage = semanticCoverage ?: ContextQualityGuard(maxContextBytes).evaluate(after, TurnSemanticPlanner().plan(before))
+        val capabilityCoverage = CapabilityCoverageAnalyzer().report(after, coverage.requirements)
         val recomputedHash = sha256(JsonSupport.json.encodeToString(after.copy(contextHash = "")).toByteArray(Charsets.UTF_8))
         return ContextBudgetForensicsReport(
             sessionId = after.sessionId,
@@ -59,6 +60,7 @@ class ContextBudgetForensicsService(
             metadataPathBreakdown = metadataPathBreakdown(after, duplicateGroups),
             duplicateContentGroups = duplicateGroups,
             semanticCoverage = coverage,
+            capabilityCoverage = capabilityCoverage,
             danglingReferenceCheck = danglingReferenceCheck(after),
             safetyFieldPresence = safetyFieldPresence(after),
             unsatisfiedReason = unsatisfiedReason,
@@ -90,6 +92,7 @@ class ContextBudgetForensicsService(
             section("characterKnowledge", context.knowledgeClaims, context.knowledgeClaims.size),
             section("retrievedMemories", context.retrievedMemories, context.retrievedMemories.size),
             section("relevantSettings", context.relevantSettings, context.relevantSettings.size),
+            section("activeCapabilityContracts", context.activeCapabilityContracts, context.activeCapabilityContracts.size),
             section("storyThreads", context.activeStoryThreads, context.activeStoryThreads.size),
             section("recentTurnSummaries", context.recentTurnSummaries, context.recentTurnSummaries.size),
             section("worldRules", context.worldRules, context.worldRules.size),
@@ -133,6 +136,7 @@ class ContextBudgetForensicsService(
         context.retrievedMemories.forEach { put("memory:${it.memoryId}", "retrievedMemories") }
         context.knowledgeClaims.forEach { put("knowledge:${it.claimId}", "characterKnowledge") }
         context.relevantSettings.forEach { put("setting:${it.entityType}:${it.entityId}", "relevantSettings") }
+        context.activeCapabilityContracts.forEach { put("capability:${it.entityType}:${it.entityId}", "activeCapabilityContracts") }
         context.activeStoryThreads.forEach { put("thread:${it.threadId}", "storyThreads") }
         context.recentTurnSummaries.forEach { put("summary:${it.turnNumber}", "recentTurnSummaries") }
         context.worldRules.forEach { put("world_rule:${it.id}", "worldRules") }
@@ -304,6 +308,7 @@ class ContextBudgetForensicsService(
             path.startsWith("$.recentTurnSummaries") -> "turn summary reference"
             path.startsWith("$.items") -> "item reference"
             path.startsWith("$.techniques") -> "technique reference"
+            path.startsWith("$.activeCapabilityContracts") -> "referenced capability contract"
             path.startsWith("$.worldRules") -> "hard world rule"
             path.startsWith("$.relevantSettings") -> "setting compact view"
             path.startsWith("$.contextBudget") || path.startsWith("$.settingContextBudget") -> "budget accounting"
@@ -337,6 +342,7 @@ class ContextBudgetForensicsService(
             path.startsWith("$.characterStates") -> "runtime goal, emotion, location, inventory, and action constraints"
             path.startsWith("$.characters") -> "actor identity and compact public-facing role"
             path.startsWith("$.relevantSettings") -> "bounded canon excerpt selected by dependency relevance"
+            path.startsWith("$.activeCapabilityContracts") -> "Tier 1 capability legality contract for explicit use"
             path.startsWith("$.sceneContract") -> "forbidden reveal and scene contract safety"
             path.startsWith("$.worldRules") -> "hard world rule safety"
             else -> "formal ContextPacket protocol field"
@@ -377,6 +383,7 @@ class ContextBudgetForensicsService(
             "characterKnowledge",
             "retrievedMemories",
             "relevantSettings",
+            "activeCapabilityContracts",
             "storyThreads",
             "recentTurnSummaries",
             "facts",
@@ -435,6 +442,7 @@ class ContextBudgetForensicsService(
             "$.pendingWorldEvents",
             "$.worldClock",
             "$.relevantSettings",
+            "$.activeCapabilityContracts",
             "$.settingContextBudget",
             "$.canonRevisionSummary",
             "$.contextBudget",

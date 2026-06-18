@@ -198,3 +198,15 @@ Final context fitting now includes a semantic coverage sidecar. It is not part o
 - `nearHardLimit`, `remainingBytes`, and Tier 0..3 byte estimates.
 
 `prepare-turn` still writes only a normal context JSON. If the required semantic floor cannot fit, it fails with `CONTEXT_QUALITY_UNSATISFIABLE` before saving a pending context.
+
+## Referenced Capability Contract Protocol
+
+`ContextPacket` adds:
+
+- `activeCapabilityContracts`: compact Tier 1 cards for explicitly used techniques, items, or weapons. Each card includes authorized actors, effects, prerequisites, requirements, costs, limitations, forbidden uses, current eligibility, eligibility reasons, and source revision.
+
+`AiTurnResult` adds:
+
+- `capabilityUseChecks`: per-use validation evidence containing actor, capability ID, intended use, eligibility claim, satisfied/unsatisfied prerequisites, applied costs, observed limitations, result scope, evidence state deltas, and reason.
+
+Manual AI output may use only the capability effects in the active contract. Description text alone is not sufficient. Successful use with costs must include a legal cost state delta.

@@ -113,3 +113,15 @@ Relevance floor adds no migration and no write path. It sits between context con
 - `ContextQualityGuard` verifies that must-satisfy requirements are present in the final `ContextPacket`.
 - `ContextPacketFinalizer` protects Tier 1 records while trimming Tier 3 and Tier 2 material. If the protected semantic floor cannot fit under `24576` bytes, prepare/preview fails with `CONTEXT_QUALITY_UNSATISFIABLE`.
 - `ContextBudgetForensicsService` and `ContextAuditService` expose `semanticCoverage` only in sidecar reports; this coverage data is not serialized into the AI-facing context.
+
+## Referenced Capability Contracts
+
+Capability contracts add no migration and no alternate write path.
+
+- `CapabilityContractResolver` builds compact `activeCapabilityContracts` from core rows plus latest `entity_revisions.snapshot_json`.
+- `explain-capability` is a read-only provenance diagnostic for one technique, item, or weapon.
+- `TurnSemanticPlanner` treats explicit capability use as a Tier 1 semantic requirement.
+- `ContextQualityGuard`, `ContextBudgetForensicsService`, and `ContextAuditService` report `capabilityCoverage` in sidecars only.
+- `CapabilityUseValidator` requires matching `AiTurnResult.capabilityUseChecks` and cost state deltas for successful uses with costs.
+
+AI/Codex still writes only result JSON. SQLite changes remain behind `resolve-turn`, validator checks, stateVersion, contextHash, and the transaction.

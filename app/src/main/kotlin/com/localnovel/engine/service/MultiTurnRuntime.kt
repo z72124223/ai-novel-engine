@@ -138,7 +138,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             ),
             continuityConstraints = repository.getContinuityConstraints(session.id),
         )
-        val enrichedContext = SettingContextResolver(repository).enrich(baseContext)
+        val enrichedContext = CapabilityContractResolver(repository).enrich(SettingContextResolver(repository).enrich(baseContext))
         val contextWithoutHash = ContextBudgeter().applyBudget(
             enrichedContext,
             omittedMemoryCount = memorySelection.omittedMemoryCount,
@@ -161,7 +161,8 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.threadProgressUpdates.isNotEmpty() ||
             result.transitionProposal != null ||
             result.worldEventAcknowledgements.isNotEmpty() ||
-            result.timeAdvanceProposal != null
+            result.timeAdvanceProposal != null ||
+            result.capabilityUseChecks.isNotEmpty()
         return repository.resolvePendingTurn(context, result, hasStateChange)
     }
 
@@ -208,6 +209,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         errors += WorldClockService().validate(result)
         errors += ScheduledWorldEventService().validate(context, result)
         errors += NarrativeContinuityValidator(repository).validate(context, result)
+        errors += CapabilityUseValidator().validate(context, result)
         errors += KnowledgeBoundaryValidator(repository).validate(context, result)
         errors += MemoryLifecycleService(repository).validate(context, result)
         errors += EmotionReducer().validate(context, result)
@@ -258,6 +260,20 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.timeAdvanceProposal?.let {
                 add(it.sourceType)
                 add(it.sourceId)
+                add(it.reason)
+            }
+            result.capabilityUseChecks.forEach {
+                add(it.actorId)
+                add(it.entityType)
+                add(it.entityId)
+                add(it.intendedUse)
+                add(it.eligibilityClaim)
+                addAll(it.satisfiedPrerequisites)
+                addAll(it.unsatisfiedPrerequisites)
+                addAll(it.appliedCosts)
+                addAll(it.observedLimitations)
+                add(it.resultScope)
+                addAll(it.evidenceStateDeltaIds)
                 add(it.reason)
             }
             result.allDeltaOperations().forEach { addAll(it.payload.allStringValues()) }
@@ -340,8 +356,8 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             errors += ValidationError("low_character_fit", "characterActions[$index] characterFitScore must be >= 70.")
         }
         val memoryIds = (context.characterMemories.map { it.id } + context.retrievedMemories.map { it.memoryId }).toSet()
-        val itemIds = context.items.map { it.id }.toSet()
-        val techniqueIds = context.techniques.map { it.id }.toSet()
+        val itemIds = (context.items.map { it.id } + context.activeCapabilityContracts.filter { it.entityType in setOf("item", "weapon") }.map { it.entityId }).toSet()
+        val techniqueIds = (context.techniques.map { it.id } + context.activeCapabilityContracts.filter { it.entityType == "technique" }.map { it.entityId }).toSet()
         action.usedMemoryIds.filterNot { it in memoryIds }.forEach {
             errors += ValidationError("unknown_memory", "characterActions[$index] uses unknown memory: $it")
         }
