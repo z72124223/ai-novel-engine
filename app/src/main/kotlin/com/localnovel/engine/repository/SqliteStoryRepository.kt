@@ -14,6 +14,7 @@ import com.localnovel.engine.model.DependencyEdge
 import com.localnovel.engine.model.Event
 import com.localnovel.engine.model.Fact
 import com.localnovel.engine.model.Faction
+import com.localnovel.engine.model.InitialRuntimeTemplate
 import com.localnovel.engine.model.Item
 import com.localnovel.engine.model.Location
 import com.localnovel.engine.model.LocationConnection
@@ -51,6 +52,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.nio.file.Files
@@ -663,6 +665,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     statement.setString(3, projectId)
                     statement.executeUpdate()
                 }
+                initializeOpeningRuntimeStates(connection, projectId, startScene.locationId, timestamp)
             }
             insertSceneInstance(connection, session.id, sceneId, sceneInstanceId, 1, 1, "start-session")
             initializeSceneRequirementStates(connection, session.id, sceneInstanceId, sceneId)
@@ -675,6 +678,68 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             throw error
         } finally {
             connection.autoCommit = true
+        }
+    }
+
+    private fun initializeOpeningRuntimeStates(connection: Connection, projectId: String, openingLocationId: String, timestamp: String) {
+        val charactersById = selectCharacters(connection, projectId).associateBy { it.id }
+        val openingCharacterIds = buildSet {
+            connection.prepareStatement(
+                """
+                SELECT from_id
+                FROM dependency_edges
+                WHERE project_id = ?
+                  AND from_type = 'character'
+                  AND to_type = 'location'
+                  AND to_id = ?
+                  AND UPPER(relation) = 'LOCATED_IN'
+                  AND status = 'active'
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, projectId)
+                statement.setString(2, openingLocationId)
+                statement.executeQuery().use { rows ->
+                    while (rows.next()) add(rows.getString("from_id"))
+                }
+            }
+            charactersById.values
+                .filter { it.initialRuntimeTemplate()?.initialLocationId == openingLocationId }
+                .forEach { add(it.id) }
+        }
+        openingCharacterIds.sorted().forEach { characterId ->
+            if (selectCharacterState(connection, projectId, characterId) != null) return@forEach
+            val character = charactersById[characterId] ?: error("MISSING_INITIAL_RUNTIME_TEMPLATE: opening character not found: $characterId")
+            val template = character.initialRuntimeTemplate()
+                ?: error("MISSING_INITIAL_RUNTIME_TEMPLATE: opening active character '$characterId' requires initialRuntimeTemplate")
+            if (template.initialLocationId != openingLocationId) {
+                error("INVALID_INITIAL_CHARACTER_LOCATION: '$characterId' initialLocationId '${template.initialLocationId}' does not match opening location '$openingLocationId'")
+            }
+            if (template.initialGoal.isBlank() || template.dominantEmotion.isBlank()) {
+                error("MISSING_INITIAL_RUNTIME_TEMPLATE: '$characterId' initialGoal and dominantEmotion are required")
+            }
+            if (template.emotionState.values.any { it !in 0..100 } || template.initiativeLevel !in 0..100) {
+                error("INVALID_INITIAL_RUNTIME_TEMPLATE: '$characterId' has invalid emotionState or initiativeLevel")
+            }
+            val flags = buildMap {
+                put("current_goal", template.initialGoal)
+                put("dominant_emotion", template.dominantEmotion)
+                put("available_actions", JsonSupport.json.encodeToString(template.availableActions))
+                put("relationship_defaults", JsonSupport.json.encodeToString(template.relationshipDefaults))
+                put("initiative_level", template.initiativeLevel.toString())
+                template.emotionState.forEach { (emotion, value) -> put("emotion.$emotion", value.toString()) }
+            }
+            insertCharacterState(
+                connection,
+                CharacterState(
+                    characterId = characterId,
+                    projectId = projectId,
+                    locationId = template.initialLocationId,
+                    mood = template.dominantEmotion,
+                    health = "normal",
+                    inventory = selectItemsOwnedBy(connection, projectId, characterId),
+                    flags = flags,
+                ),
+            )
         }
     }
 
@@ -1821,7 +1886,12 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             recordEntityRevision(connection, pack, "world_rule", entity, packHash)
         }
         pack.entities.characters.forEach { entity ->
-            insertCharacter(connection, CharacterProfile(entity.id, pack.projectId, entity.displayName(), entity.role, entity.bodyText(), entity.metadata.stringValue("isPlayer") == "true", entity.metadata))
+            val profile = if (entity.initialRuntimeTemplate == null) {
+                entity.metadata
+            } else {
+                JsonObject(entity.metadata + ("initialRuntimeTemplate" to JsonSupport.json.encodeToJsonElement(entity.initialRuntimeTemplate)))
+            }
+            insertCharacter(connection, CharacterProfile(entity.id, pack.projectId, entity.displayName(), entity.role, entity.bodyText(), entity.metadata.stringValue("isPlayer") == "true", profile))
             recordEntityRevision(connection, pack, "character", entity, packHash)
         }
         pack.entities.scenes.forEach { entity ->
@@ -2893,6 +2963,35 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.executeQuery().use { rows -> if (rows.next()) rows.toKnowledgeClaim() else null }
         }
 
+    private fun selectCharacters(connection: Connection, projectId: String): List<CharacterProfile> =
+        connection.queryMany(
+            """
+            SELECT id, project_id, name, role, description, is_player, profile_json
+            FROM characters
+            WHERE project_id = ?
+            ORDER BY is_player DESC, name ASC
+            """.trimIndent(),
+            projectId,
+        ) { it.toCharacterProfile() }
+
+    private fun selectItemsOwnedBy(connection: Connection, projectId: String, characterId: String): List<String> =
+        connection.prepareStatement(
+            """
+            SELECT id
+            FROM items
+            WHERE project_id = ? AND owner_character_id = ?
+            ORDER BY id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, characterId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) add(rows.getString("id"))
+                }
+            }
+        }
+
     private fun <T> Connection.queryMany(sql: String, projectId: String, mapper: (ResultSet) -> T): List<T> =
         prepareStatement(sql).use { statement ->
             statement.setString(1, projectId)
@@ -3110,3 +3209,6 @@ private inline fun <reified T> JsonObject.decodeValue(key: String): T? {
 
 private fun JsonObject.decodeListField(key: String): List<String> =
     decodeValue<List<String>>(key).orEmpty()
+
+private fun CharacterProfile.initialRuntimeTemplate(): InitialRuntimeTemplate? =
+    profile.decodeValue("initialRuntimeTemplate")

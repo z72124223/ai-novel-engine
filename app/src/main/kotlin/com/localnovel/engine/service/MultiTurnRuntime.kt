@@ -32,6 +32,15 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
     }
 
     fun prepareTurn(sessionId: String, playerInput: String): ContextPacket {
+        val context = buildTurnContext(sessionId, playerInput)
+        repository.savePendingContext(context)
+        return context
+    }
+
+    fun previewTurnContext(sessionId: String, playerInput: String): ContextPacket =
+        buildTurnContext(sessionId, playerInput)
+
+    private fun buildTurnContext(sessionId: String, playerInput: String): ContextPacket {
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
         require(session.status == "active") { "Session is not active: $sessionId" }
         val project = repository.getProject(session.projectId) ?: error("Project not found: ${session.projectId}")
@@ -111,9 +120,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             omittedMemoryCount = memorySelection.omittedMemoryCount,
             omittedKnowledgeCount = memorySelection.omittedKnowledgeCount,
         )
-        val context = contextWithoutHash.copy(contextHash = hashContext(contextWithoutHash))
-        repository.savePendingContext(context)
-        return context
+        return ContextPacketFinalizer().finalize(contextWithoutHash, ::hashContext)
     }
 
     fun resolveTurn(sessionId: String, result: AiTurnResult): ApplyResult {

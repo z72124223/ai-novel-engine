@@ -115,6 +115,44 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
                     issues += error("author_only_knowledge_leak", "Author-only secret '$secretId' cannot enter '${character.id}' initial knowledge.", "$.entities.characters[${character.id}].startingKnowledge")
                 }
             }
+            character.initialRuntimeTemplate?.let { template ->
+                if (template.initialLocationId.isBlank()) {
+                    issues += error("missing_initial_runtime_template_field", "Character '${character.id}' initialRuntimeTemplate.initialLocationId is required.", "$.entities.characters[${character.id}].initialRuntimeTemplate.initialLocationId")
+                } else if (!exists(pack, "location", template.initialLocationId, localByType)) {
+                    issues += error("unknown_reference", "Character '${character.id}' initialRuntimeTemplate references unknown location '${template.initialLocationId}'.", "$.entities.characters[${character.id}].initialRuntimeTemplate.initialLocationId")
+                }
+                if (template.initialGoal.isBlank()) {
+                    issues += error("missing_initial_runtime_template_field", "Character '${character.id}' initialRuntimeTemplate.initialGoal is required.", "$.entities.characters[${character.id}].initialRuntimeTemplate.initialGoal")
+                }
+                if (template.dominantEmotion.isBlank()) {
+                    issues += error("missing_initial_runtime_template_field", "Character '${character.id}' initialRuntimeTemplate.dominantEmotion is required.", "$.entities.characters[${character.id}].initialRuntimeTemplate.dominantEmotion")
+                }
+                template.emotionState.filterValues { it !in 0..100 }.forEach { (emotion, value) ->
+                    issues += error("invalid_initial_emotion_state", "Character '${character.id}' emotion '$emotion' must be between 0 and 100, got $value.", "$.entities.characters[${character.id}].initialRuntimeTemplate.emotionState.$emotion")
+                }
+                if (template.initiativeLevel !in 0..100) {
+                    issues += error("invalid_initial_initiative", "Character '${character.id}' initiativeLevel must be between 0 and 100.", "$.entities.characters[${character.id}].initialRuntimeTemplate.initiativeLevel")
+                }
+                val directorGoals = pack.entities.storyThreads.map { it.directorGoal }.filter { it.isNotBlank() }
+                if (directorGoals.any { it == template.initialGoal || template.initialGoal.contains(it) }) {
+                    issues += error("director_goal_leak", "Character '${character.id}' initialGoal cannot copy a story thread directorGoal.", "$.entities.characters[${character.id}].initialRuntimeTemplate.initialGoal")
+                }
+                validateInitialRuntimeKnowledgeBoundary(pack, character.id, template.allRuntimeText(), localByType).forEach { issue ->
+                    issues += issue
+                }
+                template.availableActions.forEachIndexed { actionIndex, action ->
+                    val tokens = Regex("[A-Za-z0-9._:-]+").findAll(action).map { it.value }.toList()
+                    tokens.filter { it.startsWith("item-") && !exists(pack, "item", it, localByType) }.forEach {
+                        issues += error("invalid_initial_character_action", "Character '${character.id}' availableAction references unknown item '$it'.", "$.entities.characters[${character.id}].initialRuntimeTemplate.availableActions[$actionIndex]")
+                    }
+                    tokens.filter { it.startsWith("technique-") && !exists(pack, "technique", it, localByType) }.forEach {
+                        issues += error("invalid_initial_character_action", "Character '${character.id}' availableAction references unknown technique '$it'.", "$.entities.characters[${character.id}].initialRuntimeTemplate.availableActions[$actionIndex]")
+                    }
+                    tokens.filter { it.startsWith("secret-") }.forEach {
+                        issues += error("initial_runtime_knowledge_leak", "Character '${character.id}' availableAction cannot reference hidden secret '$it'.", "$.entities.characters[${character.id}].initialRuntimeTemplate.availableActions[$actionIndex]")
+                    }
+                }
+            }
         }
 
         pack.entities.items.forEach { item ->
@@ -185,7 +223,62 @@ class CanonSemanticValidator(private val repository: SqliteStoryRepository) {
         idsByType["items"]?.groupingBy { it }?.eachCount()?.filterValues { it > 1 }?.keys.orEmpty().forEach {
             issues += error("unique_item_multi_owner", "Unique item '$it' appears more than once.", "$.entities.items")
         }
+        issues += validateOpeningRuntimeTemplates(pack, localByType)
         return report(pack, issues)
+    }
+
+    private fun validateOpeningRuntimeTemplates(pack: SettingPack, localByType: Map<String, Set<String>>): List<SettingPackValidationIssue> {
+        val openingSceneId = pack.entities.projects.firstOrNull { it.id == pack.projectId }?.metadata?.stringValue("activeSceneId")
+            ?: pack.entities.projects.firstOrNull()?.metadata?.stringValue("activeSceneId")
+            ?: pack.entities.scenes.firstOrNull()?.id
+            ?: return emptyList()
+        val openingScene = pack.entities.scenes.firstOrNull { it.id == openingSceneId } ?: return emptyList()
+        val openingLocation = openingScene.locationId ?: return emptyList()
+        val activeCharacterIds = buildSet {
+            pack.relations
+                .filter { it.relation.equals("LOCATED_IN", true) }
+                .filter { it.fromType.toCanonicalEntityType() == "character" && it.toType.toCanonicalEntityType() == "location" && it.toId == openingLocation }
+                .forEach { add(it.fromId) }
+            pack.entities.characters
+                .filter { it.initialRuntimeTemplate?.initialLocationId == openingLocation }
+                .forEach { add(it.id) }
+        }
+        return activeCharacterIds.flatMap { characterId ->
+            val character = pack.entities.characters.firstOrNull { it.id == characterId }
+            when {
+                character == null && !exists(pack, "character", characterId, localByType) ->
+                    listOf(error("unknown_reference", "Opening scene references unknown active character '$characterId'.", "$.relations"))
+                character?.initialRuntimeTemplate == null ->
+                    listOf(error("missing_initial_runtime_template", "Opening active character '$characterId' requires initialRuntimeTemplate.", "$.entities.characters[$characterId].initialRuntimeTemplate"))
+                character.initialRuntimeTemplate.initialLocationId != openingLocation ->
+                    listOf(error("invalid_initial_character_location", "Opening active character '$characterId' initial location must match opening scene location '$openingLocation'.", "$.entities.characters[$characterId].initialRuntimeTemplate.initialLocationId"))
+                else -> emptyList()
+            }
+        }
+    }
+
+    private fun validateInitialRuntimeKnowledgeBoundary(
+        pack: SettingPack,
+        characterId: String,
+        texts: List<String>,
+        localByType: Map<String, Set<String>>,
+    ): List<SettingPackValidationIssue> {
+        val issues = mutableListOf<SettingPackValidationIssue>()
+        pack.entities.secrets.filter { !it.revealed }.forEach { secret ->
+            val secretText = secret.bodyText()
+            val leakedId = texts.any { it.contains(secret.id) }
+            val leakedContent = secretText.isNotBlank() && texts.any { it.contains(secretText) }
+            if (leakedId || leakedContent) {
+                issues += error("initial_runtime_knowledge_leak", "Character '$characterId' initialRuntimeTemplate leaks hidden secret '${secret.id}'.", "$.entities.characters[$characterId].initialRuntimeTemplate")
+            }
+        }
+        pack.entities.secrets.filter { it.visibility == "author_only" }.forEach { secret ->
+            val secretText = secret.bodyText()
+            if (texts.any { it.contains(secret.id) || (secretText.isNotBlank() && it.contains(secretText)) }) {
+                issues += error("author_only_knowledge_leak", "Author-only secret '${secret.id}' cannot enter '$characterId' initial runtime.", "$.entities.characters[$characterId].initialRuntimeTemplate")
+            }
+        }
+        return issues
     }
 
     private fun exists(pack: SettingPack, type: String, id: String, localByType: Map<String, Set<String>>): Boolean {
@@ -566,6 +659,17 @@ private fun SettingPackEntity.displayName(): String =
 
 private fun SettingPackEntity.bodyText(): String =
     content.ifBlank { statement.ifBlank { description.ifBlank { summary } } }
+
+private fun com.localnovel.engine.model.InitialRuntimeTemplate.allRuntimeText(): List<String> =
+    buildList {
+        add(initialLocationId)
+        add(initialGoal)
+        add(dominantEmotion)
+        addAll(emotionState.keys)
+        addAll(availableActions)
+        addAll(relationshipDefaults.keys)
+        addAll(relationshipDefaults.values)
+    }.filter { it.isNotBlank() }
 
 private fun sortJson(element: JsonElement): JsonElement =
     when (element) {

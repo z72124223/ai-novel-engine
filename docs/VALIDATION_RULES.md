@@ -69,3 +69,17 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - `PATCH_CANON` updates against existing canon are blocked while active sessions exist.
 - Rejected packs must not write import logs, entity revisions, dependency edges or core canon rows.
 - Successful apply writes pack, import log, entity revisions, dependency edges and core canon rows in one SQLite transaction.
+
+## Pilot-1 Stabilization Rules
+
+- Final `ContextPacket` JSON must fit within `24576` actual UTF-8 bytes. The limit must not be raised.
+- `contextBudget.actualBytes` must match the exact final file bytes produced by `prepare-turn`.
+- `audit-context` must fail when bytes, declared bytes, hash, or mandatory fields do not match.
+- `prepare-turn` must fail with `CONTEXT_BUDGET_UNSATISFIABLE` before saving a pending context if mandatory context cannot fit.
+- Opening active setting-pack characters must define `initialRuntimeTemplate`.
+- `initialRuntimeTemplate.initialLocationId` must exist and match the opening scene location for opening active characters.
+- `initialRuntimeTemplate.initialGoal` and `dominantEmotion` must be non-empty.
+- `emotionState` values and `initiativeLevel` must be in `0..100`.
+- The template must not contain unrevealed secret content, author-only secret content, or a story-thread `directorGoal`.
+- `start-session` creates missing opening `character_states` from the template in one transaction and rolls back on initialization failure.
+- `pilot-preflight` and `export-session-evidence` are read-only commands.
