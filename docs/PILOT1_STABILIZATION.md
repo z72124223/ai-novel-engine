@@ -14,6 +14,7 @@ Pilot-1 stabilization resolves the blocking issues found in real-use validation 
   - `audit-context`
   - `export-session-evidence`
   - `pilot-preflight`
+  - `explain-context-budget`
 
 ## Runtime Boundary
 
@@ -30,6 +31,19 @@ Formal writes still go only through existing transaction commands:
 - `resolve-turn`
 
 `audit-context`, `pilot-preflight`, and `export-session-evidence` are read-only with respect to SQLite.
+
+`explain-context-budget` is also read-only. It uses the turn context builder in preview mode and writes a JSON forensics report only.
+
+## Context Budget V2
+
+Budget V2 addresses late Pilot turns where mandatory, provenance and optional sections together approached the 24576-byte ceiling.
+
+- The hard cap remains `24576` actual UTF-8 bytes.
+- Failure reports include section bytes, mandatory/optional totals, largest JSON paths, duplicate content groups, retained/removed items and safety checks.
+- `ContextPacketFinalizer` removes duplicated provenance such as stale `canonRevisionSummary.relevantRevisionIds` after setting excerpts have been omitted.
+- Character profiles are compacted when runtime state already carries current goal, dominant emotion, emotion values and available actions.
+- Settings, memories, knowledge, summaries and threads share the remaining global budget deterministically.
+- Failed prepare still happens before pending context creation.
 
 ## Pilot Rerun Rule
 

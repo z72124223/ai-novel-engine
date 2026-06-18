@@ -85,6 +85,7 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `audit-context --file <path> [--out <path>]`
 - `export-session-evidence --db <path> --session <id> --out <path>`
 - `pilot-preflight --db <path> --project <id> --session <id> [--out <path>]`
+- `explain-context-budget --db <path> --session <id> (--input <text> | --input-file <path>) [--out <path>]`
 
 ## Multi-Turn Flow
 
@@ -159,6 +160,14 @@ Before starting a fresh Pilot rerun:
 ```
 
 `pilot-preflight` and `export-session-evidence` are read-only. Setting-pack opening characters must provide `initialRuntimeTemplate`; `start-session` uses it to create missing runtime `character_states` in the session transaction.
+
+When a Pilot turn is near the hard budget, run the read-only forensics command before `prepare-turn`:
+
+```powershell
+./gradlew.bat run --args="explain-context-budget --db data/pilot1-rerun.db --session SESSION_ID --input-file out/turn_input.txt --out out/context_budget_explain.json"
+```
+
+Budget V2 keeps the same `24576` byte limit. It adds deterministic duplicate compaction, compact mandatory views, dynamic allocation across settings/memories/knowledge/summaries, and section-level failure reports. See `docs/CONTEXT_BUDGET_FORENSICS.md`.
 
 ## Project Layout
 

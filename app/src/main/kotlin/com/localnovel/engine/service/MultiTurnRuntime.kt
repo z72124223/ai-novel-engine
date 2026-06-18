@@ -4,6 +4,7 @@ import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ApplyResult
 import com.localnovel.engine.model.CharacterAction
 import com.localnovel.engine.model.CharacterMemory
+import com.localnovel.engine.model.ContextBudgetForensicsReport
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DirectorPressure
 import com.localnovel.engine.model.OutputRequirements
@@ -40,7 +41,30 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
     fun previewTurnContext(sessionId: String, playerInput: String): ContextPacket =
         buildTurnContext(sessionId, playerInput)
 
+    fun explainContextBudget(sessionId: String, playerInput: String): ContextBudgetForensicsReport {
+        val prepared = prepareContextForFinalization(sessionId, playerInput)
+        return runCatching {
+            val finalized = ContextPacketFinalizer().finalize(prepared.budgetedContext, ::hashContext)
+            ContextBudgetForensicsService().report(prepared.candidateBeforeTrimming, finalized)
+        }.getOrElse { error ->
+            if (error is ContextBudgetUnsatisfiableException && error.report != null) {
+                error.report
+            } else {
+                ContextBudgetForensicsService().report(
+                    before = prepared.candidateBeforeTrimming,
+                    after = prepared.budgetedContext,
+                    unsatisfiedReason = error.message ?: error.toString(),
+                )
+            }
+        }
+    }
+
     private fun buildTurnContext(sessionId: String, playerInput: String): ContextPacket {
+        val prepared = prepareContextForFinalization(sessionId, playerInput)
+        return ContextPacketFinalizer().finalize(prepared.budgetedContext, ::hashContext)
+    }
+
+    private fun prepareContextForFinalization(sessionId: String, playerInput: String): PreparedContextForBudget {
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
         require(session.status == "active") { "Session is not active: $sessionId" }
         val project = repository.getProject(session.projectId) ?: error("Project not found: ${session.projectId}")
@@ -120,7 +144,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             omittedMemoryCount = memorySelection.omittedMemoryCount,
             omittedKnowledgeCount = memorySelection.omittedKnowledgeCount,
         )
-        return ContextPacketFinalizer().finalize(contextWithoutHash, ::hashContext)
+        return PreparedContextForBudget(enrichedContext, contextWithoutHash)
     }
 
     fun resolveTurn(sessionId: String, result: AiTurnResult): ApplyResult {
@@ -334,6 +358,11 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         const val SUPPORTED_PROTOCOL_VERSION = "2"
     }
 }
+
+private data class PreparedContextForBudget(
+    val candidateBeforeTrimming: ContextPacket,
+    val budgetedContext: ContextPacket,
+)
 
 private fun JsonObject.mtStringField(key: String): String? =
     this[key]?.jsonPrimitive?.contentOrNull

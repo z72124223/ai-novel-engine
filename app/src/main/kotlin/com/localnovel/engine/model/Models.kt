@@ -955,6 +955,76 @@ data class ContextAuditReport(
 )
 
 @Serializable
+data class ContextBudgetItemReport(
+    val id: String = "",
+    val section: String,
+    val reason: String = "",
+    val utf8Bytes: Int = 0,
+)
+
+@Serializable
+data class ContextJsonPathByteReport(
+    val path: String,
+    val utf8Bytes: Int,
+    val mandatory: Boolean = false,
+    val deduplicatable: Boolean = false,
+)
+
+@Serializable
+data class ContextDuplicateContentGroup(
+    val hash: String,
+    val normalizedBytes: Int,
+    val paths: List<String>,
+    val sample: String = "",
+)
+
+@Serializable
+data class ContextDanglingReferenceCheck(
+    val valid: Boolean,
+    val missingReferences: List<String> = emptyList(),
+)
+
+@Serializable
+data class ContextSafetyFieldPresence(
+    val protocolIdentity: Boolean,
+    val sceneContract: Boolean,
+    val forbiddenReveals: Boolean,
+    val worldRules: Boolean,
+    val activeCharacters: Boolean,
+    val characterStates: Boolean,
+    val continuityConstraints: Boolean,
+    val contextHash: Boolean,
+)
+
+@Serializable
+data class ContextBudgetForensicsReport(
+    val sessionId: String,
+    val turnNumber: Int,
+    val baseStateVersion: Int,
+    val maxContextBytes: Int = 24576,
+    val candidateBytesBeforeTrimming: Int,
+    val candidateBytesAfterTrimming: Int,
+    val bytesOverLimit: Int,
+    val mandatoryBytes: Int,
+    val optionalBytesRemaining: Int,
+    val perSectionBytesBefore: List<ContextSectionByteReport> = emptyList(),
+    val perSectionBytesAfter: List<ContextSectionByteReport> = emptyList(),
+    val mandatorySections: List<String> = emptyList(),
+    val optionalSections: List<String> = emptyList(),
+    val removedItems: List<ContextBudgetItemReport> = emptyList(),
+    val retainedItems: List<ContextBudgetItemReport> = emptyList(),
+    val topLargestJsonPaths: List<ContextJsonPathByteReport> = emptyList(),
+    val duplicateContentGroups: List<ContextDuplicateContentGroup> = emptyList(),
+    val danglingReferenceCheck: ContextDanglingReferenceCheck = ContextDanglingReferenceCheck(true),
+    val safetyFieldPresence: ContextSafetyFieldPresence,
+    val unsatisfiedReason: String = "",
+    val canFit: Boolean = false,
+    val contextHash: String = "",
+    val actualBytesMatchesSerializedPayload: Boolean = false,
+    val hashValid: Boolean = false,
+)
+
+@Serializable
 data class SessionEvidenceExport(
     val session: StorySession,
     val activeSceneInstanceCount: Int,
@@ -980,6 +1050,9 @@ data class PilotPreflightReport(
     val sessionId: String,
     val checks: List<PilotPreflightCheck>,
     val contextAudit: ContextAuditReport? = null,
+    val stateVersion: Int? = null,
+    val nextTurnNumber: Int? = null,
+    val pendingContextCount: Int = 0,
 )
 
 data class ValidationError(
