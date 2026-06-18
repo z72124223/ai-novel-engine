@@ -18,6 +18,13 @@ import com.localnovel.engine.model.Item
 import com.localnovel.engine.model.Location
 import com.localnovel.engine.model.LocationConnection
 import com.localnovel.engine.model.MemoryCandidate
+import com.localnovel.engine.model.SettingPack
+import com.localnovel.engine.model.SettingPackApplyResult
+import com.localnovel.engine.model.SettingPackDiff
+import com.localnovel.engine.model.SettingPackEntity
+import com.localnovel.engine.model.SettingPackImpactReport
+import com.localnovel.engine.model.SettingPackPreview
+import com.localnovel.engine.model.SettingPackRelation
 import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.RetrievedMemory
 import com.localnovel.engine.model.ScheduledWorldEventSeed
@@ -41,11 +48,14 @@ import com.localnovel.engine.model.allDeltaOperations
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.nio.file.Files
 import java.nio.file.Path
+import java.security.MessageDigest
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -59,7 +69,13 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connect { connection ->
             connection.createStatement().use { statement ->
                 statement.executeUpdate("PRAGMA foreign_keys = ON")
-                listOf("001_init.sql", "002_multi_turn_runtime.sql", "003_memory_knowledge_runtime.sql", "004_scene_thread_runtime.sql").forEach { fileName ->
+                listOf(
+                    "001_init.sql",
+                    "002_multi_turn_runtime.sql",
+                    "003_memory_knowledge_runtime.sql",
+                    "004_scene_thread_runtime.sql",
+                    "005_setting_pack_runtime.sql",
+                ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
                     migration.readText().splitToStatements().forEach { sql ->
@@ -777,6 +793,169 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    fun activeSessionIds(projectId: String): List<String> = connect { connection ->
+        connection.prepareStatement(
+            "SELECT id FROM story_sessions WHERE project_id = ? AND status = 'active' ORDER BY id ASC",
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) add(rows.getString("id"))
+                }
+            }
+        }
+    }
+
+    fun closeSession(sessionId: String) {
+        connect { connection ->
+            connection.prepareStatement("UPDATE story_sessions SET status = 'closed', updated_at = ? WHERE id = ?").use { statement ->
+                statement.setString(1, now())
+                statement.setString(2, sessionId)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    fun settingPackHash(packId: String, packVersion: Int): String? = connect { connection ->
+        selectSettingPackHash(connection, packId, packVersion)
+    }
+
+    fun settingPackJson(packId: String, packVersion: Int): String? = connect { connection ->
+        connection.prepareStatement("SELECT pack_json FROM setting_packs WHERE pack_id = ? AND pack_version = ?").use { statement ->
+            statement.setString(1, packId)
+            statement.setInt(2, packVersion)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("pack_json") else null }
+        }
+    }
+
+    fun settingPackRows(projectId: String): List<Map<String, String>> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT pack_id, pack_version, project_id, name, mode, canonical_hash, created_at
+            FROM setting_packs
+            WHERE project_id = ?
+            ORDER BY pack_id ASC, pack_version ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                val meta = rows.metaData
+                buildList {
+                    while (rows.next()) {
+                        add((1..meta.columnCount).associate { index -> meta.getColumnName(index) to (rows.getString(index) ?: "") })
+                    }
+                }
+            }
+        }
+    }
+
+    fun latestEntityRevision(projectId: String, entityType: String, entityId: String): Map<String, String>? = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT id, project_id, entity_type, entity_id, entity_version, source_pack_id,
+                   source_pack_version, canonical_hash, snapshot_json, visibility, status, created_at
+            FROM entity_revisions
+            WHERE project_id = ? AND entity_type = ? AND entity_id = ?
+            ORDER BY entity_version DESC, created_at DESC
+            LIMIT 1
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.setString(2, entityType)
+            statement.setString(3, entityId)
+            statement.executeQuery().use { rows ->
+                if (!rows.next()) return@connect null
+                val meta = rows.metaData
+                (1..meta.columnCount).associate { index -> meta.getColumnName(index) to (rows.getString(index) ?: "") }
+            }
+        }
+    }
+
+    fun listEntityRevisionRows(projectId: String, entityType: String? = null): List<Map<String, String>> = connect { connection ->
+        val sql = if (entityType == null) {
+            """
+            SELECT id, project_id, entity_type, entity_id, entity_version, source_pack_id,
+                   source_pack_version, canonical_hash, snapshot_json, visibility, status, created_at
+            FROM entity_revisions
+            WHERE project_id = ?
+            ORDER BY entity_type ASC, entity_id ASC, entity_version ASC
+            """.trimIndent()
+        } else {
+            """
+            SELECT id, project_id, entity_type, entity_id, entity_version, source_pack_id,
+                   source_pack_version, canonical_hash, snapshot_json, visibility, status, created_at
+            FROM entity_revisions
+            WHERE project_id = ? AND entity_type = ?
+            ORDER BY entity_id ASC, entity_version ASC
+            """.trimIndent()
+        }
+        connection.prepareStatement(sql).use { statement ->
+            statement.setString(1, projectId)
+            if (entityType != null) statement.setString(2, entityType)
+            statement.executeQuery().use { rows ->
+                val meta = rows.metaData
+                buildList {
+                    while (rows.next()) {
+                        add((1..meta.columnCount).associate { index -> meta.getColumnName(index) to (rows.getString(index) ?: "") })
+                    }
+                }
+            }
+        }
+    }
+
+    fun listDependencyRows(projectId: String): List<Map<String, String>> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT *
+            FROM dependency_edges
+            WHERE project_id = ? AND status = 'active'
+            ORDER BY from_type ASC, from_id ASC, relation ASC, to_type ASC, to_id ASC
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                val meta = rows.metaData
+                buildList {
+                    while (rows.next()) {
+                        add((1..meta.columnCount).associate { index -> meta.getColumnName(index) to (rows.getString(index) ?: "") })
+                    }
+                }
+            }
+        }
+    }
+
+    fun applySettingPack(preview: SettingPackPreview, sourcePath: String = ""): SettingPackApplyResult = connect { connection ->
+        connection.autoCommit = false
+        try {
+            val pack = preview.pack
+            val importId = newId("setting-import")
+            val existingHash = selectSettingPackHash(connection, pack.packId, pack.packVersion)
+            if (existingHash != null && existingHash != preview.canonicalHash) {
+                error("Setting pack ${pack.packId} v${pack.packVersion} already exists with a different canonical hash.")
+            }
+            if (existingHash == preview.canonicalHash) {
+                insertSettingPackImport(connection, importId, pack, preview, sourcePath, "no_change")
+                finishSettingPackImport(connection, importId, "no_change")
+                connection.commit()
+                return@connect SettingPackApplyResult(false, importId, pack.packId, pack.packVersion, preview.canonicalHash, preview.diff, preview.impact)
+            }
+
+            ensureProjectForPack(connection, pack)
+            insertSettingPackImport(connection, importId, pack, preview, sourcePath, "applying")
+            insertSettingPackRecord(connection, pack, preview.canonicalHash)
+            applyPackEntities(connection, pack, preview.canonicalHash)
+            pack.relations.forEach { insertSettingPackRelation(connection, pack, it) }
+            finishSettingPackImport(connection, importId, "applied")
+            connection.commit()
+            SettingPackApplyResult(true, importId, pack.packId, pack.packVersion, preview.canonicalHash, preview.diff, preview.impact)
+        } catch (error: Throwable) {
+            connection.rollback()
+            throw error
+        } finally {
+            connection.autoCommit = true
+        }
+    }
+
     fun resolvePendingTurn(context: ContextPacket, result: AiTurnResult, hasStateChange: Boolean): ApplyResult = connect { connection ->
         connection.autoCommit = false
         try {
@@ -856,8 +1035,12 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
 
     override fun targetExists(projectId: String, targetType: String, targetId: String): Boolean = connect { connection ->
         val table = when (targetType) {
+            "project", "projects" -> "projects"
             "character", "characters" -> "characters"
             "character_state", "character_states" -> "character_states"
+            "world_rule", "world_rules" -> "world_rules"
+            "faction", "factions" -> "factions"
+            "location", "locations" -> "locations"
             "fact", "facts" -> "facts"
             "secret", "secrets" -> "secrets"
             "event", "events" -> "events"
@@ -873,6 +1056,12 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             "scene_transition", "scene_transitions" -> "scene_transitions"
             "world_event", "scheduled_world_events" -> "scheduled_world_events"
             else -> return@connect false
+        }
+        if (table == "projects") {
+            return@connect connection.prepareStatement("SELECT 1 FROM projects WHERE id = ? LIMIT 1").use { statement ->
+                statement.setString(1, targetId)
+                statement.executeQuery().use { it.next() }
+            }
         }
         if (table == "scene_instances") {
             return@connect connection.prepareStatement("SELECT 1 FROM scene_instances WHERE id = ? LIMIT 1").use { statement ->
@@ -1034,8 +1223,14 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     private fun insertProject(connection: Connection, project: Project) {
         connection.prepareStatement(
             """
-            INSERT OR REPLACE INTO projects(id, name, summary, active_scene_id, current_turn, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM projects WHERE id = ?), ?), ?)
+            INSERT INTO projects(id, name, summary, active_scene_id, current_turn, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                name = excluded.name,
+                summary = excluded.summary,
+                active_scene_id = excluded.active_scene_id,
+                current_turn = excluded.current_turn,
+                updated_at = excluded.updated_at
             """.trimIndent(),
         ).use { statement ->
             val timestamp = now()
@@ -1044,9 +1239,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(3, project.summary)
             statement.setString(4, project.activeSceneId)
             statement.setInt(5, project.currentTurn)
-            statement.setString(6, project.id)
+            statement.setString(6, timestamp)
             statement.setString(7, timestamp)
-            statement.setString(8, timestamp)
             statement.executeUpdate()
         }
     }
@@ -1506,6 +1700,291 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.executeUpdate()
         }
     }
+
+    private fun selectSettingPackHash(connection: Connection, packId: String, packVersion: Int): String? =
+        connection.prepareStatement("SELECT canonical_hash FROM setting_packs WHERE pack_id = ? AND pack_version = ?").use { statement ->
+            statement.setString(1, packId)
+            statement.setInt(2, packVersion)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("canonical_hash") else null }
+        }
+
+    private fun insertSettingPackImport(
+        connection: Connection,
+        importId: String,
+        pack: SettingPack,
+        preview: SettingPackPreview,
+        sourcePath: String,
+        status: String,
+    ) {
+        connection.prepareStatement(
+            """
+            INSERT INTO setting_pack_imports(
+                id, pack_id, pack_version, project_id, mode, canonical_hash, source_path,
+                status, validation_json, diff_json, impact_json, created_at, applied_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, importId)
+            statement.setString(2, pack.packId)
+            statement.setInt(3, pack.packVersion)
+            statement.setString(4, pack.projectId)
+            statement.setString(5, pack.mode)
+            statement.setString(6, preview.canonicalHash)
+            statement.setString(7, sourcePath)
+            statement.setString(8, status)
+            statement.setString(9, JsonSupport.json.encodeToString(preview.validation))
+            statement.setString(10, JsonSupport.json.encodeToString(preview.diff))
+            statement.setString(11, JsonSupport.json.encodeToString(preview.impact))
+            statement.setString(12, now())
+            statement.executeUpdate()
+        }
+    }
+
+    private fun finishSettingPackImport(connection: Connection, importId: String, status: String) {
+        connection.prepareStatement("UPDATE setting_pack_imports SET status = ?, applied_at = ? WHERE id = ?").use { statement ->
+            statement.setString(1, status)
+            statement.setString(2, now())
+            statement.setString(3, importId)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertSettingPackRecord(connection: Connection, pack: SettingPack, canonicalHash: String) {
+        connection.prepareStatement(
+            """
+            INSERT INTO setting_packs(
+                pack_id, pack_version, project_id, name, description, mode, canonical_hash,
+                pack_json, source_json, metadata_json, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, pack.packId)
+            statement.setInt(2, pack.packVersion)
+            statement.setString(3, pack.projectId)
+            statement.setString(4, pack.name)
+            statement.setString(5, pack.description)
+            statement.setString(6, pack.mode)
+            statement.setString(7, canonicalHash)
+            statement.setString(8, JsonSupport.json.encodeToString(pack))
+            statement.setString(9, JsonSupport.json.encodeToString(pack.source))
+            statement.setString(10, JsonSupport.json.encodeToString(pack.metadata))
+            statement.setString(11, now())
+            statement.executeUpdate()
+        }
+    }
+
+    private fun ensureProjectForPack(connection: Connection, pack: SettingPack) {
+        val existing = connection.prepareStatement("SELECT 1 FROM projects WHERE id = ? LIMIT 1").use { statement ->
+            statement.setString(1, pack.projectId)
+            statement.executeQuery().use { it.next() }
+        }
+        if (existing) return
+        val projectEntity = pack.entities.projects.firstOrNull { it.id == pack.projectId } ?: pack.entities.projects.firstOrNull()
+        val activeSceneId = pack.entities.scenes.firstOrNull()?.id
+        insertProject(
+            connection,
+            Project(
+                id = pack.projectId,
+                name = projectEntity?.displayName() ?: pack.name,
+                summary = projectEntity?.bodyText()?.ifBlank { pack.description } ?: pack.description.ifBlank { pack.name },
+                activeSceneId = activeSceneId,
+                currentTurn = 0,
+            ),
+        )
+    }
+
+    private fun applyPackEntities(connection: Connection, pack: SettingPack, packHash: String) {
+        pack.entities.projects.forEach { entity ->
+            insertProject(
+                connection,
+                Project(
+                    id = entity.id,
+                    name = entity.displayName(),
+                    summary = entity.bodyText().ifBlank { entity.summary.ifBlank { pack.description } },
+                    activeSceneId = entity.metadata.stringValue("activeSceneId") ?: pack.entities.scenes.firstOrNull()?.id,
+                ),
+            )
+            recordEntityRevision(connection, pack, "project", entity, packHash)
+        }
+        pack.entities.locations.forEach { entity ->
+            insertLocation(connection, Location(entity.id, pack.projectId, entity.displayName(), entity.bodyText(), entity.parentLocationId))
+            recordEntityRevision(connection, pack, "location", entity, packHash)
+        }
+        pack.entities.factions.forEach { entity ->
+            insertFaction(connection, Faction(entity.id, pack.projectId, entity.displayName(), entity.bodyText(), entity.metadata.stringValue("stance") ?: "neutral"))
+            recordEntityRevision(connection, pack, "faction", entity, packHash)
+        }
+        pack.entities.worldRules.forEach { entity ->
+            insertWorldRule(connection, WorldRule(entity.id, pack.projectId, entity.displayName(), entity.bodyText(), entity.priority))
+            recordEntityRevision(connection, pack, "world_rule", entity, packHash)
+        }
+        pack.entities.characters.forEach { entity ->
+            insertCharacter(connection, CharacterProfile(entity.id, pack.projectId, entity.displayName(), entity.role, entity.bodyText(), entity.metadata.stringValue("isPlayer") == "true", entity.metadata))
+            recordEntityRevision(connection, pack, "character", entity, packHash)
+        }
+        pack.entities.scenes.forEach { entity ->
+            insertScene(connection, Scene(entity.id, pack.projectId, entity.displayName(), entity.summary.ifBlank { entity.bodyText() }, entity.locationId, entity.status))
+            recordEntityRevision(connection, pack, "scene", entity, packHash)
+        }
+        pack.entities.sceneContracts.forEach { entity ->
+            val sceneId = entity.sceneId ?: entity.metadata.stringValue("sceneId") ?: entity.id
+            insertSceneContract(connection, SceneContract(entity.id, pack.projectId, sceneId, entity.allowedSecretIds, entity.requiredBeats, entity.forbiddenReveals))
+            recordEntityRevision(connection, pack, "scene_contract", entity, packHash)
+        }
+        pack.entities.facts.forEach { entity ->
+            insertFact(connection, Fact(entity.id, pack.projectId, entity.bodyText(), entity.visibility, "setting_pack:${pack.packId}", 0))
+            recordEntityRevision(connection, pack, "fact", entity, packHash)
+        }
+        pack.entities.secrets.forEach { entity ->
+            insertSecret(connection, Secret(entity.id, pack.projectId, entity.bodyText(), entity.revealed, entity.revealCondition, 0, null))
+            recordEntityRevision(connection, pack, "secret", entity, packHash)
+        }
+        pack.entities.items.forEach { entity ->
+            insertItem(connection, Item(entity.id, pack.projectId, entity.displayName(), entity.bodyText(), entity.initialOwnerId ?: entity.ownerCharacterId, entity.initialLocationId ?: entity.locationId, entity.tags))
+            recordEntityRevision(connection, pack, "item", entity, packHash)
+        }
+        pack.entities.techniques.forEach { entity ->
+            insertTechnique(connection, Technique(entity.id, pack.projectId, entity.displayName(), entity.bodyText(), entity.ownerCharacterId ?: entity.initialOwnerId, entity.tags))
+            recordEntityRevision(connection, pack, "technique", entity, packHash)
+        }
+        pack.entities.storyThreads.forEach { entity ->
+            insertStoryThread(
+                connection,
+                StoryThread(
+                    id = entity.id,
+                    projectId = pack.projectId,
+                    threadType = entity.threadType.ifBlank { entity.type.ifBlank { "plot" } },
+                    title = entity.displayName(),
+                    directorGoal = entity.directorGoal,
+                    publicSummary = entity.publicSummary.ifBlank { entity.summary.ifBlank { entity.bodyText() } },
+                    priority = entity.priority,
+                    visibility = entity.visibility,
+                    parentThreadId = entity.parentThreadId,
+                ),
+            )
+            recordEntityRevision(connection, pack, "story_thread", entity, packHash)
+        }
+        pack.entities.characterMemories.forEach { entity ->
+            val characterId = entity.ownerCharacterId ?: entity.metadata.stringValue("characterId") ?: entity.knownBy.firstOrNull().orEmpty()
+            insertCharacterMemory(
+                connection,
+                CharacterMemory(
+                    id = entity.id,
+                    projectId = pack.projectId,
+                    characterId = characterId,
+                    ownerCharacterId = characterId,
+                    memoryType = entity.type.ifBlank { "SEMANTIC" },
+                    summary = entity.summary.ifBlank { entity.bodyText() },
+                    sourceType = "setting_pack",
+                    sourceId = pack.packId,
+                    tags = entity.tags,
+                    salience = entity.priority.coerceIn(0, 100),
+                    confidence = entity.metadata.stringValue("confidence")?.toIntOrNull()?.coerceIn(0, 100) ?: 100,
+                    visibility = entity.visibility,
+                    isCanon = true,
+                ),
+            )
+            recordEntityRevision(connection, pack, "character_memory", entity, packHash)
+        }
+        pack.entities.characterKnowledge.forEach { entity ->
+            val characterId = entity.ownerCharacterId ?: entity.metadata.stringValue("characterId") ?: entity.knownBy.firstOrNull().orEmpty()
+            insertKnowledgeClaim(
+                connection,
+                CharacterKnowledgeClaim(
+                    id = entity.id,
+                    projectId = pack.projectId,
+                    characterId = characterId,
+                    propositionKey = entity.metadata.stringValue("propositionKey") ?: entity.id,
+                    statement = entity.statement.ifBlank { entity.bodyText() },
+                    epistemicState = entity.metadata.stringValue("epistemicState") ?: "BELIEVED",
+                    confidence = entity.metadata.stringValue("confidence")?.toIntOrNull()?.coerceIn(0, 100) ?: 70,
+                    sourceFactId = entity.metadata.stringValue("sourceFactId"),
+                    sourceMemoryId = entity.metadata.stringValue("sourceMemoryId"),
+                    visibility = entity.visibility,
+                ),
+            )
+            recordEntityRevision(connection, pack, "character_knowledge", entity, packHash)
+        }
+    }
+
+    private fun recordEntityRevision(connection: Connection, pack: SettingPack, entityType: String, entity: SettingPackEntity, packHash: String) {
+        val snapshot = JsonSupport.json.encodeToString(entity)
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO entity_revisions(
+                id, project_id, entity_type, entity_id, entity_version, source_pack_id,
+                source_pack_version, canonical_hash, snapshot_json, visibility, status, created_at
+            )
+            VALUES (
+                COALESCE((SELECT id FROM entity_revisions WHERE project_id = ? AND entity_type = ? AND entity_id = ? AND entity_version = ?), ?),
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            )
+            """.trimIndent(),
+        ).use { statement ->
+            val revisionId = newId("entity-revision")
+            val entityHash = sha256("$packHash:$entityType:${entity.id}:${entity.entityVersion}:$snapshot")
+            statement.setString(1, pack.projectId)
+            statement.setString(2, entityType)
+            statement.setString(3, entity.id)
+            statement.setInt(4, entity.entityVersion)
+            statement.setString(5, revisionId)
+            statement.setString(6, pack.projectId)
+            statement.setString(7, entityType)
+            statement.setString(8, entity.id)
+            statement.setInt(9, entity.entityVersion)
+            statement.setString(10, pack.packId)
+            statement.setInt(11, pack.packVersion)
+            statement.setString(12, entityHash)
+            statement.setString(13, snapshot)
+            statement.setString(14, entity.visibility)
+            statement.setString(15, entity.status)
+            statement.setString(16, now())
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertSettingPackRelation(connection: Connection, pack: SettingPack, relation: SettingPackRelation) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO dependency_edges(
+                id, project_id, from_type, from_id, to_type, to_id, relation,
+                source_pack_id, source_pack_version, visibility, runtime_relevant,
+                strength, reason, metadata_json, canonical_hash, status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, relation.id)
+            statement.setString(2, pack.projectId)
+            statement.setString(3, relation.fromType)
+            statement.setString(4, relation.fromId)
+            statement.setString(5, relation.toType)
+            statement.setString(6, relation.toId)
+            statement.setString(7, relation.relation)
+            statement.setString(8, pack.packId)
+            statement.setInt(9, pack.packVersion)
+            statement.setString(10, relation.visibility)
+            statement.setInt(11, if (relation.runtimeRelevant) 1 else 0)
+            statement.setInt(12, relation.strength)
+            statement.setString(13, relation.reason)
+            statement.setString(14, JsonSupport.json.encodeToString(relation.metadata))
+            statement.setString(15, sha256(JsonSupport.json.encodeToString(relation)))
+            statement.executeUpdate()
+        }
+    }
+
+    private fun SettingPackEntity.displayName(): String =
+        name.ifBlank { title.ifBlank { id } }
+
+    private fun SettingPackEntity.bodyText(): String =
+        content.ifBlank { statement.ifBlank { description.ifBlank { summary } } }
+
+    private fun sha256(value: String): String =
+        MessageDigest.getInstance("SHA-256")
+            .digest(value.toByteArray(Charsets.UTF_8))
+            .joinToString("") { "%02x".format(it) }
 
     private fun ensureActiveSceneInstance(connection: Connection, session: StorySession): String {
         val active = connection.prepareStatement(

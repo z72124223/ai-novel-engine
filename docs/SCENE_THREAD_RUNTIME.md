@@ -86,3 +86,12 @@ MVP-4 adds read-only inspection commands:
 ```
 
 These commands do not write story state.
+
+## MVP-5 Setting Dependencies
+
+Setting packs may add scenes, locations, story threads and dependency edges. Runtime scene logic still uses bounded context:
+
+- scene completion does not force transitions,
+- story thread director goals remain director-facing,
+- dependency paths inform impact/context relevance but do not become character motives,
+- active-session canon patches are blocked instead of hot-reloaded silently.

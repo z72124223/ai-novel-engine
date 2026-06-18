@@ -70,3 +70,29 @@ New tables:
 - `elapsed_minutes`
 
 `scenes` remain definitions; `scene_instances` store per-session visits. Re-entering a scene creates a new instance and increments `visit_number`.
+
+## MVP-5 Setting Pack Runtime
+
+`005_setting_pack_runtime.sql` is additive and does not modify migrations `001`, `002`, `003`, or `004`.
+
+New tables:
+
+- `setting_packs`: imported pack identity, canonical hash, source metadata and original pack JSON.
+- `setting_pack_imports`: local import attempts and their validation, diff and impact reports.
+- `entity_revisions`: per-entity provenance, stable `entityVersion`, canonical hash and snapshot JSON.
+- `canon_validation_runs`: reserved validation report storage.
+- `impact_analysis_runs`: reserved impact report storage.
+
+`dependency_edges` gains setting-pack provenance and runtime traversal columns:
+
+- `source_pack_id`
+- `source_pack_version`
+- `visibility`
+- `runtime_relevant`
+- `strength`
+- `reason`
+- `metadata_json`
+- `canonical_hash`
+- `status`
+
+Core tables continue to hold the runtime-readable canon. `entity_revisions` records where each imported canon row came from and is the source for diff/export/impact/context relevance.

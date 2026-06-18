@@ -120,3 +120,13 @@ Hash rule: the engine serializes `ContextPacket` with `contextHash = ""` using t
 - `timeAdvanceProposal`
 
 AI/Codex must only read the current context JSON when drafting a result. It must not write SQLite directly. `resolve-turn` reloads the pending context and validates `contextId`, `sessionId`, `turnNumber`, `baseStateVersion`, `contextHash`, and `resultId` before accepting these fields.
+
+## MVP-5 Setting Context Protocol
+
+`ContextPacket` adds:
+
+- `relevantSettings`: bounded excerpts selected from imported canon revisions and dependency paths.
+- `settingContextBudget`: byte budget and truncation accounting for the setting section.
+- `canonRevisionSummary`: imported packs and relevant revision IDs used by this context.
+
+The setting section is read-only context. It must not contain the full setting pack, the full dependency graph, or author-only secret content. AI/Codex still writes only `AiTurnResult` JSON for turns; setting pack JSON is handled by the separate setting-pack import commands.

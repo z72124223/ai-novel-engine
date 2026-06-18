@@ -73,6 +73,15 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `preview-transitions --db <path> --session <id> --input <text>`
 - `show-world-events --db <path> --session <id>`
 - `explain-scene-state --db <path> --session <id>`
+- `create-setting-pack-template --project <id> --out <path> [--pack <id>] [--version <n>] [--mode ADD_ON]`
+- `validate-setting-pack --db <path> --file <path> [--out <path>]`
+- `preview-setting-import --db <path> --file <path> [--out <path>]`
+- `apply-setting-pack --db <path> --file <path> [--out <path>]`
+- `export-setting-pack --db <path> --project <id> --pack <id> --version <n> --out <path>`
+- `diff-setting-pack --db <path> --file <path> [--out <path>]`
+- `impact-report --db <path> --file <path> [--out <path>]`
+- `show-dependencies --db <path> --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]`
+- `validate-project-canon --db <path> --project <id> [--out <path>]`
 
 ## Multi-Turn Flow
 
@@ -113,6 +122,22 @@ MVP-4 adds scene instances, requirements, story threads, location-aware transiti
 `prepare-turn` now includes `sceneLifecycle`, `sceneRequirements`, `activeStoryThreads`, `availableTransitions`, `pendingWorldEvents`, `worldClock` and `continuityConstraints`. `resolve-turn` accepts the matching result fields only after Validator approval and applies scene/thread/time/world-event writes in the same transaction as the turn.
 
 See `docs/SCENE_THREAD_RUNTIME.md`.
+
+## Setting Pack Runtime
+
+MVP-5 adds local setting pack import, dependency graph traversal, impact preview, provenance revisions and setting-context budgeting.
+
+```powershell
+./gradlew.bat run --args="create-setting-pack-template --project demo --out samples/setting_pack_template.json"
+./gradlew.bat run --args="validate-setting-pack --db data/story.db --file samples/sample_setting_pack.json"
+./gradlew.bat run --args="preview-setting-import --db data/story.db --file samples/sample_setting_pack.json --out out/setting_preview.json"
+./gradlew.bat run --args="apply-setting-pack --db data/story.db --file samples/sample_setting_pack.json"
+./gradlew.bat run --args="export-setting-pack --db data/story.db --project demo --pack sample-shrine-pack --version 1 --out out/exported_setting_pack.json"
+```
+
+The import path is always parse -> validate -> diff -> impact preview -> transaction apply. `PATCH_CANON` updates are blocked while active sessions exist. `prepare-turn` includes only relevant setting excerpts through `relevantSettings`, `settingContextBudget` and `canonRevisionSummary`; it never includes a full setting pack or full dependency graph.
+
+See `docs/SETTING_PACKS_AND_DEPENDENCIES.md`.
 
 ## Project Layout
 

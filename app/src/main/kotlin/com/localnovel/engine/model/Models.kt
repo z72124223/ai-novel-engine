@@ -2,7 +2,9 @@ package com.localnovel.engine.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 @Serializable
 data class Project(
@@ -208,6 +210,15 @@ data class DependencyEdge(
     val toType: String,
     val toId: String,
     val relation: String,
+    val sourcePackId: String? = null,
+    val sourcePackVersion: Int? = null,
+    val visibility: String = "public",
+    val runtimeRelevant: Boolean = true,
+    val strength: Int = 1,
+    val reason: String = "",
+    val metadata: JsonObject = JsonObject(emptyMap()),
+    val canonicalHash: String = "",
+    val status: String = "active",
 )
 
 @Serializable
@@ -387,6 +398,37 @@ data class ContinuityConstraints(
 )
 
 @Serializable
+data class RelevantSetting(
+    val entityType: String,
+    val entityId: String,
+    val name: String = "",
+    val summary: String = "",
+    val visibility: String = "public",
+    val sourcePackId: String? = null,
+    val sourcePackVersion: Int? = null,
+    val relationPath: List<String> = emptyList(),
+    val requiredRuntimeUse: Boolean = false,
+    val metadata: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SettingContextBudget(
+    val maxBytes: Int = 8192,
+    val actualBytes: Int = 0,
+    val includedSettingCount: Int = 0,
+    val omittedSettingCount: Int = 0,
+    val truncationApplied: Boolean = false,
+    val reasons: List<String> = emptyList(),
+)
+
+@Serializable
+data class CanonRevisionSummary(
+    val importedPacks: List<String> = emptyList(),
+    val relevantRevisionIds: List<String> = emptyList(),
+    val latestImportId: String? = null,
+)
+
+@Serializable
 data class ContextPacket(
     val protocolVersion: String = "2",
     val project: Project,
@@ -424,6 +466,9 @@ data class ContextPacket(
     val pendingWorldEvents: List<PendingWorldEventView> = emptyList(),
     val worldClock: WorldClock = WorldClock(),
     val continuityConstraints: ContinuityConstraints = ContinuityConstraints(),
+    val relevantSettings: List<RelevantSetting> = emptyList(),
+    val settingContextBudget: SettingContextBudget = SettingContextBudget(),
+    val canonRevisionSummary: CanonRevisionSummary = CanonRevisionSummary(),
 )
 
 @Serializable
@@ -672,6 +717,206 @@ data class ScheduledWorldEventSeed(
     val payload: JsonObject = JsonObject(emptyMap()),
     val visibility: String = "public",
     val status: String = "scheduled",
+)
+
+@Serializable
+data class SettingPackSource(
+    val author: String = "",
+    val license: String = "",
+    val notes: String = "",
+)
+
+@Serializable
+data class SettingPackDependency(
+    val packId: String,
+    val minVersion: Int = 1,
+)
+
+@Serializable
+data class SettingPackEntity(
+    val id: String,
+    val entityVersion: Int = 1,
+    val name: String = "",
+    val title: String = "",
+    val role: String = "",
+    val description: String = "",
+    val summary: String = "",
+    val content: String = "",
+    val statement: String = "",
+    val type: String = "",
+    val subtype: String = "",
+    val priority: Int = 0,
+    val visibility: String = "public",
+    val status: String = "active",
+    val tags: List<String> = emptyList(),
+    val sourcePackId: String? = null,
+    val sceneId: String? = null,
+    val locationId: String? = null,
+    val parentLocationId: String? = null,
+    val ownerCharacterId: String? = null,
+    val initialOwnerId: String? = null,
+    val initialLocationId: String? = null,
+    val factionId: String? = null,
+    val parentThreadId: String? = null,
+    val threadType: String = "",
+    val directorGoal: String = "",
+    val publicSummary: String = "",
+    val knownBy: List<String> = emptyList(),
+    val startingKnowledge: List<String> = emptyList(),
+    val startingItems: List<String> = emptyList(),
+    val startingTechniques: List<String> = emptyList(),
+    val effects: List<String> = emptyList(),
+    val costs: List<String> = emptyList(),
+    val limitations: List<String> = emptyList(),
+    val prerequisites: List<String> = emptyList(),
+    val forbiddenUses: List<String> = emptyList(),
+    val allowedSecretIds: List<String> = emptyList(),
+    val forbiddenReveals: List<String> = emptyList(),
+    val requiredBeats: List<String> = emptyList(),
+    val unique: Boolean = false,
+    val revealed: Boolean = false,
+    val revealCondition: String = "",
+    val metadata: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SettingPackRelation(
+    val id: String,
+    val fromType: String,
+    val fromId: String,
+    val toType: String,
+    val toId: String,
+    val relation: String,
+    val visibility: String = "public",
+    val runtimeRelevant: Boolean = true,
+    val strength: Int = 1,
+    val reason: String = "",
+    val metadata: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SettingPackAssertion(
+    val id: String,
+    val statement: String,
+    val severity: String = "soft",
+    val entityRefs: List<String> = emptyList(),
+    val metadata: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SettingPackEntities(
+    val projects: List<SettingPackEntity> = emptyList(),
+    val characters: List<SettingPackEntity> = emptyList(),
+    val worldRules: List<SettingPackEntity> = emptyList(),
+    val factions: List<SettingPackEntity> = emptyList(),
+    val locations: List<SettingPackEntity> = emptyList(),
+    val items: List<SettingPackEntity> = emptyList(),
+    val techniques: List<SettingPackEntity> = emptyList(),
+    val facts: List<SettingPackEntity> = emptyList(),
+    val secrets: List<SettingPackEntity> = emptyList(),
+    val scenes: List<SettingPackEntity> = emptyList(),
+    val sceneContracts: List<SettingPackEntity> = emptyList(),
+    val storyThreads: List<SettingPackEntity> = emptyList(),
+    val characterMemories: List<SettingPackEntity> = emptyList(),
+    val characterKnowledge: List<SettingPackEntity> = emptyList(),
+)
+
+@Serializable
+data class SettingPack(
+    val schemaVersion: String = "1.0",
+    val packId: String,
+    val packVersion: Int = 1,
+    val projectId: String,
+    val name: String,
+    val description: String = "",
+    val mode: String = "BASE",
+    val source: SettingPackSource = SettingPackSource(),
+    val dependencies: List<SettingPackDependency> = emptyList(),
+    val entities: SettingPackEntities = SettingPackEntities(),
+    val relations: List<SettingPackRelation> = emptyList(),
+    val assertions: List<SettingPackAssertion> = emptyList(),
+    val metadata: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class SettingPackValidationIssue(
+    val code: String,
+    val message: String,
+    val path: String = "",
+    val severity: String = "error",
+)
+
+@Serializable
+data class SettingPackValidationReport(
+    val packId: String = "",
+    val packVersion: Int = 0,
+    val valid: Boolean = false,
+    val issues: List<SettingPackValidationIssue> = emptyList(),
+) {
+    val isValid: Boolean get() = valid && issues.none { it.severity == "error" }
+}
+
+@Serializable
+data class SettingPackDiffEntry(
+    val action: String,
+    val entityType: String,
+    val entityId: String,
+    val previousVersion: Int? = null,
+    val newVersion: Int? = null,
+    val fieldChanges: Map<String, String> = emptyMap(),
+    val sensitive: Boolean = false,
+)
+
+@Serializable
+data class SettingPackDiff(
+    val packId: String,
+    val packVersion: Int,
+    val entries: List<SettingPackDiffEntry> = emptyList(),
+    val canonicalHash: String = "",
+)
+
+@Serializable
+data class ImpactPath(
+    val rootType: String,
+    val rootId: String,
+    val impactedType: String,
+    val impactedId: String,
+    val relationPath: List<String> = emptyList(),
+    val severity: String = "LOW",
+    val reason: String = "",
+)
+
+@Serializable
+data class SettingPackImpactReport(
+    val packId: String,
+    val packVersion: Int,
+    val changedRoots: List<String> = emptyList(),
+    val impactedSessions: List<String> = emptyList(),
+    val impactedCharacters: List<String> = emptyList(),
+    val impactedScenes: List<String> = emptyList(),
+    val impactedThreads: List<String> = emptyList(),
+    val paths: List<ImpactPath> = emptyList(),
+    val blockers: List<String> = emptyList(),
+)
+
+@Serializable
+data class SettingPackPreview(
+    val pack: SettingPack,
+    val validation: SettingPackValidationReport,
+    val diff: SettingPackDiff,
+    val impact: SettingPackImpactReport,
+    val canonicalHash: String,
+)
+
+@Serializable
+data class SettingPackApplyResult(
+    val applied: Boolean,
+    val importId: String,
+    val packId: String,
+    val packVersion: Int,
+    val canonicalHash: String,
+    val diff: SettingPackDiff,
+    val impact: SettingPackImpactReport,
 )
 
 data class ValidationError(

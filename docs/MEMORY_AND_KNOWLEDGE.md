@@ -100,3 +100,9 @@ When writing `AiTurnResult`, Codex should use only:
 - character state, goal, mood and legal actions.
 
 Codex must not reveal forbidden phrases, must not inject author-only truth, and must let characters act from their own beliefs and memories rather than from plot convenience.
+
+## MVP-5 Setting Context Boundary
+
+Imported setting pack data is canonical world data, not automatic character memory or knowledge. `SettingContextResolver` may place bounded `relevantSettings` in turn context, but author-only secrets are excluded and character knowledge still comes only from `knowledgeClaims`, memories, visible facts, or accepted runtime updates.
+
+Setting pack `characterMemories` and `characterKnowledge` are imported through the same validation and transaction pipeline as other setting entities. Codex must not bypass that pipeline by writing memory or knowledge rows directly.

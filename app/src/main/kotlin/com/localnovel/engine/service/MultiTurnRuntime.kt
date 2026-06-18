@@ -105,8 +105,9 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             ),
             continuityConstraints = repository.getContinuityConstraints(session.id),
         )
+        val enrichedContext = SettingContextResolver(repository).enrich(baseContext)
         val contextWithoutHash = ContextBudgeter().applyBudget(
-            baseContext,
+            enrichedContext,
             omittedMemoryCount = memorySelection.omittedMemoryCount,
             omittedKnowledgeCount = memorySelection.omittedKnowledgeCount,
         )

@@ -56,3 +56,18 @@ MVP-4 keeps the same local single-process boundary and adds only additive SQLite
 - `NarrativeContinuityValidator` checks actor location, item reachability and world-event knowledge boundaries.
 
 Scene/thread/time/world-event writes happen inside the existing `resolve-turn` transaction after protocol, stateVersion and contextHash validation.
+
+## MVP-5 Setting Pack Runtime
+
+MVP-5 keeps the local single-process boundary and adds only additive SQLite schema in `005_setting_pack_runtime.sql`.
+
+- `SettingPackParser` reads UTF-8 JSON setting packs.
+- `SettingPackSchemaValidator` checks required pack metadata, IDs, versions, modes, visibility and dependencies.
+- `CanonSemanticValidator` checks references, cycles, author-only knowledge leaks, technique cost/limitation balance and active-session patch blockers.
+- `SettingPackDiffService` compares incoming entities with `entity_revisions`.
+- `ImpactAnalyzer` traverses `dependency_edges` and active sessions before apply.
+- `SettingPackImportService` enforces parse -> validate -> diff -> impact preview -> transaction apply.
+- `DependencyGraphService` provides bounded graph display.
+- `SettingContextResolver` adds only relevant setting excerpts to `ContextPacket`.
+
+Codex may draft setting pack JSON, but formal canon writes must go through `apply-setting-pack`; no direct SQL, `sqlite3`, scripts or network APIs are part of this runtime.

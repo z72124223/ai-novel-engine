@@ -25,3 +25,13 @@
 - Scene `READY_TO_CLOSE` means a transition is allowed, not forced.
 - Characters may only act from their own goals, emotions, memories, knowledge, current location, reachable items and available actions.
 - AI/Codex may draft JSON result files, but must not write SQLite directly or bypass `contextHash`, `stateVersion`, `TransitionValidator`, or `NarrativeContinuityValidator`.
+
+## MVP-5 Setting Pack Runtime
+
+- Use only additive migration `005_setting_pack_runtime.sql`; do not edit `001`, `002`, `003`, or `004`.
+- Setting packs must flow through parse, validate, diff, impact preview and transaction apply.
+- Codex may generate setting pack JSON, but must not directly modify formal SQLite data with SQL, `sqlite3`, or ad hoc scripts.
+- Do not let `author_only` secrets enter character initial knowledge or character-facing turn context.
+- Do not silently patch existing canon while a session is active; preview must report blockers and apply must reject.
+- Turn context may include relevant setting excerpts only, never the full setting pack or full dependency graph.
+- See `docs/MVP5_SETTING_PACK_DEPENDENCY_SPEC.md` and `docs/SETTING_PACKS_AND_DEPENDENCIES.md`.

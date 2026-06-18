@@ -1,6 +1,7 @@
 package com.localnovel.engine.service
 
 import com.localnovel.engine.model.ContextPacket
+import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.repository.StoryRepository
 
 class ContextCompiler(private val repository: StoryRepository) {
@@ -11,7 +12,7 @@ class ContextCompiler(private val repository: StoryRepository) {
         val sceneContract = activeScene?.let { repository.getSceneContract(projectId, it.id) }
         val turnNumber = project.currentTurn + 1
 
-        return ContextPacket(
+        val context = ContextPacket(
             project = project,
             turnId = "${project.id}-turn-$turnNumber",
             turnNumber = turnNumber,
@@ -29,5 +30,6 @@ class ContextCompiler(private val repository: StoryRepository) {
             recentEvents = repository.listRecentEvents(projectId),
             openTasks = repository.listOpenTasks(projectId),
         )
+        return (repository as? SqliteStoryRepository)?.let { SettingContextResolver(it).enrich(context) } ?: context
     }
 }

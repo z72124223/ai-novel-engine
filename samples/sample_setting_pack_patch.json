@@ -1,0 +1,37 @@
+{
+    "schemaVersion": "1.0",
+    "packId": "sample-shrine-pack-patch",
+    "packVersion": 1,
+    "projectId": "demo",
+    "name": "範例祠堂設定包 Patch",
+    "description": "示範 PATCH_CANON 需要提高 entityVersion。",
+    "mode": "PATCH_CANON",
+    "source": {
+        "author": "local-author",
+        "license": "CC0",
+        "notes": "Apply only after no active sessions are running."
+    },
+    "dependencies": [],
+    "entities": {
+        "items": [
+            {
+                "id": "item-sample-lamp",
+                "entityVersion": 2,
+                "name": "側祠長明燈",
+                "description": "燈芯多了一粒霜白的結晶。",
+                "initialOwnerId": "char-sample-keeper",
+                "tags": [
+                    "lamp",
+                    "annex",
+                    "patched"
+                ],
+                "visibility": "public"
+            }
+        ]
+    },
+    "relations": [],
+    "assertions": [],
+    "metadata": {
+        "samplePatch": true
+    }
+}

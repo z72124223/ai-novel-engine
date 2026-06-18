@@ -3,14 +3,26 @@ package com.localnovel.engine
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.SettingPack
+import com.localnovel.engine.model.SettingPackEntities
+import com.localnovel.engine.model.SettingPackEntity
+import com.localnovel.engine.model.SettingPackSource
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
+import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.ContextCompiler
+import com.localnovel.engine.service.DependencyGraphService
+import com.localnovel.engine.service.ImpactAnalyzer
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.MemoryRetriever
+import com.localnovel.engine.service.SettingPackDiffService
+import com.localnovel.engine.service.SettingPackImportService
+import com.localnovel.engine.service.SettingPackParser
+import com.localnovel.engine.service.SettingPackSchemaValidator
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
 import com.localnovel.engine.service.TurnRunner
+import com.localnovel.engine.service.canonicalHash
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -53,6 +65,15 @@ class Cli {
                 "preview-transitions" -> previewTransitions(options)
                 "show-world-events" -> showWorldEvents(options)
                 "explain-scene-state" -> explainSceneState(options)
+                "create-setting-pack-template" -> createSettingPackTemplate(options)
+                "validate-setting-pack" -> validateSettingPack(options)
+                "preview-setting-import" -> previewSettingImport(options)
+                "apply-setting-pack" -> applySettingPack(options)
+                "export-setting-pack" -> exportSettingPack(options)
+                "diff-setting-pack" -> diffSettingPack(options)
+                "impact-report" -> impactReport(options)
+                "show-dependencies" -> showDependencies(options)
+                "validate-project-canon" -> validateProjectCanon(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -398,6 +419,148 @@ class Cli {
         return 0
     }
 
+    private fun createSettingPackTemplate(options: Map<String, String>): Int {
+        val projectId = options.required("project")
+        val out = Path.of(options.required("out"))
+        val pack = SettingPack(
+            packId = options["pack"] ?: "$projectId-setting-pack",
+            packVersion = options["version"]?.toIntOrNull() ?: 1,
+            projectId = projectId,
+            name = "Setting Pack Template",
+            description = "Template for local canon import.",
+            mode = options["mode"] ?: "ADD_ON",
+            source = SettingPackSource(author = options["author"] ?: "local-author"),
+            entities = SettingPackEntities(
+                worldRules = listOf(
+                    SettingPackEntity(
+                        id = "rule-template",
+                        title = "Template rule",
+                        content = "Replace this rule with canon text.",
+                        visibility = "public",
+                    ),
+                ),
+            ),
+        )
+        out.parent?.let { Files.createDirectories(it) }
+        Files.writeString(out, JsonSupport.json.encodeToString(pack))
+        println("wrote=$out")
+        return 0
+    }
+
+    private fun validateSettingPack(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val preview = SettingPackImportService(repository).preview(pack)
+        printValidation(preview.validation)
+        options["out"]?.let { writeJson(Path.of(it), preview.validation) }
+        return if (preview.validation.isValid) 0 else 1
+    }
+
+    private fun previewSettingImport(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val preview = SettingPackImportService(repository).preview(pack)
+        printValidation(preview.validation)
+        println("canonicalHash=${preview.canonicalHash}")
+        println("diffEntries=${preview.diff.entries.size}")
+        preview.diff.entries.forEach { println("- ${it.action} ${it.entityType}:${it.entityId} v${it.previousVersion ?: "-"} -> ${it.newVersion}") }
+        println("impactPaths=${preview.impact.paths.size}")
+        println("impactedSessions=${preview.impact.impactedSessions.joinToString(",")}")
+        preview.impact.blockers.forEach { println("blocker=$it") }
+        options["out"]?.let { writeJson(Path.of(it), preview) }
+        return if (preview.validation.isValid) 0 else 1
+    }
+
+    private fun applySettingPack(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val file = Path.of(options.required("file"))
+        val pack = SettingPackParser().parse(file)
+        val result = SettingPackImportService(repository).apply(pack, file.toString())
+        println("applied=${result.applied}")
+        println("importId=${result.importId}")
+        println("pack=${result.packId}@${result.packVersion}")
+        println("canonicalHash=${result.canonicalHash}")
+        println("diffEntries=${result.diff.entries.size}")
+        println("impactPaths=${result.impact.paths.size}")
+        options["out"]?.let { writeJson(Path.of(it), result) }
+        return 0
+    }
+
+    private fun exportSettingPack(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val pack = SettingPackImportService(repository).export(
+            projectId = options.required("project"),
+            packId = options.required("pack"),
+            packVersion = options.required("version").toInt(),
+        )
+        val out = Path.of(options.required("out"))
+        writeJson(out, pack)
+        println("wrote=$out")
+        return 0
+    }
+
+    private fun diffSettingPack(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val diff = SettingPackDiffService(repository).diff(pack, canonicalHash(pack))
+        diff.entries.forEach { println("${it.action} ${it.entityType}:${it.entityId} v${it.previousVersion ?: "-"} -> ${it.newVersion}") }
+        options["out"]?.let { writeJson(Path.of(it), diff) }
+        return 0
+    }
+
+    private fun impactReport(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val diff = SettingPackDiffService(repository).diff(pack, canonicalHash(pack))
+        val report = ImpactAnalyzer(repository).analyze(pack, diff)
+        println("changedRoots=${report.changedRoots.joinToString(",")}")
+        println("impactedSessions=${report.impactedSessions.joinToString(",")}")
+        println("impactedCharacters=${report.impactedCharacters.joinToString(",")}")
+        println("impactedScenes=${report.impactedScenes.joinToString(",")}")
+        println("impactedThreads=${report.impactedThreads.joinToString(",")}")
+        report.blockers.forEach { println("blocker=$it") }
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        return 0
+    }
+
+    private fun showDependencies(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        DependencyGraphService(repository).show(
+            projectId = options.required("project"),
+            entityType = options["entity-type"],
+            entityId = options["entity-id"],
+            depth = options["depth"]?.toIntOrNull() ?: 2,
+        ).forEach(::println)
+        return 0
+    }
+
+    private fun validateProjectCanon(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val report = CanonConsistencyValidator(repository).validate(options.required("project"))
+        printValidation(report)
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        return if (report.isValid) 0 else 1
+    }
+
+    private fun printValidation(report: com.localnovel.engine.model.SettingPackValidationReport) {
+        println("valid=${report.isValid}")
+        println("issueCount=${report.issues.size}")
+        report.issues.forEach { println("${it.severity}:${it.code}:${it.path}:${it.message}") }
+    }
+
+    private inline fun <reified T> writeJson(path: Path, value: T) {
+        path.parent?.let { Files.createDirectories(it) }
+        Files.writeString(path, JsonSupport.json.encodeToString(value))
+    }
+
     private fun repository(options: Map<String, String>): SqliteStoryRepository =
         SqliteStoryRepository(Path.of(options["db"] ?: "data/story.db"))
 
@@ -455,6 +618,15 @@ class Cli {
               preview-transitions [--db <path>] --session <id> --input <text>
               show-world-events [--db <path>] --session <id>
               explain-scene-state [--db <path>] --session <id>
+              create-setting-pack-template --project <id> --out <path> [--pack <id>] [--version <n>] [--mode ADD_ON]
+              validate-setting-pack [--db <path>] --file <path> [--out <path>]
+              preview-setting-import [--db <path>] --file <path> [--out <path>]
+              apply-setting-pack [--db <path>] --file <path> [--out <path>]
+              export-setting-pack [--db <path>] --project <id> --pack <id> --version <n> --out <path>
+              diff-setting-pack [--db <path>] --file <path> [--out <path>]
+              impact-report [--db <path>] --file <path> [--out <path>]
+              show-dependencies [--db <path>] --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]
+              validate-project-canon [--db <path>] --project <id> [--out <path>]
             """.trimIndent(),
         )
     }

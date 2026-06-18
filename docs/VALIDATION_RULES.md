@@ -55,3 +55,17 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - `timeAdvanceProposal` requires minutes, source and reason; accepted transition travel time is applied in the same transaction.
 - Character actions must respect current scene location and item owner/location reachability.
 - Forbidden reveals are scanned across MVP-4 result surfaces including requirement updates, thread updates, transition proposal, world event acknowledgements and time advance reason.
+
+## MVP-5 Setting Pack Rules
+
+- A setting pack must parse as UTF-8 JSON and declare schema version `1.0`.
+- `packId`, `packVersion`, `projectId`, `name`, `mode` and `source.author` are required.
+- `mode` must be `BASE`, `ADD_ON`, or `PATCH_CANON`.
+- IDs must be stable ASCII identifiers and duplicate entity IDs within a type are rejected.
+- Dependencies must already be imported.
+- Existing canon can only change with a higher `entityVersion`.
+- Author-only secrets must not enter character starting knowledge unless the secret explicitly lists the character in `knownBy`.
+- Unknown entity references, incompatible relations, dependency cycles, hard world-rule conflicts, unbounded powerful techniques and item owner/location conflicts are rejected.
+- `PATCH_CANON` updates against existing canon are blocked while active sessions exist.
+- Rejected packs must not write import logs, entity revisions, dependency edges or core canon rows.
+- Successful apply writes pack, import log, entity revisions, dependency edges and core canon rows in one SQLite transaction.

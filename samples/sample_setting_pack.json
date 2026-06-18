@@ -1,0 +1,142 @@
+{
+    "schemaVersion": "1.0",
+    "packId": "sample-shrine-pack",
+    "packVersion": 1,
+    "projectId": "demo",
+    "name": "範例祠堂設定包",
+    "description": "加入一段可驗證的祠堂設定。",
+    "mode": "ADD_ON",
+    "source": {
+        "author": "local-author",
+        "license": "CC0",
+        "notes": "Sample pack for MVP-5 local import."
+    },
+    "dependencies": [],
+    "entities": {
+        "locations": [
+            {
+                "id": "loc-sample-shrine-annex",
+                "name": "側祠",
+                "description": "側祠的窗紙被霜貼住。",
+                "visibility": "public"
+            }
+        ],
+        "characters": [
+            {
+                "id": "char-sample-keeper",
+                "name": "陸微",
+                "role": "側祠守燈人",
+                "description": "他只相信自己親手點亮的燈。",
+                "startingItems": [
+                    "item-sample-lamp"
+                ],
+                "visibility": "public"
+            }
+        ],
+        "worldRules": [
+            {
+                "id": "rule-sample-lamp-price",
+                "title": "守燈需付代價",
+                "content": "側祠的長明燈每次重燃都會消耗一段記憶。",
+                "priority": 8,
+                "visibility": "public",
+                "metadata": {
+                    "severity": "hard",
+                    "conflictKey": "sample-lamp"
+                }
+            }
+        ],
+        "items": [
+            {
+                "id": "item-sample-lamp",
+                "name": "側祠長明燈",
+                "description": "燈芯是銀白色的。",
+                "initialOwnerId": "char-sample-keeper",
+                "tags": [
+                    "lamp",
+                    "annex"
+                ],
+                "visibility": "public"
+            }
+        ],
+        "facts": [
+            {
+                "id": "fact-sample-lamp-cold",
+                "content": "側祠長明燈的火焰沒有溫度。",
+                "visibility": "public"
+            }
+        ],
+        "secrets": [
+            {
+                "id": "secret-sample-author-only",
+                "content": "作者專用祕密：長明燈連著地下舊誓。",
+                "visibility": "author_only",
+                "revealCondition": "not for character context"
+            }
+        ],
+        "scenes": [
+            {
+                "id": "scene-sample-annex",
+                "title": "側祠燈影",
+                "summary": "長明燈在無風處晃動。",
+                "locationId": "loc-sample-shrine-annex",
+                "visibility": "public"
+            }
+        ],
+        "sceneContracts": [
+            {
+                "id": "contract-sample-annex",
+                "sceneId": "scene-sample-annex",
+                "allowedSecretIds": [],
+                "forbiddenReveals": [
+                    "地下舊誓"
+                ],
+                "visibility": "director_only"
+            }
+        ],
+        "storyThreads": [
+            {
+                "id": "thread-sample-lamp-trust",
+                "title": "燈與信任",
+                "threadType": "character",
+                "publicSummary": "陸微觀察來者是否值得託付燈火。",
+                "directorGoal": "測試信任是否能累積。",
+                "priority": 3,
+                "visibility": "director_only"
+            }
+        ]
+    },
+    "relations": [
+        {
+            "id": "rel-sample-keeper-location",
+            "fromType": "character",
+            "fromId": "char-sample-keeper",
+            "toType": "location",
+            "toId": "loc-sample-shrine-annex",
+            "relation": "LOCATED_IN",
+            "reason": "陸微守在側祠。"
+        },
+        {
+            "id": "rel-sample-keeper-lamp",
+            "fromType": "character",
+            "fromId": "char-sample-keeper",
+            "toType": "item",
+            "toId": "item-sample-lamp",
+            "relation": "OWNS",
+            "reason": "陸微持有長明燈。"
+        },
+        {
+            "id": "rel-sample-scene-location",
+            "fromType": "scene",
+            "fromId": "scene-sample-annex",
+            "toType": "location",
+            "toId": "loc-sample-shrine-annex",
+            "relation": "LOCATED_IN",
+            "reason": "側祠燈影發生在側祠。"
+        }
+    ],
+    "assertions": [],
+    "metadata": {
+        "sample": true
+    }
+}
