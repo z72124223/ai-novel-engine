@@ -37,7 +37,6 @@ tasks.withType<ProcessResources>().configureEach {
 }
 
 tasks.withType<Jar>().configureEach {
-    enabled = false
     doNotTrackState("OneDrive may expose copied resources as non-regular reparse files on this workspace.")
 }
 
