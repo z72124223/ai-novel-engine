@@ -2,80 +2,77 @@
 
 ## Goal
 
-Implement MVP-7 Candidate A: a read-only narrative quality audit report. The tool analyzes existing context/result JSON and optionally a session evidence JSON file, then emits a stable report without writing SQLite or changing turn resolution.
+Calibrate MVP-7 Candidate A by running the existing read-only `audit-narrative-quality` command against several real Pilot turn context/result/evidence files, then write a report about warning usefulness, noise, missed issues, and next-step readiness.
 
 ## Global Strategy
 
-Add a standalone audit surface. Keep it separate from `resolve-turn`, `StateReducer`, `AiTurnResultValidator`, migrations, and repository writes. The service should consume already-exported JSON data and produce report JSON only.
+Use existing artifacts only. Do not adjust audit rules, runtime code, schema, Validator, `resolve-turn`, `StateReducer`, `stateVersion`, or `contextHash`. Treat audit output as evidence for a documentation-only calibration report.
 
 ## Non-Goals
 
+- No code changes.
+- No audit rule changes.
 - No SQLite writes.
-- No schema or migration edits.
-- No `resolve-turn` behavior changes.
-- No `StateReducer` changes.
-- No `AiTurnResultValidator` safety-boundary changes.
-- No `stateVersion` or `contextHash` changes.
-- No story rewriting.
-- No MVP-7 Candidate B/C/D.
+- No schema or migration changes.
+- No `resolve-turn` or `StateReducer` changes.
+- No Candidate B.
 - No server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
-- No push, merge, tag creation, retagging, or branch deletion.
+- No retagging, merge, push, or branch changes.
 
 ## Scope
 
-- Add narrative quality report models.
-- Add `NarrativeQualityAuditService`.
-- Add CLI command `audit-narrative-quality`.
-- Add tests for the read-only audit.
-- Update README/VERIFY and focused MVP-7 docs as needed.
-- Update this `PLANS.md`.
+- Read current docs and available Pilot artifacts.
+- Select 3 to 5 existing Pilot turn context/result/evidence groups.
+- Run `audit-narrative-quality` on each group.
+- Add `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`.
+- Run required verification and commit documentation-only changes.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `fda77df` before this milestone.
-- `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `ROADMAP.md` lists `MVP-7 Candidate A narrative quality audit report` as a recommended candidate after explicit approval.
-- The user explicitly approved this Candidate A milestone.
-- `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` defines Candidate A as a read-only analyzer for context/result pairs.
-- Existing CLI read-only commands use `writeJson(Path.of(out), report)` and print a short stdout summary.
-- Existing JSON support is `JsonSupport.json` with `ignoreUnknownKeys = true`.
-- `samples/sample_context_packet.json` and `samples/sample_ai_turn_result.json` are available as smoke-test inputs.
+- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `8bdb9f5` before this milestone.
+- `mvp-6` exists and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
+- `audit-narrative-quality` is implemented as a read-only CLI command that does not require `--db`.
+- `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` says Candidate A is implemented and Candidate B is not approved.
+- `out/pilot1/rerun/turns` contains formal Pilot context/result files for Turns 1 through 12.
+- Per-turn evidence files exist for several Pilot turns, including Turns 4, 8, and 9.
+- Final/full evidence artifacts exist under `out/pilot1/rerun` and `out/pilot1/capability_contract`.
 
 ## Assumptions
 
-- The first implementation can use deterministic heuristic rules and stable report fields, without claiming literary judgment is fully automated.
-- Optional pilot evidence support can be limited to reading an exported JSON file for repeated narrative/summary signals.
+- Turns 4, 8, 9, 10, and 12 provide a useful calibration spread: NPC refusal, memory/transition question, attempted transition, capability use, and final boundary negotiation.
+- Generated audit reports under `out/` remain ignored and should not be committed.
 
 ## Open Questions
 
-- Which audit warnings should become hard Validator failures in a later milestone, if any.
-- Whether future Pilot scoring should use this report directly or remain manual.
+- Whether the current heuristics are useful enough to feed a future Candidate B gate.
+- Whether evidence-file repetition warnings are meaningful when the evidence file contains a whole-session export rather than one turn only.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current control docs, MVP-7 spec, decision brief, README, AGENTS, samples, source, and tests.
-- [x] Step 2: Output read-only plan before editing code.
-- [x] Step 3: Add report models and read-only audit service.
-- [x] Step 4: Add CLI command and docs.
-- [x] Step 5: Add tests and sample CLI verification.
-- [x] Step 6: Run full verification, commit if all pass.
+- [x] Step 1: Read control docs, MVP-7 spec, Pilot findings/log, samples, and available `out/` artifacts.
+- [x] Step 2: Update this plan for the calibration-only milestone.
+- [x] Step 3: Run audit on selected Pilot turn groups and capture stable report JSON under `out/mvp7_calibration/`.
+- [x] Step 4: Add `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`.
+- [x] Step 5: Verify with `git diff --check`, `gradlew.bat clean test --no-daemon`, and `gradlew.bat :app:installDist`.
+- [x] Step 6: Commit documentation-only calibration changes.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
 - `gradlew.bat :app:installDist`
-- `gradlew.bat :app:run --args="audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_narrative_quality_report.json"`
-- Installed distribution CLI smoke test for `audit-narrative-quality`.
+- Manual CLI audit runs for selected Pilot turns.
 
 ## Risks
 
-- Heuristic quality findings may be noisy; report should use warnings and scores, not block story resolution.
-- Scope could drift into Validator enforcement; keep Candidate A read-only.
-- Adding a CLI command requires docs and installDist verification.
+- The report may overinterpret heuristic warnings as objective literary failure.
+- Whole-session evidence can create repeated-narrative warnings that may not belong to one turn.
+- If only `PLANS.md` and the calibration report change, the milestone stays documentation-only despite generated ignored reports under `out/`.
 
 ## Drift Log
 
-- 2026-06-20: Started MVP-7 Candidate A after explicit approval. Read-only plan confirms no DB write path and no resolve-turn changes.
-- 2026-06-20: Added read-only audit service/CLI/tests/docs and verified tests, installDist, repo CLI smoke, and distribution CLI smoke.
+- 2026-06-20: Started calibration-only milestone after explicit approval. Scope is documentation plus ignored audit outputs; no runtime edits.
+- 2026-06-20: Audited Pilot Turns 4, 8, 9, 10, and 12 using the installed distribution CLI. Reports were written to ignored `out/mvp7_calibration/`.
+- 2026-06-20: Verification passed: `git diff --check`, 225 tests with 0 failures/errors/skips, and `gradlew.bat :app:installDist`.
+- 2026-06-20: Prepared documentation-only commit for the calibration report.
