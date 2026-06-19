@@ -2,68 +2,69 @@
 
 ## Goal
 
-Refresh project control documents so they match the verified post-MVP-6 state: MVP-6 is complete, installDist packaging is repaired, local bundle backup is complete, private remote push is complete, remote restore verification is complete, and MVP-7 remains not approved.
+Align the original external blueprint with the current verified repo state, then produce a conservative MVP-7 decision brief. This milestone is documentation-only and must not start MVP-7 implementation.
 
 ## Global Strategy
 
-This is a documentation/control milestone. Update only project-control documents that currently drift from confirmed Git and verification evidence. Avoid runtime, schema, protocol, validator, and test changes.
+Treat `C:\Users\f7212\Downloads\AI_story_engine_blueprint.md` as design intent, not current operational truth. Record which parts remain useful, which parts are stale, and what decision should happen before any MVP-7 work begins.
 
 ## Non-Goals
 
-- No MVP-7.
+- No MVP-7 implementation.
+- No MVP-7 spec implementation.
 - No Kotlin code edits.
 - No migrations or schema edits.
 - No runtime, protocol, Validator, state reducer, context budget, or transaction changes.
-- No push, merge, tag creation, retagging, or branch deletion in this milestone.
+- No push, merge, tag creation, retagging, or branch deletion.
 - No server, API, port, Web UI, Android UI, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 
 ## Scope
 
-- Update `ROADMAP.md`.
-- Update `docs/ROADMAP.md`.
-- Update `docs/HANDOFF.md`.
+- Add `docs/BLUEPRINT_ALIGNMENT.md`.
+- Add `docs/MVP7_DECISION_BRIEF.md`.
 - Update this `PLANS.md`.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `43e0169882f449bb2b0c0f809b5bfdee8ca389de` before this refresh.
+- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `64439e10f951994eebd79614bb6fd229592f6e61` before this milestone.
 - Remote is `https://github.com/z72124223/ai-novel-engine.git`.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `docs/PROJECT_COMPLETION_AUDIT.md` reports `PASS_WITH_CONTROL_DOC_DRIFT`.
-- Remote restore clone and `gradlew.bat clean test --no-daemon` passed with 220 tests, 0 failures, 0 errors, 0 skipped.
-- Root `ROADMAP.md` still described MVP-6 as current and MVP-6 CLI acceptance as next.
-- `docs/ROADMAP.md` still described installDist as later non-blocking technical debt.
-- `docs/HANDOFF.md` still referenced the pre-audit stable HEAD.
+- `ROADMAP.md` says MVP-7 is not approved and must first create a focused `docs/MVP7_*.md` spec if requested later.
+- `VERIFY.md` says future MVP-7 work must define matching unit tests and CLI E2E before implementation.
+- `docs/HANDOFF.md` records the stable branch, pushed remote, hard boundaries, and remote restore verification.
+- The external blueprint states the same core safety principle: AI only produces JSON proposals, while Validator and `resolve-turn` govern SQLite writes.
+- The external blueprint also contains stale operational state: it describes Pilot-1 as still around Turn 10/11 and MVP-6 as not started, while current repo docs and Git evidence show MVP-6 is complete and tagged.
 
 ## Assumptions
 
-- The next safe milestone after this refresh should be chosen explicitly by the user, not inferred as MVP-7.
-- Avoiding a mutable current HEAD hash in `docs/HANDOFF.md` will reduce future drift; `mvp-6` remains the fixed release anchor.
+- The external blueprint is useful as a source of product intent and safety rules, even though its progress snapshot is stale.
+- The safest next product step is a user-approved MVP-7 spec draft, not implementation.
 
 ## Open Questions
 
-- Whether to later define an MVP-7 spec.
-- Whether to later push or prune historical local `feat/*` and `fix/*` branches.
-- Whether to configure GitHub branch protection on the private repo.
+- Whether the user wants MVP-7 narrative quality work next, Pilot-2 playtesting, or another operational maintenance milestone.
+- If MVP-7 is approved, which narrative quality failures should be measured first.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current Git state and relevant control docs.
-- [x] Step 2: Update control docs to reflect post-MVP-6 verified state.
-- [ ] Step 3: Run diff checks and tests, then commit only this documentation/control milestone if verification passes.
+- [x] Step 1: Read current Git state, control docs, and the external blueprint.
+- [x] Step 2: Add blueprint alignment and MVP-7 decision docs.
+- [x] Step 3: Run diff checks and tests, then commit only this documentation milestone if verification passes.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- Confirm `git status` and diff scope only include `ROADMAP.md`, `docs/ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
+- Confirm `git status` and diff scope only include `PLANS.md`, `docs/BLUEPRINT_ALIGNMENT.md`, and `docs/MVP7_DECISION_BRIEF.md`.
 
 ## Risks
 
-- Roadmap wording can drift again after the next milestone; keep `docs/HANDOFF.md` focused on stable anchors and commands instead of mutable HEAD hashes.
-- This milestone intentionally does not push; user approval is required after commit.
+- Accidentally treating stale blueprint progress as current state.
+- Accidentally implying MVP-7 approval by writing a decision brief.
+- Over-specifying MVP-7 before the user approves the spec milestone.
 
 ## Drift Log
 
-- 2026-06-20: Started control-doc refresh after project completion audit identified stale roadmap and handoff state.
+- 2026-06-20: Started blueprint alignment after user provided the original project blueprint from Downloads and approved a conservative follow-up.
+- 2026-06-20: Added documentation-only alignment docs. `gradlew.bat clean test --no-daemon` passed after clearing a transient Gradle clean lock left by an earlier timeout.
