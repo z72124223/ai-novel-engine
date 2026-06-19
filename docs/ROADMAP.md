@@ -57,6 +57,17 @@
 - Setting pack export/import UTF-8 round trip.
 - 100-entity deterministic scale fixture.
 
+## MVP-6
+
+- Local checkpoint creation for session state.
+- Branch timeline metadata with one active writable branch per project.
+- Non-destructive rewind by forking a new session from a checkpoint.
+- Branch checkout through explicit CLI command and transaction restore.
+- Replay-chain verification for applied turn logs, state versions, result IDs and context hashes.
+- Redacted timeline export that does not expose author-only or unrevealed secret content.
+- Additive `006_checkpoint_branching_runtime.sql` migration only.
+- Full old-test preservation plus branch/fork/replay E2E acceptance.
+
 ## Later
 
 - Non-blocking technical debt: `:app:installDist` currently generates scripts that cannot run because the app jar task is disabled to avoid OneDrive reparse-file issues during builds. CLI acceptance can still run through Gradle or the compiled `MainKt` classpath. Revisit packaging separately without changing MVP-4 runtime behavior.
