@@ -2,7 +2,7 @@
 
 日期：2026-06-20
 
-狀態：`DRAFT_SPEC_ONLY`，只是一份規格草案，不代表已批准實作。
+狀態：`CANDIDATE_A_IMPLEMENTED`。本文件原先只是規格草案；目前只完成 Candidate A 的 read-only audit（只讀稽核）入口，不代表 MVP-7 其他候選已批准。
 
 ## 1. MVP-7 目標
 
@@ -255,6 +255,8 @@ MVP-7 應降低「漂亮但不利於遊玩」的文字。
 - 輸出玩家代理權、重複、弱根據、工具人化等 warning（警告）。
 - 不寫 state。
 - 第一版不增加硬性 Validator failure。
+- 已批准的最小入口是 `audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]`。
+- 這個入口只讀 JSON，不接收 `--db`，不得呼叫 `resolve-turn`、`StateReducer` 或 SQLite repository（資料庫存取層）。
 
 候選 B：Result lint before resolve（resolve 前結果檢查）。
 

@@ -145,10 +145,27 @@ Expected:
 
 | Future Area | Verification Requirement |
 | --- | --- |
-| MVP-7 | Must add a focused `docs/MVP7_*.md` spec first, then define matching unit tests and CLI E2E before implementation. |
+| MVP-7 | Must add a focused `docs/MVP7_*.md` spec first, then define matching unit tests and CLI E2E before implementation. Candidate A additionally requires the read-only narrative quality audit smoke below. |
 | Pilot | Must use fresh Pilot DB, `pilot-preflight`, `audit-context`, `export-session-evidence`, and a turn log/findings document. |
 | UI | Not currently approved. If approved later, must define non-server local execution or explicitly update roadmap constraints first. |
 | Packaging | Must verify `gradlew.bat clean test --no-daemon` plus generated distribution launch, without reintroducing OneDrive reparse-file issues. |
+
+### MVP-7 Candidate A Narrative Quality Audit
+
+Candidate A is read-only. It reads existing JSON files and must not require `--db`.
+
+```powershell
+New-Item -ItemType Directory -Force -Path out | Out-Null
+gradlew.bat :app:run --args="audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_narrative_quality_report.json"
+```
+
+Expected:
+
+- Command exits `0`.
+- Report JSON exists.
+- Report includes `verdict`, `score`, `severity`, `findings`, and `evidence`.
+- No SQLite path is required or written.
+- The command does not call `resolve-turn`, `StateReducer`, or any repository-backed write path.
 
 ## 4. Failure Triage Order
 

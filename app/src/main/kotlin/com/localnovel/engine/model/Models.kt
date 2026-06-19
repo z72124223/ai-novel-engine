@@ -1336,6 +1336,48 @@ data class PilotPreflightReport(
     val pendingContextCount: Int = 0,
 )
 
+@Serializable
+data class NarrativeQualityAuditReport(
+    val verdict: String,
+    val score: Int,
+    val severity: String,
+    val findings: List<NarrativeQualityFinding> = emptyList(),
+    val evidence: NarrativeQualityAuditEvidence = NarrativeQualityAuditEvidence(),
+)
+
+@Serializable
+data class NarrativeQualityFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String,
+    @SerialName("affected_file_or_turn")
+    val affectedFileOrTurn: String = "",
+)
+
+@Serializable
+data class NarrativeQualityAuditEvidence(
+    val contextFile: String = "",
+    val resultFile: String = "",
+    val evidenceFile: String = "",
+    val projectId: String = "",
+    val turnId: String = "",
+    val contextId: String = "",
+    val resultId: String = "",
+    val turnNumber: Int = 0,
+    val narrativeLength: Int = 0,
+    val characterActionCount: Int = 0,
+    val stateDeltaCount: Int = 0,
+    val retrievedMemoryCount: Int = 0,
+    val knowledgeClaimCount: Int = 0,
+    val activeThreadCount: Int = 0,
+    val pendingWorldEventCount: Int = 0,
+)
+
 data class ValidationError(
     val code: String,
     val message: String,

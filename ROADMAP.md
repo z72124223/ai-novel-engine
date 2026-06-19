@@ -5,9 +5,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 ## Current Rule
 
 - Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
-- Active product milestone: none after the MVP-7 narrative quality spec draft; MVP-7 implementation is not approved.
-- Next milestone: decide whether to implement one minimal MVP-7 candidate, continue playtesting, or do operational maintenance.
-- MVP-7 implementation is not approved. The current milestone only creates `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+- Active product milestone: none after MVP-7 Candidate A read-only narrative quality audit report.
+- Next milestone: decide whether to push the Candidate A commit or continue with another explicitly approved MVP-7 candidate.
+- MVP-7 implementation beyond Candidate A is not approved. Candidate A must stay read-only and must not affect `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
 
 ## Milestone Table
 
@@ -29,10 +29,11 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Project Control Docs Refresh | Completed | Align control docs with the verified post-MVP-6 state. | `ROADMAP.md`, `docs/ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Accidentally implying MVP-7 approval or changing product scope. |
 | Blueprint Alignment | Completed | Preserve useful external blueprint intent while rejecting stale operational state. | `docs/BLUEPRINT_ALIGNMENT.md`, `docs/MVP7_DECISION_BRIEF.md`, `PLANS.md`. | Treating old Pilot/MVP-6 notes as current facts. |
 | MVP-7 Narrative Quality Spec Draft | Completed | Define narrative quality, NPC liveliness, AI-feeling output, style constraints, verifiable checks and implementation decision gates. | `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`, `ROADMAP.md`, `PLANS.md`. | Accidentally starting MVP-7 implementation or making subjective prose rules brittle. |
+| MVP-7 Candidate A Narrative Quality Audit | Completed | Add the lowest-risk MVP-7 entry point: a read-only report over context/result/evidence JSON. | Report models, read-only audit service, `audit-narrative-quality` CLI, tests, docs. | Treating subjective warnings as hard Validator failures, writing SQLite, or expanding into story rewriting. |
 
 ## Temporarily Not Doing
 
-- MVP-7 implementation beyond this user-approved spec milestone.
+- MVP-7 implementation beyond explicitly approved Candidate A.
 - Web server, Web UI, HTTP API, port listener.
 - Android UI.
 - OpenAI API integration or external AI calls.
@@ -61,4 +62,4 @@ Recommended candidates after this spec draft:
 
 1. `remote restore smoke on demand`: rerun clone/test verification when needed.
 2. `branch strategy review`: decide whether to push, archive, or delete historical local branches.
-3. `MVP-7 Candidate A narrative quality audit report`: only if the user explicitly approves implementation after reading `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+3. `MVP-7 Candidate B result lint before resolve`: only if the user explicitly approves it after reviewing Candidate A results.

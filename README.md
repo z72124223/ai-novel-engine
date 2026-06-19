@@ -83,6 +83,7 @@ Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎�
 - `show-dependencies --db <path> --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]`
 - `validate-project-canon --db <path> --project <id> [--out <path>]`
 - `audit-context --file <path> [--out <path>]`
+- `audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]`
 - `export-session-evidence --db <path> --session <id> --out <path>`
 - `pilot-preflight --db <path> --project <id> --session <id> [--out <path>]`
 - `explain-context-budget --db <path> --session <id> (--input <text> | --input-file <path>) [--out <path>]`
@@ -175,6 +176,16 @@ Pilot-1 context metadata normalization keeps diagnostics out of the AI-facing `C
 Pilot-1 context relevance floor prevents a byte-valid but semantically empty turn context. `prepare-turn`, `audit-context`, and `explain-context-budget` now evaluate deterministic semantic requirements for explicit recall cues, relevant beliefs, transition/location questions, active character goals, hard world rules, and referenced item/technique constraints. If required memory, knowledge, or legality records cannot fit under `24576` bytes, the command fails with `CONTEXT_QUALITY_UNSATISFIABLE` before a pending turn is created. See `docs/CONTEXT_RELEVANCE_FLOOR.md`.
 
 Referenced capability contracts prevent AI results from using a technique, item, or weapon from name/description alone. Explicit capability use must keep a Tier 1 `activeCapabilityContracts` card with authorization, effects, prerequisites, requirements, costs, limitations, forbidden uses, and current eligibility. `resolve-turn` requires matching `capabilityUseChecks` and a cost state delta when a successful use has costs. Use `explain-capability` for read-only provenance. See `docs/REFERENCED_CAPABILITY_CONTRACTS.md`.
+
+## Narrative Quality Audit
+
+MVP-7 Candidate A adds a read-only narrative quality audit for a context/result pair. It does not open SQLite, does not rewrite the story, and does not affect `resolve-turn`.
+
+```powershell
+./gradlew.bat :app:run --args="audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_narrative_quality_report.json"
+```
+
+The report includes `verdict`, `score`, `severity`, stable `findings`, evidence, suggested fixes, affected file or turn, and rule ids.
 
 ## Project Layout
 

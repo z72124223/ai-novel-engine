@@ -2,73 +2,80 @@
 
 ## Goal
 
-Draft the MVP-7 narrative quality specification as a documentation-only milestone. Define what narrative quality means for this engine, what MVP-7 must not do, what can be verified, and what decision is required before any implementation.
+Implement MVP-7 Candidate A: a read-only narrative quality audit report. The tool analyzes existing context/result JSON and optionally a session evidence JSON file, then emits a stable report without writing SQLite or changing turn resolution.
 
 ## Global Strategy
 
-Keep this milestone as a spec draft only. Use current repo control docs and the blueprint alignment document as evidence. Do not modify Kotlin code, migrations, runtime behavior, CLI commands, Validator, `stateVersion`, or `contextHash`.
+Add a standalone audit surface. Keep it separate from `resolve-turn`, `StateReducer`, `AiTurnResultValidator`, migrations, and repository writes. The service should consume already-exported JSON data and produce report JSON only.
 
 ## Non-Goals
 
-- No MVP-7 implementation.
-- No Kotlin code edits.
+- No SQLite writes.
 - No schema or migration edits.
-- No new CLI commands.
-- No Validator, `stateVersion`, `contextHash`, or transaction changes.
-- No web server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
+- No `resolve-turn` behavior changes.
+- No `StateReducer` changes.
+- No `AiTurnResultValidator` safety-boundary changes.
+- No `stateVersion` or `contextHash` changes.
+- No story rewriting.
+- No MVP-7 Candidate B/C/D.
+- No server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 - No push, merge, tag creation, retagging, or branch deletion.
 
 ## Scope
 
-- Add `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
-- Update `ROADMAP.md` only to reflect that the MVP-7 spec draft milestone was selected and remains documentation-only.
+- Add narrative quality report models.
+- Add `NarrativeQualityAuditService`.
+- Add CLI command `audit-narrative-quality`.
+- Add tests for the read-only audit.
+- Update README/VERIFY and focused MVP-7 docs as needed.
 - Update this `PLANS.md`.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `a35f5e9` before this milestone.
+- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `fda77df` before this milestone.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `ROADMAP.md` says MVP-7 implementation is not approved and must start with a focused `docs/MVP7_*.md` spec if requested later.
-- `VERIFY.md` says MVP-7 must define matching tests and CLI E2E before implementation.
-- `DONE_CRITERIA.md` requires `git diff --check` and `gradlew.bat clean test --no-daemon` before commit.
-- `docs/BLUEPRINT_ALIGNMENT.md` says the external blueprint is useful as design intent, but stale as current state.
-- `docs/MVP7_DECISION_BRIEF.md` says MVP-7 is ready for a spec draft, not implementation.
-- `docs/PROJECT_STRUCTURE_REPORT.md` is a historical snapshot and contains stale MVP-6 status.
+- `ROADMAP.md` lists `MVP-7 Candidate A narrative quality audit report` as a recommended candidate after explicit approval.
+- The user explicitly approved this Candidate A milestone.
+- `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` defines Candidate A as a read-only analyzer for context/result pairs.
+- Existing CLI read-only commands use `writeJson(Path.of(out), report)` and print a short stdout summary.
+- Existing JSON support is `JsonSupport.json` with `ignoreUnknownKeys = true`.
+- `samples/sample_context_packet.json` and `samples/sample_ai_turn_result.json` are available as smoke-test inputs.
 
 ## Assumptions
 
-- The most useful MVP-7 spec is conservative: define measurable narrative quality before adding enforcement.
-- A future MVP-7 implementation should likely start with audit/report behavior before hard Validator failures, but that remains a decision for the spec and user approval.
+- The first implementation can use deterministic heuristic rules and stable report fields, without claiming literary judgment is fully automated.
+- Optional pilot evidence support can be limited to reading an exported JSON file for repeated narrative/summary signals.
 
 ## Open Questions
 
-- Whether MVP-7 implementation should begin after this spec draft.
-- Which quality failures the user wants to prioritize first during real play.
-- Whether future enforcement should be hard rejection, warning-only audit, or staged.
+- Which audit warnings should become hard Validator failures in a later milestone, if any.
+- Whether future Pilot scoring should use this report directly or remain manual.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current control docs, blueprint alignment, MVP-7 decision brief, project report, MVP-6 acceptance, README, and AGENTS.
-- [x] Step 2: Output read-only analysis before editing.
-- [x] Step 3: Add MVP-7 narrative quality spec and minimal roadmap update.
-- [x] Step 4: Run diff checks and tests, then commit only this documentation milestone if verification passes.
+- [x] Step 1: Read current control docs, MVP-7 spec, decision brief, README, AGENTS, samples, source, and tests.
+- [x] Step 2: Output read-only plan before editing code.
+- [x] Step 3: Add report models and read-only audit service.
+- [x] Step 4: Add CLI command and docs.
+- [x] Step 5: Add tests and sample CLI verification.
+- [x] Step 6: Run full verification, commit if all pass.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- Confirm `git status` and diff scope only include `PLANS.md`, `ROADMAP.md`, and `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+- `gradlew.bat :app:installDist`
+- `gradlew.bat :app:run --args="audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_narrative_quality_report.json"`
+- Installed distribution CLI smoke test for `audit-narrative-quality`.
 
 ## Risks
 
-- Accidentally implying MVP-7 implementation approval.
-- Turning subjective style preferences into impossible automatic requirements.
-- Weakening safety boundaries in the name of better prose.
-- Overfitting the spec to one Pilot story instead of the engine.
+- Heuristic quality findings may be noisy; report should use warnings and scores, not block story resolution.
+- Scope could drift into Validator enforcement; keep Candidate A read-only.
+- Adding a CLI command requires docs and installDist verification.
 
 ## Drift Log
 
-- 2026-06-20: Started documentation-only MVP-7 narrative quality spec draft after explicit user approval.
-- 2026-06-20: Added `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` as a Chinese-first spec and updated `ROADMAP.md` without approving implementation.
-- 2026-06-20: `git diff --check` passed and `gradlew.bat clean test --no-daemon` passed.
+- 2026-06-20: Started MVP-7 Candidate A after explicit approval. Read-only plan confirms no DB write path and no resolve-turn changes.
+- 2026-06-20: Added read-only audit service/CLI/tests/docs and verified tests, installDist, repo CLI smoke, and distribution CLI smoke.

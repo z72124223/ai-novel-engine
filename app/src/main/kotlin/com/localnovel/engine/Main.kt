@@ -18,6 +18,8 @@ import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
 import com.localnovel.engine.service.DependencyGraphService
 import com.localnovel.engine.service.ImpactAnalyzer
 import com.localnovel.engine.service.MultiTurnRuntime
+import com.localnovel.engine.service.NarrativeQualityAuditInput
+import com.localnovel.engine.service.NarrativeQualityAuditService
 import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.SessionEvidenceExporter
@@ -83,6 +85,7 @@ class Cli {
                 "show-dependencies" -> showDependencies(options)
                 "validate-project-canon" -> validateProjectCanon(options)
                 "audit-context" -> auditContext(options)
+                "audit-narrative-quality" -> auditNarrativeQuality(options)
                 "export-session-evidence" -> exportSessionEvidence(options)
                 "pilot-preflight" -> pilotPreflight(options)
                 "explain-context-budget" -> explainContextBudget(options)
@@ -464,6 +467,32 @@ class Cli {
         println("hashValid=${report.hashValid}")
         report.violations.forEach { println("violation=$it") }
         return if (report.valid) 0 else 1
+    }
+
+    private fun auditNarrativeQuality(options: Map<String, String>): Int {
+        val contextPath = Path.of(options.required("context"))
+        val resultPath = Path.of(options.required("result"))
+        val evidencePath = options["evidence"]?.let { Path.of(it) }
+        val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
+        val report = NarrativeQualityAuditService().audit(
+            context = readJson(contextPath),
+            result = readJson(resultPath),
+            input = NarrativeQualityAuditInput(
+                contextFile = contextPath.toString(),
+                resultFile = resultPath.toString(),
+                evidenceFile = evidencePath?.toString().orEmpty(),
+                evidenceText = evidenceText,
+            ),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("score=${report.score}")
+        println("severity=${report.severity}")
+        println("findings=${report.findings.size}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.message}")
+        }
+        return 0
     }
 
     private fun explainContextBudget(options: Map<String, String>): Int {
@@ -877,6 +906,7 @@ class Cli {
               show-dependencies [--db <path>] --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]
               validate-project-canon [--db <path>] --project <id> [--out <path>]
               audit-context --file <path> [--out <path>]
+              audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]
               export-session-evidence [--db <path>] --session <id> --out <path>
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
               explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
