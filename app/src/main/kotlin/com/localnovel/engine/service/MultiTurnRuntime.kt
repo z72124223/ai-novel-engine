@@ -67,6 +67,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
     private fun prepareContextForFinalization(sessionId: String, playerInput: String): PreparedContextForBudget {
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
         require(session.status == "active") { "Session is not active: $sessionId" }
+        require(repository.isSessionActiveForMutation(sessionId)) { "Session is not on the active timeline branch: $sessionId" }
         val project = repository.getProject(session.projectId) ?: error("Project not found: ${session.projectId}")
         val activeScene = repository.getActiveScene(session.projectId) ?: error("Active scene not found.")
         require(activeScene.id == session.currentSceneId) { "Session scene '${session.currentSceneId}' does not match project active scene '${activeScene.id}'." }
@@ -107,6 +108,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             openTasks = repository.listOpenTasks(session.projectId),
             contextId = contextId,
             sessionId = session.id,
+            branchId = session.branchId,
             baseStateVersion = session.stateVersion,
             contextHash = "",
             generatedAt = Instant.now().toString(),
@@ -187,6 +189,9 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         if (session == null) {
             errors += ValidationError("missing_session", "Session not found: ${context.sessionId}")
         } else {
+            if (!repository.isSessionActiveForMutation(context.sessionId)) {
+                errors += ValidationError("inactive_branch", "Session is not on the active timeline branch.")
+            }
             if (session.stateVersion != result.baseStateVersion) {
                 errors += ValidationError("stale_state", "Current stateVersion is ${session.stateVersion}, result baseStateVersion is ${result.baseStateVersion}.")
             }

@@ -11,6 +11,7 @@ import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.CapabilityContractResolver
+import com.localnovel.engine.service.CheckpointService
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
 import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
@@ -26,6 +27,8 @@ import com.localnovel.engine.service.SettingPackParser
 import com.localnovel.engine.service.SettingPackSchemaValidator
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
+import com.localnovel.engine.service.ReplayAuditService
+import com.localnovel.engine.service.TimelineBranchService
 import com.localnovel.engine.service.TurnRunner
 import com.localnovel.engine.service.canonicalHash
 import com.localnovel.engine.support.JsonSupport
@@ -84,6 +87,14 @@ class Cli {
                 "pilot-preflight" -> pilotPreflight(options)
                 "explain-context-budget" -> explainContextBudget(options)
                 "explain-capability" -> explainCapability(options)
+                "create-checkpoint" -> createCheckpoint(options)
+                "list-checkpoints" -> listCheckpoints(options)
+                "show-checkpoint" -> showCheckpoint(options)
+                "fork-session" -> forkSession(options)
+                "checkout-branch" -> checkoutBranch(options)
+                "show-timeline" -> showTimeline(options)
+                "verify-replay-chain" -> verifyReplayChain(options)
+                "export-timeline" -> exportTimeline(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -209,6 +220,7 @@ class Cli {
             sceneId = options.required("scene"),
         )
         println("sessionId=${session.id}")
+        println("branchId=${session.branchId ?: ""}")
         println("currentSceneId=${session.currentSceneId}")
         println("nextTurnNumber=${session.nextTurnNumber}")
         println("stateVersion=${session.stateVersion}")
@@ -266,6 +278,7 @@ class Cli {
         val scene = repository.getActiveScene(session.projectId)
         val shen = repository.getCharacterState(session.projectId, "char-shen-shuang")
         println("sessionId=${session.id}")
+        println("branchId=${session.branchId ?: ""}")
         println("project=${project.name}")
         println("currentScene=${scene?.title ?: session.currentSceneId}")
         println("nextTurnNumber=${session.nextTurnNumber}")
@@ -506,6 +519,120 @@ class Cli {
         return if (report.status == "OK") 0 else 1
     }
 
+    private fun createCheckpoint(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val checkpoint = CheckpointService(repository).createCheckpoint(
+            sessionId = options.required("session"),
+            label = options["label"].orEmpty(),
+            kind = options["kind"] ?: "MANUAL",
+            reason = options["reason"].orEmpty(),
+        )
+        println("checkpointId=${checkpoint.id}")
+        println("branchId=${checkpoint.branchId ?: ""}")
+        println("sessionId=${checkpoint.sessionId}")
+        println("turnNumber=${checkpoint.turnNumber}")
+        println("stateVersion=${checkpoint.stateVersion}")
+        println("snapshotHash=${checkpoint.snapshotHash}")
+        return 0
+    }
+
+    private fun listCheckpoints(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        CheckpointService(repository).listCheckpoints(options.required("session")).forEach {
+            println("${it.id} branch=${it.branchId ?: ""} turn=${it.turnNumber} stateVersion=${it.stateVersion} kind=${it.kind} label=${it.label} createdAt=${it.createdAt}")
+        }
+        return 0
+    }
+
+    private fun showCheckpoint(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val checkpoint = CheckpointService(repository).showCheckpoint(options.required("checkpoint"))
+        println("checkpointId=${checkpoint.id}")
+        println("projectId=${checkpoint.projectId}")
+        println("sessionId=${checkpoint.sessionId}")
+        println("branchId=${checkpoint.branchId ?: ""}")
+        println("turnNumber=${checkpoint.turnNumber}")
+        println("stateVersion=${checkpoint.stateVersion}")
+        println("kind=${checkpoint.kind}")
+        println("label=${checkpoint.label}")
+        println("snapshotHash=${checkpoint.snapshotHash}")
+        println("createdAt=${checkpoint.createdAt}")
+        return 0
+    }
+
+    private fun forkSession(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val result = TimelineBranchService(repository).forkSession(
+            checkpointId = options.required("checkpoint"),
+            label = options["label"] ?: "fork",
+            reason = options["reason"].orEmpty(),
+        )
+        println("branchId=${result.branchId}")
+        println("sessionId=${result.sessionId}")
+        println("sourceCheckpointId=${result.sourceCheckpointId}")
+        println("stateVersion=${result.stateVersion}")
+        println("nextTurnNumber=${result.nextTurnNumber}")
+        return 0
+    }
+
+    private fun checkoutBranch(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val branch = TimelineBranchService(repository).checkoutBranch(options.required("branch"))
+        println("branchId=${branch.id}")
+        println("status=${branch.status}")
+        println("activeSessionId=${branch.activeSessionId ?: ""}")
+        println("sourceCheckpointId=${branch.sourceCheckpointId ?: ""}")
+        return 0
+    }
+
+    private fun showTimeline(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val export = TimelineBranchService(repository).showTimeline(options.required("project"))
+        println("projectId=${export.projectId}")
+        println("activeBranchId=${export.activeBranchId ?: ""}")
+        println("branches:")
+        export.branches.forEach {
+            println("- ${it.id} status=${it.status} session=${it.activeSessionId ?: ""} parent=${it.parentBranchId ?: ""} label=${it.label}")
+        }
+        println("checkpoints:")
+        export.checkpoints.forEach {
+            println("- ${it.id} branch=${it.branchId ?: ""} turn=${it.turnNumber} stateVersion=${it.stateVersion} kind=${it.kind} label=${it.label}")
+        }
+        return 0
+    }
+
+    private fun verifyReplayChain(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val report = ReplayAuditService(repository).verify(
+            sessionId = options.required("session"),
+            record = options["record"] == "true",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("status=${report.status}")
+        println("checkedTurnCount=${report.checkedTurnCount}")
+        report.issues.forEach { println("${it.code}: turn=${it.turnNumber ?: ""} ${it.message}") }
+        return if (report.status == "PASS") 0 else 1
+    }
+
+    private fun exportTimeline(options: Map<String, String>): Int {
+        val repository = repository(options)
+        repository.initialize()
+        val export = TimelineBranchService(repository).exportTimeline(options.required("project"))
+        writeJson(Path.of(options.required("out")), export)
+        println("wrote=${options.required("out")}")
+        println("branches=${export.branches.size}")
+        println("checkpoints=${export.checkpoints.size}")
+        println("activeBranchId=${export.activeBranchId ?: ""}")
+        return 0
+    }
+
     private fun exportSessionEvidence(options: Map<String, String>): Int {
         val repository = repository(options)
         val export = SessionEvidenceExporter(repository).export(options.required("session"))
@@ -698,6 +825,11 @@ class Cli {
             val token = args[index]
             require(token.startsWith("--")) { "Expected option starting with --, got '$token'." }
             val key = token.removePrefix("--")
+            if (key == "record") {
+                options[key] = "true"
+                index += 1
+                continue
+            }
             val value = args.getOrNull(index + 1)
             require(value != null && !value.startsWith("--")) { "Missing value for option --$key." }
             options[key] = value
@@ -749,6 +881,14 @@ class Cli {
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
               explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
               explain-capability [--db <path>] --session <id> --entity-type <technique|item|weapon> --entity-id <id> [--actor <character-id>] [--intended-use <text>] [--out <path>]
+              create-checkpoint [--db <path>] --session <id> [--label <text>] [--kind MANUAL] [--reason <text>]
+              list-checkpoints [--db <path>] --session <id>
+              show-checkpoint [--db <path>] --checkpoint <id>
+              fork-session [--db <path>] --checkpoint <id> [--label <text>] [--reason <text>]
+              checkout-branch [--db <path>] --branch <id>
+              show-timeline [--db <path>] --project <id>
+              verify-replay-chain [--db <path>] --session <id> [--out <path>] [--record]
+              export-timeline [--db <path>] --project <id> --out <path>
             """.trimIndent(),
         )
     }

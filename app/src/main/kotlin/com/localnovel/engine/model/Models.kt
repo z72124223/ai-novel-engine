@@ -557,6 +557,8 @@ data class ContextPacket(
     val openTasks: List<Task> = emptyList(),
     val contextId: String = "",
     val sessionId: String = "",
+    val branchId: String? = null,
+    val checkpointSummary: String? = null,
     val baseStateVersion: Int = 0,
     val contextHash: String = "",
     val generatedAt: String = "",
@@ -647,6 +649,7 @@ data class StorySession(
     val nextTurnNumber: Int,
     val stateVersion: Int,
     val status: String = "active",
+    val branchId: String? = null,
     val currentSceneInstanceId: String? = null,
     val worldTime: String = "",
     val elapsedMinutes: Int = 0,
@@ -1226,6 +1229,91 @@ data class SessionEvidenceExport(
     val facts: List<Fact> = emptyList(),
     val revealedSecrets: List<Secret> = emptyList(),
     val pendingContextCount: Int = 0,
+)
+
+@Serializable
+data class TimelineBranch(
+    val id: String,
+    val projectId: String,
+    val label: String = "",
+    val status: String = "ACTIVE",
+    val parentBranchId: String? = null,
+    val sourceCheckpointId: String? = null,
+    val activeSessionId: String? = null,
+    val createdFromSessionId: String? = null,
+    val createdFromTurnNumber: Int = 0,
+    val createdFromStateVersion: Int = 0,
+    val reason: String = "",
+    val metadata: JsonObject = JsonObject(emptyMap()),
+    val createdAt: String = "",
+    val updatedAt: String = "",
+)
+
+@Serializable
+data class CheckpointSnapshot(
+    val snapshotVersion: String = "1",
+    val projectId: String,
+    val sessionId: String,
+    val branchId: String? = null,
+    val turnNumber: Int,
+    val stateVersion: Int,
+    val worldTime: String = "",
+    val elapsedMinutes: Int = 0,
+    val activeSceneId: String? = null,
+    val currentSceneInstanceId: String? = null,
+    val tables: Map<String, List<Map<String, String?>>> = emptyMap(),
+)
+
+@Serializable
+data class SessionCheckpoint(
+    val id: String,
+    val projectId: String,
+    val sessionId: String,
+    val branchId: String? = null,
+    val turnNumber: Int,
+    val stateVersion: Int,
+    val sourceTurnLogId: String? = null,
+    val kind: String,
+    val label: String = "",
+    val reason: String = "",
+    val snapshotHash: String,
+    val snapshot: CheckpointSnapshot? = null,
+    val createdAt: String = "",
+)
+
+@Serializable
+data class ForkSessionResult(
+    val branchId: String,
+    val sessionId: String,
+    val sourceCheckpointId: String,
+    val stateVersion: Int,
+    val nextTurnNumber: Int,
+)
+
+@Serializable
+data class ReplayAuditIssue(
+    val code: String,
+    val message: String,
+    val turnNumber: Int? = null,
+)
+
+@Serializable
+data class ReplayAuditReport(
+    val projectId: String,
+    val sessionId: String,
+    val branchId: String? = null,
+    val status: String,
+    val checkedTurnCount: Int,
+    val issues: List<ReplayAuditIssue> = emptyList(),
+)
+
+@Serializable
+data class TimelineExport(
+    val projectId: String,
+    val activeBranchId: String? = null,
+    val branches: List<TimelineBranch> = emptyList(),
+    val checkpoints: List<SessionCheckpoint> = emptyList(),
+    val replayAudits: List<ReplayAuditReport> = emptyList(),
 )
 
 @Serializable

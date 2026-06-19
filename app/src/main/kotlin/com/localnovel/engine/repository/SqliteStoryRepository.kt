@@ -41,6 +41,7 @@ import com.localnovel.engine.model.StoryThread
 import com.localnovel.engine.model.StorySession
 import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
+import com.localnovel.engine.model.TimelineBranch
 import com.localnovel.engine.model.ActiveStoryThreadView
 import com.localnovel.engine.model.AvailableTransition
 import com.localnovel.engine.model.PendingWorldEventView
@@ -77,6 +78,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "003_memory_knowledge_runtime.sql",
                     "004_scene_thread_runtime.sql",
                     "005_setting_pack_runtime.sql",
+                    "006_checkpoint_branching_runtime.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -596,7 +598,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -608,17 +610,37 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    fun isSessionActiveForMutation(sessionId: String): Boolean = connect { connection ->
+        val session = selectSession(connection, sessionId) ?: return@connect false
+        val branchId = session.branchId ?: return@connect true
+        connection.prepareStatement(
+            """
+            SELECT 1
+            FROM timeline_branches
+            WHERE id = ? AND project_id = ? AND status = 'ACTIVE' AND active_session_id = ?
+            LIMIT 1
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, branchId)
+            statement.setString(2, session.projectId)
+            statement.setString(3, sessionId)
+            statement.executeQuery().use { it.next() }
+        }
+    }
+
     fun startSession(projectId: String, sceneId: String): StorySession = connect { connection ->
         connection.autoCommit = false
         try {
             val sessionId = newId("session")
             val sceneInstanceId = newId("scene-instance")
+            val branchId = newId("branch")
             val session = StorySession(
                 id = sessionId,
                 projectId = projectId,
                 currentSceneId = sceneId,
                 nextTurnNumber = 1,
                 stateVersion = 0,
+                branchId = branchId,
                 currentSceneInstanceId = sceneInstanceId,
                 worldTime = "0001-01-01T00:00:00Z",
                 elapsedMinutes = 0,
@@ -627,12 +649,35 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             val startScene = selectScene(connection, projectId, sceneId)
                 ?: error("Scene not found: $sceneId")
             connection.prepareStatement(
+                "UPDATE timeline_branches SET status = 'INACTIVE', updated_at = ? WHERE project_id = ? AND status = 'ACTIVE'",
+            ).use { statement ->
+                statement.setString(1, timestamp)
+                statement.setString(2, projectId)
+                statement.executeUpdate()
+            }
+            insertTimelineBranch(
+                connection = connection,
+                branch = TimelineBranch(
+                    id = branchId,
+                    projectId = projectId,
+                    label = "main",
+                    status = "ACTIVE",
+                    activeSessionId = null,
+                    createdFromSessionId = null,
+                    createdFromTurnNumber = 0,
+                    createdFromStateVersion = 0,
+                    reason = "start-session",
+                    createdAt = timestamp,
+                    updatedAt = timestamp,
+                ),
+            )
+            connection.prepareStatement(
                 """
                 INSERT INTO story_sessions(
                     id, project_id, current_scene_id, next_turn_number, state_version, status,
-                    current_scene_instance_id, world_time, elapsed_minutes, created_at, updated_at
+                    current_scene_instance_id, world_time, elapsed_minutes, branch_id, created_at, updated_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """.trimIndent(),
             ).use { statement ->
                 statement.setString(1, session.id)
@@ -644,8 +689,15 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.setString(7, sceneInstanceId)
                 statement.setString(8, session.worldTime)
                 statement.setInt(9, session.elapsedMinutes)
-                statement.setString(10, timestamp)
+                statement.setString(10, branchId)
                 statement.setString(11, timestamp)
+                statement.setString(12, timestamp)
+                statement.executeUpdate()
+            }
+            connection.prepareStatement("UPDATE timeline_branches SET active_session_id = ?, updated_at = ? WHERE id = ?").use { statement ->
+                statement.setString(1, sessionId)
+                statement.setString(2, timestamp)
+                statement.setString(3, branchId)
                 statement.executeUpdate()
             }
             connection.prepareStatement(
@@ -750,9 +802,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 INSERT INTO turn_logs(
                     id, project_id, turn_number, player_input, context_json, result_json, narrative,
                     has_state_change, created_at, session_id, context_id, base_state_version, context_hash,
-                    turn_summary, validation_status
+                    turn_summary, validation_status, branch_id
                 )
-                VALUES (?, ?, ?, ?, ?, '', '', 0, ?, ?, ?, ?, ?, '', 'pending')
+                VALUES (?, ?, ?, ?, ?, '', '', 0, ?, ?, ?, ?, ?, '', 'pending', ?)
                 """.trimIndent(),
             ).use { statement ->
                 statement.setString(1, newId("pending"))
@@ -765,6 +817,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.setString(8, context.contextId)
                 statement.setInt(9, context.baseStateVersion)
                 statement.setString(10, context.contextHash)
+                statement.setString(11, context.branchId)
                 statement.executeUpdate()
             }
         }
@@ -1029,6 +1082,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         try {
             val session = selectSession(connection, context.sessionId)
                 ?: error("Session not found: ${context.sessionId}")
+            require(session.branchId == null || selectBranchIsActive(connection, session.projectId, session.branchId, context.sessionId)) {
+                "Session is not on the active timeline branch: ${context.sessionId}"
+            }
             require(session.stateVersion == context.baseStateVersion) { "Stale baseStateVersion: expected ${session.stateVersion}, got ${context.baseStateVersion}." }
             require(session.nextTurnNumber == context.turnNumber) { "Stale turnNumber: expected ${session.nextTurnNumber}, got ${context.turnNumber}." }
 
@@ -1264,6 +1320,60 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    internal fun <T> withConnection(block: (Connection) -> T): T = connect(block)
+
+    internal fun <T> withTransaction(block: (Connection) -> T): T = connect { connection ->
+        connection.autoCommit = false
+        try {
+            val result = block(connection)
+            connection.commit()
+            result
+        } catch (error: Throwable) {
+            connection.rollback()
+            throw error
+        } finally {
+            connection.autoCommit = true
+        }
+    }
+
+    internal fun queryRows(connection: Connection, sql: String, vararg args: String?): List<Map<String, String?>> =
+        connection.prepareStatement(sql).use { statement ->
+            args.forEachIndexed { index, value -> statement.setString(index + 1, value) }
+            statement.executeQuery().use { rows ->
+                val meta = rows.metaData
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            (1..meta.columnCount).associate { index ->
+                                meta.getColumnName(index) to rows.getString(index)
+                            }.toSortedMap(),
+                        )
+                    }
+                }
+            }
+        }
+
+    internal fun executeUpdate(connection: Connection, sql: String, vararg args: String?): Int =
+        connection.prepareStatement(sql).use { statement ->
+            args.forEachIndexed { index, value -> statement.setString(index + 1, value) }
+            statement.executeUpdate()
+        }
+
+    internal fun insertRawRow(connection: Connection, tableName: String, row: Map<String, String?>) {
+        require(tableName.matches(Regex("[a-zA-Z_]+"))) { "Unsafe table name: $tableName" }
+        val columns = row.keys.toList()
+        require(columns.all { it.matches(Regex("[a-zA-Z_]+")) }) { "Unsafe column in $tableName" }
+        val placeholders = columns.joinToString(", ") { "?" }
+        val sql = "INSERT OR REPLACE INTO $tableName(${columns.joinToString(", ")}) VALUES ($placeholders)"
+        connection.prepareStatement(sql).use { statement ->
+            columns.forEachIndexed { index, column ->
+                val value = row[column]
+                if (value == null) statement.setNull(index + 1, java.sql.Types.VARCHAR) else statement.setString(index + 1, value)
+            }
+            statement.executeUpdate()
+        }
+    }
+
     private fun <T> connect(block: (Connection) -> T): T =
         DriverManager.getConnection("jdbc:sqlite:$dbPath").use { connection ->
             connection.createStatement().use { it.executeUpdate("PRAGMA foreign_keys = ON") }
@@ -1285,6 +1395,36 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
     private fun clearProject(connection: Connection, projectId: String) {
         connection.prepareStatement("DELETE FROM projects WHERE id = ?").use { statement ->
             statement.setString(1, projectId)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertTimelineBranch(connection: Connection, branch: TimelineBranch) {
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO timeline_branches(
+                id, project_id, label, status, parent_branch_id, source_checkpoint_id,
+                active_session_id, created_from_session_id, created_from_turn_number,
+                created_from_state_version, reason, metadata_json, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, branch.id)
+            statement.setString(2, branch.projectId)
+            statement.setString(3, branch.label)
+            statement.setString(4, branch.status)
+            statement.setString(5, branch.parentBranchId)
+            statement.setString(6, branch.sourceCheckpointId)
+            statement.setString(7, branch.activeSessionId)
+            statement.setString(8, branch.createdFromSessionId)
+            statement.setInt(9, branch.createdFromTurnNumber)
+            statement.setInt(10, branch.createdFromStateVersion)
+            statement.setString(11, branch.reason)
+            statement.setString(12, JsonSupport.json.encodeToString(branch.metadata))
+            statement.setString(13, branch.createdAt.ifBlank { timestamp })
+            statement.setString(14, branch.updatedAt.ifBlank { timestamp })
             statement.executeUpdate()
         }
     }
@@ -2825,7 +2965,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -2848,6 +2988,21 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             "SELECT 1 FROM turn_logs WHERE result_id = ? AND validation_status = 'applied' LIMIT 1",
         ).use { statement ->
             statement.setString(1, resultId)
+            statement.executeQuery().use { it.next() }
+        }
+
+    private fun selectBranchIsActive(connection: Connection, projectId: String, branchId: String, sessionId: String): Boolean =
+        connection.prepareStatement(
+            """
+            SELECT 1
+            FROM timeline_branches
+            WHERE id = ? AND project_id = ? AND status = 'ACTIVE' AND active_session_id = ?
+            LIMIT 1
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, branchId)
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
             statement.executeQuery().use { it.next() }
         }
 
@@ -3176,6 +3331,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         nextTurnNumber = getInt("next_turn_number"),
         stateVersion = getInt("state_version"),
         status = getString("status"),
+        branchId = runCatching { getString("branch_id") }.getOrNull(),
         currentSceneInstanceId = runCatching { getString("current_scene_instance_id") }.getOrNull(),
         worldTime = runCatching { getString("world_time") }.getOrNull().orEmpty(),
         elapsedMinutes = runCatching { getInt("elapsed_minutes") }.getOrDefault(0),

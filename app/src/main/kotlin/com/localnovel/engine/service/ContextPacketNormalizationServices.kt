@@ -38,6 +38,8 @@ object ContextPacketTopLevelAllowlist {
         "openTasks",
         "contextId",
         "sessionId",
+        "branchId",
+        "checkpointSummary",
         "baseStateVersion",
         "contextHash",
         "generatedAt",
