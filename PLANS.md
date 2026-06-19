@@ -2,64 +2,66 @@
 
 ## Goal
 
-Create a small handoff index for future Codex windows so the project can resume from the current stable point without rediscovering branch, tag, remote, verification, and safety-boundary state.
+Run a Project Completion Loop Audit and write down the current completion baseline, remaining planned work, known technical debt, explicit non-goals, and the next smallest safe milestone.
 
 ## Global Strategy
 
-Keep this milestone documentation-only. Record only facts confirmed from Git state, existing control docs, remote verification, and test output. Do not start MVP-7, do not alter runtime behavior, and do not change any schema, validator, `stateVersion`, or `contextHash` boundary.
+This is a documentation/control milestone. Use Git state, pushed remote refs, existing roadmap files, verification docs, test output, and runtime docs as evidence. Do not implement product behavior, do not start MVP-7, and do not modify code, schema, validator, `stateVersion`, or `contextHash` boundaries.
 
 ## Non-Goals
 
-- No product features.
-- No Kotlin code changes.
-- No migration changes.
-- No remote changes, pushes, branch deletion, tag creation, or retagging.
-- No server, API, Web UI, Android UI, Rust, Docker, embedding, vector DB, or multi-agent runtime.
-- No edits to Pilot story state, DB files, generated output, local backups, build cache, or temp JDK.
+- No MVP-7.
+- No Kotlin code edits.
+- No migrations or schema edits.
+- No runtime, protocol, Validator, state reducer, context budget, or transaction changes.
+- No push, merge, tag creation, retagging, or branch deletion in this milestone.
+- No server, API, port, Web UI, Android UI, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 
 ## Scope
 
-- Add `docs/HANDOFF.md`.
-- Update this `PLANS.md` to reflect the current documentation milestone.
+- Update this `PLANS.md`.
+- Add `docs/PROJECT_COMPLETION_AUDIT.md`.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current branch tracks `origin/codex/mvp6-checkpoint-branching-spec`.
-- Current remote is `https://github.com/z72124223/ai-novel-engine.git`.
-- Current HEAD is `514120afdc0b87b2e5ff6bdbe01701e6a288e491`.
+- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `65c298517f8d6b5794b6fe0a7056e80874b66041` before this audit.
+- Remote is `https://github.com/z72124223/ai-novel-engine.git`.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Remote restore clone from GitHub succeeded on 2026-06-20.
-- Remote restore clone `gradlew.bat clean test --no-daemon` succeeded with 220 tests, 0 failures, 0 errors, 0 skipped.
-- `data/`, `out/`, `backups/`, and build/cache directories are ignored and were not pushed as tracked files.
+- Remote restore clone succeeded on 2026-06-20.
+- Remote restore clone ran `gradlew.bat clean test --no-daemon` with 220 tests, 0 failures, 0 errors, 0 skipped.
+- Source includes migrations `001` through `006`.
+- Test suites currently total 220 tests across 10 XML reports.
+- `ROADMAP.md` still describes MVP-6 as current and MVP-6 CLI acceptance as next, which is stale relative to the verified Git state.
+- `docs/ROADMAP.md` still lists `installDist` as later non-blocking debt, which is stale after commit `514120a`.
 
 ## Assumptions
 
-- Future work will benefit from a single, short handoff entry point before reading the larger roadmap and specs.
-- The next product milestone is not yet approved; any MVP-7 work must begin with an explicit spec and user approval.
+- The user wants the loop to remain conservative: one explicit milestone at a time, with approval before new feature work.
+- The next safe milestone should repair control-document drift before any MVP-7 discussion.
 
 ## Open Questions
 
-- Whether to later refresh `ROADMAP.md` so its "Current Rule" reflects the post-MVP-6 remote backup state.
-- Whether to push additional historical feature/fix branches beyond the two stable branches already pushed.
+- Whether the user wants the next milestone to update `ROADMAP.md`, `docs/ROADMAP.md`, and `docs/HANDOFF.md` to the latest post-audit state.
+- Whether additional historical `feat/*` and `fix/*` branches should be pushed or pruned later; no such branch hygiene is approved in this milestone.
 
 ## Implementation Steps
 
-- [x] Step 1: Gather current Git, remote, tag, and verification facts.
-- [x] Step 2: Add `docs/HANDOFF.md` with stable-point, safety-boundary, verification, and next-session guidance.
-- [ ] Step 3: Verify documentation diff and decide whether to commit this documentation-only milestone.
+- [x] Step 1: Read current Git, remote, tags, roadmap, handoff, done criteria, verify guide, and relevant Pilot/MVP docs.
+- [x] Step 2: Write a concise project completion audit document.
+- [ ] Step 3: Run diff checks and tests, then commit only this documentation/control milestone if verification passes.
 
 ## Verification
 
-- Run `git diff --check`.
-- Run `git status`.
-- For this documentation-only milestone, no runtime test is required unless the user requests a commit under the global done criteria.
+- `git diff --check`
+- `gradlew.bat clean test --no-daemon`
+- Confirm `git status` and diff scope only include `PLANS.md` and `docs/PROJECT_COMPLETION_AUDIT.md`.
 
 ## Risks
 
-- The handoff could become stale if future milestones change branch, remote, tags, or verification status.
-- `ROADMAP.md` still contains some milestone wording from before the MVP-6 release seal; that is documented as an open question rather than silently changed in this milestone.
+- The audit may become stale after the next commit because HEAD changes; the next milestone should refresh `docs/HANDOFF.md`.
+- Control docs currently disagree about what is current; do not use a single roadmap file as source of truth until that drift is fixed.
 
 ## Drift Log
 
-- 2026-06-20: Started documentation-only handoff milestone after remote push and remote restore verification completed.
+- 2026-06-20: Audit started after remote backup, remote restore, handoff doc, and handoff doc push were completed.
