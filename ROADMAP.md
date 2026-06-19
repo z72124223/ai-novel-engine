@@ -4,9 +4,10 @@ This roadmap controls stable project completion. It is intentionally conservativ
 
 ## Current Rule
 
-- Current milestone: MVP-6 stabilization and sealing.
-- Next milestone: MVP-6 CLI acceptance evidence.
-- Do not start MVP-7 or any new product surface until MVP-6 code and MVP-6 CLI acceptance are both committed.
+- Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
+- Active product milestone: none approved after this control-doc refresh.
+- Next milestone: choose explicitly from current evidence; do not infer or start MVP-7 automatically.
+- MVP-7 is not approved. If MVP-7 is requested later, first create a focused `docs/MVP7_*.md` spec with tests and CLI E2E before implementation.
 
 ## Milestone Table
 
@@ -20,11 +21,17 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Pilot-1 Stabilization | Completed | Repair real-use blockers found during Pilot-1. | UTF-8 context byte hard limit, runtime character initialization, read-only audit/export/preflight, context budget forensics. | Raising byte limit, using old Pilot evidence, pending context residue. |
 | Pilot-1 Context Repairs | Completed | Keep final context compact but semantically useful. | Metadata normalization, context relevance floor, capability contracts. | Empty setting context, recent facts pretending to be recalled memories, capability use from description only. |
 | Pilot-1b Coverage Repair | Completed | Repair Pilot-1 coverage gaps without entering MVP-6. | Setting pack runtime topology, legal transition coverage, scheduled world event pressure, setting context precision. | Hardcoded E2E behavior, forced transition, scheduled event pressure omitted from context. |
-| MVP-6 Checkpoint Branching Runtime | Current | Add safe local alternate timeline exploration. | Additive `006` migration, checkpoint snapshots, one active branch per project, fork, checkout, redacted timeline export, replay audit. | Destructive rewind, branch writes on inactive session, snapshot restore cascading canon deletes, hidden secret export. |
-| MVP-6 CLI Acceptance Evidence | Next | Prove MVP-6 works through real CLI commands, not only unit tests. | Fresh demo DB, create checkpoint, fork session, checkout branch, show timeline, verify replay chain, export timeline, document expected results. | CLI docs drifting from real syntax, E2E relying on uncommitted data, output paths accidentally tracked. |
+| MVP-6 Checkpoint Branching Runtime | Completed | Add safe local alternate timeline exploration. | Additive `006` migration, checkpoint snapshots, one active branch per project, fork, checkout, redacted timeline export, replay audit. | Destructive rewind, branch writes on inactive session, snapshot restore cascading canon deletes, hidden secret export. |
+| MVP-6 CLI Acceptance Evidence | Completed | Prove MVP-6 works through real CLI commands, not only unit tests. | Fresh demo DB, create checkpoint, fork session, checkout branch, show timeline, verify replay chain, export timeline, document expected results. | CLI docs drifting from real syntax, E2E relying on uncommitted data, output paths accidentally tracked. |
+| installDist Packaging Repair | Completed | Make generated Windows distribution launch the CLI and load packaged migrations. | Restore app JAR generation while preserving OneDrive build safeguards; verify distribution `help` and `init-db`. | Reintroducing OneDrive reparse-file build issues, broken packaged resource loading. |
+| Local And Remote Backup | Completed | Protect the stable repo state outside the working tree. | Local Git bundle, private GitHub remote, pushed stable branches and tags, remote restore clone and test. | Private repo accidentally made public, generated data pushed by mistake. |
+| Handoff And Completion Audit | Completed | Make the project restartable by future Codex windows. | `docs/HANDOFF.md`, `docs/PROJECT_COMPLETION_AUDIT.md`, remote restore evidence, next-milestone guidance. | Handoff docs drifting after each commit. |
+| Project Control Docs Refresh | Completed | Align control docs with the verified post-MVP-6 state. | `ROADMAP.md`, `docs/ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Accidentally implying MVP-7 approval or changing product scope. |
+| Next Milestone Selection | Next | Choose the smallest next step from verified evidence. | Read current docs and Git state, then ask for explicit approval before implementation. | Jumping into features before the user approves product direction. |
 
 ## Temporarily Not Doing
 
+- MVP-7 implementation or planning beyond a user-approved spec milestone.
 - Web server, Web UI, HTTP API, port listener.
 - Android UI.
 - OpenAI API integration or external AI calls.
@@ -33,8 +40,8 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Embedding, vector database, semantic search infrastructure.
 - Multi-agent runtime.
 - Timeline UI, replay UI, graphical branch browser.
-- MVP-7 planning before MVP-6 code and CLI acceptance are sealed.
-- Packaging refactor for `installDist`; this remains non-blocking technical debt unless explicitly selected as a milestone.
+- Branch deletion, retagging, or broad branch hygiene unless selected as a milestone.
+- GitHub branch protection or repository settings changes unless selected as a milestone.
 
 ## Selection Rule For The Next Milestone
 
@@ -48,3 +55,9 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 - commit message.
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
+
+Recommended candidates after this refresh:
+
+1. `remote restore smoke on demand`: rerun clone/test verification when needed.
+2. `branch strategy review`: decide whether to push, archive, or delete historical local branches.
+3. `MVP-7 spec draft`: only if the user explicitly approves starting MVP-7 planning.

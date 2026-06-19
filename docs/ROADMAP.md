@@ -1,14 +1,16 @@
 # Roadmap
 
+This file summarizes product/runtime evolution. The root `ROADMAP.md` is the control roadmap for current milestone selection.
+
 ## v1
 
-- Kotlin/JVM CLI。
-- SQLite schema migration。
-- JSON context/result protocol。
-- Demo seed。
-- Validator + reducer。
-- Minimal stall detection。
-- Unit tests for schema、seed、context、validation、reducer、stall detector。
+- Kotlin/JVM CLI.
+- SQLite schema migration.
+- JSON context/result protocol.
+- Demo seed.
+- Validator + reducer.
+- Minimal stall detection.
+- Unit tests for schema, seed, context, validation, reducer, stall detector.
 
 ## MVP-2
 
@@ -67,13 +69,29 @@
 - Redacted timeline export that does not expose author-only or unrevealed secret content.
 - Additive `006_checkpoint_branching_runtime.sql` migration only.
 - Full old-test preservation plus branch/fork/replay E2E acceptance.
+- CLI acceptance guide: `docs/MVP6_CLI_ACCEPTANCE.md`.
+- Release tag: `mvp-6`.
+
+## Post-MVP-6 Stabilization
+
+- `:app:installDist` packaging repair is complete.
+- Generated distribution now includes the app JAR and can launch the CLI.
+- Distribution smoke tests covered `help` and `init-db` with packaged migrations.
+- Local Git bundle backup was created and verified.
+- Private GitHub remote was created at `https://github.com/z72124223/ai-novel-engine.git`.
+- Stable branches and tags were pushed.
+- Remote restore clone ran `gradlew.bat clean test --no-daemon` with 220 tests, 0 failures, 0 errors, 0 skipped.
+- Handoff and completion audit docs now exist:
+  - `docs/HANDOFF.md`
+  - `docs/PROJECT_COMPLETION_AUDIT.md`
 
 ## Later
 
-- Non-blocking technical debt: `:app:installDist` currently generates scripts that cannot run because the app jar task is disabled to avoid OneDrive reparse-file issues during builds. CLI acceptance can still run through Gradle or the compiled `MainKt` classpath. Revisit packaging separately without changing MVP-4 runtime behavior.
 - Richer dependency graph queries and persisted validation/impact run history.
 - More granular visibility levels for secrets and facts.
 - Replay/export tooling for turn logs.
 - Optional human review queues for high-risk deltas.
+- Optional GitHub branch protection or repository settings hardening.
+- MVP-7 only after an explicit user-approved `docs/MVP7_*.md` spec milestone.
 
-Non-goals remain unchanged unless explicitly revised: no web server, no port, no OpenAI API integration, no Android UI, no Rust.
+Non-goals remain unchanged unless explicitly revised: no web server, no port, no OpenAI API integration, no Android UI, no Rust, no Docker, no embedding/vector DB.

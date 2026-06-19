@@ -2,11 +2,11 @@
 
 ## Goal
 
-Run a Project Completion Loop Audit and write down the current completion baseline, remaining planned work, known technical debt, explicit non-goals, and the next smallest safe milestone.
+Refresh project control documents so they match the verified post-MVP-6 state: MVP-6 is complete, installDist packaging is repaired, local bundle backup is complete, private remote push is complete, remote restore verification is complete, and MVP-7 remains not approved.
 
 ## Global Strategy
 
-This is a documentation/control milestone. Use Git state, pushed remote refs, existing roadmap files, verification docs, test output, and runtime docs as evidence. Do not implement product behavior, do not start MVP-7, and do not modify code, schema, validator, `stateVersion`, or `contextHash` boundaries.
+This is a documentation/control milestone. Update only project-control documents that currently drift from confirmed Git and verification evidence. Avoid runtime, schema, protocol, validator, and test changes.
 
 ## Non-Goals
 
@@ -19,49 +19,51 @@ This is a documentation/control milestone. Use Git state, pushed remote refs, ex
 
 ## Scope
 
+- Update `ROADMAP.md`.
+- Update `docs/ROADMAP.md`.
+- Update `docs/HANDOFF.md`.
 - Update this `PLANS.md`.
-- Add `docs/PROJECT_COMPLETION_AUDIT.md`.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `65c298517f8d6b5794b6fe0a7056e80874b66041` before this audit.
+- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `43e0169882f449bb2b0c0f809b5bfdee8ca389de` before this refresh.
 - Remote is `https://github.com/z72124223/ai-novel-engine.git`.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Remote restore clone succeeded on 2026-06-20.
-- Remote restore clone ran `gradlew.bat clean test --no-daemon` with 220 tests, 0 failures, 0 errors, 0 skipped.
-- Source includes migrations `001` through `006`.
-- Test suites currently total 220 tests across 10 XML reports.
-- `ROADMAP.md` still describes MVP-6 as current and MVP-6 CLI acceptance as next, which is stale relative to the verified Git state.
-- `docs/ROADMAP.md` still lists `installDist` as later non-blocking debt, which is stale after commit `514120a`.
+- `docs/PROJECT_COMPLETION_AUDIT.md` reports `PASS_WITH_CONTROL_DOC_DRIFT`.
+- Remote restore clone and `gradlew.bat clean test --no-daemon` passed with 220 tests, 0 failures, 0 errors, 0 skipped.
+- Root `ROADMAP.md` still described MVP-6 as current and MVP-6 CLI acceptance as next.
+- `docs/ROADMAP.md` still described installDist as later non-blocking technical debt.
+- `docs/HANDOFF.md` still referenced the pre-audit stable HEAD.
 
 ## Assumptions
 
-- The user wants the loop to remain conservative: one explicit milestone at a time, with approval before new feature work.
-- The next safe milestone should repair control-document drift before any MVP-7 discussion.
+- The next safe milestone after this refresh should be chosen explicitly by the user, not inferred as MVP-7.
+- Avoiding a mutable current HEAD hash in `docs/HANDOFF.md` will reduce future drift; `mvp-6` remains the fixed release anchor.
 
 ## Open Questions
 
-- Whether the user wants the next milestone to update `ROADMAP.md`, `docs/ROADMAP.md`, and `docs/HANDOFF.md` to the latest post-audit state.
-- Whether additional historical `feat/*` and `fix/*` branches should be pushed or pruned later; no such branch hygiene is approved in this milestone.
+- Whether to later define an MVP-7 spec.
+- Whether to later push or prune historical local `feat/*` and `fix/*` branches.
+- Whether to configure GitHub branch protection on the private repo.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current Git, remote, tags, roadmap, handoff, done criteria, verify guide, and relevant Pilot/MVP docs.
-- [x] Step 2: Write a concise project completion audit document.
+- [x] Step 1: Read current Git state and relevant control docs.
+- [x] Step 2: Update control docs to reflect post-MVP-6 verified state.
 - [ ] Step 3: Run diff checks and tests, then commit only this documentation/control milestone if verification passes.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- Confirm `git status` and diff scope only include `PLANS.md` and `docs/PROJECT_COMPLETION_AUDIT.md`.
+- Confirm `git status` and diff scope only include `ROADMAP.md`, `docs/ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 
 ## Risks
 
-- The audit may become stale after the next commit because HEAD changes; the next milestone should refresh `docs/HANDOFF.md`.
-- Control docs currently disagree about what is current; do not use a single roadmap file as source of truth until that drift is fixed.
+- Roadmap wording can drift again after the next milestone; keep `docs/HANDOFF.md` focused on stable anchors and commands instead of mutable HEAD hashes.
+- This milestone intentionally does not push; user approval is required after commit.
 
 ## Drift Log
 
-- 2026-06-20: Audit started after remote backup, remote restore, handoff doc, and handoff doc push were completed.
+- 2026-06-20: Started control-doc refresh after project completion audit identified stale roadmap and handoff state.

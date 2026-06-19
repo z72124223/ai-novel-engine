@@ -6,8 +6,8 @@ This file is the first stop for a new Codex window. It records the current stabl
 
 - Current stable branch: `codex/mvp6-checkpoint-branching-spec`
 - Remote: `origin https://github.com/z72124223/ai-novel-engine.git`
-- Current HEAD: `514120afdc0b87b2e5ff6bdbe01701e6a288e491`
-- Current HEAD summary: `merge: integrate installDist packaging fix`
+- Current branch should track `origin/codex/mvp6-checkpoint-branching-spec`
+- Use `git log --oneline --decorate -5` for the latest mutable HEAD.
 - Release tag: `mvp-6`
 - `mvp-6` target commit: `be527031335efe8e2b0facae0145e1bbc084f8c6`
 - Main pushed branches:
@@ -36,6 +36,7 @@ Verified on 2026-06-20:
 - Remote clone saw `mvp-6` at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - Remote clone ran `gradlew.bat clean test --no-daemon`.
 - Test result: 220 tests, 0 failures, 0 errors, 0 skipped.
+- Project completion audit was committed and pushed as `43e0169882f449bb2b0c0f809b5bfdee8ca389de`.
 
 ## Read First
 
@@ -130,7 +131,7 @@ Do not enter MVP-7 automatically.
 
 Recommended next small milestone:
 
-- Refresh project control docs if desired, especially `ROADMAP.md`, so "Current Rule" reflects that MVP-6, installDist repair, local bundle backup, remote push, and remote restore verification are complete.
+- Choose the next milestone explicitly from current evidence. Good candidates are branch strategy review, remote restore smoke on demand, or an MVP-7 spec draft only if the user explicitly approves MVP-7 planning.
 
 Alternative safe milestone:
 
