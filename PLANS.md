@@ -2,66 +2,64 @@
 
 ## Goal
 
-修復既有非阻塞技術債：`:app:installDist` 產物必須能在 Windows script 中啟動 CLI，並能透過 distribution 讀到 packaged resources（封裝資源）中的 SQLite migrations（資料庫遷移檔）。
+Create a small handoff index for future Codex windows so the project can resume from the current stable point without rediscovering branch, tag, remote, verification, and safety-boundary state.
 
 ## Global Strategy
 
-只調整 Gradle packaging（打包 / 發佈）設定，讓 application distribution（應用程式發佈產物）包含主程式 JAR（Java 封裝檔）與既有 resources。先修最小必要點，再用 clean test、installDist、distribution CLI 實跑驗證。
+Keep this milestone documentation-only. Record only facts confirmed from Git state, existing control docs, remote verification, and test output. Do not start MVP-7, do not alter runtime behavior, and do not change any schema, validator, `stateVersion`, or `contextHash` boundary.
 
 ## Non-Goals
 
-不新增功能。不開 MVP-7。不修改 SQLite schema。不修改 Validator、StateReducer、stateVersion、contextHash 邊界。不新增 server、port、API、Android、Rust、Docker、embedding/vector DB。不處理或 commit `data/`、`out/` ignored 產物。不 push、不 merge、不修改 `mvp-6` tag。
+- No product features.
+- No Kotlin code changes.
+- No migration changes.
+- No remote changes, pushes, branch deletion, tag creation, or retagging.
+- No server, API, Web UI, Android UI, Rust, Docker, embedding, vector DB, or multi-agent runtime.
+- No edits to Pilot story state, DB files, generated output, local backups, build cache, or temp JDK.
 
 ## Scope
 
-預期 production 設定只限 `app/build.gradle.kts`。本檔 `PLANS.md` 僅記錄本次受限修復軌跡。
+- Add `docs/HANDOFF.md`.
+- Update this `PLANS.md` to reflect the current documentation milestone.
 
 ## Confirmed Facts
 
-- 目前分支已切到 `fix/install-dist-packaging`。
-- 初始工作樹在切分支前為 clean。
-- `mvp-6` tag 指向 commit `be527031335efe8e2b0facae0145e1bbc084f8c6`。
-- 原始環境缺少 `JAVA_HOME` 與 PATH 中的 `java`，會先阻止 Gradle wrapper 執行。
-- 使用臨時 JDK 後，`:app:installDist` task 成功。
-- installDist 產物的 Windows script classpath 包含 `lib/app.jar`。
-- installDist 產物的 `lib` 目錄目前沒有 `app.jar`。
-- 實跑 installDist 產物 `bin/app.bat help` 失敗：`ClassNotFoundException: com.localnovel.engine.MainKt`。
-- `app/build.gradle.kts` 已套用 `application` plugin 並設定 `mainClass` 為 `com.localnovel.engine.MainKt`。
-- `app/build.gradle.kts` 目前停用所有 `Jar` task。
-- migrations 位於 `app/src/main/resources/migrations/`，repository 透過 classloader resource path `migrations/<file>` 載入。
-- `docs/ROADMAP.md` 已記錄 `installDist` 技術債：app jar task 被停用導致 scripts 不能跑。
+- Current branch is `codex/mvp6-checkpoint-branching-spec`.
+- Current branch tracks `origin/codex/mvp6-checkpoint-branching-spec`.
+- Current remote is `https://github.com/z72124223/ai-novel-engine.git`.
+- Current HEAD is `514120afdc0b87b2e5ff6bdbe01701e6a288e491`.
+- `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
+- Remote restore clone from GitHub succeeded on 2026-06-20.
+- Remote restore clone `gradlew.bat clean test --no-daemon` succeeded with 220 tests, 0 failures, 0 errors, 0 skipped.
+- `data/`, `out/`, `backups/`, and build/cache directories are ignored and were not pushed as tracked files.
 
 ## Assumptions
 
-- 重新啟用 app module 的 JAR task 足以讓 distribution script 找到 `MainKt` 與 resources。
-- 既有 `ProcessResources` 的 `doNotTrackState` 設定已足以處理 OneDrive reparse file 風險。
+- Future work will benefit from a single, short handoff entry point before reading the larger roadmap and specs.
+- The next product milestone is not yet approved; any MVP-7 work must begin with an explicit spec and user approval.
 
 ## Open Questions
 
-- `clean test --no-daemon` 是否會在重新啟用 JAR task 後仍保持 220 tests passing。
-- distribution CLI 的 `init-db` 是否能從 packaged JAR 讀到全部 migrations。
+- Whether to later refresh `ROADMAP.md` so its "Current Rule" reflects the post-MVP-6 remote backup state.
+- Whether to push additional historical feature/fix branches beyond the two stable branches already pushed.
 
 ## Implementation Steps
 
-- [x] Step 1: 完成環境與根因診斷。
-- [x] Step 2: 最小修改 Gradle packaging 設定，恢復 application distribution 需要的 app JAR。
-- [x] Step 3: 驗證 tests、installDist、distribution CLI。
-- [x] Step 4: 檢查 diff 與 git status，全部通過後 commit。
+- [x] Step 1: Gather current Git, remote, tag, and verification facts.
+- [x] Step 2: Add `docs/HANDOFF.md` with stable-point, safety-boundary, verification, and next-session guidance.
+- [ ] Step 3: Verify documentation diff and decide whether to commit this documentation-only milestone.
 
 ## Verification
 
-- Step 2: 檢查 `git diff`，確認只碰 packaging 設定與本 plan。
-- Step 3: 執行 `git diff --check`、`gradlew.bat clean test --no-daemon`、`gradlew.bat :app:installDist`、distribution CLI `help` 與臨時 db `init-db`。
-- Step 4: 執行 `git status`、`git diff --stat`，再 commit。
+- Run `git diff --check`.
+- Run `git status`.
+- For this documentation-only milestone, no runtime test is required unless the user requests a commit under the global done criteria.
 
 ## Risks
 
-- 本機無全域 JDK；本輪驗證需使用暫存 JDK 與 per-command `JAVA_HOME`。
-- 若 OneDrive reparse file 問題重現，可能需要保留 Jar task 但調整其 tracking 或輸入行為。
+- The handoff could become stale if future milestones change branch, remote, tags, or verification status.
+- `ROADMAP.md` still contains some milestone wording from before the MVP-6 release seal; that is documented as an open question rather than silently changed in this milestone.
 
 ## Drift Log
 
-- 2026-06-19: 初始 `installDist` 指令先被缺 JDK 擋住；以暫存 JDK 解除環境阻塞後，確認真正問題是 distribution script 指向不存在的 `lib/app.jar`。
-- 2026-06-19: 已移除 `Jar` task 的 `enabled = false`，保留 OneDrive `doNotTrackState` 設定；目前未發現範圍漂移。
-- 2026-06-19: 驗證通過：`git diff --check`、`clean test --no-daemon`、`:app:installDist`、distribution `help`、distribution `init-db`。
-- 2026-06-19: commit completed on `fix/install-dist-packaging`; no push, merge, tag mutation, or MVP-7 work performed.
+- 2026-06-20: Started documentation-only handoff milestone after remote push and remote restore verification completed.
