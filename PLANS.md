@@ -2,69 +2,73 @@
 
 ## Goal
 
-Align the original external blueprint with the current verified repo state, then produce a conservative MVP-7 decision brief. This milestone is documentation-only and must not start MVP-7 implementation.
+Draft the MVP-7 narrative quality specification as a documentation-only milestone. Define what narrative quality means for this engine, what MVP-7 must not do, what can be verified, and what decision is required before any implementation.
 
 ## Global Strategy
 
-Treat `C:\Users\f7212\Downloads\AI_story_engine_blueprint.md` as design intent, not current operational truth. Record which parts remain useful, which parts are stale, and what decision should happen before any MVP-7 work begins.
+Keep this milestone as a spec draft only. Use current repo control docs and the blueprint alignment document as evidence. Do not modify Kotlin code, migrations, runtime behavior, CLI commands, Validator, `stateVersion`, or `contextHash`.
 
 ## Non-Goals
 
 - No MVP-7 implementation.
-- No MVP-7 spec implementation.
 - No Kotlin code edits.
-- No migrations or schema edits.
-- No runtime, protocol, Validator, state reducer, context budget, or transaction changes.
+- No schema or migration edits.
+- No new CLI commands.
+- No Validator, `stateVersion`, `contextHash`, or transaction changes.
+- No web server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 - No push, merge, tag creation, retagging, or branch deletion.
-- No server, API, port, Web UI, Android UI, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 
 ## Scope
 
-- Add `docs/BLUEPRINT_ALIGNMENT.md`.
-- Add `docs/MVP7_DECISION_BRIEF.md`.
+- Add `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+- Update `ROADMAP.md` only to reflect that the MVP-7 spec draft milestone was selected and remains documentation-only.
 - Update this `PLANS.md`.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current branch is synced to `origin/codex/mvp6-checkpoint-branching-spec` at `64439e10f951994eebd79614bb6fd229592f6e61` before this milestone.
-- Remote is `https://github.com/z72124223/ai-novel-engine.git`.
+- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `a35f5e9` before this milestone.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `ROADMAP.md` says MVP-7 is not approved and must first create a focused `docs/MVP7_*.md` spec if requested later.
-- `VERIFY.md` says future MVP-7 work must define matching unit tests and CLI E2E before implementation.
-- `docs/HANDOFF.md` records the stable branch, pushed remote, hard boundaries, and remote restore verification.
-- The external blueprint states the same core safety principle: AI only produces JSON proposals, while Validator and `resolve-turn` govern SQLite writes.
-- The external blueprint also contains stale operational state: it describes Pilot-1 as still around Turn 10/11 and MVP-6 as not started, while current repo docs and Git evidence show MVP-6 is complete and tagged.
+- `ROADMAP.md` says MVP-7 implementation is not approved and must start with a focused `docs/MVP7_*.md` spec if requested later.
+- `VERIFY.md` says MVP-7 must define matching tests and CLI E2E before implementation.
+- `DONE_CRITERIA.md` requires `git diff --check` and `gradlew.bat clean test --no-daemon` before commit.
+- `docs/BLUEPRINT_ALIGNMENT.md` says the external blueprint is useful as design intent, but stale as current state.
+- `docs/MVP7_DECISION_BRIEF.md` says MVP-7 is ready for a spec draft, not implementation.
+- `docs/PROJECT_STRUCTURE_REPORT.md` is a historical snapshot and contains stale MVP-6 status.
 
 ## Assumptions
 
-- The external blueprint is useful as a source of product intent and safety rules, even though its progress snapshot is stale.
-- The safest next product step is a user-approved MVP-7 spec draft, not implementation.
+- The most useful MVP-7 spec is conservative: define measurable narrative quality before adding enforcement.
+- A future MVP-7 implementation should likely start with audit/report behavior before hard Validator failures, but that remains a decision for the spec and user approval.
 
 ## Open Questions
 
-- Whether the user wants MVP-7 narrative quality work next, Pilot-2 playtesting, or another operational maintenance milestone.
-- If MVP-7 is approved, which narrative quality failures should be measured first.
+- Whether MVP-7 implementation should begin after this spec draft.
+- Which quality failures the user wants to prioritize first during real play.
+- Whether future enforcement should be hard rejection, warning-only audit, or staged.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current Git state, control docs, and the external blueprint.
-- [x] Step 2: Add blueprint alignment and MVP-7 decision docs.
-- [x] Step 3: Run diff checks and tests, then commit only this documentation milestone if verification passes.
+- [x] Step 1: Read current control docs, blueprint alignment, MVP-7 decision brief, project report, MVP-6 acceptance, README, and AGENTS.
+- [x] Step 2: Output read-only analysis before editing.
+- [x] Step 3: Add MVP-7 narrative quality spec and minimal roadmap update.
+- [x] Step 4: Run diff checks and tests, then commit only this documentation milestone if verification passes.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- Confirm `git status` and diff scope only include `PLANS.md`, `docs/BLUEPRINT_ALIGNMENT.md`, and `docs/MVP7_DECISION_BRIEF.md`.
+- Confirm `git status` and diff scope only include `PLANS.md`, `ROADMAP.md`, and `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
 
 ## Risks
 
-- Accidentally treating stale blueprint progress as current state.
-- Accidentally implying MVP-7 approval by writing a decision brief.
-- Over-specifying MVP-7 before the user approves the spec milestone.
+- Accidentally implying MVP-7 implementation approval.
+- Turning subjective style preferences into impossible automatic requirements.
+- Weakening safety boundaries in the name of better prose.
+- Overfitting the spec to one Pilot story instead of the engine.
 
 ## Drift Log
 
-- 2026-06-20: Started blueprint alignment after user provided the original project blueprint from Downloads and approved a conservative follow-up.
-- 2026-06-20: Added documentation-only alignment docs. `gradlew.bat clean test --no-daemon` passed after clearing a transient Gradle clean lock left by an earlier timeout.
+- 2026-06-20: Started documentation-only MVP-7 narrative quality spec draft after explicit user approval.
+- 2026-06-20: Added `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` as a Chinese-first spec and updated `ROADMAP.md` without approving implementation.
+- 2026-06-20: `git diff --check` passed and `gradlew.bat clean test --no-daemon` passed.

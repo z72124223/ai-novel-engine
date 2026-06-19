@@ -5,9 +5,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 ## Current Rule
 
 - Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
-- Active product milestone: none approved after this control-doc refresh.
-- Next milestone: choose explicitly from current evidence; do not infer or start MVP-7 automatically.
-- MVP-7 is not approved. If MVP-7 is requested later, first create a focused `docs/MVP7_*.md` spec with tests and CLI E2E before implementation.
+- Active product milestone: none after the MVP-7 narrative quality spec draft; MVP-7 implementation is not approved.
+- Next milestone: decide whether to implement one minimal MVP-7 candidate, continue playtesting, or do operational maintenance.
+- MVP-7 implementation is not approved. The current milestone only creates `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
 
 ## Milestone Table
 
@@ -27,11 +27,12 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Local And Remote Backup | Completed | Protect the stable repo state outside the working tree. | Local Git bundle, private GitHub remote, pushed stable branches and tags, remote restore clone and test. | Private repo accidentally made public, generated data pushed by mistake. |
 | Handoff And Completion Audit | Completed | Make the project restartable by future Codex windows. | `docs/HANDOFF.md`, `docs/PROJECT_COMPLETION_AUDIT.md`, remote restore evidence, next-milestone guidance. | Handoff docs drifting after each commit. |
 | Project Control Docs Refresh | Completed | Align control docs with the verified post-MVP-6 state. | `ROADMAP.md`, `docs/ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Accidentally implying MVP-7 approval or changing product scope. |
-| Next Milestone Selection | Next | Choose the smallest next step from verified evidence. | Read current docs and Git state, then ask for explicit approval before implementation. | Jumping into features before the user approves product direction. |
+| Blueprint Alignment | Completed | Preserve useful external blueprint intent while rejecting stale operational state. | `docs/BLUEPRINT_ALIGNMENT.md`, `docs/MVP7_DECISION_BRIEF.md`, `PLANS.md`. | Treating old Pilot/MVP-6 notes as current facts. |
+| MVP-7 Narrative Quality Spec Draft | Completed | Define narrative quality, NPC liveliness, AI-feeling output, style constraints, verifiable checks and implementation decision gates. | `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`, `ROADMAP.md`, `PLANS.md`. | Accidentally starting MVP-7 implementation or making subjective prose rules brittle. |
 
 ## Temporarily Not Doing
 
-- MVP-7 implementation or planning beyond a user-approved spec milestone.
+- MVP-7 implementation beyond this user-approved spec milestone.
 - Web server, Web UI, HTTP API, port listener.
 - Android UI.
 - OpenAI API integration or external AI calls.
@@ -56,8 +57,8 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after this refresh:
+Recommended candidates after this spec draft:
 
 1. `remote restore smoke on demand`: rerun clone/test verification when needed.
 2. `branch strategy review`: decide whether to push, archive, or delete historical local branches.
-3. `MVP-7 spec draft`: only if the user explicitly approves starting MVP-7 planning.
+3. `MVP-7 Candidate A narrative quality audit report`: only if the user explicitly approves implementation after reading `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
