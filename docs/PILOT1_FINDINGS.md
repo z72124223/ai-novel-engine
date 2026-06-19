@@ -160,3 +160,64 @@ Recommended next step: a narrow Pilot-1 coverage repair / Pilot-1b pass focused 
 3. Improving setting context precision so relevant public setting does not collapse to `2` bytes in most turns.
 
 After those are validated, rerun a short targeted Pilot slice and then reconsider `MVP-6: checkpoint, branching timeline, non-destructive rewind, and replayability`.
+
+## Pilot-1b Coverage Repair Addendum
+
+Date: 2026-06-19
+
+PILOT-1B VERDICT: PASS
+
+This addendum records the narrow coverage repair performed after the original Pilot-1 audit. It does not rewrite the historical Pilot-1 verdict above: the original 12-turn run remains a coverage FAIL. Pilot-1b used a fresh fixture DB to prove the three blockers can now be covered without changing the formal Pilot-1 evidence DB.
+
+Repair scope:
+
+1. Legal scene transition topology from setting pack.
+2. Scheduled world event pressure in turn context.
+3. Runtime-relevant setting context precision.
+
+Evidence:
+
+- Branch: `pilot/real-use-vertical-slice`
+- Merge commit: `f615bb7` (`merge: integrate Pilot-1b coverage repair`)
+- Repair commit: `b2c6df1` (`fix: repair Pilot-1 coverage topology and setting context`)
+- Tag: `pilot-1b-coverage-repair`
+- DB: `data/pilot1b-coverage-e2e.db`
+- Session: `session-104107b8-cdbb-471e-90ff-a4e7a8f428c1`
+- Evidence export: `out/pilot1b/evidence`
+- Final state: `stateVersion=2`, `nextTurnNumber=3`, `pendingContexts=0`
+- Current scene: `scene-abandoned-post-perimeter` / `Outer perimeter hold`
+- Active scene instance count: 1
+- World time: `T+3m`
+
+Pilot-1b context budget:
+
+| Turn | Context bytes | Max | Setting bytes | Included settings | Omitted settings | Truncation |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 1 | 12911 | 24576 | 4682 | 12 | 0 | false |
+| 2 | 12035 | 24576 | 3976 | 11 | 0 | false |
+
+Coverage repair results:
+
+| Former blocker | Pilot-1b result | Evidence |
+| --- | --- | --- |
+| No legal scene transition | PASS | `transition-abandoned-post-to-perimeter-hold` became reachable on Turn 2 and moved the session to `scene-abandoned-post-perimeter`. |
+| No scheduled world event pressure | PASS | `world-event-verifier-arrival-pressure` was due on Turn 1, entered context as public pressure, was acknowledged by result JSON, and was consumed once. |
+| Setting context collapsed to `2` bytes | PASS | Turn 1 included 4682 setting bytes and Turn 2 included 3976 setting bytes, both as compact relevant setting cards rather than a full setting pack dump. |
+
+Relevant setting cards preserved:
+
+- Turn 1: `scene_transition:transition-abandoned-post-to-perimeter-hold`, `location_connection:conn-abandoned-post-to-perimeter`, `world_event:world-event-verifier-arrival-pressure`, current/target scenes, current/target locations, active characters, and `story_thread:thread-identity-and-shelter`.
+- Turn 2: `scene_transition:transition-abandoned-post-to-perimeter-hold`, `location_connection:conn-abandoned-post-to-perimeter`, current/target scenes, current/target locations, active characters, and `story_thread:thread-identity-and-shelter`.
+
+Safety notes:
+
+- The repair used a fresh Pilot-1b DB and did not modify `data/pilot1-rerun.db`.
+- No author-only secret content was copied into context or findings.
+- The scheduled world event public effect was used without forcing imprint, separation, or forbidden reveal.
+- The scene transition required explicit player intent and was not auto-forced.
+- One draft Turn 1 result was rejected by the Validator because the delta enum used `ADD_EVENT` instead of the protocol value `add_event`; the result JSON was corrected and then resolved through the normal Validator and transaction path.
+- A read-only `preview-transitions --input-file` attempt showed the CLI does not support that option; this caused no DB mutation and is a non-blocking CLI ergonomics issue.
+
+Updated recommendation:
+
+Pilot-1b is sufficient to unblock MVP-6 planning from a coverage perspective. The safer product framing is `Pilot-1 historical verdict: FAIL`, `Pilot-1b repair verdict: PASS`, with remaining quality work treated as follow-up polish rather than a blocker to checkpoint/branching design.
