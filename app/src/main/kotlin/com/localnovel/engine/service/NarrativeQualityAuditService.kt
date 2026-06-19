@@ -26,6 +26,7 @@ class NarrativeQualityAuditService {
             addAll(checkNpcLiveliness(context, result, input))
             addAll(checkAiFeeling(result, input))
             addAll(checkWorldAutonomy(context, result, input))
+            addAll(checkContextQuality(context, result, input))
             addAll(checkKnowledgeBoundaries(context, result, input))
             addAll(checkStyle(result, input))
             addAll(checkConsequences(result, input))
@@ -142,7 +143,7 @@ class NarrativeQualityAuditService {
         }
 
         val convenienceTerms = listOf("立刻答應", "毫不猶豫地答應", "完全配合", "照你的意思", "順著你的話")
-        val matched = convenienceTerms.filter { result.narrative.contains(it) }
+        val matched = convenienceTerms.filter { containsUnnegatedTerm(result.narrative, it) }
         if (matched.isNotEmpty()) {
             add(
                 finding(
@@ -152,6 +153,98 @@ class NarrativeQualityAuditService {
                     message = "Narrative may make an NPC conveniently serve the player without resistance evidence.",
                     evidence = matched,
                     suggestedFix = "Show why the NPC accepts, refuses, modifies, or conditions the player's request from their own motive.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+    }
+
+    private fun checkContextQuality(
+        context: ContextPacket,
+        result: AiTurnResult,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        val hasSettingPressure = context.settingContextBudget.omittedSettingCount > 0 ||
+            context.contextBudget.omittedSettingCount > 0 ||
+            context.availableTransitions.isNotEmpty() ||
+            context.pendingWorldEvents.isNotEmpty() ||
+            context.activeStoryThreads.isNotEmpty()
+        if (context.turnNumber > 0 && context.settingContextBudget.actualBytes <= 16 && hasSettingPressure) {
+            add(
+                finding(
+                    ruleId = "CONTEXT_SETTING_TOO_THIN",
+                    category = "context_quality",
+                    severity = "WARNING",
+                    message = "Setting context is nearly empty while runtime-relevant setting pressure appears to exist.",
+                    evidence = listOf(
+                        "settingBytes=${context.settingContextBudget.actualBytes}/${context.settingContextBudget.maxBytes}",
+                        "includedSettings=${context.settingContextBudget.includedSettingCount}",
+                        "omittedSettings=${context.settingContextBudget.omittedSettingCount}",
+                        "contextOmittedSettings=${context.contextBudget.omittedSettingCount}",
+                    ),
+                    suggestedFix = "Review context selection so relevant public setting constraints are preserved without loading the full setting pack.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+
+        val transitionIntentTerms = listOf("退到", "撤到", "退往", "門外", "離開", "跨過門檻", "轉場", "退路", "撤離", "門口")
+        val transitionSurface = context.playerInput + "\n" + result.narrative
+        val transitionTerms = transitionIntentTerms.filter { transitionSurface.contains(it) }
+        if (transitionTerms.isNotEmpty() && context.availableTransitions.isEmpty() && result.transitionProposal == null) {
+            add(
+                finding(
+                    ruleId = "CONTEXT_TRANSITION_UNAVAILABLE",
+                    category = "context_quality",
+                    severity = "WARNING",
+                    message = "Turn mentions retreat, exit, or transition intent but context contains no available transition.",
+                    evidence = transitionTerms.distinct().take(5),
+                    suggestedFix = "Check whether a legal transition definition, location connection, and exit gate should be available, or record why staying in the scene is correct.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+
+        if (context.turnNumber >= 4 && context.activeStoryThreads.isNotEmpty() && context.pendingWorldEvents.isEmpty()) {
+            add(
+                finding(
+                    ruleId = "CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE",
+                    category = "context_quality",
+                    severity = "WARNING",
+                    message = "Active story threads exist at a later turn, but no pending scheduled world event pressure is present.",
+                    evidence = context.activeStoryThreads.map { "${it.threadId}:${it.status}:progress=${it.progress}" },
+                    suggestedFix = "If the scene has stalled, consider whether an already-defined scheduled world event should become visible pressure; do not invent one in the result.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+
+        val sceneStillActive = context.sceneLifecycle.status == "ACTIVE" && !context.sceneLifecycle.readyToClose
+        if (context.turnNumber >= 8 &&
+            sceneStillActive &&
+            context.activeStoryThreads.isNotEmpty() &&
+            context.availableTransitions.isEmpty() &&
+            context.pendingWorldEvents.isEmpty() &&
+            result.transitionProposal == null &&
+            result.worldEventAcknowledgements.isEmpty() &&
+            result.timeAdvanceProposal == null
+        ) {
+            add(
+                finding(
+                    ruleId = "CONTEXT_PROCEDURAL_STASIS_RISK",
+                    category = "context_quality",
+                    severity = "WARNING",
+                    message = "Late active scene has thread pressure but no transition, world event, or time-pressure surface.",
+                    evidence = listOf(
+                        "turnNumber=${context.turnNumber}",
+                        "sceneStatus=${context.sceneLifecycle.status}",
+                        "readyToClose=${context.sceneLifecycle.readyToClose}",
+                    ) + context.activeStoryThreads.map { "${it.threadId}:progress=${it.progress}" },
+                    suggestedFix = "Review whether the scene needs a legal exit, scheduled pressure, or explicit blocked-state evidence to avoid procedural stasis.",
                     input = input,
                     turn = context.turnNumber,
                 ),
@@ -536,6 +629,18 @@ class NarrativeQualityAuditService {
             "WARNING" -> 2
             else -> 3
         }
+
+    private fun containsUnnegatedTerm(text: String, term: String): Boolean {
+        var index = text.indexOf(term)
+        while (index >= 0) {
+            val prefix = text.substring(maxOf(0, index - 8), index)
+            val negated = listOf("沒有", "並未", "不是", "不曾", "不能", "未曾", "未能", "沒有要")
+                .any { prefix.contains(it) }
+            if (!negated) return true
+            index = text.indexOf(term, startIndex = index + term.length)
+        }
+        return false
+    }
 
     private fun normalizeForRepetition(value: String): String =
         value.lowercase()

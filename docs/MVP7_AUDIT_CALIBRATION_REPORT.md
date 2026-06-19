@@ -6,6 +6,29 @@ Status: `CANDIDATE_A_CALIBRATION`
 
 This report calibrates the existing `audit-narrative-quality` read-only audit against real Pilot turn artifacts. It does not change audit rules, runtime code, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`.
 
+## Candidate A.1 Refinement Result
+
+Date: 2026-06-20
+
+Status: `CANDIDATE_A1_IMPLEMENTED`
+
+Candidate A.1 made a narrow read-only calibration pass based on this report:
+
+- Fixed the false positive where `沒有立刻答應` triggered `NPC_TOOLMAN_CONVENIENT_COMPLIANCE`.
+- Added advisory `context_quality` observations for:
+  - `CONTEXT_SETTING_TOO_THIN`
+  - `CONTEXT_TRANSITION_UNAVAILABLE`
+  - `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`
+  - `CONTEXT_PROCEDURAL_STASIS_RISK`
+
+Turn 12 was rerun after the refinement:
+
+| Turn | Verdict | Score | Findings | Rule IDs |
+| --- | --- | ---: | ---: | --- |
+| 12 after A.1 | PASS_WITH_WARNINGS | 76 | 3 | `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`, `CONTEXT_SETTING_TOO_THIN`, `CONTEXT_TRANSITION_UNAVAILABLE` |
+
+The old `NPC_TOOLMAN_CONVENIENT_COMPLIANCE` warning is gone. The remaining findings are advisory context-quality observations, not Validator failures and not Candidate B behavior.
+
 ## 1. Test Data Sources
 
 Audit command used:

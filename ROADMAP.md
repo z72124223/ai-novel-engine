@@ -5,9 +5,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 ## Current Rule
 
 - Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
-- Active product milestone: none after MVP-7 Candidate A read-only narrative quality audit report.
-- Next milestone: decide whether to push the Candidate A commit or continue with another explicitly approved MVP-7 candidate.
-- MVP-7 implementation beyond Candidate A is not approved. Candidate A must stay read-only and must not affect `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
+- Active product milestone: none after MVP-7 Candidate A.1 read-only audit calibration refinements.
+- Next milestone: decide whether to push the Candidate A.1 commit or collect more calibration evidence before another explicitly approved MVP-7 candidate.
+- MVP-7 implementation beyond Candidate A/A.1 is not approved. Candidate A.1 must stay read-only and must not affect `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
 
 ## Milestone Table
 
@@ -30,10 +30,11 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Blueprint Alignment | Completed | Preserve useful external blueprint intent while rejecting stale operational state. | `docs/BLUEPRINT_ALIGNMENT.md`, `docs/MVP7_DECISION_BRIEF.md`, `PLANS.md`. | Treating old Pilot/MVP-6 notes as current facts. |
 | MVP-7 Narrative Quality Spec Draft | Completed | Define narrative quality, NPC liveliness, AI-feeling output, style constraints, verifiable checks and implementation decision gates. | `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`, `ROADMAP.md`, `PLANS.md`. | Accidentally starting MVP-7 implementation or making subjective prose rules brittle. |
 | MVP-7 Candidate A Narrative Quality Audit | Completed | Add the lowest-risk MVP-7 entry point: a read-only report over context/result/evidence JSON. | Report models, read-only audit service, `audit-narrative-quality` CLI, tests, docs. | Treating subjective warnings as hard Validator failures, writing SQLite, or expanding into story rewriting. |
+| MVP-7 Candidate A.1 Audit Calibration Refinements | Completed | Reduce a known false positive and add advisory context-quality observations found during calibration. | Negated convenient-compliance matching, thin-setting / missing-transition / missing-event / stasis observations, tests, docs. | Turning coverage observations into hard validation, making warnings too noisy, drifting into Candidate B. |
 
 ## Temporarily Not Doing
 
-- MVP-7 implementation beyond explicitly approved Candidate A.
+- MVP-7 implementation beyond explicitly approved Candidate A/A.1.
 - Web server, Web UI, HTTP API, port listener.
 - Android UI.
 - OpenAI API integration or external AI calls.
