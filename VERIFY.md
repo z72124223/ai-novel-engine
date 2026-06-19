@@ -1,0 +1,184 @@
+# Verification Guide
+
+This file defines the required verification commands and failure triage order for stable project completion.
+
+## 1. Baseline Commands
+
+Run these before any commit:
+
+```powershell
+git status
+git diff --stat
+git diff --check
+gradlew.bat clean test --no-daemon
+```
+
+If `JAVA_HOME` is not configured, a temporary JDK may be used from outside the repo. Do not copy a JDK into the repo and do not write an absolute JDK path into code, Gradle files, or docs.
+
+## 2. MVP-6 CLI E2E Acceptance
+
+Use a fresh DB. Do not use the formal Pilot DB.
+
+Suggested paths:
+
+```powershell
+$Db = "data\mvp6-branching-e2e.db"
+$Out = "out\mvp6"
+New-Item -ItemType Directory -Force -Path "data", $Out | Out-Null
+Remove-Item -LiteralPath $Db -Force -ErrorAction SilentlyContinue
+```
+
+### 2.1 Initialize And Seed
+
+```powershell
+gradlew.bat :app:run --args="init-db --db $Db"
+gradlew.bat :app:run --args="seed-demo --db $Db --seed samples/demo_project_seed.json"
+```
+
+Expected:
+
+- DB exists.
+- Migrations `001` through `006` are applied.
+- Demo project exists.
+
+### 2.2 Start Session And Resolve Two Turns
+
+```powershell
+gradlew.bat :app:run --args="start-session --db $Db --project demo --scene scene-shrine-questioning"
+```
+
+Record `SESSION_ID` and `BRANCH_ID` from output.
+
+For Turn 1 and Turn 2:
+
+```powershell
+gradlew.bat :app:run --args="prepare-turn --db $Db --session SESSION_ID --input `"我先觀察沈霜的反應。`" --out $Out\turn1_context.json"
+```
+
+Create a valid local result JSON matching the emitted context, then run:
+
+```powershell
+gradlew.bat :app:run --args="resolve-turn --db $Db --session SESSION_ID --result $Out\turn1_result.json"
+```
+
+Expected:
+
+- `stateVersion` advances exactly once per resolved turn.
+- `pendingContextCount` returns to `0`.
+- No forbidden reveal.
+
+### 2.3 Create Checkpoint
+
+```powershell
+gradlew.bat :app:run --args="create-checkpoint --db $Db --session SESSION_ID --label before-branch"
+gradlew.bat :app:run --args="list-checkpoints --db $Db --session SESSION_ID"
+```
+
+Expected:
+
+- A checkpoint id is printed.
+- Session `stateVersion` and `nextTurnNumber` do not change.
+- Checkpoint has stable `snapshotHash`.
+
+### 2.4 Resolve Original Branch Turn
+
+Prepare and resolve one more turn on the original session.
+
+Expected:
+
+- Original branch keeps its Turn 3 log.
+- Checkpoint remains unchanged.
+
+### 2.5 Fork Session
+
+```powershell
+gradlew.bat :app:run --args="fork-session --db $Db --checkpoint CHECKPOINT_ID --label alternate-choice"
+```
+
+Expected:
+
+- New `branchId` and new `sessionId` are printed.
+- Forked session starts at `checkpoint.turnNumber + 1`.
+- Forked session `stateVersion` equals checkpoint `stateVersion`.
+- Previous branch becomes inactive.
+- Source turn logs remain readable and unchanged.
+
+### 2.6 Resolve Fork Branch Turn
+
+Prepare and resolve a different turn on the forked session.
+
+Expected:
+
+- Fork branch accepts mutation.
+- Inactive source branch rejects new `prepare-turn` or `resolve-turn`.
+- Fork branch has distinct result id/narrative/event evidence after fork point.
+
+### 2.7 Checkout Branch
+
+```powershell
+gradlew.bat :app:run --args="checkout-branch --db $Db --branch BRANCH_ID"
+```
+
+Expected:
+
+- Target branch becomes `ACTIVE`.
+- Previously active branch becomes `INACTIVE`.
+- A `PRE_CHECKOUT` checkpoint is created for the previously active branch.
+- No source turn log is deleted or rewritten.
+
+### 2.8 Show Timeline, Replay Audit, Export
+
+```powershell
+gradlew.bat :app:run --args="show-timeline --db $Db --project demo"
+gradlew.bat :app:run --args="verify-replay-chain --db $Db --session SESSION_ID --out $Out\replay_audit_original.json"
+gradlew.bat :app:run --args="verify-replay-chain --db $Db --session FORK_SESSION_ID --out $Out\replay_audit_fork.json"
+gradlew.bat :app:run --args="export-timeline --db $Db --project demo --out $Out\timeline_export.json"
+```
+
+Expected:
+
+- Replay audit status is `PASS` for clean sessions.
+- Timeline export redacts unrevealed and author-only secret content.
+- No pending contexts remain.
+
+## 3. Future Verification Types
+
+| Future Area | Verification Requirement |
+| --- | --- |
+| MVP-7 | Must add a focused `docs/MVP7_*.md` spec first, then define matching unit tests and CLI E2E before implementation. |
+| Pilot | Must use fresh Pilot DB, `pilot-preflight`, `audit-context`, `export-session-evidence`, and a turn log/findings document. |
+| UI | Not currently approved. If approved later, must define non-server local execution or explicitly update roadmap constraints first. |
+| Packaging | Must verify `gradlew.bat clean test --no-daemon` plus generated distribution launch, without reintroducing OneDrive reparse-file issues. |
+
+## 4. Failure Triage Order
+
+Use this order. Do not skip directly to broad rewrites.
+
+1. Read the failing command output.
+2. Confirm branch and working tree with `git status`.
+3. If tests fail, inspect the specific test XML under the Gradle test-results directory.
+4. If CLI E2E fails, rerun the last successful read-only inspection command.
+5. Check for pending context residue before retrying a turn command.
+6. Check `stateVersion`, `contextHash`, and `resultId` mismatch before changing runtime code.
+7. Check migration order and old migration diffs.
+8. Check whether context hard max or semantic floor failed before editing result JSON.
+9. Fix the smallest failing unit.
+10. Re-run `git diff --check`, `gradlew.bat clean test --no-daemon`, and the relevant CLI E2E.
+
+## 5. Stop And Handoff Conditions
+
+Stop and write a handoff report if:
+
+- a required command cannot run because of environment or permissions,
+- tests cannot be made to pass in the current session,
+- an E2E requires human-authored story input,
+- a change would require new technology not approved by `ROADMAP.md`,
+- a migration conflict would require modifying old migrations.
+
+The handoff report must include:
+
+- completed work,
+- blocker,
+- exact command/output summary,
+- files changed,
+- next prompt for another session.
