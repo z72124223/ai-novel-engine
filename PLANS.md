@@ -2,11 +2,11 @@
 
 ## Goal
 
-Align control documentation after the automatic loop bootstrap push so future work starts from the correct remote-synced state and does not reopen completed MVP-7 Candidate A.2 follow-up milestones.
+Run the existing read-only MVP-7 narrative quality audit on additional non-Pilot sample families to improve sample diversity before any Candidate B discussion.
 
 ## Global Strategy
 
-Keep this milestone documentation-only. Update roadmap/control status to match verified Git evidence, then verify, commit, and push the alignment. Do not change runtime behavior or enter any new product candidate.
+Do not change audit rules or runtime code. Use existing context/result JSON artifacts only, run `audit-narrative-quality` through the CLI, write generated reports under ignored `out/`, then document what the current audit does on more diverse samples.
 
 ## Non-Goals
 
@@ -19,61 +19,64 @@ Keep this milestone documentation-only. Update roadmap/control status to match v
 - No `resolve-turn` or `StateReducer` changes.
 - No SQLite writes.
 - No Candidate B.
-- No Candidate A.3.
+- No Candidate A.3 implementation.
 - No MVP-8.
 - No web server, API, Docker, Android UI, Rust, embedding, vector DB, or multi-agent runtime.
 - No retagging `mvp-6`.
 
 ## Scope
 
-- `ROADMAP.md`
 - `PLANS.md`
+- New documentation report under `docs/`
+- Ignored audit output under `out/`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `fed20562015d536c4f3a356854c7e78c17470df3`.
-- The previous push included `737ea09 docs: harden audit JSON verification instructions` and `fed2056 docs: record automatic stability loop start`.
-- Working tree was clean after the push.
+- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `665b8cae4d626173fb76763d3988e5b7b6f55a4d`.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `ROADMAP.md` previously still listed A.2 real sample rerun as a future option even though `4786d25 docs: rerun MVP-7 A.2 audit on real samples` exists in history.
-- `ROADMAP.md` did not yet list the audit JSON robustness investigation, JSON verification docs hardening, or automatic loop bootstrap.
+- Candidate A.2 real sample rerun already used Pilot-1, Pilot-1b, and MVP-6 branch/checkpoint samples.
+- Existing ignored `out/` artifacts include additional context/result pairs from memory E2E, MVP-4 scene/thread E2E, and MVP-4 soak runs.
+- `audit-narrative-quality` is read-only and does not require `--db`.
+- Generated audit reports under `out/` are ignored and should not be committed.
 
 ## Assumptions
 
-- Updating `ROADMAP.md` and `PLANS.md` is sufficient for this checkpoint; `VERIFY.md` already contains the hardened JSON verification instructions.
-- The next safest substantive milestone after this alignment is more diverse read-only audit sample collection, unless a new candidate brief is explicitly selected.
+- Some older E2E context/result pairs may be schema-light or synthetic and should be labeled as acceptance fixtures, not real prose-quality proof.
+- If a sample cannot be parsed by the current audit command, documenting that incompatibility is more useful than inventing replacement data.
 
 ## Open Questions
 
-- None blocking this milestone.
+- Whether enough non-Pilot samples parse cleanly to produce a meaningful diversity report.
 
 ## Implementation Steps
 
-- [x] Step 1: Read current Git state and control docs.
-- [x] Step 2: Update `ROADMAP.md` with completed A.2 rerun, JSON robustness, JSON verification hardening, and automatic loop bootstrap status.
-- [x] Step 3: Update `PLANS.md` for this docs alignment milestone.
-- [x] Step 4: Verify with `git diff --check`.
-- [x] Step 5: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 6: Commit `docs: align automatic loop checkpoint status`.
-- [ ] Step 7: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
+- [x] Step 1: Inventory available context/result JSON artifacts.
+- [x] Step 2: Update `PLANS.md` for the diverse read-only audit sample milestone.
+- [x] Step 3: Build/install CLI if needed and run `audit-narrative-quality` on selected non-Pilot samples.
+- [x] Step 4: Write `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md`.
+- [x] Step 5: Verify with `git diff --check`.
+- [x] Step 6: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 7: Commit `docs: rerun MVP-7 audit on diverse samples`.
+- [ ] Step 8: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- `git status`
-- `git ls-remote --heads origin codex/mvp6-checkpoint-branching-spec`
-- `git rev-parse "mvp-6^{}"`
+- CLI audit commands for selected samples.
+- Explicit UTF-8 JSON parse check for generated audit reports.
 
 ## Risks
 
-- Accidentally implying Candidate B is approved.
-- Rewriting historical roadmap milestones instead of appending current status.
-- Creating documentation churn without improving restartability.
+- Treating synthetic E2E fixtures as representative story quality.
+- Letting advisory findings become implied Validator gates.
+- Accidentally committing ignored `out/` reports.
 
 ## Drift Log
 
-- 2026-06-20: Started control docs alignment after successful automatic loop bootstrap push. Scope is documentation-only.
-- 2026-06-20: Verification passed before commit. `git diff --check` reported no whitespace errors. `gradlew.bat clean test --no-daemon` exited `0` with Temurin JDK 17.0.19 and `233 tests / 0 failures / 0 errors / 0 skipped`.
-- 2026-06-20: Created docs-only commit `docs: align automatic loop checkpoint status`.
+- 2026-06-20: Started diverse read-only audit sample rerun after inventory found additional non-Pilot context/result artifacts.
+- 2026-06-20: Ran `audit-narrative-quality` through the installDist CLI on 16 additional memory/MVP-4 E2E/soak samples. Generated reports were written under ignored `out/mvp7_diverse_audit_rerun/` and parsed as UTF-8 JSON.
+- 2026-06-20: Added `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md` and updated `ROADMAP.md` to record this completed read-only sample milestone.
+- 2026-06-20: Verification passed before commit. `git diff --check` reported no whitespace errors, ignored `out/` reports stayed untracked, and `gradlew.bat clean test --no-daemon` exited `0` with `233 tests / 0 failures / 0 errors / 0 skipped`.
+- 2026-06-20: Created docs-only commit `docs: rerun MVP-7 audit on diverse samples`.
