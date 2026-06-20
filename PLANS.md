@@ -61,7 +61,7 @@ Keep this milestone documentation-only. Update stale restart/control documents u
 - [x] Step 6: Verify with `git diff --check`.
 - [x] Step 7: Verify with `gradlew.bat clean test --no-daemon`.
 - [x] Step 8: Commit `docs: refresh handoff after MVP-7 audit milestones`.
-- [ ] Step 9: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
+- [x] Step 9: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
 
 ## Verification
 
@@ -83,3 +83,5 @@ Keep this milestone documentation-only. Update stale restart/control documents u
 - 2026-06-20: Refreshed `docs/HANDOFF.md`, `docs/PROJECT_COMPLETION_AUDIT.md`, and `docs/ROADMAP.md` to include completed MVP-7 read-only audit milestones while keeping Candidate B unapproved.
 - 2026-06-20: Verification passed before commit. `git diff --check` reported no whitespace errors and `gradlew.bat clean test --no-daemon` exited `0` with `233 tests / 0 failures / 0 errors / 0 skipped`.
 - 2026-06-20: Created docs-only commit `docs: refresh handoff after MVP-7 audit milestones`.
+- 2026-06-20: Pushed the handoff refresh to `origin/codex/mvp6-checkpoint-branching-spec`; local and remote synchronized at `dfd05a10562b508217031d47b57708ec0155c532`.
+- 2026-06-20: Follow-up search found possible older historical drift in `docs/PROJECT_STRUCTURE_REPORT.md` and some MVP-7 historical briefs; kept out of this milestone to avoid mixing scopes.
