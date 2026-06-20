@@ -2,11 +2,11 @@
 
 ## Goal
 
-Align documentation after MVP-7 Candidate A.2 implementation was completed, pushed, and post-push checkpointed.
+Run MVP-7 Candidate A.2 read-only narrative quality audit against a broader set of real or near-real samples, then document whether the A.2 rules are stable, noisy, or still missing obvious issues.
 
 ## Global Strategy
 
-Only update status and verification documentation. Do not change Kotlin code, tests, audit rules, schemas, runtime write paths, or Candidate B planning. Preserve the current Git stable point and keep `mvp-6` as the old MVP-6 release tag.
+Use existing `audit-narrative-quality` only as a read-only reviewer aid. Collect evidence from existing JSON artifacts, write generated audit outputs only under ignored `out/`, and commit only documentation. Do not change Kotlin code, tests, audit rules, schemas, runtime write paths, or Candidate B planning.
 
 ## Non-Goals
 
@@ -26,61 +26,61 @@ Only update status and verification documentation. Do not change Kotlin code, te
 ## Scope
 
 - `PLANS.md`
-- `ROADMAP.md`
-- `VERIFY.md`
-- `docs/MVP7_CANDIDATE_A2_CALIBRATION_PLAN.md`
-- `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md`
+- `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md`
+- ignored generated audit reports under `out/mvp7_a2_real_sample_rerun/`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` are synced at `e6f56006f90ba2bd419defe3e14041e46525a9e3`.
-- Working tree was clean before this documentation alignment milestone.
+- Local branch is up to date with `origin/codex/mvp6-checkpoint-branching-spec` at `d79d3e9f2c99d361ff5acdc231fe464dd3e5fa4a`.
+- Working tree was clean before this milestone.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Candidate A.2 implementation was completed and pushed.
-- Candidate A.2 latest verification baseline was `233 tests / 0 failures / 0 errors / 0 skipped`.
-- `gradlew.bat :app:installDist --no-daemon` passed for Candidate A.2.
-- Post-push checkpoint verdict was `PASS_WITH_DOC_GAPS`.
-- The doc gaps were status drift only: `ROADMAP.md`, `PLANS.md`, and historical MVP-7 reports still described pre-A.2 or planning state.
+- Candidate A.2 implementation and docs checkpoint were completed and pushed.
+- Latest verified test baseline before this milestone was `233 tests / 0 failures / 0 errors / 0 skipped`.
+- The installDist app path from `VERIFY.md` is not currently present after the last clean test, so this rerun will use the repository Gradle CLI.
+- Existing usable sample artifacts include Pilot-1 stabilized rerun turns, Pilot-1b coverage turns, and MVP-6 branch/checkpoint turns with context/result JSON files.
 
 ## Assumptions
 
-- `VERIFY.md` should include a compact Candidate A.2 audit calibration smoke because A.2 added refined sample/flawed-case expectations.
-- Historical reports should keep old result tables intact and add post-A.2 notes instead of rewriting history.
+- A mixed sample set from Pilot-1, Pilot-1b, and MVP-6 branch artifacts is more useful than rerunning only the previous Pilot-1 turns.
+- Full session evidence is acceptable when per-turn evidence is unavailable, but the report must label that evidence precision limitation.
+- `out/` remains ignored and suitable for generated audit output.
 
 ## Open Questions
 
-- Whether to run a fresh A.2 real sample rerun as the next milestone.
-- Whether to collect more diverse non-Pilot-1 audit samples before any Candidate B decision brief.
+- Whether future sample collection should generate fresh per-turn evidence for Pilot-1b and MVP-6 branch turns.
+- Whether Candidate B should remain blocked until more story arcs beyond Pilot-1/Pilot-1b are audited.
 
 ## Implementation Steps
 
-- [x] Step 1: Read `strata-agent-loop`, Git status, remote head, tag state, and the requested docs.
-- [x] Step 2: Update `PLANS.md` for this docs checkpoint alignment milestone.
-- [x] Step 3: Update `ROADMAP.md` to show Candidate A.2 implementation is complete and pushed.
-- [x] Step 4: Update `docs/MVP7_CANDIDATE_A2_CALIBRATION_PLAN.md` with implementation status.
-- [x] Step 5: Update `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md` with a post-A.2 historical note.
-- [x] Step 6: Update `VERIFY.md` with Candidate A.2 flawed sample and installDist audit verification details.
-- [x] Step 7: Verify with `git diff --check`.
-- [x] Step 8: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 9: Commit `docs: align MVP-7 Candidate A.2 checkpoint status`.
+- [x] Step 1: Confirm Git status, remote, tags, and current docs.
+- [x] Step 2: Identify at least 10 existing context/result/evidence sample groups without inventing data.
+- [x] Step 3: Update `PLANS.md` for this A.2 real sample rerun milestone.
+- [x] Step 4: Run `audit-narrative-quality` on the selected sample groups using the repo CLI.
+- [x] Step 5: Summarize audit output into `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md`.
+- [x] Step 6: Verify with `git diff --check`.
+- [x] Step 7: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 8: Commit `docs: rerun MVP-7 A.2 audit on real samples`.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- Manual diff review to confirm only allowed documentation files changed.
+- Manual review that tracked changes are documentation only.
+- Audit output JSON under ignored `out/mvp7_a2_real_sample_rerun/`.
 
 ## Risks
 
-- Accidentally implying Candidate B approval.
-- Rewriting historical report results instead of annotating them.
-- Letting status docs claim fresh test execution that belongs to an earlier milestone.
-- Touching files outside the approved documentation scope.
+- Treating ignored/generated reports as source-of-truth instead of summarizing them in docs.
+- Over-claiming precision when some samples lack per-turn evidence.
+- Mistaking advisory context-quality findings for Validator or runtime failures.
+- Accidentally proceeding into Candidate B without a separate decision brief.
 
 ## Drift Log
 
-- 2026-06-20: Started MVP-7 Candidate A.2 docs checkpoint alignment after explicit approval. Scope is documentation only.
-- 2026-06-20: Evidence pass confirmed A.2 implementation is pushed at `e6f56006f90ba2bd419defe3e14041e46525a9e3`, while several docs still reflected pre-A.2 or planning state.
+- 2026-06-20: Started MVP-7 Candidate A.2 real sample rerun after explicit approval. Scope is read-only audit plus documentation.
+- 2026-06-20: Evidence pass found enough existing artifacts for a 12-sample cross-source rerun: Pilot-1 stabilized rerun turns, Pilot-1b coverage turns, and MVP-6 branch/checkpoint turns.
+- 2026-06-20: Expanded the rerun to 14 samples by adding Pilot-1 Turns 1 and 5 to recheck previously suspected consequence false positives.
+- 2026-06-20: Repo CLI audit completed for all 14 samples. Results: 3 PASS, 11 PASS_WITH_WARNINGS, 0 NEEDS_REVIEW, 0 FAIL; no `CONSEQUENCE_COST_NOT_RECORDED` findings.
 - 2026-06-20: Verification passed: `git diff --check` reported no whitespace errors, and `gradlew.bat clean test --no-daemon` completed with `233 tests / 0 failures / 0 errors / 0 skipped`.
-- 2026-06-20: Created docs-only commit `docs: align MVP-7 Candidate A.2 checkpoint status`; no push performed.
+- 2026-06-20: Created docs-only commit `docs: rerun MVP-7 A.2 audit on real samples`; no push performed.
