@@ -2,94 +2,89 @@
 
 ## Goal
 
-Repair Pilot-2 Turn 4 context fitting by compacting final `ContextPacket` records so the exact Turn 4 input can fit under the existing `24576` UTF-8 byte hard max. Do not raise the limit, do not modify formal write paths, and do not resolve Turn 4.
+Investigate Pilot-2 Turn 10 context budget failure as read-only forensics, document the exact byte pressure sources, and recommend the smallest safe future repair. Do not rerun Turn 10, do not prepare a new context, do not draft a result, and do not modify SQLite.
 
 ## Global Strategy
 
-Make the smallest deterministic final-context compaction changes in the prepare/context path. Prefer removing duplicated AI-facing text over removing semantic floor items. Verify on tests and a copied Pilot-2 DB before any formal Turn 4 continuation.
+Use existing evidence artifacts from `out/pilot2/pilot2-qingli-herb-warehouse/turns/` and compare them with the earlier Turn 4 budget failure. Treat all numeric claims as facts only when confirmed from JSON artifacts, docs, source code, or command output. Produce a documentation-only milestone and verify it with the standard repo checks.
 
 ## Non-Goals
 
-- No `24576` byte limit increase.
-- No schema or migration changes.
-- No Validator changes.
-- No `stateVersion` or `contextHash` boundary changes.
-- No `resolve-turn` changes.
-- No `StateReducer` changes.
-- No direct SQLite writes.
-- No Turn 4 result generation.
+- No Turn 10 rerun.
+- No `prepare-turn`.
+- No `turn_010_context.json`.
+- No `turn_010_result.json`.
 - No `validate-result`.
 - No `resolve-turn`.
+- No SQLite writes.
+- No Kotlin code changes.
+- No test changes.
+- No schema or migration changes.
+- No Validator changes.
+- No `stateVersion` or `contextHash` changes.
+- No `StateReducer` changes.
 - No Candidate B.
-- No retagging `mvp-6`.
+- No `mvp-6` retag.
 - No push in this milestone.
 
 ## Scope
 
 - `PLANS.md`
-- `app/src/main/kotlin/com/localnovel/engine/service/ContextPacketNormalizationServices.kt`
-- `app/src/main/kotlin/com/localnovel/engine/service/MemoryKnowledgeServices.kt` only if an extra deterministic finalizer reduction step is required
-- `app/src/test/kotlin/com/localnovel/engine/*Context*Test.kt`
-- `docs/PILOT2_TURN4_CONTEXT_BUDGET_FORENSICS.md` only if verification results need an addendum
-- ignored copied DB / out files for E2E verification
+- `docs/PILOT2_TURN10_CONTEXT_BUDGET_FORENSICS.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
 - Working tree was clean before this milestone.
-- Pilot-2 Turn 4 did not formally execute.
-- Failed Turn 4 report: `candidateBytesBeforeTrimming=53956`, `candidateBytesAfterTrimming=26885`, `maxContextBytes=24576`, `bytesOverLimit=2309`.
-- Formal Pilot-2 state remained `stateVersion=3`, `nextTurnNumber=4`, and `pendingContexts=0`.
-- Largest retained sections after trimming are `relevantSettings`, `characterRuntimeStates`, `facts`, `characterKnowledge`, `playerInput`, and `availableTransitions`.
-- `retrievedMemories` were already trimmed from 9 to 0.
-- Transition data appears in both `availableTransitions` and `relevantSettings`.
-- `prepare-turn` writes a pending context row; therefore Turn 4 prepare verification should use a copied DB unless the user separately approves mutating the formal Pilot-2 DB.
+- Turn 10 was not formally executed.
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context_budget.json` reports `candidateBytesBeforeTrimming=93794`.
+- The same report shows `candidateBytesAfterTrimming=26904`, `maxContextBytes=24576`, and `bytesOverLimit=2328`.
+- `mandatoryBytes=10503`.
+- Semantic coverage is `PASS`.
+- Formal session evidence before and after the failure remained at `stateVersion=9` and `nextTurnNumber=10`.
+- Top retained sections after trimming are `relevantSettings=3034`, `playerInput=2949`, `characterRuntimeStates=2918`, `facts=2731`, `retrievedMemories=2339`, `characterKnowledge=1676`, `availableTransitions=1183`, `openTasks=1119`, and `contextBudgetMetadata=1060`.
+- Turn 4 failed at `26885/24576`; Turn 10 failed at `26904/24576`.
+- Compared with Turn 4, Turn 10 retained fewer setting bytes but more retrieved memory bytes and a larger player input.
 
 ## Assumptions
 
-- The best first repair is compacting duplicated transition/setting and runtime-state text, not changing semantic-floor selection.
-- Existing `ContextPacketNormalizer` is the safest place for most compaction because it runs before final byte accounting and hash calculation.
-- A copied DB E2E prepare is sufficient to prove the repair without advancing formal Pilot-2 state.
+- A future repair should focus on compaction and deduplication rather than changing semantic floor selection.
+- Turn 10's explicit awning movement intent and previous-turn recall cues explain why transition constraints and retrieved memories both remained active.
+- `contextBudgetMetadata` may be reducible in final context while preserving full diagnostics in sidecar reports.
 
 ## Open Questions
 
-- Whether same-scene "step back" wording should trigger all transition settings remains a future semantic-planner refinement; this milestone will avoid changing that behavior unless compaction alone is insufficient.
+- Whether transition intent matching should distinguish exact formal transition intent from broad movement language is a future repair decision, not part of this forensics milestone.
+- Whether retrieved memory cards can be made more compact without harming manual result drafting requires code-level design in a later approved repair.
 
 ## Implementation Steps
 
-- [x] Step 1: Read Turn 4 forensics artifacts, docs, source, and existing context tests.
-- [x] Step 2: Update `PLANS.md` for the compaction repair milestone.
-- [x] Step 3: Implement minimal final-context compaction.
-- [x] Step 4: Add focused tests for transition/setting deduplication, runtime flag compaction, and knowledge source safety.
+- [x] Step 1: Read Turn 10 player input, budget report, before/after evidence, Turn 4 forensics, control docs, and context services.
+- [x] Step 2: Extract section-level byte breakdown, retained/removed item counts, semantic coverage, duplicates, and top JSON paths.
+- [x] Step 3: Update `PLANS.md` for the Turn 10 read-only forensics milestone.
+- [x] Step 4: Add `docs/PILOT2_TURN10_CONTEXT_BUDGET_FORENSICS.md`.
 - [x] Step 5: Run `git diff --check`.
 - [x] Step 6: Run `gradlew.bat clean test --no-daemon`.
-- [x] Step 7: Run `gradlew.bat :app:installDist --no-daemon`.
-- [x] Step 8: Verify Turn 4 `prepare-turn` on a copied DB, without result/validate/resolve.
-- [ ] Step 9: Commit `fix: compact Pilot-2 context packets`.
+- [ ] Step 7: Commit `docs: investigate Pilot-2 Turn 10 context budget failure`.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- `gradlew.bat :app:installDist --no-daemon`
-- copied DB Turn 4 `prepare-turn`
-- confirm generated copied-DB `turn_004_context.json` is `<=24576` UTF-8 bytes
-- confirm no Turn 4 result, validation, or resolve was run
-- confirm formal `data/pilot2.db` still remains at `stateVersion=3`, `nextTurnNumber=4`, and `pendingContexts=0`
+- Confirm no Turn 10 context/result/validate/resolve files were created by this milestone.
+- Confirm git diff contains only the planned documentation files.
 
 ## Risks
 
-- Over-compacting could remove information needed for safe manual result drafting. Mitigation: retain IDs, targets, player intent requirements, travel time, forced/optional status, world-event public limits, character goals, emotions, and allowed actions.
-- Removing source references from knowledge claims could reduce traceability. Mitigation: only drop source IDs that are not present in the final context to avoid dangling references.
-- Running `prepare-turn` on the formal DB would create a pending context. Mitigation: use a copied DB for verification.
+- Misdiagnosing a semantic-floor issue as pure byte pressure. Mitigation: report semantic coverage status and satisfied requirements directly from the budget JSON.
+- Accidentally implying budget should be raised. Mitigation: explicitly reject raising the `24576` hard max.
+- Accidentally treating user input as the problem. Mitigation: classify player input as large but protocol-critical and not the main repair target.
 
 ## Drift Log
 
-- 2026-06-21: Started Pilot-2 context compaction repair after user approved a small fitting repair and prohibited Turn 4 result/resolve, write-path changes, schema changes, and budget increase.
-- 2026-06-21: Implemented final-context compaction in `ContextPacketNormalizer` for transition setting cards, location connection cards, world event cards, available transition preview text, character runtime flags, facts, and knowledge source references.
+- 2026-06-21: Started read-only Pilot-2 Turn 10 context budget forensics after user approved documentation-only analysis and prohibited rerun, prepare, result, validation, resolve, DB writes, Kotlin changes, and push.
+- 2026-06-21: Confirmed Turn 10 failure is byte pressure after semantic coverage `PASS`, not missing semantic coverage.
+- 2026-06-21: Confirmed the largest retained sections after trimming are `relevantSettings`, `playerInput`, `characterRuntimeStates`, `facts`, `retrievedMemories`, `characterKnowledge`, `availableTransitions`, `openTasks`, and `contextBudgetMetadata`.
 - 2026-06-21: Verified `git diff --check` passed with only CRLF normalization warnings.
-- 2026-06-21: Verified `gradlew.bat clean test --no-daemon` passed.
-- 2026-06-21: Verified `gradlew.bat :app:installDist --no-daemon` passed.
-- 2026-06-21: On copied DB `data/pilot2-turn4-context-repair-e2e.db`, `explain-context-budget` for exact Turn 4 input changed from failing `26885/24576` to fitting `24065/24576`; `prepare-turn` wrote copied-DB context `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_004_context.json`.
-- 2026-06-21: `audit-context` on copied-DB Turn 4 context passed with `actualBytes=24065/24576`, `declaredActualBytes=24065`, and `hashValid=true`.
-- 2026-06-21: Formal `data/pilot2.db` remains unadvanced at `stateVersion=3`, `nextTurnNumber=4`; read-only evidence export reported `pendingContexts=0`.
+- 2026-06-21: First `clean test` attempt timed out and left Gradle daemon file locks; stopped Gradle daemons with `gradlew.bat --stop`.
+- 2026-06-21: Verified `gradlew.bat clean test --no-daemon` passed after stopping stale Gradle daemons.
