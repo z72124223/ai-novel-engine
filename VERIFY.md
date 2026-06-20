@@ -152,7 +152,7 @@ Expected:
 
 ### MVP-7 Candidate A Narrative Quality Audit
 
-Candidate A is read-only. It reads existing JSON files and must not require `--db`.
+Candidate A and its A.1/A.2 calibration passes are read-only. They read existing JSON files and must not require `--db`.
 
 ```powershell
 New-Item -ItemType Directory -Force -Path out | Out-Null
@@ -166,6 +166,28 @@ Expected:
 - Report includes `verdict`, `score`, `severity`, `findings`, and `evidence`.
 - No SQLite path is required or written.
 - The command does not call `resolve-turn`, `StateReducer`, or any repository-backed write path.
+
+Candidate A.2 calibration additionally requires a distribution smoke and selected flawed-pack checks:
+
+```powershell
+gradlew.bat :app:installDist --no-daemon
+
+gradlew.bat :app:run --args="audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_candidate_a2/repo_sample_report.json"
+
+$App = "$env:LOCALAPPDATA\local-interactive-fiction-engine-build\app\install\app\bin\app.bat"
+& $App audit-narrative-quality --context samples/sample_context_packet.json --result samples/sample_ai_turn_result.json --out out/mvp7_candidate_a2/install_sample_report.json
+& $App audit-narrative-quality --context samples/mvp7_flawed_audit_pack/case_02_ai_overwritten_style/context.json --result samples/mvp7_flawed_audit_pack/case_02_ai_overwritten_style/result.json --out out/mvp7_candidate_a2/case_02_ai_overwritten_style_report.json
+& $App audit-narrative-quality --context samples/mvp7_flawed_audit_pack/case_05_missing_consequence/context.json --result samples/mvp7_flawed_audit_pack/case_05_missing_consequence/result.json --out out/mvp7_candidate_a2/case_05_missing_consequence_report.json
+& $App audit-narrative-quality --context samples/mvp7_flawed_audit_pack/case_08_false_positive_guard_crack/context.json --result samples/mvp7_flawed_audit_pack/case_08_false_positive_guard_crack/result.json --out out/mvp7_candidate_a2/case_08_false_positive_guard_crack_report.json
+```
+
+Expected A.2 signals:
+
+- Repo and installDist sample audits exit `0`.
+- `case_02_ai_overwritten_style` includes `AI_FEELING_EMOTION_TOLD_NOT_SHOWN`.
+- `case_05_missing_consequence` still includes `CONSEQUENCE_COST_NOT_RECORDED`.
+- `case_08_false_positive_guard_crack` remains PASS or at minimum has no `CONSEQUENCE_COST_NOT_RECORDED` finding.
+- Generated reports stay under ignored `out/`.
 
 ## 4. Failure Triage Order
 

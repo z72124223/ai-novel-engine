@@ -1,6 +1,25 @@
 # MVP-7 Candidate A.2 Calibration Plan
 
-This document plans a small read-only calibration pass for `audit-narrative-quality`. It does not approve implementation by itself.
+Status: `IMPLEMENTED_AND_PUSHED`
+
+This document originally planned a small read-only calibration pass for `audit-narrative-quality`. Candidate A.2 implementation was later explicitly approved, completed, and pushed in commit `e6f56006f90ba2bd419defe3e14041e46525a9e3`.
+
+Implementation remained within this plan's read-only boundary:
+
+- `audit-narrative-quality` still reads JSON context/result/evidence files and does not accept `--db`.
+- No SQLite writes were added.
+- `resolve-turn`, `StateReducer`, `AiTurnResultValidator`, `stateVersion`, and `contextHash` were not changed.
+- Candidate B was not opened.
+
+Latest verified A.2 baseline:
+
+- `gradlew.bat clean test --no-daemon`: 233 tests, 0 failures, 0 errors, 0 skipped.
+- `gradlew.bat :app:installDist --no-daemon`: PASS.
+- Repo CLI sample audit: PASS_WITH_WARNINGS, score 82.
+- installDist sample audit: PASS_WITH_WARNINGS, score 82.
+- `case_02_ai_overwritten_style` now emits `AI_FEELING_EMOTION_TOLD_NOT_SHOWN`.
+- `case_05_missing_consequence` still emits `CONSEQUENCE_COST_NOT_RECORDED`.
+- `case_08_false_positive_guard_crack` remains PASS, score 100, 0 findings.
 
 ## 1. Candidate A.2 Goal
 

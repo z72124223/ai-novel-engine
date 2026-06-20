@@ -6,6 +6,14 @@ Status: `FLAWED_SAMPLE_PACK_COMPLETE`
 
 This milestone created deliberately flawed read-only samples for `audit-narrative-quality`. It did not change Kotlin code, tests, audit rules, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or SQLite data.
 
+Post-A.2 note:
+
+- The per-case table below records the pre-A.2 audit output from the flawed sample pack milestone. It is kept unchanged as historical evidence.
+- Candidate A.2 implementation later improved the read-only audit calibration in commit `e6f56006f90ba2bd419defe3e14041e46525a9e3`.
+- After A.2, `case_02_ai_overwritten_style` emits `AI_FEELING_EMOTION_TOLD_NOT_SHOWN` in addition to its previous summary/style/consequence findings.
+- After A.2, `case_08_false_positive_guard_crack` remains PASS with score 100 and 0 findings, so the expression/object crack guard still holds.
+- Candidate B remains unapproved.
+
 ## 1. Sample Pack
 
 Sample directory:
