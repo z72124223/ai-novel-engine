@@ -5,10 +5,10 @@ This roadmap controls stable project completion. It is intentionally conservativ
 ## Current Rule
 
 - Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
-- Active product milestone: none after MVP-7 Candidate A.2 implementation, docs checkpoint alignment, real sample rerun, JSON robustness investigation, JSON verification docs hardening, and diverse audit sample rerun.
-- MVP-7 Candidate A, Candidate A.1, real audit sample collection, deliberately flawed audit sample pack, Candidate A.2 calibration planning, Candidate A.2 implementation, A.2 real sample rerun, audit JSON robustness investigation, audit JSON verification docs hardening, automatic loop bootstrap, and diverse audit sample rerun are complete and pushed through the latest synchronized branch state.
+- Active product milestone: none after MVP-7 Candidate A.2 implementation, docs checkpoint alignment, real sample rerun, JSON robustness investigation, JSON verification docs hardening, diverse audit sample rerun, and the next-candidate decision brief.
+- MVP-7 Candidate A, Candidate A.1, real audit sample collection, deliberately flawed audit sample pack, Candidate A.2 calibration planning, Candidate A.2 implementation, A.2 real sample rerun, audit JSON robustness investigation, audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, and the next-candidate decision brief are complete or selected as documentation-only work.
 - Candidate A.2 remains read-only audit calibration. It did not approve Candidate B and did not alter `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
-- Next milestone options: collect more diverse audit samples from different story arcs, define a new explicit MVP-7 candidate, or run a read-only remote restore smoke on demand. Do not enter Candidate B directly.
+- Next milestone options after the next-candidate brief: collect more real story samples, design Pilot-2, or draft a focused Candidate A.3 read-only brief. Do not enter Candidate B directly.
 - MVP-7 implementation beyond explicitly approved read-only audit work is not approved. Any future Candidate B or gate behavior requires a separate decision brief and approval.
 
 ## Milestone Table
@@ -44,6 +44,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | MVP-7 Audit JSON Verification Docs Hardening | Completed | Document correct UTF-8 JSON verification commands for audit reports, especially PowerShell 5.1. | `VERIFY.md`, `docs/MVP7_AUDIT_JSON_ROBUSTNESS_INVESTIGATION.md`, `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md`, `PLANS.md`. | Overstating a product bug, forgetting the PowerShell 5.1 encoding caveat. |
 | Automatic Stable-Completion Loop Bootstrap | Completed | Start the authorized automatic loop and push the verified docs-hardening state to the current branch. | `PLANS.md`, remote sync verification. | Letting automation cross product-decision boundaries or enter Candidate B without approval. |
 | MVP-7 Diverse Audit Sample Rerun | Completed | Run the read-only audit on additional non-Pilot sample families to check A.2 stability beyond the first Pilot sample set. | `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md`, `PLANS.md`, ignored `out/mvp7_diverse_audit_rerun/` reports. | Treating synthetic acceptance fixtures as Candidate B proof, committing ignored reports. |
+| MVP-7 Next Candidate Decision Brief | Completed locally | Compare Candidate A.3, Candidate B, Pilot-2, more real samples, and UI/product direction without implementation. | `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md`, `PLANS.md`, `ROADMAP.md`. | Accidentally implying Candidate B approval or starting implementation from a decision document. |
 
 ## Temporarily Not Doing
 
@@ -74,8 +75,9 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, and diverse audit sample rerun:
+Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, and the next-candidate decision brief:
 
 1. `collect real author-led story arc samples`: wait for or generate approved real turns outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
-2. `define a new explicit MVP-7 candidate`: write a focused brief before implementation; Candidate B is not the default next step.
-3. `remote restore smoke on demand`: rerun clone/test verification when needed.
+2. `Pilot-2 scenario design`: documentation-only scenario and evidence plan before new real turns.
+3. `Candidate A.3 read-only audit brief`: define a focused read-only target before any implementation.
+4. `remote restore smoke on demand`: rerun clone/test verification when needed.
