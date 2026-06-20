@@ -2,11 +2,11 @@
 
 ## Goal
 
-Start the automatic stable-completion loop from the current verified repository state, record the remote-sync milestone, and push the already verified MVP-7 audit JSON verification hardening work to the current branch.
+Align control documentation after the automatic loop bootstrap push so future work starts from the correct remote-synced state and does not reopen completed MVP-7 Candidate A.2 follow-up milestones.
 
 ## Global Strategy
 
-Use the repo control files as the source of truth. Advance one small milestone at a time: read evidence, update this plan, make only necessary changes, verify, commit if there are file changes, push the current branch when the milestone is passing, then select the next smallest documented gap.
+Keep this milestone documentation-only. Update roadmap/control status to match verified Git evidence, then verify, commit, and push the alignment. Do not change runtime behavior or enter any new product candidate.
 
 ## Non-Goals
 
@@ -19,32 +19,30 @@ Use the repo control files as the source of truth. Advance one small milestone a
 - No `resolve-turn` or `StateReducer` changes.
 - No SQLite writes.
 - No Candidate B.
+- No Candidate A.3.
 - No MVP-8.
 - No web server, API, Docker, Android UI, Rust, embedding, vector DB, or multi-agent runtime.
 - No retagging `mvp-6`.
-- No branch deletion or merge.
 
 ## Scope
 
+- `ROADMAP.md`
 - `PLANS.md`
-- Git verification and push of the current branch after tests pass.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Working tree was clean at the start of this loop milestone.
-- Local `HEAD` is `737ea09247cf77f12d42ec3b069e84af52873484`.
-- `origin/codex/mvp6-checkpoint-branching-spec` is `fc244e1e168d38746b8c2b0c8425b6f296ccc8fb`.
-- Local branch is ahead of origin by one commit: `docs: harden audit JSON verification instructions`.
+- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `fed20562015d536c4f3a356854c7e78c17470df3`.
+- The previous push included `737ea09 docs: harden audit JSON verification instructions` and `fed2056 docs: record automatic stability loop start`.
+- Working tree was clean after the push.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- The hardening commit was previously verified with `git diff --check` and `gradlew.bat clean test --no-daemon`.
-- `VERIFY.md` now documents explicit UTF-8 parsing for `audit-narrative-quality` reports on Windows PowerShell 5.1.
-- `ROADMAP.md` says Candidate B is not approved and the next work should remain explicit, minimal, and read-only unless separately approved.
-- User authorized the automatic stable-completion loop, including commits and pushes to the current branch after verification passes.
+- `ROADMAP.md` previously still listed A.2 real sample rerun as a future option even though `4786d25 docs: rerun MVP-7 A.2 audit on real samples` exists in history.
+- `ROADMAP.md` did not yet list the audit JSON robustness investigation, JSON verification docs hardening, or automatic loop bootstrap.
 
 ## Assumptions
 
-- The next safest milestone after this remote sync is a read-only post-push checkpoint and then a small documentation alignment if the checkpoint finds stale control docs.
+- Updating `ROADMAP.md` and `PLANS.md` is sufficient for this checkpoint; `VERIFY.md` already contains the hardened JSON verification instructions.
+- The next safest substantive milestone after this alignment is more diverse read-only audit sample collection, unless a new candidate brief is explicitly selected.
 
 ## Open Questions
 
@@ -53,12 +51,12 @@ Use the repo control files as the source of truth. Advance one small milestone a
 ## Implementation Steps
 
 - [x] Step 1: Read current Git state and control docs.
-- [x] Step 2: Update `PLANS.md` to record the automatic loop bootstrap and remote-sync milestone.
-- [x] Step 3: Verify with `git diff --check`.
-- [x] Step 4: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 5: Commit `docs: record automatic stability loop start`.
-- [ ] Step 6: Push `codex/mvp6-checkpoint-branching-spec` to origin.
-- [ ] Step 7: Confirm remote head, local status, and `mvp-6` tag.
+- [x] Step 2: Update `ROADMAP.md` with completed A.2 rerun, JSON robustness, JSON verification hardening, and automatic loop bootstrap status.
+- [x] Step 3: Update `PLANS.md` for this docs alignment milestone.
+- [x] Step 4: Verify with `git diff --check`.
+- [x] Step 5: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 6: Commit `docs: align automatic loop checkpoint status`.
+- [ ] Step 7: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
 
 ## Verification
 
@@ -70,12 +68,12 @@ Use the repo control files as the source of truth. Advance one small milestone a
 
 ## Risks
 
-- Accidentally making this loop milestone look like Candidate B approval.
-- Pushing without re-verifying the combined local state.
-- Over-editing docs when the milestone only needs `PLANS.md`.
+- Accidentally implying Candidate B is approved.
+- Rewriting historical roadmap milestones instead of appending current status.
+- Creating documentation churn without improving restartability.
 
 ## Drift Log
 
-- 2026-06-20: Automatic stable-completion loop started after explicit user authorization. First milestone selected from evidence: remote-sync the current verified audit JSON verification hardening state.
+- 2026-06-20: Started control docs alignment after successful automatic loop bootstrap push. Scope is documentation-only.
 - 2026-06-20: Verification passed before commit. `git diff --check` reported no whitespace errors. `gradlew.bat clean test --no-daemon` exited `0` with Temurin JDK 17.0.19 and `233 tests / 0 failures / 0 errors / 0 skipped`.
-- 2026-06-20: Created loop bootstrap commit `docs: record automatic stability loop start`.
+- 2026-06-20: Created docs-only commit `docs: align automatic loop checkpoint status`.
