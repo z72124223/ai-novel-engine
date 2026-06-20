@@ -20,8 +20,9 @@ The blueprint is valuable as a product-intent and safety-boundary document. It s
 - Remote: `origin https://github.com/z72124223/ai-novel-engine.git`.
 - Release tag: `mvp-6`.
 - `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `ROADMAP.md` says MVP-7 is not approved and must first start with a focused `docs/MVP7_*.md` spec if requested later.
-- `VERIFY.md` says future MVP-7 work must define matching tests and CLI E2E before implementation.
+- `ROADMAP.md` records approved MVP-7 work so far as read-only narrative quality audit milestones through Candidate A.2 and sample reruns.
+- Candidate B, pre-resolve gates, MVP-8, and runtime write-path integration remain unapproved.
+- `VERIFY.md` defines the read-only `audit-narrative-quality` verification path and explicit UTF-8 JSON report parsing for PowerShell 5.1.
 - `docs/HANDOFF.md` is the current repo handoff index for a new Codex window.
 
 ## Blueprint Parts To Preserve
@@ -82,7 +83,7 @@ Do not use the blueprint to answer:
 - Which branch is current.
 - Whether MVP-6 is complete.
 - Whether Pilot-1 is still running.
-- Whether MVP-7 or MVP-8 is approved.
+- Whether Candidate B, MVP-8, or any new write-path integration is approved.
 
 ## Drift Guardrail
 

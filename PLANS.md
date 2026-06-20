@@ -2,11 +2,11 @@
 
 ## Goal
 
-Refresh handoff and completion-audit documentation after the pushed MVP-7 read-only audit milestones so future Codex windows start from current evidence instead of the older MVP-6-only handoff state.
+Refresh stale project structure and historical MVP-7/blueprint documents so they no longer describe MVP-6 as uncommitted or MVP-7 Candidate A/A.2 as not yet completed.
 
 ## Global Strategy
 
-Keep this milestone documentation-only. Update stale restart/control documents using current Git evidence, then verify, commit, and push. Do not change runtime behavior or open any new product candidate.
+Keep this milestone documentation-only. Update current-state claims where they are misleading, preserve historical context where useful, verify, commit, and push. Do not change runtime behavior or open a new product candidate.
 
 ## Non-Goals
 
@@ -27,25 +27,24 @@ Keep this milestone documentation-only. Update stale restart/control documents u
 ## Scope
 
 - `PLANS.md`
-- `docs/HANDOFF.md`
-- `docs/PROJECT_COMPLETION_AUDIT.md`
-- `docs/ROADMAP.md`
+- `docs/PROJECT_STRUCTURE_REPORT.md`
+- `docs/BLUEPRINT_ALIGNMENT.md`
+- `docs/MVP7_DECISION_BRIEF.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `a2e5a6f31f7d10483022e6e9e04a45c7cdeba63c`.
+- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `3cf9a8081bb05a8e68bb85060e71d663d1d527bc`.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - Working tree was clean before this milestone.
-- `PLANS.md` from the previous milestone still had the push-confirmation step unchecked even though the push succeeded.
-- `docs/HANDOFF.md` still described the project as post-MVP-6 with 220-test restore evidence and warned not to enter MVP-7 automatically.
-- `docs/PROJECT_COMPLETION_AUDIT.md` still reported `PASS_WITH_CONTROL_DOC_DRIFT` from before the MVP-7 Candidate A/A.1/A.2 read-only audit work.
-- `docs/ROADMAP.md` did not yet mention the completed MVP-7 read-only audit milestones.
+- `docs/PROJECT_STRUCTURE_REPORT.md` still says MVP-6 is not committed, `HEAD` is `a8131a2`, and tests are 220.
+- `docs/BLUEPRINT_ALIGNMENT.md` says `ROADMAP.md` says MVP-7 is not approved, but current roadmap records approved read-only MVP-7 Candidate A/A.1/A.2 work as completed while Candidate B remains unapproved.
+- `docs/MVP7_DECISION_BRIEF.md` is intentionally historical but its current-status note only mentions Candidate A.1.
 
 ## Assumptions
 
-- Updating handoff and completion docs is enough for restartability; no runtime code needs to change.
-- Exact mutable `HEAD` should be checked with Git commands rather than hardcoded into every future-facing sentence.
+- Updating these docs improves restartability and prevents a future Codex window from following stale MVP-6 instructions.
+- No CLI E2E is needed because this milestone changes documentation only.
 
 ## Open Questions
 
@@ -53,14 +52,14 @@ Keep this milestone documentation-only. Update stale restart/control documents u
 
 ## Implementation Steps
 
-- [x] Step 1: Read current Git state and stale control docs.
-- [x] Step 2: Update `PLANS.md` for this handoff refresh milestone.
-- [x] Step 3: Refresh `docs/HANDOFF.md`.
-- [x] Step 4: Refresh `docs/PROJECT_COMPLETION_AUDIT.md`.
-- [x] Step 5: Refresh `docs/ROADMAP.md`.
+- [x] Step 1: Read stale documents and current Git evidence.
+- [x] Step 2: Update `PLANS.md` for this stale-doc refresh milestone.
+- [x] Step 3: Refresh `docs/PROJECT_STRUCTURE_REPORT.md`.
+- [x] Step 4: Update `docs/BLUEPRINT_ALIGNMENT.md` current anchors.
+- [x] Step 5: Update `docs/MVP7_DECISION_BRIEF.md` historical status note.
 - [x] Step 6: Verify with `git diff --check`.
 - [x] Step 7: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 8: Commit `docs: refresh handoff after MVP-7 audit milestones`.
+- [x] Step 8: Commit `docs: refresh project structure and MVP-7 status notes`.
 - [x] Step 9: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
 
 ## Verification
@@ -73,15 +72,13 @@ Keep this milestone documentation-only. Update stale restart/control documents u
 
 ## Risks
 
-- Accidentally implying Candidate B is approved.
-- Treating read-only audit advisory findings as runtime gates.
-- Overwriting useful history instead of recording current restart state.
+- Erasing useful historical context in `docs/MVP7_DECISION_BRIEF.md`.
+- Implying Candidate B is approved.
+- Treating synthetic fixture audit results as product-complete proof.
 
 ## Drift Log
 
-- 2026-06-20: Started handoff/completion docs refresh after evidence showed old handoff docs still described only the post-MVP-6 state.
-- 2026-06-20: Refreshed `docs/HANDOFF.md`, `docs/PROJECT_COMPLETION_AUDIT.md`, and `docs/ROADMAP.md` to include completed MVP-7 read-only audit milestones while keeping Candidate B unapproved.
-- 2026-06-20: Verification passed before commit. `git diff --check` reported no whitespace errors and `gradlew.bat clean test --no-daemon` exited `0` with `233 tests / 0 failures / 0 errors / 0 skipped`.
-- 2026-06-20: Created docs-only commit `docs: refresh handoff after MVP-7 audit milestones`.
-- 2026-06-20: Pushed the handoff refresh to `origin/codex/mvp6-checkpoint-branching-spec`; local and remote synchronized at `dfd05a10562b508217031d47b57708ec0155c532`.
-- 2026-06-20: Follow-up search found possible older historical drift in `docs/PROJECT_STRUCTURE_REPORT.md` and some MVP-7 historical briefs; kept out of this milestone to avoid mixing scopes.
+- 2026-06-20: Started stale-doc refresh after search found outdated MVP-6 and MVP-7 current-state claims in project structure and historical alignment docs.
+- 2026-06-20: Updated `docs/PROJECT_STRUCTURE_REPORT.md`, `docs/BLUEPRINT_ALIGNMENT.md`, and `docs/MVP7_DECISION_BRIEF.md` so current-state notes reflect completed MVP-7 read-only audit work while Candidate B remains unapproved.
+- 2026-06-20: Verification passed: `git diff --check` reported no whitespace errors, and `gradlew.bat clean test --no-daemon` passed with 233 tests, 0 failures, 0 errors, 0 skipped on Temurin JDK 17.0.19.
+- 2026-06-20: Sealed this stale-document refresh as a documentation-only commit and prepared it for push to `origin/codex/mvp6-checkpoint-branching-spec`.

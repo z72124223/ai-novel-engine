@@ -6,7 +6,7 @@ Date: 2026-06-20
 
 This is a historical decision brief. It records the state before MVP-7 Candidate A and Candidate A.1 were implemented.
 
-Current status is tracked in `ROADMAP.md`, `PLANS.md`, and `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`. As of the Candidate A.1 checkpoint, Candidate A and A.1 are complete and pushed, while Candidate B remains unapproved.
+Current status is tracked in `ROADMAP.md`, `PLANS.md`, `docs/PROJECT_COMPLETION_AUDIT.md`, and the MVP-7 audit reports. As of the current handoff refresh, Candidate A, Candidate A.1, Candidate A.2, JSON robustness hardening, and diverse sample reruns are complete and pushed, while Candidate B remains unapproved.
 
 ## Verdict
 
@@ -101,4 +101,4 @@ Pilot-2 scenario design brief
 
 ## Decision Needed
 
-The next milestone should still be chosen explicitly by the user. Do not infer Candidate B or any new implementation from the existence of this historical brief.
+The next milestone should still be chosen explicitly from current evidence. Do not infer Candidate B or any new write-path implementation from the existence of this historical brief.
