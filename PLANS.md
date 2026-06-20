@@ -2,11 +2,11 @@
 
 ## Goal
 
-Draft a new MVP-7 next-candidate decision brief that compares possible next directions without implementing any runtime, audit-rule, schema, or write-path changes.
+Design a Pilot-2 scenario document for collecting more real story-arc audit samples, without changing Kotlin code, audit rules, schema, runtime writes, or Candidate B boundaries.
 
 ## Global Strategy
 
-Keep this milestone documentation-only. Use the completed Candidate A/A.1/A.2 reports and current project control docs to compare next-step options, make the safest recommendation explicit, and preserve the boundary that Candidate B is not approved. Verify, commit, and stop without pushing.
+Keep this milestone documentation-only. Use the MVP-7 next-candidate decision brief and A.2 audit reports to define a practical Pilot-2 scenario, per-turn evidence format, naming convention, audit flow, and success/failure criteria. Verify with standard repository checks, commit, and stop without pushing.
 
 ## Non-Goals
 
@@ -29,58 +29,59 @@ Keep this milestone documentation-only. Use the completed Candidate A/A.1/A.2 re
 ## Scope
 
 - `PLANS.md`
-- `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md`
-- `ROADMAP.md` only if needed; current plan is to avoid changing it unless the decision brief reveals a control-doc conflict.
+- `docs/PILOT2_SCENARIO_DESIGN.md`
+- `ROADMAP.md` only for a small status update after the design exists.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `77f5173c9eb00009bb58783293c8c8a7f7968d9e`.
+- Local `HEAD` is `b94caf81f07eade476c37305e5f63f6606bbee31`.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - Working tree was clean before this milestone.
-- MVP-7 Candidate A, A.1, and A.2 are complete.
-- Candidate A.2 remains a read-only audit calibration and did not change `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
-- `docs/PROJECT_COMPLETION_AUDIT.md` says remaining progress needs either real author-led story samples or an explicit new candidate decision.
-- `ROADMAP.md` says Candidate B, Candidate A.3, and MVP-8 are not approved by default.
-- `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md` says A.2 stayed stable, but Candidate B is not ready.
-- `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md` says some deliberately flawed cases remain advisory and not strong enough for Candidate B gating.
+- `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md` ranks more real audit samples and Pilot-2 scenario design as the safest next directions.
+- `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md` says the current audit is stable but still mostly tested on Pilot-1, Pilot-1b, MVP-6, and fixture families.
+- `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md` says flawed fixtures are useful but are not enough to proceed to Candidate B.
+- `VERIFY.md` defines `audit-narrative-quality` as a read-only JSON audit and documents UTF-8 report validation.
+- `DONE_CRITERIA.md` requires `git diff --check` and `gradlew.bat clean test --no-daemon` before commit.
+- Existing committed sample families include demo seed/context/result, Pilot-1b coverage pack, setting packs, and the MVP-7 flawed audit sample pack.
 
 ## Assumptions
 
-- A decision brief is the smallest safe step because it narrows the user's next choice without changing runtime behavior.
-- No CLI E2E is needed because this milestone changes documentation only.
+- A documentation-only Pilot-2 scenario design is the smallest safe step because it lets the user provide better real story evidence later without changing runtime behavior now.
+- No CLI E2E is needed for this milestone because it changes only documentation and does not alter commands or runtime behavior.
 
 ## Open Questions
 
-- Which direction the user will choose after reading the brief remains intentionally open.
+- The exact Pilot-2 story premise still needs user approval or future author input before formal turns are run.
+- Whether Pilot-2 will use the existing snow-dog setting or a new setting pack remains a future decision; this document can propose a recommended scenario without applying it.
 
 ## Implementation Steps
 
-- [x] Step 1: Read required control docs and MVP-7 evidence reports.
-- [x] Step 2: Update `PLANS.md` for this decision-brief milestone.
-- [x] Step 3: Create `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md`.
-- [x] Step 4: Decide whether `ROADMAP.md` needs a small status note; avoid changing it if not needed.
+- [x] Step 1: Read required control docs, MVP-7 reports, README, and sample inventory.
+- [x] Step 2: Update `PLANS.md` for this Pilot-2 design milestone.
+- [x] Step 3: Create `docs/PILOT2_SCENARIO_DESIGN.md`.
+- [x] Step 4: Update `ROADMAP.md` with a small Pilot-2 design status note.
 - [x] Step 5: Verify with `git diff --check`.
 - [x] Step 6: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 7: Commit `docs: draft MVP-7 next candidate decision brief`.
+- [x] Step 7: Commit `docs: design Pilot-2 scenario`.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
 - `git status`
-- confirm no Kotlin/test/schema/runtime files changed
+- confirm no Kotlin, test, schema, migration, Validator, `resolve-turn`, `StateReducer`, or SQLite files changed
 
 ## Risks
 
-- Accidentally making Candidate B sound approved.
-- Recommending UI/product work before the runtime and sample evidence justify it.
-- Treating synthetic fixture audit results as enough for a gate.
-- Writing a brief that is too abstract for the user to act on.
+- Accidentally making Pilot-2 sound like an approved runtime implementation.
+- Accidentally implying Candidate B is approved.
+- Designing a scenario so specific that it becomes hardcoded test data rather than a flexible evidence-collection plan.
+- Producing a format too vague for the user to provide real turns.
 
 ## Drift Log
 
-- 2026-06-20: Started MVP-7 next-candidate decision brief after the automatic stable-completion loop stopped because remaining work required human direction.
-- 2026-06-20: Created `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md` and updated `ROADMAP.md` to point next work toward real samples, Pilot-2 design, or a focused Candidate A.3 brief while keeping Candidate B unapproved.
-- 2026-06-20: Verification passed: `git diff --check` reported no whitespace errors, and `gradlew.bat clean test --no-daemon` completed with `BUILD SUCCESSFUL`.
-- 2026-06-20: Sealed this decision brief in a local documentation-only commit. Per user instruction, it has not been pushed.
+- 2026-06-20: Started Pilot-2 scenario design after the user approved a documentation-only milestone for settings, acceptance items, and human turn collection format.
+- 2026-06-20: Created `docs/PILOT2_SCENARIO_DESIGN.md` with scenario premise, human input format, evidence naming rules, audit commands, and pass/fail criteria. Updated `ROADMAP.md` to list Pilot-2 scenario design as completed locally and to keep Candidate B unapproved.
+- 2026-06-20: `git diff --check` passed. The first `clean test` attempt was cut off by tool timeout and left a temporary Java lock outside the repo; after the Java process exited, `gradlew.bat clean test --no-daemon` passed with 233 tests, 0 failures, 0 errors, and 0 skipped.
+- 2026-06-20: Sealing this documentation-only milestone in local commit `docs: design Pilot-2 scenario`; no push is performed in this milestone.
