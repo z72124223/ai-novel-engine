@@ -85,6 +85,23 @@ This file summarizes product/runtime evolution. The root `ROADMAP.md` is the con
   - `docs/HANDOFF.md`
   - `docs/PROJECT_COMPLETION_AUDIT.md`
 
+## MVP-7 Read-Only Narrative Quality Audit Track
+
+MVP-7 has not become a runtime gate. The approved work so far is a read-only audit track:
+
+- Narrative quality spec draft: `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+- Candidate A read-only `audit-narrative-quality` CLI.
+- Candidate A.1 calibration refinements for advisory context-quality observations.
+- Real audit sample collection: `docs/MVP7_AUDIT_SAMPLE_COLLECTION_REPORT.md`.
+- Deliberately flawed audit sample pack: `samples/mvp7_flawed_audit_pack/`.
+- Candidate A.2 calibration planning and read-only implementation.
+- Candidate A.2 real sample rerun: `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md`.
+- Audit JSON robustness investigation: `docs/MVP7_AUDIT_JSON_ROBUSTNESS_INVESTIGATION.md`.
+- Audit JSON verification hardening in `VERIFY.md`; PowerShell 5.1 must read reports with explicit UTF-8.
+- Diverse non-Pilot audit sample rerun: `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md`.
+
+Candidate B, any pre-resolve gate, and any write-path integration remain unapproved.
+
 ## Later
 
 - Richer dependency graph queries and persisted validation/impact run history.
@@ -92,6 +109,6 @@ This file summarizes product/runtime evolution. The root `ROADMAP.md` is the con
 - Replay/export tooling for turn logs.
 - Optional human review queues for high-risk deltas.
 - Optional GitHub branch protection or repository settings hardening.
-- MVP-7 only after an explicit user-approved `docs/MVP7_*.md` spec milestone.
+- Further MVP-7 work only after an explicit user-approved candidate brief.
 
 Non-goals remain unchanged unless explicitly revised: no web server, no port, no OpenAI API integration, no Android UI, no Rust, no Docker, no embedding/vector DB.
