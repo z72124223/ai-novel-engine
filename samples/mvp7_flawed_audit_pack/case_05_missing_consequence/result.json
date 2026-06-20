@@ -1,0 +1,19 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-05",
+  "resultId": "result-flawed-case-05",
+  "contextId": "ctx-flawed-case-05",
+  "turnNumber": 5,
+  "narrative": "你徒手按上燒紅的鐵門，掌心立刻疼得像裂開，袖口也被火星燎黑。同行者喊你停下，可下一刻鐵門就被推開，場面像什麼代價都沒有發生。",
+  "characterActions": [
+    {
+      "characterId": "char-helper",
+      "intent": "阻止玩家受傷",
+      "visibleAction": "同行者伸手想攔，卻沒有留下任何後續紀錄。",
+      "hiddenMotive": "擔心玩家硬闖。",
+      "characterFitScore": 78,
+      "storyProgressScore": 40
+    }
+  ]
+}

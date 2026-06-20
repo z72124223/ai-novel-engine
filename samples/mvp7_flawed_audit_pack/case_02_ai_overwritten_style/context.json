@@ -1,0 +1,62 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-courtyard",
+    "currentTurn": 2
+  },
+  "turnId": "flawed-case-02",
+  "turnNumber": 2,
+  "playerInput": "我等對方先說話。",
+  "activeScene": {
+    "id": "scene-test-courtyard",
+    "projectId": "mvp7-flawed",
+    "title": "空院",
+    "summary": "玩家與醫者在院中短暫對峙。",
+    "locationId": "loc-test-courtyard",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-courtyard",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-courtyard",
+    "forbiddenReveals": ["井底埋著失蹤醫者的手札。"]
+  },
+  "characters": [
+    {
+      "id": "char-healer",
+      "projectId": "mvp7-flawed",
+      "name": "醫者",
+      "role": "npc",
+      "description": "務實直接，不愛說大道理。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-healer",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-courtyard",
+      "mood": "疲憊",
+      "health": "steady",
+      "flags": {
+        "current_goal": "確認玩家是否帶來病患。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-02",
+  "contextBudget": {
+    "actualBytes": 4096
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-02",
+    "sceneId": "scene-test-courtyard",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1
+  }
+}

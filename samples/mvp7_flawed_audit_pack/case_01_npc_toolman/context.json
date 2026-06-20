@@ -1,0 +1,92 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-gate",
+    "currentTurn": 1
+  },
+  "turnId": "flawed-case-01",
+  "turnNumber": 1,
+  "playerInput": "我要求守門人立刻放行，並讓他替我處理所有麻煩。",
+  "activeScene": {
+    "id": "scene-test-gate",
+    "projectId": "mvp7-flawed",
+    "title": "霧門前",
+    "summary": "守門人按規矩守門，玩家要求破例。",
+    "locationId": "loc-test-gate",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-gate",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-gate",
+    "forbiddenReveals": ["門後的真正主人是失蹤的太子。"]
+  },
+  "characters": [
+    {
+      "id": "char-player",
+      "projectId": "mvp7-flawed",
+      "name": "玩家",
+      "role": "player",
+      "description": "正在測試守門人邊界。",
+      "isPlayer": true
+    },
+    {
+      "id": "char-gatekeeper",
+      "projectId": "mvp7-flawed",
+      "name": "守門人",
+      "role": "npc",
+      "description": "受雇守門，照理應先查令牌與通行理由。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-gatekeeper",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-gate",
+      "mood": "戒備",
+      "health": "steady",
+      "flags": {
+        "current_goal": "守住霧門，查驗通行理由。"
+      }
+    }
+  ],
+  "worldRules": [
+    {
+      "id": "rule-gate-permission",
+      "projectId": "mvp7-flawed",
+      "title": "霧門通行",
+      "content": "守門人不能無理由放行，至少要查驗令牌或上級手令。",
+      "priority": 10
+    }
+  ],
+  "facts": [
+    {
+      "id": "fact-no-token",
+      "projectId": "mvp7-flawed",
+      "content": "玩家沒有出示霧門通行令。",
+      "visibility": "public",
+      "source": "fixture",
+      "createdTurn": 0
+    }
+  ],
+  "contextId": "ctx-flawed-case-01",
+  "contextBudget": {
+    "actualBytes": 4096,
+    "includedSettingCount": 1,
+    "omittedSettingCount": 0
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-01",
+    "sceneId": "scene-test-gate",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1,
+    "omittedSettingCount": 0
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-thin-context",
+    "currentTurn": 7
+  },
+  "turnId": "flawed-case-07",
+  "turnNumber": 7,
+  "playerInput": "我詢問是否有合法退路與外部支援。",
+  "activeScene": {
+    "id": "scene-test-thin-context",
+    "projectId": "mvp7-flawed",
+    "title": "資訊被裁空的現場",
+    "summary": "玩家提出需要世界規則支援的問題，但 setting context 幾乎空白。",
+    "locationId": "loc-test-thin-context",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-thin-context",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-thin-context",
+    "forbiddenReveals": []
+  },
+  "characters": [
+    {
+      "id": "char-clerk",
+      "projectId": "mvp7-flawed",
+      "name": "書吏",
+      "role": "npc",
+      "description": "熟悉規程但 context 未提供規程細節。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-clerk",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-thin-context",
+      "mood": "為難",
+      "health": "steady",
+      "flags": {
+        "current_goal": "引用規程回答玩家。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-07",
+  "contextBudget": {
+    "actualBytes": 22000,
+    "omittedSettingCount": 24,
+    "truncationApplied": true
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-07",
+    "sceneId": "scene-test-thin-context",
+    "status": "ACTIVE"
+  },
+  "activeStoryThreads": [
+    {
+      "threadId": "thread-legal-handling",
+      "type": "procedure",
+      "publicSummary": "合法處置仍需規程支撐。",
+      "status": "OPEN",
+      "progress": 10,
+      "urgency": 6
+    }
+  ],
+  "availableTransitions": [],
+  "pendingWorldEvents": [],
+  "settingContextBudget": {
+    "actualBytes": 2,
+    "includedSettingCount": 0,
+    "omittedSettingCount": 24,
+    "truncationApplied": true
+  }
+}

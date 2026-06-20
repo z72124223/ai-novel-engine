@@ -1,0 +1,72 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-shrine",
+    "currentTurn": 4
+  },
+  "turnId": "flawed-case-04",
+  "turnNumber": 4,
+  "playerInput": "我問守祠人：你到底隱瞞了什麼？",
+  "activeScene": {
+    "id": "scene-test-shrine",
+    "projectId": "mvp7-flawed",
+    "title": "祠堂外",
+    "summary": "守祠人不應直接揭露地下秘密。",
+    "locationId": "loc-test-shrine",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-shrine",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-shrine",
+    "forbiddenReveals": ["祠堂下面鎮著一口會呼吸的黑棺。"]
+  },
+  "characters": [
+    {
+      "id": "char-shrine-keeper",
+      "projectId": "mvp7-flawed",
+      "name": "守祠人",
+      "role": "npc",
+      "description": "只知道表層規矩，不知道地下真相。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-shrine-keeper",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-shrine",
+      "mood": "戒備",
+      "health": "steady",
+      "flags": {
+        "current_goal": "阻止外人入祠。"
+      }
+    }
+  ],
+  "facts": [
+    {
+      "id": "fact-shrine-locked",
+      "projectId": "mvp7-flawed",
+      "content": "祠堂後門被鎖住。",
+      "visibility": "public",
+      "source": "fixture",
+      "createdTurn": 0
+    }
+  ],
+  "contextId": "ctx-flawed-case-04",
+  "contextBudget": {
+    "actualBytes": 4096
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-04",
+    "sceneId": "scene-test-shrine",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1
+  }
+}

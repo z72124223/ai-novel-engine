@@ -1,0 +1,32 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-03",
+  "resultId": "result-flawed-case-03",
+  "contextId": "ctx-flawed-case-03",
+  "turnNumber": 3,
+  "narrative": "你剛走進市集，所有人都看向你。因你出現，鼓聲忽然響起；因為你在場，巡兵立刻封街；只因你站在路中央，遠處酒樓也同時起火。沒有任何人知道原因，但世界像是只為你轉動。",
+  "characterActions": [
+    {
+      "characterId": "char-vendor",
+      "intent": "配合主角登場",
+      "visibleAction": "攤販停下手邊買賣，跟著所有人看向玩家。",
+      "hiddenMotive": "沒有自身目標痕跡。",
+      "characterFitScore": 55,
+      "storyProgressScore": 20
+    }
+  ],
+  "stateDelta": {
+    "summary": "世界無根據地圍繞主角變化。",
+    "operations": [
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "targetId": "event-flawed-case-03",
+        "payload": {
+          "summary": "市集所有事件都因主角存在發生。"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-02",
+  "resultId": "result-flawed-case-02",
+  "contextId": "ctx-flawed-case-02",
+  "turnNumber": 2,
+  "narrative": "總之，這意味著命運在此刻張開了無形的手。因為沉默，所以恐懼；因為恐懼，所以焦慮；因為焦慮，所以所有人都震驚。不是選擇，而是宿命；既是天地深處的回聲，也是萬物無聲地宣告。從某種意義上，這代表著每個人都在悲傷、憤怒、崩潰，彷彿整個世界都在為你讓路。",
+  "characterActions": [
+    {
+      "characterId": "char-healer",
+      "intent": "站在原地",
+      "visibleAction": "醫者站在原地。",
+      "hiddenMotive": "沒有具體動機。",
+      "characterFitScore": 70,
+      "storyProgressScore": 10
+    }
+  ]
+}

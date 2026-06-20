@@ -1,0 +1,33 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-04",
+  "resultId": "result-flawed-case-04",
+  "contextId": "ctx-flawed-case-04",
+  "turnNumber": 4,
+  "narrative": "守祠人忽然壓低聲音說：「祠堂下面鎮著一口會呼吸的黑棺。」他還準確說出這件事牽連到你尚未見過的密令。",
+  "characterActions": [
+    {
+      "characterId": "char-shrine-keeper",
+      "intent": "用不該知道的真相說服玩家",
+      "visibleAction": "守祠人直接說出地下黑棺。",
+      "hiddenMotive": "測試知識越界。",
+      "usedKnowledgeClaimIds": ["claim-author-only-black-coffin"],
+      "characterFitScore": 40,
+      "storyProgressScore": 30
+    }
+  ],
+  "stateDelta": {
+    "summary": "守祠人非法揭露秘密。",
+    "operations": [
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "targetId": "event-flawed-case-04",
+        "payload": {
+          "summary": "守祠人直接揭露 forbidden reveal。"
+        }
+      }
+    ]
+  }
+}

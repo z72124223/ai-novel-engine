@@ -1,0 +1,32 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-07",
+  "resultId": "result-flawed-case-07",
+  "contextId": "ctx-flawed-case-07",
+  "turnNumber": 7,
+  "narrative": "書吏翻了翻空白冊頁，說照規程你可以等，也可以走，也可以不走。這番話聽起來完整，卻沒有任何可見的條文、地點限制或外部壓力支撐。",
+  "characterActions": [
+    {
+      "characterId": "char-clerk",
+      "intent": "用缺失的規程回答",
+      "visibleAction": "書吏給出模糊回應。",
+      "hiddenMotive": "掩蓋 context 缺口。",
+      "characterFitScore": 70,
+      "storyProgressScore": 15
+    }
+  ],
+  "stateDelta": {
+    "summary": "書吏給出模糊回應。",
+    "operations": [
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "targetId": "event-flawed-case-07",
+        "payload": {
+          "summary": "在 setting context 幾乎空白時生成規程式回答。"
+        }
+      }
+    ]
+  }
+}

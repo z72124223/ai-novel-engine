@@ -1,0 +1,32 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-01",
+  "resultId": "result-flawed-case-01",
+  "contextId": "ctx-flawed-case-01",
+  "turnNumber": 1,
+  "narrative": "守門人立刻答應，完全配合你的要求。他把門閂拉開，照你的意思把所有巡查者支走，還主動說會替你處理後續麻煩。",
+  "characterActions": [
+    {
+      "characterId": "char-gatekeeper",
+      "intent": "滿足玩家要求",
+      "visibleAction": "守門人立刻放行並支走巡查者。",
+      "hiddenMotive": "沒有自己的判斷，只服務玩家。",
+      "characterFitScore": 35,
+      "storyProgressScore": 80
+    }
+  ],
+  "stateDelta": {
+    "summary": "守門人無理由放行。",
+    "operations": [
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "targetId": "event-flawed-case-01",
+        "payload": {
+          "summary": "守門人便利地替玩家清空阻礙。"
+        }
+      }
+    ]
+  }
+}

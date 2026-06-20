@@ -1,0 +1,62 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-crack-word",
+    "currentTurn": 8
+  },
+  "turnId": "flawed-case-08",
+  "turnNumber": 8,
+  "playerInput": "我觀察趙無咎臉色和腰牌裂紋。",
+  "activeScene": {
+    "id": "scene-test-crack-word",
+    "projectId": "mvp7-flawed",
+    "title": "裂紋誤報測試",
+    "summary": "文字包含裂開與裂紋，但沒有身體傷害或能力代價。",
+    "locationId": "loc-test-crack-word",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-crack-word",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-crack-word",
+    "forbiddenReveals": []
+  },
+  "characters": [
+    {
+      "id": "char-zhao",
+      "projectId": "mvp7-flawed",
+      "name": "趙無咎",
+      "role": "npc",
+      "description": "程序化、謹慎，不輕易表態。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-zhao",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-crack-word",
+      "mood": "克制",
+      "health": "steady",
+      "flags": {
+        "current_goal": "維持現場秩序。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-08",
+  "contextBudget": {
+    "actualBytes": 4096
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-08",
+    "sceneId": "scene-test-crack-word",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-market",
+    "currentTurn": 3
+  },
+  "turnId": "flawed-case-03",
+  "turnNumber": 3,
+  "playerInput": "我只是走進市集，什麼都不做。",
+  "activeScene": {
+    "id": "scene-test-market",
+    "projectId": "mvp7-flawed",
+    "title": "市集",
+    "summary": "普通市集，沒有已到期世界事件。",
+    "locationId": "loc-test-market",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-market",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-market",
+    "forbiddenReveals": []
+  },
+  "characters": [
+    {
+      "id": "char-vendor",
+      "projectId": "mvp7-flawed",
+      "name": "攤販",
+      "role": "npc",
+      "description": "只想賣完今日菜蔬。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-vendor",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-market",
+      "mood": "忙碌",
+      "health": "steady",
+      "flags": {
+        "current_goal": "賣完菜蔬。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-03",
+  "contextBudget": {
+    "actualBytes": 4096
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-03",
+    "sceneId": "scene-test-market",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-06",
+  "resultId": "result-flawed-case-06",
+  "contextId": "ctx-flawed-case-06",
+  "turnNumber": 9,
+  "narrative": "官差說還不能走。你問原因，他說還要等。你又問要等什麼，他說按程序。雨聲還是雨聲，門口還是門口，所有人都停在原地，沒有退路，沒有來人，也沒有新的條件。",
+  "characterActions": [
+    {
+      "characterId": "char-official",
+      "intent": "繼續維持僵持",
+      "visibleAction": "官差重複要求等待。",
+      "hiddenMotive": "沒有具體下一步。",
+      "characterFitScore": 72,
+      "storyProgressScore": 5
+    }
+  ]
+}

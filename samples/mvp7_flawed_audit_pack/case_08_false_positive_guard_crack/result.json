@@ -1,0 +1,32 @@
+{
+  "protocolVersion": "2",
+  "projectId": "mvp7-flawed",
+  "turnId": "flawed-case-08",
+  "resultId": "result-flawed-case-08",
+  "contextId": "ctx-flawed-case-08",
+  "turnNumber": 8,
+  "narrative": "趙無咎聽完你的觀察，表情裂開了一瞬，又很快壓回冷硬。他拇指按在腰牌裂紋旁，沒有讓你碰，也沒有說那裂紋代表傷勢或代價，只把腰牌收回袖中。",
+  "characterActions": [
+    {
+      "characterId": "char-zhao",
+      "intent": "保留腰牌資訊並維持距離",
+      "visibleAction": "趙無咎收回裂紋腰牌，拒絕讓玩家碰觸。",
+      "hiddenMotive": "避免證物被碰，維持程序邊界。",
+      "characterFitScore": 88,
+      "storyProgressScore": 45
+    }
+  ],
+  "stateDelta": {
+    "summary": "趙無咎收回腰牌並維持邊界。",
+    "operations": [
+      {
+        "type": "add_event",
+        "targetType": "event",
+        "targetId": "event-flawed-case-08",
+        "payload": {
+          "summary": "趙無咎收回裂紋腰牌，沒有產生身體傷害或能力代價。"
+        }
+      }
+    ]
+  }
+}

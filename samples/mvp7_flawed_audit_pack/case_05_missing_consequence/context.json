@@ -1,0 +1,62 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-fire",
+    "currentTurn": 5
+  },
+  "turnId": "flawed-case-05",
+  "turnNumber": 5,
+  "playerInput": "我徒手推開燒紅的鐵門。",
+  "activeScene": {
+    "id": "scene-test-fire",
+    "projectId": "mvp7-flawed",
+    "title": "火門",
+    "summary": "鐵門被火燒紅，徒手碰觸應有代價。",
+    "locationId": "loc-test-fire",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-fire",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-fire",
+    "forbiddenReveals": []
+  },
+  "characters": [
+    {
+      "id": "char-helper",
+      "projectId": "mvp7-flawed",
+      "name": "同行者",
+      "role": "npc",
+      "description": "擔心玩家受傷。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-helper",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-fire",
+      "mood": "焦急",
+      "health": "steady",
+      "flags": {
+        "current_goal": "阻止玩家徒手碰火門。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-05",
+  "contextBudget": {
+    "actualBytes": 4096
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-05",
+    "sceneId": "scene-test-fire",
+    "status": "ACTIVE"
+  },
+  "settingContextBudget": {
+    "actualBytes": 1024,
+    "includedSettingCount": 1
+  }
+}

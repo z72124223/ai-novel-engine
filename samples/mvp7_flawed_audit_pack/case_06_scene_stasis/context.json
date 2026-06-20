@@ -1,0 +1,79 @@
+{
+  "protocolVersion": "2",
+  "project": {
+    "id": "mvp7-flawed",
+    "name": "MVP-7 壞樣本",
+    "summary": "刻意設計的敘事品質稽核樣本。",
+    "activeSceneId": "scene-test-standoff",
+    "currentTurn": 9
+  },
+  "turnId": "flawed-case-06",
+  "turnNumber": 9,
+  "playerInput": "我又問了一遍：現在到底能不能走？",
+  "activeScene": {
+    "id": "scene-test-standoff",
+    "projectId": "mvp7-flawed",
+    "title": "長時間僵持",
+    "summary": "雙方已談判多回合，但沒有可用轉場或外部壓力。",
+    "locationId": "loc-test-standoff",
+    "status": "active"
+  },
+  "sceneContract": {
+    "id": "contract-test-standoff",
+    "projectId": "mvp7-flawed",
+    "sceneId": "scene-test-standoff",
+    "forbiddenReveals": []
+  },
+  "characters": [
+    {
+      "id": "char-official",
+      "projectId": "mvp7-flawed",
+      "name": "官差",
+      "role": "npc",
+      "description": "維持封控，但缺少下一步。",
+      "isPlayer": false
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-official",
+      "projectId": "mvp7-flawed",
+      "locationId": "loc-test-standoff",
+      "mood": "僵硬",
+      "health": "steady",
+      "flags": {
+        "current_goal": "繼續拖住玩家。"
+      }
+    }
+  ],
+  "contextId": "ctx-flawed-case-06",
+  "contextBudget": {
+    "actualBytes": 23000,
+    "omittedSettingCount": 24,
+    "truncationApplied": true
+  },
+  "sceneLifecycle": {
+    "sceneInstanceId": "scene-instance-flawed-06",
+    "sceneId": "scene-test-standoff",
+    "status": "ACTIVE",
+    "readyToClose": false
+  },
+  "activeStoryThreads": [
+    {
+      "threadId": "thread-standoff",
+      "type": "procedure",
+      "publicSummary": "封控談判已卡住。",
+      "status": "OPEN",
+      "progress": 20,
+      "urgency": 7
+    }
+  ],
+  "availableTransitions": [],
+  "pendingWorldEvents": [],
+  "settingContextBudget": {
+    "actualBytes": 2,
+    "includedSettingCount": 0,
+    "omittedSettingCount": 24,
+    "truncationApplied": true
+  }
+}
