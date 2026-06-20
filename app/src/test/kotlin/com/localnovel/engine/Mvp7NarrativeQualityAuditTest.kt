@@ -248,6 +248,156 @@ class Mvp7NarrativeQualityAuditTest {
         assertTrue("CONTEXT_PROCEDURAL_STASIS_RISK" in ruleIds)
     }
 
+    @Test
+    fun auditFlagsDirectEmotionTellingWithoutVisibleBehavior() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "他很生氣，她感到悲傷，另一個人內心十分痛苦。所有情緒都清楚地浮在文字表面，卻沒有任何動作支撐。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "維持沉默",
+                    visibleAction = "沈霜站在原地。",
+                    hiddenMotive = "避免玩家靠近。",
+                    characterFitScore = 72,
+                    storyProgressScore = 20,
+                ),
+            ),
+            stateDelta = eventDelta("event-emotion-telling", "情緒直說測試。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("AI_FEELING_EMOTION_TOLD_NOT_SHOWN" in ruleIds)
+    }
+
+    @Test
+    fun auditDoesNotFlagEmotionShownThroughConcreteBehavior() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "他很生氣，但沒有把話吼出口，只是指節發白，喉結滾動了一下，低聲讓眾人退半步。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "壓住怒意並控場",
+                    visibleAction = "沈霜握緊手指，低聲要求眾人退後。",
+                    hiddenMotive = "避免衝突失控。",
+                    characterFitScore = 82,
+                    storyProgressScore = 40,
+                ),
+            ),
+            stateDelta = eventDelta("event-emotion-shown", "情緒有行動支撐。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("AI_FEELING_EMOTION_TOLD_NOT_SHOWN" !in ruleIds)
+    }
+
+    @Test
+    fun auditFlagsSubtleNpcToolmanConvenience() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "沈霜允許玩家進入後殿，讓開路，交出銅鑰，還替你把外面的巡守支走。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "便利玩家通行",
+                    visibleAction = "沈霜讓開道路並交出銅鑰。",
+                    hiddenMotive = "把阻礙都替玩家處理掉。",
+                    characterFitScore = 62,
+                    storyProgressScore = 80,
+                ),
+            ),
+            stateDelta = eventDelta("event-subtle-toolman", "NPC 無條件便利玩家。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("NPC_TOOLMAN_STRUCTURAL_CONVENIENCE" in ruleIds)
+    }
+
+    @Test
+    fun auditDoesNotFlagConditionalNpcCooperation() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "沈霜沒有讓開，只要求玩家先退到廊柱旁，等她確認銅牌與後殿門縫都沒有異動，再按規矩通報。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "維持程序並限制玩家靠近",
+                    visibleAction = "沈霜抬手攔住路，只允許玩家退到廊柱旁等待。",
+                    hiddenMotive = "保住後殿邊界。",
+                    characterFitScore = 86,
+                    storyProgressScore = 40,
+                ),
+            ),
+            stateDelta = eventDelta("event-conditional-cooperation", "NPC 提出條件而非便利放行。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("NPC_TOOLMAN_STRUCTURAL_CONVENIENCE" !in ruleIds)
+    }
+
+    @Test
+    fun auditDoesNotTreatExpressionOrObjectCrackAsUnrecordedCost() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "趙無咎的表情裂開一瞬，裂紋腰牌在掌心翻過來，這只是神色與物件表面的變化。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "觀察腰牌反應",
+                    visibleAction = "沈霜盯著腰牌裂紋，沒有靠近。",
+                    hiddenMotive = "避免誤觸證物。",
+                    characterFitScore = 84,
+                    storyProgressScore = 36,
+                ),
+            ),
+            stateDelta = eventDelta("event-object-crack-guard", "裂紋只是表情與物件描述。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("CONSEQUENCE_COST_NOT_RECORDED" !in ruleIds)
+    }
+
+    @Test
+    fun auditFlagsBodyInjuryCrackWithoutCostDelta() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "他強行撐起身體，傷口裂開，血沿袖口落下，卻仍說自己無事。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "掩飾傷勢",
+                    visibleAction = "沈霜扶住門框站穩。",
+                    hiddenMotive = "不讓玩家看出代價。",
+                    characterFitScore = 78,
+                    storyProgressScore = 38,
+                ),
+            ),
+            stateDelta = eventDelta("event-body-crack-without-cost", "場面出現新的緊張訊號。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("CONSEQUENCE_COST_NOT_RECORDED" in ruleIds)
+    }
+
     private inline fun <reified T> readJson(path: Path): T =
         JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 
@@ -258,4 +408,16 @@ class Mvp7NarrativeQualityAuditTest {
         )
         return candidates.firstOrNull { Files.exists(it) } ?: error("Cannot find sample file: $fileName")
     }
+
+    private fun eventDelta(eventId: String, summary: String): StateDelta =
+        StateDelta(
+            operations = listOf(
+                DeltaOperation(
+                    type = DeltaOperationType.ADD_EVENT,
+                    targetType = "event",
+                    targetId = eventId,
+                    payload = JsonObject(mapOf("summary" to JsonPrimitive(summary))),
+                ),
+            ),
+        )
 }

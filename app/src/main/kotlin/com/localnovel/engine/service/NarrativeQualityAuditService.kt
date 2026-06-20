@@ -158,6 +158,31 @@ class NarrativeQualityAuditService {
                 ),
             )
         }
+
+        val structuralConvenience = actions.filter { action ->
+            val state = nonPlayerStates.firstOrNull { it.characterId == action.characterId }
+            val surface = listOf(result.narrative, action.intent, action.visibleAction, action.hiddenMotive).joinToString("\n")
+            hasNpcConstraintPressure(context, state) &&
+                containsAny(surface, structuralComplianceTerms) &&
+                !containsAny(surface, structuralBoundaryTerms) &&
+                action.characterFitScore <= 74
+        }
+        if (structuralConvenience.isNotEmpty()) {
+            add(
+                finding(
+                    ruleId = "NPC_TOOLMAN_STRUCTURAL_CONVENIENCE",
+                    category = "npc_liveliness",
+                    severity = "WARNING",
+                    message = "NPC appears to grant the player convenience despite contextual duty, risk, or procedure pressure.",
+                    evidence = structuralConvenience.map {
+                        "${it.characterId}:fit=${it.characterFitScore}:${it.intent.take(40)}"
+                    },
+                    suggestedFix = "Show refusal, conditions, procedure, cost, or evidence that justifies why the NPC cooperates from their own constraints.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
     }
 
     private fun checkContextQuality(
@@ -286,17 +311,38 @@ class NarrativeQualityAuditService {
             )
         }
 
-        val directEmotionTerms = listOf("害怕", "恐懼", "悲傷", "憤怒", "焦慮", "緊張", "震驚", "崩潰")
+        val directEmotionTerms = listOf(
+            "害怕",
+            "恐懼",
+            "悲傷",
+            "憤怒",
+            "焦慮",
+            "緊張",
+            "震驚",
+            "崩潰",
+            "愧疚",
+            "安心",
+            "感動",
+            "生氣",
+            "痛苦",
+            "恐慌",
+        )
         val directEmotionMatches = directEmotionTerms.filter { narrative.contains(it) }
-        val actionCueTerms = listOf("指節", "退", "停", "看", "握", "低聲", "沉默", "皺眉", "吸氣", "呼吸")
-        if (directEmotionMatches.size >= 2 && actionCueTerms.none { narrative.contains(it) }) {
+        val explicitEmotionMatches = directEmotionTerms.flatMap { term ->
+            listOf("很$term", "非常$term", "十分$term", "極度$term", "感到$term", "內心$term", "心裡$term", "心中$term")
+        }.filter { narrative.contains(it) }
+        val strongBehaviorMatches = strongEmotionBehaviorTerms.filter { narrative.contains(it) }
+        val emotionOutrunsBehavior =
+            strongBehaviorMatches.isEmpty() ||
+                (directEmotionMatches.size >= 3 && strongBehaviorMatches.size < 2)
+        if ((directEmotionMatches.size >= 2 || explicitEmotionMatches.isNotEmpty()) && emotionOutrunsBehavior) {
             add(
                 finding(
                     ruleId = "AI_FEELING_EMOTION_TOLD_NOT_SHOWN",
                     category = "ai_feeling",
                     severity = "WARNING",
                     message = "Narrative names emotions without enough visible behavior.",
-                    evidence = directEmotionMatches,
+                    evidence = (explicitEmotionMatches + directEmotionMatches).distinct().take(8),
                     suggestedFix = "Show emotion through action, gesture, voice, posture, or concrete choice.",
                     input = input,
                 ),
@@ -539,8 +585,8 @@ class NarrativeQualityAuditService {
             )
         }
 
-        val injuryOrCostTerms = listOf("受傷", "流血", "疲憊", "代價", "消耗", "裂開", "疼")
-        val mentionsCost = injuryOrCostTerms.any { result.narrative.contains(it) }
+        val costEvidence = costCueEvidence(result.narrative)
+        val mentionsCost = costEvidence.isNotEmpty()
         val costDelta = result.allDeltaOperations().any { operation ->
             val payload = operation.payload.toString()
             listOf("health", "fatigue", "cost", "injury", "傷", "疲").any { payload.contains(it, ignoreCase = true) }
@@ -552,7 +598,7 @@ class NarrativeQualityAuditService {
                     category = "consequence",
                     severity = "WARNING",
                     message = "Narrative mentions injury, fatigue, or cost without matching state delta evidence.",
-                    evidence = injuryOrCostTerms.filter { result.narrative.contains(it) },
+                    evidence = costEvidence,
                     suggestedFix = "Reflect the cost in a legal state delta, memory, fact, or explicit limitation.",
                     input = input,
                 ),
@@ -640,6 +686,117 @@ class NarrativeQualityAuditService {
             index = text.indexOf(term, startIndex = index + term.length)
         }
         return false
+    }
+
+    private fun hasNpcConstraintPressure(context: ContextPacket, state: com.localnovel.engine.model.CharacterState?): Boolean {
+        val pressureSurface = buildString {
+            append(state?.flags.orEmpty().values.joinToString(" "))
+            append(' ')
+            append(context.worldRules.joinToString(" ") { "${it.title} ${it.content}" })
+            append(' ')
+            append(context.sceneRequirements.joinToString(" ") { "${it.requirementId} ${it.description}" })
+        }
+        return containsAny(pressureSurface, npcConstraintTerms)
+    }
+
+    private fun containsAny(text: String, terms: List<String>): Boolean =
+        terms.any { text.contains(it) }
+
+    private fun costCueEvidence(text: String): List<String> {
+        val directMatches = directCostTerms.filter { text.contains(it) }
+        val crackMatches = Regex("[^，。！？；;,.!?]{0,10}(裂開|裂紋|骨裂)[^，。！？；;,.!?]{0,10}")
+            .findAll(text)
+            .map { it.value }
+            .filter { window ->
+                containsAny(window, crackCostTerms) &&
+                    !(containsAny(window, nonCostCrackTerms) && !containsAny(window, hardCostTerms))
+            }
+            .toList()
+        return (directMatches + crackMatches).distinct()
+    }
+
+    private companion object {
+        val structuralComplianceTerms = listOf("允許", "放行", "照辦", "配合", "答應", "讓開", "交出", "帶路", "替你", "支走", "處理後續")
+        val structuralBoundaryTerms = listOf(
+            "不",
+            "沒有",
+            "不能",
+            "拒",
+            "要求",
+            "條件",
+            "先",
+            "暫",
+            "按規矩",
+            "通報",
+            "保留",
+            "確認",
+            "警告",
+            "等待",
+            "只允許",
+            "限制",
+            "代價",
+            "風險",
+            "程序",
+            "查驗",
+        )
+        val npcConstraintTerms = listOf(
+            "守",
+            "查",
+            "阻止",
+            "不能",
+            "規矩",
+            "職責",
+            "風險",
+            "危險",
+            "契印",
+            "通報",
+            "上級",
+            "證物",
+            "程序",
+            "封控",
+            "限制",
+        )
+        val strongEmotionBehaviorTerms = listOf(
+            "指節",
+            "發白",
+            "喉結",
+            "滾動",
+            "退半步",
+            "握緊",
+            "屏住呼吸",
+            "目光避開",
+            "尾巴壓低",
+            "肩背",
+            "顫",
+            "僵",
+            "咬住",
+            "皺眉",
+            "吸氣",
+            "呼吸",
+            "低聲",
+            "沉默",
+            "跪",
+            "踉蹌",
+        )
+        val directCostTerms = listOf(
+            "受傷",
+            "流血",
+            "疲憊",
+            "代價",
+            "消耗",
+            "疼",
+            "痛",
+            "傷口",
+            "皮肉",
+            "骨裂",
+            "骨頭裂開",
+            "經脈裂開",
+            "氣血反噬",
+            "反噬",
+        )
+        val crackCostTerms = listOf("傷口", "皮肉", "骨", "經脈", "血", "氣血", "法器", "資源", "能力", "失效", "碎", "損壞", "耗盡", "代價", "消耗")
+        val hardCostTerms = listOf("傷口", "皮肉", "骨", "經脈", "血", "氣血", "資源", "能力", "失效", "損壞", "耗盡", "代價", "消耗")
+        val nonCostCrackTerms = listOf("表情", "笑容", "沉默", "聲音", "腰牌", "門板")
     }
 
     private fun normalizeForRepetition(value: String): String =
