@@ -2,9 +2,12 @@ package com.localnovel.engine.service
 
 import com.localnovel.engine.model.CharacterProfile
 import com.localnovel.engine.model.CharacterState
+import com.localnovel.engine.model.AvailableTransition
 import com.localnovel.engine.model.ContextBudget
+import com.localnovel.engine.model.ContextKnowledgeClaim
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.Event
+import com.localnovel.engine.model.Fact
 import com.localnovel.engine.model.RelevantSetting
 import com.localnovel.engine.model.SettingContextBudget
 import com.localnovel.engine.support.JsonSupport
@@ -107,13 +110,38 @@ object ContextPacketNormalizer {
         "forbiddenCharacterUses",
     )
 
+    private val transitionSettingMetadataKeys = setOf(
+        "targetSceneId",
+        "targetLocationId",
+        "playerIntentRequired",
+        "travelMinutes",
+        "forcedAllowed",
+        "transitionId",
+    )
+
+    private val locationConnectionMetadataKeys = setOf(
+        "fromLocationId",
+        "toLocationId",
+        "travelMinutes",
+        "bidirectional",
+        "connectionType",
+    )
+
+    private val worldEventMetadataKeys = setOf(
+        "dueReason",
+        "publicEffect",
+        "allowedNarrativeUses",
+        "forbiddenCharacterUses",
+        "forbiddenUses",
+    )
+
     fun normalizeForFinalContext(context: ContextPacket): ContextPacket {
         val mandatoryTexts = mandatoryTextFragments(context)
-        return context.copy(
+        val compactedContext = context.copy(
             characters = context.characters.map(::compactCharacter).distinctBy { it.id },
             characterMemories = emptyList(),
             characterStates = context.characterStates.map(::compactState).distinctBy { it.characterId },
-            facts = context.facts.distinctBy { it.id },
+            facts = context.facts.map(::compactFact).distinctBy { it.id },
             revealedSecrets = emptyList(),
             items = context.items.distinctBy { it.id },
             techniques = context.techniques.map { technique ->
@@ -130,6 +158,8 @@ object ContextPacketNormalizer {
             directorPressure = context.directorPressure?.takeIf {
                 it.enabled || it.mustProduceMeaningfulStateChange || it.allowedPressureTypes.isNotEmpty()
             },
+            knowledgeClaims = emptyList(),
+            availableTransitions = context.availableTransitions.map(::compactTransition).distinctBy { it.transitionId },
             relevantSettings = context.relevantSettings.map { compactSetting(it, mandatoryTexts) }.distinctBy { "${it.entityType}:${it.entityId}" },
             activeCapabilityContracts = context.activeCapabilityContracts.distinctBy { "${it.entityType}:${it.entityId}:${it.authorizedActorIds.joinToString(",")}" },
             contextBudget = context.contextBudget.withoutLegacyDiagnostics(),
@@ -137,6 +167,9 @@ object ContextPacketNormalizer {
             canonRevisionSummary = context.canonRevisionSummary.copy(
                 relevantRevisionIds = context.canonRevisionSummary.relevantRevisionIds.take(8),
             ),
+        )
+        return compactedContext.copy(
+            knowledgeClaims = compactKnowledgeClaims(compactedContext, context.knowledgeClaims),
         )
     }
 
@@ -192,6 +225,9 @@ object ContextPacketNormalizer {
     private fun compactFlag(key: String, value: String): String? {
         if (value.isBlank()) return null
         val lower = key.lowercase()
+        if (lower.contains("default") && lower != "relationship_summary") {
+            return null
+        }
         if (
             ".last_" in lower ||
             lower.endsWith(".source") ||
@@ -215,7 +251,18 @@ object ContextPacketNormalizer {
         ) ||
             lower.startsWith("emotion.") && value.trim().matches(Regex("-?\\d{1,3}")) ||
             listOf("belief", "knowledge", "goal", "emotion", "relationship", "constraint", "intent", "trust", "fear", "suspicion").any { it in lower }
-        return if (keep) trimText(value, 180) else null
+        if (!keep) return null
+        val maxChars = when (lower) {
+            "available_actions", "forbidden_actions" -> 120
+            "current_goal" -> 160
+            "relationship_summary" -> 120
+            else -> 120
+        }
+        return if (lower == "available_actions" || lower == "forbidden_actions") {
+            compactActionList(value, maxChars)
+        } else {
+            trimText(value, maxChars)
+        }
     }
 
     private fun compactEvent(event: Event): Event {
@@ -228,6 +275,52 @@ object ContextPacketNormalizer {
                 },
         )
         return event.copy(summary = trimText(event.summary, 180), payload = payload)
+    }
+
+    private fun compactTransition(transition: AvailableTransition): AvailableTransition {
+        val unmet = transition.unmetPrerequisites
+            .map { trimText(it, 96) }
+            .distinct()
+            .take(3)
+        val visibleReason = trimText(transition.visibleReason, 96).let { reason ->
+            if (reason.isBlank() || unmet.any { it == reason }) "" else reason
+        }
+        return transition.copy(
+            playerIntentRequired = trimText(transition.playerIntentRequired, 96),
+            unmetPrerequisites = unmet,
+            visibleReason = visibleReason,
+        )
+    }
+
+    private fun compactFact(fact: Fact): Fact =
+        fact.copy(content = trimText(fact.content, 180))
+
+    private fun compactKnowledgeClaims(
+        context: ContextPacket,
+        claims: List<ContextKnowledgeClaim>,
+    ): List<ContextKnowledgeClaim> {
+        val retainedFactIds = context.facts.map { it.id }.toSet()
+        val retainedMemoryIds = context.retrievedMemories.map { it.memoryId }.toSet() +
+            context.characterMemories.map { it.id }
+        return claims
+            .map { claim ->
+                val sourceFactId = claim.sourceFactId?.takeIf { it in retainedFactIds }
+                val sourceMemoryId = claim.sourceMemoryId?.takeIf { it in retainedMemoryIds }
+                val sourceType = when {
+                    sourceFactId != null -> "fact"
+                    sourceMemoryId != null -> "memory"
+                    claim.sourceFactId != null || claim.sourceMemoryId != null -> "belief"
+                    claim.sourceType.isBlank() -> "belief"
+                    else -> claim.sourceType
+                }
+                claim.copy(
+                    statement = trimText(claim.statement, 180),
+                    sourceType = sourceType,
+                    sourceFactId = sourceFactId,
+                    sourceMemoryId = sourceMemoryId,
+                )
+            }
+            .distinctBy { it.claimId }
     }
 
     private fun mandatoryTextFragments(context: ContextPacket): Set<String> =
@@ -257,12 +350,72 @@ object ContextPacketNormalizer {
         }.filter { it.length >= 20 }.toSet()
 
     private fun compactSetting(setting: RelevantSetting, mandatoryTexts: Set<String>): RelevantSetting {
+        if (setting.entityType == "scene_transition") {
+            return setting.copy(
+                summary = "",
+                relationPath = emptyList(),
+                metadata = metadataWithKeys(setting.metadata, transitionSettingMetadataKeys, maxStringChars = 96),
+            )
+        }
+        if (setting.entityType == "location_connection") {
+            return setting.copy(
+                summary = "",
+                relationPath = emptyList(),
+                metadata = metadataWithKeys(setting.metadata, locationConnectionMetadataKeys, maxStringChars = 80),
+            )
+        }
+        if (setting.entityType == "world_event") {
+            return setting.copy(
+                summary = if (setting.requiredRuntimeUse) trimText(setting.summary, 96) else "",
+                relationPath = emptyList(),
+                metadata = metadataWithKeys(setting.metadata, worldEventMetadataKeys, maxStringChars = 96),
+            )
+        }
         val duplicateSummary = setting.summary.normalizedFragment() in mandatoryTexts
         return setting.copy(
             summary = if (duplicateSummary) "" else trimText(setting.summary, if (setting.requiredRuntimeUse) 220 else 100),
             relationPath = if (setting.requiredRuntimeUse) setting.relationPath.take(1) else emptyList(),
             metadata = JsonObject(setting.metadata.filterKeys { it in retainedSettingMetadataKeys }.filterValues { it.hasMeaningfulContent() }),
         )
+    }
+
+    private fun metadataWithKeys(
+        metadata: JsonObject,
+        keys: Set<String>,
+        maxStringChars: Int,
+    ): JsonObject = JsonObject(
+        metadata
+            .filterKeys { it in keys }
+            .mapValues { (_, value) -> compactMetadataValue(value, maxStringChars) }
+            .filterValues { it.hasMeaningfulContent() },
+    )
+
+    private fun compactMetadataValue(value: JsonElement, maxStringChars: Int): JsonElement =
+        when (value) {
+            is JsonPrimitive -> if (value.isString) JsonPrimitive(trimText(value.content, maxStringChars)) else value
+            is JsonArray -> JsonArray(value.take(4).map { compactMetadataValue(it, maxStringChars) })
+            is JsonObject -> JsonObject(
+                value.entries
+                    .take(6)
+                    .associate { (key, element) -> key to compactMetadataValue(element, maxStringChars) }
+                    .filterValues { it.hasMeaningfulContent() },
+            )
+        }
+
+    private fun compactActionList(value: String, maxChars: Int): String {
+        val parsed = runCatching {
+            (JsonSupport.json.parseToJsonElement(value) as? JsonArray)
+                ?.mapNotNull { it.jsonPrimitive.contentOrNull?.trim() }
+        }.getOrNull()
+        val actions = parsed ?: value
+            .split(';', ',', '\n')
+            .map { it.trim().trim('"') }
+        val compacted = actions
+            .filter { it.isNotBlank() }
+            .distinct()
+            .take(6)
+            .joinToString("; ")
+        return trimText(if (compacted.isBlank()) value else compacted, maxChars)
     }
 
     private fun compactJsonObject(value: JsonObject): JsonObject =

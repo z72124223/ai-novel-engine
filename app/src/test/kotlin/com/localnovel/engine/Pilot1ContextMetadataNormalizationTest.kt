@@ -3,6 +3,7 @@ package com.localnovel.engine
 import com.localnovel.engine.model.CharacterKnowledgeClaim
 import com.localnovel.engine.model.CharacterProfile
 import com.localnovel.engine.model.CharacterState
+import com.localnovel.engine.model.AvailableTransition
 import com.localnovel.engine.model.ContextBudget
 import com.localnovel.engine.model.ContextKnowledgeClaim
 import com.localnovel.engine.model.ContextPacket
@@ -37,6 +38,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class Pilot1ContextMetadataNormalizationTest {
@@ -208,6 +210,108 @@ class Pilot1ContextMetadataNormalizationTest {
         val report = ContextBudgetForensicsService().report(baseContext(), finalize(baseContext()))
 
         assertTrue(report.danglingReferenceCheck.valid, report.danglingReferenceCheck.missingReferences.joinToString())
+    }
+
+    @Test
+    fun transitionSettingMetadataIsDeduplicatedAgainstTransitionPreview() {
+        val unmet = "Need patient name, medicine, package number, and witness before opening the seal."
+        val context = baseContext(playerInput = "I ask whether we can move toward the awning after checking the package number.").copy(
+            availableTransitions = listOf(
+                AvailableTransition(
+                    transitionId = "transition-gate-to-awning",
+                    toSceneId = "scene-awning",
+                    targetLocation = "loc-awning",
+                    playerIntentRequired = "move to awning to register responsibility",
+                    prerequisitesSatisfied = false,
+                    unmetPrerequisites = listOf(unmet, unmet),
+                    travelMinutes = 1,
+                    forcedAllowed = false,
+                    visibleReason = unmet,
+                ),
+            ),
+            relevantSettings = baseContext().relevantSettings + RelevantSetting(
+                "scene_transition",
+                "transition-gate-to-awning",
+                "Move to awning",
+                "Transition to the awning. $unmet",
+                requiredRuntimeUse = true,
+                relationPath = listOf(
+                    "scene:scene-gate-HAS_TRANSITION->scene_transition:transition-gate-to-awning",
+                    "scene_transition:transition-gate-to-awning-TARGETS->scene:scene-awning",
+                ),
+                metadata = JsonObject(
+                    mapOf(
+                        "targetSceneId" to JsonPrimitive("scene-awning"),
+                        "targetLocationId" to JsonPrimitive("loc-awning"),
+                        "playerIntentRequired" to JsonPrimitive("move to awning to register responsibility"),
+                        "prerequisitesSatisfied" to JsonPrimitive(false),
+                        "unmetPrerequisites" to JsonArray(listOf(JsonPrimitive(unmet))),
+                        "travelMinutes" to JsonPrimitive(1),
+                        "forcedAllowed" to JsonPrimitive(false),
+                    ),
+                ),
+            ),
+        )
+
+        val finalized = finalize(context)
+        val transitionSetting = finalized.relevantSettings.single { it.entityType == "scene_transition" }
+
+        assertEquals("", transitionSetting.summary)
+        assertEquals(emptyList(), transitionSetting.relationPath)
+        assertFalse(transitionSetting.metadata.containsKey("unmetPrerequisites"))
+        assertFalse(transitionSetting.metadata.containsKey("prerequisitesSatisfied"))
+        assertEquals("", finalized.availableTransitions.single().visibleReason)
+        assertEquals(listOf(unmet), finalized.availableTransitions.single().unmetPrerequisites)
+        assertTrue(finalized.contextBudget.actualBytes <= 24576)
+    }
+
+    @Test
+    fun relationshipDefaultsAreRemovedFromCharacterStateFlags() {
+        val context = baseContext().copy(
+            characterStates = baseContext().characterStates.map { state ->
+                if (state.characterId == "char-warden") {
+                    state.copy(
+                        flags = state.flags + mapOf(
+                            "relationship_defaults" to "A long default relationship matrix that belongs in canon, not final context.",
+                            "available_actions" to "[\"control perimeter\",\"answer partially\",\"test safely\",\"repeat procedure\"]",
+                        ),
+                    )
+                } else {
+                    state
+                }
+            },
+        )
+
+        val state = finalize(context).characterStates.single { it.characterId == "char-warden" }
+
+        assertFalse(state.flags.containsKey("relationship_defaults"))
+        assertEquals("control perimeter; answer partially; test safely; repeat procedure", state.flags["available_actions"])
+    }
+
+    @Test
+    fun missingKnowledgeSourceReferencesAreDroppedDuringNormalization() {
+        val context = baseContext().copy(
+            facts = emptyList(),
+            retrievedMemories = emptyList(),
+            knowledgeClaims = listOf(
+                ContextKnowledgeClaim(
+                    "claim-missing-source",
+                    "char-warden",
+                    "missing_source",
+                    "A belief that used to point at a source removed by final context trimming.",
+                    "BELIEVES",
+                    50,
+                    "fact",
+                    sourceFactId = "fact-not-retained",
+                ),
+            ),
+        )
+
+        val claim = finalize(context).knowledgeClaims.single()
+
+        assertEquals("belief", claim.sourceType)
+        assertNull(claim.sourceFactId)
+        assertNull(claim.sourceMemoryId)
     }
 
     @Test
