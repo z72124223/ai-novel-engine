@@ -167,6 +167,27 @@ Expected:
 - No SQLite path is required or written.
 - The command does not call `resolve-turn`, `StateReducer`, or any repository-backed write path.
 
+Audit reports are expected to be UTF-8 JSON. On Windows PowerShell 5.1, always read the report with explicit UTF-8 before piping into `ConvertFrom-Json`:
+
+```powershell
+Get-Content -LiteralPath out/mvp7_narrative_quality_report.json -Encoding UTF8 -Raw |
+    ConvertFrom-Json |
+    Out-Null
+```
+
+Do not use the bare PowerShell 5.1 form below for audit report validation, because it can decode UTF-8 files through the system default code page and produce a false parse failure:
+
+```powershell
+Get-Content -LiteralPath out/mvp7_narrative_quality_report.json -Raw |
+    ConvertFrom-Json
+```
+
+Node.js is an acceptable alternate strict JSON check when available:
+
+```powershell
+node -e "const fs=require('fs'); JSON.parse(fs.readFileSync(process.argv[1], 'utf8')); console.log('JSON OK')" out/mvp7_narrative_quality_report.json
+```
+
 Candidate A.2 calibration additionally requires a distribution smoke and selected flawed-pack checks:
 
 ```powershell
@@ -184,6 +205,7 @@ $App = "$env:LOCALAPPDATA\local-interactive-fiction-engine-build\app\install\app
 Expected A.2 signals:
 
 - Repo and installDist sample audits exit `0`.
+- Generated report files parse as UTF-8 JSON with the explicit PowerShell or Node check above.
 - `case_02_ai_overwritten_style` includes `AI_FEELING_EMOTION_TOLD_NOT_SHOWN`.
 - `case_05_missing_consequence` still includes `CONSEQUENCE_COST_NOT_RECORDED`.
 - `case_08_false_positive_guard_crack` remains PASS or at minimum has no `CONSEQUENCE_COST_NOT_RECORDED` finding.

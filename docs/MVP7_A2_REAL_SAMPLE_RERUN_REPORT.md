@@ -143,10 +143,11 @@ No obvious new missed issue was proven by this rerun, but several gaps remain:
    - They prove that the audit can identify thin NPC action evidence.
    - They should not be used alone to tune normal story severity.
 
-4. Some generated Pilot-1 audit reports did not parse as strict JSON.
+4. Some generated Pilot-1 audit reports initially appeared not to parse as strict JSON.
    - The command completed and emitted readable verdict/score/rule summaries.
-   - `ConvertFrom-Json` failed on `pilot1_turn008` through `pilot1_turn012`, apparently due malformed or unescaped evidence strings inherited from those artifacts.
-   - This is a report-output robustness issue to investigate separately; it is not a SQLite or runtime state issue.
+   - `ConvertFrom-Json` failed on `pilot1_turn008` through `pilot1_turn012` when PowerShell 5.1 read the files without explicit UTF-8.
+   - A later JSON robustness investigation showed the reports were valid UTF-8 JSON; the apparent failure came from PowerShell default decoding, not malformed or unescaped audit output.
+   - This was a verification-instruction issue, not a SQLite or runtime state issue. See `docs/MVP7_AUDIT_JSON_ROBUSTNESS_INVESTIGATION.md`.
 
 ## 9. New False Positives
 
@@ -193,7 +194,7 @@ This rerun improved confidence that A.2 is not too noisy, but it does not prove 
 
 Blockers before Candidate B discussion:
 
-- Fix or investigate strict JSON parsing of generated audit reports for Pilot-1 turns with noisy evidence strings.
+- Keep strict JSON verification instructions explicit about UTF-8, especially on PowerShell 5.1.
 - Collect more real story arcs beyond this Pilot-1/Pilot-1b/MVP-6 artifact set.
 - Separate acceptance-fixture quality warnings from true story-turn quality warnings.
 - Decide whether context-quality findings should remain advisory or become a separate preflight category.

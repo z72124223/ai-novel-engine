@@ -6,6 +6,8 @@ Status: `INVESTIGATION_COMPLETE`
 
 This investigation checked why five `audit-narrative-quality` output files appeared to fail strict JSON parsing during the Candidate A.2 real sample rerun. It did not change Kotlin code, tests, audit rules, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or SQLite data.
 
+Follow-up: verification instructions were hardened in `VERIFY.md` so audit report JSON is validated with explicit UTF-8 on Windows PowerShell 5.1. The investigation conclusion remains unchanged: the reports were valid UTF-8 JSON, and the apparent failures came from the verification read path.
+
 ## 1. Outputs That Initially Appeared To Fail
 
 The apparent failures were the five late Pilot-1 reports generated under ignored `out/`:
