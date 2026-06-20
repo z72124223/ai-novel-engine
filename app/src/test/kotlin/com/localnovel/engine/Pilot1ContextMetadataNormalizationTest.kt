@@ -18,6 +18,7 @@ import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
 import com.localnovel.engine.model.SceneLifecycle
 import com.localnovel.engine.model.SettingContextBudget
+import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
 import com.localnovel.engine.model.WorldRule
 import com.localnovel.engine.service.ContextAuditService
@@ -312,6 +313,160 @@ class Pilot1ContextMetadataNormalizationTest {
         assertEquals("belief", claim.sourceType)
         assertNull(claim.sourceFactId)
         assertNull(claim.sourceMemoryId)
+    }
+
+    @Test
+    fun openTaskPayloadIsCompactedAndDeduplicatedDuringNormalization() {
+        val title = "Confirm the limited water-trace witness path before anyone can turn it into cargo responsibility."
+        val context = baseContext().copy(
+            openTasks = listOf(
+                Task(
+                    "task-water-witness",
+                    "metadata-normalization",
+                    title,
+                    status = "open",
+                    payload = JsonObject(
+                        mapOf(
+                            "title" to JsonPrimitive(title),
+                            "status" to JsonPrimitive("open"),
+                            "currentObjective" to JsonPrimitive("Record water trace, wheel rut, and low blocks without opening cargo. ".repeat(4)),
+                            "nextOptions" to JsonArray(
+                                (1..6).map { JsonPrimitive("option-$it: verify one narrow procedural step without touching the warehouse seal") },
+                            ),
+                            "diagnostics" to JsonPrimitive("debug payload that should not enter final context"),
+                            "fullHistory" to JsonPrimitive("long task history ".repeat(50)),
+                        ),
+                    ),
+                    createdTurn = 3,
+                    updatedTurn = 10,
+                ),
+            ),
+        )
+
+        val task = finalize(context).openTasks.single()
+
+        assertEquals("task-water-witness", task.id)
+        assertFalse(task.payload.containsKey("title"))
+        assertFalse(task.payload.containsKey("status"))
+        assertFalse(task.payload.containsKey("diagnostics"))
+        assertFalse(task.payload.containsKey("fullHistory"))
+        assertTrue(task.title.length <= 120)
+        assertTrue(task.payload["currentObjective"].toString().length < 140)
+        assertEquals(3, (task.payload["nextOptions"] as JsonArray).size)
+    }
+
+    @Test
+    fun retrievedMemoryCardsAreCompactedButKeepIdentityAndUse() {
+        val context = baseContext().copy(
+            retrievedMemories = listOf(
+                RetrievedMemory(
+                    "memory-turn-009-limited-witness",
+                    "char-warden",
+                    "EPISODIC",
+                    "The stranger accepted limited witness responsibility for checking water traces but refused cargo opening responsibility. ".repeat(4),
+                    emotionalSignature = JsonObject(
+                        mapOf(
+                            "trust_shift" to JsonPrimitive("cautious but procedurally useful"),
+                            "risk" to JsonPrimitive("may draw buyer and merchant hostility"),
+                            "debug_source" to JsonPrimitive("internal retrieval diagnostics"),
+                            "long_note" to JsonPrimitive("detailed emotional analysis ".repeat(20)),
+                        ),
+                    ),
+                    confidence = 90,
+                    salience = 88,
+                    retrievalScore = 160,
+                    retrievalReasons = listOf(
+                        "explicitly mentions limited responsibility and water-trace witness",
+                        "explicitly mentions limited responsibility and water-trace witness",
+                        "connects to awning transition intent",
+                    ),
+                    allowedUses = listOf("character_action", "dialogue_subtext", "emotion_trigger", "long_form_summary"),
+                ),
+            ),
+        )
+
+        val memory = finalize(context).retrievedMemories.single()
+
+        assertEquals("memory-turn-009-limited-witness", memory.memoryId)
+        assertTrue(memory.summary.length <= 140)
+        assertEquals(2, memory.retrievalReasons.size)
+        assertTrue(memory.retrievalReasons.all { it.length <= 48 })
+        assertEquals(2, memory.allowedUses.size)
+        assertFalse(memory.emotionalSignature.containsKey("debug_source"))
+        assertTrue(memory.emotionalSignature.size <= 3)
+    }
+
+    @Test
+    fun turnTenLikePressureFitsAfterTaskAndMemoryCompaction() {
+        val playerInput = """
+            I formally accept limited witness responsibility and go to the awning with witness, but only for checking water.
+            I do not cross the chalk line, touch the seal, touch the cargo, open the warehouse, or accept cargo responsibility.
+            Record water trace, wheel rut, and low blocks as separate from opening, taking cargo, or assigning guilt.
+        """.trimIndent().repeat(4)
+        val base = largeContext(playerInput)
+        val context = base.copy(
+            facts = base.facts + (1..24).map {
+                Fact(
+                    "fact-water-$it",
+                    "metadata-normalization",
+                    "Water-trace procedural fact $it: right drain, wheel rut, low blocks, buyer pressure, clerk record, and witness boundary remain separate from opening cargo.",
+                    "public",
+                    "turn",
+                    it,
+                )
+            },
+            retrievedMemories = base.retrievedMemories + (1..16).map {
+                RetrievedMemory(
+                    "memory-water-$it",
+                    "char-warden",
+                    "EPISODIC",
+                    "Earlier turn $it kept the witness boundary narrow: water trace, wheel rut, low blocks, no cargo opening, and no blame assignment. ".repeat(3),
+                    confidence = 85,
+                    salience = 80,
+                    retrievalScore = 150 - it,
+                    retrievalReasons = listOf("limited witness boundary repeated in player intent", "transition to awning with witness"),
+                )
+            },
+            openTasks = listOf(
+                Task(
+                    "task-pilot2-legal-opening-path",
+                    "metadata-normalization",
+                    "Resolve the limited legal opening path without turning water witness into cargo responsibility.",
+                    payload = JsonObject(
+                        mapOf(
+                            "currentObjective" to JsonPrimitive("Keep check-water-only responsibility distinct from opening, taking cargo, or assigning guilt. ".repeat(5)),
+                            "nextOptions" to JsonArray((1..8).map { JsonPrimitive("option-$it: one procedural next step after awning witness") }),
+                            "knownFacts" to JsonArray((1..8).map { JsonPrimitive("known fact $it: water trace and witness boundary remain relevant") }),
+                        ),
+                    ),
+                    createdTurn = 3,
+                    updatedTurn = 10,
+                ),
+            ),
+            relevantSettings = base.relevantSettings + (1..16).map {
+                RelevantSetting(
+                    "scene_transition",
+                    "transition-awning-$it",
+                    "Awning witness transition $it",
+                    "Move to the awning for a limited witness record without opening cargo.",
+                    requiredRuntimeUse = true,
+                    metadata = JsonObject(
+                        mapOf(
+                            "targetSceneId" to JsonPrimitive("scene-awning"),
+                            "targetLocationId" to JsonPrimitive("loc-awning"),
+                            "playerIntentRequired" to JsonPrimitive("go to awning with witness"),
+                            "travelMinutes" to JsonPrimitive(1),
+                            "forcedAllowed" to JsonPrimitive(false),
+                        ),
+                    ),
+                )
+            },
+        )
+
+        val finalized = finalize(context, 24576)
+
+        assertTrue(finalized.contextBudget.actualBytes <= 24576)
+        assertTrue(finalized.openTasks.any { it.id == "task-pilot2-legal-opening-path" })
     }
 
     @Test

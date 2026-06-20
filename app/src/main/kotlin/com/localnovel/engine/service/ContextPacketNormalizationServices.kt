@@ -9,7 +9,10 @@ import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.Event
 import com.localnovel.engine.model.Fact
 import com.localnovel.engine.model.RelevantSetting
+import com.localnovel.engine.model.RetrievedMemory
 import com.localnovel.engine.model.SettingContextBudget
+import com.localnovel.engine.model.Task
+import com.localnovel.engine.model.WorldRule
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
@@ -87,6 +90,8 @@ object ContextPacketTopLevelAllowlist {
 }
 
 object ContextPacketNormalizer {
+    private val defaultMemoryAllowedUses = listOf("character_action", "emotion_trigger", "dialogue_subtext")
+
     private val retainedSettingMetadataKeys = setOf(
         "costs",
         "limitations",
@@ -113,18 +118,13 @@ object ContextPacketNormalizer {
     private val transitionSettingMetadataKeys = setOf(
         "targetSceneId",
         "targetLocationId",
-        "playerIntentRequired",
         "travelMinutes",
-        "forcedAllowed",
-        "transitionId",
     )
 
     private val locationConnectionMetadataKeys = setOf(
         "fromLocationId",
         "toLocationId",
         "travelMinutes",
-        "bidirectional",
-        "connectionType",
     )
 
     private val worldEventMetadataKeys = setOf(
@@ -140,7 +140,9 @@ object ContextPacketNormalizer {
         val compactedContext = context.copy(
             characters = context.characters.map(::compactCharacter).distinctBy { it.id },
             characterMemories = emptyList(),
-            characterStates = context.characterStates.map(::compactState).distinctBy { it.characterId },
+            characterStates = context.characterStates
+                .map { compactState(it, context.continuityConstraints.characterLocations) }
+                .distinctBy { it.characterId },
             facts = context.facts.map(::compactFact).distinctBy { it.id },
             revealedSecrets = emptyList(),
             items = context.items.distinctBy { it.id },
@@ -151,13 +153,15 @@ object ContextPacketNormalizer {
                     technique
                 }
             }.distinctBy { it.id },
+            worldRules = context.worldRules.map(::compactWorldRule).distinctBy { it.id },
             recentEvents = context.recentEvents.map(::compactEvent).distinctBy { it.id },
-            openTasks = context.openTasks.distinctBy { it.id },
+            openTasks = context.openTasks.map(::compactTask).distinctBy { it.id },
             recentTurnSummaries = context.recentTurnSummaries.distinctBy { it.turnNumber },
             sceneProgress = compactJsonObject(context.sceneProgress),
             directorPressure = context.directorPressure?.takeIf {
                 it.enabled || it.mustProduceMeaningfulStateChange || it.allowedPressureTypes.isNotEmpty()
             },
+            retrievedMemories = context.retrievedMemories.map(::compactRetrievedMemory).distinctBy { it.memoryId },
             knowledgeClaims = emptyList(),
             availableTransitions = context.availableTransitions.map(::compactTransition).distinctBy { it.transitionId },
             relevantSettings = context.relevantSettings.map { compactSetting(it, mandatoryTexts) }.distinctBy { "${it.entityType}:${it.entityId}" },
@@ -206,13 +210,14 @@ object ContextPacketNormalizer {
                 .filterValues { it.hasMeaningfulContent() },
         )
         return character.copy(
-            description = trimText(character.description, 220),
+            description = trimText(character.description, 140),
             profile = profile,
         )
     }
 
-    private fun compactState(state: CharacterState): CharacterState =
+    private fun compactState(state: CharacterState, continuityLocations: Map<String, String?>): CharacterState =
         state.copy(
+            locationId = state.locationId?.takeUnless { continuityLocations[state.characterId] == it },
             inventory = state.inventory.distinct().sorted(),
             flags = state.flags
                 .toSortedMap()
@@ -253,10 +258,10 @@ object ContextPacketNormalizer {
             listOf("belief", "knowledge", "goal", "emotion", "relationship", "constraint", "intent", "trust", "fear", "suspicion").any { it in lower }
         if (!keep) return null
         val maxChars = when (lower) {
-            "available_actions", "forbidden_actions" -> 120
-            "current_goal" -> 160
-            "relationship_summary" -> 120
-            else -> 120
+            "available_actions", "forbidden_actions" -> 80
+            "current_goal" -> 80
+            "relationship_summary" -> 72
+            else -> 72
         }
         return if (lower == "available_actions" || lower == "forbidden_actions") {
             compactActionList(value, maxChars)
@@ -274,7 +279,17 @@ object ContextPacketNormalizer {
                     element.hasMeaningfulContent() && text != event.summary.trim()
                 },
         )
-        return event.copy(summary = trimText(event.summary, 180), payload = payload)
+        return event.copy(
+            summary = trimText(event.summary, 80),
+            payload = JsonObject(
+                payload.entries
+                    .asSequence()
+                    .map { (key, value) -> key to compactMetadataValue(value, maxStringChars = 48) }
+                    .filter { (_, value) -> value.hasMeaningfulContent() }
+                    .take(3)
+                    .toMap(),
+            ),
+        )
     }
 
     private fun compactTransition(transition: AvailableTransition): AvailableTransition {
@@ -282,18 +297,66 @@ object ContextPacketNormalizer {
             .map { trimText(it, 96) }
             .distinct()
             .take(3)
-        val visibleReason = trimText(transition.visibleReason, 96).let { reason ->
-            if (reason.isBlank() || unmet.any { it == reason }) "" else reason
+        val visibleReason = transition.visibleReason.trim().let { reason ->
+            if (reason.isBlank() || transition.unmetPrerequisites.any { it == reason }) "" else trimText(reason, 80)
         }
         return transition.copy(
-            playerIntentRequired = trimText(transition.playerIntentRequired, 96),
+            playerIntentRequired = trimText(transition.playerIntentRequired, 80),
             unmetPrerequisites = unmet,
             visibleReason = visibleReason,
         )
     }
 
     private fun compactFact(fact: Fact): Fact =
-        fact.copy(content = trimText(fact.content, 180))
+        fact.copy(content = trimText(fact.content, 72))
+
+    private fun compactWorldRule(rule: WorldRule): WorldRule =
+        rule.copy(
+            title = trimText(rule.title, 60),
+            content = trimText(rule.content, 96),
+        )
+
+    private fun compactTask(task: Task): Task {
+        val compactPayload = JsonObject(
+            task.payload.entries
+                .asSequence()
+                .filterNot { (key, _) ->
+                    val lower = key.lowercase()
+                    val textValue = (task.payload[key] as? JsonPrimitive)?.contentOrNull
+                    val duplicateTitle = lower == "title" && textValue == task.title
+                    val duplicateStatus = lower == "status" && textValue == task.status
+                    duplicateTitle ||
+                        duplicateStatus ||
+                        lower.contains("debug") ||
+                        lower.contains("diagnostic") ||
+                        lower.contains("history") ||
+                        lower.contains("full")
+                }
+                .map { (key, value) -> key to compactTaskPayloadValue(value) }
+                .filter { (_, value) -> value.hasMeaningfulContent() }
+                .take(6)
+                .toMap(),
+        )
+        return task.copy(
+            title = trimText(task.title, 72),
+            payload = compactPayload,
+        )
+    }
+
+    private fun compactRetrievedMemory(memory: RetrievedMemory): RetrievedMemory =
+        memory.copy(
+            summary = trimText(memory.summary, 90),
+            emotionalSignature = compactMemorySignature(memory.emotionalSignature),
+            retrievalReasons = memory.retrievalReasons
+                .map { trimText(it, 40) }
+                .distinct()
+                .take(2),
+            allowedUses = if (memory.allowedUses == defaultMemoryAllowedUses) {
+                memory.allowedUses
+            } else {
+                memory.allowedUses.distinct().take(2)
+            },
+        )
 
     private fun compactKnowledgeClaims(
         context: ContextPacket,
@@ -314,7 +377,7 @@ object ContextPacketNormalizer {
                     else -> claim.sourceType
                 }
                 claim.copy(
-                    statement = trimText(claim.statement, 180),
+                    statement = trimText(claim.statement, 96),
                     sourceType = sourceType,
                     sourceFactId = sourceFactId,
                     sourceMemoryId = sourceMemoryId,
@@ -352,30 +415,39 @@ object ContextPacketNormalizer {
     private fun compactSetting(setting: RelevantSetting, mandatoryTexts: Set<String>): RelevantSetting {
         if (setting.entityType == "scene_transition") {
             return setting.copy(
+                name = trimText(setting.name, 40),
                 summary = "",
                 relationPath = emptyList(),
-                metadata = metadataWithKeys(setting.metadata, transitionSettingMetadataKeys, maxStringChars = 96),
+                metadata = JsonObject(emptyMap()),
             )
         }
         if (setting.entityType == "location_connection") {
             return setting.copy(
+                name = trimText(setting.name, 40),
                 summary = "",
                 relationPath = emptyList(),
-                metadata = metadataWithKeys(setting.metadata, locationConnectionMetadataKeys, maxStringChars = 80),
+                metadata = JsonObject(emptyMap()),
             )
         }
         if (setting.entityType == "world_event") {
             return setting.copy(
-                summary = if (setting.requiredRuntimeUse) trimText(setting.summary, 96) else "",
+                name = trimText(setting.name, 40),
+                summary = if (setting.requiredRuntimeUse) trimText(setting.summary, 56) else "",
                 relationPath = emptyList(),
-                metadata = metadataWithKeys(setting.metadata, worldEventMetadataKeys, maxStringChars = 96),
+                metadata = metadataWithKeys(setting.metadata, worldEventMetadataKeys, maxStringChars = 64),
             )
         }
         val duplicateSummary = setting.summary.normalizedFragment() in mandatoryTexts
         return setting.copy(
-            summary = if (duplicateSummary) "" else trimText(setting.summary, if (setting.requiredRuntimeUse) 220 else 100),
+            name = trimText(setting.name, 56),
+            summary = if (duplicateSummary) "" else trimText(setting.summary, if (setting.requiredRuntimeUse) 120 else 56),
             relationPath = if (setting.requiredRuntimeUse) setting.relationPath.take(1) else emptyList(),
-            metadata = JsonObject(setting.metadata.filterKeys { it in retainedSettingMetadataKeys }.filterValues { it.hasMeaningfulContent() }),
+            metadata = JsonObject(
+                setting.metadata
+                    .filterKeys { it in retainedSettingMetadataKeys }
+                    .mapValues { (_, value) -> compactMetadataValue(value, maxStringChars = 72) }
+                    .filterValues { it.hasMeaningfulContent() },
+            ),
         )
     }
 
@@ -393,14 +465,34 @@ object ContextPacketNormalizer {
     private fun compactMetadataValue(value: JsonElement, maxStringChars: Int): JsonElement =
         when (value) {
             is JsonPrimitive -> if (value.isString) JsonPrimitive(trimText(value.content, maxStringChars)) else value
-            is JsonArray -> JsonArray(value.take(4).map { compactMetadataValue(it, maxStringChars) })
+            is JsonArray -> JsonArray(value.take(3).map { compactMetadataValue(it, maxStringChars) })
             is JsonObject -> JsonObject(
                 value.entries
-                    .take(6)
+                    .take(5)
                     .associate { (key, element) -> key to compactMetadataValue(element, maxStringChars) }
                     .filterValues { it.hasMeaningfulContent() },
             )
         }
+
+    private fun compactTaskPayloadValue(value: JsonElement): JsonElement =
+        compactMetadataValue(value, maxStringChars = 48)
+
+    private fun compactMemorySignature(signature: JsonObject): JsonObject =
+        JsonObject(
+            signature.entries
+                .asSequence()
+                .filterNot { (key, _) ->
+                    val lower = key.lowercase()
+                    lower.contains("debug") ||
+                        lower.contains("diagnostic") ||
+                        lower.contains("source") ||
+                        lower.contains("history")
+                }
+                .map { (key, value) -> key to compactMetadataValue(value, maxStringChars = 40) }
+                .filter { (_, value) -> value.hasMeaningfulContent() }
+                .take(3)
+                .toMap(),
+        )
 
     private fun compactActionList(value: String, maxChars: Int): String {
         val parsed = runCatching {
@@ -413,7 +505,7 @@ object ContextPacketNormalizer {
         val compacted = actions
             .filter { it.isNotBlank() }
             .distinct()
-            .take(6)
+            .take(4)
             .joinToString("; ")
         return trimText(if (compacted.isBlank()) value else compacted, maxChars)
     }
