@@ -2,16 +2,17 @@
 
 ## Goal
 
-Align documentation after the MVP-7 Candidate A.1 post-push checkpoint. This milestone only records that Candidate A.1 is complete, pushed, and checkpointed.
+Collect more real or near-real MVP-7 Candidate A.1 audit samples, run the existing read-only `audit-narrative-quality` command, and document how the audit behaves across a larger Pilot turn set.
 
 ## Global Strategy
 
-Keep this as a documentation-only checkpoint. Update the few control and MVP-7 documents that still describe Candidate A.1 as pending or historically ambiguous, without changing Kotlin code, tests, runtime behavior, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`.
+Use existing Pilot artifacts only. Do not change Kotlin code, tests, audit rules, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or SQLite data. Generate ignored `out/` reports for evidence, then commit only documentation.
 
 ## Non-Goals
 
 - No Kotlin code changes.
 - No test changes.
+- No audit rule changes.
 - No schema or migration changes.
 - No Validator changes.
 - No `stateVersion` or `contextHash` changes.
@@ -25,57 +26,61 @@ Keep this as a documentation-only checkpoint. Update the few control and MVP-7 d
 
 ## Scope
 
-- `ROADMAP.md`
 - `PLANS.md`
-- `docs/MVP7_DECISION_BRIEF.md`
-- `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`
+- `docs/MVP7_AUDIT_SAMPLE_COLLECTION_REPORT.md`
+- Ignored audit output under `out/mvp7_sample_collection/`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `bc3f3843d64ba883890b79464db8785658732cda`.
-- `bc3f3843d64ba883890b79464db8785658732cda` is `fix: calibrate narrative quality audit findings`.
-- Candidate A is complete.
-- Candidate A.1 is complete and has been pushed.
-- The post-push checkpoint passed.
-- `mvp-6` remains the old stable tag and still points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- At milestone start, `ROADMAP.md` still said the next milestone was to decide whether to push Candidate A.1.
-- At milestone start, `docs/MVP7_DECISION_BRIEF.md` reflected the pre-Candidate A/A.1 decision state without a historical-status warning.
-- At milestone start, `docs/MVP7_AUDIT_CALIBRATION_REPORT.md` contained both the initial calibration and the later Candidate A.1 result, but the initial status text could read like no audit rules changed.
+- Local branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `40032c042bdc885dc1bd0e8736597efaec1310e7`.
+- `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
+- Candidate A and Candidate A.1 are complete.
+- Candidate A.1 docs checkpoint is complete and pushed.
+- `out/pilot1/rerun/turns` contains context/result pairs for Pilot turns 1 through 12.
+- Pilot turns 1 through 9 include per-turn evidence files.
+- Pilot turns 10 through 12 do not include per-turn evidence files, but related audit/explain files and whole-session evidence exist.
 
 ## Assumptions
 
-- The correct next milestone is to collect more real audit samples or define a new explicit candidate, not to enter Candidate B automatically.
-- The docs can state Candidate A.1 post-push status without requiring another runtime verification beyond this milestone's required tests.
+- A 10-turn sample set from Pilot turns 1 through 10 is enough to satisfy this milestone's 5-10 sample target while avoiding reusing every prior calibration choice.
+- Whole-session evidence can be used only as supporting context in the report, not as a per-turn substitute unless explicitly noted.
+- Generated audit reports under `out/` remain ignored and should not be committed.
 
 ## Open Questions
 
-- None blocking this documentation-only alignment.
+- Whether future Candidate B should use this audit as a pre-resolve lint remains undecided and out of scope.
+- Whether more deliberately flawed samples are needed should be decided after this collection report.
 
 ## Implementation Steps
 
-- [x] Step 1: Read `ROADMAP.md`, `PLANS.md`, `VERIFY.md`, `DONE_CRITERIA.md`, `docs/MVP7_DECISION_BRIEF.md`, `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`, and `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
-- [x] Step 2: Update this plan for the docs checkpoint alignment.
-- [x] Step 3: Align `ROADMAP.md` current/next milestone language and milestone table.
-- [x] Step 4: Mark `docs/MVP7_DECISION_BRIEF.md` as a historical decision brief.
-- [x] Step 5: Clarify initial calibration versus Candidate A.1 refinements in `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`.
-- [x] Step 6: Run verification.
-- [x] Step 7: Commit `docs: align MVP-7 Candidate A.1 checkpoint status`.
+- [x] Step 1: Confirm git status, recent log, remote, and tags.
+- [x] Step 2: Read MVP-7 and control documentation.
+- [x] Step 3: Inventory available context/result/evidence samples.
+- [x] Step 4: Run `audit-narrative-quality` on 5-10 selected samples.
+- [x] Step 5: Write `docs/MVP7_AUDIT_SAMPLE_COLLECTION_REPORT.md`.
+- [x] Step 6: Verify with `git diff --check` and `gradlew.bat clean test --no-daemon`.
+- [x] Step 7: Commit `docs: collect MVP-7 audit samples`.
 
 ## Verification
 
-- `git diff --check`
-- `gradlew.bat clean test --no-daemon`
+- Run the existing audit CLI against selected sample pairs.
+- Inspect generated audit verdicts, scores, finding counts, and rule IDs.
+- Run `git diff --check`.
+- Run `gradlew.bat clean test --no-daemon`.
 
 ## Risks
 
-- Accidentally making the historical decision brief read like the current roadmap.
-- Accidentally implying Candidate B is approved.
-- Accidentally editing code or tests outside the approved documentation scope.
+- Accidentally treating ignored `out/` files as committable evidence.
+- Overstating audit precision from a small sample set.
+- Using whole-session evidence as if it were per-turn evidence.
+- Letting a documentation-only milestone drift into audit rule changes.
 
 ## Drift Log
 
-- 2026-06-20: Started docs checkpoint alignment after explicit approval. Scope is limited to four documentation files and excludes all runtime changes.
-- 2026-06-20: Aligned roadmap next milestone, marked the decision brief historical, and clarified calibration report timeline semantics.
+- 2026-06-20: Started Candidate A.1 sample collection after explicit approval. Scope is read-only audit execution plus documentation.
+- 2026-06-20: Confirmed 12 Pilot rerun context/result pairs exist; selected a 10-turn sample target for this milestone.
+- 2026-06-20: Ran audit on Pilot rerun Turns 1 through 10. Generated ignored reports under `out/mvp7_sample_collection/`.
+- 2026-06-20: Added `docs/MVP7_AUDIT_SAMPLE_COLLECTION_REPORT.md` summarizing verdicts, warning distribution, useful findings, noisy findings, suspected misses, and Candidate B readiness.
 - 2026-06-20: Verification passed: `git diff --check` and `gradlew.bat clean test --no-daemon` with 227 tests, 0 failures, 0 errors, 0 skipped.
-- 2026-06-20: Ready to commit after verification; no runtime files changed.
+- 2026-06-20: Committed `docs: collect MVP-7 audit samples`.
