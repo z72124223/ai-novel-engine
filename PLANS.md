@@ -2,11 +2,11 @@
 
 ## Goal
 
-Run a read-only remote restore smoke check from the current GitHub remote to prove the pushed branch can be freshly cloned and verified outside this working tree.
+Align the secondary roadmap document with the latest remote restore smoke evidence so it no longer reports the old 220-test restore baseline.
 
 ## Global Strategy
 
-Keep this milestone operational and non-product. Use the current remote branch as the source of truth, clone it into a temporary directory outside the repo, verify branch/tag identity, run the standard Gradle test baseline there, then record the evidence in `PLANS.md`, commit, and push. Do not change Kotlin code, schema, runtime safety boundaries, or product direction.
+Keep this milestone documentation-only. Use the current Git evidence and prior verified remote-restore command output to update the stale `docs/ROADMAP.md` line, then verify, commit, and push. Do not change runtime behavior or start any new product candidate.
 
 ## Non-Goals
 
@@ -28,21 +28,22 @@ Keep this milestone operational and non-product. Use the current remote branch a
 ## Scope
 
 - `PLANS.md`
-- Temporary clone outside the repository, used only for verification evidence.
+- `docs/ROADMAP.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `0019da552f482898956715f239938d3a4e1b2608`.
+- Local `HEAD` and `origin/codex/mvp6-checkpoint-branching-spec` both point to `4c47c3438dec86723f0abb21db38e090282ceae7`.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Working tree is clean after the stale-document refresh milestone.
-- `ROADMAP.md` lists `remote restore smoke on demand` as a valid next milestone option and explicitly says Candidate B is not the default next step.
-- `VERIFY.md` requires `git diff --check` and `gradlew.bat clean test --no-daemon` for stable completion.
+- Working tree was clean before this milestone.
+- Root `ROADMAP.md`, `docs/HANDOFF.md`, and `docs/PROJECT_COMPLETION_AUDIT.md` record the current 233-test baseline.
+- Before this milestone, `docs/ROADMAP.md` still reported the old 220-test remote restore baseline instead of the current 233-test baseline.
+- The latest remote restore smoke milestone verified a temporary clone from `origin/codex/mvp6-checkpoint-branching-spec` at `0019da552f482898956715f239938d3a4e1b2608`, and the current branch has since advanced to `4c47c3438dec86723f0abb21db38e090282ceae7` with only `PLANS.md` evidence changes.
 
 ## Assumptions
 
-- A temporary clone outside the repo is enough to prove the remote branch remains restorable.
-- No CLI story E2E is needed because this milestone does not change runtime behavior.
+- Updating the stale `docs/ROADMAP.md` test baseline improves restartability without needing a new CLI E2E.
+- No runtime CLI E2E is needed because this milestone changes documentation only.
 
 ## Open Questions
 
@@ -50,36 +51,31 @@ Keep this milestone operational and non-product. Use the current remote branch a
 
 ## Implementation Steps
 
-- [x] Step 1: Read `ROADMAP.md`, `PLANS.md`, and `VERIFY.md` to choose the next safe milestone.
-- [x] Step 2: Update `PLANS.md` for the remote restore smoke milestone.
-- [x] Step 3: Clone `origin/codex/mvp6-checkpoint-branching-spec` into a temporary directory outside the repo.
-- [x] Step 4: Verify cloned branch, `HEAD`, `origin` tracking, and `mvp-6` tag target.
-- [x] Step 5: Run `gradlew.bat clean test --no-daemon` in the temporary clone.
-- [x] Step 6: Run `git diff --check` in the primary repo.
-- [x] Step 7: Run `gradlew.bat clean test --no-daemon` in the primary repo.
-- [x] Step 8: Commit `docs: record remote restore smoke verification`.
-- [x] Step 9: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
+- [x] Step 1: Read `ROADMAP.md`, `VERIFY.md`, `docs/ROADMAP.md`, and Git evidence.
+- [x] Step 2: Update `PLANS.md` for this secondary-roadmap alignment milestone.
+- [x] Step 3: Update `docs/ROADMAP.md` remote restore test baseline from the old 220-test baseline to the verified 233-test baseline.
+- [x] Step 4: Verify with `git diff --check`.
+- [x] Step 5: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 6: Commit `docs: align secondary roadmap restore baseline`.
+- [x] Step 7: Push `codex/mvp6-checkpoint-branching-spec` to origin and confirm remote state.
 
 ## Verification
 
-- Temporary clone branch and tag checks.
-- Temporary clone `gradlew.bat clean test --no-daemon`.
-- Primary repo `git diff --check`.
-- Primary repo `gradlew.bat clean test --no-daemon`.
-- Primary repo `git status`.
-- `git ls-remote --heads origin codex/mvp6-checkpoint-branching-spec`.
-- `git rev-parse "mvp-6^{}"`.
+- `git diff --check`
+- `gradlew.bat clean test --no-daemon`
+- `git status`
+- `git ls-remote --heads origin codex/mvp6-checkpoint-branching-spec`
+- `git rev-parse "mvp-6^{}"`
 
 ## Risks
 
-- Temporary clone may fail if GitHub credentials are unavailable in this environment.
-- Test execution may need per-command `JAVA_HOME` because Java is not on the default PATH.
-- A remote restore smoke does not prove Candidate B readiness or narrative quality completeness.
+- Overstating remote restore evidence beyond what was actually verified.
+- Accidentally treating this documentation alignment as Candidate B approval.
+- Creating churn in historical documents that are better left unchanged.
 
 ## Drift Log
 
-- 2026-06-20: Started remote restore smoke because current roadmap lists it as a safe next milestone option and no product-direction approval is needed.
-- 2026-06-20: Temporary clone outside the repo succeeded from `origin/codex/mvp6-checkpoint-branching-spec`; cloned `HEAD` was `0019da552f482898956715f239938d3a4e1b2608`, and cloned `mvp-6` resolved to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- 2026-06-20: Temporary clone passed `gradlew.bat clean test --no-daemon` using the existing external Temurin JDK 17.0.19 environment.
-- 2026-06-20: Primary repo verification passed: `git diff --check` reported no whitespace errors, and `gradlew.bat clean test --no-daemon` completed with `BUILD SUCCESSFUL`.
-- 2026-06-20: Sealed this remote restore smoke as a documentation-only commit and prepared it for push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- 2026-06-20: Started secondary roadmap alignment after `git grep` found `docs/ROADMAP.md` still reporting the old 220-test remote restore baseline while current control docs record 233 tests.
+- 2026-06-20: Updated `docs/ROADMAP.md` to reference the latest verified 233-test restore baseline.
+- 2026-06-20: Verification passed: `git diff --check` reported no whitespace errors, and `gradlew.bat clean test --no-daemon` completed with `BUILD SUCCESSFUL`.
+- 2026-06-20: Sealed this secondary-roadmap alignment as a documentation-only commit and prepared it for push to `origin/codex/mvp6-checkpoint-branching-spec`.

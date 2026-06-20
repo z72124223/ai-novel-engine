@@ -80,7 +80,7 @@ This file summarizes product/runtime evolution. The root `ROADMAP.md` is the con
 - Local Git bundle backup was created and verified.
 - Private GitHub remote was created at `https://github.com/z72124223/ai-novel-engine.git`.
 - Stable branches and tags were pushed.
-- Remote restore clone ran `gradlew.bat clean test --no-daemon` with 220 tests, 0 failures, 0 errors, 0 skipped.
+- Remote restore clone ran `gradlew.bat clean test --no-daemon`; the latest verified baseline is 233 tests, 0 failures, 0 errors, 0 skipped.
 - Handoff and completion audit docs now exist:
   - `docs/HANDOFF.md`
   - `docs/PROJECT_COMPLETION_AUDIT.md`
