@@ -2,9 +2,12 @@
 
 Date: 2026-06-20
 
-Status: `CANDIDATE_A_CALIBRATION`
+Status: `CANDIDATE_A1_PUSHED_AND_CHECKPOINTED`
 
-This report calibrates the existing `audit-narrative-quality` read-only audit against real Pilot turn artifacts. It does not change audit rules, runtime code, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`.
+This document now contains two timeline layers:
+
+1. Initial calibration report: ran the existing `audit-narrative-quality` read-only audit against real Pilot turn artifacts and recorded observations only. That initial pass did not change audit rules, runtime code, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`.
+2. Candidate A.1 refinements: a later, explicitly approved, small read-only audit calibration pass that fixed one false positive and added advisory context-quality observations. It still did not write SQLite or change `resolve-turn`, `StateReducer`, schema, Validator, `stateVersion`, or `contextHash`.
 
 ## Candidate A.1 Refinement Result
 
@@ -12,7 +15,7 @@ Date: 2026-06-20
 
 Status: `CANDIDATE_A1_IMPLEMENTED`
 
-Candidate A.1 made a narrow read-only calibration pass based on this report:
+Candidate A.1 made a narrow read-only calibration pass after the initial report:
 
 - Fixed the false positive where `沒有立刻答應` triggered `NPC_TOOLMAN_CONVENIENT_COMPLIANCE`.
 - Added advisory `context_quality` observations for:
@@ -27,7 +30,7 @@ Turn 12 was rerun after the refinement:
 | --- | --- | ---: | ---: | --- |
 | 12 after A.1 | PASS_WITH_WARNINGS | 76 | 3 | `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`, `CONTEXT_SETTING_TOO_THIN`, `CONTEXT_TRANSITION_UNAVAILABLE` |
 
-The old `NPC_TOOLMAN_CONVENIENT_COMPLIANCE` warning is gone. The remaining findings are advisory context-quality observations, not Validator failures and not Candidate B behavior.
+The old `NPC_TOOLMAN_CONVENIENT_COMPLIANCE` warning is gone. The remaining findings are advisory context-quality observations, not Validator failures and not Candidate B behavior. Candidate A.1 has been pushed to `origin/codex/mvp6-checkpoint-branching-spec` at `bc3f3843d64ba883890b79464db8785658732cda`, and the post-push checkpoint passed.
 
 ## 1. Test Data Sources
 
@@ -196,7 +199,7 @@ Candidate B should be considered only after one of these conditions is met:
 
 ## 11. Next Step Recommendation
 
-Recommended next milestone:
+The original recommendation below was fulfilled by Candidate A.1:
 
 `MVP-7 Candidate A.1 audit calibration refinements`
 
@@ -210,6 +213,12 @@ Scope should remain read-only and small:
 Alternative if no code changes are desired:
 
 - Run the current audit against more Pilot-1b and MVP-6 context/result pairs and build a larger calibration matrix before changing rules.
+
+Current recommendation after Candidate A.1:
+
+- Collect more real audit samples before further audit rule changes.
+- Or define a new explicit MVP-7 candidate in a focused brief.
+- Do not enter Candidate B yet.
 
 ## 12. Verdict
 

@@ -5,8 +5,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 ## Current Rule
 
 - Stable baseline: MVP-6 checkpoint branching runtime, installDist packaging repair, local bundle backup, private remote push, remote restore verification, handoff index, and project completion audit are complete.
-- Active product milestone: none after MVP-7 Candidate A.1 read-only audit calibration refinements.
-- Next milestone: decide whether to push the Candidate A.1 commit or collect more calibration evidence before another explicitly approved MVP-7 candidate.
+- Active product milestone: none after MVP-7 Candidate A.1 docs checkpoint alignment.
+- MVP-7 Candidate A.1 is complete and pushed to `origin/codex/mvp6-checkpoint-branching-spec` at `bc3f3843d64ba883890b79464db8785658732cda`.
+- Next milestone: collect more real audit samples, or define a new explicit MVP-7 candidate. Do not enter Candidate B yet.
 - MVP-7 implementation beyond Candidate A/A.1 is not approved. Candidate A.1 must stay read-only and must not affect `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
 
 ## Milestone Table
@@ -31,6 +32,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | MVP-7 Narrative Quality Spec Draft | Completed | Define narrative quality, NPC liveliness, AI-feeling output, style constraints, verifiable checks and implementation decision gates. | `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`, `ROADMAP.md`, `PLANS.md`. | Accidentally starting MVP-7 implementation or making subjective prose rules brittle. |
 | MVP-7 Candidate A Narrative Quality Audit | Completed | Add the lowest-risk MVP-7 entry point: a read-only report over context/result/evidence JSON. | Report models, read-only audit service, `audit-narrative-quality` CLI, tests, docs. | Treating subjective warnings as hard Validator failures, writing SQLite, or expanding into story rewriting. |
 | MVP-7 Candidate A.1 Audit Calibration Refinements | Completed | Reduce a known false positive and add advisory context-quality observations found during calibration. | Negated convenient-compliance matching, thin-setting / missing-transition / missing-event / stasis observations, tests, docs. | Turning coverage observations into hard validation, making warnings too noisy, drifting into Candidate B. |
+| MVP-7 Candidate A.1 Docs Checkpoint Alignment | Completed | Record that Candidate A.1 is complete, pushed, and post-push checkpointed. | `ROADMAP.md`, `PLANS.md`, `docs/MVP7_DECISION_BRIEF.md`, `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`. | Accidentally implying Candidate B approval or changing runtime scope. |
 
 ## Temporarily Not Doing
 
@@ -59,8 +61,8 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after this spec draft:
+Recommended candidates after Candidate A.1:
 
-1. `remote restore smoke on demand`: rerun clone/test verification when needed.
-2. `branch strategy review`: decide whether to push, archive, or delete historical local branches.
-3. `MVP-7 Candidate B result lint before resolve`: only if the user explicitly approves it after reviewing Candidate A results.
+1. `collect more real audit samples`: run the read-only audit on more Pilot or sample turns and extend the calibration matrix.
+2. `define a new explicit MVP-7 candidate`: write a focused brief before any implementation; Candidate B is not the default next step.
+3. `remote restore smoke on demand`: rerun clone/test verification when needed.

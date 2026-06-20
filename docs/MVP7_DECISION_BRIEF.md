@@ -2,11 +2,17 @@
 
 Date: 2026-06-20
 
+## Historical Status
+
+This is a historical decision brief. It records the state before MVP-7 Candidate A and Candidate A.1 were implemented.
+
+Current status is tracked in `ROADMAP.md`, `PLANS.md`, and `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`. As of the Candidate A.1 checkpoint, Candidate A and A.1 are complete and pushed, while Candidate B remains unapproved.
+
 ## Verdict
 
 READY_FOR_SPEC_DRAFT, NOT_READY_FOR_IMPLEMENTATION.
 
-MVP-7 is a plausible next product milestone, but it is not approved for implementation. The next safe step would be a specification-only milestone if the user explicitly chooses it.
+At the time this brief was written, MVP-7 was a plausible next product milestone, but it was not approved for implementation. The next safe step then was a specification-only milestone if the user explicitly chose it.
 
 ## Why MVP-7 Is Plausible
 
@@ -23,9 +29,9 @@ The stable runtime now covers the main safety and persistence layers through MVP
 
 The original blueprint's remaining product ambition is narrative quality: characters should feel distinct, turns should avoid repetition, and story pressure should emerge without forcing player decisions.
 
-## Current Non-Approval
+## Historical Non-Approval
 
-MVP-7 is not approved yet.
+At the time this brief was written, MVP-7 was not approved yet.
 
 `ROADMAP.md` and `VERIFY.md` both require a focused `docs/MVP7_*.md` spec before implementation. That spec must define measurable acceptance tests and CLI E2E before any runtime change.
 
@@ -95,4 +101,4 @@ Pilot-2 scenario design brief
 
 ## Decision Needed
 
-The next milestone should be chosen explicitly by the user. Do not infer MVP-7 from the existence of this brief.
+The next milestone should still be chosen explicitly by the user. Do not infer Candidate B or any new implementation from the existence of this historical brief.

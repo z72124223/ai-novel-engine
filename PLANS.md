@@ -2,85 +2,80 @@
 
 ## Goal
 
-Implement MVP-7 Candidate A.1 audit calibration refinements: fix one known false positive and add small read-only context-quality observations to the existing narrative quality audit.
+Align documentation after the MVP-7 Candidate A.1 post-push checkpoint. This milestone only records that Candidate A.1 is complete, pushed, and checkpointed.
 
 ## Global Strategy
 
-Keep Candidate A.1 advisory and read-only. Improve the existing `NarrativeQualityAuditService` heuristics without changing runtime writes, Validator behavior, schema, `resolve-turn`, `StateReducer`, `stateVersion`, or `contextHash`.
+Keep this as a documentation-only checkpoint. Update the few control and MVP-7 documents that still describe Candidate A.1 as pending or historically ambiguous, without changing Kotlin code, tests, runtime behavior, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`.
 
 ## Non-Goals
 
-- No SQLite writes.
-- No schema or migration edits.
-- No `resolve-turn` behavior changes.
-- No `StateReducer` changes.
-- No Validator safety-boundary changes.
+- No Kotlin code changes.
+- No test changes.
+- No schema or migration changes.
+- No Validator changes.
 - No `stateVersion` or `contextHash` changes.
-- No story rewriting.
+- No `resolve-turn` or `StateReducer` changes.
+- No SQLite writes.
 - No Candidate B.
+- No Candidate A.2.
 - No server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
-- No push, merge, tag creation, retagging, or branch deletion.
+- No retagging `mvp-6`.
+- No push in this milestone.
 
 ## Scope
 
-- Fix negated convenient-compliance phrase matching.
-- Add advisory context-quality findings for thin setting context, missing transition availability, missing scheduled world-event pressure, and procedural stasis risk.
-- Add/update unit tests.
-- Update calibration documentation and this plan.
-- Run required verification and commit if all pass.
+- `ROADMAP.md`
+- `PLANS.md`
+- `docs/MVP7_DECISION_BRIEF.md`
+- `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- The branch was synced with `origin/codex/mvp6-checkpoint-branching-spec` at `3fb3eaf` before this milestone.
-- `mvp-6` exists and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `docs/MVP7_AUDIT_CALIBRATION_REPORT.md` identifies one false positive: `沒有立刻答應` matched `立刻答應`.
-- The same calibration report identifies missed issues around setting bytes, missing legal scene transition, missing scheduled world-event pressure, and procedural stasis.
-- `NarrativeQualityAuditService` currently uses simple `contains` matching for convenient-compliance terms.
-- `ContextPacket` includes `settingContextBudget`, `availableTransitions`, `pendingWorldEvents`, `activeStoryThreads`, `sceneLifecycle`, `contextBudget`, and `playerInput`.
-- `audit-narrative-quality` is a read-only CLI command that does not require `--db`.
+- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `bc3f3843d64ba883890b79464db8785658732cda`.
+- `bc3f3843d64ba883890b79464db8785658732cda` is `fix: calibrate narrative quality audit findings`.
+- Candidate A is complete.
+- Candidate A.1 is complete and has been pushed.
+- The post-push checkpoint passed.
+- `mvp-6` remains the old stable tag and still points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
+- At milestone start, `ROADMAP.md` still said the next milestone was to decide whether to push Candidate A.1.
+- At milestone start, `docs/MVP7_DECISION_BRIEF.md` reflected the pre-Candidate A/A.1 decision state without a historical-status warning.
+- At milestone start, `docs/MVP7_AUDIT_CALIBRATION_REPORT.md` contained both the initial calibration and the later Candidate A.1 result, but the initial status text could read like no audit rules changed.
 
 ## Assumptions
 
-- The new context-quality observations should remain `WARNING`, not hard failures.
-- "Too small" setting context can be treated as `actualBytes <= 16` when omitted settings or setting relevance exists.
-- Missing transition observation should trigger only when the player/result language mentions retreat/exit/door/threshold/transition intent.
-- Missing scheduled-world-event pressure should be framed as coverage risk, not a per-turn correctness violation.
+- The correct next milestone is to collect more real audit samples or define a new explicit candidate, not to enter Candidate B automatically.
+- The docs can state Candidate A.1 post-push status without requiring another runtime verification beyond this milestone's required tests.
 
 ## Open Questions
 
-- Whether context-quality observations should eventually live in a separate context audit command instead of narrative quality audit.
-- Whether thresholds should be configurable after more calibration samples.
+- None blocking this documentation-only alignment.
 
 ## Implementation Steps
 
-- [x] Step 1: Read MVP-7 spec, calibration report, audit service, tests, samples, PLANS, ROADMAP, and VERIFY.
-- [x] Step 2: Output plan before code changes.
-- [x] Step 3: Update this plan for Candidate A.1.
-- [x] Step 4: Implement false-positive suppression and context-quality observations.
-- [x] Step 5: Add/update tests.
-- [x] Step 6: Update docs.
-- [x] Step 7: Run full verification and CLI smokes.
-- [x] Step 8: Commit `fix: calibrate narrative quality audit findings`.
+- [x] Step 1: Read `ROADMAP.md`, `PLANS.md`, `VERIFY.md`, `DONE_CRITERIA.md`, `docs/MVP7_DECISION_BRIEF.md`, `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`, and `docs/MVP7_NARRATIVE_QUALITY_SPEC.md`.
+- [x] Step 2: Update this plan for the docs checkpoint alignment.
+- [x] Step 3: Align `ROADMAP.md` current/next milestone language and milestone table.
+- [x] Step 4: Mark `docs/MVP7_DECISION_BRIEF.md` as a historical decision brief.
+- [x] Step 5: Clarify initial calibration versus Candidate A.1 refinements in `docs/MVP7_AUDIT_CALIBRATION_REPORT.md`.
+- [x] Step 6: Run verification.
+- [x] Step 7: Commit `docs: align MVP-7 Candidate A.1 checkpoint status`.
 
 ## Verification
 
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
-- `gradlew.bat :app:installDist`
-- Repo CLI sample audit smoke.
-- installDist sample audit smoke.
-- Turn 12 audit smoke confirming the previous false positive is gone.
-- A constructed sample/context test that triggers at least one context-quality observation.
 
 ## Risks
 
-- Context-quality observations could become noisy if they fire on intentionally tiny sample contexts.
-- Transition/event observations can conflate "coverage gap" with "turn quality"; keep messages explicit and advisory.
-- Scope could drift into Candidate B; do not make findings block `resolve-turn`.
+- Accidentally making the historical decision brief read like the current roadmap.
+- Accidentally implying Candidate B is approved.
+- Accidentally editing code or tests outside the approved documentation scope.
 
 ## Drift Log
 
-- 2026-06-20: Started Candidate A.1 after explicit approval. Plan confirms read-only scope and no Candidate B.
-- 2026-06-20: Added negation-aware convenient-compliance matching plus read-only context-quality observations and tests.
-- 2026-06-20: Verification passed: `git diff --check`, 227 tests with 0 failures/errors/skips, `gradlew.bat :app:installDist`, repo CLI sample audit, installDist sample audit, and Turn 12 audit smoke. Turn 12 no longer reports the old convenient-compliance false positive.
+- 2026-06-20: Started docs checkpoint alignment after explicit approval. Scope is limited to four documentation files and excludes all runtime changes.
+- 2026-06-20: Aligned roadmap next milestone, marked the decision brief historical, and clarified calibration report timeline semantics.
+- 2026-06-20: Verification passed: `git diff --check` and `gradlew.bat clean test --no-daemon` with 227 tests, 0 failures, 0 errors, 0 skipped.
+- 2026-06-20: Ready to commit after verification; no runtime files changed.
