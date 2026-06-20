@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create an MVP-7 deliberately flawed audit sample pack that exercises obvious narrative-quality failures and a known false-positive guard case using the existing read-only `audit-narrative-quality` command.
+Create a documentation-only MVP-7 Candidate A.2 calibration plan for the read-only narrative quality audit.
 
 ## Global Strategy
 
-Keep this milestone fixture-only and documentation-only. Add sample JSON context/result pairs plus a report based on actual CLI audit output. Do not change Kotlin code, tests, audit rules, schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or SQLite data.
+Keep Candidate A.2 in planning mode only. Use existing evidence from the MVP-7 narrative quality spec, calibration report, real sample collection, deliberately flawed sample pack, current audit service, and current audit tests. Do not implement any Kotlin code, test changes, audit-rule changes, database writes, schema changes, or Candidate B behavior in this milestone.
 
 ## Non-Goals
 
@@ -19,6 +19,7 @@ Keep this milestone fixture-only and documentation-only. Add sample JSON context
 - No `resolve-turn` or `StateReducer` changes.
 - No SQLite writes.
 - No Candidate B.
+- No Candidate A.2 implementation in this milestone.
 - No server, API, port, Web UI, Android UI, OpenAI API, Rust, Docker, embedding, vector DB, or multi-agent runtime.
 - No retagging `mvp-6`.
 - No push in this milestone.
@@ -26,62 +27,59 @@ Keep this milestone fixture-only and documentation-only. Add sample JSON context
 ## Scope
 
 - `PLANS.md`
-- `samples/mvp7_flawed_audit_pack/`
-- `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md`
-- Ignored audit output under `out/mvp7_flawed_audit_pack/`
+- `ROADMAP.md`
+- `docs/MVP7_CANDIDATE_A2_CALIBRATION_PLAN.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `7f6c864cebd755ca648893bf6b8c1831213b37bc`.
+- Local branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `02f146526812c7c2bda1b882583b553da2fcbdbb`.
 - `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Candidate A and Candidate A.1 are complete.
-- `NarrativeQualityAuditService` is read-only and consumes `ContextPacket`, `AiTurnResult`, and optional evidence text.
-- `audit-narrative-quality` does not require `--db`.
-- Existing rules can report NPC liveliness, AI-feeling, world-autonomy, context-quality, knowledge-boundary, style, consequence, and pilot-evidence findings.
-- `samples/sample_context_packet.json` and `samples/sample_ai_turn_result.json` provide a valid baseline JSON shape, but stronger fixture coverage needs canonical fields such as `characterActions` and `stateDelta`.
+- Candidate A added a read-only `audit-narrative-quality` CLI command.
+- Candidate A.1 reduced the known negated convenient-compliance false positive and added context-quality observations.
+- The real audit sample collection found the audit useful but conservative, and identified likely `CONSEQUENCE_COST_NOT_RECORDED` false positives around `裂開`.
+- The deliberately flawed sample pack found that obvious AI-feeling/style and knowledge-boundary failures are caught, but direct emotion telling, subtle NPC toolman behavior, and consequence false-positive behavior still need calibration.
+- Existing `NarrativeQualityAuditService` is read-only and consumes `ContextPacket`, `AiTurnResult`, and optional evidence text.
+- Existing `Mvp7NarrativeQualityAuditTest` covers stable report generation, forbidden reveal, AI-feeling/style, recorded consequence evidence, negated convenient compliance, and context-quality observations.
 
 ## Assumptions
 
-- Eight compact flawed cases are sufficient for this milestone because the user requested 6-8 cases.
-- The sample pack should be committed because the user explicitly requested samples.
-- Generated audit reports under `out/` should stay ignored and uncommitted.
+- Candidate A.2 should remain advisory and read-only even if later approved for implementation.
+- A planning document is enough for this milestone because the user explicitly prohibited implementation.
+- `ROADMAP.md` should be updated because the previous next milestone was already completed by the flawed sample pack.
 
 ## Open Questions
 
-- Whether any findings from this sample pack should lead to Candidate A.2 rule calibration is a post-report decision, not part of this milestone.
-- Whether Candidate B should exist remains undecided and out of scope.
+- Whether Candidate A.2 implementation should be approved after this planning milestone.
+- Whether Candidate A.2 should adjust severity thresholds or only add/adjust findings while keeping the same advisory verdict model.
+- Whether more real Pilot-1b or MVP-6 branch/fork samples should be collected before Candidate A.2 implementation.
 
 ## Implementation Steps
 
-- [x] Step 1: Confirm git status, recent log, sample directory state, and `mvp-6` tag.
-- [x] Step 2: Read MVP-7 specs, calibration reports, audit service, audit tests, samples, `PLANS.md`, `ROADMAP.md`, and `VERIFY.md`.
-- [x] Step 3: Publish a concise plan before writing samples.
-- [x] Step 4: Create 6-8 deliberately flawed context/result sample cases and a manifest.
-- [x] Step 5: Run `audit-narrative-quality` against every flawed case.
-- [x] Step 6: Write `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md`.
-- [x] Step 7: Verify with `git diff --check` and `gradlew.bat clean test --no-daemon`.
-- [x] Step 8: Commit `docs: add flawed audit sample pack`.
+- [x] Step 1: Confirm git status, relevant docs, audit service, audit tests, and sample evidence.
+- [x] Step 2: Update `PLANS.md` for the Candidate A.2 planning milestone.
+- [x] Step 3: Add `docs/MVP7_CANDIDATE_A2_CALIBRATION_PLAN.md`.
+- [x] Step 4: Update `ROADMAP.md` to record sample collection, flawed sample pack, and Candidate A.2 planning state.
+- [x] Step 5: Verify with `git diff --check`.
+- [x] Step 6: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 7: Commit `docs: plan MVP-7 Candidate A.2 audit calibration`.
 
 ## Verification
 
-- Run the existing audit CLI against every sample pair.
-- Inspect generated audit verdicts, scores, finding counts, and rule IDs.
-- Run `git diff --check`.
-- Run `gradlew.bat clean test --no-daemon`.
+- `git diff --check`
+- `gradlew.bat clean test --no-daemon`
+- Manual diff review to confirm only allowed documentation files changed.
 
 ## Risks
 
-- Accidentally making samples invalid JSON or invalid protocol fixtures.
-- Expecting the current audit to catch quality issues it does not yet implement.
-- Committing ignored audit output instead of only samples and docs.
-- Letting a fixture milestone drift into audit rule changes.
+- Accidentally implying Candidate B approval.
+- Turning planning language into implementation commitments without user approval.
+- Writing unverified guesses as facts.
+- Touching files outside the approved documentation scope.
 
 ## Drift Log
 
-- 2026-06-20: Started deliberately flawed audit sample pack after explicit approval. Scope is samples plus documentation only.
-- 2026-06-20: Added eight flawed sample cases under `samples/mvp7_flawed_audit_pack/`.
-- 2026-06-20: Ran `audit-narrative-quality` against all eight cases and generated ignored reports under `out/mvp7_flawed_audit_pack/`.
-- 2026-06-20: Added `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md` with expected versus actual findings, missed issues, false-positive observations, and Candidate B readiness.
-- 2026-06-20: Verification passed: `git diff --check` and `gradlew.bat clean test --no-daemon` with 227 tests, 0 failures, 0 errors, 0 skipped.
-- 2026-06-20: Committed `docs: add flawed audit sample pack`.
+- 2026-06-20: Started MVP-7 Candidate A.2 calibration planning after explicit approval. Scope is documentation only.
+- 2026-06-20: Evidence pass confirmed Candidate A/A.1, real sample collection, and flawed sample pack are complete; the remaining issues are direct emotion telling, subtle NPC toolman behavior, and consequence false-positive calibration.
+- 2026-06-20: Verification passed: `git diff --check`; `gradlew.bat clean test --no-daemon` passed with 227 tests, 0 failures, 0 errors, 0 skipped.
+- 2026-06-20: Committed `docs: plan MVP-7 Candidate A.2 audit calibration`.
