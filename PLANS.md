@@ -2,14 +2,15 @@
 
 ## Goal
 
-Design a Pilot-2 scenario document for collecting more real story-arc audit samples, without changing Kotlin code, audit rules, schema, runtime writes, or Candidate B boundaries.
+Create a reusable Pilot-2 turn collection template that tells the user and future Codex sessions how to provide player input, save per-turn artifacts, run read-only narrative audit, and decide when to stop, without starting Pilot-2 Turn 1.
 
 ## Global Strategy
 
-Keep this milestone documentation-only. Use the MVP-7 next-candidate decision brief and A.2 audit reports to define a practical Pilot-2 scenario, per-turn evidence format, naming convention, audit flow, and success/failure criteria. Verify with standard repository checks, commit, and stop without pushing.
+Keep this milestone documentation-only. Use `docs/PILOT2_SCENARIO_DESIGN.md`, `VERIFY.md`, `README.md`, and the current roadmap to turn the Pilot-2 scenario design into an operational template. Do not execute story turns, do not create result JSON, do not write SQLite, and do not change runtime behavior.
 
 ## Non-Goals
 
+- No Pilot-2 Turn 1 execution.
 - No Kotlin code changes.
 - No test changes.
 - No audit rule changes.
@@ -18,52 +19,47 @@ Keep this milestone documentation-only. Use the MVP-7 next-candidate decision br
 - No `stateVersion` or `contextHash` changes.
 - No `resolve-turn` or `StateReducer` changes.
 - No SQLite writes.
-- No Candidate B implementation.
-- No Candidate A.3 implementation.
+- No Candidate B.
 - No MVP-8.
-- No UI implementation.
-- No web server, API, Docker, Android UI, Rust, embedding, vector DB, or multi-agent runtime.
+- No server, API, Docker, Android UI, Rust, embedding, vector DB, or multi-agent runtime.
 - No retagging `mvp-6`.
 - No push unless the user explicitly approves later.
 
 ## Scope
 
 - `PLANS.md`
-- `docs/PILOT2_SCENARIO_DESIGN.md`
-- `ROADMAP.md` only for a small status update after the design exists.
+- `docs/PILOT2_TURN_TEMPLATE.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Local `HEAD` is `b94caf81f07eade476c37305e5f63f6606bbee31`.
-- `mvp-6` remains the old stable tag and points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
+- Local `HEAD` is `fa1d15bc7ee9ce2539b0c62f12e4d2e0ada160c5`.
+- Local branch is synchronized with `origin/codex/mvp6-checkpoint-branching-spec`.
+- `mvp-6` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - Working tree was clean before this milestone.
-- `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md` ranks more real audit samples and Pilot-2 scenario design as the safest next directions.
-- `docs/MVP7_A2_REAL_SAMPLE_RERUN_REPORT.md` says the current audit is stable but still mostly tested on Pilot-1, Pilot-1b, MVP-6, and fixture families.
-- `docs/MVP7_FLAWED_AUDIT_SAMPLE_PACK_REPORT.md` says flawed fixtures are useful but are not enough to proceed to Candidate B.
-- `VERIFY.md` defines `audit-narrative-quality` as a read-only JSON audit and documents UTF-8 report validation.
-- `DONE_CRITERIA.md` requires `git diff --check` and `gradlew.bat clean test --no-daemon` before commit.
-- Existing committed sample families include demo seed/context/result, Pilot-1b coverage pack, setting packs, and the MVP-7 flawed audit sample pack.
+- `docs/PILOT2_SCENARIO_DESIGN.md` defines the Pilot-2 scenario, turn data to collect, naming rules, audit execution, success conditions, and failure conditions.
+- `VERIFY.md` defines `audit-narrative-quality` as read-only and documents UTF-8 JSON report verification.
+- `README.md` lists the relevant CLI commands: `prepare-turn`, `resolve-turn`, `audit-context`, `export-session-evidence`, and `audit-narrative-quality`.
+- `ROADMAP.md` says next options after Pilot-2 scenario design include Pilot-2 human turn collection and explicitly says not to enter Candidate B directly.
 
 ## Assumptions
 
-- A documentation-only Pilot-2 scenario design is the smallest safe step because it lets the user provide better real story evidence later without changing runtime behavior now.
-- No CLI E2E is needed for this milestone because it changes only documentation and does not alter commands or runtime behavior.
+- A template document is the smallest safe next step because it reduces future operator confusion without touching the engine.
+- No CLI E2E is needed because this milestone changes only documentation and does not alter commands or runtime behavior.
 
 ## Open Questions
 
-- The exact Pilot-2 story premise still needs user approval or future author input before formal turns are run.
-- Whether Pilot-2 will use the existing snow-dog setting or a new setting pack remains a future decision; this document can propose a recommended scenario without applying it.
+- The user has not yet provided the actual Pilot-2 Turn 1 player input.
+- The actual Pilot-2 DB path, project id, and session id remain future execution details.
 
 ## Implementation Steps
 
-- [x] Step 1: Read required control docs, MVP-7 reports, README, and sample inventory.
-- [x] Step 2: Update `PLANS.md` for this Pilot-2 design milestone.
-- [x] Step 3: Create `docs/PILOT2_SCENARIO_DESIGN.md`.
-- [x] Step 4: Update `ROADMAP.md` with a small Pilot-2 design status note.
-- [x] Step 5: Verify with `git diff --check`.
-- [x] Step 6: Verify with `gradlew.bat clean test --no-daemon`.
-- [x] Step 7: Commit `docs: design Pilot-2 scenario`.
+- [x] Step 1: Read requested docs and current repo state.
+- [x] Step 2: Update `PLANS.md` for the Pilot-2 turn template milestone.
+- [x] Step 3: Create `docs/PILOT2_TURN_TEMPLATE.md`.
+- [x] Step 4: Verify with `git diff --check`.
+- [x] Step 5: Verify with `gradlew.bat clean test --no-daemon`.
+- [x] Step 6: Commit `docs: add Pilot-2 turn collection template`.
 
 ## Verification
 
@@ -74,14 +70,14 @@ Keep this milestone documentation-only. Use the MVP-7 next-candidate decision br
 
 ## Risks
 
-- Accidentally making Pilot-2 sound like an approved runtime implementation.
-- Accidentally implying Candidate B is approved.
-- Designing a scenario so specific that it becomes hardcoded test data rather than a flexible evidence-collection plan.
-- Producing a format too vague for the user to provide real turns.
+- Accidentally writing the template as if Pilot-2 Turn 1 has already started.
+- Accidentally making Candidate B sound approved.
+- Making the template too vague for the user to provide a valid turn.
+- Including commands that imply direct SQLite writes or bypass Validator.
 
 ## Drift Log
 
-- 2026-06-20: Started Pilot-2 scenario design after the user approved a documentation-only milestone for settings, acceptance items, and human turn collection format.
-- 2026-06-20: Created `docs/PILOT2_SCENARIO_DESIGN.md` with scenario premise, human input format, evidence naming rules, audit commands, and pass/fail criteria. Updated `ROADMAP.md` to list Pilot-2 scenario design as completed locally and to keep Candidate B unapproved.
-- 2026-06-20: `git diff --check` passed. The first `clean test` attempt was cut off by tool timeout and left a temporary Java lock outside the repo; after the Java process exited, `gradlew.bat clean test --no-daemon` passed with 233 tests, 0 failures, 0 errors, and 0 skipped.
-- 2026-06-20: Sealing this documentation-only milestone in local commit `docs: design Pilot-2 scenario`; no push is performed in this milestone.
+- 2026-06-20: Started Pilot-2 turn collection template milestone after the user approved a documentation-only template and explicitly prohibited starting Turn 1.
+- 2026-06-20: Created `docs/PILOT2_TURN_TEMPLATE.md` with player input format, Turn 1 example, artifact naming, per-turn audit commands, quality checklists, stop conditions, and Candidate B reminder.
+- 2026-06-20: `git diff --check` passed, and `gradlew.bat clean test --no-daemon` passed with 233 tests, 0 failures, 0 errors, and 0 skipped.
+- 2026-06-20: Sealing this documentation-only milestone in local commit `docs: add Pilot-2 turn collection template`; no push is performed in this milestone.
