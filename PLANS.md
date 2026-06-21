@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06 handoff contracts, scene-registry completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06 handoff contracts, scene-registry completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, align project-control docs after 03 passed the Qingli scene registry seed brief, moving that brief from recommended candidate to completed docs-only evidence while preserving manual handoff boundaries.
+Treat 04 playtest learning as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, create a docs-only scene packet sample / registry dry-run review to verify that the script-ready packet spec and Qingli scene registry seed can support a conservative sample without resuming 04/05/06 or producing formal story content.
 
 ## Non-Goals
 
@@ -33,6 +33,7 @@ Tracked files allowed:
 - `DONE_CRITERIA.md`
 - `docs/HANDOFF.md`
 - `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`
+- `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md`
 
 Docs to inspect:
 
@@ -67,6 +68,9 @@ Docs to inspect:
 - 03 passed commit `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b` (`docs: seed Qingli scene registry brief`).
 - `ROADMAP.md` and `docs/HANDOFF.md` still list scene registry seed brief as a future recommended candidate, so they need status alignment.
 - User instruction for this milestone forbids moving directly to Pilot-2 human turn collection, Candidate A.3, Candidate B, MVP-8, runtime enforcement, Oiioii integration, automation, or 04/05/06 restart.
+- 03 passed commit `bbcd1df6bbfaebc7834eea1338249eaa70a55772` (`docs: align control docs after Qingli scene registry seed`).
+- `ROADMAP.md` now recommends `scene packet sample / registry dry-run review` as a safe docs-only next candidate.
+- User instruction for this milestone requires a dry-run review only. It is not 04 generation, 05 formal review gate, 06 display, formal turn, AI result JSON, setting-pack patch, runtime scene definition, approved animation asset lock, or Oiioii integration.
 
 ## Assumptions
 
@@ -80,6 +84,7 @@ Docs to inspect:
 - Whether 04/05/06 should resume after these contracts is a 01/user decision. This milestone does not resume them.
 - Whether Qingli scene registry seed entries should become formal setting-pack fields or approved animation asset locks requires a later 01/user-approved milestone.
 - Whether to run a scene packet sample / registry dry-run review is a future 01 handoff decision. This milestone only records it as a safe docs-only candidate.
+- Whether to turn any dry-run recommendations into spec edits, packet templates, or formal 04/05/06 work requires a later 01/user-approved milestone.
 
 ## Implementation Steps
 
@@ -133,6 +138,10 @@ Docs to inspect:
 - [x] Step 48: Run `git diff --check` and inspect diff/stat/staged scope for the scene-registry control docs alignment.
 - [x] Step 49: Commit `docs: align control docs after Qingli scene registry seed` and push tracked docs only.
 - [x] Step 50: Directly notify 03 read-only review thread using a 03 verifier-window prompt.
+- [x] Step 51: Add a docs-only Qingli script packet dry-run review with one conservative historical sample packet.
+- [x] Step 52: Run `git diff --check` and inspect diff/stat/staged scope for the dry-run review.
+- [x] Step 53: Commit `docs: dry-run Qingli script packet registry review` and push tracked docs only.
+- [x] Step 54: Directly notify 03 read-only review thread using a 03 verifier-window prompt.
 
 ## Verification
 
@@ -154,6 +163,7 @@ Safety checks:
 - For project-control alignment, also allow `ROADMAP.md`, `VERIFY.md`, `DONE_CRITERIA.md`, and `docs/HANDOFF.md`.
 - For Qingli scene registry seed brief, also allow `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md` and a narrow cross-reference in `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md` or `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`.
 - For post-Qingli scene registry seed control alignment, allow `ROADMAP.md` and `docs/HANDOFF.md`.
+- For Qingli scene packet dry-run review, allow `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md` and narrow cross-references only if needed.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -171,6 +181,7 @@ Safety checks:
 - Accidentally treating conservative scene seed entries as final canon, schema, runtime scene definitions, or approved production asset locks.
 - Accidentally leaving completed scene registry seed work listed as a next candidate.
 - Accidentally implying the next step can run Pilot turns or restart 04/05/06 without user / 01 handoff.
+- Accidentally treating a dry-run sample packet as formal story output, user-approved content, setting-pack patch, formal turn result, or a 05/06 deliverable.
 
 ## Drift Log
 
@@ -202,3 +213,5 @@ Safety checks:
 - 2026-06-22: Qingli scene registry seed brief added for four formal scene ids. `git diff --check` passed with only Windows line-ending warnings; full Gradle is intentionally skipped because this milestone changes only docs/control files.
 - 2026-06-22: 03 passed Qingli scene registry seed brief commit `c248cef`. New control-doc alignment milestone started to mark the seed brief completed/pushed and update recommended candidates.
 - 2026-06-22: Post-Qingli scene registry control alignment `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.
+- 2026-06-22: 03 passed control-doc alignment commit `bbcd1df`. New docs-only scene packet sample / registry dry-run review milestone started. It must verify packet/registry usability without restarting 04/05/06 or creating formal turn / setting-pack / runtime content.
+- 2026-06-22: Added `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md` with a `historical_sample` / dry-run-only packet using `scene-qingli-herb-warehouse-perimeter`. `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.
