@@ -2,110 +2,121 @@
 
 ## Goal
 
-Repair the minor drift identified by 03 after `fix: refine Pilot-2 transition refusal handling`: the Chinese bare word `留下` in `refusesSceneTransition()` can false-positive on non-movement phrases such as `留下姓名`, `留下記錄`, or `留下證據`.
+Execute the approved Pilot-2 Turn 14 Codex-authored probe through prepare/audit only. 01 provided the exact player input content; 02 must save it verbatim, run formal CLI context preparation and context audit, document the evidence, and stop before any result JSON, narrative, validation, or resolve step.
 
 ## Global Strategy
 
-Stay inside the already approved D path for transition refusal / Validator / runtime minimal repair. Add tests first for Chinese non-movement `留下...` phrases with explicit transition consent, then narrow the Chinese movement-refusal phrases so direct movement refusal remains blocked while record/name/evidence retention does not block a legal transition. Do not execute any formal Pilot-2 probe.
+Treat this as a formal Pilot-2 prepare checkpoint, not a full turn resolution. Confirm the repo, tag, branch, and formal session state first. If the session is exactly `stateVersion=13`, `nextTurnNumber=14`, and `pendingContexts=0`, save the 01-provided player input, run `show-session`, `explain-context-budget`, `prepare-turn`, and `audit-context`, then write a tracked docs report. Do not generate AI result JSON or narrative decision content.
 
 ## Non-Goals
 
-- No formal Pilot-2 Turn 14 probe.
-- No `turn_014_player_input.txt`.
-- No formal probe result JSON, narrative, or decision content.
-- No formal Pilot-2 `prepare-turn`, `validate-result`, or `resolve-turn`.
+- No AI result JSON.
+- No narrative or probe decision content authored by 02.
+- No `validate-result`.
+- No `resolve-turn`.
+- No formal Pilot-2 DB state advance beyond the pending context created by `prepare-turn`.
 - No direct SQLite writes.
 - No schema or migration changes.
 - No `stateVersion` or `contextHash` calculation changes.
 - No `resolve-turn` orchestration or StateReducer changes.
-- No Candidate B or MVP-8.
+- No `mvp-6` retagging.
+- No MVP-8 or unapproved Candidate B follow-up scope.
 - No server/API/Docker/Android/Rust/embedding/vector DB.
 - No deleting `data/`, `out/`, or `backups/`.
 - No committing ignored `out/` or `data/` artifacts.
-- No `mvp-6` retagging.
 
 ## Scope
 
-Allowed tracked files:
+Tracked files allowed:
 
 - `PLANS.md`
-- `app/src/main/kotlin/com/localnovel/engine/service/SceneThreadServices.kt`
-- `app/src/test/kotlin/com/localnovel/engine/Mvp4SceneThreadRuntimeTest.kt`
-- `docs/PILOT2_TRANSITION_REFUSAL_MINIMAL_REPAIR_REPORT.md`
+- `docs/PILOT2_TURN14_CODEX_PROBE_PREPARE_AUDIT_REPORT.md`
 
-Read-only context:
+Ignored artifacts to create but not commit:
 
-- `AGENTS.md`
-- `ROADMAP.md`
-- `VERIFY.md`
-- `DONE_CRITERIA.md`
-- previous `PLANS.md`
-- `docs/PILOT2_TRANSITION_REFUSAL_MINIMAL_REPAIR_REPORT.md`
-- 03 review summary from the current prompt: `PASS_WITH_MINOR_DRIFT`, no blocker, drift is bare `留下`.
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_014_player_input.txt`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_014_context_budget.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_014_context.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_014_context_audit.json`
+
+Formal DB:
+
+- `data/pilot2.db`
+
+Session:
+
+- `session-ea110b6c-7509-40e6-a786-99cf00d8fc66`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `7e5ca83 fix: refine Pilot-2 transition refusal handling`.
+- Current HEAD before this milestone is `99e74c0 fix: narrow Chinese transition refusal matching`.
 - Working tree was clean at milestone start.
 - `mvp-6` was confirmed as `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- 03 accepted the prior repair with `PASS_WITH_MINOR_DRIFT`.
-- The only named drift is that `refusesSceneTransition()` still contains the Chinese bare word `留下`.
-- Formal Codex-authored probe content remains reserved for 01; 02 must not execute or author it in this milestone.
+- 03 reviewed the D repair commit `99e74c09077763726c7c8d9f453fd46dcc7d8741` with `PASS`, per 01.
+- 01 supplied exact Turn 14 Codex-authored player input and instructed 02 not to rewrite it.
+- Turn 14 input is non-human system-probe evidence and must not count as real human-player evidence.
 
 ## Assumptions
 
-- The smallest safe repair is to remove bare `留下` and keep or add more explicit phrases such as `留下來`, `留在這裡`, and `留在原地`.
-- `Mvp4SceneThreadRuntimeTest` remains the best location for focused transition refusal regression coverage.
-- Full Gradle tests are sufficient because this milestone does not run formal Pilot-2 lifecycle commands or mutate the formal Pilot DB.
+- Formal Pilot-2 state should be `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`.
+- `data/pilot2.db` and the known session id remain the formal Pilot-2 target unless CLI inspection proves otherwise.
+- `prepare-turn` will create a pending context without advancing `stateVersion` or `nextTurnNumber`.
 
 ## Open Questions
 
-- Whether future Chinese refusal matching should be regex-based; this milestone will avoid that unless tests force it.
-- Whether more Chinese wording variants are needed later; this milestone only covers the drift named by 03 and direct movement refusal guards.
+- 01 must later provide result JSON / narrative / decision content if this context is accepted.
+- The next worker must decide how to use the existing Turn 14 pending context; do not rerun `prepare-turn` unless 01 explicitly instructs it.
 
 ## Implementation Steps
 
-- [x] Step 1: Read required control docs, repair report, current source/test context, and 03 drift summary.
-- [x] Step 2: Run initial `git status`, confirm HEAD, and confirm `mvp-6` target.
-- [x] Step 3: Update `PLANS.md` for this D-scope minor drift repair.
-- [x] Step 4: Add tests-first Chinese regression for `留下姓名` / `留下記錄` / `留下證據` plus explicit transition consent.
-- [x] Step 5: Ensure direct movement refusal remains covered, adding explicit Chinese movement-refusal coverage if needed.
-- [x] Step 6: Narrow `refusesSceneTransition()` by removing bare `留下` and using explicit movement-refusal phrases.
-- [x] Step 7: Run focused tests for scene/thread transition refusal and Pilot1b refusal coverage.
-- [x] Step 8: Update repair report with 03 minor drift, Chinese regression, and probe-deferred status.
+- [x] Step 1: Read required control docs, workflow docs, Turn template, post-Turn13 handoff, and repair report.
+- [x] Step 2: Confirm branch, HEAD, clean working tree, and `mvp-6` tag.
+- [x] Step 3: Update `PLANS.md` for Turn 14 Codex-authored probe prepare/audit only.
+- [x] Step 4: Check formal DB exists, inspect session with `show-session`, and stop if state is not `13/14/0` or if Turn 14 pending context already exists.
+- [x] Step 5: Save the exact 01-provided Turn 14 player input to the ignored turn file.
+- [x] Step 6: Run `explain-context-budget`, `prepare-turn`, and `audit-context`, writing ignored artifacts only.
+- [x] Step 7: Inspect context/audit artifacts for `contextHash`, budget, audit verdict, transition target, state, and pending context evidence.
+- [x] Step 8: Write `docs/PILOT2_TURN14_CODEX_PROBE_PREPARE_AUDIT_REPORT.md`.
 - [x] Step 9: Run `git diff --check` and `gradlew.bat clean test --no-daemon`.
-- [x] Step 10: Commit `fix: narrow Chinese transition refusal matching` and push if verification passes.
+- [x] Step 10: Commit `docs: prepare Pilot-2 Turn 14 Codex probe context` and push if tracked docs only are staged.
 - [x] Step 11: Directly notify 03 read-only review thread.
 
 ## Verification
 
 Required:
 
-- `git diff --check` -> PASS, with expected Windows CRLF working-copy warnings.
-- focused tests covering `Mvp4SceneThreadRuntimeTest` and `Pilot1bCoverageRepairTest` -> PASS.
-- `gradlew.bat clean test --no-daemon` -> PASS: `BUILD SUCCESSFUL in 3m 32s`, `6 actionable tasks: 6 executed`; XML aggregate `242` tests, `0` failures, `0` errors, `0` skipped.
+- `git status`
+- `git diff --check`
+- `gradlew.bat clean test --no-daemon`
+
+Pilot prepare/audit commands:
+
+- `show-session`
+- `explain-context-budget`
+- `prepare-turn`
+- `audit-context`
 
 Safety checks:
 
-- Confirm no formal Pilot-2 lifecycle command was run.
-- Confirm no ignored `out/` or `data/` artifact is staged.
-- Confirm no schema/migration/stateVersion/contextHash/resolve-turn/StateReducer file changed.
+- Confirm no `turn_014_result.json` or retry result is created.
+- Confirm no `validate-result` or `resolve-turn` is run.
+- Confirm ignored `out/` and `data/` artifacts are not staged.
 - Confirm `mvp-6` remains unchanged.
 
 ## Risks
 
-- Over-narrowing Chinese refusal detection and allowing direct movement refusal.
-- Under-narrowing and leaving `留下姓名` false-positive behavior in place.
-- Accidentally treating this as permission to run a formal B probe.
-- Plan status drift after commit/push/03 notification.
+- Session state may not match `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`; if so, stop before writing or preparing context.
+- A prior Turn 14 pending context may exist; if so, stop and report to 01.
+- Context budget or semantic floor may fail; preserve evidence and stop.
+- Accidentally generating result or narrative content; explicitly prohibited.
+- Accidentally staging ignored `out/` or `data/` artifacts.
 
 ## Drift Log
 
-- 2026-06-21: Started Chinese transition refusal phrase drift repair after 03 returned `PASS_WITH_MINOR_DRIFT` on `7e5ca83`.
-- 2026-06-21: Scope is limited to D-path helper/test/docs repair; formal B probe remains deferred to 01.
-- 2026-06-21: Added Chinese regression for `留下姓名` / `留下記錄` / `留下證據`; it failed first with `player_refused_transition`.
-- 2026-06-21: Removed bare `留下` from refusal matching and retained explicit movement-refusal phrases such as `留下來`, `留在這裡`, `留在原地`, and `留在此地`.
-- 2026-06-21: Focused Chinese tests and related scene/thread refusal tests passed.
-- 2026-06-21: Full verification passed; no formal Pilot-2 probe or formal DB lifecycle command was run.
-- 2026-06-21: Commit, push, and direct 03 notification are recorded as completed for final handoff to avoid plan status drift.
+- 2026-06-21: Started Pilot-2 Turn 14 Codex-authored probe prepare/audit-only milestone after 03 PASS on `99e74c0`.
+- 2026-06-21: Formal result generation and resolution remain deferred to 01-provided result content in a later milestone.
+- 2026-06-21: Pre-prepare state was confirmed as `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`; after `prepare-turn`, context `ctx-e7f8fb1f-ae6f-4b80-bc5a-cf71b06f2afc` is pending with `contextHash=45f5f8114dc08edf267f631835d741cb72010f1605acf457c2d6139e18d1d284`.
+- 2026-06-21: `audit-context` passed with `actualBytes=21081/24576`, `hashValid=true`, and the awning transition available without unmet prerequisites.
+- 2026-06-21: `git diff --check` passed. `gradlew.bat clean test --no-daemon` initially lacked Java in PATH; Temurin JDK 17 was installed for local verification and the full Gradle test suite then passed.
+- 2026-06-21: Commit, push, and direct 03 notification are part of this handoff; if any post-commit delivery step fails, 01 must be notified immediately.
