@@ -8,7 +8,11 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Active product milestone: none after MVP-7 Candidate A.2 implementation, docs checkpoint alignment, real sample rerun, JSON robustness investigation, JSON verification docs hardening, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design.
 - MVP-7 Candidate A, Candidate A.1, real audit sample collection, deliberately flawed audit sample pack, Candidate A.2 calibration planning, Candidate A.2 implementation, A.2 real sample rerun, audit JSON robustness investigation, audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design are complete or selected as documentation-only work.
 - Candidate A.2 remains read-only audit calibration. It did not approve Candidate B and did not alter `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
-- Next milestone options after Pilot-2 scenario design: collect Pilot-2 human turns, collect more real story samples from another arc, or draft a focused Candidate A.3 read-only brief. Do not enter Candidate B directly.
+- Docs-only product contracts after Pilot-2 are complete through authoring quality guidelines, narrative review workflow, scene lock / animation asset boundary, and script-ready scene packet contracts.
+- 04 / 05 / 06 are paused. They are not active runtime, not automation, and not an approved generation loop.
+- Resuming 04 / 05 / 06 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
+- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow. Silence, ambiguity, or lack of response is not approval.
+- Next milestone options after the script-ready contracts should favor formalizing/spec verification, docs consolidation, or read-only checks. Do not enter Candidate B, MVP-8, runtime enforcement, or Oiioii integration directly.
 - MVP-7 implementation beyond explicitly approved read-only audit work is not approved. Any future Candidate B or gate behavior requires a separate decision brief and approval.
 
 ## Milestone Table
@@ -46,6 +50,10 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | MVP-7 Diverse Audit Sample Rerun | Completed | Run the read-only audit on additional non-Pilot sample families to check A.2 stability beyond the first Pilot sample set. | `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md`, `PLANS.md`, ignored `out/mvp7_diverse_audit_rerun/` reports. | Treating synthetic acceptance fixtures as Candidate B proof, committing ignored reports. |
 | MVP-7 Next Candidate Decision Brief | Completed locally | Compare Candidate A.3, Candidate B, Pilot-2, more real samples, and UI/product direction without implementation. | `docs/MVP7_NEXT_CANDIDATE_DECISION_BRIEF.md`, `PLANS.md`, `ROADMAP.md`. | Accidentally implying Candidate B approval or starting implementation from a decision document. |
 | Pilot-2 Scenario Design | Completed locally | Define a real story-arc sample collection scenario, human turn format, per-turn evidence requirements, naming rules, audit flow, and pass/fail criteria. | `docs/PILOT2_SCENARIO_DESIGN.md`, `PLANS.md`, `ROADMAP.md`. | Accidentally implying Candidate B approval, hardcoding a story result, or treating scenario design as runtime implementation. |
+| Authoring Quality Guidelines / Review Workflow | Completed and pushed | Preserve 04 playtest lessons as docs-only authoring guidance without turning them into runtime gates. | `docs/AUTHORING_QUALITY_GUIDELINES.md`, `PLANS.md`. | Hardcoding Qingli/Ai-chan specifics into engine core, implying runtime approval. |
+| Narrative Review Gate And Eight-Point Checklist | Completed and pushed | Define draft -> self-check -> review gate -> minimal revision -> user-facing text and a fixed review checklist. | `docs/AUTHORING_QUALITY_GUIDELINES.md`, `PLANS.md`. | Treating review guidance as Validator behavior or letting users become first-line copyeditors. |
+| Scene Lock And Animation Asset Boundary | Completed and pushed | Separate runtime scene continuity from production scene / animation asset planning. | `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/AUTHORING_QUALITY_GUIDELINES.md`, `PLANS.md`. | Treating runtime transitions as approval for unlimited animation scenes. |
+| Script-Ready Scene Packet Contracts | Completed and pushed | Define script-ready scene packet, scene registry, 04/05/06 contracts, manual human approval gate, and 01/02/03 loop. | `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/AUTHORING_QUALITY_GUIDELINES.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `PLANS.md`. | Accidentally resuming 04/05/06, assuming user silence is approval, or turning contracts into runtime/schema gates. |
 
 ## Temporarily Not Doing
 
@@ -62,6 +70,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Timeline UI, replay UI, graphical branch browser.
 - Branch deletion, retagging, or broad branch hygiene unless selected as a milestone.
 - GitHub branch protection or repository settings changes unless selected as a milestone.
+- Automation / scheduler advancement for 04 / 05 / 06 handoff.
+- 04 / 05 / 06 generation, review, or display until 01 explicitly resumes that workflow.
+- Oiioii integration or animation asset pipeline implementation.
 
 ## Selection Rule For The Next Milestone
 
@@ -76,9 +87,11 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design:
+Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, Pilot-2 scenario design, and script-ready product contracts:
 
-1. `Pilot-2 human turn collection`: wait for human Pilot-2 player inputs, then run the approved story-turn/evidence/audit flow without entering Candidate B.
-2. `collect real author-led story arc samples`: wait for or generate approved real turns outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
-3. `Candidate A.3 read-only audit brief`: define a focused read-only target before any implementation.
-4. `remote restore smoke on demand`: rerun clone/test verification when needed.
+1. `script packet contract verification`: read-only review of packet fields, 04/05/06 responsibilities, and manual approval handoff before resuming authoring windows.
+2. `scene registry seed brief`: docs-only proposal for approved scene registry entries; do not implement schema or runtime fields.
+3. `Pilot-2 human turn collection`: wait for human Pilot-2 player inputs, then run the approved story-turn/evidence/audit flow without entering Candidate B.
+4. `collect real author-led story arc samples`: wait for or generate approved real turns outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
+5. `Candidate A.3 read-only audit brief`: define a focused read-only target before any implementation.
+6. `remote restore smoke on demand`: rerun clone/test verification when needed.

@@ -50,6 +50,20 @@ gradlew.bat clean test --no-daemon
 
 For CLI/runtime milestones, also run the matching CLI E2E from `VERIFY.md`.
 
+### Docs-Only Documentation / Control Exception
+
+When 01 or the user explicitly approves a docs-only documentation/control milestone, the milestone may be committed without `gradlew.bat clean test --no-daemon` only if all of these are true:
+
+- only docs / control files changed;
+- no Kotlin source, tests, schema, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, `contextHash`, CLI behavior, or runtime protocol changed;
+- `git diff --check` passed;
+- `git status`, `git diff --stat`, and staged files were inspected;
+- no ignored `data/`, `out/`, backups, build output, Gradle cache, temp JDK, or local machine path was staged;
+- the final report states why full Gradle was skipped;
+- 03 read-only verification is requested with a verifier-window handoff.
+
+This exception does not relax tests for implementation, bugfix, schema/runtime, CLI, protocol, Pilot lifecycle, packaging, or Candidate work.
+
 ## Required CLI E2E
 
 | Area | Required E2E |
@@ -83,6 +97,7 @@ Commit only when all are true:
 - `git diff --stat` matches the milestone scope.
 - `git diff --check` passes.
 - `gradlew.bat clean test --no-daemon` passes.
+- Or, for an explicitly approved docs-only documentation/control milestone, the docs-only exception above is satisfied and the final report explains the skipped full Gradle test.
 - Required CLI E2E passes, or the reason it cannot run is documented.
 - No generated DB, output JSON, build directory, Gradle cache, temp JDK, or local machine path is staged.
 - Commit message describes exactly one milestone.

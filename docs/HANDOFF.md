@@ -8,7 +8,8 @@ This file is the first stop for a new Codex window. It records the current stabl
 - Remote: `origin https://github.com/z72124223/ai-novel-engine.git`
 - Current branch should track `origin/codex/mvp6-checkpoint-branching-spec`.
 - Use `git status --short --branch` and `git log --oneline --decorate -10` for the latest mutable `HEAD`.
-- Latest synchronized state before this handoff refresh: `a2e5a6f31f7d10483022e6e9e04a45c7cdeba63c`.
+- Latest product-contract baseline before this control-doc refresh: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
+- Use `git log --oneline --decorate -10` for the actual latest `HEAD` after any newer control-doc alignment commits.
 - MVP-6 release tag: `mvp-6`
 - `mvp-6` target commit: `be527031335efe8e2b0facae0145e1bbc084f8c6`
 - Main pushed branches:
@@ -38,6 +39,14 @@ Verified on 2026-06-20 during the automatic stable-completion loop:
 - Test result: 233 tests, 0 failures, 0 errors, 0 skipped.
 - `:app:installDist` was exercised during the diverse audit rerun milestone.
 - `audit-narrative-quality` was run read-only on 16 additional non-Pilot samples; generated reports were ignored under `out/mvp7_diverse_audit_rerun/`.
+
+Additional docs-only product-control baseline as of 2026-06-22:
+
+- Authoring quality guidelines, narrative review gate, scene lock / animation asset boundary, and script-ready scene packet contracts are completed and pushed.
+- Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
+- 04 / 05 / 06 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
+- Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
+- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow.
 
 ## Read First
 
@@ -90,6 +99,10 @@ For Pilot or context-budget work, also read:
 - Audit JSON verification docs hardening.
 - Automatic stable-completion loop bootstrap.
 - Diverse non-Pilot audit sample rerun.
+- Authoring quality guidelines / review workflow docs.
+- Narrative review gate and eight-point checklist.
+- Scene lock and animation asset boundary.
+- Script-ready scene packet contracts.
 
 ## Hard Boundaries
 
@@ -99,6 +112,9 @@ Do not start or add any of these unless the user explicitly approves a new miles
 - Candidate A.3 or MVP-8.
 - Web server, HTTP API, port listener, Web UI, Android UI.
 - Docker, Rust, embedding, vector DB, or multi-agent runtime.
+- Automation / scheduler advancement for 04 / 05 / 06 handoff.
+- Resuming 04 / 05 / 06 generation, review, display, or playtest without 01 explicit handoff and user approval where required.
+- Oiioii integration or animation asset pipeline implementation.
 - OpenAI API or any external AI call.
 - Schema changes or migration edits.
 - Validator, `stateVersion`, or `contextHash` bypass.
@@ -139,6 +155,8 @@ Get-Content -LiteralPath <audit-report.json> -Encoding UTF8 -Raw | ConvertFrom-J
 
 If `JAVA_HOME` is missing, a temporary JDK outside the repo may be used. Do not copy a JDK into the repo and do not write absolute JDK paths into project files.
 
+For explicitly approved docs-only documentation/control milestones, 01 or the user may allow the narrow docs-only exception in `VERIFY.md`: `git diff --check`, diff/stat/staged inspection, no code/runtime touched, no ignored artifacts staged, final explanation for skipped Gradle, and direct 03 read-only verification. Do not apply that exception to code/runtime/schema/CLI/Pilot work.
+
 ## Remote Restore Check
 
 To verify the GitHub backup from a clean location:
@@ -172,9 +190,11 @@ Do not enter Candidate B automatically.
 
 Recommended safe next steps:
 
-1. Collect real author-led story arc audit samples when the user provides or approves them.
-2. Draft a new explicit MVP-7 candidate brief if the user wants more read-only audit work.
-3. Run a remote restore smoke check on demand.
+1. Verify or refine the script-ready scene packet / scene registry contracts with docs-only review.
+2. Draft a scene registry seed brief if 01 wants to prepare 04/05/06 resumption without schema/runtime changes.
+3. Collect real author-led story arc audit samples when the user provides or approves them.
+4. Draft a new explicit MVP-7 candidate brief if the user wants more read-only audit work.
+5. Run a remote restore smoke check on demand.
 
 Stop and ask before any work that would alter schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or any formal SQLite write path.
 
@@ -186,6 +206,8 @@ First read AGENTS.md, ROADMAP.md, PLANS.md, VERIFY.md, DONE_CRITERIA.md, docs/HA
 Current integration branch: codex/mvp6-checkpoint-branching-spec.
 Remote: https://github.com/z72124223/ai-novel-engine.git.
 mvp-6 tag must remain at be527031335efe8e2b0facae0145e1bbc084f8c6.
-Do not enter Candidate B, MVP-8, schema changes, Validator/stateVersion/contextHash changes, resolve-turn/StateReducer changes, server/API/UI/Docker/Rust/embedding work, or direct SQLite writes without explicit user approval.
+Do not enter Candidate B, MVP-8, schema changes, Validator/stateVersion/contextHash changes, resolve-turn/StateReducer changes, server/API/UI/Docker/Rust/embedding/Oiioii integration work, automation/scheduler handoff, or direct SQLite writes without explicit user approval.
+04/05/06 are paused. Resuming them requires manual handoff only: 01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step.
+When 02 finishes a milestone, notify 03 using a verifier-window prompt: "You are 03 驗收稽核窗口..." with commit, push, changed files, verification, scope, safety boundaries, and review focus.
 Start by running git status --short --branch, git log --oneline --decorate -10, git tag --list, and git remote -v, then choose the next smallest milestone from current evidence.
 ```

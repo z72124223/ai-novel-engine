@@ -15,6 +15,21 @@ gradlew.bat clean test --no-daemon
 
 If `JAVA_HOME` is not configured, a temporary JDK may be used from outside the repo. Do not copy a JDK into the repo and do not write an absolute JDK path into code, Gradle files, or docs.
 
+### 1.1 Docs-Only Documentation / Control Exception
+
+For an explicitly approved docs-only documentation/control milestone, 01 or the user may allow a lighter verification set when all of the following are true:
+
+- the diff touches only docs / control files such as `PLANS.md`, `ROADMAP.md`, `VERIFY.md`, `DONE_CRITERIA.md`, or files under `docs/`;
+- no Kotlin source, tests, schema, migrations, runtime protocol, Validator, StateReducer, CLI behavior, `stateVersion`, or `contextHash` files are changed;
+- no formal Pilot or runtime command is run;
+- no ignored `data/`, `out/`, backup, build, Gradle cache, or local machine artifact is staged;
+- `git diff --check` passes;
+- `git status`, `git diff --stat`, and staged files are inspected;
+- the final report explains why full Gradle was not run;
+- 02 sends a verifier-window handoff to 03 for read-only review.
+
+This exception is narrow. It does not apply to code, runtime, schema, CLI, packaging, Pilot lifecycle, Validator, StateReducer, setting-pack runtime, or bugfix milestones.
+
 ## 2. MVP-6 CLI E2E Acceptance
 
 Use a fresh DB. Do not use the formal Pilot DB.
