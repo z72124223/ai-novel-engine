@@ -35,6 +35,9 @@ Use existing docs, Turn 12 artifacts（產物）, and read-only source/test insp
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
 - Current HEAD before this milestone is `626a35d docs: draft Pilot-2 transition refusal decision brief`.
 - 01 reports 03 read-only review passed for `docs: draft Pilot-2 transition refusal decision brief`.
+- Investigation milestone commit `52e3218 docs: investigate Pilot-2 refusal heuristic` has been pushed to `origin/codex/mvp6-checkpoint-branching-spec`.
+- 03 read-only review for `52e3218` returned `PASS_WITH_MINOR_PLAN_DRIFT`; the only reported drift is that Step 8 commit and Step 9 push were left unchecked in this file after the commit/push had completed.
+- `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - Turn 12 is Codex-authored player input（Codex 代寫玩家輸入） and must not count as real human-player evidence.
 - Turn 12 context（上下文） has `contextId=ctx-04485d23-0ab5-470d-96d2-2af2df48a2af`, `baseStateVersion=11`, `contextHash=31198815d7c384a91de97c2369cc503075c25ed630a44cd4ce730cbe15848d39`, and `contextBudget.actualBytes=21366` of `24576`.
 - Turn 12 target transition `transition-perimeter-to-awning-witnessed` required `go to awning with witness` and had no unmet prerequisites in the context artifact.
@@ -64,8 +67,8 @@ Use existing docs, Turn 12 artifacts（產物）, and read-only source/test insp
 - [x] Step 5: Run `git status`.
 - [x] Step 6: Run `git diff --check`.
 - [x] Step 7: Run `gradlew.bat clean test --no-daemon`.
-- [ ] Step 8: Commit `docs: investigate Pilot-2 refusal heuristic`.
-- [ ] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 8: Commit `docs: investigate Pilot-2 refusal heuristic`.
+- [x] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
 
 ## Verification
 
@@ -86,3 +89,4 @@ Use existing docs, Turn 12 artifacts（產物）, and read-only source/test insp
 - 2026-06-21: Started Pilot-2 refusal heuristic investigation brief after 01 reported 03 read-only PASS on the transition refusal decision brief.
 - 2026-06-21: Added `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md`; scope remains docs-only and no Pilot lifecycle commands were run.
 - 2026-06-21: Verification passed with `git diff --check` and full Gradle tests.
+- 2026-06-21: 03 returned `PASS_WITH_MINOR_PLAN_DRIFT` for `52e3218`; this status-alignment milestone marks Step 8/9 complete and records that `52e3218` was pushed without moving `mvp-6`.
