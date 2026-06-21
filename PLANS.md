@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, epoch / material culture consistency, and protagonist reaction logic while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -76,6 +76,10 @@ Docs to inspect:
 - [x] Step 16: Run `git diff --check` for protagonist reaction addendum scope.
 - [x] Step 17: Commit `docs: add protagonist reaction beat guidance` and push tracked docs only.
 - [x] Step 18: Directly notify 03 read-only review thread for the protagonist reaction addendum.
+- [x] Step 19: Add initial survival orientation and goal transition addendum.
+- [x] Step 20: Run `git diff --check` for orientation addendum scope.
+- [x] Step 21: Commit `docs: add opening goal transition guidance` and push tracked docs only.
+- [x] Step 22: Directly notify 03 read-only review thread for the orientation addendum.
 
 ## Verification
 
@@ -113,3 +117,5 @@ Safety checks:
 - 2026-06-21: Tech-level addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-21: Addendum requested protagonist reaction beat guidance for openings where abnormal cues accumulate. The rule requires cue -> notice -> check/adjust -> advance, while keeping truth withheld and avoiding long internal explanation. This remains docs-only.
 - 2026-06-21: Protagonist reaction addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-22: Addendum requested initial survival orientation and goal transition guidance for displacement openings. The rule requires opening objectives to follow protagonist knowledge boundary and immediate needs before local mysteries become main goals. This remains docs-only.
+- 2026-06-22: Opening goal-transition addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.

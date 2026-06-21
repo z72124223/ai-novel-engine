@@ -234,6 +234,52 @@ Layer decision:
 - It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
 - Future runtime support for protagonist cognition, reaction-state tracking, or opening-scene checklists requires a separate approved milestone.
 
+### Initial Survival Orientation And Goal Transition
+
+Opening player objectives must fit the protagonist's current knowledge boundary and immediate need. A newly displaced, transported, lost, injured, or disoriented protagonist should not immediately inherit the author's local mystery as their own main goal.
+
+For displacement openings, the first stage usually centers on:
+
+- orientation;
+- immediate safety;
+- return path;
+- companion protection;
+- finding help;
+- checking whether familiar rules still apply.
+
+Local events or mysteries may appear as obstacle, pressure, or context. They should not become the protagonist's main objective without visible causality.
+
+Use staged goal transition:
+
+1. return home / locate self;
+2. attempt fails or is blocked;
+3. seek help or survival resources;
+4. local rules, people, danger, debt, duty, or misunderstanding pull the protagonist into the local event.
+
+Scene beats should include protagonist reaction and objective handoff. The reader should see the goal changing because the character's situation changed, not because plot gravity pulls them toward the author's planned mystery.
+
+Ending action options should fit the current objective. Do not smuggle later plot into choices. For example, a protagonist who has just arrived somewhere impossible should usually see options such as "check the route back", "protect the companion", "ask where this is", or "find shelter" before options such as "investigate the sealed warehouse" unless the scene has already established why that local event now blocks survival or return.
+
+Good opening pressure:
+
+- The local event blocks the road home.
+- A local authority stops the protagonist from leaving.
+- The companion is endangered by local rules.
+- The protagonist needs help from someone involved in the local event.
+- A misunderstanding makes the protagonist part of the local procedure.
+
+Weak opening pressure:
+
+- The protagonist ignores being displaced and immediately acts like a local investigator.
+- The narrative treats the local mystery as obvious priority before the protagonist understands where they are.
+- Action options assume the protagonist cares about local disputes without a survival, return-path, or companion-protection bridge.
+
+Layer decision:
+
+- Engine layer: keep the orientation-first and staged goal-transition review rule.
+- Content layer: decide the local mystery, faction, obstacle, and exact survival pressure.
+- This section is authoring guideline and review checklist only. It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
+
 ## 5. NPC Consistency Check
 
 For each important NPC, reviewers should ask:
