@@ -189,12 +189,43 @@ class TransitionValidator(private val repository: SqliteStoryRepository) {
                 errors += ValidationError("missing_character_transition_actor", "CHARACTER_INITIATED transition requires a participating character action.")
             }
         }
-        val refusal = listOf("不走", "留下", "拒絕", "不離開", "不要走", "stay", "refuse")
-            .any { context.playerInput.contains(it, ignoreCase = true) }
-        if (refusal && proposal.proposalType != "WORLD_FORCED") {
+        if (context.playerInput.refusesSceneTransition() && proposal.proposalType != "WORLD_FORCED") {
             errors += ValidationError("player_refused_transition", "Player input refuses transition; normal transition cannot be forced.")
         }
         return errors
+    }
+
+    private fun String.refusesSceneTransition(): Boolean {
+        val normalized = lowercase()
+        val movementRefusalPhrases = listOf(
+            "不走",
+            "留下",
+            "拒絕離開",
+            "拒絕走",
+            "不離開",
+            "不要走",
+            "不要離開",
+            "stay exactly",
+            "stay where",
+            "stay here",
+            "stay put",
+            "refuse to leave",
+            "refuse to move",
+            "refuse to go",
+            "refuse transition",
+            "refuse the transition",
+            "do not leave",
+            "don't leave",
+            "do not move",
+            "don't move",
+            "do not go",
+            "don't go",
+            "will not leave",
+            "won't leave",
+            "will not go",
+            "won't go",
+        )
+        return movementRefusalPhrases.any { normalized.contains(it) }
     }
 }
 

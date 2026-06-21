@@ -192,6 +192,27 @@ class Mvp4SceneThreadRuntimeTest {
     }
 
     @Test
+    fun nonMovementBoundaryDoesNotBlockConsentedTransition() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-rear-hall")
+        val context = runtime.prepareTurn(
+            session.id,
+            "I decide to 離開 the rear hall. I refuse to open cargo, touch seals, or enter the sealed warehouse.",
+        )
+        val result = resultFor(context, "mvp4-boundary-not-refusal").copy(
+            sceneRequirementUpdates = listOf(requiredDone("mvp4-boundary-not-refusal")),
+            transitionProposal = transitionToCorridor(context, "PLAYER_INITIATED"),
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertTrue(report.isValid, report.errors.joinToString { "${it.code}: ${it.message}" })
+        runtime.resolveTurn(session.id, result)
+        assertEquals("scene-shrine-questioning", repository.getSession(session.id)?.currentSceneId)
+    }
+
+    @Test
     fun unreachableLocationTransitionIsRejected() {
         val seed = readSeed().copy(
             sceneTransitions = readSeed().sceneTransitions + SceneTransitionDefinition(
