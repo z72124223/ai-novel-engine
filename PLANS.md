@@ -2,17 +2,17 @@
 
 ## Goal
 
-Execute Pilot-2 Turn 13 using the explicitly selected Candidate B Codex-authored player input（Codex 代寫玩家輸入） as system stress evidence（系統壓測證據）, then preserve context/result/evidence/audit artifacts under ignored `out/`, update the tracked plan, verify, commit, push, and notify 03 for read-only review.
+Close the Pilot-2 Turn 13 test evidence gap（測試證據缺口） reported by 03 by rerunning `gradlew.bat clean test --no-daemon`, saving the console output to an ignored sidecar, recording any XML report locations that exist after the run, updating `PLANS.md`, and committing/pushing the tracked documentation record.
 
 ## Global Strategy
 
-Use the formal Pilot-2 DB and existing CLI（命令列介面） flow only: confirm session state, save the approved Codex-authored input, run `prepare-turn`, `audit-context`, draft a result JSON from the emitted context, run `validate-result`, run `resolve-turn` only after validation passes, export evidence, run narrative audit, and update tracked documentation. Keep all formal state mutation behind the existing Validator（驗證器）, `contextHash`, `stateVersion`, `resolve-turn`, and StateReducer（狀態化約器） path.
+Do the smallest verification-only milestone. Do not rerun Pilot turns and do not run lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`. Preserve Gradle console output under ignored `out/` for 03 review, then update only `PLANS.md` with the test evidence path and summary.
 
 ## Non-Goals
 
-- No Turn 1-12 reruns.
-- No overwriting `turn_001` through `turn_012` artifacts.
-- No treatment of Turn 13 as real human-player evidence.
+- No Turn 1-13 reruns.
+- No `prepare-turn`, `validate-result`, or `resolve-turn`.
+- No Pilot DB mutation.
 - No Kotlin changes.
 - No test changes.
 - No schema or migration changes.
@@ -20,13 +20,12 @@ Use the formal Pilot-2 DB and existing CLI（命令列介面） flow only: confi
 - No `stateVersion` or `contextHash` logic changes.
 - No `resolve-turn` or StateReducer implementation changes.
 - No direct SQLite writes.
-- No bypassing formal CLI validation.
+- No committing `out/` or `data/`.
+- No `mvp-6` retagging.
 - No MVP-7 Candidate B.
 - No MVP-8.
 - No 04 thread creation.
-- No server, API, Docker, Android, Rust, embedding, vector DB, or unrelated technology.
-- No `mvp-6` retagging.
-- No committing ignored `data/` or `out/` artifacts.
+- No treatment of Turn 13 as real human-player evidence.
 
 ## Scope
 
@@ -34,95 +33,86 @@ Tracked files:
 
 - `PLANS.md`
 
-Ignored artifacts to preserve but not commit:
+Ignored sidecar:
 
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_player_input.txt`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context_budget.json`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context.json`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context_audit.json`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_result.json`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_evidence.json`
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_audit_report.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`
+
+Optional read-only evidence paths:
+
+- Gradle `TEST-*.xml` report paths if they exist after the rerun.
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `903a568 docs: draft Pilot-2 Turn 13 Codex input options`.
-- 03 read-only review for `903a568` returned `PASS`, per 01.
+- Current HEAD before this milestone is `39be8c4 docs: record Pilot-2 Turn 13 Codex-authored run`.
+- 03 read-only review for Turn 13 returned `PASS_WITH_TEST_EVIDENCE_GAP`, per 01.
+- The gap is evidence readability only: 03 did not find `TEST-*.xml` or `app/build` reports and could not independently confirm the Gradle test count.
+- Turn 13 artifacts already exist and must not be rerun.
+- Formal DB is already at `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`, per 01 and prior Turn 13 handoff.
 - `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `data/pilot2.db` exists.
-- Formal session id is `session-ea110b6c-7509-40e6-a786-99cf00d8fc66`.
-- `show-session` before Turn 13 confirms `nextTurnNumber=13` and `stateVersion=12`.
-- The current scene is `青犁鎮藥市封倉粉線外`, corresponding to `scene-qingli-herb-warehouse-perimeter`.
-- Prior Turn 12 summary confirms it was Codex-authored, had exact `go to awning with witness` intent, and still did not complete formal transition.
-- User/01 explicitly selected Candidate B from `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md` for this milestone.
-- Turn 13 must be labeled Codex-authored / system stress evidence / not human-player evidence.
-- Turn 13 context audit passed with `actualBytes=21213/24576` and `hashValid=true`.
-- First Turn 13 result with `transitionProposal` passed `validate-result` but `resolve-turn` failed with `player_refused_transition`.
-- Retry result without `transitionProposal` passed `validate-result` and `resolve-turn`.
-- Post-resolve state is `stateVersion=13`, `nextTurnNumber=14`, current scene still `青犁鎮藥市封倉粉線外`, and `pendingContexts=0`.
-- Narrative audit passed with `verdict=PASS`, `score=92`, `severity=WARNING`, and one finding: `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`.
+- Initial `git status` for this milestone was clean and synced with origin.
+- `gradlew.bat clean test --no-daemon` was rerun for this milestone and passed.
+- Console output was saved to `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`.
+- Gradle generated XML reports under `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test`.
+- XML report summary: 11 report files, 239 tests, 0 failures, 0 errors, 0 skipped.
+- No Pilot lifecycle commands were run in this milestone.
 
 ## Assumptions
 
-- `show-session` output does not print `pendingContexts` directly, but the user-provided expected value is `0`; `prepare-turn` would fail or create a conflict if a pending context existed.
-- The cleanest way to isolate the Turn 12 refusal heuristic variable is to use `邊界 / 不同意事項` rather than `明確拒絕 / 邊界`, and avoid direct movement-refusal phrases such as `不走`, `留下`, `拒絕`, `不離開`, `不要走`, `stay`, or `refuse` in the player input.
-- Only `PLANS.md` needs to be committed if the turn completes; generated `out/` and mutated `data/pilot2.db` remain ignored formal artifacts.
+- The repository's Gradle build output may be outside `app/build` due to prior OneDrive build safeguards, so XML reports may appear under a local appdata build directory rather than the repo tree.
+- The saved console output sidecar plus explicit local appdata XML report paths should be sufficient for this minimal evidence-gap closure.
 
 ## Open Questions
 
-- Whether 01 wants Turn 14 to wait for real human input, use another Codex-authored probe, or stop Pilot-2 for summary review.
+- Whether future verification conventions should add a standard tracked note or ignored test-output sidecar naming rule for Pilot turn milestones.
 
 ## Implementation Steps
 
-- [x] Step 1: Read control docs and relevant Pilot-2 Turn 13 workflow/options/finding docs.
-- [x] Step 2: Run initial `git status`, confirm branch/head, confirm `mvp-6`, and confirm `data/pilot2.db` exists.
-- [x] Step 3: Confirm formal session state with `show-session`.
-- [x] Step 4: Update `PLANS.md` for this Turn 13 execution milestone.
-- [x] Step 5: Save `turn_013_player_input.txt` with Candidate B and Codex-authored evidence label.
-- [x] Step 6: Run `explain-context-budget`.
-- [x] Step 7: Run `prepare-turn` and save `turn_013_context.json`.
-- [x] Step 8: Run `audit-context` and confirm hash/bytes.
-- [x] Step 9: Draft `turn_013_result.json` from context and player input.
-- [x] Step 10: Run `validate-result`.
-- [x] Step 11: Run `resolve-turn` only if validation passes.
-- [x] Step 12: Export `turn_013_evidence.json`.
-- [x] Step 13: Run `audit-narrative-quality` and parse report.
-- [x] Step 14: Confirm post-turn session state and transition result.
-- [x] Step 15: Update `PLANS.md` with Turn 13 outcome and verification evidence.
-- [x] Step 16: Run `git status`, `git diff --check`, and `gradlew.bat clean test --no-daemon`.
-- [x] Step 17: Commit `docs: record Pilot-2 Turn 13 Codex-authored run`.
-- [x] Step 18: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
-- [x] Step 19: Directly notify 03 read-only review thread.
+- [x] Step 1: Read `AGENTS.md`, `PLANS.md`, `VERIFY.md`, and `docs/PILOT2_TURN_TEMPLATE.md`.
+- [x] Step 2: Run initial `git status`, confirm current HEAD, and confirm `mvp-6` tag target.
+- [x] Step 3: Update `PLANS.md` for this verification evidence gap closure milestone.
+- [x] Step 4: Run `gradlew.bat clean test --no-daemon` and tee console output to the ignored Turn 13 sidecar.
+- [x] Step 5: Locate any generated `TEST-*.xml` reports and record their actual paths.
+- [x] Step 6: Update `PLANS.md` with test result summary, sidecar path, XML path status, and no-Pilot-rerun guarantee.
+- [x] Step 7: Run `git diff --check`.
+- [x] Step 8: Confirm tracked changes are only allowed docs.
+- [x] Step 9: Commit `docs: record Pilot-2 Turn 13 test evidence`.
+- [x] Step 10: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 11: Directly notify 03 read-only review thread.
 
 ## Verification
 
-- `git status` before commit should show only allowed tracked files changed.
-- `git diff --check` -> PASS, with the existing CRLF working-copy warning for `PLANS.md`.
 - `gradlew.bat clean test --no-daemon` -> PASS.
-- `explain-context-budget` -> `canFit=true`, `candidateBytesAfterTrimming=21213/24576`.
-- `prepare-turn` -> `contextId=ctx-6a9dee92-6635-4ec0-ab85-c17d5ad3e561`, `turnNumber=13`, `baseStateVersion=12`.
-- `audit-context` -> PASS with `hashValid=true` and `actualBytes=21213/24576`.
-- First `turn_013_result.json` -> `validate-result` PASS; `resolve-turn` FAIL with `player_refused_transition`.
-- Retry `turn_013_result_retry_01.json` -> `validate-result` PASS; `resolve-turn` PASS.
-- `export-session-evidence` -> `turnLogs=13`, `stateDeltas=150`, `pendingContexts=0`.
-- `audit-narrative-quality` -> PASS, score 92, one warning `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`.
-- Final handoff must state transition did not succeed; final state is `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`.
+- Console output saved to `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`.
+- Console output summary includes `BUILD SUCCESSFUL in 3m 24s` and `6 actionable tasks: 6 executed`.
+- XML reports found at:
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.EngineTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp4SceneThreadRuntimeTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp5SettingPackDependencyRuntimeTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp6CheckpointBranchingRuntimeTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp7NarrativeQualityAuditTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1bCoverageRepairTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextBudgetV2Test.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextMetadataNormalizationTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextRelevanceFloorTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ReferencedCapabilityContractTest.xml`
+  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1StabilizationTest.xml`
+- XML aggregate: 239 tests, 0 failures, 0 errors, 0 skipped, 11 files.
+- `git diff --check` -> PASS, with the existing CRLF working-copy warning for `PLANS.md`.
+- `git status` before commit -> only `PLANS.md` as tracked modification.
+- `out/` and `data/` were not staged.
+- No Pilot lifecycle commands were run in this milestone.
 
 ## Risks
 
-- The refusal heuristic may still reject transition even with reduced refusal wording.
-- Drafting the result too aggressively could force a transition beyond player consent or context permissions.
-- Generated artifacts under `out/` must be preserved for review but not committed.
-- Mutated `data/pilot2.db` must remain formal local state and not be directly edited or committed.
-- Plan status drift can recur if commit/push/03 notification steps are not reflected before final handoff.
+- Accidentally rerunning a Pilot lifecycle command instead of only Gradle tests.
+- Accidentally staging ignored `out/` or `data/` artifacts.
+- Test XML may exist outside the repo build tree and be missed unless searched explicitly.
+- Plan status drift can recur if commit/push/03 notification are not reflected before final handoff.
 
 ## Drift Log
 
-- 2026-06-21: Started Pilot-2 Turn 13 Codex-authored Candidate B execution after 01 reported 03 PASS on `903a568`.
-- 2026-06-21: Confirmed branch, clean worktree, `mvp-6` tag target, formal DB presence, and `show-session` state before saving input.
-- 2026-06-21: Prepared Turn 13 context; context audit passed at `21213/24576` bytes with `hashValid=true`.
-- 2026-06-21: First transition result validated but `resolve-turn` rejected it with `player_refused_transition`; no runtime or Validator changes were made.
-- 2026-06-21: Retry result removed `transitionProposal` and resolved successfully, advancing to Turn 14 while staying in the perimeter scene.
-- 2026-06-21: Exported evidence and narrative audit; audit passed with score 92 and the existing scheduled-world-event pressure warning.
-- 2026-06-21: Commit, push, and direct 03 notification are recorded as completed for the final handoff sequence to avoid plan status drift.
+- 2026-06-21: Started test-evidence gap closure after 03 returned `PASS_WITH_TEST_EVIDENCE_GAP` for Turn 13.
+- 2026-06-21: Scope is verification-only; no Pilot turn lifecycle command is approved.
+- 2026-06-21: Reran Gradle tests, saved console output sidecar, found XML reports in local appdata build directory, and recorded 239 passing tests.
+- 2026-06-21: Commit, push, and direct 03 notification are recorded as completed for final handoff to avoid plan status drift.
