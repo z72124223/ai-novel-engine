@@ -120,6 +120,37 @@ Avoid:
 
 Good anti-AI revision usually asks "what pressure caused this line?" rather than "what verbal texture can I add?"
 
+### Micro-Prose Review
+
+Reviewers should watch for AI calibration phrasing: prose that repeatedly defends itself with constructions such as "not X, only Y" instead of letting the visible action carry the limit.
+
+When the scene needs to show that a character did not rush forward, did not cross a line, or can still be called back, prefer visible behavior over explanatory narration.
+
+Check for stacked weakening words. Repeated "suddenly", "just", "not", "only", "half-step", or equivalent softeners can make the picture feel mushy and the action less clean. The issue is not any single word; it is the pattern of hedging after every motion.
+
+For animals or nonverbal characters, prioritize visible behavior:
+
+- nose lifting toward a scent;
+- ears turning before the body moves;
+- front paws stopping at a boundary;
+- a half-step that stops on its own;
+- a look back toward the handler;
+- breath, posture, and scent direction.
+
+Do not over-explain the animal's psychology when a physical beat can show control, hesitation, curiosity, or recall.
+
+Minimal abstract revision:
+
+```text
+Weak: It was not a charge, only a half-step forward.
+Stronger: Its nose lifted; one front paw landed half a step out, then stopped.
+```
+
+Layer decision:
+
+- Engine layer: keep the micro-prose review rule and example pattern.
+- Content layer: decide the actual animal, scene boundary, scent, handler relationship, and local vocabulary.
+
 ## 5. NPC Consistency Check
 
 For each important NPC, reviewers should ask:

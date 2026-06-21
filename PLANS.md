@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, and anti-AI-writing guidance while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, and micro-prose review while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -64,6 +64,10 @@ Docs to inspect:
 - [x] Step 4: Run `git diff --check` and inspect diff scope.
 - [x] Step 5: Commit `docs: add authoring quality guidelines` and push tracked docs only.
 - [x] Step 6: Directly notify 03 read-only review thread.
+- [x] Step 7: Add micro-prose review addendum for AI calibration phrasing and visible nonverbal action.
+- [x] Step 8: Run `git diff --check` for addendum scope.
+- [x] Step 9: Commit `docs: add micro-prose authoring review guidance` and push tracked docs only.
+- [x] Step 10: Directly notify 03 read-only review thread for the addendum.
 
 ## Verification
 
@@ -95,3 +99,5 @@ Safety checks:
 - 2026-06-21: Started docs-only authoring quality / style guide / review workflow milestone after 01 classified 04 playtest learning as docs-first evidence, not runtime approval.
 - 2026-06-21: Added `docs/AUTHORING_QUALITY_GUIDELINES.md` with engine/content layer separation, anti-AI-writing guidance, NPC consistency checks, review loop, and copyright/style safety. No runtime or schema files touched.
 - 2026-06-21: `git diff --check` passed with only Windows line-ending warnings. Full Gradle was intentionally skipped because this milestone changed only docs and `PLANS.md`.
+- 2026-06-21: Addendum requested micro-prose review guidance for avoiding AI calibration phrasing such as repeated "not X, only Y", using visible behavior for limits, checking stacked weakening words, and handling animal/nonverbal action through concrete beats. This remains docs-only.
+- 2026-06-21: Addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
