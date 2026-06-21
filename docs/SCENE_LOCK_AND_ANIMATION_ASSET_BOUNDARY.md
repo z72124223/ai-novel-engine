@@ -105,6 +105,8 @@ These ids must not be translated or casually renamed.
 
 The mountain path / dense fog prologue bridge currently remains a playtest prologue bridge / `sceneCandidate`, not a formal runtime scene and not an approved production asset scene, unless 01 later approves it.
 
+For a conservative Qingli-specific seed draft of these scene ids, see `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`. That brief is a planning reference only; it is not a setting-pack patch, runtime scene definition, or approved animation asset lock.
+
 ## 7. Boundary Examples
 
 Within one production scene:
