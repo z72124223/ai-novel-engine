@@ -83,6 +83,71 @@ The engine layer can standardize review questions:
 
 Review workflow should stay advisory unless a future explicitly approved milestone changes runtime behavior.
 
+### Narrative Review Gate And Eight-Point Checklist
+
+Use a fixed authoring workflow so the user is not the first line-by-line reviewer.
+
+Recommended flow:
+
+```text
+draft -> self-check -> review gate -> minimal revision -> user-facing text
+```
+
+Workflow rules:
+
+1. 04 or any authoring window first produces a draft.
+2. The draft includes a short self-check summary and is not treated as final.
+3. 01 or a designated review gate uses the fixed checklist below.
+4. The review asks for minimal revision, not a full rewrite by default.
+5. Only the revised text is shown to the user.
+6. The user mainly gives direction-level feedback: premise, mood, pacing, taste, or product intent.
+
+Eight-point checklist:
+
+| Check | Question |
+| --- | --- |
+| Character objective alignment | Does the opening or turn goal fit the character's current motive, knowledge boundary, and immediate need? |
+| Protagonist reaction beats | Do major abnormalities or pressures receive enough noticing, checking, adjustment, and then advancement? |
+| NPC consistency | Are terms of address, knowledge, voice, pressure, and social position continuous? Do NPCs avoid taking turns reciting setting information? |
+| Companion / animal behavior | Does the companion or nonverbal character fit species, senses, leash / no-leash state, recallability, and non-human behavior? |
+| Material culture consistency | Do objects, tools, materials, transport, and institutions fit the setting's epoch and tech level? |
+| Micro-prose quality | Does the prose avoid AI calibration phrasing, mechanical balanced clauses, sensory misattribution, random synonym swaps, and over-explanation? |
+| Scene causality | Do scene beats connect causally, without plot gravity dragging the protagonist toward the author's preferred mystery? |
+| Actionable ending | Does the ending leave clear, natural, non-UI player choices that fit the current objective and do not smuggle in later plot? |
+
+04 self-check summary template:
+
+```text
+Authoring self-check:
+
+1. Character objective alignment: PASS / RISK / FAIL - <one sentence>
+2. Protagonist reaction beats: PASS / RISK / FAIL - <one sentence>
+3. NPC consistency: PASS / RISK / FAIL - <one sentence>
+4. Companion / animal behavior: PASS / RISK / FAIL - <one sentence>
+5. Material culture consistency: PASS / RISK / FAIL - <one sentence>
+6. Micro-prose quality: PASS / RISK / FAIL - <one sentence>
+7. Scene causality: PASS / RISK / FAIL - <one sentence>
+8. Actionable ending: PASS / RISK / FAIL - <one sentence>
+
+Minimal revision needed:
+<one to three concrete fixes, not a full rewrite plan>
+```
+
+Review gate expectations:
+
+- Mark `PASS` when the issue is acceptable as-is.
+- Mark `RISK` when a small localized edit should fix the issue.
+- Mark `FAIL` when the draft's objective, causality, knowledge boundary, or setting fit is structurally wrong.
+- Prefer one narrow patch over rewriting the whole scene.
+- Do not leak author-only secrets in the self-check or review note.
+
+Layer decision:
+
+- This is an authoring guideline and review checklist.
+- It is not a runtime quality gate.
+- It does not approve schema, migration, Validator, StateReducer, setting-pack field, or context protocol changes.
+- Qingli, Ai-chan, and any specific opening text may be used as private review context, but they are not hardcoded into engine core.
+
 ## 3. Content / Setting Pack Layer
 
 The following should remain in content, setting packs, or scenario notes, not engine core:

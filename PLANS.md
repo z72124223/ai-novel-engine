@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -84,6 +84,10 @@ Docs to inspect:
 - [x] Step 24: Run `git diff --check` for sensory attribution addendum scope.
 - [x] Step 25: Commit `docs: add sensory attribution guidance` and push tracked docs only.
 - [x] Step 26: Directly notify 03 read-only review thread for the sensory attribution addendum.
+- [x] Step 27: Add narrative review gate and eight-point checklist addendum.
+- [x] Step 28: Run `git diff --check` for review gate addendum scope.
+- [x] Step 29: Commit `docs: add narrative review gate checklist` and push tracked docs only.
+- [x] Step 30: Directly notify 03 read-only review thread for the review gate addendum.
 
 ## Verification
 
@@ -125,3 +129,5 @@ Safety checks:
 - 2026-06-22: Opening goal-transition addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-22: Addendum requested sensory attribution and body-part logic guidance for animal/nonverbal beats, including smell-to-nose, sound-to-ears, sight-to-gaze, touch-to-body-contact mapping and avoiding mechanical balanced clauses. This remains docs-only.
 - 2026-06-22: Sensory attribution addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-22: Addendum requested a narrative review gate and eight-point checklist to move line-by-line review away from the user. The flow is draft -> self-check -> review gate -> minimal revision -> user-facing text and remains docs-only.
+- 2026-06-22: Narrative review gate addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
