@@ -151,6 +151,44 @@ Layer decision:
 - Engine layer: keep the micro-prose review rule and example pattern.
 - Content layer: decide the actual animal, scene boundary, scent, handler relationship, and local vocabulary.
 
+### Sensory Attribution And Body-Part Logic
+
+Sensory attribution must match physiology and visible action. Do not attach a stimulus to the wrong body part just because the sentence needs to satisfy two prompt conditions at once.
+
+Use the right sensory surface:
+
+- Smell / scent: nose tip, nostrils, breath, muzzle, body angle, front paws, steps, pause.
+- Hearing / sound: ears, stopping, head turn, alert posture, looking back, quieting down.
+- Sight / visual cue: gaze, head direction, narrowed eyes, line of sight, where attention rests.
+- Touch / ground feel: soles, fingers, skin, fur, weight of steps, pressure through the body.
+
+If one beat needs multiple stimuli, distribute the reactions to the correct body parts. For example, ears may answer the protagonist's voice while the nose remains angled toward a scent source.
+
+Avoid mechanical "while / on one side / on the other side" balancing when it reads like prompt condition stitching. Use visible action to show divided attention or conflict.
+
+For animals and nonverbal characters, do not write human-style inner conflict when body language can carry it. Attention, obedience, distraction, and hesitation should be visible through ears, nose, paws, body angle, stopping, looking back, or returning to the handler.
+
+Micro-prose review questions:
+
+- Does this sensory cue land on the right organ?
+- Is the action visible?
+- Did an abstract sentence replace the picture?
+- Is the sentence forcing two unrelated reactions into one balanced construction?
+- Would splitting the beat make the animal or nonverbal character clearer?
+
+Minimal abstract revision:
+
+```text
+Weak: The animal's ears listened to the handler while the scent pulled them forward.
+Stronger: Its ears flicked back at the handler's voice; its nose stayed angled toward the scent.
+```
+
+Layer decision:
+
+- Engine layer: keep the sensory attribution and body-part review rule.
+- Content layer: decide the actual species, scent source, handler cue, and local vocabulary.
+- This section is authoring guideline and review checklist only. It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
+
 ### Epoch And Material Culture Consistency
 
 Reviewers should check whether objects, tools, transport, containers, weapons, lighting, medicine, and infrastructure fit the setting's epoch, material culture, and tech level.

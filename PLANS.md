@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -80,6 +80,10 @@ Docs to inspect:
 - [x] Step 20: Run `git diff --check` for orientation addendum scope.
 - [x] Step 21: Commit `docs: add opening goal transition guidance` and push tracked docs only.
 - [x] Step 22: Directly notify 03 read-only review thread for the orientation addendum.
+- [x] Step 23: Add sensory attribution and body-part logic addendum.
+- [x] Step 24: Run `git diff --check` for sensory attribution addendum scope.
+- [x] Step 25: Commit `docs: add sensory attribution guidance` and push tracked docs only.
+- [x] Step 26: Directly notify 03 read-only review thread for the sensory attribution addendum.
 
 ## Verification
 
@@ -119,3 +123,5 @@ Safety checks:
 - 2026-06-21: Protagonist reaction addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-22: Addendum requested initial survival orientation and goal transition guidance for displacement openings. The rule requires opening objectives to follow protagonist knowledge boundary and immediate needs before local mysteries become main goals. This remains docs-only.
 - 2026-06-22: Opening goal-transition addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-22: Addendum requested sensory attribution and body-part logic guidance for animal/nonverbal beats, including smell-to-nose, sound-to-ears, sight-to-gaze, touch-to-body-contact mapping and avoiding mechanical balanced clauses. This remains docs-only.
+- 2026-06-22: Sensory attribution addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
