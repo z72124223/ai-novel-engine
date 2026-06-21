@@ -2,11 +2,11 @@
 
 ## Goal
 
-Close the Pilot-2 Turn 13 test evidence gap（測試證據缺口） reported by 03 by rerunning `gradlew.bat clean test --no-daemon`, saving the console output to an ignored sidecar, recording any XML report locations that exist after the run, updating `PLANS.md`, and committing/pushing the tracked documentation record.
+Create a docs-only Pilot-2 Turn 13 evidence and decision checkpoint（證據與決策檢查點） that consolidates the Codex-authored Turn 13 run, the follow-up test-evidence closure, and the next decision options for 01/user without changing runtime（執行期） behavior or rerunning any Pilot turn.
 
 ## Global Strategy
 
-Do the smallest verification-only milestone. Do not rerun Pilot turns and do not run lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`. Preserve Gradle console output under ignored `out/` for 03 review, then update only `PLANS.md` with the test evidence path and summary.
+Use existing docs and ignored artifacts as the evidence base. Add one checkpoint document under `docs/` and update `PLANS.md`. Do not run Pilot lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`; do not modify Kotlin, tests, schema, Validator（驗證器）, `stateVersion`, `contextHash`, `resolve-turn`, or StateReducer（狀態化約器）.
 
 ## Non-Goals
 
@@ -25,94 +25,80 @@ Do the smallest verification-only milestone. Do not rerun Pilot turns and do not
 - No MVP-7 Candidate B.
 - No MVP-8.
 - No 04 thread creation.
-- No treatment of Turn 13 as real human-player evidence.
+- No treatment of Turn 12 or Turn 13 Codex-authored evidence as real human-player evidence.
 
 ## Scope
 
 Tracked files:
 
 - `PLANS.md`
+- `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_13.md`
 
-Ignored sidecar:
+Read-only evidence files:
 
-- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`
-
-Optional read-only evidence paths:
-
-- Gradle `TEST-*.xml` report paths if they exist after the rerun.
+- `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_12.md`
+- `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md`
+- `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md`
+- `docs/PILOT2_TRANSITION_REFUSAL_DECISION_BRIEF.md`
+- `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_*`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `39be8c4 docs: record Pilot-2 Turn 13 Codex-authored run`.
-- 03 read-only review for Turn 13 returned `PASS_WITH_TEST_EVIDENCE_GAP`, per 01.
-- The gap is evidence readability only: 03 did not find `TEST-*.xml` or `app/build` reports and could not independently confirm the Gradle test count.
-- Turn 13 artifacts already exist and must not be rerun.
-- Formal DB is already at `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`, per 01 and prior Turn 13 handoff.
+- Current HEAD before this milestone is `e4e7a18 docs: record Pilot-2 Turn 13 test evidence`.
+- 03 read-only review for `e4e7a18` returned `PASS`, per 01.
 - `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Initial `git status` for this milestone was clean and synced with origin.
-- `gradlew.bat clean test --no-daemon` was rerun for this milestone and passed.
-- Console output was saved to `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`.
-- Gradle generated XML reports under `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test`.
-- XML report summary: 11 report files, 239 tests, 0 failures, 0 errors, 0 skipped.
-- No Pilot lifecycle commands were run in this milestone.
+- Turn 13 was Codex-authored system stress evidence, not real human-player evidence.
+- Turn 13 pre-state was `stateVersion=12`, `nextTurnNumber=13`.
+- Turn 13 post-state was `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`, with current scene still `scene-qingli-herb-warehouse-perimeter`.
+- Turn 13 context audit passed with `actualBytes=21213/24576` and `hashValid=true`.
+- First Turn 13 result had `transitionProposal=transition-perimeter-to-awning-witnessed`, passed `validate-result`, but failed `resolve-turn` with `player_refused_transition`.
+- Retry result had no `transitionProposal`, passed `validate-result`, and resolved successfully.
+- Turn 13 narrative audit passed with `score=92`, `severity=WARNING`, and one finding: `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`.
+- Test evidence closure commit `e4e7a18` recorded the ignored console output sidecar and XML test report locations.
+- Gradle XML aggregate from the closure was 239 tests, 0 failures, 0 errors, 0 skipped.
 
 ## Assumptions
 
-- The repository's Gradle build output may be outside `app/build` due to prior OneDrive build safeguards, so XML reports may appear under a local appdata build directory rather than the repo tree.
-- The saved console output sidecar plus explicit local appdata XML report paths should be sufficient for this minimal evidence-gap closure.
+- No `ROADMAP.md` or `VERIFY.md` edit is required because this checkpoint documents evidence and decisions only; it does not change verification policy or roadmap status.
+- A docs-only checkpoint does not require CLI E2E beyond `git diff --check` and the required Gradle test run.
 
 ## Open Questions
 
-- Whether future verification conventions should add a standard tracked note or ignored test-output sidecar naming rule for Pilot turn milestones.
+- Whether 01/user wants to wait for real human Turn 14 input, run another Codex-authored probe, open read-only/tests-only investigation, or explicitly approve runtime/refusal heuristic repair.
 
 ## Implementation Steps
 
-- [x] Step 1: Read `AGENTS.md`, `PLANS.md`, `VERIFY.md`, and `docs/PILOT2_TURN_TEMPLATE.md`.
+- [x] Step 1: Read required control docs, workflow docs, Turn 13 artifacts, and test sidecar.
 - [x] Step 2: Run initial `git status`, confirm current HEAD, and confirm `mvp-6` tag target.
-- [x] Step 3: Update `PLANS.md` for this verification evidence gap closure milestone.
-- [x] Step 4: Run `gradlew.bat clean test --no-daemon` and tee console output to the ignored Turn 13 sidecar.
-- [x] Step 5: Locate any generated `TEST-*.xml` reports and record their actual paths.
-- [x] Step 6: Update `PLANS.md` with test result summary, sidecar path, XML path status, and no-Pilot-rerun guarantee.
-- [x] Step 7: Run `git diff --check`.
-- [x] Step 8: Confirm tracked changes are only allowed docs.
-- [x] Step 9: Commit `docs: record Pilot-2 Turn 13 test evidence`.
-- [x] Step 10: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
-- [x] Step 11: Directly notify 03 read-only review thread.
+- [x] Step 3: Update `PLANS.md` for this docs-only checkpoint milestone.
+- [x] Step 4: Add `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_13.md`.
+- [x] Step 5: Inspect diff for scope and evidence accuracy.
+- [x] Step 6: Run `git status` and `git diff --check`.
+- [x] Step 7: Run `gradlew.bat clean test --no-daemon`.
+- [x] Step 8: Commit `docs: checkpoint Pilot-2 evidence after Turn 13`.
+- [x] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 10: Directly notify 03 read-only review thread.
 
 ## Verification
 
-- `gradlew.bat clean test --no-daemon` -> PASS.
-- Console output saved to `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_gradle_test_output.txt`.
-- Console output summary includes `BUILD SUCCESSFUL in 3m 24s` and `6 actionable tasks: 6 executed`.
-- XML reports found at:
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.EngineTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp4SceneThreadRuntimeTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp5SettingPackDependencyRuntimeTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp6CheckpointBranchingRuntimeTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Mvp7NarrativeQualityAuditTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1bCoverageRepairTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextBudgetV2Test.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextMetadataNormalizationTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ContextRelevanceFloorTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1ReferencedCapabilityContractTest.xml`
-  - `C:\Users\f7212\AppData\Local\local-interactive-fiction-engine-build\app\test-results\test\TEST-com.localnovel.engine.Pilot1StabilizationTest.xml`
-- XML aggregate: 239 tests, 0 failures, 0 errors, 0 skipped, 11 files.
+- `git status` before commit should show only `PLANS.md` and `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_13.md` as tracked changes.
 - `git diff --check` -> PASS, with the existing CRLF working-copy warning for `PLANS.md`.
-- `git status` before commit -> only `PLANS.md` as tracked modification.
-- `out/` and `data/` were not staged.
+- `gradlew.bat clean test --no-daemon` -> PASS.
 - No Pilot lifecycle commands were run in this milestone.
+- `out/` and `data/` were not staged.
 
 ## Risks
 
-- Accidentally rerunning a Pilot lifecycle command instead of only Gradle tests.
-- Accidentally staging ignored `out/` or `data/` artifacts.
-- Test XML may exist outside the repo build tree and be missed unless searched explicitly.
-- Plan status drift can recur if commit/push/03 notification are not reflected before final handoff.
+- Accidentally overstating Codex-authored Turn 13 as human evidence.
+- Accidentally calling the refusal heuristic a confirmed bug rather than a supported interpretation.
+- Drifting into Validator/runtime/StateReducer recommendations without approval.
+- Plan status drift after commit/push/03 notification.
 
 ## Drift Log
 
-- 2026-06-21: Started test-evidence gap closure after 03 returned `PASS_WITH_TEST_EVIDENCE_GAP` for Turn 13.
-- 2026-06-21: Scope is verification-only; no Pilot turn lifecycle command is approved.
-- 2026-06-21: Reran Gradle tests, saved console output sidecar, found XML reports in local appdata build directory, and recorded 239 passing tests.
+- 2026-06-21: Started Pilot-2 Turn 13 evidence and decision checkpoint after 03 returned PASS on `e4e7a18`.
+- 2026-06-21: Scope is docs-only; no Pilot lifecycle command is approved.
+- 2026-06-21: Added `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_13.md`; verification passed with `git diff --check` and full Gradle tests.
 - 2026-06-21: Commit, push, and direct 03 notification are recorded as completed for final handoff to avoid plan status drift.
