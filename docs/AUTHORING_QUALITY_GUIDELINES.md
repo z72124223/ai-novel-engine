@@ -151,6 +151,53 @@ Layer decision:
 - Engine layer: keep the micro-prose review rule and example pattern.
 - Content layer: decide the actual animal, scene boundary, scent, handler relationship, and local vocabulary.
 
+### Epoch And Material Culture Consistency
+
+Reviewers should check whether objects, tools, transport, containers, weapons, lighting, medicine, and infrastructure fit the setting's epoch, material culture, and tech level.
+
+Generic review questions:
+
+- What materials does this object require?
+- What craft, toolchain, energy source, or workshop does it require?
+- Who can manufacture it?
+- Who can repair it?
+- Who can afford it?
+- Does it imply roads, storage, commerce, warfare, institutions, or supply chains that must also exist?
+- Would it change the setting's social structure or combat balance if it were common?
+
+If an object exceeds the setting tech level, the text needs a clear source before using it:
+
+- a transported item;
+- a ruin or relic;
+- foreign technology;
+- abnormal trade;
+- magic / cultivation exception;
+- explicit author approval in the setting pack.
+
+If there is no source, revise to an era-fitting substitute. Do not only swap the noun; check the material and institution behind it.
+
+Example: a "tire" is not just a wheel. Modern rubber tires may imply rubber processing, petrochemical products, vulcanization, industrial supply, repair tools, and road conditions. If the setting pack does not authorize those systems, use a period-appropriate trace instead.
+
+Abstract playtest example:
+
+- Reasonable by default: `cart tracks`, `wooden wheel ruts`, `iron-rimmed cart wheel marks`.
+- Requires explicit exception or prohibition: `modern rubber tires`, `plastic containers`, `electric lamps`, `firearms`, `cars`, `petrochemical products`.
+- If the text says "medicine cart wheel marks", read it as wooden or iron-rimmed cart marks unless the player or setting explicitly establishes a modern vehicle.
+- Do not upgrade "wheel marks" into modern "tire tracks" by convenience.
+
+When player input introduces a modern object:
+
+- Decide whether it is a transported remnant, usable tool, mistaken description, or forbidden artifact.
+- Do not let the AI result make the world native to an unauthorized modern supply chain.
+- Prefer narrative refusal, translation, or downgrading when appropriate. For example, "car" may be interpreted as a beast-drawn cart / wooden-wheel vehicle unless the player clearly means a modern automobile and the setting permits it.
+- If the object would affect social structure, combat power, medicine, travel, or trade, stop for 01 / user decision before formalizing it as canon.
+
+Layer decision:
+
+- This section is authoring guideline and review checklist only.
+- It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
+- Future engineering may separately design fields such as `techLevel`, `materialCulture`, `allowedMaterials`, `forbiddenArtifacts`, or `exceptionSources`, but this document does not implement them.
+
 ## 5. NPC Consistency Check
 
 For each important NPC, reviewers should ask:

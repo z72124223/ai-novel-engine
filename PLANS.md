@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, and micro-prose review while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, and epoch / material culture consistency while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -68,6 +68,10 @@ Docs to inspect:
 - [x] Step 8: Run `git diff --check` for addendum scope.
 - [x] Step 9: Commit `docs: add micro-prose authoring review guidance` and push tracked docs only.
 - [x] Step 10: Directly notify 03 read-only review thread for the addendum.
+- [x] Step 11: Add epoch / material culture / tech-level consistency addendum.
+- [x] Step 12: Run `git diff --check` for tech-level addendum scope.
+- [x] Step 13: Commit `docs: add material culture consistency guidance` and push tracked docs only.
+- [x] Step 14: Directly notify 03 read-only review thread for the tech-level addendum.
 
 ## Verification
 
@@ -101,3 +105,5 @@ Safety checks:
 - 2026-06-21: `git diff --check` passed with only Windows line-ending warnings. Full Gradle was intentionally skipped because this milestone changed only docs and `PLANS.md`.
 - 2026-06-21: Addendum requested micro-prose review guidance for avoiding AI calibration phrasing such as repeated "not X, only Y", using visible behavior for limits, checking stacked weakening words, and handling animal/nonverbal action through concrete beats. This remains docs-only.
 - 2026-06-21: Addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-21: Addendum requested epoch / material culture / tech-level consistency guidance, including object material/toolchain checks, modern artifact exceptions, cart wheel versus tire track wording, player-introduced modern objects, and future optional schema ideas that are not approved in this milestone.
+- 2026-06-21: Tech-level addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
