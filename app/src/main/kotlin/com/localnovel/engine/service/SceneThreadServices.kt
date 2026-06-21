@@ -199,7 +199,10 @@ class TransitionValidator(private val repository: SqliteStoryRepository) {
         val normalized = lowercase()
         val movementRefusalPhrases = listOf(
             "不走",
-            "留下",
+            "留下來",
+            "留在這裡",
+            "留在原地",
+            "留在此地",
             "拒絕離開",
             "拒絕走",
             "不離開",

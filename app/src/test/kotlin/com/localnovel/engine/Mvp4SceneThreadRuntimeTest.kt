@@ -213,6 +213,44 @@ class Mvp4SceneThreadRuntimeTest {
     }
 
     @Test
+    fun chineseRecordRetentionDoesNotBlockConsentedTransition() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-rear-hall")
+        val context = runtime.prepareTurn(
+            session.id,
+            "我決定離開後殿，前往前殿問話。我會留下姓名、留下記錄、留下證據。",
+        )
+        val result = resultFor(context, "mvp4-chinese-record-retention").copy(
+            sceneRequirementUpdates = listOf(requiredDone("mvp4-chinese-record-retention")),
+            transitionProposal = transitionToCorridor(context, "PLAYER_INITIATED"),
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertTrue(report.isValid, report.errors.joinToString { "${it.code}: ${it.message}" })
+        runtime.resolveTurn(session.id, result)
+        assertEquals("scene-shrine-questioning", repository.getSession(session.id)?.currentSceneId)
+    }
+
+    @Test
+    fun explicitChineseMovementRefusalStillBlocksNormalTransition() {
+        val repository = seededRepository()
+        val runtime = MultiTurnRuntime(repository)
+        val session = runtime.startSession("demo", "scene-rear-hall")
+        val context = runtime.prepareTurn(session.id, "我知道可以離開後殿，但我留下來不走。")
+        val result = resultFor(context, "mvp4-chinese-movement-refusal").copy(
+            sceneRequirementUpdates = listOf(requiredDone("mvp4-chinese-movement-refusal")),
+            transitionProposal = transitionToCorridor(context, "PLAYER_INITIATED"),
+        )
+
+        val report = runtime.validate(context, result)
+
+        assertFalse(report.isValid)
+        assertTrue(report.errors.any { it.code == "player_refused_transition" })
+    }
+
+    @Test
     fun unreachableLocationTransitionIsRejected() {
         val seed = readSeed().copy(
             sceneTransitions = readSeed().sceneTransitions + SceneTransitionDefinition(

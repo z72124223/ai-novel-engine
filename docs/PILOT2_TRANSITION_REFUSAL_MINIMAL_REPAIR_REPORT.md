@@ -12,6 +12,12 @@ The minimal repair narrows transition refusal detection so that unrelated bounda
 
 The formal B probe was not executed by 02. Per the corrected 01 boundary, any formal Codex-authored Pilot-2 probe content must be authored by 01 and assigned in a later milestone.
 
+Follow-up note:
+
+- 03 later reviewed the repair as `PASS_WITH_MINOR_DRIFT`.
+- The drift was the Chinese bare word `留下`, which could false-positive on non-movement phrases such as `留下姓名`, `留下記錄`, or `留下證據`.
+- The follow-up repair removes bare `留下` and keeps explicit movement-refusal phrases such as `留下來`, `留在這裡`, `留在原地`, and `留在此地`.
+
 ## 2. Scope
 
 Changed source/test scope:
@@ -76,6 +82,13 @@ Existing direct-refusal coverage remains in place through:
 - `Mvp4SceneThreadRuntimeTest.playerRefusalBlocksNormalTransition`
 - `Pilot1bCoverageRepairTest.playerRefusalCannotBeResolvedAsNormalTransition`
 
+Follow-up Chinese drift regression:
+
+- `Mvp4SceneThreadRuntimeTest.chineseRecordRetentionDoesNotBlockConsentedTransition`
+- `Mvp4SceneThreadRuntimeTest.explicitChineseMovementRefusalStillBlocksNormalTransition`
+
+The first test covers explicit transition consent plus `留下姓名`, `留下記錄`, and `留下證據`. The second test confirms `留下來不走` still blocks a normal transition.
+
 ## 5. Repair Summary
 
 `TransitionValidator` now calls a focused movement-refusal helper:
@@ -90,6 +103,21 @@ The helper checks for explicit movement or transition refusal phrases, such as:
 - English movement refusal: `refuse to leave`, `refuse to move`, `refuse to go`, `stay exactly`, `stay here`, `do not leave`, `do not move`, `do not go`
 
 It no longer treats generic `refuse` by itself as a transition refusal. This preserves protection against forced movement while avoiding false positives when a player refuses only unrelated actions such as opening cargo or touching seals.
+
+After the Chinese drift follow-up, it also no longer treats bare `留下` as movement refusal. The retained Chinese movement-refusal examples are:
+
+```text
+不走
+留下來
+留在這裡
+留在原地
+留在此地
+拒絕離開
+拒絕走
+不離開
+不要走
+不要離開
+```
 
 ## 6. Verification
 
@@ -110,6 +138,33 @@ Focused class XML evidence after the repair:
 ```text
 TEST-com.localnovel.engine.Mvp4SceneThreadRuntimeTest.xml tests=31 failures=0 errors=0 skipped=0
 TEST-com.localnovel.engine.Pilot1bCoverageRepairTest.xml tests=7 failures=0 errors=0 skipped=0
+```
+
+Focused Chinese drift repair run:
+
+```text
+Mvp4SceneThreadRuntimeTest.chineseRecordRetentionDoesNotBlockConsentedTransition
+Mvp4SceneThreadRuntimeTest.explicitChineseMovementRefusalStillBlocksNormalTransition
+PASS
+```
+
+Related class run after Chinese drift repair:
+
+```text
+Mvp4SceneThreadRuntimeTest + Pilot1bCoverageRepairTest
+BUILD SUCCESSFUL in 57s
+```
+
+Full verification after Chinese drift repair:
+
+```text
+git diff --check
+PASS, with expected Windows CRLF working-copy warnings.
+
+gradlew.bat clean test --no-daemon
+BUILD SUCCESSFUL in 3m 32s
+6 actionable tasks: 6 executed
+XML aggregate: tests=242 failures=0 errors=0 skipped=0
 ```
 
 Full required verification:
