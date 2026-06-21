@@ -2,14 +2,16 @@
 
 ## Goal
 
-Create a docs-only Pilot-2 refusal heuristic investigation brief（拒絕啟發式調查簡報） so 01 and the user can understand why Turn 12 produced `validate-result` PASS but `resolve-turn` FAIL with `player_refused_transition`. This milestone is read-only investigation（只讀調查） plus documentation; it must not approve or perform Candidate B, Validator（驗證器）, StateReducer（狀態化約器）, `resolve-turn`, runtime（執行期）, schema（資料結構）, migration（資料庫遷移）, or test changes.
+Create a docs-only Pilot-2 Codex-authored player input workflow（Codex 代寫玩家輸入流程） alignment document so future Pilot-2 operator-authored inputs are clearly labeled, separated from real human-player evidence（真人玩家證據）, and assigned to clean 01/02/03/optional 04 roles without context pollution（上下文污染）.
 
 ## Global Strategy
 
-Use existing docs, Turn 12 artifacts（產物）, and read-only source/test inspection to document observable behavior. Separate confirmed facts from 推測. Produce one focused brief under `docs/` and update `PLANS.md`. Do not rerun Pilot-2 turns or lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`.
+Use existing Pilot-2 scenario, template, evidence checkpoint, and Turn 12 transition/refusal findings as the evidence base. Add one focused workflow document under `docs/` and update `PLANS.md`. Do not create a new thread（聊天窗口）, do not begin Turn 13, and do not run lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`.
 
 ## Non-Goals
 
+- No new chat window / thread creation.
+- No Pilot-2 Turn 13 start.
 - No Pilot-2 turn reruns.
 - No `prepare-turn`, `validate-result`, or `resolve-turn`.
 - No Kotlin changes.
@@ -28,65 +30,57 @@ Use existing docs, Turn 12 artifacts（產物）, and read-only source/test insp
 ## Scope
 
 - `PLANS.md`
-- `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md`
+- `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `626a35d docs: draft Pilot-2 transition refusal decision brief`.
-- 01 reports 03 read-only review passed for `docs: draft Pilot-2 transition refusal decision brief`.
-- Investigation milestone commit `52e3218 docs: investigate Pilot-2 refusal heuristic` has been pushed to `origin/codex/mvp6-checkpoint-branching-spec`.
-- 03 read-only review for `52e3218` returned `PASS_WITH_MINOR_PLAN_DRIFT`; the only reported drift is that Step 8 commit and Step 9 push were left unchecked in this file after the commit/push had completed.
+- Current HEAD before this milestone is `7222ef2 docs: align Pilot-2 refusal heuristic plan status`.
+- 03 read-only review for `7222ef2` returned `PASS`, per 01.
 - `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Turn 12 is Codex-authored player input（Codex 代寫玩家輸入） and must not count as real human-player evidence.
-- Turn 12 context（上下文） has `contextId=ctx-04485d23-0ab5-470d-96d2-2af2df48a2af`, `baseStateVersion=11`, `contextHash=31198815d7c384a91de97c2369cc503075c25ed630a44cd4ce730cbe15848d39`, and `contextBudget.actualBytes=21366` of `24576`.
-- Turn 12 target transition `transition-perimeter-to-awning-witnessed` required `go to awning with witness` and had no unmet prerequisites in the context artifact.
-- Turn 12 first result included `transitionProposal`; prior recorded outcome says `validate-result` passed but `resolve-turn` failed with `player_refused_transition`.
-- Turn 12 retry result had no `transitionProposal`, resolved successfully, and final evidence shows `stateVersion=12`, `nextTurnNumber=13`, `currentSceneId=scene-qingli-herb-warehouse-perimeter`, `pendingContexts=0`.
-- `SqliteStoryRepository` builds available transitions by checking whether `playerInput.contains(required_player_intent, ignoreCase = true)`.
-- `TransitionValidator` checks `context.playerInput` for refusal keywords including `拒絕`, `不走`, `留下`, `不離開`, `不要走`, `stay`, and `refuse` when a non-`WORLD_FORCED` transition proposal exists.
-- `validate-result` CLI uses `AiTurnResultValidator`, while `resolve-turn` uses `MultiTurnRuntime.resolveTurn`, which calls `MultiTurnRuntime.validate` and includes `TransitionValidator`.
+- `docs/PILOT2_SCENARIO_DESIGN.md` defines Pilot-2 as evidence collection and requires real human-input turns for human evidence success.
+- `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_12.md` records Turn 12 as Codex-authored player input and excludes it from human-player evidence.
+- `docs/PILOT2_TRANSITION_REFUSAL_DECISION_BRIEF.md` lists Codex-authored Turn 13 as an optional system probe only, explicitly labeled non-human evidence.
+- `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md` recommends waiting for real Turn 13, or explicitly approving a Codex-authored Turn 13 as non-human evidence.
+- The user request explicitly forbids creating a new thread and starting Turn 13 in this milestone.
 
 ## Assumptions
 
-- No `ROADMAP.md` edit is required because this is a narrow investigation brief, not a roadmap status change.
-- The Turn 12 `player_refused_transition` was likely triggered by broad player-input refusal wording or the standard section heading `明確拒絕 / 邊界`, but this remains 推測 unless reproduced in an approved tests-only milestone.
+- No `ROADMAP.md` edit is required because this is an operational workflow note, not a roadmap status change.
+- A future 04 player-input simulation window is optional and requires explicit 01/user approval before creation or assignment.
 
 ## Open Questions
 
-- Whether future `validate-result` should intentionally remain a legacy/basic result validator or be clarified/documented against `resolve-turn` validation.
-- Whether the refusal heuristic should distinguish target-transition refusal from boundary refusals such as "do not enter the sealed warehouse".
-- Whether the Pilot-2 player input template should avoid the exact word `拒絕` in transition-attempt turns, or whether runtime should become smarter. This milestone does not decide.
+- Whether 01 wants to create or designate a 04 player-input simulation window later.
+- Whether Turn 13 should wait for real human input or use a clearly labeled Codex-authored input as system-probe evidence only.
 
 ## Implementation Steps
 
-- [x] Step 1: Read control docs, Pilot-2 decision/checkpoint/finding docs, Turn 12 artifacts, and source/test observations from `rg`.
-- [x] Step 2: Update `PLANS.md` for this docs-only read-only investigation milestone.
-- [x] Step 3: Add `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md`.
+- [x] Step 1: Read control docs and relevant Pilot-2 evidence/workflow/finding docs.
+- [x] Step 2: Update `PLANS.md` for this docs-only workflow alignment milestone.
+- [x] Step 3: Add `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md`.
 - [x] Step 4: Inspect diff for scope drift and evidence accuracy.
 - [x] Step 5: Run `git status`.
 - [x] Step 6: Run `git diff --check`.
 - [x] Step 7: Run `gradlew.bat clean test --no-daemon`.
-- [x] Step 8: Commit `docs: investigate Pilot-2 refusal heuristic`.
-- [x] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [ ] Step 8: Commit `docs: define Pilot-2 Codex-authored input workflow`.
+- [ ] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
 
 ## Verification
 
-- `git status` -> only `PLANS.md` and `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md` changed before commit.
+- `git status` -> only `PLANS.md` and `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md` changed before commit.
 - `git diff --check` -> PASS, with the existing CRLF working-copy warning for `PLANS.md`.
 - `gradlew.bat clean test --no-daemon` -> PASS.
 
 ## Risks
 
-- Overstating Turn 12 as real human evidence.
-- Presenting source observations as a completed fix.
-- Treating this investigation as approval to modify Validator, runtime, StateReducer, schema, or Candidate B.
-- Committing ignored `out/` artifacts by mistake.
-- Accidentally rerunning Pilot-2 lifecycle commands while only read-only investigation is approved.
+- Accidentally treating Codex-authored player input as real human-player evidence.
+- Blurring 02 execution duties with player-input authorship or 03 acceptance review.
+- Accidentally creating a new thread or starting Turn 13 while only documentation is approved.
+- Treating this workflow note as approval for Candidate B, Validator, runtime, StateReducer, schema, or resolve changes.
 
 ## Drift Log
 
-- 2026-06-21: Started Pilot-2 refusal heuristic investigation brief after 01 reported 03 read-only PASS on the transition refusal decision brief.
-- 2026-06-21: Added `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md`; scope remains docs-only and no Pilot lifecycle commands were run.
+- 2026-06-21: Started Pilot-2 Codex-authored input workflow alignment after 01 reported 03 PASS on the refusal heuristic plan status alignment.
+- 2026-06-21: Added `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md`; scope remains docs-only, no thread was created, and Turn 13 was not started.
 - 2026-06-21: Verification passed with `git diff --check` and full Gradle tests.
-- 2026-06-21: 03 returned `PASS_WITH_MINOR_PLAN_DRIFT` for `52e3218`; this status-alignment milestone marks Step 8/9 complete and records that `52e3218` was pushed without moving `mvp-6`.
