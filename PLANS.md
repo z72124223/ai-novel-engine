@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality and scene-production boundary notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, and scene lock / animation asset planning while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, and script-ready packet notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, and 04/05/06 handoff contracts while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning as authoring evidence, not runtime approval. First record this milestone in `PLANS.md`, then add a focused `docs/AUTHORING_QUALITY_GUIDELINES.md` that can guide future engine prompts, review checklists, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core.
+Treat 04 playtest learning as authoring evidence, not runtime approval. First record this milestone in `PLANS.md`, then keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, define the script-ready scene packet, scene registry, 04 generation, 05 review, and 06 display contracts before 04/05/06 resume.
 
 ## Non-Goals
 
@@ -27,6 +27,7 @@ Tracked files allowed:
 - `PLANS.md`
 - `docs/AUTHORING_QUALITY_GUIDELINES.md`
 - `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`
 
 Docs to inspect:
 
@@ -47,6 +48,9 @@ Docs to inspect:
 - Search found `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` as the existing narrative-quality spec.
 - Search did not find an existing dedicated authoring quality guidelines file that separates engine layer rules from content / setting pack layer specifics.
 - User instruction for this milestone explicitly requests docs-only authoring quality / style guide / review workflow work and forbids runtime/schema/Validator/StateReducer changes.
+- User instruction for the current milestone explicitly requests docs-only script-ready scene packet, scene registry, 04 generation, 05 review, and 06 display contracts before 04/05/06 resume.
+- Active addendum states that the project will not use automation / scheduler handoff for this workflow. Human approval must follow `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
+- Existing docs already include authoring review gate guidance and scene lock / animation asset boundary guidance, but search did not find a dedicated script-ready scene packet specification.
 
 ## Assumptions
 
@@ -56,6 +60,7 @@ Docs to inspect:
 ## Open Questions
 
 - Whether future milestones should turn parts of the guideline into prompt templates, setting-pack schema fields, or read-only audit checks. This milestone does not decide that.
+- Whether future milestones should turn the packet contract into runtime schema, Validator rules, UI forms, or Oiioii integration. This milestone does not decide that.
 
 ## Implementation Steps
 
@@ -93,6 +98,10 @@ Docs to inspect:
 - [x] Step 32: Run `git diff --check` for scene lock addendum scope.
 - [x] Step 33: Commit `docs: add scene lock asset boundary guidance` and push tracked docs only.
 - [x] Step 34: Directly notify 03 read-only review thread for the scene lock addendum.
+- [x] Step 35: Add script-ready scene packet, scene registry, 04 generation, 05 review, 06 display, human approval, and 01/02/03 loop contracts.
+- [x] Step 36: Run `git diff --check` and inspect diff/stat/staged scope for script packet contract docs.
+- [x] Step 37: Commit `docs: define script-ready scene packet contracts` and push tracked docs only.
+- [x] Step 38: Directly notify 03 read-only review thread for the script packet contract milestone.
 
 ## Verification
 
@@ -110,6 +119,7 @@ Safety checks:
 
 - Confirm only `PLANS.md` and `docs/AUTHORING_QUALITY_GUIDELINES.md` are staged.
 - For scene lock addendum, also allow `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`.
+- For script packet contract milestone, also allow `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -119,6 +129,8 @@ Safety checks:
 - Accidentally implying Candidate B or runtime quality gates are approved.
 - Overfitting anti-AI-writing guidance into brittle phrase bans instead of review principles.
 - Copying or imitating protected external story style too closely.
+- Accidentally treating a `sceneCandidate` or script packet draft as approved canon, setting-pack data, or animation asset lock.
+- Accidentally making 04/05/06 look active before 01 explicitly resumes that workflow.
 
 ## Drift Log
 
@@ -139,3 +151,7 @@ Safety checks:
 - 2026-06-22: Narrative review gate addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-22: Addendum requested scene lock and animation asset boundary guidance because runtime scene continuity is not the same as animation-ready production asset planning. This remains docs-only and does not add runtime/schema fields.
 - 2026-06-22: Scene lock addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-22: New docs-only milestone requested script-ready scene packet, scene registry, 04 generation, 05 review, 06 display, and 01/02/03 loop contracts before 04/05/06 resume. This remains docs-only and does not add runtime/schema/Validator gates.
+- 2026-06-22: Active addendum clarified no automation / scheduler push for this workflow. 06 is a human approval window; silence, ambiguity, or lack of reply is not approval. User explicit approval must return to 01 before 01 schedules 02/03 or formal Turn work.
+- 2026-06-22: Script packet contract docs added. `git diff --check` passed for tracked changes with only Windows line-ending warnings; full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
+- 2026-06-22: Script packet contract milestone is limited to tracked docs. Planned commit is `docs: define script-ready scene packet contracts`; 02 will push to the current branch and directly notify 03 for read-only verification.

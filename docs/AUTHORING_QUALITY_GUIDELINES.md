@@ -156,6 +156,22 @@ Layer decision:
 - It does not approve schema, migration, Validator, StateReducer, setting-pack field, or context protocol changes.
 - Qingli, Ai-chan, and any specific opening text may be used as private review context, but they are not hardcoded into engine core.
 
+### Script-Ready Packet Handoff
+
+For 04 / 05 / 06 workflows, a reviewed scene should move through a script-ready scene packet before user-facing display. The packet is structured handoff data for 05 review, 06 display, and future Oiioii / animation planning; it is not final prose, not a formal turn result, and not setting-pack canon.
+
+Use `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` for:
+
+- required packet fields;
+- scene registry alignment;
+- `sceneCandidate` handling;
+- 04 draft boundaries;
+- 05 PASS / NEEDS_REVIEW / FAIL criteria;
+- 06 display / intake boundaries;
+- the human approval gate that requires explicit user approval before 01 schedules the next step.
+
+This handoff rule keeps review work product-oriented without turning authoring guidance into runtime enforcement.
+
 ## 3. Content / Setting Pack Layer
 
 The following should remain in content, setting packs, or scenario notes, not engine core:
@@ -445,6 +461,7 @@ Possible future follow-ups, each requiring separate approval:
 - prompt templates for opening scene beats;
 - a human review checklist template for playtest notes;
 - a production scene registry for animation asset planning;
+- script-ready packet templates for 04 / 05 / 06 handoff;
 - read-only audit observations for terminology drift or NPC voice sameness;
 - setting-pack fields for character voice and naming conventions;
 - content patch proposals for specific scenarios or characters.

@@ -66,6 +66,8 @@ Within one approved scene, many local positions should usually be zones or block
 
 Scene movement is allowed only through approved transition or explicit 01 decision. Camera movement, character blocking, or a new angle does not automatically create a new production scene.
 
+For 04 / 05 / 06 handoff, scene decisions should be captured in a script-ready scene packet before display or animation-oriented production use. See `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` for the packet fields, `sceneCandidate` flow, 05 review checklist, 06 display contract, and explicit human approval gate.
+
 ## 5. Review Gate Checklist
 
 The authoring review gate should ask:
@@ -138,3 +140,5 @@ Not approved:
 - committing generated assets.
 
 Future engineering may separately design fields such as `productionSceneId`, `visualAnchors`, `blockingZones`, `cameraZones`, `allowedObjects`, `forbiddenAdditions`, `sceneCandidate`, or `assetLockStatus`. That requires a separate 01 / user-approved milestone.
+
+Script-ready packet fields such as `packetStatus`, `reviewVerdict`, `displaySafeFields`, or `animationAssetNotes` are also future implementation candidates only. They are not approved by this docs-only boundary note.
