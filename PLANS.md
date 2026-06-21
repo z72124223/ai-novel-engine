@@ -2,87 +2,99 @@
 
 ## Goal
 
-Run the formal Pilot-2 Turn 10 prepare checkpoint on `data/pilot2.db` after the approved context compaction repair. Produce and audit the official Turn 10 context only. Do not draft a result, do not validate a result, and do not resolve the turn in this milestone.
+Complete Pilot-2 Turn 10 through the approved formal CLI path: use the existing pending context, produce a validated result JSON, resolve the turn, export evidence, run the read-only narrative audit, and stop because the next step requires real Turn 11 player input.
 
 ## Global Strategy
 
-Use the formal CLI path for `prepare-turn` and `audit-context`, preserving `stateVersion`, `contextHash`, and pending-context semantics. Keep the milestone narrow: create the official pending context if prepare succeeds, verify the final context is within the `24576` UTF-8 byte limit, and stop before any narrative result work.
+Keep the milestone inside the approved Pilot-2 turn-collection boundary. Use the existing `turn_010_context.json` and pending context, draft result JSON under ignored `out/`, validate before resolve, resolve only through `resolve-turn`, then export evidence and audit. Do not change Kotlin, tests, schema, Validator, `stateVersion` logic, `contextHash`, `StateReducer`, or Candidate B behavior.
 
 ## Non-Goals
 
-- No Turn 10 result generation.
-- No `validate-result`.
-- No `resolve-turn`.
-- No `StateReducer` changes.
+- No Kotlin changes.
+- No test changes.
+- No schema or migration changes.
 - No Validator changes.
 - No `stateVersion` or `contextHash` logic changes.
-- No schema or migration changes.
+- No `resolve-turn` or `StateReducer` implementation changes.
 - No direct SQLite writes.
 - No Candidate B.
+- No MVP-8.
 - No `mvp-6` retagging.
-- No push without explicit main-control or user approval, and no push outside the current `codex/mvp6-checkpoint-branching-spec` branch.
-- No unrelated docs or code cleanup.
+- No committing ignored `data/` or `out/` artifacts.
 
 ## Scope
 
 - `PLANS.md`
-- Formal Pilot-2 ignored output files under `out/pilot2/pilot2-qingli-herb-warehouse/turns/`
-- Formal `data/pilot2.db` only through the approved CLI `prepare-turn` operation
+- Ignored Pilot-2 runtime artifacts under `out/pilot2/pilot2-qingli-herb-warehouse/turns/`
+- Formal `data/pilot2.db` only through approved CLI commands
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- The branch is synced with `origin/codex/mvp6-checkpoint-branching-spec` at `40e6fc6`.
 - `mvp-6^{}` points to `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- Pilot-2 Turn 10 context compaction repair is committed and pushed.
-- Copied-DB Turn 10 prepare succeeded after the repair with `actualBytes=23906/24576` and `hashValid=true`.
-- Formal `data/pilot2.db` was previously left at `stateVersion=9`, `nextTurnNumber=10`, and `pendingContexts=0`.
-- Turn 10 player input exists at `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_player_input.txt`.
+- Formal Pilot-2 Turn 10 already had one pending context before result work:
+  - `contextId=ctx-b2359562-807e-4e97-bc4c-f808d2ad710b`
+  - `contextHash=d1463cfa291509dabada86d9a199ac8eace36a460b94477639ff79f100751488`
+  - `actualBytes=23906/24576`
+  - `hashValid=true`
+- `turn_010_result.json` was first drafted with a transition proposal, but `resolve-turn` rejected it with `player_refused_transition` because the runtime transition validator detected refusal wording in the player-input boundaries.
+- The failed result was not applied; formal DB state did not advance from that failed attempt.
+- `turn_010_result_retry_01.json` removed the transition proposal and represented the turn as procedural progress without actual scene transition.
+- `validate-result` passed for `turn_010_result_retry_01.json`.
+- `resolve-turn` passed for `turn_010_result_retry_01.json`.
+- Formal Pilot-2 DB advanced to `stateVersion=10` and `nextTurnNumber=11`.
+- `export-session-evidence` after Turn 10 reported `pendingContexts=0`.
+- `audit-narrative-quality` for Turn 10 reported `verdict=PASS`, `score=92`, `severity=WARNING`, `findings=1`.
+- The single audit warning was `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`, consistent with prior Pilot-2 audit observations.
 
 ## Assumptions
 
-- The formal DB still matches the expected pre-Turn-10 state; this must be confirmed through `show-session` before prepare.
-- The formal prepare result should fit similarly to the copied-DB result unless ignored artifacts or formal DB state have drifted.
-- `prepare-turn` may legitimately create one pending context on the formal DB; this is allowed for this milestone.
+- The next safe story step requires a real human Turn 11 player input from the user.
+- The Turn 10 transition blocker is a runtime validator/string-matching limitation that should not be fixed inside this story-turn milestone.
+- If future work wants the exact oil-cloth-awning transition to complete, it should be handled as a separate approved context/transition-intent repair or by a new player input that avoids refusal-boundary collision.
 
 ## Open Questions
 
-- If formal prepare fails despite copied-DB success, stop and investigate without result generation.
-- If audit-context fails or bytes exceed `24576`, stop before result generation.
+- What should the player do for Pilot-2 Turn 11?
+- Should a future small milestone investigate transition-refusal matching for inputs that include boundary refusals such as "do not touch goods" while still clearly accepting a movement?
 
 ## Implementation Steps
 
-- [x] Step 1: Read current repo state, Pilot-2 turn template, and existing plan.
-- [x] Step 2: Update `PLANS.md` for the formal Turn 10 prepare checkpoint.
-- [x] Step 3: Confirm formal session state with `show-session`.
-- [x] Step 4: Run formal `prepare-turn` using the existing Turn 10 player input and save `turn_010_context.json`.
-- [x] Step 5: Run `audit-context` and save `turn_010_context_audit.json`.
-- [x] Step 6: Confirm no Turn 10 result, validate, or resolve was run.
-- [x] Step 7: Run `git diff --check`.
-- [x] Step 8: Run `gradlew.bat clean test --no-daemon`.
-- [x] Step 9: Commit this checkpoint documentation after verification passed.
+- [x] Step 1: Confirm repo, session, Turn 10 context, and pending context state.
+- [x] Step 2: Read Turn 10 context, Turn 9 result format, result models, and runtime validation rules.
+- [x] Step 3: Draft `turn_010_result.json`.
+- [x] Step 4: Run `validate-result` for `turn_010_result.json`.
+- [x] Step 5: Attempt `resolve-turn`; observe `player_refused_transition` rejection.
+- [x] Step 6: Draft `turn_010_result_retry_01.json` without transition proposal.
+- [x] Step 7: Run `validate-result` for `turn_010_result_retry_01.json`.
+- [x] Step 8: Run `resolve-turn` for `turn_010_result_retry_01.json`.
+- [x] Step 9: Export `turn_010_evidence.json`.
+- [x] Step 10: Run `audit-narrative-quality` and save `turn_010_audit_report.json`.
+- [ ] Step 11: Run `git diff --check`.
+- [ ] Step 12: Run `gradlew.bat clean test --no-daemon`.
+- [ ] Step 13: Commit and push the tracked checkpoint update.
+- [ ] Step 14: Stop for real Turn 11 player input.
 
 ## Verification
 
 - `show-session --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66`
-- `prepare-turn --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --input-file out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_player_input.txt --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context.json`
-- `audit-context --file out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context.json --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context_audit.json`
-- Confirm final context is at or below `24576` UTF-8 bytes.
-- Confirm `hashValid=true`.
-- Confirm no `turn_010_result.json` was generated.
-- Confirm no `validate-result` or `resolve-turn` command was run.
+- `validate-result --db data/pilot2.db --context out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context.json --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_result_retry_01.json`
+- `resolve-turn --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_result_retry_01.json`
+- `export-session-evidence --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_evidence.json`
+- `audit-narrative-quality --context out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_context.json --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_result_retry_01.json --evidence out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_evidence.json --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_010_audit_report.json`
 - `git diff --check`
 - `gradlew.bat clean test --no-daemon`
 - `git status`
 
 ## Risks
 
-- Formal DB may differ from copied DB and still fail context fitting.
-- Running formal `prepare-turn` creates a pending context; this is expected, but result generation must remain blocked until a separate milestone.
-- If a stale `turn_010_context.json` exists from failed attempts, it must be treated carefully and overwritten only by the formal successful prepare for the same Turn 10 input.
+- The successful retry did not complete the oil-cloth-awning scene transition because the validator rejected the normal transition when boundary-refusal wording existed in the player input.
+- Turn 10 still made meaningful progress through limited-liability wording, but the transition coverage remains incomplete for this specific turn.
+- Pilot-2 still lacks scheduled world event pressure in context; the audit warning remains advisory and should not be treated as a hard failure.
 
 ## Drift Log
 
-- 2026-06-21: Started high-autonomy stable-completion mode. Selected the smallest safe next milestone: formal Pilot-2 Turn 10 prepare checkpoint after the committed context compaction repair. The milestone explicitly excludes result generation, validation, and resolve.
-- 2026-06-21: Formal Pilot-2 Turn 10 prepare checkpoint completed on `data/pilot2.db`: `turn_010_context.json` was generated with `contextId=ctx-b2359562-807e-4e97-bc4c-f808d2ad710b`, `baseStateVersion=9`, and `actualBytes=23906/24576`; `audit-context` reported `valid=true` and `hashValid=true`. The formal session remains at `stateVersion=9`, `nextTurnNumber=10`, with `pendingContextCount=1` as expected after prepare. No Turn 10 result, validate, or resolve was run.
-- 2026-06-21: Re-verified the existing Turn 10 pending context under high-autonomy mode instead of re-running `prepare-turn`. `audit-context` again reported `valid=true`, `actualBytes=23906/24576`, `declaredActualBytes=23906`, and `hashValid=true`; `turn_010_result.json` is still absent.
+- 2026-06-21: High-autonomy mode selected Pilot-2 Turn 10 result/validate/resolve after the formal prepare checkpoint was already complete and synced.
+- 2026-06-21: First Turn 10 result attempted the explicit awning transition, but `resolve-turn` rejected it with `player_refused_transition`. The result was not applied.
+- 2026-06-21: Wrote `turn_010_result_retry_01.json` to preserve player boundaries and avoid forced transition. The retry passed `validate-result`, passed `resolve-turn`, advanced formal DB to `stateVersion=10` and `nextTurnNumber=11`, exported evidence, and produced a `PASS` narrative audit with score `92`.
+- 2026-06-21: Stopping after verification will be required because Pilot-2 Turn 11 needs real player input.
