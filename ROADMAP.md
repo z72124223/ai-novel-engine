@@ -8,7 +8,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Active product milestone: none after MVP-7 Candidate A.2 implementation, docs checkpoint alignment, real sample rerun, JSON robustness investigation, JSON verification docs hardening, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design.
 - MVP-7 Candidate A, Candidate A.1, real audit sample collection, deliberately flawed audit sample pack, Candidate A.2 calibration planning, Candidate A.2 implementation, A.2 real sample rerun, audit JSON robustness investigation, audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design are complete or selected as documentation-only work.
 - Candidate A.2 remains read-only audit calibration. It did not approve Candidate B and did not alter `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
-- Docs-only product contracts after Pilot-2 are complete through authoring quality guidelines, narrative review workflow, scene lock / animation asset boundary, and script-ready scene packet contracts.
+- Docs-only product contracts after Pilot-2 are complete through authoring quality guidelines, narrative review workflow, scene lock / animation asset boundary, script-ready scene packet contracts, and the Qingli scene registry seed brief.
 - 04 / 05 / 06 are paused. They are not active runtime, not automation, and not an approved generation loop.
 - Resuming 04 / 05 / 06 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow. Silence, ambiguity, or lack of response is not approval.
@@ -54,6 +54,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Narrative Review Gate And Eight-Point Checklist | Completed and pushed | Define draft -> self-check -> review gate -> minimal revision -> user-facing text and a fixed review checklist. | `docs/AUTHORING_QUALITY_GUIDELINES.md`, `PLANS.md`. | Treating review guidance as Validator behavior or letting users become first-line copyeditors. |
 | Scene Lock And Animation Asset Boundary | Completed and pushed | Separate runtime scene continuity from production scene / animation asset planning. | `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/AUTHORING_QUALITY_GUIDELINES.md`, `PLANS.md`. | Treating runtime transitions as approval for unlimited animation scenes. |
 | Script-Ready Scene Packet Contracts | Completed and pushed | Define script-ready scene packet, scene registry, 04/05/06 contracts, manual human approval gate, and 01/02/03 loop. | `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/AUTHORING_QUALITY_GUIDELINES.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `PLANS.md`. | Accidentally resuming 04/05/06, assuming user silence is approval, or turning contracts into runtime/schema gates. |
+| Qingli Scene Registry Seed Brief | Completed and pushed | Create conservative seed registry entries for the four formal Pilot-2 scene ids as docs-only reference for future 04/05/06, script packet, and production planning work. | `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `PLANS.md`. | Treating the seed brief as a formal setting-pack patch, runtime scene definition, approved animation asset lock, Oiioii integration, or approval to resume 04/05/06. |
 
 ## Temporarily Not Doing
 
@@ -87,11 +88,10 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, Pilot-2 scenario design, and script-ready product contracts:
+Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, Pilot-2 scenario design, script-ready product contracts, script packet contract verification, and the Qingli scene registry seed brief:
 
-1. `script packet contract verification`: read-only review of packet fields, 04/05/06 responsibilities, and manual approval handoff before resuming authoring windows.
-2. `scene registry seed brief`: docs-only proposal for approved scene registry entries; do not implement schema or runtime fields.
-3. `Pilot-2 human turn collection`: wait for human Pilot-2 player inputs, then run the approved story-turn/evidence/audit flow without entering Candidate B.
-4. `collect real author-led story arc samples`: wait for or generate approved real turns outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
-5. `Candidate A.3 read-only audit brief`: define a focused read-only target before any implementation.
-6. `remote restore smoke on demand`: rerun clone/test verification when needed.
+1. `scene packet sample / registry dry-run review`: docs-only sample or review pass using the approved seed brief; requires 01 explicit handoff and must not resume 04/05/06 actual generation/display.
+2. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.
+3. `collect real author-led story arc samples`: requires user approval or user-provided material outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
+4. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
+5. `remote restore smoke on demand`: rerun clone/test verification when needed.

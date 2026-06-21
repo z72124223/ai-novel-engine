@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06 handoff contracts, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06 handoff contracts, scene-registry completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, draft a conservative Qingli scene registry seed brief from existing formal scene ids, setting pack public scene/location data, and evidence docs, without turning it into schema, runtime scene definitions, or approved animation asset lock.
+Treat 04 playtest learning as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, align project-control docs after 03 passed the Qingli scene registry seed brief, moving that brief from recommended candidate to completed docs-only evidence while preserving manual handoff boundaries.
 
 ## Non-Goals
 
@@ -64,6 +64,9 @@ Docs to inspect:
 - The Pilot-2 setting pack file exists at `out/pilot2/bootstrap/pilot2_setting_pack.json`.
 - The formal scene ids confirmed from docs and setting pack are `scene-qingli-herb-warehouse-perimeter`, `scene-qingli-herb-awning`, `scene-qingli-runoff-channel`, and `scene-qingli-outer-waiting-line`.
 - The setting pack has scene contracts with forbidden reveal boundaries for those scenes; this milestone must record the boundary without copying secret contents into user-facing prose.
+- 03 passed commit `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b` (`docs: seed Qingli scene registry brief`).
+- `ROADMAP.md` and `docs/HANDOFF.md` still list scene registry seed brief as a future recommended candidate, so they need status alignment.
+- User instruction for this milestone forbids moving directly to Pilot-2 human turn collection, Candidate A.3, Candidate B, MVP-8, runtime enforcement, Oiioii integration, automation, or 04/05/06 restart.
 
 ## Assumptions
 
@@ -76,6 +79,7 @@ Docs to inspect:
 - Whether future milestones should turn the packet contract into runtime schema, Validator rules, UI forms, or Oiioii integration. This milestone does not decide that.
 - Whether 04/05/06 should resume after these contracts is a 01/user decision. This milestone does not resume them.
 - Whether Qingli scene registry seed entries should become formal setting-pack fields or approved animation asset locks requires a later 01/user-approved milestone.
+- Whether to run a scene packet sample / registry dry-run review is a future 01 handoff decision. This milestone only records it as a safe docs-only candidate.
 
 ## Implementation Steps
 
@@ -125,6 +129,10 @@ Docs to inspect:
 - [x] Step 44: Run `git diff --check` and inspect diff/stat/staged scope for the scene registry seed brief.
 - [x] Step 45: Commit `docs: seed Qingli scene registry brief` and push tracked docs only.
 - [x] Step 46: Directly notify 03 read-only review thread using a 03 verifier-window prompt.
+- [x] Step 47: Align ROADMAP and HANDOFF after 03 passed the Qingli scene registry seed brief.
+- [x] Step 48: Run `git diff --check` and inspect diff/stat/staged scope for the scene-registry control docs alignment.
+- [x] Step 49: Commit `docs: align control docs after Qingli scene registry seed` and push tracked docs only.
+- [x] Step 50: Directly notify 03 read-only review thread using a 03 verifier-window prompt.
 
 ## Verification
 
@@ -145,6 +153,7 @@ Safety checks:
 - For script packet contract milestone, also allow `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`.
 - For project-control alignment, also allow `ROADMAP.md`, `VERIFY.md`, `DONE_CRITERIA.md`, and `docs/HANDOFF.md`.
 - For Qingli scene registry seed brief, also allow `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md` and a narrow cross-reference in `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md` or `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`.
+- For post-Qingli scene registry seed control alignment, allow `ROADMAP.md` and `docs/HANDOFF.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -160,6 +169,8 @@ Safety checks:
 - Accidentally implying automation / scheduler may continue the 04/05/06 handoff without manual 01/user approval.
 - Accidentally copying author-only forbidden reveal text into a public scene registry.
 - Accidentally treating conservative scene seed entries as final canon, schema, runtime scene definitions, or approved production asset locks.
+- Accidentally leaving completed scene registry seed work listed as a next candidate.
+- Accidentally implying the next step can run Pilot turns or restart 04/05/06 without user / 01 handoff.
 
 ## Drift Log
 
@@ -189,3 +200,5 @@ Safety checks:
 - 2026-06-22: Project-control alignment `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.
 - 2026-06-22: 03 passed project-control alignment commit `834533e`. New docs-only Qingli scene registry seed brief started from existing formal scene ids and public setting pack scene/location/transition evidence. Author-only boundaries are recorded as boundaries only, not copied as reveal content.
 - 2026-06-22: Qingli scene registry seed brief added for four formal scene ids. `git diff --check` passed with only Windows line-ending warnings; full Gradle is intentionally skipped because this milestone changes only docs/control files.
+- 2026-06-22: 03 passed Qingli scene registry seed brief commit `c248cef`. New control-doc alignment milestone started to mark the seed brief completed/pushed and update recommended candidates.
+- 2026-06-22: Post-Qingli scene registry control alignment `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.

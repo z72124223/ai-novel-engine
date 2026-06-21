@@ -42,8 +42,9 @@ Verified on 2026-06-20 during the automatic stable-completion loop:
 
 Additional docs-only product-control baseline as of 2026-06-22:
 
-- Authoring quality guidelines, narrative review gate, scene lock / animation asset boundary, and script-ready scene packet contracts are completed and pushed.
+- Authoring quality guidelines, narrative review gate, scene lock / animation asset boundary, script-ready scene packet contracts, and Qingli scene registry seed brief are completed and pushed.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
+- Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - 04 / 05 / 06 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
 - Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow.
@@ -103,6 +104,7 @@ For Pilot or context-budget work, also read:
 - Narrative review gate and eight-point checklist.
 - Scene lock and animation asset boundary.
 - Script-ready scene packet contracts.
+- Qingli scene registry seed brief.
 
 ## Hard Boundaries
 
@@ -190,11 +192,10 @@ Do not enter Candidate B automatically.
 
 Recommended safe next steps:
 
-1. Verify or refine the script-ready scene packet / scene registry contracts with docs-only review.
-2. Draft a scene registry seed brief if 01 wants to prepare 04/05/06 resumption without schema/runtime changes.
-3. Collect real author-led story arc audit samples when the user provides or approves them.
-4. Draft a new explicit MVP-7 candidate brief if the user wants more read-only audit work.
-5. Run a remote restore smoke check on demand.
+1. Draft a scene packet sample / registry dry-run review only if 01 explicitly hands it off and it does not resume 04/05/06 actual generation/display.
+2. Collect real author-led story arc audit samples when the user provides or approves them.
+3. Draft a new explicit MVP-7 candidate brief if the user wants more read-only audit work.
+4. Run a remote restore smoke check on demand.
 
 Stop and ask before any work that would alter schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or any formal SQLite write path.
 
