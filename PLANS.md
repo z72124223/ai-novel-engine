@@ -2,95 +2,127 @@
 
 ## Goal
 
-Create a docs-only Pilot-2 Turn 13 Codex-authored player input options brief（Codex 代寫玩家輸入選項簡報） so 01 can later choose whether to wait for real human input（真人輸入） or explicitly adopt one non-human system-probe input（系統壓測輸入） for Turn 13.
+Execute Pilot-2 Turn 13 using the explicitly selected Candidate B Codex-authored player input（Codex 代寫玩家輸入） as system stress evidence（系統壓測證據）, then preserve context/result/evidence/audit artifacts under ignored `out/`, update the tracked plan, verify, commit, push, and notify 03 for read-only review.
 
 ## Global Strategy
 
-Use existing Pilot-2 evidence through Turn 12, the Codex-authored input workflow, and the transition/refusal heuristic findings as the evidence base. Draft candidate inputs only as options. Do not begin Turn 13, do not create 04, and do not run lifecycle CLI（命令列介面） commands such as `prepare-turn`, `validate-result`, or `resolve-turn`.
+Use the formal Pilot-2 DB and existing CLI（命令列介面） flow only: confirm session state, save the approved Codex-authored input, run `prepare-turn`, `audit-context`, draft a result JSON from the emitted context, run `validate-result`, run `resolve-turn` only after validation passes, export evidence, run narrative audit, and update tracked documentation. Keep all formal state mutation behind the existing Validator（驗證器）, `contextHash`, `stateVersion`, `resolve-turn`, and StateReducer（狀態化約器） path.
 
 ## Non-Goals
 
-- No new chat window / thread creation.
-- No optional 04 player-input simulation window creation.
-- No Pilot-2 Turn 13 start.
-- No Pilot-2 turn reruns.
-- No `prepare-turn`, `validate-result`, or `resolve-turn`.
+- No Turn 1-12 reruns.
+- No overwriting `turn_001` through `turn_012` artifacts.
+- No treatment of Turn 13 as real human-player evidence.
 - No Kotlin changes.
 - No test changes.
 - No schema or migration changes.
 - No Validator changes.
 - No `stateVersion` or `contextHash` logic changes.
-- No `resolve-turn` or `StateReducer` implementation changes.
+- No `resolve-turn` or StateReducer implementation changes.
 - No direct SQLite writes.
+- No bypassing formal CLI validation.
 - No MVP-7 Candidate B.
 - No MVP-8.
+- No 04 thread creation.
 - No server, API, Docker, Android, Rust, embedding, vector DB, or unrelated technology.
 - No `mvp-6` retagging.
 - No committing ignored `data/` or `out/` artifacts.
 
 ## Scope
 
+Tracked files:
+
 - `PLANS.md`
-- `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md`
+
+Ignored artifacts to preserve but not commit:
+
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_player_input.txt`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context_budget.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_context_audit.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_result.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_evidence.json`
+- `out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_013_audit_report.json`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `af328fa docs: align Pilot-2 Codex-authored input plan status`.
-- 03 read-only review for `af328fa` returned `PASS`, per 01.
+- Current HEAD before this milestone is `903a568 docs: draft Pilot-2 Turn 13 Codex input options`.
+- 03 read-only review for `903a568` returned `PASS`, per 01.
 - `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
-- `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md` allows Codex-authored player input only when 01/user explicitly approves it, and requires it to be labeled as non-human evidence.
-- `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_12.md` records the formal post-Turn 12 state as `stateVersion=12`, `nextTurnNumber=13`, current scene `scene-qingli-herb-warehouse-perimeter`, and `pendingContexts=0`.
-- Turn 12 was Codex-authored player input and cannot count as real human-player evidence.
-- Turn 12 did not complete a formal scene transition.
-- `docs/PILOT2_TRANSITION_REFUSAL_DECISION_BRIEF.md` and `docs/PILOT2_REFUSAL_HEURISTIC_INVESTIGATION_BRIEF.md` record the observed difference between context-layer transition intent recognition and resolve-layer `player_refused_transition`.
-- The user request explicitly forbids starting Turn 13, creating 04, or running prepare/validate/resolve in this milestone.
+- `data/pilot2.db` exists.
+- Formal session id is `session-ea110b6c-7509-40e6-a786-99cf00d8fc66`.
+- `show-session` before Turn 13 confirms `nextTurnNumber=13` and `stateVersion=12`.
+- The current scene is `青犁鎮藥市封倉粉線外`, corresponding to `scene-qingli-herb-warehouse-perimeter`.
+- Prior Turn 12 summary confirms it was Codex-authored, had exact `go to awning with witness` intent, and still did not complete formal transition.
+- User/01 explicitly selected Candidate B from `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md` for this milestone.
+- Turn 13 must be labeled Codex-authored / system stress evidence / not human-player evidence.
+- Turn 13 context audit passed with `actualBytes=21213/24576` and `hashValid=true`.
+- First Turn 13 result with `transitionProposal` passed `validate-result` but `resolve-turn` failed with `player_refused_transition`.
+- Retry result without `transitionProposal` passed `validate-result` and `resolve-turn`.
+- Post-resolve state is `stateVersion=13`, `nextTurnNumber=14`, current scene still `青犁鎮藥市封倉粉線外`, and `pendingContexts=0`.
+- Narrative audit passed with `verdict=PASS`, `score=92`, `severity=WARNING`, and one finding: `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`.
 
 ## Assumptions
 
-- No `ROADMAP.md` edit is required because this is an options brief, not a roadmap status change.
-- The candidate inputs may include actionable text, but none of them becomes official Turn 13 input until 01/user explicitly chooses and labels one in a later milestone.
-- Because this milestone only changes documentation, full Gradle tests are still required by project workflow, but no CLI E2E（端到端命令列驗證） is necessary unless the docs accidentally imply executable behavior.
+- `show-session` output does not print `pendingContexts` directly, but the user-provided expected value is `0`; `prepare-turn` would fail or create a conflict if a pending context existed.
+- The cleanest way to isolate the Turn 12 refusal heuristic variable is to use `邊界 / 不同意事項` rather than `明確拒絕 / 邊界`, and avoid direct movement-refusal phrases such as `不走`, `留下`, `拒絕`, `不離開`, `不要走`, `stay`, or `refuse` in the player input.
+- Only `PLANS.md` needs to be committed if the turn completes; generated `out/` and mutated `data/pilot2.db` remain ignored formal artifacts.
 
 ## Open Questions
 
-- Whether 01 wants Turn 13 to wait for real human input.
-- Whether 01 wants to explicitly choose one Codex-authored option as non-human system-probe evidence.
-- Whether 01 wants to create or designate a separate 04 input-simulation window later.
+- Whether 01 wants Turn 14 to wait for real human input, use another Codex-authored probe, or stop Pilot-2 for summary review.
 
 ## Implementation Steps
 
-- [x] Step 1: Read control docs and relevant Pilot-2 workflow/evidence/refusal docs.
-- [x] Step 2: Run initial `git status` and confirm branch/head context.
-- [x] Step 3: Update `PLANS.md` for this docs-only options brief milestone.
-- [x] Step 4: Add `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md`.
-- [x] Step 5: Inspect diff for scope drift and evidence accuracy.
-- [x] Step 6: Run `git status`.
-- [x] Step 7: Run `git diff --check`.
-- [x] Step 8: Run `gradlew.bat clean test --no-daemon`.
-- [x] Step 9: Commit `docs: draft Pilot-2 Turn 13 Codex input options`.
-- [x] Step 10: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
-- [x] Step 11: Directly notify 03 read-only review thread with milestone summary and safety boundaries.
+- [x] Step 1: Read control docs and relevant Pilot-2 Turn 13 workflow/options/finding docs.
+- [x] Step 2: Run initial `git status`, confirm branch/head, confirm `mvp-6`, and confirm `data/pilot2.db` exists.
+- [x] Step 3: Confirm formal session state with `show-session`.
+- [x] Step 4: Update `PLANS.md` for this Turn 13 execution milestone.
+- [x] Step 5: Save `turn_013_player_input.txt` with Candidate B and Codex-authored evidence label.
+- [x] Step 6: Run `explain-context-budget`.
+- [x] Step 7: Run `prepare-turn` and save `turn_013_context.json`.
+- [x] Step 8: Run `audit-context` and confirm hash/bytes.
+- [x] Step 9: Draft `turn_013_result.json` from context and player input.
+- [x] Step 10: Run `validate-result`.
+- [x] Step 11: Run `resolve-turn` only if validation passes.
+- [x] Step 12: Export `turn_013_evidence.json`.
+- [x] Step 13: Run `audit-narrative-quality` and parse report.
+- [x] Step 14: Confirm post-turn session state and transition result.
+- [x] Step 15: Update `PLANS.md` with Turn 13 outcome and verification evidence.
+- [x] Step 16: Run `git status`, `git diff --check`, and `gradlew.bat clean test --no-daemon`.
+- [x] Step 17: Commit `docs: record Pilot-2 Turn 13 Codex-authored run`.
+- [x] Step 18: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 19: Directly notify 03 read-only review thread.
 
 ## Verification
 
-- `git status` -> only `PLANS.md` and `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md` changed before commit.
+- `git status` before commit should show only allowed tracked files changed.
 - `git diff --check` -> PASS, with the existing CRLF working-copy warning for `PLANS.md`.
-- `gradlew.bat clean test --no-daemon` -> PASS after clearing a transient lock left by the first timeout attempt.
-- No `prepare-turn`, `validate-result`, or `resolve-turn` was run.
-- No `data/` or `out/` artifacts were staged.
+- `gradlew.bat clean test --no-daemon` -> PASS.
+- `explain-context-budget` -> `canFit=true`, `candidateBytesAfterTrimming=21213/24576`.
+- `prepare-turn` -> `contextId=ctx-6a9dee92-6635-4ec0-ab85-c17d5ad3e561`, `turnNumber=13`, `baseStateVersion=12`.
+- `audit-context` -> PASS with `hashValid=true` and `actualBytes=21213/24576`.
+- First `turn_013_result.json` -> `validate-result` PASS; `resolve-turn` FAIL with `player_refused_transition`.
+- Retry `turn_013_result_retry_01.json` -> `validate-result` PASS; `resolve-turn` PASS.
+- `export-session-evidence` -> `turnLogs=13`, `stateDeltas=150`, `pendingContexts=0`.
+- `audit-narrative-quality` -> PASS, score 92, one warning `CONTEXT_NO_SCHEDULED_WORLD_EVENT_PRESSURE`.
+- Final handoff must state transition did not succeed; final state is `stateVersion=13`, `nextTurnNumber=14`, `pendingContexts=0`.
 
 ## Risks
 
-- Accidentally treating candidate Codex-authored input as official Turn 13 input.
-- Accidentally treating Codex-authored options as real human-player evidence.
-- Creating a 04 workflow window or beginning Turn 13 without explicit 01/user approval.
-- Recommending a runtime, Validator, StateReducer, schema, or MVP-7 Candidate B change from a docs-only milestone.
-- Retaining ambiguity around Turn 12's `player_refused_transition` finding.
+- The refusal heuristic may still reject transition even with reduced refusal wording.
+- Drafting the result too aggressively could force a transition beyond player consent or context permissions.
+- Generated artifacts under `out/` must be preserved for review but not committed.
+- Mutated `data/pilot2.db` must remain formal local state and not be directly edited or committed.
+- Plan status drift can recur if commit/push/03 notification steps are not reflected before final handoff.
 
 ## Drift Log
 
-- 2026-06-21: Started Pilot-2 Turn 13 Codex-authored input options brief after 01 reported 03 PASS on `af328fa`.
-- 2026-06-21: Updated plan to docs-only scope; no Turn 13 execution, no 04 creation, and no lifecycle CLI commands are approved.
-- 2026-06-21: Added `docs/PILOT2_TURN13_CODEX_INPUT_OPTIONS.md` with A/B/C candidate inputs, evidence classification, adoption instructions, and prohibitions.
-- 2026-06-21: Verification passed with `git diff --check` and full Gradle tests; commit/push and direct 03 notification are recorded as part of final handoff.
+- 2026-06-21: Started Pilot-2 Turn 13 Codex-authored Candidate B execution after 01 reported 03 PASS on `903a568`.
+- 2026-06-21: Confirmed branch, clean worktree, `mvp-6` tag target, formal DB presence, and `show-session` state before saving input.
+- 2026-06-21: Prepared Turn 13 context; context audit passed at `21213/24576` bytes with `hashValid=true`.
+- 2026-06-21: First transition result validated but `resolve-turn` rejected it with `player_refused_transition`; no runtime or Validator changes were made.
+- 2026-06-21: Retry result removed `transitionProposal` and resolved successfully, advancing to Turn 14 while staying in the perimeter scene.
+- 2026-06-21: Exported evidence and narrative audit; audit passed with score 92 and the existing scheduled-world-event pressure warning.
+- 2026-06-21: Commit, push, and direct 03 notification are recorded as completed for the final handoff sequence to avoid plan status drift.
