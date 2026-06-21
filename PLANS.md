@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, and epoch / material culture consistency while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, anti-AI-writing guidance, micro-prose review, epoch / material culture consistency, and protagonist reaction logic while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -72,6 +72,10 @@ Docs to inspect:
 - [x] Step 12: Run `git diff --check` for tech-level addendum scope.
 - [x] Step 13: Commit `docs: add material culture consistency guidance` and push tracked docs only.
 - [x] Step 14: Directly notify 03 read-only review thread for the tech-level addendum.
+- [x] Step 15: Add protagonist reaction beats addendum.
+- [x] Step 16: Run `git diff --check` for protagonist reaction addendum scope.
+- [x] Step 17: Commit `docs: add protagonist reaction beat guidance` and push tracked docs only.
+- [x] Step 18: Directly notify 03 read-only review thread for the protagonist reaction addendum.
 
 ## Verification
 
@@ -107,3 +111,5 @@ Safety checks:
 - 2026-06-21: Addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-21: Addendum requested epoch / material culture / tech-level consistency guidance, including object material/toolchain checks, modern artifact exceptions, cart wheel versus tire track wording, player-introduced modern objects, and future optional schema ideas that are not approved in this milestone.
 - 2026-06-21: Tech-level addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-21: Addendum requested protagonist reaction beat guidance for openings where abnormal cues accumulate. The rule requires cue -> notice -> check/adjust -> advance, while keeping truth withheld and avoiding long internal explanation. This remains docs-only.
+- 2026-06-21: Protagonist reaction addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.

@@ -198,6 +198,42 @@ Layer decision:
 - It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
 - Future engineering may separately design fields such as `techLevel`, `materialCulture`, `allowedMaterials`, `forbiddenArtifacts`, or `exceptionSources`, but this document does not implement them.
 
+### Protagonist Reaction Beats
+
+Abnormality or pressure should not only push the plot forward. It should trigger a reasonable protagonist reaction.
+
+In an opening or turn output, when environmental abnormality accumulates, include at least a short reaction chain:
+
+1. abnormal cue appears;
+2. protagonist notices;
+3. protagonist checks or adjusts;
+4. then the scene advances.
+
+Useful checks or adjustments include:
+
+- stopping for a beat;
+- looking back at the route;
+- confirming a landmark;
+- slowing down;
+- calling to a companion;
+- listening for expected or missing sound;
+- checking scent, wind, tracks, light, weather, or terrain;
+- changing posture, grip, route, or pace.
+
+Leaving mystery is not the same as omitting reaction. The text may withhold the world's truth, but the protagonist should not feel numb to obviously unreasonable phenomena.
+
+Keep reaction beats short and concrete. Avoid turning the moment into a long internal monologue, UI-style summary, or explanatory essay. A single visible check can be enough when the scene needs pace.
+
+Animals and companions can act as reaction mirrors. A companion might stop first, turn its ears, look back at the protagonist, refuse a path, or track a missing scent. That visible behavior can make the protagonist notice the abnormality without over-explaining the world.
+
+If a modern object such as a phone is used as a checking tool, respect material culture and transported item boundaries. Unless the scene is formally handling a transported modern object, prefer landmarks, the return path, sound, scent, weather, terrain, or companion reaction as the confirmation method.
+
+Layer decision:
+
+- This section is authoring guideline and review checklist only.
+- It does not approve runtime Validator, schema, setting-pack field, StateReducer, or context protocol changes.
+- Future runtime support for protagonist cognition, reaction-state tracking, or opening-scene checklists requires a separate approved milestone.
+
 ## 5. NPC Consistency Check
 
 For each important NPC, reviewers should ask:
