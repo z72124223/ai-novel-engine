@@ -2,16 +2,16 @@
 
 ## Goal
 
-Execute Pilot-2 Turn 12 as a Codex-authored player-input transition intent retry. The single story purpose is to test whether the exact legal transition intent `go to awning with witness` can satisfy context / transition prerequisites and, if valid, resolve a formal transition from `scene-qingli-herb-warehouse-perimeter` toward the awning witness position. This input is AI-authored and must not be counted as real human-input evidence.
+Consolidate（整理彙整） Pilot-2 Turn 12 transition intent evidence（轉場意圖證據） into a committed documentation checkpoint（文件檢查點）. This is a docs-only milestone（純文件里程碑）: summarize that the Codex-authored player input（Codex 代寫玩家輸入） was recognized by the context（上下文） / available-transition（可用轉場） layer, that the first `transitionProposal` result passed `validate-result` but failed `resolve-turn` with `player_refused_transition`, and that the retry result（重試結果） resolved without transition and advanced the session to Turn 13.
 
 ## Global Strategy
 
-Run the full Pilot-2 per-turn CLI flow on formal `data/pilot2.db`: save the Codex-authored Turn 12 input, run context budget, `prepare-turn`, `audit-context`, draft result only after context audit passes, validate result, resolve through the formal CLI, export evidence, run read-only narrative audit, then verify, commit, and push. Do not modify runtime code, schema, migrations, Validator, `stateVersion`, `contextHash`, `resolve-turn`, or `StateReducer`. If context/transition intent still fails, document the failure and do not force a transition.
+Use only existing evidence from committed docs and ignored Turn 12 artifacts（產物）. Do not rerun Turn 12, `prepare-turn`, `validate-result`, or `resolve-turn`. Update `PLANS.md` and add one focused finding document under `docs/` so 01 can decide future milestones from stable written evidence. Keep the finding advisory and evidence-only; it must not approve Validator（驗證器）, parser（解析器）, runtime（執行期）, schema（資料結構）, Candidate B, or MVP-8 work.
 
 ## Non-Goals
 
-- No Turn 1-11 reruns.
-- No overwriting Turn 1-11 artifacts.
+- No Turn 12 rerun.
+- No `prepare-turn`, `validate-result`, or `resolve-turn`.
 - No Kotlin changes.
 - No test changes.
 - No schema or migration changes.
@@ -23,98 +23,64 @@ Run the full Pilot-2 per-turn CLI flow on formal `data/pilot2.db`: save the Code
 - No MVP-8.
 - No server, API, Docker, Android, Rust, embedding, vector DB, or unrelated technology.
 - No `mvp-6` retagging.
-- No deleting `data/`, `out/`, or `backups/`.
 - No committing ignored `data/` or `out/` artifacts.
 
 ## Scope
 
 - `PLANS.md`
-- Ignored Pilot-2 Turn 12 artifacts under `out/pilot2/pilot2-qingli-herb-warehouse/turns/`
-- Formal `data/pilot2.db` only through approved CLI commands
+- `docs/PILOT2_TURN12_TRANSITION_INTENT_FINDING.md`
 
 ## Confirmed Facts
 
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
-- Current HEAD before this milestone is `537118e docs: record Pilot-2 Turn 11`.
-- Formal Pilot-2 session is `session-ea110b6c-7509-40e6-a786-99cf00d8fc66`.
-- Formal Pilot-2 state before Turn 12 is `stateVersion=11`, `nextTurnNumber=12`, and `pendingContextCount=0`.
-- Current scene before Turn 12 is `scene-qingli-herb-warehouse-perimeter`.
-- Turn 11 was applied with result `result-pilot2-turn-011-ledger-wording-before-route`.
-- Turn 11 evidence confirms the formal awning transition did not occur; current scene remained `scene-qingli-herb-warehouse-perimeter`.
-- Turn 11 context showed `transition-perimeter-to-awning-witnessed` as `prerequisitesSatisfied=false` because player intent `go to awning with witness` was not present.
-- The delegated Turn 12 input explicitly includes the required phrase `go to awning with witness`.
-- The delegated Turn 12 input is Codex-authored and must not be described as a real human-input sample.
-- Post-Turn 11 `pilot-preflight` passed with `valid=true`, `contextBytes=17448/24576`, and `contextHashValid=true`.
+- Current HEAD before this milestone is `e2c68d4 docs: record Pilot-2 Turn 12`.
+- Turn 12 was Codex-authored player input, not real human-player evidence.
+- Turn 12 context id is `ctx-04485d23-0ab5-470d-96d2-2af2df48a2af`.
+- Turn 12 context hash is `31198815d7c384a91de97c2369cc503075c25ed630a44cd4ce730cbe15848d39`.
+- Turn 12 context bytes are `21366/24576`.
+- Turn 12 context includes `transition-perimeter-to-awning-witnessed` with required intent `go to awning with witness`, target `scene-qingli-herb-awning`, and no `unmetPrerequisites` on that transition entry.
+- First result `result-pilot2-turn-012-awning-transition-attempt` includes `transitionProposal` for `transition-perimeter-to-awning-witnessed`.
+- The previous execution log and `PLANS.md` record first result `validate-result` as PASS and `resolve-turn` as FAIL with `player_refused_transition`.
+- Retry result `result-pilot2-turn-012-awning-transition-retry-no-transition` has no `transitionProposal` and records the first failure in `validationNotes`.
+- Turn 12 evidence shows `stateVersion=12`, `nextTurnNumber=13`, `currentSceneId=scene-qingli-herb-warehouse-perimeter`, `pendingContexts=0`, `turnLogs=12`, and `stateDeltas=138`.
+- Turn 12 narrative audit report shows `verdict=PASS`, `score=92`, `severity=WARNING`, and one warning about active story threads without pending scheduled world event pressure.
 
-## Outcome
+## Assumptions
 
-- `turn_012_player_input.txt` was saved as Codex-authored input.
-- `explain-context-budget` passed with `candidateBytesAfterTrimming=21366/24576`.
-- `prepare-turn` created `ctx-04485d23-0ab5-470d-96d2-2af2df48a2af` for Turn 12 at `baseStateVersion=11`.
-- `audit-context` passed with `actualBytes=21366/24576` and `hashValid=true`.
-- The Turn 12 context included `transition-perimeter-to-awning-witnessed` without `unmetPrerequisites`, so the exact `go to awning with witness` intent was recognized at the context/available-transition layer.
-- First result `turn_012_result.json` included `transitionProposal` and passed `validate-result`, but `resolve-turn` rejected it with `player_refused_transition: Player input refuses transition; normal transition cannot be forced.`
-- Retry result `turn_012_result_retry_01.json` removed `transitionProposal`, preserved the failed-transition evidence, and passed `validate-result`.
-- `resolve-turn` with retry result passed, advancing the formal session to `stateVersion=12`, `nextTurnNumber=13`, with `pendingContexts=0`.
-- No formal scene transition occurred; current scene remains `scene-qingli-herb-warehouse-perimeter`.
-- `export-session-evidence` wrote `turn_012_evidence.json` with `turnLogs=12`, `stateDeltas=138`, and `pendingContexts=0`.
-- `audit-narrative-quality` wrote `turn_012_audit_report.json` with `verdict=PASS`, `score=92`, `severity=WARNING`, `findings=1`.
-- Post-Turn 12 `pilot-preflight` passed with `valid=true`, `stateVersion=12`, `nextTurnNumber=13`, `pendingContextCount=0`, `contextBytes=17645/24576`, and `contextHashValid=true`.
+- The safest documentation wording is to say the context layer recognized the exact intent by omission of `unmetPrerequisites` on the target transition, rather than claiming a literal `prerequisitesSatisfied=true` field was emitted.
+- No `ROADMAP.md` edit is required unless 01 wants this finding listed as a formal milestone in the roadmap table.
 
-## Key Finding
+## Open Questions
 
-Turn 12 split the transition behavior into two layers. The context / available-transition layer recognized the exact legal intent, but formal `resolve-turn` still treated the player input's broad refusal/boundary wording as `player_refused_transition`. This is useful Pilot-2 evidence and should be reviewed by 03 before any product or runtime decision. No runtime or Validator change was made.
+- Whether a future 01-approved milestone should investigate the `player_refused_transition` heuristic as a Validator or parser design issue.
+- Whether a later human-authored turn should retest the same transition with less refusal wording.
 
 ## Implementation Steps
 
-- [x] Step 1: Read control docs, Pilot-2 docs, Turn 11 evidence/context, and current repo/session state.
-- [x] Step 2: Update `PLANS.md` for Codex-authored Turn 12 transition intent retry.
-- [x] Step 3: Save `turn_012_player_input.txt`.
-- [x] Step 4: Run `explain-context-budget`.
-- [x] Step 5: Run `prepare-turn` and save `turn_012_context.json`.
-- [x] Step 6: Run `audit-context` and confirm context is valid and `<=24576` bytes.
-- [x] Step 7: Inspect Turn 12 available transitions and draft `turn_012_result.json`.
-- [x] Step 8: Run `validate-result`.
-- [x] Step 9: Run `resolve-turn` after validation passes; first transition result failed at resolve with `player_refused_transition`, then retry result resolved successfully without transition.
-- [x] Step 10: Export `turn_012_evidence.json`.
-- [x] Step 11: Run `audit-narrative-quality` and validate audit JSON as UTF-8.
-- [x] Step 12: Confirm formal state advanced and pending contexts are cleared.
-- [x] Step 13: Update `PLANS.md` with final Turn 12 evidence and audit results.
-- [x] Step 14: Run `git diff --check`.
-- [x] Step 15: Run `gradlew.bat clean test --no-daemon`.
-- [x] Step 16: Decide whether installDist / CLI audit smoke is necessary and record rationale.
-- [x] Step 17: Commit `docs: record Pilot-2 Turn 12`.
-- [x] Step 18: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 1: Read control docs, Pilot-2 docs, Turn 12 artifacts, and current repo state.
+- [x] Step 2: Update `PLANS.md` for this docs-only consolidation milestone.
+- [x] Step 3: Add `docs/PILOT2_TURN12_TRANSITION_INTENT_FINDING.md`.
+- [x] Step 4: Inspect diff for scope drift and evidence accuracy.
+- [x] Step 5: Run `git diff --check`.
+- [x] Step 6: Run `gradlew.bat clean test --no-daemon`.
+- [x] Step 7: Commit `docs: consolidate Pilot-2 Turn 12 transition finding`.
+- [x] Step 8: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
 
 ## Verification
 
-- `show-session --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66`
-- `pilot-preflight --db data/pilot2.db --project pilot2 --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66`
-- `explain-context-budget --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --input-file out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_player_input.txt --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context_budget.json`
-- `prepare-turn --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --input-file out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_player_input.txt --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context.json`
-- `audit-context --file out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context.json --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context_audit.json`
-- `validate-result --db data/pilot2.db --context out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context.json --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_result.json` -> PASS.
-- `resolve-turn --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_result.json` -> FAIL with `player_refused_transition`.
-- `validate-result --db data/pilot2.db --context out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context.json --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_result_retry_01.json` -> PASS.
-- `resolve-turn --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_result_retry_01.json` -> PASS, `stateVersion=12`, `nextTurnNumber=13`.
-- `export-session-evidence --db data/pilot2.db --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_evidence.json`
-- `audit-narrative-quality --context out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_context.json --result out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_result_retry_01.json --evidence out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_evidence.json --out out/pilot2/pilot2-qingli-herb-warehouse/turns/turn_012_audit_report.json` -> PASS, `score=92`, `severity=WARNING`, `findings=1`.
-- Explicit UTF-8 JSON parse for `turn_012_audit_report.json` -> PASS.
-- Post-turn `pilot-preflight --db data/pilot2.db --project pilot2 --session session-ea110b6c-7509-40e6-a786-99cf00d8fc66 --out out/pilot2/pilot2-qingli-herb-warehouse/session_preflight_after_turn_012.json` -> PASS.
-- `git diff --check`
-- `gradlew.bat clean test --no-daemon`
-- `installDist` was not run because this milestone changed no build, packaging, Kotlin runtime, or distribution code; the relevant CLI paths were already exercised by `show-session`, `pilot-preflight`, `explain-context-budget`, `prepare-turn`, `audit-context`, `validate-result`, `resolve-turn`, `export-session-evidence`, and `audit-narrative-quality`.
 - `git status`
+- `git diff --check` -> PASS, with only the existing CRLF working-copy warning for `PLANS.md`.
+- `gradlew.bat clean test --no-daemon` -> PASS.
+- Final `git status`
 
 ## Risks
 
-- The explicit transition intent may still not satisfy `prepare-turn`; if so, do not forge the transition.
-- Boundary refusals may still trigger `player_refused_transition` during `resolve-turn` even if the prerequisite is satisfied.
-- If a transition is valid, the result must avoid accidental warehouse entry, powder-line crossing, seal/door/goods touch, hidden truth reveal, or unconditional NPC compliance.
-- This is Codex-authored input and therefore weaker than real human-input evidence.
+- Overstating Codex-authored input as human evidence.
+- Treating advisory Turn 12 evidence as approval to modify Validator or runtime behavior.
+- Committing ignored `out/` artifacts by mistake.
+- Implied Candidate B or MVP-8 scope creep.
 
 ## Drift Log
 
-- 2026-06-21: Started Turn 12 legal transition intent retry after delegated 01主控 instructions and Turn 11 03驗收 PASS. This milestone explicitly labels the player input as Codex-authored and keeps Candidate B / runtime changes out of scope.
-- 2026-06-21: Completed Turn 12 with retry. The exact transition intent was recognized in context, but formal transition was blocked during `resolve-turn` by `player_refused_transition`; retry result resolved without transition and advanced the session to Turn 13.
-- 2026-06-21: Final checkpoint verification passed and this plan update is intended to be committed as `docs: record Pilot-2 Turn 12` and pushed to `origin/codex/mvp6-checkpoint-branching-spec`.
+- 2026-06-21: Started Turn 12 transition intent evidence consolidation after 01 reported 03 read-only acceptance of Turn 12 execution.
+- 2026-06-21: Added `docs/PILOT2_TURN12_TRANSITION_INTENT_FINDING.md`, kept scope docs-only, and verified with `git diff --check` plus full Gradle tests before checkpoint commit/push.
