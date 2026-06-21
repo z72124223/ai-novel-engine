@@ -37,6 +37,8 @@ Use existing Pilot-2 scenario, template, evidence checkpoint, and Turn 12 transi
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
 - Current HEAD before this milestone is `7222ef2 docs: align Pilot-2 refusal heuristic plan status`.
 - 03 read-only review for `7222ef2` returned `PASS`, per 01.
+- Codex-authored workflow milestone commit `35e45e9 docs: define Pilot-2 Codex-authored input workflow` has been pushed to `origin/codex/mvp6-checkpoint-branching-spec`.
+- 03 read-only review for `35e45e9` returned `PASS_WITH_MINOR_PLAN_DRIFT`; the only reported drift is that Step 8 commit and Step 9 push were left unchecked in this file after the commit/push had completed.
 - `mvp-6` remains unchanged at `be527031335efe8e2b0facae0145e1bbc084f8c6`.
 - `docs/PILOT2_SCENARIO_DESIGN.md` defines Pilot-2 as evidence collection and requires real human-input turns for human evidence success.
 - `docs/PILOT2_EVIDENCE_CHECKPOINT_TURNS_1_12.md` records Turn 12 as Codex-authored player input and excludes it from human-player evidence.
@@ -63,8 +65,8 @@ Use existing Pilot-2 scenario, template, evidence checkpoint, and Turn 12 transi
 - [x] Step 5: Run `git status`.
 - [x] Step 6: Run `git diff --check`.
 - [x] Step 7: Run `gradlew.bat clean test --no-daemon`.
-- [ ] Step 8: Commit `docs: define Pilot-2 Codex-authored input workflow`.
-- [ ] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
+- [x] Step 8: Commit `docs: define Pilot-2 Codex-authored input workflow`.
+- [x] Step 9: Push to `origin/codex/mvp6-checkpoint-branching-spec`.
 
 ## Verification
 
@@ -84,3 +86,4 @@ Use existing Pilot-2 scenario, template, evidence checkpoint, and Turn 12 transi
 - 2026-06-21: Started Pilot-2 Codex-authored input workflow alignment after 01 reported 03 PASS on the refusal heuristic plan status alignment.
 - 2026-06-21: Added `docs/PILOT2_CODEX_AUTHORED_INPUT_WORKFLOW.md`; scope remains docs-only, no thread was created, and Turn 13 was not started.
 - 2026-06-21: Verification passed with `git diff --check` and full Gradle tests.
+- 2026-06-21: 03 returned `PASS_WITH_MINOR_PLAN_DRIFT` for `35e45e9`; this status-alignment milestone marks Step 8/9 complete and records that `35e45e9` was pushed without moving `mvp-6`.
