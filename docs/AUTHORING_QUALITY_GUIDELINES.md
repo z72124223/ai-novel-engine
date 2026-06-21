@@ -115,6 +115,14 @@ Eight-point checklist:
 | Scene causality | Do scene beats connect causally, without plot gravity dragging the protagonist toward the author's preferred mystery? |
 | Actionable ending | Does the ending leave clear, natural, non-UI player choices that fit the current objective and do not smuggle in later plot? |
 
+Additional scene-lock check for animation-oriented projects:
+
+- Is the scene inside the approved scene set?
+- Are visual anchors stable?
+- Did the draft introduce an unapproved new location, building, room, or interior?
+- Did it mistake a camera corner, blocking zone, or local position for a new scene?
+- If it needs a new space, is it labeled `sceneCandidate` and handed to 01 instead of being sent as approved output?
+
 04 self-check summary template:
 
 ```text
@@ -436,6 +444,7 @@ Possible future follow-ups, each requiring separate approval:
 
 - prompt templates for opening scene beats;
 - a human review checklist template for playtest notes;
+- a production scene registry for animation asset planning;
 - read-only audit observations for terminology drift or NPC voice sameness;
 - setting-pack fields for character voice and naming conventions;
 - content patch proposals for specific scenarios or characters.
@@ -448,6 +457,7 @@ Not approved by this document:
 - StateReducer changes;
 - automatic prose rewriting;
 - hardcoding specific worlds or characters into engine behavior.
+- treating runtime scene transitions as approval to create unlimited animation scenes.
 
 ## 9. Minimal Example
 

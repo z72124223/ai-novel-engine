@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create and maintain a docs-only authoring quality boundary note that preserves playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, and initial survival orientation / goal transition while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality and scene-production boundary notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, and scene lock / animation asset planning while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
@@ -26,6 +26,7 @@ Tracked files allowed:
 
 - `PLANS.md`
 - `docs/AUTHORING_QUALITY_GUIDELINES.md`
+- `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`
 
 Docs to inspect:
 
@@ -88,6 +89,10 @@ Docs to inspect:
 - [x] Step 28: Run `git diff --check` for review gate addendum scope.
 - [x] Step 29: Commit `docs: add narrative review gate checklist` and push tracked docs only.
 - [x] Step 30: Directly notify 03 read-only review thread for the review gate addendum.
+- [x] Step 31: Add scene lock and animation asset boundary docs.
+- [x] Step 32: Run `git diff --check` for scene lock addendum scope.
+- [x] Step 33: Commit `docs: add scene lock asset boundary guidance` and push tracked docs only.
+- [x] Step 34: Directly notify 03 read-only review thread for the scene lock addendum.
 
 ## Verification
 
@@ -104,6 +109,7 @@ Not planned:
 Safety checks:
 
 - Confirm only `PLANS.md` and `docs/AUTHORING_QUALITY_GUIDELINES.md` are staged.
+- For scene lock addendum, also allow `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -131,3 +137,5 @@ Safety checks:
 - 2026-06-22: Sensory attribution addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
 - 2026-06-22: Addendum requested a narrative review gate and eight-point checklist to move line-by-line review away from the user. The flow is draft -> self-check -> review gate -> minimal revision -> user-facing text and remains docs-only.
 - 2026-06-22: Narrative review gate addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
+- 2026-06-22: Addendum requested scene lock and animation asset boundary guidance because runtime scene continuity is not the same as animation-ready production asset planning. This remains docs-only and does not add runtime/schema fields.
+- 2026-06-22: Scene lock addendum `git diff --check` passed with only Windows line-ending warnings. Full Gradle remains intentionally skipped because the addendum changed only docs and `PLANS.md`.
