@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, new-world foundation questionnaire, demand-driven query layer blueprint, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, new-world foundation questionnaire, demand-driven query layer blueprint, simulation-first knowledge / truth rules, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, demand-driven world / asset / story retrieval, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, add a docs-only demand-driven query layer blueprint that defines World Card Queryer, Asset Queryer, and Story Card Queryer as future product-layer specifications for the 09 -> 04 -> 05 -> 06 -> 07 -> 08 pipeline, not as implemented runtime enforcement.
+Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, demand-driven world / asset / situation retrieval, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, add docs-only simulation-first knowledge and truth rules, then revise product-layer vocabulary so bottom-layer truth is framed as world causality rather than a reveal schedule, plot objective, or mystery product.
 
 ## Non-Goals
 
@@ -24,6 +24,8 @@ Treat 04 playtest learning and user product-direction discussion as authoring ev
 - No filling in worldbuilding answers on behalf of the user.
 - No turning questionnaire prompts into canon, setting-pack data, runtime fields, or asset records.
 - No implementing World Card Queryer, Asset Queryer, Story Card Queryer, 09 canon data, runtime enforcement, schema, CLI, SQLite tables, or external automation.
+- No treating 11 / 12 candidate rules as canon, runtime rules, setting-pack content, or worldbuilding answers.
+- No inserting candidate world content such as future Earth, great transformation, qi, or ley-line material into project docs.
 
 ## Scope
 
@@ -44,6 +46,7 @@ Tracked files allowed:
 - `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`
 - `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`
 - `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
+- `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`
 - `ROADMAP.md`
 - `docs/HANDOFF.md`
 
@@ -104,6 +107,11 @@ Docs to inspect:
 - The current final deliverable remains reviewable storyboard images / storyboard packets, not high-quality animation.
 - 04/05/06/07/08 remain paused and manual-handoff only.
 - The three demand-driven queryers are future implementation paths, not existing capabilities.
+- 03 passed `docs: define demand-driven query layer blueprint` at commit `f26e79b2fc224dce00a1e4afc4fa9504399b0e88`.
+- Thread `019ef199-68fe-7391-959a-d14ee199a6a2` produced a v0.1 Simulation-First Knowledge And Truth Rules candidate without modifying the repo.
+- Thread `019ef198-c653-7620-942a-97a29e9b17db` reviewed that candidate as PASS, with scores 5/5 for simulation priority, distributed knowledge, anti-forced-reveal, workflow clarity, and overreach risk 0/5.
+- Thread `019ef19a-9016-7782-8cf0-c7ccb399ea24` reported `RISKS_FOUND`: no severe overreach landed, but product-layer wording around reveal rhythm / story beats can drift toward plot-first truth handling.
+- User / 00 / 01 direction says bottom-layer truth is world causality, not a plot objective; players, NPCs, factions, sects, officials, and ordinary people form partial knowledge from contact, position, profession, education, interest, bias, evidence, and action.
 
 ## Assumptions
 
@@ -126,6 +134,7 @@ Docs to inspect:
 - Which questionnaire answers the user will provide, and which items should be marked "unknown / let 01 propose", remains open until the user / 00 responds.
 - Whether World Card Queryer, Asset Queryer, or Story Card Queryer should become templates, files, CLI commands, schema, SQLite tables, or runtime enforcement requires later explicit 01/user approval.
 - How 09 will organize new-world cards remains open until the user / 00 answers the questionnaire and 01 drafts a foundation brief.
+- Whether future docs should rename Story Card Queryer entirely to Situation / Continuity / Pressure Queryer remains a product wording decision; this milestone may clarify the alias and guardrails without implementing a new capability.
 
 ## Implementation Steps
 
@@ -209,6 +218,10 @@ Docs to inspect:
 - [x] Step 78: Add `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defining World Card Queryer, Asset Queryer, and Story Card Queryer.
 - [x] Step 79: Add narrow cross-references in roadmap, handoff, script packet, asset registry, storyboard, and questionnaire docs without implying implementation.
 - [x] Step 80: Run `git diff --check`, inspect diff/stat/status/staged files, commit, push, and directly notify 03 for read-only verification.
+- [x] Step 81: Update `PLANS.md` for the docs-only simulation-first knowledge / truth rules milestone.
+- [x] Step 82: Add `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` as the product-layer guardrail anchor.
+- [x] Step 83: Revise relevant docs to replace plot/reveal-first wording with observation, evidence, causality, local misconception, and actor-knowledge wording.
+- [x] Step 84: Run `git diff --check`, inspect search results / diff scope / status, commit, push, and directly notify 03 for read-only verification.
 
 ## Verification
 
@@ -238,6 +251,7 @@ Safety checks:
 - For storyboard-first final deliverable alignment, allow `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - For new world foundation questionnaire, allow `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`, and only minimal `ROADMAP.md` / `docs/HANDOFF.md` if needed.
 - For demand-driven query layer blueprint, allow `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
+- For simulation-first knowledge / truth rules, allow `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -267,6 +281,9 @@ Safety checks:
 - Accidentally answering the questionnaire instead of leaving it for user / 00 input.
 - Accidentally turning questionnaire options into canon, setting-pack data, runtime fields, or approved storyboard / asset work.
 - Accidentally treating World Card Queryer, Asset Queryer, or Story Card Queryer as implemented capability, runtime ContextPacket enforcement, SQLite schema, CLI, external API, or approval to restart 04/05/06/07/08.
+- Accidentally preserving reveal / hidden-truth wording that makes world causality look like a plot objective, reveal schedule, or forced mystery product.
+- Accidentally weakening author-only boundaries while removing reveal-oriented wording.
+- Accidentally treating simulation-first guardrails as runtime enforcement, canon world content, setting-pack patch, or approval to start 09/04/05/06/07/08.
 
 ## Drift Log
 
@@ -316,3 +333,5 @@ Safety checks:
 - 2026-06-22: New world foundation questionnaire added as a user / 00 input surface and control docs minimally aligned. `git diff --check`, staged scope inspection, ignored artifact check, and `mvp-6` tag check passed before commit; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
 - 2026-06-22: 03 passed new world foundation questionnaire commit `0d24be2`. New docs-only milestone starts to define World Card Queryer, Asset Queryer, and Story Card Queryer as future product-layer demand-driven retrieval contracts for 09 -> 04 -> 05 -> 06 -> 07 -> 08, not as implemented runtime/schema/CLI/SQLite behavior.
 - 2026-06-22: Demand-driven query layer blueprint added with narrow cross-references. `git diff --check` and staged scope inspection passed; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
+- 2026-06-23: 03 passed demand-driven query layer commit `f26e79b`. New docs-only milestone starts to integrate simulation-first knowledge / truth guardrails from 11/12/13 thread evidence, correcting product-layer wording without implementing runtime/schema/Validator/CLI behavior or adding world canon.
+- 2026-06-23: Added `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` and revised product-layer wording in query, packet, storyboard, questionnaire, world-bible, roadmap, and handoff docs. `git diff --check` passed with only Windows line-ending warnings; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.

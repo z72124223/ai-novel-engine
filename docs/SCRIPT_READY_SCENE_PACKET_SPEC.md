@@ -35,9 +35,9 @@ It is not:
 
 For storyboard-oriented work, a packet should reference future registered asset ids or asset candidates instead of redesigning reusable characters, animals, props, weapons, costumes, or fixed scenes inside prose. The future asset registry planning note is `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
-For future new-world production, 04 should not read a full world bible or full story arc by default. The docs-only future query layer in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines World Card Queryer, Story Card Queryer, and Asset Queryer as scoped retrieval contracts for packet drafting, review, asset handoff, and storyboard pickup. Those queryers are not implemented runtime enforcement.
+For future new-world production, 04 should not read a full world bible or full story arc by default. The docs-only future query layer in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines World Card Queryer, Story Card Queryer / Situation-Continuity-Pressure Queryer, and Asset Queryer as scoped retrieval contracts for packet drafting, review, asset handoff, and storyboard pickup. Those queryers are not implemented runtime enforcement.
 
-The packet should carry enough information for review and display without leaking author-only secrets, director goals, sealed-truth answers, culprit identity, or knowledge a character should not have.
+The packet should carry enough information for review and display without leaking author-only world causality, director goals, sealed answers, culprit identity, or knowledge a character should not have. This is a perspective-safety rule, not a fixed reveal schedule.
 
 ## 3. Packet Status
 
@@ -70,12 +70,12 @@ The following fields are the minimum contract. This is a documentation shape, no
 | `charactersPresent` | Yes | User-facing | Characters present and their visible position. |
 | `characterState` | Yes | Review-only by default | Mood, constraints, knowledge boundary, immediate pressure. |
 | `approvedProps` | Yes | Production-only by default | Objects and materials allowed in this scene. |
-| `forbiddenProps` | Yes | Production-only by default | Objects, materials, tech, or reveals that must not appear. |
+| `forbiddenProps` | Yes | Production-only by default | Objects, materials, tech, or inaccessible causal facts that must not appear. |
 | `beatList` | Yes | User-facing after review | Ordered scene beats, not a full prose rewrite. |
 | `actionLines` | Yes | User-facing after review | Animation-friendly actions and blocking. |
 | `dialogueLines` | Optional but expected | User-facing after review | Usable lines with speaker and knowledge boundary. |
 | `interactionChoices` | Yes | User-facing | Player choices that fit current objective. |
-| `stateConstraints` | Yes | Review-only | What must not change, such as no sealed reveal or no scene transition. |
+| `stateConstraints` | Yes | Review-only | What must not change, such as no scene transition, no actor knowledge gain, or no access to sealed evidence. |
 | `continuityChecks` | Yes | Review-only | Prior facts, scene locks, NPC state, material culture, and objective continuity. |
 | `storyboardNotes` | Optional | Production-only | Frame, camera, asset reuse, or storyboard pickup notes. |
 | `oiioiiNotes` | Optional | Production-only | Optional downstream video notes only; not current mainline. |
@@ -113,11 +113,11 @@ Production-only fields are for storyboard preparation and optional downstream vi
 - `forbiddenProps`;
 - `storyboardNotes`;
 - `oiioiiNotes`;
-- blocking notes that reveal future setup;
+- blocking notes that expose future setup or inaccessible causal facts;
 - asset reuse notes;
 - author-only boundaries.
 
-Do not include author-only secrets, sealed warehouse truth, director goals, hidden culprit identity, future plot answers, or knowledge a character should not possess in user-facing packet sections.
+Do not include author-only secrets, sealed causal answers, director goals, hidden culprit identity, future plot answers, or knowledge a character should not possess in user-facing packet sections.
 
 ## 6. Minimal Packet Template
 
@@ -260,16 +260,16 @@ Required flow:
 | Check | PASS | NEEDS_REVIEW | FAIL |
 | --- | --- | --- | --- |
 | Scene registry alignment | Uses approved scene / zone or correctly labels `sceneCandidate`. | Small scene/zone ambiguity. | Invents unapproved scene as if approved. |
-| Query scope discipline | Uses only scoped World Card / Story Card / Asset Queryer results where future query-layer workflow applies. | Query is slightly broad, thin, or unclear. | Over-retrieves, leaks secrets, lacks required context, invents ids, or ignores returned ids. |
+| Query scope discipline | Uses only scoped World Card / Situation-Continuity-Pressure / Asset Queryer results where future query-layer workflow applies. | Query is slightly broad, thin, or unclear. | Over-retrieves, leaks secrets, lacks required context, invents ids, ignores returned ids, or treats causal truth as a plot objective. |
 | Animation producibility | Visual anchors, blocking, props, and motion are producible and stable. | Missing one or two production details. | Requires uncontrolled new assets or impossible blocking. |
 | Information completeness | Packet has enough fields for 06 and production review. | A field is thin but recoverable. | Critical fields are missing. |
 | Player objective clarity | Player goal fits immediate knowledge and need. | Goal is visible but slightly broad. | Goal jumps to author plot without causality. |
-| Character motivation and knowledge boundary | Characters act from role, pressure, and known facts. | One motivation or knowledge edge needs tightening. | NPCs reveal secrets, act as tools, or use unknown knowledge. |
+| Character motivation and knowledge boundary | Characters act from role, pressure, evidence, local misconception, and known facts. | One motivation or knowledge edge needs tightening. | NPCs leak author-only causality, act as tools, or use unknown knowledge. |
 | Material culture consistency | Props, tech, and institutions fit the approved setting. | One item needs source / downgrade. | Unauthorized modern or setting-breaking supply chain appears. |
 | Beat causality | Beats connect by visible cause and reaction. | One causal bridge needs a short fix. | Plot gravity replaces causality. |
 | Dialogue usability | Lines are speakable, role-bound, and not exposition dumps. | Some lines need trimming. | Dialogue leaks secrets or reads like setting report. |
 | Interaction readiness | Choices are actionable and fit current objective. | Choices need labels or constraints. | Choices smuggle later plot or cannot be acted on. |
-| Secrecy safety | User-facing packet avoids author-only secrets. | One review-only detail needs relocation. | Secrets or director goals appear in user-facing material. |
+| Secrecy safety | User-facing packet avoids author-only causality and director goals while preserving normal observable evidence. | One review-only detail needs relocation. | Author-only causality, director goals, forced reveal, or forced concealment appears in user-facing material. |
 
 05 verdict rules:
 
@@ -300,7 +300,7 @@ Required flow:
 - start a Turn;
 - approve `sceneCandidate`;
 - patch canon or setting pack;
-- answer author-only questions with hidden information.
+- answer author-only questions with inaccessible causal information.
 - treat user silence, non-response, vague approval, confused reaction, or topic change as approval.
 
 If the user asks 06 to directly fix text, generate new content, approve a scene, or change canon, 06 should summarize the request and report it to 01. 06 is a display / intake window, not a generation or validation authority.
@@ -344,7 +344,7 @@ Recommended display split:
 08 must not:
 
 - rewrite story content;
-- invent new scene ids, props, costumes, or hidden reveals;
+- invent new scene ids, props, costumes, or inaccessible causal facts;
 - treat candidate assets as approved references;
 - launch Seedance, Oiioii, or other video generation;
 - turn a storyboard image into formal canon without 01/user approval.

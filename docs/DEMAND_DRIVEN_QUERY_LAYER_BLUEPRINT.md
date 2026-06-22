@@ -12,7 +12,7 @@ The project should plan three demand-driven queryers before restarting 04 / 05 /
 
 - World Card Queryer: retrieves only the world data needed for the current packet or review task.
 - Asset Queryer: retrieves only the approved or candidate asset data needed for the current storyboard packet or frame.
-- Story Card Queryer: retrieves only the story node, continuity, and allowed-beat data needed for the current packet or review task.
+- Story Card Queryer, better understood as Situation / Continuity / Pressure Queryer: retrieves only the situation, continuity, causal pressure, actor objective, available evidence, local misconception, and known constraints needed for the current packet or review task.
 
 These queryers are future implementation paths, not current capabilities. They are product-layer contracts for worldbuilding, script packet, asset, and storyboard workflows. They do not replace the existing runtime ContextPacket, `relevantSettings`, `retrievedMemories`, or `knowledgeClaims` surfaces.
 
@@ -20,13 +20,13 @@ These queryers are future implementation paths, not current capabilities. They a
 
 New-world production will eventually contain more data than 04, 05, 06, 07, or 08 should read at once. Full-world prompts create predictable risks:
 
-- 04 may overfit to hidden truths or future arcs.
+- 04 may overfit to author-only world causality or future arcs.
 - 04 may invent scenes, assets, materials, or institutions because the needed card was not supplied.
 - 05 cannot tell whether a draft used too much information or missed a required boundary.
 - 08 may redesign characters, scenes, props, costumes, or weapons instead of using stable references.
-- Author-only secrets may leak into player-facing text, storyboard notes, or image prompts.
+- Author-only causal notes may leak into player-facing text, storyboard notes, or image prompts.
 
-The query layer gives future windows a smaller, auditable retrieval surface. Each request should say why data is needed, what visibility level is allowed, and what must remain hidden.
+The query layer gives future windows a smaller, auditable retrieval surface. Each request should say why data is needed, what visibility level is allowed, and what must remain outside the current actor / user-facing view.
 
 ## 3. Pipeline Position
 
@@ -36,7 +36,7 @@ Future storyboard-first flow:
 09 world foundation / world data organization
         |
         v
-World Card Queryer + Story Card Queryer
+World Card Queryer + Situation / Continuity / Pressure Queryer
         |
         v
 04 draft script-ready scene packet
@@ -63,9 +63,9 @@ user-reviewable storyboard images / packets
 Important boundaries:
 
 - 09 data organization does not make a world canon by itself.
-- 04 should not read the full world bible. It should request scoped World Cards and Story Cards for the current packet.
+- 04 should not read the full world bible. It should request scoped World Cards and Situation / Continuity / Pressure Cards for the current packet.
 - 07 may prepare asset candidate packets only after explicit handoff and approval rules are satisfied.
-- 08 must cite or carry the asset ids, scene ids, zone ids, variants, and storyboard frame data returned by the query layer. 08 must not freely redesign characters, scenes, props, clothes, weapons, materials, or hidden story facts.
+- 08 must cite or carry the asset ids, scene ids, zone ids, variants, and storyboard frame data returned by the query layer. 08 must not freely redesign characters, scenes, props, clothes, weapons, materials, or author-only causal facts.
 - 05 must review whether each query was necessary, too broad, too narrow, or secrecy-unsafe.
 
 ## 4. World Card Queryer
@@ -126,27 +126,31 @@ World Card Queryer must not:
 
 - dump the full world bible into 04;
 - turn questionnaire answers into canon without 01/user approval;
-- expose author-only secrets to user-facing fields;
-- supply hidden truth as character knowledge;
+- expose author-only causal notes to user-facing fields;
+- supply world causality as character knowledge without an evidence path;
 - invent material culture, institutions, maps, factions, or power-system rules;
 - approve setting-pack patches or runtime data.
 
-## 5. Story Card Queryer
+## 5. Story Card Queryer / Situation-Continuity-Pressure Queryer
 
 ### 5.1 Responsibility
 
-Story Card Queryer retrieves scoped story-structure data, such as:
+The historical label `Story Card Queryer` is retained for continuity, but its safer product meaning is Situation / Continuity / Pressure Queryer.
+
+It retrieves scoped situation data, such as:
 
 - current act / chapter objective;
-- allowed near-term beats;
+- local causal pressure;
 - unresolved questions;
 - prior beat continuity;
 - protagonist objective handoff;
-- known blockers and pressure;
-- what must not be revealed yet;
+- known blockers;
+- available evidence paths;
+- local misconceptions;
+- what currently exists only as world causality rather than actor knowledge;
 - what player-facing choices are currently natural.
 
-It should answer "which story node is relevant now?" rather than "what is the entire plot?"
+It should answer "what situation, continuity, pressure, evidence, and constraint are relevant now?" rather than "what is the next plot?"
 
 ### 5.2 Inputs
 
@@ -156,10 +160,10 @@ Potential future request fields:
 requestId: ""
 requestingWindow: 04 | 05 | 06 | 07 | 08 | 01
 packetId: ""
-currentStoryNodeId: ""
+currentSituationId: ""
 sceneId: ""
 protagonistObjective: ""
-desiredHorizon: current_beat | next_choice | scene_end | chapter_end
+desiredHorizon: current_situation | next_choice | scene_end | chapter_end
 visibilityTarget: author_only | review_only | production_only | user_facing
 reason: ""
 ```
@@ -169,13 +173,15 @@ reason: ""
 Potential future response fields:
 
 ```yaml
-storyCards:
-  - storyCardId: ""
-    nodeType: premise | beat | thread | objective | constraint | choice
+situationCards:
+  - cardId: ""
+    nodeType: situation | continuity | pressure | objective | constraint | evidence | misconception | choice
     visibility: author_only | review_only | production_only | user_facing
     summary: ""
-    allowedNextBeats: []
-    forbiddenReveals: []
+    causalPressures: []
+    availableEvidence: []
+    actorKnowledgeLimits: []
+    localMisconceptions: []
     continuityRefs: []
 missingContext: []
 reviewWarnings: []
@@ -183,11 +189,12 @@ reviewWarnings: []
 
 ### 5.4 Prohibitions
 
-Story Card Queryer must not:
+Story Card Queryer / Situation-Continuity-Pressure Queryer must not:
 
 - decide the next plot by itself;
 - write final prose, AI result JSON, or storyboard frames;
-- reveal future story answers in user-facing packet fields;
+- turn world causality into a forced reveal path;
+- leak author-only causal answers into user-facing packet fields;
 - force a player objective that violates the protagonist's knowledge boundary;
 - let 04 skip protagonist reaction beats or objective handoff;
 - bypass 01/user approval for canon story changes.
@@ -255,7 +262,7 @@ Asset Queryer must not:
 - generate new images;
 - redesign characters, scenes, props, weapons, costumes, or materials;
 - treat a candidate asset as `production_locked`;
-- leak author-only secrets into prompt-facing fields;
+- leak author-only causal notes into prompt-facing fields;
 - invent scene ids, zone ids, or variants;
 - start GPT storyboard pickup, Seedance, Oiioii, or external API work.
 
@@ -293,7 +300,7 @@ Every future query response should carry a visibility boundary:
 - `production_only`: visible to 07 / 08 for asset or storyboard preparation, not casually shown to the user.
 - `user_facing`: safe for 06 display after 05 PASS and explicit 01 handoff.
 
-Author-only hidden truth, future plot answers, director goals, sealed motives, or knowledge unavailable to present characters must not enter player-facing packet fields or image prompts.
+Author-only world causality, future answers, director goals, sealed motives, or knowledge unavailable to present characters must not enter player-facing packet fields or image prompts. This boundary prevents perspective leaks; it is not a fixed reveal schedule.
 
 ## 9. 05 Query-Scope Review Checklist
 
@@ -302,7 +309,7 @@ Author-only hidden truth, future plot answers, director goals, sealed motives, o
 - Was every query tied to a packet, frame, scene, objective, or review need?
 - Did 04 request the minimum necessary world / story data?
 - Did the response omit needed background, causing 04 to invent?
-- Did the response include author-only or future-spoiler material in a lower-visibility field?
+- Did the response include author-only causal material or future-spoiler material in a lower-visibility field?
 - Did 04 create unregistered assets, scene ids, zone ids, materials, institutions, or story facts?
 - Did 04 / 08 use an asset id, scene id, zone id, or variant not returned by the queryer?
 - Did 08 treat a candidate asset as approved or production-locked?
@@ -313,7 +320,7 @@ Verdict options:
 
 - `PASS`: query scope was necessary, limited, and safe.
 - `NEEDS_REVIEW`: missing cards, overbroad retrieval, unclear visibility, or unstable asset status.
-- `FAIL`: author-only leak, invented formal ids, unauthorized asset redesign, wrong scene, or premature story reveal.
+- `FAIL`: author-only leak, invented formal ids, unauthorized asset redesign, wrong scene, forced reveal, forced concealment, or premature actor knowledge.
 
 ## 10. 08 Storyboard Pickup Rules
 
@@ -323,7 +330,7 @@ Verdict options:
 - preserve asset status and never upgrade candidate assets;
 - report missing assets instead of inventing them;
 - preserve scene lock and zone/blocking rules;
-- keep prompt notes free of author-only secrets;
+- keep prompt notes free of author-only causal notes;
 - flag visual drift when GPT storyboard images diverge from registered references;
 - return evidence to 01 / 03 rather than directly presenting unreviewed images as final.
 
@@ -369,5 +376,5 @@ This blueprint does not authorize restarting 04 / 05 / 06 / 07 / 08, creating a 
 - 05 over-query / under-query / leak / invented-id checks are included;
 - 08 must use returned asset ids / scene ids / zone ids / frame data and cannot redesign assets;
 - runtime ContextPacket boundaries are preserved;
-- author-only / hidden truth cannot enter player-facing fields;
+- author-only world causality cannot enter player-facing fields;
 - no Kotlin, tests, schema, migrations, Validator, StateReducer, SQLite, external API, Oiioii, Seedance, or 04/05/06/07/08 activation is implied.

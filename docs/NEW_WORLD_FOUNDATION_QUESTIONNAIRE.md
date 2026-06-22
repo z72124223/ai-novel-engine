@@ -90,7 +90,7 @@ Questions:
 - What is the first thing the protagonist should want to understand?
 - What is the first thing the protagonist should protect?
 - What local pressure can pull a stranger into the world without feeling like plot gravity?
-- What should the world promise long term: becoming stronger, surviving institutions, solving hidden rules, finding a way home, protecting Ai-chan, earning belonging, or another arc?
+- What should the world promise long term: becoming stronger, surviving institutions, understanding local rules through contact and evidence, finding a way home, protecting Ai-chan, earning belonging, or another arc?
 
 Avoid using an existing work's named places, factions, cultivation ladder, sect structure, signature rules, or plot beats.
 
@@ -195,7 +195,7 @@ what they know:
 what they do not know:
 what they want from the protagonist:
 what makes them memorable:
-what they must not reveal early:
+what they cannot know, observe, or verify yet:
 ```
 
 Do not draft full NPC cards yet unless 01 later assigns that milestone.
@@ -211,7 +211,7 @@ Questions:
 - How does the protagonist move from "I need to get home / get safe" to "I must understand this world"?
 - What failed attempt, blocked route, social pressure, threat to Ai-chan, or need for help causes that goal transition?
 - What can be solved in the first scene?
-- What must not be solved in the first scene?
+- What cannot be observed, verified, accessed, or responsibly concluded in the first scene?
 - What clue or pressure can recur without becoming an exposition dump?
 - What is the first meaningful choice the player should make?
 
@@ -271,14 +271,14 @@ Some answers may be only for author / 01. Mark them clearly.
 
 Questions:
 
-- What is the hidden truth of the world, if any?
+- What underlying world causality, if any, should 01 / author planning know?
 - What should the protagonist not know at first?
 - What should Ai-chan sense but not explain?
 - What should NPCs know or misunderstand?
-- Which secrets must never appear in user-facing packet fields?
-- Which secrets must never appear in image prompts?
-- Which secrets can be visible as ambiguous hints?
-- Which secrets are production-only, review-only, or author-only?
+- Which causal design notes must never appear in user-facing packet fields unless an actor has a valid evidence path?
+- Which causal design notes must never appear in image prompts?
+- Which causal pressures can be visible as ambiguous phenomena?
+- Which facts are production-only, review-only, or author-only?
 
 Use this classification:
 
@@ -357,7 +357,7 @@ Copy this template into a response and fill only what is known.
 - first obstacle:
 - goal transition trigger:
 - first meaningful choice:
-- what must not be solved early:
+- what cannot be observed / verified early:
 - unknown / let 01 propose:
 
 8. Asset and storyboard constraints
@@ -414,7 +414,9 @@ That later brief may organize the answers into a coherent world foundation. It s
 
 Those require later explicit 01 / user milestones.
 
-If the foundation brief is later approved, 01 may separately assign docs-only 09 world-card / story-card organization or query request / response template work. The demand-driven query layer blueprint in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` explains the future World Card Queryer, Story Card Queryer, and Asset Queryer contracts. That blueprint is not canon, not a setting pack, not runtime enforcement, and not an implemented capability.
+If the foundation brief is later approved, 01 may separately assign docs-only 09 world-card / story-card organization or query request / response template work. The demand-driven query layer blueprint in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` explains the future World Card Queryer, Story Card Queryer / Situation-Continuity-Pressure Queryer, and Asset Queryer contracts. That blueprint is not canon, not a setting pack, not runtime enforcement, and not an implemented capability.
+
+Future answers should also follow `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`: bottom-layer truth is world causality, not a plot objective or reveal schedule. If an answer describes a secret, it should also clarify visible phenomena, local explanations, operational knowledge, institutional theories, wrong beliefs, and who can access evidence.
 
 ## 13. 03 Review Focus
 

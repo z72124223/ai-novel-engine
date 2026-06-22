@@ -192,7 +192,7 @@ Minimum required layers:
 - zones / blocking areas;
 - transition conditions;
 - public visual descriptions;
-- what must not be revealed early.
+- what current actors cannot yet observe, access, verify, or responsibly conclude.
 
 ### NPC Tiering
 
@@ -226,10 +226,12 @@ Minimum required layers:
 
 ### Author-Only Boundary
 
-- hidden truth categories;
-- secrets not available to characters;
-- information that cannot appear in prompts, user-facing packets, or asset descriptions;
+- world-causality notes that are not actor knowledge;
+- information not available to characters because no evidence path exists yet;
+- information that cannot appear in prompts, user-facing packets, or asset descriptions unless actor access is established;
 - distinction between public premise and author-only design.
+
+Author-only boundary is a perspective-safety and production-safety tool. It should not become a fixed reveal schedule, forced concealment rule, or proof that the world exists to deliver secrets to the protagonist.
 
 ## 7. Inspiration Boundary
 

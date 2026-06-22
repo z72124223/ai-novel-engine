@@ -13,7 +13,7 @@ The project is moving from raw interactive prose toward script-ready scene packe
 - which approved scene is being used;
 - where characters and important objects are positioned;
 - what each frame should communicate;
-- what must remain hidden;
+- what is outside the current viewpoint, evidence path, or actor knowledge;
 - what can be shown clearly without inventing new locations or assets.
 
 This file is a planning note only. It is not a working storyboard generator, image generator, Seedance adapter, Oiioii adapter, schema, or runtime validator.
@@ -31,7 +31,7 @@ Camera language:
 
 - camera purpose, framing, angle, movement, and viewer guidance;
 - used to clarify information, hide information, or guide temporary viewer interpretation;
-- should not become decoration or a fixed "make this person look evil, reveal later" template.
+- should not become decoration or a fixed "make this person look evil, expose a twist later" template.
 
 Scene lock:
 
@@ -94,7 +94,7 @@ storyboardFrames:
     beatId: ""
     framePurpose: ""
     shotType: establishing | wide | medium | closeup | insert | overShoulder | pointOfView
-    cameraPurpose: clarify_space | show_risk | guide_attention | hide_information | reveal_detail | neutral_coverage
+    cameraPurpose: clarify_space | show_risk | guide_attention | hide_information | show_evidence_detail | neutral_coverage
     viewerEffect: ""
     subject: ""
     blocking:
@@ -127,7 +127,7 @@ Recommended order:
 6. deliver only approved storyboard images / packets to the user;
 7. use approved storyboard packets as optional downstream video references only after a later decision.
 
-Do not let image generation invent new rooms, costumes, props, weather, lighting, character designs, or hidden reveals without approval.
+Do not let image generation invent new rooms, costumes, props, weather, lighting, character designs, or author-only causal disclosures without approval.
 
 Cost rule:
 
@@ -144,9 +144,9 @@ Use camera notes when they solve a story or production problem:
 - clarify where characters are;
 - show a boundary or risk;
 - guide viewer attention to a relevant object;
-- preserve a hidden truth by not showing it;
+- preserve an author-only boundary by not showing inaccessible causal facts;
 - plant a visible detail that can be reinterpreted later;
-- support an approved reveal beat.
+- support an approved evidence-discovery beat.
 
 Do not use camera notes as decoration:
 
@@ -182,7 +182,7 @@ Reveal frame:
 
 Do-not-show frame:
 
-- explicitly blocks the camera from showing author-only secrets, sealed truth, hidden culprit evidence, director goals, or character-inaccessible knowledge.
+- explicitly blocks the camera from showing author-only secrets, sealed causal answers, hidden culprit evidence, director goals, or character-inaccessible knowledge.
 
 ## 7. Scene Lock Rules For Storyboard Frames
 
@@ -219,7 +219,7 @@ Future GPT storyboard pickup may need:
 - text storyboard frame data;
 - stable scene registry entries;
 - registered production asset ids and approved reference requirements;
-- scoped Asset Queryer / Story Card Queryer responses when that future product layer is approved;
+- scoped Asset Queryer / Situation-Continuity-Pressure Queryer responses when that future product layer is approved;
 - approved character design references;
 - approved prop and material lists;
 - blocking notes;
@@ -253,7 +253,7 @@ Future work should decide whether GPT storyboard notes and optional video notes 
 
 For future planning of locked characters, animals, props, weapons, costumes, scene references, reference view requirements, and variants, see `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
-For future planning of scoped world, story, and asset retrieval before storyboard pickup, see `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`. The query layer is a future product contract only; it does not authorize 08 to generate images, redesign assets, or call external services.
+For future planning of scoped world, situation / continuity / pressure, and asset retrieval before storyboard pickup, see `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` and `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`. The query layer is a future product contract only; it does not authorize 08 to generate images, redesign assets, leak author-only causality, or call external services.
 
 ## 9. 04 / 05 / 06 / 07 / 08 Future Workflow Impact
 
@@ -271,7 +271,7 @@ If this planning becomes an approved workflow later:
 05 should fail or return for review when:
 
 - storyboard frames create unapproved scenes;
-- camera notes reveal hidden information;
+- camera notes leak inaccessible or author-only information;
 - camera choices over-direct every NPC;
 - storyboard images or prompts change approved scene assets;
 - a frame cannot be produced from the locked scene and approved visual anchors.
@@ -288,7 +288,7 @@ beatId: "beat-first-boundary-pressure"
 framePurpose: "Show that the protagonist and Ai-chan have reached a boundary they do not understand."
 shotType: "medium"
 cameraPurpose: "clarify_space"
-viewerEffect: "The viewer understands the powder line, the dog, and the patrol pressure without learning the sealed truth."
+viewerEffect: "The viewer understands the powder line, the dog, and the patrol pressure without learning sealed causal answers."
 subject: "Ai-chan stopped near the powder line; protagonist slightly behind; patrol presence at the edge of frame."
 blocking:
   foreground:
@@ -302,7 +302,7 @@ visibleAction: "Ai-chan's nose angles toward a scent; one front paw stops short 
 dialogueOrAudio: "Patrol voice off to one side: 'Call the dog back. Do not let it cross.'"
 doNotShow:
   - "warehouse interior"
-  - "sealed-truth evidence"
+  - "sealed causal evidence"
   - "author-only cause of contamination"
 continuityAnchor:
   - "rain-wet ground"
