@@ -12,9 +12,10 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - User product decision: the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation.
 - Seedance / Oiioii / video generation is optional future downstream work only. It is not the current mainline deliverable and not an implemented capability.
 - Qingli remains historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; it must not be used as the new-world opening base or assetization starting point.
+- New world foundation questionnaire is the current user-input entry before any new world foundation brief, 04/05/06/07/08 restart, setting-pack patch, or storyboard pickup.
 - 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime, not automation, and not an approved generation loop.
 - Resuming 04 / 05 / 06 / 07 / 08 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
-- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow. Silence, ambiguity, or lack of response is not approval.
+- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 / 07 / 08 flow. Silence, ambiguity, or lack of response is not approval.
 - Next milestone options should favor the new-world foundation, docs consolidation, or read-only checks. Do not enter Candidate B, MVP-8, runtime enforcement, production asset registry implementation, Oiioii / Seedance integration, or video generation directly.
 - MVP-7 implementation beyond explicitly approved read-only audit work is not approved. Any future Candidate B or gate behavior requires a separate decision brief and approval.
 
@@ -63,6 +64,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Production Asset Registry Planning | Completed and pushed | Define why reusable characters, animals, scenes, props, weapons, costumes, and variants must be registered and visually locked before storyboard delivery. | `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `PLANS.md`. | Treating 07 candidate references as approved production assets or letting GPT / video tools regenerate accepted assets freely. |
 | Asset Registry Implementation Blueprint | Completed and pushed | Plan a future layered implementation for storyboard asset consistency: draft asset files first, SQLite formal registry only after separate approval, and validate / preview / apply / export / audit flow before downstream use. | `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Accidentally implying schema, migrations, direct SQLite writes, asset tables, Validator changes, or Oiioii / Seedance integration are approved now. |
 | Storyboard As Final Deliverable Alignment | Completed and pushed | Align storyboard / asset planning docs and control docs with the user decision that reviewable storyboard images / packets are the current final deliverable. | `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Treating high-quality video as current scope, upgrading Qingli into the new base, or treating 07/08 as active without 01/user approval. |
+| New World Foundation Questionnaire | Completed and pushed | Provide a user / 00 input questionnaire for premise, material culture, power system, geography, social structure, assets, storyboards, and author-only boundaries before a foundation brief. | `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`, `ROADMAP.md`, `docs/HANDOFF.md`. | Treating questionnaire prompts as canon, setting-pack data, runtime fields, or 02-authored answers. |
 
 ## Temporarily Not Doing
 
@@ -100,7 +102,7 @@ If a candidate milestone would require new infrastructure, it must be rejected u
 
 Recommended candidates after the storyboard-first alignment:
 
-1. `NEW_WORLD_FOUNDATION_QUESTIONNAIRE`: docs-only questionnaire / decision aid for rebuilding the non-Qingli world foundation before any new opening, asset pickup, or storyboard delivery resumes.
+1. User / 00 answers `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`.
 2. `NEW_WORLD_FOUNDATION_BRIEF`: only after the user provides enough preference material; define premise, era/material culture, geography, society, power system, law, initial scene set, protagonist displacement, Ai-chan role, asset strategy, and author-only boundaries.
 3. `04/05/06/07/08 manual resumption decision brief`: docs-only decision brief only after 01/user asks whether to resume the manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
 4. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.

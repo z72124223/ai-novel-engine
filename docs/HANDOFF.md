@@ -47,6 +47,7 @@ Additional docs-only product-control baseline as of 2026-06-22:
 - Seedance / Oiioii / video generation is optional future downstream work only. It is not implemented and not the current mainline.
 - Qingli is historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; do not use it as the new-world opening base or assetization starting point.
 - Storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are future-planning docs. They are not runtime, schema, image-generation, Seedance, or Oiioii implementations.
+- `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` is the current user / 00 input entry for rebuilding the non-Qingli world foundation. It is not canon, a setting pack, or a runtime artifact.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
 - Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - Qingli script packet registry dry-run baseline commit: `ee80a16f83825ac56b2449285c19981a81f746a1`.
@@ -115,6 +116,7 @@ For Pilot or context-budget work, also read:
 - Storyboard / camera planning, aligned to storyboard-first final deliverables.
 - Production asset registry planning, aligned to storyboard consistency before optional downstream video.
 - Asset registry implementation blueprint, future-only and not schema/runtime approval.
+- New world foundation questionnaire, as a docs-only user-input surface before any foundation brief or 04/05/06/07/08 restart.
 
 ## Hard Boundaries
 
@@ -203,7 +205,7 @@ Do not enter Candidate B automatically.
 
 Recommended safe next steps:
 
-1. Draft `NEW_WORLD_FOUNDATION_QUESTIONNAIRE` as a docs-only milestone before any new opening, 04/05/06/07/08 restart, storyboard pickup, or asset work resumes.
+1. Wait for user / 00 answers to `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`.
 2. Draft `NEW_WORLD_FOUNDATION_BRIEF` only after the user provides enough world-preference material.
 3. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
 4. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.

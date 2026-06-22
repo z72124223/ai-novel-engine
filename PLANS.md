@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, new-world foundation questionnaire, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, align the existing dirty storyboard / asset planning docs to the user's new product decision: the current final deliverable is reviewable storyboard images / storyboard packets, while Seedance / Oiioii / high-quality video generation remains optional future downstream work, not the current mainline or implemented capability.
+Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, add a docs-only new world foundation questionnaire so the user / 00 can provide premise, material culture, power system, scene set, social structure, asset, and author-only boundary decisions before any world foundation brief or 04/05/06/07/08 restart.
 
 ## Non-Goals
 
@@ -21,6 +21,8 @@ Treat 04 playtest learning and user product-direction discussion as authoring ev
 - No hardcoding Qingli, Ai-chan, specific NPCs, or copyrighted work elements as engine core.
 - No treating Qingli as the new opening base after the world-bible rebuild decision.
 - No treating Seedance, Oiioii, or high-quality video generation as the current final deliverable or implemented system.
+- No filling in worldbuilding answers on behalf of the user.
+- No turning questionnaire prompts into canon, setting-pack data, runtime fields, or asset records.
 
 ## Scope
 
@@ -39,6 +41,7 @@ Tracked files allowed:
 - `docs/STORYBOARD_AND_CAMERA_PLANNING.md`
 - `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`
 - `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`
+- `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`
 - `ROADMAP.md`
 - `docs/HANDOFF.md`
 
@@ -91,6 +94,9 @@ Docs to inspect:
 - User explicitly decided the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation.
 - User explicitly allowed this milestone to organize and submit the existing dirty storyboard / asset planning docs if they are rewritten toward the storyboard-first direction.
 - The required product flow for future manual work is `04 scene packet -> 05 packet review -> 06 human approval -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
+- 03 passed `docs: align storyboard as final deliverable` at commit `16f0c8446d3479bfec03888781c0cdbf6232f767`.
+- 01 confirmed the next safe milestone is a docs-only `NEW_WORLD_FOUNDATION_QUESTIONNAIRE`.
+- User / 01 instruction for this milestone says the questionnaire is not canon, not a setting pack, not a 04 generation packet, not storyboard pickup, and must not be pre-filled by 02.
 
 ## Assumptions
 
@@ -110,6 +116,7 @@ Docs to inspect:
 - Whether production asset registry should become implemented schema, files, image storage, Validator checks, GPT prompt tooling, or Oiioii integration requires later explicit approval. This milestone only records future planning.
 - Whether the future SQLite asset registry belongs inside the existing runtime DB, a separate production DB, or an exportable sidecar DB requires later architecture approval.
 - Whether the new world foundation should preserve, rewrite, or replace any non-Qingli production planning examples requires later 01/user approval.
+- Which questionnaire answers the user will provide, and which items should be marked "unknown / let 01 propose", remains open until the user / 00 responds.
 
 ## Implementation Steps
 
@@ -185,6 +192,10 @@ Docs to inspect:
 - [x] Step 70: Align storyboard / camera, production asset registry, implementation blueprint, scene lock, and script packet docs to storyboard-first delivery and optional downstream video.
 - [x] Step 71: Align `ROADMAP.md` and `docs/HANDOFF.md` with the storyboard-first final deliverable and safe next steps.
 - [x] Step 72: Run `git diff --check`, inspect diff/stat/status, commit, push, and directly notify 03 for read-only verification.
+- [x] Step 73: Read AGENTS, PLANS, ROADMAP, HANDOFF, world-bible rebuild, storyboard, asset, and packet docs before the new-world questionnaire milestone.
+- [x] Step 74: Update `PLANS.md` for the docs-only new world foundation questionnaire milestone.
+- [x] Step 75: Add `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` without filling in user answers.
+- [x] Step 76: Run `git diff --check`, inspect diff/stat/status/staged files, commit, push, and directly notify 03 for read-only verification.
 
 ## Verification
 
@@ -212,6 +223,7 @@ Safety checks:
 - For production asset registry future planning, allow `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, and `PLANS.md`.
 - For asset registry implementation blueprint planning, also allow `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `ROADMAP.md`, and `docs/HANDOFF.md`.
 - For storyboard-first final deliverable alignment, allow `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
+- For new world foundation questionnaire, allow `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`, and only minimal `ROADMAP.md` / `docs/HANDOFF.md` if needed.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -238,6 +250,8 @@ Safety checks:
 - Accidentally treating Seedance / Oiioii / high-quality video generation as the current deliverable rather than optional future downstream work.
 - Accidentally treating Qingli historical samples as the new-world base after the world-bible rebuild decision.
 - Accidentally treating 07 asset candidates as approved references or production locks before review and explicit approval.
+- Accidentally answering the questionnaire instead of leaving it for user / 00 input.
+- Accidentally turning questionnaire options into canon, setting-pack data, runtime fields, or approved storyboard / asset work.
 
 ## Drift Log
 
@@ -283,3 +297,5 @@ Safety checks:
 - 2026-06-22: User decided the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation. New milestone starts to align dirty storyboard / asset planning docs and control docs to a `04 -> 05 -> 06 -> 07 -> 08 -> user-reviewable storyboard` flow, with Seedance / Oiioii only as optional future downstream work.
 - 2026-06-22: Dirty tree handling: the existing modified / untracked storyboard and asset planning docs are explicitly allowed in this milestone if rewritten to the storyboard-first direction and kept docs-only. No runtime, schema, CLI, SQLite, or generated artifact work is approved.
 - 2026-06-22: Storyboard-first alignment edited only allowed docs/control files. `git diff --check` and staged scope inspection passed before commit; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
+- 2026-06-22: 03 passed storyboard-first alignment commit `16f0c84`. New docs-only milestone starts to create `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` as a user-input questionnaire. It must not answer worldbuilding questions, create canon, patch setting packs, or resume 04/05/06/07/08.
+- 2026-06-22: New world foundation questionnaire added as a user / 00 input surface and control docs minimally aligned. `git diff --check`, staged scope inspection, ignored artifact check, and `mvp-6` tag check passed before commit; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
