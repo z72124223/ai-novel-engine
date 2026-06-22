@@ -8,9 +8,9 @@ This document records simulation-first knowledge and truth rules for product-lay
 
 Source evidence:
 
-- `AI劇本｜11 模擬優先規則研發` produced candidate v0.1.
-- `AI劇本｜12 模擬優先規則審核` reviewed it as `PASS`.
-- `AI劇本｜13 專案越權稽核` reported `RISKS_FOUND`: no severe overreach had landed, but product-layer wording still risked drifting toward reveal rhythm, mystery product, or plot-first truth handling.
+- Candidate window 11 produced the v0.1 simulation-first knowledge/truth rules candidate.
+- Review window 12 passed the candidate.
+- Audit window 13 reported `RISKS_FOUND`: no severe overreach had landed, but product-layer wording still risked drifting toward reveal rhythm, mystery product, or plot-first truth handling.
 
 ## 1. VERDICT
 
