@@ -414,6 +414,8 @@ That later brief may organize the answers into a coherent world foundation. It s
 
 Those require later explicit 01 / user milestones.
 
+If the foundation brief is later approved, 01 may separately assign docs-only 09 world-card / story-card organization or query request / response template work. The demand-driven query layer blueprint in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` explains the future World Card Queryer, Story Card Queryer, and Asset Queryer contracts. That blueprint is not canon, not a setting pack, not runtime enforcement, and not an implemented capability.
+
 ## 13. 03 Review Focus
 
 03 should verify:

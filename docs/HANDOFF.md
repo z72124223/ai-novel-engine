@@ -48,6 +48,7 @@ Additional docs-only product-control baseline as of 2026-06-22:
 - Qingli is historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; do not use it as the new-world opening base or assetization starting point.
 - Storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are future-planning docs. They are not runtime, schema, image-generation, Seedance, or Oiioii implementations.
 - `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` is the current user / 00 input entry for rebuilding the non-Qingli world foundation. It is not canon, a setting pack, or a runtime artifact.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future World Card Queryer, Asset Queryer, and Story Card Queryer contracts for scoped product-layer retrieval. It is not implemented runtime, schema, CLI, SQLite, external API, GPT automation, Seedance, or Oiioii work.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
 - Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - Qingli script packet registry dry-run baseline commit: `ee80a16f83825ac56b2449285c19981a81f746a1`.
@@ -130,6 +131,7 @@ Do not start or add any of these unless the user explicitly approves a new miles
 - Resuming 04 / 05 / 06 generation, review, display, playtest, 07 asset-candidate creation, or 08 storyboard pickup without 01 explicit handoff and user approval where required.
 - Seedance / Oiioii integration, high-quality video generation, or animation asset pipeline implementation.
 - Production asset registry schema, migrations, import CLI, generated image storage, or direct SQLite asset writes.
+- Demand-driven queryer implementation, query audit tables, query CLI commands, runtime query enforcement, or external retrieval services.
 - OpenAI API or any external AI call.
 - Schema changes or migration edits.
 - Validator, `stateVersion`, or `contextHash` bypass.
@@ -207,11 +209,13 @@ Recommended safe next steps:
 
 1. Wait for user / 00 answers to `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`.
 2. Draft `NEW_WORLD_FOUNDATION_BRIEF` only after the user provides enough world-preference material.
-3. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
-4. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
-5. Collect real author-led story arc audit samples when the user provides or approves them.
-6. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
-7. Run a remote restore smoke check on demand.
+3. Draft a 09 world-card / story-card organization brief only after a foundation brief exists; keep it docs-only unless 01/user separately approves implementation.
+4. Draft query request / response templates only after 01 explicitly asks to make the demand-driven query layer more concrete; do not implement schema, CLI, SQLite, or runtime enforcement.
+5. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
+6. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
+7. Collect real author-led story arc audit samples when the user provides or approves them.
+8. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
+9. Run a remote restore smoke check on demand.
 
 Stop and ask before any work that would alter schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or any formal SQLite write path.
 

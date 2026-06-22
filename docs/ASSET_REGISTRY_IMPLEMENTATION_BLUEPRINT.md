@@ -17,6 +17,8 @@ The draft layer keeps exploration cheap and flexible. The SQLite layer keeps lar
 
 Near-term goal: keep asset planning as docs and draft candidates that help 08 produce consistent storyboard images. Do not write directly to SQLite. Any future formal asset registry must follow an explicit validation / preview / apply flow.
 
+The demand-driven Asset Queryer described in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` is a future product-layer retrieval contract over these asset records or draft candidates. It is not implemented by this blueprint, but it defines how 04 / 08 should eventually request scoped asset ids, scene ids, zone ids, variants, and prompt-safe notes without redesigning assets.
+
 ## 2. Why Not Only Files
 
 Files are useful while the format is changing, but future production data will become too large and relational for plain JSON / YAML alone.
@@ -284,6 +286,13 @@ Rules:
 - return GPT images as candidate references;
 - mark drift issues;
 - never push GPT output directly to a video pipeline.
+
+08 should eventually:
+
+- cite the Asset Queryer response used for each storyboard frame;
+- report missing asset ids, scene ids, zone ids, or variants instead of inventing them;
+- treat `candidate` and `review_ready` assets as unstable unless 01 / 05 / 06 approval explicitly promotes them;
+- preserve prompt-safe summaries and forbidden-drift notes returned by the query layer.
 
 ## 10. Future Engineering Phases
 

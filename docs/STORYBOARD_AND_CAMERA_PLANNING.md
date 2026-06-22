@@ -219,6 +219,7 @@ Future GPT storyboard pickup may need:
 - text storyboard frame data;
 - stable scene registry entries;
 - registered production asset ids and approved reference requirements;
+- scoped Asset Queryer / Story Card Queryer responses when that future product layer is approved;
 - approved character design references;
 - approved prop and material lists;
 - blocking notes;
@@ -252,6 +253,8 @@ Future work should decide whether GPT storyboard notes and optional video notes 
 
 For future planning of locked characters, animals, props, weapons, costumes, scene references, reference view requirements, and variants, see `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
+For future planning of scoped world, story, and asset retrieval before storyboard pickup, see `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`. The query layer is a future product contract only; it does not authorize 08 to generate images, redesign assets, or call external services.
+
 ## 9. 04 / 05 / 06 / 07 / 08 Future Workflow Impact
 
 If this planning becomes an approved workflow later:
@@ -262,6 +265,7 @@ If this planning becomes an approved workflow later:
 - 06 should show storyboard / camera fields only when 01 decides they are safe and useful for human approval.
 - After 06 receives explicit user approval, 01 may assign 07 to prepare asset candidates needed for the storyboard.
 - 08 should retrieve / assemble storyboard images and run storyboard-specific drift checks before anything is shown as deliverable.
+- 08 should reference query-returned asset ids, scene ids, zone ids, variants, and storyboard frame data where the future query-layer workflow applies.
 - Optional video generation may be considered only after storyboard delivery is approved and 01/user explicitly opens a new downstream milestone.
 
 05 should fail or return for review when:

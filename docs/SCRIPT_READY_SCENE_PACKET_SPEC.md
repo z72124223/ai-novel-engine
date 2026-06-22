@@ -35,6 +35,8 @@ It is not:
 
 For storyboard-oriented work, a packet should reference future registered asset ids or asset candidates instead of redesigning reusable characters, animals, props, weapons, costumes, or fixed scenes inside prose. The future asset registry planning note is `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
+For future new-world production, 04 should not read a full world bible or full story arc by default. The docs-only future query layer in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines World Card Queryer, Story Card Queryer, and Asset Queryer as scoped retrieval contracts for packet drafting, review, asset handoff, and storyboard pickup. Those queryers are not implemented runtime enforcement.
+
 The packet should carry enough information for review and display without leaking author-only secrets, director goals, sealed-truth answers, culprit identity, or knowledge a character should not have.
 
 ## 3. Packet Status
@@ -258,6 +260,7 @@ Required flow:
 | Check | PASS | NEEDS_REVIEW | FAIL |
 | --- | --- | --- | --- |
 | Scene registry alignment | Uses approved scene / zone or correctly labels `sceneCandidate`. | Small scene/zone ambiguity. | Invents unapproved scene as if approved. |
+| Query scope discipline | Uses only scoped World Card / Story Card / Asset Queryer results where future query-layer workflow applies. | Query is slightly broad, thin, or unclear. | Over-retrieves, leaks secrets, lacks required context, invents ids, or ignores returned ids. |
 | Animation producibility | Visual anchors, blocking, props, and motion are producible and stable. | Missing one or two production details. | Requires uncontrolled new assets or impossible blocking. |
 | Information completeness | Packet has enough fields for 06 and production review. | A field is thin but recoverable. | Critical fields are missing. |
 | Player objective clarity | Player goal fits immediate knowledge and need. | Goal is visible but slightly broad. | Goal jumps to author plot without causality. |
