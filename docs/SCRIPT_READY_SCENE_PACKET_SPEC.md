@@ -4,11 +4,11 @@ Status: `DOCS_ONLY_CONTRACT`
 
 Date: 2026-06-22
 
-This document defines a script-ready scene packet, a minimal production scene registry contract, and the 04 / 05 / 06 handoff rules. It does not change Kotlin source, tests, schema, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, `contextHash`, runtime gates, or setting-pack fields.
+This document defines a script-ready scene packet, a minimal production scene registry contract, and the 04 / 05 / 06 / 07 / 08 handoff rules. It does not change Kotlin source, tests, schema, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, `contextHash`, runtime gates, or setting-pack fields.
 
 ## 1. VERDICT
 
-04 / 05 / 06 should stay paused until the project has a clear handoff contract. The next usable unit is not raw prose and not a runtime turn result. It is a structured scene packet that 05 can review, 06 can display, and a future Oiioii / animation pipeline can break down without inventing new production requirements every turn.
+04 / 05 / 06 / 07 / 08 should stay paused until the project has a clear handoff contract. The next usable unit is not raw prose and not a runtime turn result. It is a structured scene packet that 05 can review, 06 can present for explicit human approval, 07 can use to prepare asset candidates, and 08 can use for GPT storyboard pickup / verification without inventing new production requirements every turn.
 
 This document is a product and authoring contract only. It does not approve new runtime enforcement, schema fields, UI work, or animation integration.
 
@@ -18,7 +18,9 @@ A script-ready scene packet is structured production data for:
 
 - 05 review;
 - 06 display / intake;
-- future Oiioii or animation breakdown;
+- 07 asset candidate planning;
+- 08 GPT storyboard pickup and review;
+- optional future Seedance / Oiioii / video breakdown;
 - 01 decision-making about scene candidates and content scope;
 - 02 documentation or repo work when 01 explicitly assigns it.
 
@@ -30,6 +32,8 @@ It is not:
 - an AI result JSON;
 - a direct player-facing transcript;
 - a place to store full DB state.
+
+For storyboard-oriented work, a packet should reference future registered asset ids or asset candidates instead of redesigning reusable characters, animals, props, weapons, costumes, or fixed scenes inside prose. The future asset registry planning note is `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
 The packet should carry enough information for review and display without leaking author-only secrets, director goals, sealed-truth answers, culprit identity, or knowledge a character should not have.
 
@@ -71,7 +75,8 @@ The following fields are the minimum contract. This is a documentation shape, no
 | `interactionChoices` | Yes | User-facing | Player choices that fit current objective. |
 | `stateConstraints` | Yes | Review-only | What must not change, such as no sealed reveal or no scene transition. |
 | `continuityChecks` | Yes | Review-only | Prior facts, scene locks, NPC state, material culture, and objective continuity. |
-| `oiioiiNotes` | Optional | Production-only | Camera, motion, asset reuse, or animation notes. |
+| `storyboardNotes` | Optional | Production-only | Frame, camera, asset reuse, or storyboard pickup notes. |
+| `oiioiiNotes` | Optional | Production-only | Optional downstream video notes only; not current mainline. |
 | `secrecyKnowledgeNotes` | Yes | Review-only | Author-only boundaries and character knowledge limits. |
 | `reviewSummary` | Yes before 06 | Review-only | 05 PASS / NEEDS_REVIEW / FAIL with reasons. |
 
@@ -100,10 +105,11 @@ Review-only fields are for 01 / 02 / 03 / 05:
 - `secrecyKnowledgeNotes`;
 - `reviewSummary`.
 
-Production-only fields are for animation / Oiioii preparation and should not be casually shown to the user:
+Production-only fields are for storyboard preparation and optional downstream video preparation. They should not be casually shown to the user:
 
 - `approvedProps`;
 - `forbiddenProps`;
+- `storyboardNotes`;
 - `oiioiiNotes`;
 - blocking notes that reveal future setup;
 - asset reuse notes;
@@ -168,6 +174,10 @@ oiioiiNotes:
   cameraZones: []
   assetReuse: []
   animationRisks: []
+storyboardNotes:
+  framePurpose: []
+  assetReferencesNeeded: []
+  gptStoryboardRisks: []
 secrecyKnowledgeNotes:
   authorOnlyExcluded: true
   notes: []
@@ -179,7 +189,7 @@ reviewSummary:
 
 ## 7. Scene Registry Minimal Contract
 
-Every approved production scene should have a registry entry before 04 drafts animation-oriented output.
+Every approved production scene should have a registry entry before 04 drafts storyboard-oriented output.
 
 Minimum fields:
 
@@ -302,6 +312,9 @@ Manual approval gate:
 -> user explicit approval
 -> 06 reports approval to 01
 -> 01 assigns the next step
+-> 07 asset candidate creation if storyboard assets are needed
+-> 08 GPT storyboard pickup / storyboard verification
+-> user-reviewable storyboard delivery
 ```
 
 No automation / scheduler should advance this workflow. A later 02 / 03 engineering milestone or formal Turn lifecycle may begin only after 01 receives explicit user approval and issues a new assignment.
@@ -319,7 +332,34 @@ Recommended display split:
    - omit author-only secrets;
    - clearly mark review-only or production-only sections that should not be user-facing.
 
-## 12. 01 / 02 / 03 Engineering Loop
+## 12. 07 / 08 Storyboard Delivery Boundary
+
+07 is an asset-candidate window for storyboard consistency. It may prepare candidate references for characters, animals, scenes, zones, props, weapons, costumes, documents, materials, and variants after 01 assigns that work. 07 output remains candidate material until reviewed and approved; it is not automatically an approved reference or production lock.
+
+08 is the GPT storyboard pickup / storyboard verification window. It uses reviewed packets and asset candidates to retrieve / assemble storyboard images, checks visual drift, and reports whether the storyboard packet is ready for user review. 08 is currently a core pre-delivery window for storyboard images, not merely Oiioii preparation.
+
+08 must not:
+
+- rewrite story content;
+- invent new scene ids, props, costumes, or hidden reveals;
+- treat candidate assets as approved references;
+- launch Seedance, Oiioii, or other video generation;
+- turn a storyboard image into formal canon without 01/user approval.
+
+Current final deliverable target:
+
+```text
+04 scene packet draft
+-> 05 packet review
+-> 06 human approval
+-> 07 asset candidates
+-> 08 GPT storyboard pickup / verification
+-> user-reviewable storyboard images / storyboard packet
+```
+
+Seedance / Oiioii / high-quality video generation is optional future downstream work after storyboard approval, not an implemented mainline step.
+
+## 13. 01 / 02 / 03 Engineering Loop
 
 The engineering loop remains:
 
@@ -330,7 +370,7 @@ The engineering loop remains:
 5. If 03 passes, 01 chooses the next milestone.
 6. If 03 fails or needs review, 01 assigns a correction milestone or stops to ask the user.
 
-04 / 05 / 06 are not the engineering loop mainline. They are currently paused until the packet, registry, review, and display contracts are accepted.
+04 / 05 / 06 / 07 / 08 are not the engineering loop mainline. They are currently paused until the packet, registry, review, display, asset-candidate, and storyboard pickup contracts are accepted and 01 explicitly resumes them.
 
 When 04 / 05 / 06 resume, they still do not bypass 01:
 
@@ -340,11 +380,11 @@ When 04 / 05 / 06 resume, they still do not bypass 01:
 - 06 displays only 05 PASS content and collects user response.
 - User approval must be explicit.
 - 06 reports the user decision to 01.
-- 01 then decides whether to assign 02 / 03 repo work, a formal Turn flow, another 04 draft, or a stop condition.
+- 01 then decides whether to assign 02 / 03 repo work, 07 asset-candidate preparation, 08 storyboard pickup / verification, a formal Turn flow, another 04 draft, or a stop condition.
 
 Do not use automation, scheduler wakeups, silence, or assumed consent to move from display to execution.
 
-## 13. Boundaries
+## 14. Boundaries
 
 This document does not approve:
 
@@ -361,5 +401,8 @@ This document does not approve:
 - 04 / 05 / 06 restart;
 - Candidate B or MVP-8 work;
 - Oiioii integration implementation.
+- Seedance integration implementation.
+- GPT storyboard pickup tooling.
+- 07 / 08 restart.
 
-Future implementation may separately propose formal fields such as `scriptPacketStatus`, `productionSceneId`, `sceneCandidate`, `reviewVerdict`, `displaySafeFields`, or `animationAssetNotes`. That requires a separate 01 / user-approved milestone.
+Future implementation may separately propose formal fields such as `scriptPacketStatus`, `productionSceneId`, `sceneCandidate`, `reviewVerdict`, `displaySafeFields`, `storyboardNotes`, or `animationAssetNotes`. That requires a separate 01 / user-approved milestone.

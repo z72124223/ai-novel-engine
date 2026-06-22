@@ -8,11 +8,14 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Active product milestone: none after MVP-7 Candidate A.2 implementation, docs checkpoint alignment, real sample rerun, JSON robustness investigation, JSON verification docs hardening, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design.
 - MVP-7 Candidate A, Candidate A.1, real audit sample collection, deliberately flawed audit sample pack, Candidate A.2 calibration planning, Candidate A.2 implementation, A.2 real sample rerun, audit JSON robustness investigation, audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, and Pilot-2 scenario design are complete or selected as documentation-only work.
 - Candidate A.2 remains read-only audit calibration. It did not approve Candidate B and did not alter `resolve-turn`, `StateReducer`, SQLite writes, Validator, `stateVersion`, or `contextHash`.
-- Docs-only product contracts after Pilot-2 are complete through authoring quality guidelines, narrative review workflow, scene lock / animation asset boundary, script-ready scene packet contracts, the Qingli scene registry seed brief, and the Qingli script packet registry dry-run review.
-- 04 / 05 / 06 are paused. They are not active runtime, not automation, and not an approved generation loop.
-- Resuming 04 / 05 / 06 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
+- Docs-only product contracts after Pilot-2 are complete through authoring quality guidelines, narrative review workflow, scene lock / storyboard asset boundary, script-ready scene packet contracts, the Qingli scene registry seed brief, the Qingli script packet registry dry-run review, storyboard / camera planning, production asset registry planning, and the asset registry implementation blueprint.
+- User product decision: the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation.
+- Seedance / Oiioii / video generation is optional future downstream work only. It is not the current mainline deliverable and not an implemented capability.
+- Qingli remains historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; it must not be used as the new-world opening base or assetization starting point.
+- 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime, not automation, and not an approved generation loop.
+- Resuming 04 / 05 / 06 / 07 / 08 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow. Silence, ambiguity, or lack of response is not approval.
-- Next milestone options after the script-ready contracts should favor formalizing/spec verification, docs consolidation, or read-only checks. Do not enter Candidate B, MVP-8, runtime enforcement, or Oiioii integration directly.
+- Next milestone options should favor the new-world foundation, docs consolidation, or read-only checks. Do not enter Candidate B, MVP-8, runtime enforcement, production asset registry implementation, Oiioii / Seedance integration, or video generation directly.
 - MVP-7 implementation beyond explicitly approved read-only audit work is not approved. Any future Candidate B or gate behavior requires a separate decision brief and approval.
 
 ## Milestone Table
@@ -56,6 +59,10 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Script-Ready Scene Packet Contracts | Completed and pushed | Define script-ready scene packet, scene registry, 04/05/06 contracts, manual human approval gate, and 01/02/03 loop. | `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/AUTHORING_QUALITY_GUIDELINES.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `PLANS.md`. | Accidentally resuming 04/05/06, assuming user silence is approval, or turning contracts into runtime/schema gates. |
 | Qingli Scene Registry Seed Brief | Completed and pushed | Create conservative seed registry entries for the four formal Pilot-2 scene ids as docs-only reference for future 04/05/06, script packet, and production planning work. | `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `PLANS.md`. | Treating the seed brief as a formal setting-pack patch, runtime scene definition, approved animation asset lock, Oiioii integration, or approval to resume 04/05/06. |
 | Qingli Script Packet Registry Dry-Run Review | Completed and pushed | Use one conservative `historical_sample` / dry-run-only sample packet to verify that the script-ready packet spec and Qingli scene registry seed brief can align. | `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md`, `PLANS.md`. | Treating the dry-run sample as formal story output, user-approved content, setting-pack patch, formal Turn result, 05 PASS / 06 deliverable, runtime/schema/Oiioii integration, or approval to resume 04/05/06. |
+| Storyboard / Camera Planning | Completed and pushed | Record storyboard-first planning for scene-locked storyboard frames, camera intent, GPT rough storyboard pickup, and optional downstream video boundaries. | `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `PLANS.md`. | Treating storyboard images, camera fields, Oiioii / Seedance prompts, or GPT generation as implemented runtime/tooling. |
+| Production Asset Registry Planning | Completed and pushed | Define why reusable characters, animals, scenes, props, weapons, costumes, and variants must be registered and visually locked before storyboard delivery. | `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `PLANS.md`. | Treating 07 candidate references as approved production assets or letting GPT / video tools regenerate accepted assets freely. |
+| Asset Registry Implementation Blueprint | Completed and pushed | Plan a future layered implementation for storyboard asset consistency: draft asset files first, SQLite formal registry only after separate approval, and validate / preview / apply / export / audit flow before downstream use. | `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Accidentally implying schema, migrations, direct SQLite writes, asset tables, Validator changes, or Oiioii / Seedance integration are approved now. |
+| Storyboard As Final Deliverable Alignment | Completed and pushed | Align storyboard / asset planning docs and control docs with the user decision that reviewable storyboard images / packets are the current final deliverable. | `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Treating high-quality video as current scope, upgrading Qingli into the new base, or treating 07/08 as active without 01/user approval. |
 
 ## Temporarily Not Doing
 
@@ -74,7 +81,9 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - GitHub branch protection or repository settings changes unless selected as a milestone.
 - Automation / scheduler advancement for 04 / 05 / 06 handoff.
 - 04 / 05 / 06 generation, review, or display until 01 explicitly resumes that workflow.
-- Oiioii integration or animation asset pipeline implementation.
+- Seedance / Oiioii integration or high-quality video generation.
+- Storyboard pickup, 07 asset candidate work, or 08 storyboard verification until 01/user explicitly resumes that workflow.
+- Production asset registry schema, migrations, import CLI, or generated image storage.
 
 ## Selection Rule For The Next Milestone
 
@@ -89,12 +98,14 @@ Choose the smallest milestone that closes an already documented gap. A valid nex
 
 If a candidate milestone would require new infrastructure, it must be rejected unless a roadmap update explicitly approves that infrastructure first.
 
-Recommended candidates after audit JSON verification docs hardening, automatic loop bootstrap, diverse audit sample rerun, the next-candidate decision brief, Pilot-2 scenario design, script-ready product contracts, script packet contract verification, the Qingli scene registry seed brief, and the Qingli script packet registry dry-run review:
+Recommended candidates after the storyboard-first alignment:
 
-1. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.
-2. `collect real author-led story arc samples`: requires user approval or user-provided material outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
-3. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
-4. `04/05/06 manual resumption decision brief`: docs-only decision brief only after 01/user asks whether to resume the manual handoff flow. It must not itself generate, review, or display new content.
-5. `remote restore smoke on demand`: rerun clone/test verification when needed.
+1. `NEW_WORLD_FOUNDATION_QUESTIONNAIRE`: docs-only questionnaire / decision aid for rebuilding the non-Qingli world foundation before any new opening, asset pickup, or storyboard delivery resumes.
+2. `NEW_WORLD_FOUNDATION_BRIEF`: only after the user provides enough preference material; define premise, era/material culture, geography, society, power system, law, initial scene set, protagonist displacement, Ai-chan role, asset strategy, and author-only boundaries.
+3. `04/05/06/07/08 manual resumption decision brief`: docs-only decision brief only after 01/user asks whether to resume the manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
+4. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.
+5. `collect real author-led story arc samples`: requires user approval or user-provided material outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
+6. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
+7. `remote restore smoke on demand`: rerun clone/test verification when needed.
 
-Do not automatically enter Candidate B, MVP-8, runtime enforcement, Oiioii integration, formal Pilot turn execution, or 04/05/06 generation / review / display from these candidates.
+Do not automatically enter Candidate B, MVP-8, runtime enforcement, production asset registry schema / migrations, Oiioii / Seedance integration, high-quality video generation, formal Pilot turn execution, or 04/05/06/07/08 generation / review / display / storyboard pickup from these candidates.

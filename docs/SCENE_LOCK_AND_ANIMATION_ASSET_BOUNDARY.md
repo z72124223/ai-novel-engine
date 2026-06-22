@@ -4,13 +4,13 @@ Status: `DOCS_ONLY_GUIDANCE`
 
 Date: 2026-06-22
 
-This document separates runtime scene continuity from production scene / animation asset planning. It does not change Kotlin source, schema, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, `contextHash`, or setting-pack fields.
+This document separates runtime scene continuity from production scene / storyboard asset planning. It does not change Kotlin source, schema, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, `contextHash`, or setting-pack fields.
 
 ## 1. VERDICT
 
 The project has runtime scene definitions, scene instances, and scene transitions from MVP-4 Scene Thread Runtime. Those are necessary for CLI / Validator / StateReducer / context continuity.
 
-They are not the same as animation-ready scene planning or production asset lock. Future Oiioii / animation generation needs a smaller, stable visual scene registry so every turn does not freely create new visual asset requirements.
+They are not the same as storyboard-ready scene planning or production asset lock. The current deliverable target is reviewable storyboard images / storyboard packets, which need a smaller, stable visual scene registry so every turn does not freely create new visual asset requirements. Seedance / Oiioii / high-quality video generation remains optional future downstream work only.
 
 ## 2. Layer Definitions
 
@@ -20,9 +20,9 @@ Runtime scene:
 - answers continuity questions such as where characters are, whether a transition is legal, and which scene requirements apply;
 - may be sufficient for story-state validation but not for production asset stability.
 
-Production scene / animation asset:
+Production scene / storyboard asset:
 
-- stable visual asset node intended for future Oiioii or animation generation;
+- stable visual asset node intended for storyboard delivery and possible future optional video generation;
 - answers production questions such as what must be drawn, animated, lit, reused, blocked, and kept visually consistent;
 - needs a stricter approved scene set than ordinary prose description.
 
@@ -30,7 +30,7 @@ The two layers are related but not equivalent. A runtime transition can be legal
 
 ## 3. Scene Registry Rule
 
-Each chapter, episode, or act should have a finite approved scene set before animation-oriented drafting.
+Each chapter, episode, or act should have a finite approved scene set before storyboard-oriented drafting.
 
 Each approved production scene should define at least:
 
@@ -66,7 +66,9 @@ Within one approved scene, many local positions should usually be zones or block
 
 Scene movement is allowed only through approved transition or explicit 01 decision. Camera movement, character blocking, or a new angle does not automatically create a new production scene.
 
-For 04 / 05 / 06 handoff, scene decisions should be captured in a script-ready scene packet before display or animation-oriented production use. See `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` for the packet fields, `sceneCandidate` flow, 05 review checklist, 06 display contract, and explicit human approval gate.
+For 04 / 05 / 06 / 07 / 08 handoff, scene decisions should be captured in a script-ready scene packet before display, asset pickup, or storyboard delivery. See `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` for packet fields, `sceneCandidate` flow, 05 review checklist, 06 display contract, 07 asset-candidate boundary, 08 storyboard pickup boundary, and explicit human approval gate.
+
+Scene lock controls spaces and zones. It does not by itself lock reusable characters, animals, costumes, weapons, props, documents, or damaged variants. Future production asset locking is planned separately in `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`.
 
 ## 5. Review Gate Checklist
 
@@ -78,7 +80,7 @@ The authoring review gate should ask:
 - Did the draft mistake a camera corner, blocking zone, or local position for a new scene?
 - Are allowed NPCs and objects still within the scene registry?
 - Are materials and lighting consistent with the approved visual description?
-- If a `sceneCandidate` appears, was it handed to 01 instead of being treated as approved output for 06 / animation?
+- If a `sceneCandidate` appears, was it handed to 01 instead of being treated as approved output for 06 / 07 / 08?
 - Does the public visual description avoid author-only secrets?
 
 Review result should be concise:
@@ -143,4 +145,4 @@ Not approved:
 
 Future engineering may separately design fields such as `productionSceneId`, `visualAnchors`, `blockingZones`, `cameraZones`, `allowedObjects`, `forbiddenAdditions`, `sceneCandidate`, or `assetLockStatus`. That requires a separate 01 / user-approved milestone.
 
-Script-ready packet fields such as `packetStatus`, `reviewVerdict`, `displaySafeFields`, or `animationAssetNotes` are also future implementation candidates only. They are not approved by this docs-only boundary note.
+Script-ready packet fields such as `packetStatus`, `reviewVerdict`, `displaySafeFields`, `storyboardNotes`, or `animationAssetNotes` are also future implementation candidates only. They are not approved by this docs-only boundary note. Optional Seedance / Oiioii video handoff remains out of scope until after storyboard delivery is approved and a separate downstream milestone exists.

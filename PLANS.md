@@ -2,11 +2,11 @@
 
 ## Goal
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
 
 ## Global Strategy
 
-Treat 04 playtest learning as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, align project-control docs after 03 passed the Qingli script packet registry dry-run review, moving that review from recommended candidate to completed docs-only evidence while preserving manual handoff boundaries.
+Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, align the existing dirty storyboard / asset planning docs to the user's new product decision: the current final deliverable is reviewable storyboard images / storyboard packets, while Seedance / Oiioii / high-quality video generation remains optional future downstream work, not the current mainline or implemented capability.
 
 ## Non-Goals
 
@@ -19,6 +19,8 @@ Treat 04 playtest learning as authoring evidence, not runtime approval. Keep foc
 - No deletion of `data/`, `out/`, or backups.
 - No committing ignored artifacts.
 - No hardcoding Qingli, Ai-chan, specific NPCs, or copyrighted work elements as engine core.
+- No treating Qingli as the new opening base after the world-bible rebuild decision.
+- No treating Seedance, Oiioii, or high-quality video generation as the current final deliverable or implemented system.
 
 ## Scope
 
@@ -34,6 +36,11 @@ Tracked files allowed:
 - `docs/HANDOFF.md`
 - `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`
 - `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md`
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md`
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`
+- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`
+- `ROADMAP.md`
+- `docs/HANDOFF.md`
 
 Docs to inspect:
 
@@ -74,6 +81,16 @@ Docs to inspect:
 - 03 passed commit `ee80a16f83825ac56b2449285c19981a81f746a1` (`docs: dry-run Qingli script packet registry review`).
 - `ROADMAP.md` and `docs/HANDOFF.md` still list the dry-run review as a safe next candidate, so they need status alignment.
 - User instruction for this milestone says the completed dry-run review proves the spec and seed brief can support a conservative sample, but does not approve 04/05/06 restart, formal Turn work, setting-pack patch, runtime/schema/Oiioii integration, or treating the sample as user-approved content.
+- User requested a not-yet-implemented future planning document inside the project for storyboard images, scene locking for storyboard frames, camera language /運鏡, GPT-generated storyboard images, and future Oiioii-oriented workflow.
+- Existing docs already define script-ready scene packets and scene lock / animation asset boundary, but do not yet contain a dedicated storyboard / camera planning note.
+- User identified a severe missing production layer: characters, scenes, props, weapons, costumes, and important objects must be locked after adoption so GPT and Oiioii do not regenerate drifting versions every time.
+- Existing docs mention scene registry and allowed props, but do not yet define a dedicated production asset registry planning document with reference requirements such as three-view assets, panorama / zone maps, variants, and lifecycle states.
+- User agreed that long-term asset data volume will require SQLite for approved assets, while unreviewed asset candidates should remain in draft files until human / review approval.
+- Existing project rules still forbid direct SQLite writes and require formal state-changing work to go through approved validation / apply flows.
+- 03 passed `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md` in commit `657e708cdf7514474f8a865e569f0d7da5769051`; Qingli should not be used as the new opening base or assetization starting point.
+- User explicitly decided the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation.
+- User explicitly allowed this milestone to organize and submit the existing dirty storyboard / asset planning docs if they are rewritten toward the storyboard-first direction.
+- The required product flow for future manual work is `04 scene packet -> 05 packet review -> 06 human approval -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
 
 ## Assumptions
 
@@ -89,6 +106,10 @@ Docs to inspect:
 - Whether to run a scene packet sample / registry dry-run review is a future 01 handoff decision. This milestone only records it as a safe docs-only candidate.
 - Whether to turn any dry-run recommendations into spec edits, packet templates, or formal 04/05/06 work requires a later 01/user-approved milestone.
 - Whether to resume 04/05/06, collect Pilot-2 human turns, collect author-led samples, draft Candidate A.3, or run remote restore smoke requires later explicit 01/user input or on-demand selection.
+- Whether storyboard image generation should become an implemented tool, Oiioii integration, schema field, or runtime workflow requires later explicit approval. This milestone only records future planning.
+- Whether production asset registry should become implemented schema, files, image storage, Validator checks, GPT prompt tooling, or Oiioii integration requires later explicit approval. This milestone only records future planning.
+- Whether the future SQLite asset registry belongs inside the existing runtime DB, a separate production DB, or an exportable sidecar DB requires later architecture approval.
+- Whether the new world foundation should preserve, rewrite, or replace any non-Qingli production planning examples requires later 01/user approval.
 
 ## Implementation Steps
 
@@ -150,6 +171,20 @@ Docs to inspect:
 - [x] Step 56: Run `git diff --check` and inspect diff/stat/staged scope for the dry-run control-doc alignment.
 - [x] Step 57: Commit `docs: align control docs after Qingli dry-run review` and push tracked docs only.
 - [x] Step 58: Directly notify 03 read-only review thread using a 03 verifier-window prompt.
+- [x] Step 59: Inspect existing script packet, scene lock, and authoring guideline docs for storyboard / camera planning overlap.
+- [x] Step 60: Add a docs-only future planning note for storyboard frames, scene lock, camera intent, and Oiioii-oriented image/storyboard workflow.
+- [x] Step 61: Run `git diff --check` and inspect diff scope for the storyboard planning note.
+- [x] Step 62: Add docs-only production asset registry planning for locked characters, scenes, props, weapons, costumes, variants, and required reference views.
+- [x] Step 63: Cross-reference asset registry planning from storyboard / scene-lock / script-packet docs.
+- [x] Step 64: Run `git diff --check` and inspect diff scope for asset registry planning.
+- [x] Step 65: Add docs-only asset registry implementation blueprint covering draft files, SQLite formal registry, validate / preview / apply / export / audit flow, and future engineering phases.
+- [x] Step 66: Align ROADMAP and HANDOFF with the future asset registry blueprint as a recommended milestone, without approving schema or runtime work.
+- [x] Step 67: Run `git diff --check` and inspect diff scope for the blueprint milestone.
+- [x] Step 68: Read the dirty storyboard / asset planning docs, world-bible rebuild decision brief, ROADMAP, HANDOFF, and current PLANS before editing.
+- [x] Step 69: Update `PLANS.md` for the storyboard-first final deliverable alignment milestone and dirty tree handling.
+- [x] Step 70: Align storyboard / camera, production asset registry, implementation blueprint, scene lock, and script packet docs to storyboard-first delivery and optional downstream video.
+- [x] Step 71: Align `ROADMAP.md` and `docs/HANDOFF.md` with the storyboard-first final deliverable and safe next steps.
+- [x] Step 72: Run `git diff --check`, inspect diff/stat/status, commit, push, and directly notify 03 for read-only verification.
 
 ## Verification
 
@@ -173,6 +208,10 @@ Safety checks:
 - For post-Qingli scene registry seed control alignment, allow `ROADMAP.md` and `docs/HANDOFF.md`.
 - For Qingli scene packet dry-run review, allow `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md` and narrow cross-references only if needed.
 - For post-dry-run review control alignment, allow `ROADMAP.md` and `docs/HANDOFF.md`.
+- For storyboard / camera future planning, allow `docs/STORYBOARD_AND_CAMERA_PLANNING.md` and `PLANS.md`.
+- For production asset registry future planning, allow `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, and `PLANS.md`.
+- For asset registry implementation blueprint planning, also allow `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `ROADMAP.md`, and `docs/HANDOFF.md`.
+- For storyboard-first final deliverable alignment, allow `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -193,6 +232,12 @@ Safety checks:
 - Accidentally treating a dry-run sample packet as formal story output, user-approved content, setting-pack patch, formal turn result, or a 05/06 deliverable.
 - Accidentally leaving completed dry-run review work listed as a next candidate.
 - Accidentally implying future human turn collection, author-led samples, Candidate A.3, remote restore, or 04/05/06 resumption can proceed without explicit 01/user decision.
+- Accidentally treating storyboard image generation, camera fields, Oiioii prompt output, or storyboard-frame locks as implemented runtime/tooling rather than future planning.
+- Accidentally treating planned asset registry entries, reference images, three-view sheets, panoramas, variants, or asset lifecycle states as implemented runtime/tooling or approved production assets.
+- Accidentally implying SQLite schema, migrations, import CLI, or asset Validator work is approved by the blueprint document.
+- Accidentally treating Seedance / Oiioii / high-quality video generation as the current deliverable rather than optional future downstream work.
+- Accidentally treating Qingli historical samples as the new-world base after the world-bible rebuild decision.
+- Accidentally treating 07 asset candidates as approved references or production locks before review and explicit approval.
 
 ## Drift Log
 
@@ -228,3 +273,13 @@ Safety checks:
 - 2026-06-22: Added `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md` with a `historical_sample` / dry-run-only packet using `scene-qingli-herb-warehouse-perimeter`. `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.
 - 2026-06-22: 03 passed dry-run review commit `ee80a16`. New control-doc alignment milestone started to mark the dry-run review completed/pushed and update recommended candidates.
 - 2026-06-22: Post-dry-run review control alignment `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped under the explicit docs-only documentation/control exception.
+- 2026-06-22: User requested storing a future, not-yet-implemented planning note about storyboard frames, GPT-generated storyboard images, scene lock, camera intent, and Oiioii-oriented animation handoff. Scope is docs-only and does not restart 04/05/06 or implement Oiioii integration.
+- 2026-06-22: Added `docs/STORYBOARD_AND_CAMERA_PLANNING.md` as a future-planning-only document. `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
+- 2026-06-22: User identified missing production asset locking as a severe gap. New docs-only milestone started to plan an asset registry for characters, scenes, props, weapons, costumes, variants, reference view requirements, GPT draft use, and Oiioii cost boundaries.
+- 2026-06-22: Added `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` and cross-referenced it from storyboard, scene-lock, and script-packet docs. `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
+- 2026-06-22: User approved updating the project construction blueprint. New docs-only milestone started to describe how asset candidates remain in draft files, approved assets later enter SQLite through validate / preview / apply, and downstream packets / storyboards / GPT / Oiioii reference asset ids.
+- 2026-06-22: Added `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md` and aligned `ROADMAP.md` / `docs/HANDOFF.md` so the future asset registry path is draft files first, SQLite formal registry later, and no schema/runtime/Oiioii work is approved by the blueprint alone.
+- 2026-06-22: Asset registry blueprint milestone `git diff --check` passed with only Windows line-ending warnings. Full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
+- 2026-06-22: User decided the current final deliverable is reviewable storyboard images / storyboard packets, not high-quality animation. New milestone starts to align dirty storyboard / asset planning docs and control docs to a `04 -> 05 -> 06 -> 07 -> 08 -> user-reviewable storyboard` flow, with Seedance / Oiioii only as optional future downstream work.
+- 2026-06-22: Dirty tree handling: the existing modified / untracked storyboard and asset planning docs are explicitly allowed in this milestone if rewritten to the storyboard-first direction and kept docs-only. No runtime, schema, CLI, SQLite, or generated artifact work is approved.
+- 2026-06-22: Storyboard-first alignment edited only allowed docs/control files. `git diff --check` and staged scope inspection passed before commit; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.

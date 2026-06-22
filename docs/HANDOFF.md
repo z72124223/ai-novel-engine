@@ -42,13 +42,18 @@ Verified on 2026-06-20 during the automatic stable-completion loop:
 
 Additional docs-only product-control baseline as of 2026-06-22:
 
-- Authoring quality guidelines, narrative review gate, scene lock / animation asset boundary, script-ready scene packet contracts, Qingli scene registry seed brief, and Qingli script packet registry dry-run review are completed and pushed.
+- Authoring quality guidelines, narrative review gate, scene lock / storyboard asset boundary, script-ready scene packet contracts, Qingli scene registry seed brief, Qingli script packet registry dry-run review, storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are completed and pushed.
+- User product decision: current final deliverable is reviewable storyboard images / storyboard packets. High-quality animation is not the current deliverable.
+- Seedance / Oiioii / video generation is optional future downstream work only. It is not implemented and not the current mainline.
+- Qingli is historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; do not use it as the new-world opening base or assetization starting point.
+- Storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are future-planning docs. They are not runtime, schema, image-generation, Seedance, or Oiioii implementations.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
 - Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - Qingli script packet registry dry-run baseline commit: `ee80a16f83825ac56b2449285c19981a81f746a1`.
-- 04 / 05 / 06 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
-- Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step`.
-- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 flow.
+- Latest local docs-only planning may include uncommitted storyboard / camera and asset registry blueprint files. Check `git status --short` before assuming remote state.
+- 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
+- Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
+- Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 / 07 / 08 flow.
 
 ## Read First
 
@@ -107,6 +112,9 @@ For Pilot or context-budget work, also read:
 - Script-ready scene packet contracts.
 - Qingli scene registry seed brief.
 - Qingli script packet registry dry-run review.
+- Storyboard / camera planning, aligned to storyboard-first final deliverables.
+- Production asset registry planning, aligned to storyboard consistency before optional downstream video.
+- Asset registry implementation blueprint, future-only and not schema/runtime approval.
 
 ## Hard Boundaries
 
@@ -116,9 +124,10 @@ Do not start or add any of these unless the user explicitly approves a new miles
 - Candidate A.3 or MVP-8.
 - Web server, HTTP API, port listener, Web UI, Android UI.
 - Docker, Rust, embedding, vector DB, or multi-agent runtime.
-- Automation / scheduler advancement for 04 / 05 / 06 handoff.
-- Resuming 04 / 05 / 06 generation, review, display, or playtest without 01 explicit handoff and user approval where required.
-- Oiioii integration or animation asset pipeline implementation.
+- Automation / scheduler advancement for 04 / 05 / 06 / 07 / 08 handoff.
+- Resuming 04 / 05 / 06 generation, review, display, playtest, 07 asset-candidate creation, or 08 storyboard pickup without 01 explicit handoff and user approval where required.
+- Seedance / Oiioii integration, high-quality video generation, or animation asset pipeline implementation.
+- Production asset registry schema, migrations, import CLI, generated image storage, or direct SQLite asset writes.
 - OpenAI API or any external AI call.
 - Schema changes or migration edits.
 - Validator, `stateVersion`, or `contextHash` bypass.
@@ -194,11 +203,13 @@ Do not enter Candidate B automatically.
 
 Recommended safe next steps:
 
-1. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
-2. Collect real author-led story arc audit samples when the user provides or approves them.
-3. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
-4. Draft a 04/05/06 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow.
-5. Run a remote restore smoke check on demand.
+1. Draft `NEW_WORLD_FOUNDATION_QUESTIONNAIRE` as a docs-only milestone before any new opening, 04/05/06/07/08 restart, storyboard pickup, or asset work resumes.
+2. Draft `NEW_WORLD_FOUNDATION_BRIEF` only after the user provides enough world-preference material.
+3. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
+4. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
+5. Collect real author-led story arc audit samples when the user provides or approves them.
+6. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
+7. Run a remote restore smoke check on demand.
 
 Stop and ask before any work that would alter schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or any formal SQLite write path.
 
@@ -210,8 +221,9 @@ First read AGENTS.md, ROADMAP.md, PLANS.md, VERIFY.md, DONE_CRITERIA.md, docs/HA
 Current integration branch: codex/mvp6-checkpoint-branching-spec.
 Remote: https://github.com/z72124223/ai-novel-engine.git.
 mvp-6 tag must remain at be527031335efe8e2b0facae0145e1bbc084f8c6.
-Do not enter Candidate B, MVP-8, schema changes, Validator/stateVersion/contextHash changes, resolve-turn/StateReducer changes, server/API/UI/Docker/Rust/embedding/Oiioii integration work, automation/scheduler handoff, or direct SQLite writes without explicit user approval.
-04/05/06 are paused. Resuming them requires manual handoff only: 01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 01 assigns next step.
+Do not enter Candidate B, MVP-8, schema changes, Validator/stateVersion/contextHash changes, resolve-turn/StateReducer changes, server/API/UI/Docker/Rust/embedding/Oiioii/Seedance integration work, automation/scheduler handoff, or direct SQLite writes without explicit user approval.
+Current final deliverable is reviewable storyboard images / storyboard packets, not high-quality video. Seedance / Oiioii are optional future downstream only.
+04/05/06/07/08 are paused. Resuming them requires manual handoff only: 01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery.
 When 02 finishes a milestone, notify 03 using a verifier-window prompt: "You are 03 驗收稽核窗口..." with commit, push, changed files, verification, scope, safety boundaries, and review focus.
 Start by running git status --short --branch, git log --oneline --decorate -10, git tag --list, and git remote -v, then choose the next smallest milestone from current evidence.
 ```
