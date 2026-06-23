@@ -367,6 +367,11 @@ Safe next steps remain decision-gated:
 
 This blueprint does not authorize restarting 04 / 05 / 06 / 07 / 08, creating a setting pack, building a production asset registry, or generating storyboard images.
 
+Related planning register:
+
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` records non-canon blueprint candidates that future query templates may reference only after 01 explicitly selects them.
+- Queryers must not treat the blueprint pool as canon, setting-pack data, runtime data, approved assets, or a full-world source to dump into 04.
+
 ## 13. 03 Review Focus
 
 03 should verify:

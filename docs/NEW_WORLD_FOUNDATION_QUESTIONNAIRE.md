@@ -418,6 +418,8 @@ If the foundation brief is later approved, 01 may separately assign docs-only 09
 
 Future answers should also follow `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`: bottom-layer truth is world causality, not a plot objective or reveal schedule. If an answer describes a secret, it should also clarify visible phenomena, local explanations, operational knowledge, institutional theories, wrong beliefs, and who can access evidence.
 
+If 01 later references `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, treat its entries as non-canon candidate blueprints only. They are optional planning inputs for later selection, not answers to this questionnaire, not setting-pack data, not runtime data, and not approved assets.
+
 ## 13. 03 Review Focus
 
 03 should verify:

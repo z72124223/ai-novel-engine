@@ -15,6 +15,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - New world foundation questionnaire is the current user-input entry before any new world foundation brief, 04/05/06/07/08 restart, setting-pack patch, or storyboard pickup.
 - Demand-driven World Card / Asset / Story Card queryers are future product-layer specifications for the storyboard production line; they are not implemented capabilities, runtime enforcement, schema, CLI, SQLite, or external API work.
 - Simulation-first knowledge / truth rules are product-layer guardrails: bottom-layer truth is world causality, not a plot objective or reveal schedule. They are not runtime enforcement, canon world content, schema, Validator behavior, or queryer implementation.
+- Blueprint planning is registered in `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` as `BLUEPRINT_PLANNING_REGISTERED`. Its pool entries are non-canon candidates only: not canon, not setting-pack content, not runtime data, not approved assets, and not permission to start 09/04/05/06/07/08.
 - 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime, not automation, and not an approved generation loop.
 - Resuming 04 / 05 / 06 / 07 / 08 must use manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 / 07 / 08 flow. Silence, ambiguity, or lack of response is not approval.
@@ -69,6 +70,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | New World Foundation Questionnaire | Completed and pushed | Provide a user / 00 input questionnaire for premise, material culture, power system, geography, social structure, assets, storyboards, and author-only boundaries before a foundation brief. | `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`, `ROADMAP.md`, `docs/HANDOFF.md`. | Treating questionnaire prompts as canon, setting-pack data, runtime fields, or 02-authored answers. |
 | Demand-Driven Query Layer Blueprint | Completed and pushed | Define future World Card Queryer, Asset Queryer, and Story Card Queryer product-layer contracts for scoped 09 / 04 / 05 / 06 / 07 / 08 data retrieval. | `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Treating queryers as implemented runtime, schema, CLI, SQLite, external API, GPT automation, Oiioii / Seedance integration, or approval to restart 04/05/06/07/08. |
 | Simulation-First Knowledge / Truth Rules | Completed and pushed | Add product-layer guardrails so world truth is treated as causality and distributed actor knowledge, not forced reveal, forced concealment, or plot objective. | `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Treating guardrails as runtime enforcement, canon world content, setting-pack patch, queryer implementation, or approval to start 09/04/05/06/07/08. |
+| Blueprint Data Layer And Planning Register | Completed and pushed | Register the current non-canon candidate blueprint pool, data-layer fields, derived-alias rule, setting-pack conversion rule, archive policy, and manual handoff rules. | `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`. | Treating blueprint candidates as canon, setting-pack content, runtime data, approved assets, automation, or approval to start 09/04/05/06/07/08. |
 
 ## Temporarily Not Doing
 
@@ -90,6 +92,7 @@ This roadmap controls stable project completion. It is intentionally conservativ
 - Seedance / Oiioii integration or high-quality video generation.
 - Storyboard pickup, 07 asset candidate work, or 08 storyboard verification until 01/user explicitly resumes that workflow.
 - Production asset registry schema, migrations, import CLI, or generated image storage.
+- Promoting blueprint pool entries into canon, setting packs, runtime, approved assets, or live window assignments without a separate 01-approved milestone.
 
 ## Selection Rule For The Next Milestone
 
@@ -109,11 +112,12 @@ Recommended candidates after the storyboard-first alignment:
 1. User / 00 answers `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`.
 2. `NEW_WORLD_FOUNDATION_BRIEF`: only after the user provides enough preference material; define premise, era/material culture, geography, society, power system, law, initial scene set, protagonist displacement, Ai-chan role, asset strategy, and author-only boundaries.
 3. `09 world-card / situation-continuity-pressure card organization brief`: docs-only planning only after a foundation brief exists; it must model world causality, visible phenomena, local misconceptions, operational knowledge, and actor access paths. It must not make 09 data canon or implement queryers.
-4. `query request / response template brief`: docs-only template work only after 01 decides the query layer should be made more concrete; it must not add schema, CLI, SQLite, or runtime enforcement.
-5. `04/05/06/07/08 manual resumption decision brief`: docs-only decision brief only after 01/user asks whether to resume the manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
-6. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.
-7. `collect real author-led story arc samples`: requires user approval or user-provided material outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
-8. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
-9. `remote restore smoke on demand`: rerun clone/test verification when needed.
+4. `blueprint first-batch conversion decision brief`: docs-only decision work only after 01 chooses whether any non-canon blueprint candidate should be considered for a future minimal setting-pack skeleton. It must not perform conversion or apply data.
+5. `query request / response template brief`: docs-only template work only after 01 decides the query layer should be made more concrete; it must not add schema, CLI, SQLite, or runtime enforcement.
+6. `04/05/06/07/08 manual resumption decision brief`: docs-only decision brief only after 01/user asks whether to resume the manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
+7. `Pilot-2 human turn collection`: only after the user/player provides explicit input or approval, then run the approved story-turn/evidence/audit flow without entering Candidate B.
+8. `collect real author-led story arc samples`: requires user approval or user-provided material outside the existing Pilot-1/Pilot-1b/MVP-4/MVP-6 fixture families.
+9. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
+10. `remote restore smoke on demand`: rerun clone/test verification when needed.
 
-Do not automatically enter Candidate B, MVP-8, runtime enforcement, queryer implementation, production asset registry schema / migrations, Oiioii / Seedance integration, high-quality video generation, formal Pilot turn execution, or 04/05/06/07/08 generation / review / display / storyboard pickup from these candidates.
+Do not automatically enter Candidate B, MVP-8, runtime enforcement, queryer implementation, blueprint-to-setting-pack conversion, production asset registry schema / migrations, Oiioii / Seedance integration, high-quality video generation, formal Pilot turn execution, or 04/05/06/07/08 generation / review / display / storyboard pickup from these candidates.

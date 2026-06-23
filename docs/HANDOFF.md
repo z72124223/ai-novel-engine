@@ -40,7 +40,7 @@ Verified on 2026-06-20 during the automatic stable-completion loop:
 - `:app:installDist` was exercised during the diverse audit rerun milestone.
 - `audit-narrative-quality` was run read-only on 16 additional non-Pilot samples; generated reports were ignored under `out/mvp7_diverse_audit_rerun/`.
 
-Additional docs-only product-control baseline as of 2026-06-22:
+Additional docs-only product-control baseline as of 2026-06-23:
 
 - Authoring quality guidelines, narrative review gate, scene lock / storyboard asset boundary, script-ready scene packet contracts, Qingli scene registry seed brief, Qingli script packet registry dry-run review, storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are completed and pushed.
 - User product decision: current final deliverable is reviewable storyboard images / storyboard packets. High-quality animation is not the current deliverable.
@@ -50,10 +50,11 @@ Additional docs-only product-control baseline as of 2026-06-22:
 - `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` is the current user / 00 input entry for rebuilding the non-Qingli world foundation. It is not canon, a setting pack, or a runtime artifact.
 - `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future World Card Queryer, Asset Queryer, and Story Card Queryer contracts for scoped product-layer retrieval. It is not implemented runtime, schema, CLI, SQLite, external API, GPT automation, Seedance, or Oiioii work.
 - `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` defines product-layer guardrails that treat bottom-layer truth as world causality and distributed actor knowledge, not as a plot objective, forced reveal, forced concealment, or mystery product. It is not runtime enforcement or canon world content.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` registers the current 01-managed blueprint planning pool as `BLUEPRINT_PLANNING_REGISTERED`. Entries are non-canon candidates only: not canon, not setting-pack content, not runtime data, and not approved assets.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
 - Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - Qingli script packet registry dry-run baseline commit: `ee80a16f83825ac56b2449285c19981a81f746a1`.
-- Latest local docs-only planning may include uncommitted storyboard / camera and asset registry blueprint files. Check `git status --short` before assuming remote state.
+- Use `git status --short` before assuming remote state. After the blueprint register milestone, there should be no expected uncommitted storyboard / camera or asset registry planning files.
 - 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
 - Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 / 07 / 08 flow.
@@ -134,6 +135,7 @@ Do not start or add any of these unless the user explicitly approves a new miles
 - Production asset registry schema, migrations, import CLI, generated image storage, or direct SQLite asset writes.
 - Demand-driven queryer implementation, query audit tables, query CLI commands, runtime query enforcement, or external retrieval services.
 - Treating simulation-first guardrails as schema, Validator behavior, StateReducer behavior, setting-pack canon, or approval to start 09 / 04 / 05 / 06 / 07 / 08.
+- Treating blueprint register entries as canon, setting-pack content, runtime data, approved assets, first-batch conversion content, or approval to start 09 / 04 / 05 / 06 / 07 / 08.
 - OpenAI API or any external AI call.
 - Schema changes or migration edits.
 - Validator, `stateVersion`, or `contextHash` bypass.
@@ -212,12 +214,13 @@ Recommended safe next steps:
 1. Wait for user / 00 answers to `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`.
 2. Draft `NEW_WORLD_FOUNDATION_BRIEF` only after the user provides enough world-preference material.
 3. Draft a 09 world-card / situation-continuity-pressure card organization brief only after a foundation brief exists; keep it docs-only unless 01/user separately approves implementation, and preserve the simulation-first rule that causality is not a reveal schedule.
-4. Draft query request / response templates only after 01 explicitly asks to make the demand-driven query layer more concrete; do not implement schema, CLI, SQLite, or runtime enforcement.
-5. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
-6. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
-7. Collect real author-led story arc audit samples when the user provides or approves them.
-8. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
-9. Run a remote restore smoke check on demand.
+4. Draft a blueprint first-batch conversion decision brief only if 01 asks whether any non-canon blueprint candidates should be considered for a future minimal setting-pack skeleton. Do not convert or apply data.
+5. Draft query request / response templates only after 01 explicitly asks to make the demand-driven query layer more concrete; do not implement schema, CLI, SQLite, or runtime enforcement.
+6. Draft a 04/05/06/07/08 manual resumption decision brief only if 01/user asks whether to resume that manual handoff flow. It must not itself generate, review, display, retrieve storyboards, or create assets.
+7. Collect Pilot-2 human turn input only when the user/player provides explicit input or approval.
+8. Collect real author-led story arc audit samples when the user provides or approves them.
+9. Draft a new explicit MVP-7 Candidate A.3 read-only audit brief only if 01/user explicitly asks.
+10. Run a remote restore smoke check on demand.
 
 Stop and ask before any work that would alter schema, Validator, `stateVersion`, `contextHash`, `resolve-turn`, `StateReducer`, or any formal SQLite write path.
 

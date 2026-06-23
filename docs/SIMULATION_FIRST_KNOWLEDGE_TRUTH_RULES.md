@@ -308,6 +308,7 @@ This document is a docs-only guardrail. It does not:
 - patch a setting pack;
 - add queryer implementation;
 - add runtime enforcement;
+- promote non-canon blueprint candidates from `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` into canon, setting-pack data, runtime data, or approved assets;
 - change schema, migrations, Validator, StateReducer, `stateVersion`, `contextHash`, `resolve-turn`, CLI, or SQLite;
 - approve GPT browser automation, Oiioii, Seedance, video generation, or storyboard generation.
 
@@ -319,5 +320,6 @@ This document is a docs-only guardrail. It does not:
 - distributed knowledge covers player, NPC, ordinary people, specialists, organizations, and animals/nonverbal companions;
 - author-only boundary is preserved but not treated as reveal schedule;
 - query layer wording is situation/evidence/pressure-oriented, not next-plot-oriented;
+- blueprint candidate references remain non-canon planning inputs unless a later 01/user-approved milestone promotes a specific slice;
 - 05 checks forced reveal, forced concealment, author-truth leakage, and plot gravity;
 - no runtime, schema, Validator, StateReducer, SQLite, CLI, queryer implementation, 04/05/06/07/08, 09, Oiioii, Seedance, or video-generation work is implied.

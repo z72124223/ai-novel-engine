@@ -6,7 +6,7 @@ Create and maintain docs-only authoring quality, scene-production boundary, scri
 
 ## Global Strategy
 
-Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, demand-driven world / asset / situation retrieval, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, add docs-only simulation-first knowledge and truth rules, then revise product-layer vocabulary so bottom-layer truth is framed as world causality rather than a reveal schedule, plot objective, or mystery product.
+Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, demand-driven world / asset / situation retrieval, blueprint planning, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, register the non-canon blueprint planning pool as docs-only planning data, while clearly marking it as not canon, not setting-pack content, not runtime, and not approved assets.
 
 ## Non-Goals
 
@@ -26,6 +26,8 @@ Treat 04 playtest learning and user product-direction discussion as authoring ev
 - No implementing World Card Queryer, Asset Queryer, Story Card Queryer, 09 canon data, runtime enforcement, schema, CLI, SQLite tables, or external automation.
 - No treating 11 / 12 candidate rules as canon, runtime rules, setting-pack content, or worldbuilding answers.
 - No inserting candidate world content such as future Earth, great transformation, qi, or ley-line material into project docs.
+- No treating blueprint pool entries as canon, setting-pack content, runtime data, approved assets, or permission to start 09/04/05/06/07/08.
+- No archiving, waking, scheduling, or assigning external windows from this repo milestone; only document the window archive and handoff rules supplied by 01.
 
 ## Scope
 
@@ -47,6 +49,7 @@ Tracked files allowed:
 - `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`
 - `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
 - `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`
 - `ROADMAP.md`
 - `docs/HANDOFF.md`
 
@@ -112,6 +115,14 @@ Docs to inspect:
 - Thread `019ef198-c653-7620-942a-97a29e9b17db` reviewed that candidate as PASS, with scores 5/5 for simulation priority, distributed knowledge, anti-forced-reveal, workflow clarity, and overreach risk 0/5.
 - Thread `019ef19a-9016-7782-8cf0-c7ccb399ea24` reported `RISKS_FOUND`: no severe overreach landed, but product-layer wording around reveal rhythm / story beats can drift toward plot-first truth handling.
 - User / 00 / 01 direction says bottom-layer truth is world causality, not a plot objective; players, NPCs, factions, sects, officials, and ordinary people form partial knowledge from contact, position, profession, education, interest, bias, evidence, and action.
+- 03 passed `docs: clean simulation-first source evidence labels` at commit `64dc94a9e6cdbce9b77fa05c6f8a4f66c622cc9f`.
+- User agreed that current planning should be arranged into a blueprint layer.
+- 01 supplied the blueprint pool source-window index as planning state. 02 treats that handoff as source evidence for a docs-only register, not as independently verified canon or setting-pack content.
+- Current final deliverable remains reviewable storyboard images / storyboard packets, not high-quality animation.
+- Simulation-first remains the highest content principle for future blueprint, query, packet, asset, and storyboard work.
+- Blueprint planning entries are non-canon candidates by default: not canon, not setting pack, not runtime, not approved assets, and not ready for direct SQLite or setting-pack apply.
+- 01 supplemental status says `bp-character-lu-hesheng-v0.2` is a non-canon candidate character blueprint: name 陸禾生, sourceWindow 47, sourceVersion v0.2, PASS by 38, settingPackReady false, and waiting for 01. It should not enter the first setting-pack conversion batch by default.
+- 01 supplemental status says 34 and 37 remain REVISE pending later 01 decision; 35, 36, and 47 are PASS; 38 is standby.
 
 ## Assumptions
 
@@ -135,6 +146,9 @@ Docs to inspect:
 - Whether World Card Queryer, Asset Queryer, or Story Card Queryer should become templates, files, CLI commands, schema, SQLite tables, or runtime enforcement requires later explicit 01/user approval.
 - How 09 will organize new-world cards remains open until the user / 00 answers the questionnaire and 01 drafts a foundation brief.
 - Whether future docs should rename Story Card Queryer entirely to Situation / Continuity / Pressure Queryer remains a product wording decision; this milestone may clarify the alias and guardrails without implementing a new capability.
+- Which blueprint candidates 01 may later select for a first minimal setting-pack skeleton remains open; this milestone only records the candidate pool and conversion rule.
+- Whether any derived aliases should become reviewed blueprint ids requires future review; they must not be treated as 14 PASS original card names.
+- Whether archived windows should be physically archived in the app is outside this repo milestone; this milestone only records the archive rules provided by 01.
 
 ## Implementation Steps
 
@@ -222,6 +236,10 @@ Docs to inspect:
 - [x] Step 82: Add `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` as the product-layer guardrail anchor.
 - [x] Step 83: Revise relevant docs to replace plot/reveal-first wording with observation, evidence, causality, local misconception, and actor-knowledge wording.
 - [x] Step 84: Run `git diff --check`, inspect search results / diff scope / status, commit, push, and directly notify 03 for read-only verification.
+- [x] Step 85: Update `PLANS.md` for the docs-only blueprint data layer and planning register milestone.
+- [x] Step 86: Add `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` with schema, non-canon candidate pool, retained character candidate intake, derived alias rule, setting-pack conversion rule, archive rules, and manual handoff rules.
+- [x] Step 87: Add narrow `ROADMAP.md`, `docs/HANDOFF.md`, and relevant cross-references without implying canon, setting-pack, runtime, approved asset, or window activation.
+- [x] Step 88: Run `git diff --check`, inspect diff/stat/status/staged files, commit, push, and directly notify 03 for read-only verification.
 
 ## Verification
 
@@ -252,6 +270,7 @@ Safety checks:
 - For new world foundation questionnaire, allow `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`, and only minimal `ROADMAP.md` / `docs/HANDOFF.md` if needed.
 - For demand-driven query layer blueprint, allow `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - For simulation-first knowledge / truth rules, allow `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
+- For blueprint data layer and planning register, allow `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -284,6 +303,10 @@ Safety checks:
 - Accidentally preserving reveal / hidden-truth wording that makes world causality look like a plot objective, reveal schedule, or forced mystery product.
 - Accidentally weakening author-only boundaries while removing reveal-oriented wording.
 - Accidentally treating simulation-first guardrails as runtime enforcement, canon world content, setting-pack patch, or approval to start 09/04/05/06/07/08.
+- Accidentally treating non-canon blueprint candidates as canon, setting-pack content, runtime data, approved assets, or approval to start 09/04/05/06/07/08.
+- Accidentally letting derived blueprint aliases impersonate 14 PASS original card names.
+- Accidentally implying the whole blueprint pool should be bulk-converted into a setting pack or runtime.
+- Accidentally turning window archive rules into live app actions rather than documented handoff policy.
 
 ## Drift Log
 
@@ -335,3 +358,6 @@ Safety checks:
 - 2026-06-22: Demand-driven query layer blueprint added with narrow cross-references. `git diff --check` and staged scope inspection passed; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
 - 2026-06-23: 03 passed demand-driven query layer commit `f26e79b`. New docs-only milestone starts to integrate simulation-first knowledge / truth guardrails from 11/12/13 thread evidence, correcting product-layer wording without implementing runtime/schema/Validator/CLI behavior or adding world canon.
 - 2026-06-23: Added `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` and revised product-layer wording in query, packet, storyboard, questionnaire, world-bible, roadmap, and handoff docs. `git diff --check` passed with only Windows line-ending warnings; full Gradle remains intentionally skipped because no code/runtime/schema/CLI files are touched.
+- 2026-06-23: Started docs-only blueprint data layer and planning register milestone after user approved arranging current planning into the blueprint layer. Scope is non-canon planning registration only: no setting-pack patch, runtime, SQLite, approved assets, or 09/04/05/06/07/08 activation.
+- 2026-06-23: Added `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, including the required pool index, 01 supplemental retained character candidate `bp-character-lu-hesheng-v0.2`, setting-pack conversion limits, window archive policy, and manual handoff rules. Added only narrow control-doc and cross-reference updates.
+- 2026-06-23: `git diff --check` and staged `git diff --cached --check` passed. Full Gradle is intentionally skipped under the explicit docs-only exception because no code/runtime/schema/CLI files are touched.
