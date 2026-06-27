@@ -1378,6 +1378,3302 @@ data class NarrativeQualityAuditEvidence(
     val pendingWorldEventCount: Int = 0,
 )
 
+@Serializable
+data class ChapterContinuityAnchorFile(
+    val auditId: String = "",
+    val previousTitle: String = "",
+    val draftTitle: String = "",
+    val mustAppearInPrevious: List<ChapterContinuityCheck> = emptyList(),
+    val mustAppearInDraft: List<ChapterContinuityCheck> = emptyList(),
+    val mustNotAppearInDraft: List<ChapterContinuityCheck> = emptyList(),
+    val reviewerNotes: String = "",
+)
+
+@Serializable
+data class ChapterContinuityCheck(
+    val checkId: String = "",
+    val text: String = "",
+    val severity: String = "CRITICAL",
+    val description: String = "",
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ChapterContinuityAuditReport(
+    val verdict: String,
+    val previousFile: String = "",
+    val draftFile: String = "",
+    val anchorFile: String = "",
+    val auditId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ChapterContinuityFinding> = emptyList(),
+    val evidence: ChapterContinuityAuditEvidence = ChapterContinuityAuditEvidence(),
+)
+
+@Serializable
+data class ChapterContinuityFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val checkId: String = "",
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ChapterContinuityAuditEvidence(
+    val previousCharacters: Int = 0,
+    val draftCharacters: Int = 0,
+    val mustAppearInPreviousCount: Int = 0,
+    val mustAppearInDraftCount: Int = 0,
+    val mustNotAppearInDraftCount: Int = 0,
+    val replacementCharacterCount: Int = 0,
+)
+
+@Serializable
+data class ScriptPacketDraft(
+    val packetId: String = "",
+    val source: ScriptPacketSource = ScriptPacketSource(),
+    val segments: List<ScriptPacketSegment> = emptyList(),
+    val assetNeeds: List<ScriptPacketAssetNeed> = emptyList(),
+    val storyboardNotes: ScriptPacketStoryboardNotes = ScriptPacketStoryboardNotes(),
+    val secrecyKnowledgeNotes: ScriptPacketSecrecyKnowledgeNotes = ScriptPacketSecrecyKnowledgeNotes(),
+    val reviewSummary: ScriptPacketReviewSummary = ScriptPacketReviewSummary(),
+)
+
+@Serializable
+data class ScriptPacketSource(
+    val inputType: String = "",
+    val sourceId: String = "",
+    val sourceTitle: String = "",
+    val excerptSummary: String = "",
+    val transformationStatus: String = "draft",
+    val acceptedDraftPacketId: String = "",
+    val acceptedDraftContentSha256: String = "",
+    val acceptedDraftFile: String = "",
+)
+
+@Serializable
+data class ScriptPacketSegment(
+    val segmentId: String = "",
+    val sceneReference: ScriptPacketSceneReference = ScriptPacketSceneReference(),
+    val scenePurpose: String = "",
+    val playerObjective: String = "",
+    val locationZone: ScriptPacketLocationZone = ScriptPacketLocationZone(),
+    val visualSetup: ScriptPacketVisualSetup = ScriptPacketVisualSetup(),
+    val knowledgePass: ScriptPacketKnowledgePass = ScriptPacketKnowledgePass(),
+    val beatList: List<ScriptPacketBeat> = emptyList(),
+    val actionLines: List<ScriptPacketActionLine> = emptyList(),
+    val dialogueLines: List<ScriptPacketDialogueLine> = emptyList(),
+    val interactionChoices: List<ScriptPacketInteractionChoice> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketSceneReference(
+    val type: String = "",
+    val sceneId: String = "",
+    val candidateId: String = "",
+    val notes: String = "",
+)
+
+@Serializable
+data class ScriptPacketLocationZone(
+    val zoneId: String = "",
+    val publicName: String = "",
+    val constraints: String = "",
+)
+
+@Serializable
+data class ScriptPacketVisualSetup(
+    val publicDescription: String = "",
+    val cameraIntent: String = "",
+    val mustShow: List<String> = emptyList(),
+    val mustNotShow: List<String> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketKnowledgePass(
+    val publicFacts: List<String> = emptyList(),
+    val characterKnowledgeClaims: List<String> = emptyList(),
+    val authorOnlyExtracted: List<String> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketBeat(
+    val beatId: String = "",
+    val visibleAction: String = "",
+    val causalLink: String = "",
+    val characterIds: List<String> = emptyList(),
+    val requiredKnowledgeClaimIds: List<String> = emptyList(),
+    val outcome: String = "",
+)
+
+@Serializable
+data class ScriptPacketActionLine(
+    val lineId: String = "",
+    val actorId: String = "",
+    val line: String = "",
+    val blockingZone: String = "",
+    val visibleCost: String = "",
+)
+
+@Serializable
+data class ScriptPacketDialogueLine(
+    val lineId: String = "",
+    val speakerId: String = "",
+    val line: String = "",
+    val knowledgeBoundary: String = "",
+    val subtext: String = "",
+)
+
+@Serializable
+data class ScriptPacketInteractionChoice(
+    val choiceId: String = "",
+    val label: String = "",
+    val allowedBecause: String = "",
+    val likelyStateEffect: String = "",
+)
+
+@Serializable
+data class ScriptPacketAssetNeed(
+    val assetType: String = "",
+    val existingAssetId: String = "",
+    val candidateName: String = "",
+    val candidateReason: String = "",
+    val lockStatus: String = "candidate",
+)
+
+@Serializable
+data class ScriptPacketStoryboardNotes(
+    val cameraLanguage: String = "",
+    val continuityLocks: List<String> = emptyList(),
+    val frameCandidates: List<ScriptPacketFrameCandidate> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketFrameCandidate(
+    val frameId: String = "",
+    val beatId: String = "",
+    val framePurpose: String = "",
+    val cameraPurpose: String = "",
+    val visibleSubject: String = "",
+    val doNotShow: List<String> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketSecrecyKnowledgeNotes(
+    val authorOnlyExcluded: Boolean = false,
+    val reviewOnlyNotes: String = "",
+)
+
+@Serializable
+data class ScriptPacketReviewSummary(
+    val verdict: String = "unreviewed",
+    val reviewerNotes: String = "",
+)
+
+@Serializable
+data class ScriptPacketDraftValidationReport(
+    val verdict: String,
+    val packetFile: String = "",
+    val packetId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val segmentCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ScriptPacketDraftFinding> = emptyList(),
+)
+
+@Serializable
+data class ScriptPacketDraftFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ScriptPacketDraftSourceBindingReport(
+    val verdict: String,
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketPreflightFile: String = "",
+    val acceptedDraftPacketFile: String = "",
+    val scriptPacketId: String = "",
+    val acceptedDraftPacketId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ScriptPacketDraftSourceBindingFinding> = emptyList(),
+    val evidence: ScriptPacketDraftSourceBindingEvidence = ScriptPacketDraftSourceBindingEvidence(),
+)
+
+@Serializable
+data class ScriptPacketDraftSourceBindingFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ScriptPacketDraftSourceBindingEvidence(
+    val preflightVerdict: String = "",
+    val acceptedDraftPacketVerdict: String = "",
+    val bindingMatchedBy: List<String> = emptyList(),
+    val protectedContinuityAnchorCount: Int = 0,
+    val referencedContinuityAnchorCount: Int = 0,
+    val boundaryClaimCount: Int = 0,
+)
+
+@Serializable
+data class ScriptPacketDraftStructureBridgeReport(
+    val verdict: String,
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketPreflightFile: String = "",
+    val acceptedDraftPacketFile: String = "",
+    val scriptPacketId: String = "",
+    val sourceBindingVerdict: String = "",
+    val structureVerdict: String = "",
+    val downstreamAllowed: Boolean = false,
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val sourceBindingFindingCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val structureFindingCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val sourceBindingFindings: List<ScriptPacketDraftSourceBindingFinding> = emptyList(),
+    val structureFindings: List<ScriptPacketDraftFinding> = emptyList(),
+    val findings: List<ScriptPacketDraftStructureBridgeFinding> = emptyList(),
+    val evidence: ScriptPacketDraftStructureBridgeEvidence = ScriptPacketDraftStructureBridgeEvidence(),
+)
+
+@Serializable
+data class ScriptPacketDraftStructureBridgeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ScriptPacketDraftStructureBridgeEvidence(
+    val sourceBindingPass: Boolean = false,
+    val structureAcceptable: Boolean = false,
+    val structureWarningAllowed: Boolean = false,
+    val downstreamAllowedReason: String = "",
+    val blockedReason: String = "",
+)
+
+@Serializable
+data class AcceptedScriptPacketHandoffPacket(
+    val verdict: String,
+    val packetId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceReports: AcceptedScriptPacketSourceReports = AcceptedScriptPacketSourceReports(),
+    val protectedContinuityAnchorsSummary: AcceptedScriptPacketContinuityAnchorsSummary =
+        AcceptedScriptPacketContinuityAnchorsSummary(),
+    val remainingResidualRisks: List<String> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AcceptedScriptPacketHandoffFinding> = emptyList(),
+    val evidence: AcceptedScriptPacketHandoffEvidence = AcceptedScriptPacketHandoffEvidence(),
+)
+
+@Serializable
+data class AcceptedScriptPacketSourceReports(
+    val structureBridgeReportFile: String = "",
+    val structureBridgeVerdict: String = "",
+    val sourceBindingVerdict: String = "",
+    val structureVerdict: String = "",
+    val scriptPacketPreflightReportFile: String = "",
+    val acceptedDraftPacketFile: String = "",
+)
+
+@Serializable
+data class AcceptedScriptPacketContinuityAnchorsSummary(
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val protectedContinuityAnchorCount: Int = 0,
+    val protectedContinuityAnchors: List<String> = emptyList(),
+)
+
+@Serializable
+data class AcceptedScriptPacketHandoffFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AcceptedScriptPacketHandoffEvidence(
+    val bridgeDownstreamAllowed: Boolean = false,
+    val scriptPacketCharacters: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val sourceBindingFindingCount: Int = 0,
+    val structureFindingCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val residualRiskCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPlanningPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val acceptedScriptPacketFile: String = "",
+    val acceptedScriptPacketId: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPlanningPreflightFinding> = emptyList(),
+    val evidence: StoryboardPlanningPreflightEvidence = StoryboardPlanningPreflightEvidence(),
+)
+
+@Serializable
+data class StoryboardPlanningPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPlanningPreflightEvidence(
+    val packetVerdict: String = "",
+    val structureBridgeVerdict: String = "",
+    val sourceBindingVerdict: String = "",
+    val structureVerdict: String = "",
+    val scriptPacketDraftHashPresent: Boolean = false,
+    val sourceReportFileCount: Int = 0,
+    val sourceReportVerdictCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val residualRiskCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPlanningBrief(
+    val verdict: String,
+    val briefId: String = "",
+    val acceptedScriptPacketFile: String = "",
+    val storyboardPlanningPreflightFile: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceReports: StoryboardPlanningBriefSourceReports = StoryboardPlanningBriefSourceReports(),
+    val protectedContinuityAnchorsSummary: AcceptedScriptPacketContinuityAnchorsSummary =
+        AcceptedScriptPacketContinuityAnchorsSummary(),
+    val remainingResidualRisks: List<String> = emptyList(),
+    val sceneBeatPlanningSummary: StoryboardPlanningSceneBeatSummary = StoryboardPlanningSceneBeatSummary(),
+    val framePlanningConstraints: StoryboardPlanningFrameConstraints = StoryboardPlanningFrameConstraints(),
+    val mustShowBoundary: List<String> = emptyList(),
+    val mustNotShowBoundary: List<String> = emptyList(),
+    val assetNeedsCarriedForward: StoryboardPlanningAssetCarryForward = StoryboardPlanningAssetCarryForward(),
+    val reviewChecklist: List<StoryboardPlanningReviewChecklistItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPlanningBriefFinding> = emptyList(),
+    val evidence: StoryboardPlanningBriefEvidence = StoryboardPlanningBriefEvidence(),
+)
+
+@Serializable
+data class StoryboardPlanningBriefSourceReports(
+    val acceptedScriptPacketVerdict: String = "",
+    val storyboardPlanningPreflightReportFile: String = "",
+    val storyboardPlanningPreflightVerdict: String = "",
+    val structureBridgeReportFile: String = "",
+    val structureBridgeVerdict: String = "",
+    val sourceBindingVerdict: String = "",
+    val structureVerdict: String = "",
+    val scriptPacketPreflightReportFile: String = "",
+    val acceptedDraftPacketFile: String = "",
+)
+
+@Serializable
+data class StoryboardPlanningSceneBeatSummary(
+    val planningBasis: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sceneBeatExtractionStatus: String = "not_extracted_in_this_gate",
+    val notes: List<String> = emptyList(),
+)
+
+@Serializable
+data class StoryboardPlanningFrameConstraints(
+    val frameDraftingStatus: String = "not_started",
+    val continuityPolicy: String = "",
+    val cameraPolicy: String = "",
+    val downstreamBoundary: String = "",
+)
+
+@Serializable
+data class StoryboardPlanningAssetCarryForward(
+    val sourceScriptPacketDraftFile: String = "",
+    val extractionStatus: String = "not_extracted_in_this_gate",
+    val policy: String = "",
+)
+
+@Serializable
+data class StoryboardPlanningReviewChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val requiredCheck: String = "",
+    val status: String = "required_for_next_gate",
+)
+
+@Serializable
+data class StoryboardPlanningBriefFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPlanningBriefEvidence(
+    val acceptedScriptPacketVerdict: String = "",
+    val storyboardPlanningPreflightVerdict: String = "",
+    val scriptPacketDraftHashPresent: Boolean = false,
+    val sourceReportFileCount: Int = 0,
+    val sourceReportVerdictCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val residualRiskCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val reviewChecklistCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPacketDraft(
+    val packetId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceStoryboardPlanningBriefFile: String = "",
+    val protectedContinuityAnchors: List<String> = emptyList(),
+    val frames: List<StoryboardPacketFrameDraft> = emptyList(),
+    val assetCandidates: List<StoryboardPacketAssetCandidateDraft> = emptyList(),
+    val reviewNotes: String = "",
+)
+
+@Serializable
+data class StoryboardPacketFrameDraft(
+    val frameId: String = "",
+    val sceneReference: String = "",
+    val beatReference: String = "",
+    val visualIntent: String = "",
+    val cameraIntent: String = "",
+    val mustShow: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val assetCandidateRefs: List<String> = emptyList(),
+    val reviewNotes: String = "",
+    val imageOutputPath: String = "",
+    val videoOutputPath: String = "",
+    val generationApi: String = "",
+    val assetApprovalStatus: String = "",
+)
+
+@Serializable
+data class StoryboardPacketAssetCandidateDraft(
+    val candidateId: String = "",
+    val requirement: String = "",
+    val sourceFrameIds: List<String> = emptyList(),
+    val approvalStatus: String = "candidate_only",
+    val reviewNotes: String = "",
+)
+
+@Serializable
+data class StoryboardPacketDraftValidationReport(
+    val verdict: String,
+    val storyboardPlanningBriefFile: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val storyboardPacketDraftId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPacketDraftValidationFinding> = emptyList(),
+    val evidence: StoryboardPacketDraftValidationEvidence = StoryboardPacketDraftValidationEvidence(),
+)
+
+@Serializable
+data class StoryboardPacketDraftValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPacketDraftValidationEvidence(
+    val planningBriefVerdict: String = "",
+    val planningBriefNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val protectedContinuityAnchorReferencedCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenOutputPathCount: Int = 0,
+    val externalGenerationApiHitCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPacketReviewPacket(
+    val verdict: String,
+    val reviewId: String = "",
+    val reviewStatus: String = "FAIL",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketDraftReportFile: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceReports: StoryboardPacketReviewSourceReports = StoryboardPacketReviewSourceReports(),
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val frameCount: Int = 0,
+    val frameIds: List<String> = emptyList(),
+    val protectedContinuityAnchorsSummary: AcceptedScriptPacketContinuityAnchorsSummary =
+        AcceptedScriptPacketContinuityAnchorsSummary(),
+    val assetCandidateRequirements: List<StoryboardPacketReviewAssetRequirement> = emptyList(),
+    val remainingResidualRisks: List<String> = emptyList(),
+    val reviewChecklist: List<StoryboardPacketReviewChecklistItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPacketReviewFinding> = emptyList(),
+    val evidence: StoryboardPacketReviewEvidence = StoryboardPacketReviewEvidence(),
+)
+
+@Serializable
+data class StoryboardPacketReviewSourceReports(
+    val storyboardPacketDraftValidationReportFile: String = "",
+    val storyboardPacketDraftValidationVerdict: String = "",
+    val storyboardPacketDraftValidationNextStep: String = "",
+)
+
+@Serializable
+data class StoryboardPacketReviewAssetRequirement(
+    val candidateId: String = "",
+    val requirement: String = "",
+    val sourceFrameIds: List<String> = emptyList(),
+)
+
+@Serializable
+data class StoryboardPacketReviewChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val requiredCheck: String = "",
+    val status: String = "required_for_human_review",
+)
+
+@Serializable
+data class StoryboardPacketReviewFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPacketReviewEvidence(
+    val draftValidationVerdict: String = "",
+    val draftValidationNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val assetCandidateRequirementCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val residualRiskCount: Int = 0,
+    val reviewChecklistCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenOutputPathCount: Int = 0,
+    val externalGenerationApiHitCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketDraftReportFile: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val reviewStatus: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPacketHumanReviewPreflightFinding> = emptyList(),
+    val evidence: StoryboardPacketHumanReviewPreflightEvidence = StoryboardPacketHumanReviewPreflightEvidence(),
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewPreflightEvidence(
+    val reviewPacketVerdict: String = "",
+    val reviewStatus: String = "",
+    val reviewNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val frameIdCount: Int = 0,
+    val reviewChecklistCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val residualRiskCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardStoryMovementAuditReport(
+    val verdict: String,
+    val auditId: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardHumanReviewPreflightFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val frameCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val movementEvidenceCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val coveredContinuityAnchorCount: Int = 0,
+    val downstreamBoundary: String = "storyboard_story_movement_audit_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardStoryMovementAuditFinding> = emptyList(),
+    val evidence: StoryboardStoryMovementAuditEvidence = StoryboardStoryMovementAuditEvidence(),
+)
+
+@Serializable
+data class StoryboardStoryMovementAuditFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardStoryMovementAuditEvidence(
+    val humanReviewPreflightVerdict: String = "",
+    val humanReviewPreflightNextAllowedDownstreamStep: String = "",
+    val reviewPacketVerdict: String = "",
+    val reviewStatus: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val uniqueFrameIdCount: Int = 0,
+    val movementEvidenceCount: Int = 0,
+    val openingPressureEvidenceCount: Int = 0,
+    val actionEvidenceCount: Int = 0,
+    val consequenceOrChoiceEvidenceCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val coveredContinuityAnchorCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+)
+
+@Serializable
+data class ReviewableStoryboardPacket(
+    val verdict: String,
+    val packetId: String = "",
+    val packetStatus: String = "FAIL",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardHumanReviewPreflightFile: String = "",
+    val storyboardStoryMovementAuditFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardStoryMovementAuditId: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceVerdicts: ReviewableStoryboardSourceVerdicts = ReviewableStoryboardSourceVerdicts(),
+    val movementEvidenceSummary: ReviewableStoryboardMovementEvidenceSummary =
+        ReviewableStoryboardMovementEvidenceSummary(),
+    val humanReviewReadinessSummary: ReviewableStoryboardHumanReviewReadinessSummary =
+        ReviewableStoryboardHumanReviewReadinessSummary(),
+    val frameSummaries: List<ReviewableStoryboardFrameSummary> = emptyList(),
+    val protectedContinuityAnchorsSummary: AcceptedScriptPacketContinuityAnchorsSummary =
+        AcceptedScriptPacketContinuityAnchorsSummary(),
+    val remainingResidualRisks: List<String> = emptyList(),
+    val reviewChecklist: List<StoryboardPacketReviewChecklistItem> = emptyList(),
+    val downstreamBoundary: String = "reviewable_storyboard_packet_packaging_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ReviewableStoryboardPacketFinding> = emptyList(),
+    val evidence: ReviewableStoryboardPacketEvidence = ReviewableStoryboardPacketEvidence(),
+)
+
+@Serializable
+data class ReviewableStoryboardSourceVerdicts(
+    val storyboardPacketReviewVerdict: String = "",
+    val storyboardPacketReviewStatus: String = "",
+    val storyboardHumanReviewPreflightVerdict: String = "",
+    val storyboardStoryMovementAuditVerdict: String = "",
+)
+
+@Serializable
+data class ReviewableStoryboardMovementEvidenceSummary(
+    val frameCount: Int = 0,
+    val movementEvidenceCount: Int = 0,
+    val openingPressureEvidenceCount: Int = 0,
+    val actionEvidenceCount: Int = 0,
+    val consequenceOrChoiceEvidenceCount: Int = 0,
+    val coveredContinuityAnchorCount: Int = 0,
+)
+
+@Serializable
+data class ReviewableStoryboardHumanReviewReadinessSummary(
+    val reviewStatus: String = "",
+    val reviewChecklistCount: Int = 0,
+    val residualRiskCount: Int = 0,
+    val packetStatus: String = "reviewable_storyboard_packet_candidate",
+)
+
+@Serializable
+data class ReviewableStoryboardFrameSummary(
+    val frameId: String = "",
+    val sceneReference: String = "",
+    val beatReference: String = "",
+    val visualIntent: String = "",
+    val cameraIntent: String = "",
+    val mustShow: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val assetCandidateRefs: List<String> = emptyList(),
+)
+
+@Serializable
+data class ReviewableStoryboardPacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ReviewableStoryboardPacketEvidence(
+    val sourceBindingFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val uniqueFrameIdCount: Int = 0,
+    val movementEvidenceCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val coveredContinuityAnchorCount: Int = 0,
+    val residualRiskCount: Int = 0,
+    val reviewChecklistCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecision(
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketDraftReportFile: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val checklistItems: List<StoryboardPacketHumanReviewDecisionChecklistItem> = emptyList(),
+    val blockingIssues: List<StoryboardPacketHumanReviewDecisionBlockingIssue> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecisionChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecisionBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val humanReviewPreflightFile: String = "",
+    val humanReviewDecisionFile: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketDraftReportFile: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<StoryboardPacketHumanReviewDecisionIntakeFinding> = emptyList(),
+    val evidence: StoryboardPacketHumanReviewDecisionIntakeEvidence =
+        StoryboardPacketHumanReviewDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class StoryboardPacketHumanReviewDecisionIntakeEvidence(
+    val preflightVerdict: String = "",
+    val preflightNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidatePreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val decisionId: String = "",
+    val humanReviewPreflightId: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val assetCandidateRequirements: List<StoryboardPacketReviewAssetRequirement> = emptyList(),
+    val downstreamBoundary: String = "asset_candidate_preparation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidatePreflightFinding> = emptyList(),
+    val evidence: AssetCandidatePreflightEvidence = AssetCandidatePreflightEvidence(),
+)
+
+@Serializable
+data class AssetCandidatePreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidatePreflightEvidence(
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val decisionStatus: String = "",
+    val decisionNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val assetCandidateRequirementCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidateBrief(
+    val verdict: String,
+    val briefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val assetCandidateRequirements: List<AssetCandidateBriefRequirement> = emptyList(),
+    val preparationChecklist: List<AssetCandidateBriefChecklistItem> = emptyList(),
+    val downstreamBoundary: String = "asset_candidate_brief_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidateBriefFinding> = emptyList(),
+    val evidence: AssetCandidateBriefEvidence = AssetCandidateBriefEvidence(),
+)
+
+@Serializable
+data class AssetCandidateBriefRequirement(
+    val candidateId: String = "",
+    val requirement: String = "",
+    val sourceFrameIds: List<String> = emptyList(),
+    val candidateStatus: String = "candidate_only",
+)
+
+@Serializable
+data class AssetCandidateBriefChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val requiredCheck: String = "",
+    val status: String = "required_for_asset_candidate_draft",
+)
+
+@Serializable
+data class AssetCandidateBriefFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidateBriefEvidence(
+    val preflightVerdict: String = "",
+    val preflightNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val assetCandidateRequirementCount: Int = 0,
+    val preparationChecklistCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidateDraft(
+    val verdict: String,
+    val draftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val candidateItems: List<AssetCandidateDraftItem> = emptyList(),
+    val downstreamBoundary: String = "asset_candidate_draft_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidateDraftFinding> = emptyList(),
+    val evidence: AssetCandidateDraftEvidence = AssetCandidateDraftEvidence(),
+)
+
+@Serializable
+data class AssetCandidateDraftItem(
+    val candidateId: String = "",
+    val assetType: String = "",
+    val sourceRequirementId: String = "",
+    val candidateStatus: String = "draft_candidate",
+    val requirement: String = "",
+    val publicDescription: String = "",
+    val visualReferenceRequirement: String = "",
+    val sourceFrameIds: List<String> = emptyList(),
+)
+
+@Serializable
+data class AssetCandidateDraftFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidateDraftEvidence(
+    val briefVerdict: String = "",
+    val briefNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val candidateItemCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidateDraftValidationReport(
+    val verdict: String,
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val candidateItems: List<AssetCandidateDraftItem> = emptyList(),
+    val downstreamBoundary: String = "asset_candidate_draft_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidateDraftValidationFinding> = emptyList(),
+    val evidence: AssetCandidateDraftValidationEvidence = AssetCandidateDraftValidationEvidence(),
+)
+
+@Serializable
+data class AssetCandidateDraftValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidateDraftValidationEvidence(
+    val draftVerdict: String = "",
+    val draftNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val candidateItemCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidateReviewPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val candidateItemCount: Int = 0,
+    val downstreamBoundary: String = "asset_candidate_human_review_preparation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidateReviewPreflightFinding> = emptyList(),
+    val evidence: AssetCandidateReviewPreflightEvidence = AssetCandidateReviewPreflightEvidence(),
+)
+
+@Serializable
+data class AssetCandidateReviewPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidateReviewPreflightEvidence(
+    val draftValidationVerdict: String = "",
+    val draftValidationNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val candidateItemCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecision(
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val checklistItems: List<AssetCandidateHumanReviewDecisionChecklistItem> = emptyList(),
+    val blockingIssues: List<AssetCandidateHumanReviewDecisionBlockingIssue> = emptyList(),
+    val imageCandidateRequirements: List<ImageCandidateRequirement> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecisionChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecisionBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class ImageCandidateRequirement(
+    val requirementId: String = "",
+    val candidateId: String = "",
+    val assetType: String = "",
+    val sourceRequirementId: String = "",
+    val status: String = "candidate_only",
+    val requirement: String = "",
+    val referenceRequirements: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val promptSafetyNotes: List<String> = emptyList(),
+    val imageOutputPath: String = "",
+    val generationApi: String = "",
+    val providerJobId: String = "",
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateHumanReviewDecisionFile: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val imageCandidateRequirements: List<ImageCandidateRequirement> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<AssetCandidateHumanReviewDecisionIntakeFinding> = emptyList(),
+    val evidence: AssetCandidateHumanReviewDecisionIntakeEvidence =
+        AssetCandidateHumanReviewDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class AssetCandidateHumanReviewDecisionIntakeEvidence(
+    val preflightVerdict: String = "",
+    val preflightNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val imageCandidateRequirementCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidatePreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageCandidateRequirements: List<ImageCandidateRequirement> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_preflight_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidatePreflightFinding> = emptyList(),
+    val evidence: ImageCandidatePreflightEvidence = ImageCandidatePreflightEvidence(),
+)
+
+@Serializable
+data class ImageCandidatePreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidatePreflightEvidence(
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val decisionStatus: String = "",
+    val decisionNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageCandidateRequirementCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateBrief(
+    val verdict: String,
+    val briefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageCandidateRequirements: List<ImageCandidateRequirement> = emptyList(),
+    val preparationChecklist: List<ImageCandidateBriefChecklistItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_brief_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateBriefFinding> = emptyList(),
+    val evidence: ImageCandidateBriefEvidence = ImageCandidateBriefEvidence(),
+)
+
+@Serializable
+data class ImageCandidateBriefChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val requiredCheck: String = "",
+    val status: String = "required_for_prompt_preparation",
+)
+
+@Serializable
+data class ImageCandidateBriefFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateBriefEvidence(
+    val imageCandidatePreflightVerdict: String = "",
+    val imageCandidatePreflightNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageCandidateRequirementCount: Int = 0,
+    val preparationChecklistCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidatePromptPreparation(
+    val verdict: String,
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_prompt_preparation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidatePromptPreparationFinding> = emptyList(),
+    val evidence: ImageCandidatePromptPreparationEvidence =
+        ImageCandidatePromptPreparationEvidence(),
+)
+
+@Serializable
+data class ImageCandidatePromptItem(
+    val promptItemId: String = "",
+    val sourceRequirementId: String = "",
+    val sourceCandidateId: String = "",
+    val assetType: String = "",
+    val positivePromptDraft: String = "",
+    val negativePromptDraft: String = "",
+    val doNotShow: List<String> = emptyList(),
+    val promptSafetyNotes: List<String> = emptyList(),
+    val publicVisualRequirements: List<String> = emptyList(),
+    val providerName: String = "",
+    val generationApi: String = "",
+    val providerJobId: String = "",
+    val imageOutputPath: String = "",
+)
+
+@Serializable
+data class ImageCandidatePromptPreparationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidatePromptPreparationEvidence(
+    val imageCandidateBriefVerdict: String = "",
+    val imageCandidateBriefNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidatePromptValidationReport(
+    val verdict: String,
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_prompt_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidatePromptValidationFinding> = emptyList(),
+    val evidence: ImageCandidatePromptValidationEvidence =
+        ImageCandidatePromptValidationEvidence(),
+)
+
+@Serializable
+data class ImageCandidatePromptValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidatePromptValidationEvidence(
+    val promptPreparationVerdict: String = "",
+    val promptPreparationNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val authorOnlyLeakCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val imageCandidatePromptValidationReportFile: String = "",
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_manual_provider_handoff_preparation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateProviderHandoffPreflightFinding> = emptyList(),
+    val evidence: ImageCandidateProviderHandoffPreflightEvidence =
+        ImageCandidateProviderHandoffPreflightEvidence(),
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPreflightEvidence(
+    val promptValidationVerdict: String = "",
+    val promptValidationNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val authorOnlyLeakCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecision(
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val providerHandoffPreflightFile: String = "",
+    val imageCandidatePromptValidationReportFile: String = "",
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val checklistItems: List<ImageCandidateProviderHandoffDecisionChecklistItem> = emptyList(),
+    val blockingIssues: List<ImageCandidateProviderHandoffDecisionBlockingIssue> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecisionChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecisionBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val providerHandoffPreflightFile: String = "",
+    val providerHandoffDecisionFile: String = "",
+    val imageCandidatePromptValidationReportFile: String = "",
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val assetDecisionId: String = "",
+    val assetCandidateReviewPreflightFile: String = "",
+    val assetCandidateReviewPreflightId: String = "",
+    val assetCandidateDraftValidationReportFile: String = "",
+    val assetCandidateDraftFile: String = "",
+    val assetCandidateDraftId: String = "",
+    val assetCandidateBriefFile: String = "",
+    val assetCandidateBriefId: String = "",
+    val assetCandidatePreflightFile: String = "",
+    val assetCandidatePreflightId: String = "",
+    val humanReviewDecisionIntakeFile: String = "",
+    val humanReviewDecisionId: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardPacketReviewId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateProviderHandoffDecisionIntakeFinding> = emptyList(),
+    val evidence: ImageCandidateProviderHandoffDecisionIntakeEvidence =
+        ImageCandidateProviderHandoffDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffDecisionIntakeEvidence(
+    val providerHandoffPreflightVerdict: String = "",
+    val providerHandoffPreflightNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val authorOnlyLeakCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacket(
+    val verdict: String,
+    val packetId: String = "",
+    val providerHandoffPreflightFile: String = "",
+    val providerHandoffDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val imageCandidatePromptValidationReportFile: String = "",
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val imageCandidateBriefFile: String = "",
+    val imageCandidateBriefId: String = "",
+    val imageCandidatePreflightFile: String = "",
+    val imageCandidatePreflightId: String = "",
+    val assetCandidateHumanReviewDecisionIntakeFile: String = "",
+    val assetDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val manualInstructions: List<String> = emptyList(),
+    val providerApiEndpoint: String = "",
+    val providerJobId: String = "",
+    val submittedAt: String = "",
+    val outputPath: String = "",
+    val generatedStatus: String = "",
+    val downstreamBoundary: String = "image_candidate_manual_provider_handoff_packet_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateProviderHandoffPacketFinding> = emptyList(),
+    val evidence: ImageCandidateProviderHandoffPacketEvidence =
+        ImageCandidateProviderHandoffPacketEvidence(),
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacketEvidence(
+    val providerHandoffPreflightVerdict: String = "",
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val sourceBindingFieldCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val manualInstructionCount: Int = 0,
+    val authorOnlyLeakCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacketValidationReport(
+    val verdict: String,
+    val providerHandoffPacketFile: String = "",
+    val packetId: String = "",
+    val providerHandoffPreflightFile: String = "",
+    val providerHandoffDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val preflightId: String = "",
+    val imageCandidatePromptValidationReportFile: String = "",
+    val imageCandidatePromptPreparationFile: String = "",
+    val preparationId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val promptItems: List<ImageCandidatePromptItem> = emptyList(),
+    val manualInstructions: List<String> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_provider_handoff_packet_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateProviderHandoffPacketValidationFinding> = emptyList(),
+    val evidence: ImageCandidateProviderHandoffPacketValidationEvidence =
+        ImageCandidateProviderHandoffPacketValidationEvidence(),
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacketValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateProviderHandoffPacketValidationEvidence(
+    val packetVerdict: String = "",
+    val packetNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val promptItemCount: Int = 0,
+    val manualInstructionCount: Int = 0,
+    val authorOnlyLeakCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+    val forbiddenOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateExternalResult(
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val packetId: String = "",
+    val preflightId: String = "",
+    val decisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val resultSource: String = "",
+    val recorder: String = "",
+    val recorderRole: String = "",
+    val resultAt: String = "",
+    val resultStatus: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val notes: String = "",
+    val providerJobId: String = "",
+    val apiResponse: String = "",
+    val remoteUrl: String = "",
+)
+
+@Serializable
+data class ImageCandidateExternalResultItem(
+    val resultItemId: String = "",
+    val promptItemId: String = "",
+    val sourceCandidateId: String = "",
+    val assetType: String = "",
+    val candidateStatus: String = "external_result_candidate",
+    val localImagePath: String = "",
+    val metadataOnlyReference: String = "",
+    val sourceFileSha256: String = "",
+    val doNotShowChecklist: List<String> = emptyList(),
+    val driftReviewChecklist: List<String> = emptyList(),
+    val residualRisks: List<String> = emptyList(),
+    val notes: String = "",
+    val providerJobId: String = "",
+    val apiResponse: String = "",
+    val remoteUrl: String = "",
+    val generatedStatus: String = "",
+)
+
+@Serializable
+data class ImageCandidateExternalResultIntakeReport(
+    val verdict: String,
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val externalResultFile: String = "",
+    val packetId: String = "",
+    val preflightId: String = "",
+    val decisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val resultStatus: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_external_result_intake_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateExternalResultIntakeFinding> = emptyList(),
+    val evidence: ImageCandidateExternalResultIntakeEvidence =
+        ImageCandidateExternalResultIntakeEvidence(),
+)
+
+@Serializable
+data class ImageCandidateExternalResultIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateExternalResultIntakeEvidence(
+    val providerHandoffPacketValidationVerdict: String = "",
+    val providerHandoffPacketValidationNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val resultSource: String = "",
+    val resultStatus: String = "",
+    val promptItemCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val localImageReferenceCount: Int = 0,
+    val metadataOnlyReferenceCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateResultReviewPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val packetId: String = "",
+    val preflightSourceId: String = "",
+    val decisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_result_review_preflight_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateResultReviewPreflightFinding> = emptyList(),
+    val evidence: ImageCandidateResultReviewPreflightEvidence =
+        ImageCandidateResultReviewPreflightEvidence(),
+)
+
+@Serializable
+data class ImageCandidateResultReviewPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateResultReviewPreflightEvidence(
+    val externalResultIntakeVerdict: String = "",
+    val externalResultIntakeNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val localImageReferenceCount: Int = 0,
+    val metadataOnlyReferenceCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecision(
+    val decisionId: String = "",
+    val resultReviewPreflightFile: String = "",
+    val resultReviewPreflightId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val packetId: String = "",
+    val preflightSourceId: String = "",
+    val providerDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val checklistItems: List<ImageCandidateResultReviewDecisionChecklistItem> = emptyList(),
+    val blockingIssues: List<ImageCandidateResultReviewDecisionBlockingIssue> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecisionChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecisionBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val resultReviewPreflightFile: String = "",
+    val resultReviewDecisionFile: String = "",
+    val resultReviewPreflightId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val packetId: String = "",
+    val preflightSourceId: String = "",
+    val providerDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateResultReviewDecisionIntakeFinding> = emptyList(),
+    val evidence: ImageCandidateResultReviewDecisionIntakeEvidence =
+        ImageCandidateResultReviewDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateResultReviewDecisionIntakeEvidence(
+    val resultReviewPreflightVerdict: String = "",
+    val resultReviewPreflightNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateReferencePacket(
+    val verdict: String,
+    val packetId: String = "",
+    val packetStatus: String = "reference_candidate",
+    val resultReviewPreflightFile: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewPreflightId: String = "",
+    val decisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val reviewChecklistSummary: List<String> = emptyList(),
+    val reviewNotes: List<String> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_reference_packet_candidate_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateReferencePacketFinding> = emptyList(),
+    val evidence: ImageCandidateReferencePacketEvidence =
+        ImageCandidateReferencePacketEvidence(),
+)
+
+@Serializable
+data class ImageCandidateReferencePacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateReferencePacketEvidence(
+    val resultReviewPreflightVerdict: String = "",
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val sourceBindingFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val checklistSummaryCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class ImageCandidateReferencePacketValidationReport(
+    val verdict: String,
+    val referencePacketFile: String = "",
+    val packetId: String = "",
+    val packetStatus: String = "",
+    val resultReviewPreflightFile: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewPreflightId: String = "",
+    val decisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "image_candidate_reference_packet_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageCandidateReferencePacketValidationFinding> = emptyList(),
+    val evidence: ImageCandidateReferencePacketValidationEvidence =
+        ImageCandidateReferencePacketValidationEvidence(),
+)
+
+@Serializable
+data class ImageCandidateReferencePacketValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageCandidateReferencePacketValidationEvidence(
+    val referencePacketVerdict: String = "",
+    val referencePacketNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceDecision(
+    val decisionId: String = "",
+    val candidateReferencePacketValidationReportFile: String = "",
+    val referencePacketFile: String = "",
+    val packetId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val checklistItems: List<CandidateReferenceHumanAcceptanceChecklistItem> = emptyList(),
+    val blockingIssues: List<CandidateReferenceHumanAcceptanceBlockingIssue> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val candidateReferencePacketValidationReportFile: String = "",
+    val humanAcceptanceDecisionFile: String = "",
+    val referencePacketFile: String = "",
+    val packetId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceHumanAcceptanceDecisionIntakeFinding> = emptyList(),
+    val evidence: CandidateReferenceHumanAcceptanceDecisionIntakeEvidence =
+        CandidateReferenceHumanAcceptanceDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceHumanAcceptanceDecisionIntakeEvidence(
+    val candidateReferencePacketValidationVerdict: String = "",
+    val candidateReferencePacketValidationNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceRegistryPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val candidateReferencePacketValidationReportFile: String = "",
+    val decisionId: String = "",
+    val referencePacketFile: String = "",
+    val packetId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "candidate_reference_registry_preflight_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceRegistryPreflightFinding> = emptyList(),
+    val evidence: CandidateReferenceRegistryPreflightEvidence =
+        CandidateReferenceRegistryPreflightEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceRegistryPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryPreflightEvidence(
+    val humanAcceptanceDecisionIntakeVerdict: String = "",
+    val humanAcceptanceDecisionIntakeNextAllowedDownstreamStep: String = "",
+    val candidateReferencePacketValidationVerdict: String = "",
+    val candidateReferencePacketValidationNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacket(
+    val verdict: String,
+    val packetId: String = "",
+    val packetStatus: String = "candidate_reference_candidate",
+    val registryPreflightFile: String = "",
+    val preflightId: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val candidateReferencePacketValidationReportFile: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val preparationChecklist: List<String> = emptyList(),
+    val downstreamBoundary: String = "candidate_reference_registry_packet_preparation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceRegistryPacketFinding> = emptyList(),
+    val evidence: CandidateReferenceRegistryPacketEvidence =
+        CandidateReferenceRegistryPacketEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacketEvidence(
+    val registryPreflightVerdict: String = "",
+    val registryPreflightNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacketValidationReport(
+    val verdict: String,
+    val registryPacketFile: String = "",
+    val packetId: String = "",
+    val packetStatus: String = "",
+    val registryPreflightFile: String = "",
+    val preflightId: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val candidateReferencePacketValidationReportFile: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "candidate_reference_registry_packet_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceRegistryPacketValidationFinding> = emptyList(),
+    val evidence: CandidateReferenceRegistryPacketValidationEvidence =
+        CandidateReferenceRegistryPacketValidationEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacketValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryPacketValidationEvidence(
+    val registryPacketVerdict: String = "",
+    val registryPacketNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceDecision(
+    val decisionId: String = "",
+    val registryPacketValidationReportFile: String = "",
+    val registryPacketFile: String = "",
+    val registryPacketId: String = "",
+    val registryPreflightFile: String = "",
+    val registryPreflightId: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val priorHumanAcceptanceDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val decisionSource: String = "",
+    val reviewer: String = "",
+    val reviewerRole: String = "",
+    val decisionAt: String = "",
+    val decisionStatus: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val checklistItems: List<CandidateReferenceRegistryHumanAcceptanceChecklistItem> = emptyList(),
+    val blockingIssues: List<CandidateReferenceRegistryHumanAcceptanceBlockingIssue> = emptyList(),
+    val notes: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceChecklistItem(
+    val itemId: String = "",
+    val category: String = "",
+    val result: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceBlockingIssue(
+    val issueId: String = "",
+    val severity: String = "",
+    val status: String = "",
+    val description: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceDecisionIntakeReport(
+    val verdict: String,
+    val decisionId: String = "",
+    val registryPacketValidationReportFile: String = "",
+    val humanAcceptanceDecisionFile: String = "",
+    val registryPacketFile: String = "",
+    val registryPacketId: String = "",
+    val registryPreflightFile: String = "",
+    val registryPreflightId: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val priorHumanAcceptanceDecisionId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val decisionStatus: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceRegistryHumanAcceptanceDecisionIntakeFinding> = emptyList(),
+    val evidence: CandidateReferenceRegistryHumanAcceptanceDecisionIntakeEvidence =
+        CandidateReferenceRegistryHumanAcceptanceDecisionIntakeEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceDecisionIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceRegistryHumanAcceptanceDecisionIntakeEvidence(
+    val registryPacketValidationVerdict: String = "",
+    val registryPacketValidationNextAllowedDownstreamStep: String = "",
+    val sourceBindingFieldCount: Int = 0,
+    val decisionSource: String = "",
+    val decisionStatus: String = "",
+    val checklistItemCount: Int = 0,
+    val checklistPassedCount: Int = 0,
+    val unresolvedBlockingIssueCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacket(
+    val verdict: String,
+    val packetId: String = "",
+    val packetStatus: String = "candidate_reference_acceptance_candidate",
+    val registryPacketValidationReportFile: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val humanAcceptanceDecisionSource: String = "",
+    val registryPacketFile: String = "",
+    val registryPacketId: String = "",
+    val registryPreflightFile: String = "",
+    val registryPreflightId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val sourceImageResultIdentityDigest: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val boundaryChecklist: List<String> = emptyList(),
+    val downstreamBoundary: String = "candidate_reference_acceptance_packet_boundary_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceAcceptancePacketFinding> = emptyList(),
+    val evidence: CandidateReferenceAcceptancePacketEvidence =
+        CandidateReferenceAcceptancePacketEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacketEvidence(
+    val registryPacketValidationVerdict: String = "",
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val humanAcceptanceDecisionSource: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val imageResultIdentityDigest: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacketValidationReport(
+    val verdict: String,
+    val validationId: String = "",
+    val acceptancePacketFile: String = "",
+    val packetId: String = "",
+    val packetStatus: String = "",
+    val registryPacketValidationReportFile: String = "",
+    val humanAcceptanceDecisionIntakeFile: String = "",
+    val decisionId: String = "",
+    val humanAcceptanceDecisionSource: String = "",
+    val registryPacketFile: String = "",
+    val registryPacketId: String = "",
+    val registryPreflightFile: String = "",
+    val registryPreflightId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val referencePacketFile: String = "",
+    val referencePacketId: String = "",
+    val resultReviewPreflightId: String = "",
+    val resultReviewDecisionIntakeFile: String = "",
+    val resultReviewDecisionId: String = "",
+    val providerHandoffPacketValidationReportFile: String = "",
+    val providerHandoffPacketId: String = "",
+    val providerHandoffPreflightId: String = "",
+    val providerHandoffDecisionId: String = "",
+    val externalResultIntakeFile: String = "",
+    val resultId: String = "",
+    val sourceImageResultIdentityDigest: String = "",
+    val imageResults: List<ImageCandidateExternalResultItem> = emptyList(),
+    val downstreamBoundary: String = "candidate_reference_acceptance_packet_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CandidateReferenceAcceptancePacketValidationFinding> = emptyList(),
+    val evidence: CandidateReferenceAcceptancePacketValidationEvidence =
+        CandidateReferenceAcceptancePacketValidationEvidence(),
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacketValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CandidateReferenceAcceptancePacketValidationEvidence(
+    val acceptancePacketVerdict: String = "",
+    val acceptancePacketNextAllowedDownstreamStep: String = "",
+    val registryPacketValidationVerdict: String = "",
+    val decisionIntakeVerdict: String = "",
+    val decisionAllowedDownstream: Boolean = false,
+    val humanAcceptanceDecisionSource: String = "",
+    val sourceFieldCount: Int = 0,
+    val imageResultCount: Int = 0,
+    val forbiddenRemoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class CharacterNuwaGateFile(
+    val gateId: String = "",
+    val projectId: String = "",
+    val sourceChapter: String = "",
+    val requiredSpeakingCharacters: List<CharacterNuwaRequiredSpeaker> = emptyList(),
+    val characterCards: List<CharacterNuwaCard> = emptyList(),
+    val bannedCalibrationStructures: List<String> = emptyList(),
+    val reviewerNotes: String = "",
+)
+
+@Serializable
+data class CharacterNuwaRequiredSpeaker(
+    val characterId: String = "",
+    val displayName: String = "",
+    val requiredDepth: String = "full_nuwa",
+    val reason: String = "",
+)
+
+@Serializable
+data class CharacterNuwaCard(
+    val cardId: String = "",
+    val characterId: String = "",
+    val displayName: String = "",
+    val cardDepth: String = "full_nuwa",
+    val gateStatus: String = "draft",
+    val narrativeFunction: String = "",
+    val socialPosition: String = "",
+    val currentPressure: String = "",
+    val relationshipToProtagonist: String = "",
+    val knowledgeBoundary: List<String> = emptyList(),
+    val wantsFromScene: String = "",
+    val fearsInScene: String = "",
+    val hiddenMotiveIfAny: String = "",
+    val speechRegister: String = "",
+    val sentenceLengthBias: String = "",
+    val directness: String = "",
+    val silencePattern: String = "",
+    val pressureResponse: String = "",
+    val allowedTells: List<String> = emptyList(),
+    val forbiddenTells: List<String> = emptyList(),
+    val favoriteMoves: List<String> = emptyList(),
+    val neverDo: List<String> = emptyList(),
+    val sampleLines: CharacterNuwaSampleLines = CharacterNuwaSampleLines(),
+    val bannedStructures: List<String> = emptyList(),
+)
+
+@Serializable
+data class CharacterNuwaSampleLines(
+    val accepted: List<String> = emptyList(),
+    val rejected: List<String> = emptyList(),
+)
+
+@Serializable
+data class CharacterNuwaGateValidationReport(
+    val verdict: String,
+    val gateFile: String = "",
+    val gateId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val requiredSpeakingCharacterCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val cardCount: Int = 0,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<CharacterNuwaGateFinding> = emptyList(),
+    val evidence: CharacterNuwaGateEvidence = CharacterNuwaGateEvidence(),
+)
+
+@Serializable
+data class CharacterNuwaGateFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class CharacterNuwaGateEvidence(
+    val requiredFullCardCount: Int = 0,
+    val requiredLightCardCount: Int = 0,
+    val readyCardCount: Int = 0,
+    val bannedCalibrationHitCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val characterNuwaReportFile: String = "",
+    val characterNuwaGateFile: String = "",
+    val characterNuwaGateId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationPreflightFinding> = emptyList(),
+    val evidence: NovelizationPreflightEvidence = NovelizationPreflightEvidence(),
+)
+
+@Serializable
+data class NovelizationPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationPreflightEvidence(
+    val characterNuwaVerdict: String = "",
+    val requiredSpeakingCharacterCount: Int = 0,
+    val characterCardCount: Int = 0,
+    val readyCharacterCardCount: Int = 0,
+    val upstreamFindingCount: Int = 0,
+    val bannedCalibrationHitCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationWriterBrief(
+    val briefId: String = "",
+    val projectId: String = "",
+    val targetChapter: String = "",
+    val sourcePreflightReport: String = "",
+    val previousChapterRefs: List<String> = emptyList(),
+    val acceptedChapterFacts: List<String> = emptyList(),
+    val characterStates: List<String> = emptyList(),
+    val openThreads: List<String> = emptyList(),
+    val mustAdvance: List<String> = emptyList(),
+    val mustNotRepeat: List<String> = emptyList(),
+    val allowedScenes: List<String> = emptyList(),
+    val knownUnknowns: List<String> = emptyList(),
+    val tonePacingTarget: String = "",
+    val styleContract: String = "",
+    val characterNuwaReferences: List<String> = emptyList(),
+    val antiAiProseConstraints: List<String> = emptyList(),
+    val authorOnlyExcluded: Boolean = false,
+    val reviewerNotes: String = "",
+)
+
+@Serializable
+data class NovelizationWriterBriefValidationReport(
+    val verdict: String,
+    val briefFile: String = "",
+    val sourcePreflightReportFile: String = "",
+    val briefId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationWriterBriefFinding> = emptyList(),
+    val evidence: NovelizationWriterBriefEvidence = NovelizationWriterBriefEvidence(),
+)
+
+@Serializable
+data class NovelizationWriterBriefFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationWriterBriefEvidence(
+    val sourcePreflightVerdict: String = "",
+    val previousChapterRefCount: Int = 0,
+    val acceptedFactCount: Int = 0,
+    val characterStateCount: Int = 0,
+    val openThreadCount: Int = 0,
+    val mustAdvanceCount: Int = 0,
+    val mustNotRepeatCount: Int = 0,
+    val characterNuwaReferenceCount: Int = 0,
+    val antiAiConstraintCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationDraftIntakeReport(
+    val verdict: String,
+    val draftFile: String = "",
+    val writerBriefReportFile: String = "",
+    val sourceType: String = "",
+    val sourceLabel: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationDraftIntakeFinding> = emptyList(),
+    val evidence: NovelizationDraftIntakeEvidence = NovelizationDraftIntakeEvidence(),
+)
+
+@Serializable
+data class NovelizationDraftIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationDraftIntakeEvidence(
+    val writerBriefVerdict: String = "",
+    val draftCharacters: Int = 0,
+    val draftLines: Int = 0,
+    val replacementCharacterCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationProseQualityAuditReport(
+    val verdict: String,
+    val draftFile: String = "",
+    val draftIntakeReportFile: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationProseQualityFinding> = emptyList(),
+    val evidence: NovelizationProseQualityEvidence = NovelizationProseQualityEvidence(),
+)
+
+@Serializable
+data class NovelizationProseQualityFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationProseQualityEvidence(
+    val draftIntakeVerdict: String = "",
+    val draftCharacters: Int = 0,
+    val draftLines: Int = 0,
+    val dialogueLineCount: Int = 0,
+    val sentenceCount: Int = 0,
+    val bannedCalibrationHitCount: Int = 0,
+    val genericAbstractionHitCount: Int = 0,
+    val expositionDialogueHitCount: Int = 0,
+    val replacementCharacterCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationRevisionContinuityAnchors(
+    val anchorFileId: String = "",
+    val anchors: List<String> = emptyList(),
+    val doNotChange: List<String> = emptyList(),
+)
+
+@Serializable
+data class NovelizationRevisionBriefReport(
+    val verdict: String,
+    val briefId: String = "",
+    val draftFile: String = "",
+    val draftIntakeReportFile: String = "",
+    val proseQualityAuditReportFile: String = "",
+    val continuityAnchorsFile: String = "",
+    val revisionRequired: Boolean = false,
+    val mandatoryChecklist: List<String> = emptyList(),
+    val requiredFixes: List<NovelizationRevisionItem> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val doNotChange: List<String> = emptyList(),
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationRevisionBriefFinding> = emptyList(),
+    val evidence: NovelizationRevisionBriefEvidence = NovelizationRevisionBriefEvidence(),
+)
+
+@Serializable
+data class NovelizationRevisionItem(
+    val itemId: String = "",
+    val fixType: String = "",
+    val sourceRuleId: String = "",
+    val category: String = "",
+    val severity: String = "",
+    val instruction: String = "",
+    val evidence: List<String> = emptyList(),
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationRevisionBriefFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationRevisionBriefEvidence(
+    val draftIntakeVerdict: String = "",
+    val proseQualityVerdict: String = "",
+    val draftCharacters: Int = 0,
+    val proseQualityFindingCount: Int = 0,
+    val requiredFixCount: Int = 0,
+    val continuityAnchorCount: Int = 0,
+    val doNotChangeCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationRevisionHandlingDeclaration(
+    val declarationId: String = "",
+    val revisionBriefId: String = "",
+    val handledChecklist: List<NovelizationRevisionChecklistHandling> = emptyList(),
+    val handledFixes: List<NovelizationRevisionFixHandling> = emptyList(),
+)
+
+@Serializable
+data class NovelizationRevisionChecklistHandling(
+    val checklistItem: String = "",
+    val status: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class NovelizationRevisionFixHandling(
+    val itemId: String = "",
+    val status: String = "",
+    val note: String = "",
+)
+
+@Serializable
+data class NovelizationRevisedDraftIntakeReport(
+    val verdict: String,
+    val originalDraftFile: String = "",
+    val revisedDraftFile: String = "",
+    val revisionBriefReportFile: String = "",
+    val declaredHandlingFile: String = "",
+    val revisionBriefId: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationRevisedDraftIntakeFinding> = emptyList(),
+    val evidence: NovelizationRevisedDraftIntakeEvidence = NovelizationRevisedDraftIntakeEvidence(),
+)
+
+@Serializable
+data class NovelizationRevisedDraftIntakeFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationRevisedDraftIntakeEvidence(
+    val revisionBriefVerdict: String = "",
+    val revisionRequired: Boolean = false,
+    val originalCharacters: Int = 0,
+    val revisedCharacters: Int = 0,
+    val unchangedAfterNormalization: Boolean = false,
+    val mandatoryChecklistCount: Int = 0,
+    val requiredFixCount: Int = 0,
+    val declaredChecklistCount: Int = 0,
+    val declaredFixCount: Int = 0,
+    val bannedResidualCount: Int = 0,
+    val continuityAnchorCount: Int = 0,
+    val continuityAnchorPreservedCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationAcceptedDraftPacket(
+    val verdict: String,
+    val packetId: String = "",
+    val revisedDraftFile: String = "",
+    val revisedDraftContentSha256: String = "",
+    val sourceReports: NovelizationAcceptedDraftSourceReports = NovelizationAcceptedDraftSourceReports(),
+    val requiredFixesHandledSummary: List<NovelizationAcceptedDraftHandledFix> = emptyList(),
+    val protectedContinuityAnchors: List<String> = emptyList(),
+    val doNotChange: List<String> = emptyList(),
+    val remainingResidualRisks: List<String> = emptyList(),
+    val nextAllowedDownstreamStep: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationAcceptedDraftPacketFinding> = emptyList(),
+    val evidence: NovelizationAcceptedDraftPacketEvidence = NovelizationAcceptedDraftPacketEvidence(),
+)
+
+@Serializable
+data class NovelizationAcceptedDraftSourceReports(
+    val revisionBriefReportFile: String = "",
+    val revisionBriefVerdict: String = "",
+    val revisedDraftIntakeReportFile: String = "",
+    val revisedDraftIntakeVerdict: String = "",
+    val continuityAnchorsFile: String = "",
+    val continuityAnchorFileId: String = "",
+)
+
+@Serializable
+data class NovelizationAcceptedDraftHandledFix(
+    val itemId: String = "",
+    val fixType: String = "",
+    val sourceRuleId: String = "",
+    val severity: String = "",
+    val status: String = "accepted_by_revised_draft_intake",
+)
+
+@Serializable
+data class NovelizationAcceptedDraftPacketFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationAcceptedDraftPacketEvidence(
+    val revisedDraftCharacters: Int = 0,
+    val requiredFixCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val doNotChangeCount: Int = 0,
+    val revisedDraftIntakeFindingCount: Int = 0,
+    val revisionBriefFindingCount: Int = 0,
+    val residualRiskCount: Int = 0,
+)
+
+@Serializable
+data class NovelizationScriptPacketPreflightReport(
+    val verdict: String,
+    val preflightId: String = "",
+    val acceptedDraftPacketFile: String = "",
+    val acceptedDraftPacketId: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<NovelizationScriptPacketPreflightFinding> = emptyList(),
+    val evidence: NovelizationScriptPacketPreflightEvidence = NovelizationScriptPacketPreflightEvidence(),
+)
+
+@Serializable
+data class NovelizationScriptPacketPreflightFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class NovelizationScriptPacketPreflightEvidence(
+    val packetVerdict: String = "",
+    val revisedDraftContentHashPresent: Boolean = false,
+    val sourceReportFileCount: Int = 0,
+    val sourceReportVerdictCount: Int = 0,
+    val protectedContinuityAnchorCount: Int = 0,
+    val requiredFixHandledCount: Int = 0,
+    val residualRiskCount: Int = 0,
+)
+
 data class ValidationError(
     val code: String,
     val message: String,

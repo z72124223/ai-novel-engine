@@ -1,0 +1,11 @@
+{
+    "anchorFileId": "novelization-revision-continuity-anchors-sample-001",
+    "anchors": [
+        "Mira already paid the door toll before reaching the checkpoint.",
+        "The guard requires a visible mark before answering questions."
+    ],
+    "doNotChange": [
+        "Do not reset the toll payment as unpaid.",
+        "Do not reveal who controls the checkpoint."
+    ]
+}

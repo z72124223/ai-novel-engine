@@ -1,0 +1,132 @@
+{
+    "packetId": "script-packet-draft-sample-001",
+    "source": {
+        "inputType": "novelChapter",
+        "sourceId": "neutral-sample-chapter-001",
+        "sourceTitle": "Neutral Threshold Sample",
+        "excerptSummary": "A traveler pauses at a locked threshold while a local guide checks whether the room can be entered.",
+        "transformationStatus": "draft"
+    },
+    "segments": [
+        {
+            "segmentId": "segment-threshold-check",
+            "sceneReference": {
+                "type": "sceneCandidate",
+                "candidateId": "scene-candidate-neutral-threshold",
+                "notes": "Neutral sample only; not canon."
+            },
+            "scenePurpose": "Establish a guarded threshold and a practical reason to wait before entering.",
+            "playerObjective": "Decide whether to wait, ask for details, or inspect the visible lock from outside the room.",
+            "locationZone": {
+                "zoneId": "zone-threshold-outside",
+                "publicName": "Outer threshold",
+                "constraints": "The traveler can see the lock and the guide, but cannot see inside the room."
+            },
+            "visualSetup": {
+                "publicDescription": "A narrow doorway stands half-lit. A guide keeps one hand near the latch while the traveler stays outside the threshold.",
+                "cameraIntent": "Hold the frame on the distance between traveler, guide, latch, and doorway.",
+                "mustShow": [
+                    "traveler outside the threshold",
+                    "guide controlling the latch",
+                    "locked doorway"
+                ],
+                "mustNotShow": [
+                    "inside of the room"
+                ]
+            },
+            "knowledgePass": {
+                "publicFacts": [
+                    "The doorway is locked.",
+                    "The guide is checking whether entry is allowed."
+                ],
+                "characterKnowledgeClaims": [
+                    "The guide knows the local entry rule.",
+                    "The traveler only knows what can be seen from outside."
+                ],
+                "authorOnlyExtracted": []
+            },
+            "beatList": [
+                {
+                    "beatId": "beat-guide-checks-latch",
+                    "visibleAction": "The guide rests a palm near the latch and looks back at the traveler before touching it.",
+                    "causalLink": "The guide must confirm the entry rule before anyone crosses the threshold.",
+                    "characterIds": [
+                        "char-guide",
+                        "char-traveler"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "guide-knows-entry-rule"
+                    ],
+                    "outcome": "The traveler is kept outside long enough to choose a cautious next action."
+                }
+            ],
+            "actionLines": [
+                {
+                    "lineId": "action-guide-controls-latch",
+                    "actorId": "char-guide",
+                    "line": "The guide raises one hand, stopping the traveler at the outer edge of the doorway.",
+                    "blockingZone": "zone-threshold-outside",
+                    "visibleCost": "The traveler loses immediate access but gains time to observe the lock."
+                }
+            ],
+            "dialogueLines": [
+                {
+                    "lineId": "dialogue-guide-wait",
+                    "speakerId": "char-guide",
+                    "line": "Wait here. I need to check the latch before you step through.",
+                    "knowledgeBoundary": "The guide can say this because the local entry rule is part of their role.",
+                    "subtext": "The guide is cautious, not hostile."
+                }
+            ],
+            "interactionChoices": [
+                {
+                    "choiceId": "choice-wait",
+                    "label": "Wait outside the threshold.",
+                    "allowedBecause": "The traveler is already outside the room and can comply without crossing the threshold.",
+                    "likelyStateEffect": "The scene remains stable while the guide checks the latch."
+                },
+                {
+                    "choiceId": "choice-inspect-lock",
+                    "label": "Inspect the visible lock.",
+                    "allowedBecause": "The lock is visible from the traveler's current position.",
+                    "likelyStateEffect": "The traveler may notice surface details without entering the room."
+                }
+            ]
+        }
+    ],
+    "assetNeeds": [
+        {
+            "assetType": "prop",
+            "candidateName": "simple latch and lock",
+            "candidateReason": "The lock is needed for visible blocking, choice justification, and storyboard continuity.",
+            "lockStatus": "candidate"
+        }
+    ],
+    "storyboardNotes": {
+        "cameraLanguage": "Use a medium shot that keeps guide, traveler, latch, and threshold in one readable frame.",
+        "continuityLocks": [
+            "traveler remains outside the threshold",
+            "guide controls access to the latch"
+        ],
+        "frameCandidates": [
+            {
+                "frameId": "frame-threshold-check",
+                "beatId": "beat-guide-checks-latch",
+                "framePurpose": "Show the physical boundary and the reason the traveler cannot simply enter.",
+                "cameraPurpose": "Clarify blocking and choice affordance.",
+                "visibleSubject": "Guide, traveler, latch, and doorway",
+                "doNotShow": [
+                    "inside of the room"
+                ]
+            }
+        ]
+    },
+    "secrecyKnowledgeNotes": {
+        "authorOnlyExcluded": true,
+        "reviewOnlyNotes": "Neutral sample only; no canon or hidden material."
+    },
+    "reviewSummary": {
+        "verdict": "unreviewed",
+        "reviewerNotes": "Fixture for read-only draft validation."
+    }
+}
