@@ -213,6 +213,18 @@ Good anti-AI revision usually asks "what pressure caused this line?" rather than
 
 Reviewers should watch for AI calibration phrasing: prose that repeatedly defends itself with constructions such as "not X, only Y" instead of letting the visible action carry the limit.
 
+Hard ban for accepted prose:
+
+- `這不是 X，這是 Y`;
+- `這不是XX，這是XXX`;
+- `不是 X，而是 Y`;
+- `不是XX，而是XXX`;
+- `not X, but Y`;
+- `not X, only Y`;
+- equivalent slogans that pause the scene to explain what the prose is trying to be.
+
+When contrast is truly needed, show the physical limit, social cost, procedural consequence, or character reaction directly. Do not use a calibration slogan as a substitute for evidence.
+
 When the scene needs to show that a character did not rush forward, did not cross a line, or can still be called back, prefer visible behavior over explanatory narration.
 
 Check for stacked weakening words. Repeated "suddenly", "just", "not", "only", "half-step", or equivalent softeners can make the picture feel mushy and the action less clean. The issue is not any single word; it is the pattern of hedging after every motion.

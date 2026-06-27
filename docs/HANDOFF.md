@@ -51,12 +51,16 @@ Additional docs-only product-control baseline as of 2026-06-23:
 - `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future World Card Queryer, Asset Queryer, and Story Card Queryer contracts for scoped product-layer retrieval. It is not implemented runtime, schema, CLI, SQLite, external API, GPT automation, Seedance, or Oiioii work.
 - `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` defines product-layer guardrails that treat bottom-layer truth as world causality and distributed actor knowledge, not as a plot objective, forced reveal, forced concealment, or mystery product. It is not runtime enforcement or canon world content.
 - `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` registers the current 01-managed blueprint planning pool as `BLUEPRINT_PLANNING_REGISTERED`. Entries are non-canon candidates only: not canon, not setting-pack content, not runtime data, and not approved assets.
+- `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md` registers `小說朗讀` as the canonical standalone `novel-reader-video` Node.js CLI project at `C:\Users\f7212\OneDrive\文件\小說朗讀`; the previous in-repo `C:\Users\f7212\OneDrive\文件\AI 劇本\小說朗讀` path has been removed after merge-copy verification.
 - Script packet contract baseline commit: `63cc2f17b968dd9f1c9fff602150802d1ebf2ff2`.
 - Qingli scene registry seed baseline commit: `c248cefd0dcde8a878aae290bbb3215ca4d5cb1b`.
 - Qingli script packet registry dry-run baseline commit: `ee80a16f83825ac56b2449285c19981a81f746a1`.
 - Use `git status --short` before assuming remote state. After the blueprint register milestone, there should be no expected uncommitted storyboard / camera or asset registry planning files.
 - 04 / 05 / 06 / 07 / 08 are paused. They are not active runtime and must not be resumed without 01 explicit handoff.
 - Manual handoff only: `01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery`.
+- General project-completion task handoff mode is chat-window only: `01 assigns one smallest verified slice -> 02 implements and verifies -> 02 sends review handoff to 03 -> 03 performs read-only review -> 03 reports PASS / REVISE / FAIL to 01 -> 01 chooses the next slice`.
+- This loop may repeat until the project is complete, but it is not an unattended infinite loop. Stop on safety boundaries, failed verification, dirty-scope ambiguity, product decisions, missing 03 review, user stop, or any need for explicit 01/user approval.
+- After every `03` PASS / REVISE / FAIL report, `01` must display `Project completion progress: NN%` using `docs/PROJECT_COMPLETION_PROGRESS.md`. PASS may update the estimate for accepted capability slices; REVISE / FAIL keep the last accepted estimate and name the blocker.
 - Do not use automation / scheduler wakeups to advance the 04 / 05 / 06 / 07 / 08 flow.
 
 ## Read First
@@ -120,6 +124,7 @@ For Pilot or context-budget work, also read:
 - Production asset registry planning, aligned to storyboard consistency before optional downstream video.
 - Asset registry implementation blueprint, future-only and not schema/runtime approval.
 - New world foundation questionnaire, as a docs-only user-input surface before any foundation brief or 04/05/06/07/08 restart.
+- Local subproject directory registration for `小說朗讀`, docs/local-memory only and not runtime or asset approval.
 
 ## Hard Boundaries
 
@@ -130,6 +135,7 @@ Do not start or add any of these unless the user explicitly approves a new miles
 - Web server, HTTP API, port listener, Web UI, Android UI.
 - Docker, Rust, embedding, vector DB, or multi-agent runtime.
 - Automation / scheduler advancement for 04 / 05 / 06 / 07 / 08 handoff.
+- Unattended infinite project-completion loops that bypass `01 -> 02 -> 03 -> 01` chat-window review.
 - Resuming 04 / 05 / 06 generation, review, display, playtest, 07 asset-candidate creation, or 08 storyboard pickup without 01 explicit handoff and user approval where required.
 - Seedance / Oiioii integration, high-quality video generation, or animation asset pipeline implementation.
 - Production asset registry schema, migrations, import CLI, generated image storage, or direct SQLite asset writes.

@@ -2,7 +2,9 @@
 
 Report version: 2026-06-20
 
-Workspace: `C:\Users\f7212\OneDrive\文件\AI 劇本`
+Local directory register update: 2026-06-24
+
+Workspace: `C:\Users\f7212\Projects\AI 劇本`
 
 Purpose: This report gives a stable, repeatable overview of the local interactive fiction engine, its runtime layers, data model milestones, current branch state, and recommended next step.
 
@@ -60,6 +62,8 @@ flowchart TD
 | `DONE_CRITERIA.md` | Completion gates for every milestone |
 | `VERIFY.md` | Required verification commands and triage order |
 | `docs/` | Architecture, data model, protocol, validation, MVP/Pilot/MVP-7 docs |
+| `memory/` | Local repo memory capsules and directory memory files; not runtime SQLite memory |
+| `C:\Users\f7212\OneDrive\文件\小說朗讀` | Standalone local Node.js CLI project for novel-to-narrated-video work; outside this Kotlin/JVM engine repo, see `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md` |
 | `samples/` | Demo seed, sample context/result JSON, setting pack and audit fixtures |
 | `app/src/main/kotlin/` | Kotlin source code |
 | `app/src/main/resources/migrations/` | SQLite migrations |
