@@ -1,6 +1,72 @@
 # Plan
 
-## Active Post E2E Image-Facing Delivery Proof Alignment Plan
+## Active Final Local Product-Delivery Verification Plan
+
+### Goal
+
+Create a final local product-delivery verification bundle that records the clean pushed baseline and focused product-path tests after the E2E image-facing delivery proof fixture.
+
+### Global Strategy
+
+- Produce docs/control evidence only:
+  - `PLANS.md`
+  - `docs/FINAL_LOCAL_PRODUCT_DELIVERY_VERIFICATION.md`
+- Verify the current clean pushed branch and run the smallest aggregate product-path Gradle command that covers:
+  - `PipelineHappyPathFixtureTest`
+  - `ReviewableStoryboardPacketTest`
+  - `ImageFacingDeliveryProofTest`
+- Keep the report as verification evidence, not a release tag, provider/media readiness claim, approval, canon, or production lock.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI edits.
+- No full release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No `.gitignore`, memory JSON, samples, or unrelated docs.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `09c8ea75928adcc5d2b0c0b53f1a78fa9a61259e` / `09c8ea7 docs: update image-facing fixture progress`.
+- `03` passed the post E2E image-facing proof lifecycle/progress alignment push apply.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` marks Stage 40 `Final local product-delivery verification bundle` as Next.
+- Official progress is `Project completion progress: 82%` before this verification report.
+
+### Assumptions
+
+- A focused aggregate command covering the current product path is enough for this local verification slice; full test suite remains a separate heavier release decision.
+
+### Open Questions
+
+- Whether later progress should increase after `03` accepts this report; this slice will not change the progress file before review.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm clean pushed baseline and Stage 40 scope.
+- [x] Step 2: Run focused aggregate product-path verification.
+- [x] Step 3: Create final local verification report.
+- [x] Step 4: Run docs-only hygiene checks and send to `03`.
+- [ ] Step 5: Stage, commit, and push only after review.
+
+### Verification
+
+- `git status --short --untracked-files=all`.
+- `git rev-parse HEAD`, `git rev-parse @{u}`, and `git rev-list --left-right --count @{u}...HEAD`.
+- Focused aggregate Gradle command:
+  `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --tests "*ReviewableStoryboardPacketTest" --tests "*ImageFacingDeliveryProofTest" --no-daemon --console=plain`
+- `git diff --check -- PLANS.md docs/FINAL_LOCAL_PRODUCT_DELIVERY_VERIFICATION.md`.
+- Trailing whitespace scan on changed docs.
+
+### Risks
+
+- Treating local verification evidence as formal release approval.
+- Running too broad a test set while the user is using the machine.
+
+### Drift Log
+
+- 2026-06-28: Started Stage 40 final local product-delivery verification bundle after `03` passed pushed progress alignment. Scope is docs/control evidence only.
+- 2026-06-28: Focused aggregate product-path verification passed: `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --tests "*ReviewableStoryboardPacketTest" --tests "*ImageFacingDeliveryProofTest" --no-daemon --console=plain` returned BUILD SUCCESSFUL in 30s.
+- 2026-06-28: Created `docs/FINAL_LOCAL_PRODUCT_DELIVERY_VERIFICATION.md` as docs/control evidence only. Hygiene checks passed: changed paths are `PLANS.md` plus the new report, diff/no-index checks returned only LF/CRLF warnings, and trailing whitespace scan returned no matches.
+
+## Completed Post E2E Image-Facing Delivery Proof Alignment Plan
 
 ### Goal
 
@@ -42,7 +108,7 @@ Align lifecycle and progress docs after the accepted and pushed E2E image-facing
 - [x] Step 1: Confirm pushed E2E fixture baseline and stale lifecycle/progress docs.
 - [x] Step 2: Update lifecycle/progress/plan status wording and official display estimate.
 - [x] Step 3: Run docs-only verification and send to `03`.
-- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+- [x] Step 4: Stage, commit, and push docs/control alignment after review.
 
 ### Verification
 
@@ -62,6 +128,7 @@ Align lifecycle and progress docs after the accepted and pushed E2E image-facing
 - 2026-06-28: Progress adjustment is limited to the previously listed missing E2E image-facing fixture; final delivery verification and formal registry boundary remain not counted.
 - 2026-06-28: Marked Stage 39 E2E image-facing delivery proof fixture as Done, added Stage 40 final local product-delivery verification bundle as Next, and updated official display estimate to `Project completion progress: 82%`.
 - 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
+- 2026-06-28: `03` passed docs/control alignment, staging apply, commit apply, push readiness, and push apply. Final pushed HEAD/upstream is `09c8ea75928adcc5d2b0c0b53f1a78fa9a61259e`; official progress is now 82%.
 
 ## Completed E2E Image-Facing Delivery Proof Fixture Plan
 
