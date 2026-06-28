@@ -25,7 +25,7 @@ Rules:
 
 ## Current Display Estimate
 
-Project completion progress: `80%`
+Project completion progress: `82%`
 
 This replaces the previous `79%` display value. The previous table was internally inconsistent: its rows added to `93`, while the displayed total was `79`. The new display value separates product deliverable completion from gate hardening completion.
 
@@ -39,9 +39,9 @@ This is the percentage `01` displays.
 | Novelization intake / quality / revision gates | 15 | 13 | Draft intake, prose quality audit, revision brief, revised draft intake, and accepted draft packet gates exist, but need an end-to-end chapter fixture. |
 | Accepted draft to script packet gates | 15 | 12 | Accepted draft to script packet and structure/source-binding gates exist, but final product proof still depends on storyboard E2E. |
 | Storyboard / asset / candidate-reference JSON gates | 20 | 12 | Many deterministic gates are implemented and reviewed, including candidate-reference acceptance packet validation, the reviewable storyboard packet packaging gate, and the image-facing delivery proof gate; release proof remains open. |
-| Reviewable storyboard packet / image-facing deliverable path | 20 | 13 | E2E happy-path fixture v1 reaches `storyboard_packet_human_review_ready`; story movement audit verifies minimum deterministic story movement evidence; `ReviewableStoryboardPacket` and `ImageFacingDeliveryProof` now exist as named local JSON product artifacts, but the E2E path to image-facing proof still needs a fixture. |
+| Reviewable storyboard packet / image-facing deliverable path | 20 | 15 | E2E happy-path fixture v1 reaches `storyboard_packet_human_review_ready`; story movement audit verifies minimum deterministic story movement evidence; `ReviewableStoryboardPacket` and `ImageFacingDeliveryProof` now exist as named local JSON product artifacts, and the E2E fixture reaches the image-facing proof artifact. Final local product-delivery verification remains open. |
 | Release hygiene, cleanup, packaging, handoff hardening | 10 | 10 | Release hygiene report, grouping preview, focused product-proof reproducibility bundle, tracked handoff manifest, first staging candidate decision brief, staged/committed/pushed control docs, broad implementation bundle, split planning/support docs, memory owner/parser evidence docs, and exact local-memory ignore rules are accepted. This does not imply a release tag, provider/media readiness, canon, or production approval. |
-| Total | 100 | 80 | Product-deliverable control estimate. |
+| Total | 100 | 82 | Product-deliverable control estimate. |
 
 ## Gate Hardening Indicator
 
@@ -55,8 +55,7 @@ Counted gate-hardening progress through:
 
 ## Not Yet Counted For Product Completion
 
-- E2E image-facing delivery proof fixture from accepted draft through `ReviewableStoryboardPacket` into `ImageFacingDeliveryProof`.
-- Final product-delivery verification beyond the clean pushed local branch.
+- Final local product-delivery verification beyond the clean pushed local branch and focused E2E fixture.
 - Any future formal registry decision boundary. This remains not approved until separately planned and reviewed.
 
 ## Expert Model Note
@@ -85,9 +84,10 @@ Counted through:
 - `minimal D1 governance-register docs push apply`, `minimal D2 future-planning docs push apply`, and `minimal D3 QuarterFull support doc push apply`: PASS by `03`; not counted as product behavior.
 - `minimal memory owner-decision memo push apply`, `minimal memory parser evidence docs push apply`, and `minimal local-memory exact ignore push apply`: PASS by `03`; not counted as product behavior because they are local-memory ownership and workspace hygiene controls.
 - `minimal image-facing delivery proof gate` plus staging, commit, push readiness, and push apply: PASS by `03`; evidence is recorded, but the official score remains unchanged until an E2E product fixture reaches the new proof artifact.
+- `minimal E2E image-facing delivery proof fixture` plus staging, commit, push readiness, and push apply: PASS by `03`; this completes the previously uncounted accepted-script to `ImageFacingDeliveryProof` fixture and raises the reviewable/image-facing row by 2 points.
 
 Display remains:
 
 ```text
-Project completion progress: 80%
+Project completion progress: 82%
 ```

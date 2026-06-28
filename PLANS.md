@@ -1,6 +1,69 @@
 # Plan
 
-## Active E2E Image-Facing Delivery Proof Fixture Plan
+## Active Post E2E Image-Facing Delivery Proof Alignment Plan
+
+### Goal
+
+Align lifecycle and progress docs after the accepted and pushed E2E image-facing delivery proof fixture.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Mark Stage 39 as Done and make the next slice a final local product-delivery verification bundle.
+- Increase official progress only for the now-accepted fixture that was explicitly listed as not yet counted.
+- Preserve all no-provider/no-generation/no-approval/no-canon/no-runtime-write boundaries.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No `.gitignore`, memory JSON, sample, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, or production-lock changes.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `66112aef302a1ec166076763f614987a07e6c7b8` / `66112ae test: extend image-facing delivery proof fixture`.
+- `03` passed `minimal E2E image-facing delivery proof fixture`, staging apply, commit apply, push readiness, and push apply.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 39 as `Next`.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still lists the E2E image-facing delivery proof fixture as not yet counted.
+
+### Assumptions
+
+- Completing the previously uncounted fixture should raise the product-deliverable estimate from 80% to 82% by increasing the reviewable storyboard / image-facing deliverable path row from 13 to 15.
+
+### Open Questions
+
+- Whether the final local product-delivery verification bundle should be a docs/control evidence report only, or include an additional aggregate test command.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm pushed E2E fixture baseline and stale lifecycle/progress docs.
+- [x] Step 2: Update lifecycle/progress/plan status wording and official display estimate.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+
+### Verification
+
+- `git diff --name-only` should list only `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Trailing whitespace scan on the three docs/control files.
+- Confirm displayed progress is `Project completion progress: 82%`.
+
+### Risks
+
+- Over-counting progress from a test/product-proof fixture.
+- Accidentally implying provider/media readiness, generated image/video, approval, canon, formal registry write, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started post-E2E fixture docs/control alignment after `03` passed E2E fixture push apply. Scope is three docs/control files only.
+- 2026-06-28: Progress adjustment is limited to the previously listed missing E2E image-facing fixture; final delivery verification and formal registry boundary remain not counted.
+- 2026-06-28: Marked Stage 39 E2E image-facing delivery proof fixture as Done, added Stage 40 final local product-delivery verification bundle as Next, and updated official display estimate to `Project completion progress: 82%`.
+- 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
+
+## Completed E2E Image-Facing Delivery Proof Fixture Plan
 
 ### Goal
 
@@ -44,7 +107,7 @@ Add the smallest end-to-end product-proof fixture that starts from an accepted s
 - [x] Step 2: Extend the E2E fixture to create story movement audit, reviewable storyboard packet, and image-facing delivery proof.
 - [x] Step 3: Run focused fixture verification and docs/test safety checks.
 - [x] Step 4: Send to `03` for read-only review.
-- [ ] Step 5: Stage, commit, and push only after review.
+- [x] Step 5: Stage, commit, and push only after review.
 
 ### Verification
 
@@ -65,6 +128,7 @@ Add the smallest end-to-end product-proof fixture that starts from an accepted s
 - 2026-06-28: Extended `PipelineHappyPathFixtureTest` to create `StoryboardStoryMovementAuditReport`, `ReviewableStoryboardPacket`, and `ImageFacingDeliveryProof` from the existing accepted-script fixture, with boundary assertions for candidate-only product proof output.
 - 2026-06-28: Focused verification passed: `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --no-daemon --console=plain` returned BUILD SUCCESSFUL. Diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches; safety scan hits were limited to forbidden-boundary assertion strings inside the test.
 - 2026-06-28: `03` passed `minimal E2E image-facing delivery proof fixture` with no blocking findings; accepted as test/product-proof plus plan only.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply. Final pushed HEAD/upstream is `66112aef302a1ec166076763f614987a07e6c7b8`; official progress remains 80% until the progress docs are updated and reviewed.
 
 ## Completed Post Image-Facing Delivery Proof Alignment Plan
 
