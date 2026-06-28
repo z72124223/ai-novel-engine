@@ -56,7 +56,8 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 | 35 | Broad implementation bundle commit / push apply | Pushed local JSON pipeline gate baseline | Implementation bundle only, no docs/memory cleanup | `01_control` | Shared `Main.kt` / `Models.kt` scope hiding extra files | DB writes, provider/media/canon claims, docs/memory staging | Done |
 | 36 | Remaining planning docs split groups | Pushed D1/D2/D3 docs baselines | Docs/control only | `01_control` | Mixing governance, planning, and QuarterFull support docs without review | Source/runtime edits, memory staging, canon/approval claims | Done |
 | 37 | Memory owner / parser / exact ignore closure | Clean local memory support boundary | Local-only memory support, exact ignore rules | `01_control` | Treating local memory as runtime/canon state or broadly ignoring future memory work | Memory JSON staging, repair/delete/cleanup, SQLite/runtime/provider claims | Done |
-| 38 | Image-facing delivery proof after reviewable storyboard packet | Image-facing delivery proof plan or fixture | Product proof only until separately approved | `01_control` if a decision gate is needed | Mistaking candidate packet readiness for generated image/provider readiness | Provider API job, remote download, generated image storage, approval/canon/production lock | Next |
+| 38 | Image-facing delivery proof after reviewable storyboard packet | `image_facing_delivery_proof_ready` | Product proof only, no provider/media execution | None | Mistaking proof readiness for generated image/provider readiness | Provider API job, remote download, generated image storage, approval/canon/production lock | Done |
+| 39 | E2E image-facing delivery proof fixture | Accepted draft to `ImageFacingDeliveryProof` product proof fixture | Test/product proof only | None | Proving the gate in isolation but not the product path | Provider API job, remote download, generated image storage, approval/canon/production lock | Next |
 
 ## Current Mainline
 
@@ -91,6 +92,7 @@ accepted draft packet
 -> remaining planning docs split groups
 -> memory owner / parser / exact ignore closure
 -> image-facing delivery proof after reviewable storyboard packet
+-> E2E image-facing delivery proof fixture
 ```
 
 ## Next Slice Order
@@ -111,7 +113,8 @@ accepted draft packet
 14. Apply and push the broad implementation bundle. Done.
 15. Split, commit, and push remaining planning/support docs. Done.
 16. Record memory owner/parser evidence and apply exact local-memory ignore rules. Done.
-17. Define the next image-facing delivery proof after `ReviewableStoryboardPacket`. Next.
+17. Define and implement the next image-facing delivery proof after `ReviewableStoryboardPacket`. Done.
+18. Build an E2E fixture from accepted draft to `ImageFacingDeliveryProof`. Next.
 
 ## Not Approved
 

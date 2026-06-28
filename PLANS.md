@@ -1,6 +1,68 @@
 # Plan
 
-## Active Image-Facing Delivery Proof Plan
+## Active Post Image-Facing Delivery Proof Alignment Plan
+
+### Goal
+
+Align control documentation after the accepted and pushed `ImageFacingDeliveryProof` gate so the plan and lifecycle map no longer show the completed proof gate as pending.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Keep official progress at `80%`; the proof gate is accepted, but the next product proof still needs an end-to-end fixture from accepted draft through `ReviewableStoryboardPacket` into `ImageFacingDeliveryProof`.
+- Preserve all no-provider/no-generation/no-approval/no-canon/no-runtime-write boundaries.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No memory JSON, `.gitignore`, sample, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, or production-lock changes.
+
+### Confirmed Facts
+
+- `03` passed `minimal image-facing delivery proof gate`, staging apply, commit apply, push readiness, and push apply.
+- Current pushed HEAD/upstream are `fe866e3116fa28908c0b493c5849347759767bfd` / `fe866e3 feat: add image-facing delivery proof gate`.
+- The pushed commit exact file set was the accepted five-file proof gate set.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 38 as `Next`.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still lists image-facing delivery proof itself as not yet counted.
+
+### Assumptions
+
+- The next product-completion slice should be an E2E proof fixture from accepted draft to image-facing delivery proof, not provider/media generation.
+
+### Open Questions
+
+- Whether the future E2E fixture should reuse `PipelineHappyPathFixtureTest` or create a narrower dedicated fixture.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm pushed proof gate baseline and stale docs/control status.
+- [x] Step 2: Update lifecycle/progress/plan status wording.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [ ] Step 4: Commit and push docs/control alignment after review.
+
+### Verification
+
+- `git diff --name-only` should list only `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Trailing whitespace scan on the three docs/control files.
+- Confirm displayed progress remains `Project completion progress: 80%`.
+
+### Risks
+
+- Accidentally increasing product progress without an E2E product-delivery fixture.
+- Accidentally implying image/provider readiness, generated media, approval, canon, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started post-push docs/control alignment after `03` passed image-facing delivery proof push apply. Scope is three docs/control files only; official progress remains 80%.
+- 2026-06-28: Marked Stage 38 image-facing delivery proof as Done, added Stage 39 E2E image-facing delivery proof fixture as Next, and updated progress evidence while keeping official progress at 80%.
+- 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches; progress display remains 80%.
+
+## Completed Image-Facing Delivery Proof Plan
 
 ### Goal
 
@@ -46,8 +108,8 @@ Add the smallest local JSON product proof that turns a passed `ReviewableStorybo
 - [x] Step 3: Run focused verification and safety/diff checks.
 - [x] Step 4: Send the slice to `03` for read-only review.
 - [x] Step 5: Stage the exact accepted five-file implementation set for commit review.
-- [ ] Step 6: Commit the exact accepted image-facing delivery proof gate set.
-- [ ] Step 7: Push the commit after push-readiness review.
+- [x] Step 6: Commit the exact accepted image-facing delivery proof gate set.
+- [x] Step 7: Push the commit after push-readiness review.
 
 ### Verification
 
@@ -70,6 +132,7 @@ Add the smallest local JSON product proof that turns a passed `ReviewableStorybo
 - 2026-06-28: Hardened the proof text scan to include direct source fields `packetId`, `acceptedScriptPacketId`, and `scriptPacketDraftFile`; added regression coverage for `scriptPacketDraftFile=https://...` failing with `REMOTE_REFERENCE_FORBIDDEN`. Focused test `.\gradlew.bat test --tests "*ImageFacingDeliveryProofTest" --no-daemon --console=plain` passed.
 - 2026-06-28: `03` passed `minimal image-facing delivery proof gate`, confirming the slice remains Kotlin/JVM CLI + JSON file protocol only, with no provider/image generation/approval/canon/production-lock boundary drift. `03` could not rerun Gradle due local file locks and relied on submitted BUILD SUCCESSFUL plus read-only code review; 01/02 focused test had passed before handoff.
 - 2026-06-28: Staged exactly the accepted five-file set for this slice: `PLANS.md`, `Main.kt`, `Models.kt`, `ImageFacingDeliveryProofService.kt`, and `ImageFacingDeliveryProofTest.kt`. Cached diff check passed and no unstaged drift remained inside the staged set.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply for this slice. Final pushed HEAD/upstream is `fe866e3116fa28908c0b493c5849347759767bfd`; official progress remains 80%.
 
 ## Completed Post-Clean Lifecycle and Progress Alignment Plan
 
