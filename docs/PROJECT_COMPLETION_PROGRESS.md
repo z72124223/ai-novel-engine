@@ -85,6 +85,7 @@ Counted through:
 - `minimal image-facing delivery proof gate` plus staging, commit, push readiness, and push apply: PASS by `03`; evidence is recorded, but the official score remains unchanged until an E2E product fixture reaches the new proof artifact.
 - `minimal E2E image-facing delivery proof fixture` plus staging, commit, push readiness, and push apply: PASS by `03`; this completes the previously uncounted accepted-script to `ImageFacingDeliveryProof` fixture and raises the reviewable/image-facing row by 2 points.
 - `minimal final local product-delivery verification bundle` plus staging, commit, push readiness, and push apply: PASS by `03`; this completes the previously uncounted final local verification evidence and raises the reviewable/image-facing row by 2 points.
+- `minimal project completion closure decision brief` plus staging, commit, push readiness, and push apply: PASS by `03`; not counted as a percentage increase because it frames owner options rather than selecting completion scope.
 
 Display remains:
 

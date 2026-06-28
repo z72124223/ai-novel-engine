@@ -1,6 +1,70 @@
 # Plan
 
-## Active Project Completion Closure Decision Brief Plan
+## Active Post Closure Decision Brief Progress Alignment Plan
+
+### Goal
+
+Align lifecycle and progress docs after the accepted and pushed project completion closure decision brief.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Mark Stage 41 as Done and make the next step an owner closure option selection.
+- Keep official progress at `Project completion progress: 84%`; the decision brief frames the remaining choice but does not decide it.
+- Preserve all no-release-tag/no-provider/no-generation/no-approval/no-canon/no-runtime-write boundaries.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No release tag, branch change, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No owner selection of Option A/B/C in this alignment slice.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `b37ff6303ef30184f459055be8a17018a23e4b0a` / `b37ff63 docs: add project completion closure brief`.
+- `03` passed the project completion closure decision brief, staging apply, commit apply, push readiness, and push apply.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 41 `Project completion closure decision brief` as Next.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still displays `Project completion progress: 84%`.
+
+### Assumptions
+
+- The correct next project-control step is an explicit owner selection among the closure options, not an implicit completion claim.
+
+### Open Questions
+
+- Whether the owner selects Option A, B, or C for project closure.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm pushed closure decision brief baseline and stale lifecycle/progress docs.
+- [x] Step 2: Update lifecycle/progress/plan status wording while keeping progress at 84%.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+
+### Verification
+
+- `git diff --name-only` should list only `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Trailing whitespace scan on the three docs/control files.
+- Confirm displayed progress remains `Project completion progress: 84%`.
+
+### Risks
+
+- Accidentally treating the closure decision brief as owner approval of project completion.
+- Accidentally implying release tag, formal registry write, provider/media readiness, approval, canon, runtime write, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started post-closure-decision-brief docs/control alignment after `03` passed closure brief push apply. Scope is three docs/control files only; official progress remains 84%.
+- 2026-06-28: Marked Stage 41 project completion closure decision brief as Done, added Stage 42 owner closure option selection as Next, and kept official progress at `Project completion progress: 84%`.
+- 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
+- 2026-06-28: `03` passed `minimal post-closure-decision-brief lifecycle/progress alignment`; no blocking findings. Next action is exact three-file staging after review.
+
+## Completed Project Completion Closure Decision Brief Plan
 
 ### Goal
 
@@ -46,7 +110,7 @@ Create a docs/control decision brief that lets `01` / the user decide what remai
 - [x] Step 1: Confirm clean pushed 84% baseline and Stage 41 scope.
 - [x] Step 2: Create project completion closure decision brief.
 - [x] Step 3: Run docs-only verification and send to `03`.
-- [ ] Step 4: Stage, commit, and push only after review.
+- [x] Step 4: Stage, commit, and push only after review.
 
 ### Verification
 
@@ -65,6 +129,7 @@ Create a docs/control decision brief that lets `01` / the user decide what remai
 - 2026-06-28: Started Stage 41 project completion closure decision brief after `03` passed pushed progress alignment at 84%. Scope is docs/control decision evidence only.
 - 2026-06-28: Created `docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md` with Option A current-phase closure, Option B formal registry boundary, Option C release packaging, and Option D provider/media production out-of-scope. Official progress remains 84%.
 - 2026-06-28: `03` passed `minimal project completion closure decision brief`; no blocking findings. Next action is exact two-file staging after review.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply for this decision brief. Final pushed HEAD/upstream is `b37ff6303ef30184f459055be8a17018a23e4b0a`; official progress remains 84% pending owner option selection.
 
 ## Completed Post Final Local Verification Progress Alignment Plan
 
