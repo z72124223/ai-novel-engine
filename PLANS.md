@@ -1,61 +1,67 @@
 # Plan
 
-## Active Owner Closure Option Selection Pending Plan
+## Active Owner Closure Option A Selection Record Plan
 
 ### Goal
 
-Keep Stage 42 honest after the pushed owner decision intake record: the current project phase still requires an explicit owner/user selection of Option A, B, or C before completion wording or progress alignment.
+Record the owner's explicit Option A selection for Stage 42 without yet changing lifecycle completion wording or the official progress estimate.
 
 ### Global Strategy
 
 - Update docs/control status only:
   - `PLANS.md`
-- Record that `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` has been committed and pushed.
-- Preserve Option A as the current recommendation only, not as selected.
+  - `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`
+  - `docs/PROJECT_COMPLETION_OWNER_SELECTION.md`
+- Treat the user reply `a` as the explicit owner/user selection of Option A after the prior A/B/C explanation.
+- Preserve the selection as a control decision only, not release approval or production approval.
 - Keep official progress at `Project completion progress: 84%`.
-- Ask for explicit owner/user selection before creating any selection record or completion alignment.
+- Send the selection record to `03` before any lifecycle/progress completion alignment.
 
 ### Non-Goals
 
 - No Kotlin/source/test/schema/runtime/CLI behavior edits.
 - No Gradle rerun.
 - No release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
-- No implicit owner selection, project-complete wording, or progress increase.
+- No project-complete wording or progress increase until `03` accepts the selection record and a later alignment slice updates the lifecycle/progress docs.
 
 ### Confirmed Facts
 
-- This status refresh started from clean pushed HEAD/upstream `198aabf4745f7197efed9b04cc38a4f064beb8ad` / `198aabf docs: align owner selection pending plan`.
+- This selection record slice started from clean pushed HEAD/upstream `be16f5259881e2b49f6a2746fc30ff7696a06a16` / `be16f52 docs: simplify pending owner selection plan`.
 - `03` passed the owner decision intake repair, staging apply, commit apply, push readiness, and push apply.
 - `03` passed the post-owner-decision-intake `PLANS.md` alignment, staging apply, commit apply, push readiness, and push apply.
-- `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records `Decision status: PENDING_EXPLICIT_OWNER_SELECTION`.
-- `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records Option A as current recommendation only and `Selection source: none yet.`
+- At the start of this slice, `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` recorded `Decision status: PENDING_EXPLICIT_OWNER_SELECTION`.
+- At the start of this slice, `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` recorded Option A as current recommendation only and `Selection source: none yet.`
 - `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 42 `Owner closure option selection` as Next.
 - `docs/PROJECT_COMPLETION_PROGRESS.md` still displays `Project completion progress: 84%`.
+- After a plain-language explanation of Options A/B/C, the user replied `a`.
 
 ### Assumptions
 
-- The owner/user remains the authority for choosing Option A, B, or C.
+- The lower-case reply `a` is equivalent to `A` in the previously explained A/B/C selection.
 
 ### Open Questions
 
-- Whether the owner selects Option A, Option B, or Option C for project closure.
+- Whether `03` accepts this selection record as sufficient to close the explicit owner-selection blocker.
 
 ### Implementation Steps
 
-- [ ] Step 1: Ask the owner/user for explicit A/B/C selection.
-- [ ] Step 2: Create the corresponding reviewed selection record only after that explicit choice.
-- [ ] Step 3: Align lifecycle/progress docs only after `03` accepts the selection record.
+- [x] Step 1: Receive explicit owner/user selection of Option A.
+- [x] Step 2: Create the reviewed Option A selection record.
+- [x] Step 3: Send the selection record to `03` for read-only review.
+- [ ] Step 4: Align lifecycle/progress docs only after `03` accepts the selection record.
 
 ### Verification
 
 - `git status --short --untracked-files=all`.
 - Confirm `Project completion progress: 84%` remains unchanged in `docs/PROJECT_COMPLETION_PROGRESS.md`.
-- Confirm HEAD/upstream are aligned and the worktree is clean before the next owner-selection slice.
+- `git diff --check -- PLANS.md docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`.
+- For the new untracked doc, `git diff --no-index --check -- NUL docs/PROJECT_COMPLETION_OWNER_SELECTION.md`.
+- Trailing whitespace scan on changed docs.
 
 ### Risks
 
-- Accidentally treating this status alignment as the missing owner selection.
-- Accidentally changing progress/completion wording before explicit owner selection.
+- Accidentally treating the selection record as release approval or project-complete wording.
+- Accidentally changing progress/completion wording before `03` accepts the selection record.
 - Accidentally implying formal registry write, provider/media readiness, generated media, approval, canon, runtime write, or production lock.
 
 ### Drift Log
@@ -67,6 +73,11 @@ Keep Stage 42 honest after the pushed owner decision intake record: the current 
 - 2026-06-28: Simplified active plan so it no longer creates a self-referential staging/commit/push loop. The only active next step is explicit owner/user selection of A, B, or C.
 - 2026-06-28: Docs-only verification for this status refresh passed: dirty set is only `PLANS.md`; diff check returned only LF/CRLF warning; trailing whitespace scan returned no matches; progress remains 84%; HEAD/upstream are aligned at `198aabf4745f7197efed9b04cc38a4f064beb8ad`.
 - 2026-06-28: `03` passed `minimal PLANS pending-owner-selection status refresh`; no blocking findings. After this status refresh is committed and pushed, the next project step remains explicit owner/user selection of A, B, or C.
+- 2026-06-28: User asked for the difference between A/B/C, then asked why closure is needed, then asked what the project currently can do. After those explanations, the user replied `a`, which is the explicit Option A owner selection for Stage 42. This slice records the selection only; progress remains 84% pending `03` review and later lifecycle/progress alignment.
+- 2026-06-28: Created `docs/PROJECT_COMPLETION_OWNER_SELECTION.md` and marked the prior intake record as superseded by the explicit user selection. This does not change lifecycle completion wording or progress; both remain pending `03` review.
+- 2026-06-28: Docs-only verification passed: dirty set is exactly `PLANS.md`, `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`, and new `docs/PROJECT_COMPLETION_OWNER_SELECTION.md`; diff/no-index checks returned only LF/CRLF warnings; trailing whitespace scan returned no matches; official progress remains 84%.
+- 2026-06-28: Local diff review tightened wording: `PLANS.md` now marks pending intake facts as slice-start facts, and the intake record labels its option/recommendation sections as intake history. Verification rerun passed with only LF/CRLF warnings; progress remains 84%.
+- 2026-06-28: `03` passed `minimal owner Option A selection record`. It confirmed the explicit user input `a` is now sufficient, the new selection record is docs/control-only, progress remains 84%, and lifecycle/progress completion alignment remains a later slice.
 
 ## Completed Owner Closure Decision Intake Repair Plan
 
