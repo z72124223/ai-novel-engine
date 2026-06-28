@@ -2252,6 +2252,71 @@ data class ReviewableStoryboardPacketEvidence(
 )
 
 @Serializable
+data class ImageFacingDeliveryProof(
+    val verdict: String,
+    val proofId: String = "",
+    val proofStatus: String = "FAIL",
+    val reviewableStoryboardPacketFile: String = "",
+    val reviewableStoryboardPacketId: String = "",
+    val reviewableStoryboardPacketStatus: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceVerdict: String = "",
+    val sourceNextAllowedDownstreamStep: String = "",
+    val frameDeliveryCards: List<ImageFacingDeliveryFrameCard> = emptyList(),
+    val downstreamBoundary: String = "image_facing_delivery_proof_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ImageFacingDeliveryProofFinding> = emptyList(),
+    val evidence: ImageFacingDeliveryProofEvidence = ImageFacingDeliveryProofEvidence(),
+)
+
+@Serializable
+data class ImageFacingDeliveryFrameCard(
+    val frameId: String = "",
+    val sceneReference: String = "",
+    val beatReference: String = "",
+    val visualIntent: String = "",
+    val cameraIntent: String = "",
+    val mustShow: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val assetCandidateRefs: List<String> = emptyList(),
+    val deliveryStatus: String = "image_facing_candidate_only",
+)
+
+@Serializable
+data class ImageFacingDeliveryProofFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ImageFacingDeliveryProofEvidence(
+    val sourceBindingFieldCount: Int = 0,
+    val frameCount: Int = 0,
+    val uniqueFrameIdCount: Int = 0,
+    val frameWithVisualIntentCount: Int = 0,
+    val frameWithCameraIntentCount: Int = 0,
+    val frameWithMustShowCount: Int = 0,
+    val frameWithDoNotShowCount: Int = 0,
+    val frameWithContinuityAnchorCount: Int = 0,
+    val assetCandidateRefCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val remoteReferenceCount: Int = 0,
+)
+
+@Serializable
 data class StoryboardPacketHumanReviewDecision(
     val decisionId: String = "",
     val preflightId: String = "",

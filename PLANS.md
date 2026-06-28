@@ -1,6 +1,77 @@
 # Plan
 
-## Active Post-Clean Lifecycle and Progress Alignment Plan
+## Active Image-Facing Delivery Proof Plan
+
+### Goal
+
+Add the smallest local JSON product proof that turns a passed `ReviewableStoryboardPacket` into an image-facing delivery proof artifact without generating images, calling providers, approving assets, writing runtime state, or claiming canon/production readiness.
+
+### Global Strategy
+
+- Treat this as a product proof gate after `reviewable_storyboard_packet_ready`.
+- Read only a `ReviewableStoryboardPacket` JSON and produce a deterministic local JSON report.
+- Preserve the candidate-only boundary: the report may summarize frame-level visual delivery requirements, but it must not become a provider handoff, generated image record, approved reference, registered reference, canon, or production lock.
+- Keep source binding from the reviewable storyboard packet: packet file/id, accepted script packet id, script packet draft file, and script packet draft SHA-256.
+- Add focused tests before any broader verification.
+
+### Non-Goals
+
+- No image/video/audio generation.
+- No provider API, provider job, remote download, output path, or generated media storage.
+- No formal registry write, asset approval, approved/registered reference, canon, user approval, runtime scene write, or production lock.
+- No SQLite, schema migration, server/port, browser, React/Next, Docker, or runtime `resolve-turn` / `StateReducer` changes.
+- No changes to memory JSON files or `.gitignore`.
+
+### Confirmed Facts
+
+- Current canonical workspace is `C:\Users\f7212\Projects\AI 劇本`.
+- Current HEAD/upstream are `4d0a5d8332faff7493afef829f79b66c81f2482c` / `4d0a5d8 docs: align lifecycle progress baseline`.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` marks Stage 38, `Image-facing delivery proof after reviewable storyboard packet`, as the next slice.
+- `ReviewableStoryboardPacket` exists and passes to `nextAllowedDownstreamStep=reviewable_storyboard_packet_ready`.
+- Existing image-candidate gates remain provider-free and candidate-only, but they start from the asset-candidate human review path rather than directly from `ReviewableStoryboardPacket`.
+
+### Assumptions
+
+- A proof artifact that summarizes image-facing frame delivery cards from `ReviewableStoryboardPacket.frameSummaries` is the smallest coherent product-completion step.
+- This proof should use a new downstream marker instead of pretending to approve existing image-candidate or provider handoff gates.
+
+### Open Questions
+
+- Whether a later slice should connect this proof to the existing image-candidate human review path, or keep it as a reviewable product artifact only.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm clean pushed baseline and inspect current storyboard/image-candidate model and CLI boundaries.
+- [x] Step 2: Add `ImageFacingDeliveryProof` model, service, CLI handler, and focused tests.
+- [x] Step 3: Run focused verification and safety/diff checks.
+- [x] Step 4: Send the slice to `03` for read-only review.
+- [x] Step 5: Stage the exact accepted five-file implementation set for commit review.
+- [ ] Step 6: Commit the exact accepted image-facing delivery proof gate set.
+- [ ] Step 7: Push the commit after push-readiness review.
+
+### Verification
+
+- Focused tests for the new proof gate.
+- CLI smoke test for the new command, if a CLI command is added.
+- `git diff --check` over changed files.
+- Trailing whitespace scan over new/changed service and test files.
+- Safety scan for SQLite/server/provider/browser/runtime boundary keywords in new/changed service/test files.
+
+### Risks
+
+- Accidentally turning image-facing proof into provider readiness.
+- Under-validating forged `ReviewableStoryboardPacket` direct input.
+- Letting `assetCandidateRefs` or frame text carry status-upgrade wording such as approved reference, registered reference, canon, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started the next product-completion slice after `03` passed and the branch pushed `minimal post-clean lifecycle and progress alignment`. Scope is a local JSON proof gate after `ReviewableStoryboardPacket`; official progress remains 80% until reviewed product proof evidence is accepted.
+- 2026-06-28: Added `ImageFacingDeliveryProof` local JSON model/service/CLI/test. Focused test `.\gradlew.bat test --tests "*ImageFacingDeliveryProofTest" --rerun-tasks --no-daemon --console=plain` passed; `git diff --check` passed with only LF/CRLF warnings; trailing whitespace scan returned no matches. Safety scan found only expected guardrail wording in the new service, not provider/API/runtime execution.
+- 2026-06-28: Hardened the proof text scan to include direct source fields `packetId`, `acceptedScriptPacketId`, and `scriptPacketDraftFile`; added regression coverage for `scriptPacketDraftFile=https://...` failing with `REMOTE_REFERENCE_FORBIDDEN`. Focused test `.\gradlew.bat test --tests "*ImageFacingDeliveryProofTest" --no-daemon --console=plain` passed.
+- 2026-06-28: `03` passed `minimal image-facing delivery proof gate`, confirming the slice remains Kotlin/JVM CLI + JSON file protocol only, with no provider/image generation/approval/canon/production-lock boundary drift. `03` could not rerun Gradle due local file locks and relied on submitted BUILD SUCCESSFUL plus read-only code review; 01/02 focused test had passed before handoff.
+- 2026-06-28: Staged exactly the accepted five-file set for this slice: `PLANS.md`, `Main.kt`, `Models.kt`, `ImageFacingDeliveryProofService.kt`, and `ImageFacingDeliveryProofTest.kt`. Cached diff check passed and no unstaged drift remained inside the staged set.
+
+## Completed Post-Clean Lifecycle and Progress Alignment Plan
 
 ### Goal
 
@@ -26,8 +97,8 @@ Align control documentation after the accepted local-memory exact ignore commit/
 
 ### Confirmed Facts
 
-- `03` passed `minimal local-memory exact ignore push apply`.
-- Current pushed HEAD/upstream is `66111b4085fbf160dc181c843005a29fad456d33` / `66111b4 chore: ignore local memory support files`.
+- `03` passed `minimal local-memory exact ignore push apply` before this lifecycle/progress alignment slice.
+- This lifecycle/progress alignment slice was committed and pushed as `4d0a5d8332faff7493afef829f79b66c81f2482c` / `4d0a5d8 docs: align lifecycle progress baseline`.
 - `docs/PIPELINE_LIFECYCLE_MAP.md` still lists older release/staging states as active or next.
 - `docs/PROJECT_COMPLETION_PROGRESS.md` still lists last control review only through early control-doc staging.
 - The top local-memory ignore plan was completed and pushed, so it should no longer be the active plan.
@@ -69,6 +140,7 @@ Align control documentation after the accepted local-memory exact ignore commit/
 
 - 2026-06-28: Started `minimal post-clean lifecycle and progress alignment` after `03` passed the exact local-memory ignore push apply. Scope is three docs/control files only; official progress remains 80%.
 - 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches. Remaining older Stage 26/34 references in lower `PLANS.md` sections are historical drift logs, not the active plan.
+- 2026-06-28: `03` passed staging, commit, push readiness, and push apply for this docs/control alignment slice. Final pushed HEAD/upstream is `4d0a5d8332faff7493afef829f79b66c81f2482c`; official progress remains 80%.
 
 ## Completed Local-Memory Exact Ignore Apply Plan
 

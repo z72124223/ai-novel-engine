@@ -96,6 +96,7 @@ import com.localnovel.engine.service.ImageCandidateReferencePacketService
 import com.localnovel.engine.service.ImageCandidateReferencePacketValidationService
 import com.localnovel.engine.service.ImageCandidateResultHumanReviewDecisionIntakeService
 import com.localnovel.engine.service.ImageCandidateResultReviewPreflightService
+import com.localnovel.engine.service.ImageFacingDeliveryProofService
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.CapabilityContractResolver
 import com.localnovel.engine.service.CharacterNuwaGateValidationService
@@ -207,6 +208,7 @@ class Cli {
                 "validate-storyboard-packet-human-review-decision" -> validateStoryboardPacketHumanReviewDecision(options)
                 "audit-storyboard-story-movement" -> auditStoryboardStoryMovement(options)
                 "create-reviewable-storyboard-packet" -> createReviewableStoryboardPacket(options)
+                "create-image-facing-delivery-proof" -> createImageFacingDeliveryProof(options)
                 "validate-asset-candidate-preflight" -> validateAssetCandidatePreflight(options)
                 "create-asset-candidate-brief" -> createAssetCandidateBrief(options)
                 "create-asset-candidate-draft" -> createAssetCandidateDraft(options)
@@ -974,6 +976,40 @@ class Cli {
             println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
         }
         return if (packet.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createImageFacingDeliveryProof(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("reviewable-storyboard-packet"))
+        val proof = ImageFacingDeliveryProofService().create(
+            reviewableStoryboardPacket = readJson(packetPath),
+            reviewableStoryboardPacketFile = packetPath.toString(),
+            proofId = options["proof"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), proof) }
+        println("verdict=${proof.verdict}")
+        println("proofId=${proof.proofId}")
+        println("proofStatus=${proof.proofStatus}")
+        println("reviewableStoryboardPacketId=${proof.reviewableStoryboardPacketId}")
+        println("acceptedScriptPacketId=${proof.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${proof.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${proof.scriptPacketDraftContentSha256}")
+        println("frames=${proof.evidence.uniqueFrameIdCount}/${proof.evidence.frameCount}")
+        println("visualIntentFrames=${proof.evidence.frameWithVisualIntentCount}")
+        println("cameraIntentFrames=${proof.evidence.frameWithCameraIntentCount}")
+        println("mustShowFrames=${proof.evidence.frameWithMustShowCount}")
+        println("doNotShowFrames=${proof.evidence.frameWithDoNotShowCount}")
+        println("continuityAnchorFrames=${proof.evidence.frameWithContinuityAnchorCount}")
+        println("assetCandidateRefs=${proof.evidence.assetCandidateRefCount}")
+        println("forbiddenClaims=${proof.evidence.forbiddenClaimCount}")
+        println("remoteReferences=${proof.evidence.remoteReferenceCount}")
+        println("downstreamBoundary=${proof.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${proof.nextAllowedDownstreamStep}")
+        println("blockedReason=${proof.blockedReason}")
+        println("findings=${proof.findingCount}")
+        proof.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (proof.verdict == "FAIL") 1 else 0
     }
 
     private fun validateStoryboardPacketHumanReviewDecision(options: Map<String, String>): Int {
@@ -2655,6 +2691,7 @@ class Cli {
               validate-storyboard-packet-human-review-decision --human-review-preflight <path> --human-review-decision <path> [--out <path>]
               audit-storyboard-story-movement --storyboard-packet-draft <path> --storyboard-packet-review <path> --storyboard-human-review-preflight <path> [--audit <id>] [--out <path>]
               create-reviewable-storyboard-packet --storyboard-packet-draft <path> --storyboard-packet-review <path> --storyboard-human-review-preflight <path> --storyboard-story-movement-audit <path> [--packet <id>] [--out <path>]
+              create-image-facing-delivery-proof --reviewable-storyboard-packet <path> [--proof <id>] [--out <path>]
               validate-asset-candidate-preflight --human-review-decision-intake <path> --storyboard-packet-review <path> [--preflight <id>] [--out <path>]
               create-asset-candidate-brief --asset-candidate-preflight <path> [--brief <id>] [--out <path>]
               create-asset-candidate-draft --asset-candidate-brief <path> [--draft <id>] [--out <path>]
