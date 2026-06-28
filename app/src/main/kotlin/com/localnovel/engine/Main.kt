@@ -18,6 +18,15 @@ import com.localnovel.engine.model.CandidateReferenceRegistryHumanAcceptanceDeci
 import com.localnovel.engine.model.CandidateReferenceRegistryPacket
 import com.localnovel.engine.model.CandidateReferenceRegistryPacketValidationReport
 import com.localnovel.engine.model.CandidateReferenceRegistryPreflightReport
+import com.localnovel.engine.model.ComicVideoAudioCue
+import com.localnovel.engine.model.ComicVideoPacket
+import com.localnovel.engine.model.ComicVideoPacketSourceVerdicts
+import com.localnovel.engine.model.ComicVideoPacketValidationReport
+import com.localnovel.engine.model.ComicVideoPanelTrack
+import com.localnovel.engine.model.ComicVideoSubtitleCue
+import com.localnovel.engine.model.ComicVideoTiming
+import com.localnovel.engine.model.ComicVideoVoiceCast
+import com.localnovel.engine.model.ComicVideoVoiceTimelineFill
 import com.localnovel.engine.model.ImageCandidateBrief
 import com.localnovel.engine.model.ImageCandidateExternalResult
 import com.localnovel.engine.model.ImageCandidateExternalResultIntakeReport
@@ -28,6 +37,7 @@ import com.localnovel.engine.model.ImageCandidateProviderHandoffDecisionIntakeRe
 import com.localnovel.engine.model.ImageCandidateProviderHandoffPacket
 import com.localnovel.engine.model.ImageCandidateProviderHandoffPacketValidationReport
 import com.localnovel.engine.model.ImageCandidateProviderHandoffPreflightReport
+import com.localnovel.engine.model.ImageFacingDeliveryProof
 import com.localnovel.engine.model.ImageCandidateResultReviewDecision
 import com.localnovel.engine.model.ImageCandidateResultReviewDecisionIntakeReport
 import com.localnovel.engine.model.ImageCandidateResultReviewPreflightReport
@@ -102,6 +112,10 @@ import com.localnovel.engine.service.CapabilityContractResolver
 import com.localnovel.engine.service.CharacterNuwaGateValidationService
 import com.localnovel.engine.service.ChapterContinuityAuditService
 import com.localnovel.engine.service.CheckpointService
+import com.localnovel.engine.service.ComicVideoPacketService
+import com.localnovel.engine.service.ComicVideoPacketValidationService
+import com.localnovel.engine.service.ComicVideoRenderHandoffManifestService
+import com.localnovel.engine.service.ComicVideoVoiceTimelineFillService
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
 import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
@@ -209,6 +223,12 @@ class Cli {
                 "audit-storyboard-story-movement" -> auditStoryboardStoryMovement(options)
                 "create-reviewable-storyboard-packet" -> createReviewableStoryboardPacket(options)
                 "create-image-facing-delivery-proof" -> createImageFacingDeliveryProof(options)
+                "create-comic-video-packet" -> createComicVideoPacket(options)
+                "create-comic-video-packet-template" -> createComicVideoPacketTemplate(options)
+                "create-comic-video-voice-timeline-fill-template" -> createComicVideoVoiceTimelineFillTemplate(options)
+                "fill-comic-video-voice-timeline" -> fillComicVideoVoiceTimeline(options)
+                "validate-comic-video-packet" -> validateComicVideoPacket(options)
+                "create-comic-video-render-handoff-manifest" -> createComicVideoRenderHandoffManifest(options)
                 "validate-asset-candidate-preflight" -> validateAssetCandidatePreflight(options)
                 "create-asset-candidate-brief" -> createAssetCandidateBrief(options)
                 "create-asset-candidate-draft" -> createAssetCandidateDraft(options)
@@ -1010,6 +1030,228 @@ class Cli {
             println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
         }
         return if (proof.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createComicVideoPacket(options: Map<String, String>): Int {
+        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
+        val panelDurationMillis = options["panel-duration-ms"]?.toIntOrNull()
+            ?: options["panel-duration-ms"]?.let { error("--panel-duration-ms must be an integer.") }
+            ?: 3000
+        val packet = ComicVideoPacketService().create(
+            imageFacingDeliveryProof = readJson<ImageFacingDeliveryProof>(proofPath),
+            imageFacingDeliveryProofFile = proofPath.toString(),
+            packetId = options["packet"] ?: "",
+            panelDurationMillis = panelDurationMillis,
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("packetId=${packet.packetId}")
+        println("packetStatus=${packet.packetStatus}")
+        println("sourceImageFacingDeliveryProofId=${packet.sourceImageFacingDeliveryProofId}")
+        println("acceptedScriptPacketId=${packet.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${packet.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${packet.scriptPacketDraftContentSha256}")
+        println("panels=${packet.panelTracks.size}")
+        println("voiceCast=${packet.voiceCast.size}")
+        println("audioCues=${packet.audioCues.size}")
+        println("subtitleCues=${packet.subtitleCues.size}")
+        println("totalDurationMillis=${packet.timing.totalDurationMillis}")
+        println("downstreamBoundary=${packet.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("validationNeeded=true")
+        return 0
+    }
+
+    private fun createComicVideoPacketTemplate(options: Map<String, String>): Int {
+        val packetId = options["packet"] ?: "comic-video-packet-template"
+        val out = Path.of(options.required("out"))
+        val template = ComicVideoPacket(
+            packetId = packetId,
+            reviewableStoryboardPacketFile = options["reviewable-storyboard-packet"] ?: "",
+            imageFacingDeliveryProofFile = options["image-facing-delivery-proof"] ?: "",
+            acceptedScriptPacketId = options["accepted-script-packet"] ?: "",
+            scriptPacketDraftFile = options["script-packet-draft"] ?: "",
+            scriptPacketDraftContentSha256 = options["script-packet-sha256"] ?: "",
+            sourceVerdicts = ComicVideoPacketSourceVerdicts(),
+            panelTracks = listOf(
+                ComicVideoPanelTrack(
+                    panelId = "panel-001",
+                    sourceFrameId = "frame-001",
+                    sceneReference = "replace-with-scene-reference",
+                    beatReference = "replace-with-beat-reference",
+                    visualIntent = "Replace with visible panel intent from the reviewable storyboard packet.",
+                    cameraIntent = "Replace with camera intent from the reviewable storyboard packet.",
+                    displayDurationMillis = 3000,
+                    mustShow = listOf("Replace with must-show visual constraint."),
+                    doNotShow = listOf("Replace with do-not-show visual constraint."),
+                    continuityAnchors = listOf("Replace with protected continuity anchor."),
+                    assetCandidateRefs = listOf("replace-with-asset-candidate-ref"),
+                ),
+            ),
+            voiceCast = listOf(
+                ComicVideoVoiceCast(
+                    voiceId = "voice-protagonist",
+                    characterId = "char-protagonist",
+                    displayName = "Protagonist",
+                    voiceLabel = "Replace with local/manual voice label.",
+                    notes = "Plan-only voice casting. Keep media fields blank.",
+                ),
+            ),
+            audioCues = listOf(
+                ComicVideoAudioCue(
+                    cueId = "audio-001",
+                    panelId = "panel-001",
+                    voiceId = "voice-protagonist",
+                    characterId = "char-protagonist",
+                    text = "Replace with spoken Traditional Chinese line.",
+                    startMillis = 0,
+                    durationMillis = 3000,
+                ),
+            ),
+            subtitleCues = listOf(
+                ComicVideoSubtitleCue(
+                    cueId = "subtitle-001",
+                    panelId = "panel-001",
+                    audioCueId = "audio-001",
+                    text = "Replace with subtitle text.",
+                    startMillis = 0,
+                    endMillis = 3000,
+                ),
+            ),
+            timing = ComicVideoTiming(totalDurationMillis = 3000),
+            boundaryChecklist = listOf(
+                "metadata_only",
+                "media_execution_absent",
+                "remote_payload_absent",
+                "candidate_only_no_lock",
+            ),
+            residualRisks = listOf(
+                "Template requires source ids, PASS source verdicts, and author-filled timeline details before validation can pass.",
+            ),
+        )
+        writeJson(out, template)
+        println("wrote=$out")
+        println("packetId=${template.packetId}")
+        println("packetStatus=${template.packetStatus}")
+        println("panels=${template.panelTracks.size}")
+        println("voiceCast=${template.voiceCast.size}")
+        println("audioCues=${template.audioCues.size}")
+        println("subtitleCues=${template.subtitleCues.size}")
+        println("downstreamBoundary=${template.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${template.nextAllowedDownstreamStep}")
+        return 0
+    }
+
+    private fun fillComicVideoVoiceTimeline(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("comic-video-packet"))
+        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val packet = ComicVideoVoiceTimelineFillService().fill(
+            packet = readJson<ComicVideoPacket>(packetPath),
+            fill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("packetId=${packet.packetId}")
+        println("packetStatus=${packet.packetStatus}")
+        println("sourcePacketFile=$packetPath")
+        println("voiceTimelineFillFile=$fillPath")
+        println("panels=${packet.panelTracks.size}")
+        println("voiceCast=${packet.voiceCast.size}")
+        println("audioCues=${packet.audioCues.size}")
+        println("subtitleCues=${packet.subtitleCues.size}")
+        println("totalDurationMillis=${packet.timing.totalDurationMillis}")
+        println("downstreamBoundary=${packet.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("validationNeeded=true")
+        return 0
+    }
+
+    private fun createComicVideoVoiceTimelineFillTemplate(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("comic-video-packet"))
+        val out = Path.of(options.required("out"))
+        val fill = ComicVideoVoiceTimelineFillService().createTemplate(
+            packet = readJson<ComicVideoPacket>(packetPath),
+            fillId = options["fill"] ?: "",
+            voiceId = options["voice-id"] ?: "voice-manual-001",
+            characterId = options["character-id"] ?: "char-manual-001",
+            displayName = options["display-name"] ?: "Manual Voice",
+            voiceLabel = options["voice-label"] ?: "local-manual-voice",
+        )
+        writeJson(out, fill)
+        println("wrote=$out")
+        println("fillId=${fill.fillId}")
+        println("sourceComicVideoPacketId=${fill.sourceComicVideoPacketId}")
+        println("fillStatus=${fill.fillStatus}")
+        println("voiceCast=${fill.voiceCast.size}")
+        println("audioCues=${fill.audioCues.size}")
+        println("subtitleCues=${fill.subtitleCues.size}")
+        println("totalDurationMillis=${fill.timing.totalDurationMillis}")
+        println("editRequired=true")
+        println("mediaGenerated=false")
+        return 0
+    }
+
+    private fun validateComicVideoPacket(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("comic-video-packet"))
+        val report = ComicVideoPacketValidationService().validate(
+            packet = readJson<ComicVideoPacket>(packetPath),
+            packetFile = packetPath.toString(),
+            validationId = options["validation"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("validationId=${report.validationId}")
+        println("packetId=${report.packetId}")
+        println("packetStatus=${report.packetStatus}")
+        println("reviewableStoryboardPacketFile=${report.reviewableStoryboardPacketFile}")
+        println("imageFacingDeliveryProofFile=${report.imageFacingDeliveryProofFile}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("panels=${report.evidence.uniquePanelIdCount}/${report.evidence.panelTrackCount}")
+        println("voiceCast=${report.evidence.uniqueVoiceIdCount}/${report.evidence.voiceCastCount}")
+        println("audioCues=${report.evidence.audioCueCount}")
+        println("subtitleCues=${report.evidence.subtitleCueCount}")
+        println("crossReferenceMismatches=${report.evidence.crossReferenceMismatchCount}")
+        println("generatedMediaFields=${report.evidence.generatedMediaFieldCount}")
+        println("remoteOrProviderFields=${report.evidence.remoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createComicVideoRenderHandoffManifest(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("comic-video-packet-validation"))
+        val manifest = ComicVideoRenderHandoffManifestService().create(
+            validationReport = readJson<ComicVideoPacketValidationReport>(validationPath),
+            validationReportFile = validationPath.toString(),
+            manifestId = options["manifest"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), manifest) }
+        println("verdict=${manifest.verdict}")
+        println("manifestId=${manifest.manifestId}")
+        println("manifestStatus=${manifest.manifestStatus}")
+        println("validationId=${manifest.validationId}")
+        println("packetId=${manifest.packetId}")
+        println("acceptedScriptPacketId=${manifest.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${manifest.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${manifest.scriptPacketDraftContentSha256}")
+        println("panelTimeline=${manifest.panelTimeline.size}")
+        println("voiceTimeline=${manifest.voiceTimeline.size}")
+        println("subtitleTimeline=${manifest.subtitleTimeline.size}")
+        println("totalDurationMillis=${manifest.renderSettings.totalDurationMillis}")
+        println("downstreamBoundary=${manifest.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${manifest.nextAllowedDownstreamStep}")
+        println("blockedReason=${manifest.blockedReason}")
+        println("findings=${manifest.findingCount}")
+        manifest.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (manifest.verdict == "FAIL") 1 else 0
     }
 
     private fun validateStoryboardPacketHumanReviewDecision(options: Map<String, String>): Int {
@@ -2692,6 +2934,12 @@ class Cli {
               audit-storyboard-story-movement --storyboard-packet-draft <path> --storyboard-packet-review <path> --storyboard-human-review-preflight <path> [--audit <id>] [--out <path>]
               create-reviewable-storyboard-packet --storyboard-packet-draft <path> --storyboard-packet-review <path> --storyboard-human-review-preflight <path> --storyboard-story-movement-audit <path> [--packet <id>] [--out <path>]
               create-image-facing-delivery-proof --reviewable-storyboard-packet <path> [--proof <id>] [--out <path>]
+              create-comic-video-packet --image-facing-delivery-proof <path> [--packet <id>] [--panel-duration-ms <n>] [--out <path>]
+              create-comic-video-packet-template [--packet <id>] [--reviewable-storyboard-packet <path>] [--image-facing-delivery-proof <path>] [--accepted-script-packet <id>] [--script-packet-draft <path>] [--script-packet-sha256 <sha256>] --out <path>
+              create-comic-video-voice-timeline-fill-template --comic-video-packet <path> [--fill <id>] [--voice-id <id>] [--character-id <id>] [--display-name <name>] [--voice-label <label>] --out <path>
+              fill-comic-video-voice-timeline --comic-video-packet <path> --voice-timeline-fill <path> [--out <path>]
+              validate-comic-video-packet --comic-video-packet <path> [--validation <id>] [--out <path>]
+              create-comic-video-render-handoff-manifest --comic-video-packet-validation <path> [--manifest <id>] [--out <path>]
               validate-asset-candidate-preflight --human-review-decision-intake <path> --storyboard-packet-review <path> [--preflight <id>] [--out <path>]
               create-asset-candidate-brief --asset-candidate-preflight <path> [--brief <id>] [--out <path>]
               create-asset-candidate-draft --asset-candidate-brief <path> [--draft <id>] [--out <path>]

@@ -2317,6 +2317,277 @@ data class ImageFacingDeliveryProofEvidence(
 )
 
 @Serializable
+data class ComicVideoPacket(
+    val packetId: String = "",
+    val packetStatus: String = "comic_video_packet_candidate",
+    val reviewableStoryboardPacketFile: String = "",
+    val imageFacingDeliveryProofFile: String = "",
+    val sourceReviewableStoryboardPacketId: String = "",
+    val sourceImageFacingDeliveryProofId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceVerdicts: ComicVideoPacketSourceVerdicts = ComicVideoPacketSourceVerdicts(),
+    val panelTracks: List<ComicVideoPanelTrack> = emptyList(),
+    val voiceCast: List<ComicVideoVoiceCast> = emptyList(),
+    val audioCues: List<ComicVideoAudioCue> = emptyList(),
+    val subtitleCues: List<ComicVideoSubtitleCue> = emptyList(),
+    val timing: ComicVideoTiming = ComicVideoTiming(),
+    val downstreamBoundary: String = "comic_video_packet_metadata_only",
+    val nextAllowedDownstreamStep: String = "comic_video_packet_validation",
+    val boundaryChecklist: List<String> = emptyList(),
+    val residualRisks: List<String> = emptyList(),
+)
+
+@Serializable
+data class ComicVideoPacketSourceVerdicts(
+    val reviewableStoryboardPacketVerdict: String = "",
+    val imageFacingDeliveryProofVerdict: String = "",
+    val imageFacingDeliveryProofNextAllowedDownstreamStep: String = "",
+)
+
+@Serializable
+data class ComicVideoPanelTrack(
+    val panelId: String = "",
+    val sourceFrameId: String = "",
+    val sceneReference: String = "",
+    val beatReference: String = "",
+    val visualIntent: String = "",
+    val cameraIntent: String = "",
+    val displayDurationMillis: Int = 0,
+    val transition: String = "cut",
+    val mustShow: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val assetCandidateRefs: List<String> = emptyList(),
+    val localImagePath: String = "",
+    val renderedPanelPath: String = "",
+    val remoteImageUrl: String = "",
+    val providerJobId: String = "",
+)
+
+@Serializable
+data class ComicVideoVoiceCast(
+    val voiceId: String = "",
+    val characterId: String = "",
+    val displayName: String = "",
+    val voiceLabel: String = "",
+    val voiceBoundary: String = "voice_cast_plan_only",
+    val notes: String = "",
+)
+
+@Serializable
+data class ComicVideoAudioCue(
+    val cueId: String = "",
+    val panelId: String = "",
+    val voiceId: String = "",
+    val characterId: String = "",
+    val text: String = "",
+    val startMillis: Int = 0,
+    val durationMillis: Int = 0,
+    val audioAssetPath: String = "",
+    val remoteAudioUrl: String = "",
+    val providerJobId: String = "",
+    val generatedStatus: String = "",
+)
+
+@Serializable
+data class ComicVideoSubtitleCue(
+    val cueId: String = "",
+    val panelId: String = "",
+    val audioCueId: String = "",
+    val text: String = "",
+    val startMillis: Int = 0,
+    val endMillis: Int = 0,
+)
+
+@Serializable
+data class ComicVideoTiming(
+    val timelineStatus: String = "metadata_only_timing_plan",
+    val totalDurationMillis: Int = 0,
+    val frameRate: String = "24",
+    val resolution: String = "1920x1080",
+    val backgroundPolicy: String = "panel_track_only",
+    val outputVideoPath: String = "",
+    val renderedVideoPath: String = "",
+)
+
+@Serializable
+data class ComicVideoVoiceTimelineFill(
+    val fillId: String = "",
+    val sourceComicVideoPacketId: String = "",
+    val fillStatus: String = "comic_video_voice_timeline_fill_candidate",
+    val voiceCast: List<ComicVideoVoiceCast> = emptyList(),
+    val audioCues: List<ComicVideoAudioCue> = emptyList(),
+    val subtitleCues: List<ComicVideoSubtitleCue> = emptyList(),
+    val timing: ComicVideoTiming = ComicVideoTiming(),
+    val boundaryChecklist: List<String> = emptyList(),
+    val notes: List<String> = emptyList(),
+)
+
+@Serializable
+data class ComicVideoPacketValidationReport(
+    val verdict: String,
+    val validationId: String = "",
+    val comicVideoPacketFile: String = "",
+    val packetId: String = "",
+    val packetStatus: String = "",
+    val reviewableStoryboardPacketFile: String = "",
+    val imageFacingDeliveryProofFile: String = "",
+    val sourceReviewableStoryboardPacketId: String = "",
+    val sourceImageFacingDeliveryProofId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val sourceVerdicts: ComicVideoPacketSourceVerdicts = ComicVideoPacketSourceVerdicts(),
+    val panelTracks: List<ComicVideoPanelTrack> = emptyList(),
+    val voiceCast: List<ComicVideoVoiceCast> = emptyList(),
+    val audioCues: List<ComicVideoAudioCue> = emptyList(),
+    val subtitleCues: List<ComicVideoSubtitleCue> = emptyList(),
+    val timing: ComicVideoTiming = ComicVideoTiming(),
+    val downstreamBoundary: String = "comic_video_packet_validation_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ComicVideoPacketValidationFinding> = emptyList(),
+    val evidence: ComicVideoPacketValidationEvidence = ComicVideoPacketValidationEvidence(),
+)
+
+@Serializable
+data class ComicVideoPacketValidationFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ComicVideoPacketValidationEvidence(
+    val sourceFieldCount: Int = 0,
+    val panelTrackCount: Int = 0,
+    val uniquePanelIdCount: Int = 0,
+    val panelDurationMillisTotal: Int = 0,
+    val voiceCastCount: Int = 0,
+    val uniqueVoiceIdCount: Int = 0,
+    val audioCueCount: Int = 0,
+    val subtitleCueCount: Int = 0,
+    val crossReferenceMismatchCount: Int = 0,
+    val generatedMediaFieldCount: Int = 0,
+    val remoteOrProviderFieldCount: Int = 0,
+    val forbiddenClaimCount: Int = 0,
+    val forbiddenStatusCount: Int = 0,
+)
+
+@Serializable
+data class ComicVideoRenderHandoffManifest(
+    val verdict: String,
+    val manifestId: String = "",
+    val manifestStatus: String = "FAIL",
+    val comicVideoPacketValidationReportFile: String = "",
+    val validationId: String = "",
+    val packetId: String = "",
+    val acceptedScriptPacketId: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketDraftContentSha256: String = "",
+    val panelTimeline: List<ComicVideoRenderPanelTimelineItem> = emptyList(),
+    val voiceTimeline: List<ComicVideoRenderVoiceTimelineItem> = emptyList(),
+    val subtitleTimeline: List<ComicVideoRenderSubtitleTimelineItem> = emptyList(),
+    val renderSettings: ComicVideoRenderSettings = ComicVideoRenderSettings(),
+    val downstreamBoundary: String = "comic_video_render_handoff_manifest_metadata_only",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ComicVideoRenderHandoffManifestFinding> = emptyList(),
+    val evidence: ComicVideoRenderHandoffManifestEvidence = ComicVideoRenderHandoffManifestEvidence(),
+)
+
+@Serializable
+data class ComicVideoRenderPanelTimelineItem(
+    val panelId: String = "",
+    val sourceFrameId: String = "",
+    val sceneReference: String = "",
+    val beatReference: String = "",
+    val visualIntent: String = "",
+    val cameraIntent: String = "",
+    val startMillis: Int = 0,
+    val endMillis: Int = 0,
+    val displayDurationMillis: Int = 0,
+    val transition: String = "cut",
+    val mustShow: List<String> = emptyList(),
+    val doNotShow: List<String> = emptyList(),
+    val continuityAnchors: List<String> = emptyList(),
+    val assetCandidateRefs: List<String> = emptyList(),
+    val mediaSlotStatus: String = "external_panel_image_required",
+)
+
+@Serializable
+data class ComicVideoRenderVoiceTimelineItem(
+    val cueId: String = "",
+    val panelId: String = "",
+    val voiceId: String = "",
+    val characterId: String = "",
+    val displayName: String = "",
+    val voiceLabel: String = "",
+    val text: String = "",
+    val startMillis: Int = 0,
+    val endMillis: Int = 0,
+    val durationMillis: Int = 0,
+    val mediaSlotStatus: String = "external_audio_required",
+)
+
+@Serializable
+data class ComicVideoRenderSubtitleTimelineItem(
+    val cueId: String = "",
+    val panelId: String = "",
+    val audioCueId: String = "",
+    val text: String = "",
+    val startMillis: Int = 0,
+    val endMillis: Int = 0,
+)
+
+@Serializable
+data class ComicVideoRenderSettings(
+    val timelineStatus: String = "metadata_only_timing_plan",
+    val totalDurationMillis: Int = 0,
+    val frameRate: String = "24",
+    val resolution: String = "1920x1080",
+    val backgroundPolicy: String = "panel_track_only",
+    val rendererBoundary: String = "external_manual_renderer_only",
+)
+
+@Serializable
+data class ComicVideoRenderHandoffManifestFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ComicVideoRenderHandoffManifestEvidence(
+    val validationVerdict: String = "",
+    val validationNextAllowedDownstreamStep: String = "",
+    val sourceFieldCount: Int = 0,
+    val panelTimelineItemCount: Int = 0,
+    val voiceTimelineItemCount: Int = 0,
+    val subtitleTimelineItemCount: Int = 0,
+    val totalDurationMillis: Int = 0,
+    val mediaOutputFieldCount: Int = 0,
+)
+
+@Serializable
 data class StoryboardPacketHumanReviewDecision(
     val decisionId: String = "",
     val preflightId: String = "",

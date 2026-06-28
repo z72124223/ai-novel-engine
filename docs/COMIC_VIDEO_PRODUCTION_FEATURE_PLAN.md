@@ -6,6 +6,8 @@ Date: 2026-06-25
 
 This document defines the feature layer needed for the project to produce finished comic-style videos with audio, independent character voices, comic panels, storyboard timing, and strong visual continuity. It does not implement image generation, audio generation, video rendering, web servers, external AI APIs, SQLite migrations, or automation against any external tool.
 
+Current local JSON workbench workflow: `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`.
+
 ## 1. Product Target
 
 The target product is not just a novel and not just static manga pages.

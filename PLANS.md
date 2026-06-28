@@ -1,5 +1,578 @@
 # Plan
 
+## Active Comic Video Workbench Current Phase Completion Report Plan
+
+### Goal
+
+Add a current-phase completion report for the Codex-operated comic video workbench, proving what is complete now and explicitly separating it from future formal registry, release, provider/media, canon, approval, runtime integration, and production-lock work.
+
+### Global Strategy
+
+- Keep this slice docs/control-only.
+- Add a concise evidence matrix covering:
+  - packet creation;
+  - voice timeline fill template creation;
+  - voice timeline fill;
+  - packet validation;
+  - render handoff manifest creation;
+  - end-to-end CLI JSON fixture;
+  - operator workflow documentation.
+- Reference actual commands, tests, and files introduced in the current worktree.
+- Do not alter `docs/PROJECT_COMPLETION_PROGRESS.md` because official current-phase progress is already 100% for Option A and this report is a scoped workbench addendum.
+
+### Non-Goals
+
+- No code changes, schema changes, tests, migrations, SQLite writes, generated media, provider/API calls, sidecar execution, web server, canon, approval, registry, release, or production lock.
+- No changing official `Project completion progress: 100%` wording.
+- No claim that final images, audio, subtitles as files, or MP4 output have been produced.
+
+### Scope
+
+- `PLANS.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+
+### Confirmed Facts
+
+- `docs/PROJECT_COMPLETION_PROGRESS.md` displays `Project completion progress: 100%` only for the selected Option A current-phase local product-delivery baseline.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` explicitly leaves formal registry, release tag, provider/media production, generated image/video/audio output, approval, canon, runtime integration, and production lock outside the completed current phase.
+- The current worktree includes comic video CLI commands and tests for packet creation, voice timeline fill template creation, voice timeline fill, validation, render handoff manifest creation, and an end-to-end CLI JSON fixture.
+- Focused `ComicVideo*` tests and full `.\gradlew.bat test --no-daemon --console=plain` passed after the latest workbench command slice.
+
+### Assumptions
+
+- A scoped completion report is enough to close the automatic-loop goal for the local JSON workbench without requiring final media generation.
+
+### Open Questions
+
+- Future projects may still decide to build provider/media production, sidecar rendering, static sample packs, multi-character voice inference, installDist examples, formal release, or registry work.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect current completion/progress docs and workbench evidence.
+- [x] Step 2: Add the current-phase workbench completion report and link it from the workflow doc.
+- [x] Step 3: Run documentation verification and drift checks.
+
+### Verification
+
+- `git diff --check`.
+- Manual trailing-whitespace scan for changed files.
+- Scope check with `git status --short`.
+- Existing full Gradle test result from the preceding code slice remains valid unless this docs-only slice touches code.
+
+### Risks
+
+- Accidentally implying final media generation, release, provider handoff, canon, registry, approval, or production lock.
+- Accidentally changing the official project completion progress rather than adding a scoped addendum.
+
+### Drift Log
+
+- 2026-06-28: Started scoped current-phase completion report after packet, voice timeline template, fill, validation, render handoff manifest, pipeline fixture, and workflow docs passed verification. Scope is evidence/reporting only.
+- 2026-06-28: Added `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` and linked it from the workflow doc. It records PASS only for the local JSON workbench phase and keeps final media, provider, sidecar, approval, canon, registry, release, and production-lock work out of scope.
+- 2026-06-28: Verified the completion report with read-back review, `git diff --check`, trailing-whitespace scan, and `git status --short --branch`. No drift from the scoped workbench completion report plan was detected.
+
+## Active Comic Video Voice Timeline Template Plan
+
+### Goal
+
+Add a local CLI template command that creates an editable `ComicVideoVoiceTimelineFill` scaffold from an existing `ComicVideoPacket`, so an author/Codex can fill voice and subtitle timing without manually guessing packet panel ids.
+
+### Global Strategy
+
+- Implement only a metadata-only Kotlin/JVM CLI + JSON file protocol slice:
+  - `create-comic-video-voice-timeline-fill-template`
+- Reuse `ComicVideoVoiceTimelineFillService` so template creation and fill validation share packet preconditions.
+- Generate one editable voice cast entry and one audio/subtitle cue pair for each packet panel track.
+- Derive cue timing from packet panel `displayDurationMillis` values.
+- Keep all generated media, audio paths, remote URLs, provider jobs, sidecar execution, SQLite writes, approval, canon, registry, release, and production lock out of scope.
+
+### Non-Goals
+
+- No TTS, audio files, rendered subtitles, image/video rendering, provider/API calls, sidecar renderer changes, SQLite writes, web server, canon, approval, registry, release, or production lock.
+- No automatic character voice inference from hidden canon or setting data.
+- No changing validation semantics beyond testing the new template command.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoVoiceTimelineFillService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoVoiceTimelineFillServiceTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+
+### Confirmed Facts
+
+- `ComicVideoVoiceTimelineFillService` already validates source packet status, boundary, next step, and panel presence before applying a fill.
+- `ComicVideoPacket` panel tracks carry `panelId` and `displayDurationMillis`.
+- `ComicVideoVoiceTimelineFill` already has the fields needed for an editable voice timeline fill JSON.
+- Current CLI help already lists comic video packet, fill, validation, and render handoff commands, but not a voice timeline fill template command.
+- The current docs workflow asks the author to create `voice_timeline_fill.json` manually.
+
+### Assumptions
+
+- A generated template should intentionally remain metadata-only and editable, not a claim of final dialogue quality.
+- One default voice entry is sufficient for this slice; multi-character voice splitting can be a later explicit authoring feature.
+
+### Open Questions
+
+- Later work may add richer voice-cast authoring from accepted script roles or setting packs, if kept behind explicit JSON contracts.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect the current fill service, model fields, CLI wiring, tests, and workflow doc.
+- [x] Step 2: Add service and CLI support for `create-comic-video-voice-timeline-fill-template`.
+- [x] Step 3: Add focused tests for service and CLI template output.
+- [x] Step 4: Update the workflow doc and run focused/full verification.
+
+### Verification
+
+- Focused test task covering `ComicVideoVoiceTimelineFillServiceTest`.
+- Focused `ComicVideo*` test task if the command affects adjacent workbench behavior.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual trailing-whitespace scan for changed files.
+- Scope check with `git status --short`.
+
+### Risks
+
+- Accidentally making placeholder dialogue look final.
+- Accidentally producing media/provider fields while scaffolding the template.
+- Accidentally deriving timings from invalid panel durations without a clear failure.
+
+### Drift Log
+
+- 2026-06-28: Started voice timeline fill template slice after the workflow doc exposed manual panel-id entry as the next usability gap. Scope is local JSON scaffolding only; no generated media, provider/API, sidecar, SQLite, canon, approval, registry, release, or production-lock work.
+- 2026-06-28: Added service and CLI support for `create-comic-video-voice-timeline-fill-template`, plus focused service/CLI tests. The template derives panel ids and timing from the packet and keeps media/provider/output fields blank.
+- 2026-06-28: Updated the workflow doc to use the new template command. Focused `ComicVideoVoiceTimelineFillServiceTest`, focused `ComicVideo*` tests, and full `.\gradlew.bat test --no-daemon --console=plain` all passed. No drift from the metadata-only JSON workbench plan was detected.
+
+## Active Comic Video Workbench CLI Workflow Doc Plan
+
+### Goal
+
+Add a human-usable CLI workflow document for the current comic video workbench so an author can run the verified local JSON file chain without confusing it with media generation, provider handoff, sidecar rendering, registry, release, approval, canon, or production lock.
+
+### Global Strategy
+
+- Keep this slice documentation-only.
+- Document the already implemented CLI commands:
+  - `create-comic-video-packet`
+  - `fill-comic-video-voice-timeline`
+  - `validate-comic-video-packet`
+  - `create-comic-video-render-handoff-manifest`
+- Use the existing project CLI convention: `.\gradlew.bat :app:run --args="..."`.
+- Base the workflow on the passing `ComicVideoWorkbenchPipelineFixtureTest` chain.
+- Make the boundary explicit: metadata-only packet/timeline/manifest, not generated image/audio/video output.
+
+### Non-Goals
+
+- No Kotlin behavior changes, schema changes, tests, migrations, SQLite writes, generated media, TTS, provider/API calls, sidecar execution, web server, canon, approval, registry, release, or production lock.
+- No claim that the workbench produces final MP4 output in this phase.
+- No sample media files or provider-specific payloads.
+
+### Scope
+
+- `PLANS.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`
+
+### Confirmed Facts
+
+- `build.gradle.kts` defines a root `run` task that executes `com.localnovel.engine.MainKt` with the app runtime classpath.
+- Existing README and docs use `.\gradlew.bat :app:run --args="..."` or `gradlew.bat :app:run --args="..."` as the CLI convention.
+- `Main.kt` help text lists the four comic video workbench commands in scope.
+- `ComicVideoWorkbenchPipelineFixtureTest` proves the local CLI JSON chain from PASS `ImageFacingDeliveryProof` to PASS render handoff manifest.
+- The current project boundary remains Kotlin/JVM CLI + SQLite + JSON file protocol only.
+
+### Assumptions
+
+- A docs-only workflow is the right next medium slice because the tested chain now needs a discoverable operator surface.
+- Cross-linking from the older product plan is useful as long as it does not imply the future product target is already complete.
+
+### Open Questions
+
+- Later slices may still add static sample JSON files once the workflow wording is stable.
+- Later slices may add installDist examples if the user wants packaged CLI operation rather than Gradle task operation.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect existing CLI conventions, help text, product plan, and pipeline fixture evidence.
+- [x] Step 2: Add the comic video workbench CLI workflow document and a narrow product-plan cross-reference.
+- [x] Step 3: Run documentation verification and drift checks.
+
+### Verification
+
+- `git diff --check`.
+- Manual trailing-whitespace scan for changed docs and current changed files.
+- Scope check with `git status --short`.
+- Full Gradle tests are optional for this docs-only slice; run them if time and machine state allow.
+
+### Risks
+
+- Accidentally documenting a final rendered-video workflow instead of the current metadata-only workbench.
+- Accidentally pointing users at `run` rather than the established `:app:run` convention.
+- Accidentally implying provider/media/canon/approval/registry/release/production-lock completion.
+
+### Drift Log
+
+- 2026-06-28: Started CLI workflow doc slice after the end-to-end pipeline fixture passed. Scope is documentation and discoverability only; no code/schema/test/media/provider/sidecar/SQLite/canon/approval/registry/release/production-lock work.
+- 2026-06-28: Added `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` and linked it from `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`. The workflow documents only the existing metadata-only CLI JSON chain and keeps final media/provider/approval/canon/registry/release/production-lock work out of scope.
+- 2026-06-28: Verified the docs slice with `git diff --check`, read-back review of the new workflow document, scope check with `git status --short`, and full `.\gradlew.bat test --no-daemon --console=plain` passing. No drift from the plan was detected.
+
+## Active Comic Video Workbench Pipeline Fixture Plan
+
+### Goal
+
+Add an end-to-end CLI evidence fixture that proves the comic video workbench can run from an `ImageFacingDeliveryProof` JSON file through packet creation, voice timeline fill, validation, and render handoff manifest creation.
+
+### Global Strategy
+
+- Implement only a focused test fixture under the local Kotlin/JVM test suite.
+- Exercise the real CLI commands:
+  - `create-comic-video-packet`
+  - `fill-comic-video-voice-timeline`
+  - `validate-comic-video-packet`
+  - `create-comic-video-render-handoff-manifest`
+- Use temp JSON files to prove the file protocol works end to end.
+- Assert final manifest is PASS, metadata-only, and contains no media/provider output fields.
+- Keep this as evidence only; no new media generation, sidecar execution, provider/API, SQLite, canon, approval, registry, release, or production lock.
+
+### Non-Goals
+
+- No new CLI behavior beyond the existing commands.
+- No sample media files, rendered output, TTS, sidecar renderer, provider/API calls, web server, SQLite writes, canon, approval, registry, release, or production lock.
+- No editing existing pipeline fixture unless evidence shows reuse is safer.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoWorkbenchPipelineFixtureTest.kt`
+
+### Confirmed Facts
+
+- `PipelineHappyPathFixtureTest` already proves the earlier accepted-script/storyboard path reaches a PASS `ImageFacingDeliveryProof`.
+- The comic video workbench now has CLI commands for packet creation, voice timeline fill, validation, and render handoff manifest creation.
+- Individual service/CLI tests already cover each comic video gate, but there is no single CLI pipeline fixture that proves the chain works through JSON files.
+- The owner/user requested automatic medium-sized, verified increments and drift control.
+
+### Assumptions
+
+- Starting the fixture from `ImageFacingDeliveryProof` is the right seam because the existing happy-path fixture already covers earlier gates.
+- A temp-file CLI fixture provides stronger evidence than adding static sample JSON files in this slice.
+
+### Open Questions
+
+- Later work may still add human-facing sample files or docs once the CLI chain is stable.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect existing CLI commands and fixture patterns.
+- [x] Step 2: Add a `ComicVideoWorkbenchPipelineFixtureTest` that runs the full comic video CLI chain.
+- [x] Step 3: Run focused ComicVideo tests, full Gradle tests, and diff/whitespace checks.
+
+### Verification
+
+- Focused test task covering `ComicVideo*` tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual trailing-whitespace scan for tracked and untracked changed files.
+- Manual scope check with `git status --short`.
+
+### Risks
+
+- Accidentally relying on service calls instead of CLI calls, weakening evidence.
+- Accidentally letting fixture text imply rendered media or production readiness.
+- Accidentally expanding into static media/sample artifact work before the file protocol is stable.
+
+### Drift Log
+
+- 2026-06-28: Started comic video workbench pipeline fixture slice as the next medium automatic-loop increment. Scope is CLI/file-protocol evidence only; no production code behavior changes, media generation, TTS, provider/API, sidecar rendering, SQLite, canon, approval, registry, release, or production lock.
+- 2026-06-28: Added `ComicVideoWorkbenchPipelineFixtureTest`, which runs the real CLI JSON chain from PASS `ImageFacingDeliveryProof` through `create-comic-video-packet`, `fill-comic-video-voice-timeline`, `validate-comic-video-packet`, and `create-comic-video-render-handoff-manifest`. Focused ComicVideo tests and full Gradle tests passed.
+- 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
+
+## Active Comic Video Render Handoff Manifest Plan
+
+### Goal
+
+Add a medium-sized local JSON gate that turns a PASS `ComicVideoPacketValidationReport` into a metadata-only render handoff manifest for a later sidecar or manual renderer.
+
+### Global Strategy
+
+- Implement only a local Kotlin/JVM CLI + JSON file protocol slice:
+  - `create-comic-video-render-handoff-manifest`
+- Use `ComicVideoPacketValidationReport` as the authoritative source, not an unvalidated packet.
+- Export panel timeline, voice timeline, subtitle timeline, and render settings as metadata-only handoff items.
+- Keep all image/audio/video asset paths, provider jobs, remote URLs, API payloads, renderer execution, and output paths out of scope.
+- Preserve validation as the gate before handoff; the manifest is not an approval, canon, registry, release, or production lock.
+
+### Non-Goals
+
+- No media generation, TTS, video rendering, sidecar changes, provider/API calls, web server, SQLite, canon, approval, registry, release, or production lock.
+- No accepting FAIL validation reports.
+- No storing local rendered media paths or remote media references.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoRenderHandoffManifestService.kt`
+- Focused tests under `app/src/test/kotlin/com/localnovel/engine/`
+
+### Confirmed Facts
+
+- `ComicVideoPacketValidationReport` includes PASS/FAIL verdict, validation id, packet id/status, source ids, script source path/hash, panel tracks, voice cast, audio cues, subtitle cues, timing, downstream boundary, next allowed downstream step, findings, and evidence.
+- `ComicVideoPacketValidationService` sets `nextAllowedDownstreamStep= "comic_video_packet_validated"` only on PASS.
+- Current project rules require staying inside local Kotlin/JVM CLI + JSON file protocol and forbidding provider/media/canon/approval/production-lock claims.
+- The owner/user asked for automatic medium-sized increments that avoid goal drift.
+
+### Assumptions
+
+- A render handoff manifest should be generated from the validation report so downstream tools cannot skip validation.
+- The manifest should describe required external media slots without providing actual image/audio/video paths.
+
+### Open Questions
+
+- The exact sidecar renderer schema remains future work; this slice produces a stable local handoff manifest that a sidecar can later adapt from.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect validated packet report fields and existing CLI patterns.
+- [x] Step 2: Add render handoff manifest models and service.
+- [x] Step 3: Add `create-comic-video-render-handoff-manifest` CLI wiring and help text.
+- [x] Step 4: Add focused tests for PASS manifest creation and FAIL source rejection.
+- [x] Step 5: Run focused Gradle tests, full `.\gradlew.bat test --no-daemon --console=plain`, and diff checks.
+
+### Verification
+
+- Focused test task covering `ComicVideo*` tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual trailing-whitespace scan for tracked and untracked changed files.
+- Manual scope check with `git status --short`.
+
+### Risks
+
+- Accidentally letting manifest output look like rendered media output.
+- Accidentally allowing unvalidated or failed packets into handoff.
+- Accidentally creating a sidecar-specific schema too early instead of a stable local manifest.
+
+### Drift Log
+
+- 2026-06-28: Started render handoff manifest slice as the next medium automatic-loop increment. Scope is metadata-only handoff from PASS validation report; no media generation, TTS, provider/API, sidecar rendering, SQLite, canon, approval, registry, release, or production lock.
+- 2026-06-28: Implemented `ComicVideoRenderHandoffManifest`, `ComicVideoRenderHandoffManifestService`, CLI `create-comic-video-render-handoff-manifest`, help text, and focused tests. The manifest is generated only from PASS `ComicVideoPacketValidationReport`, rejects FAIL sources and media/provider fields, and exports metadata-only panel/voice/subtitle timelines plus render settings. Focused ComicVideo tests and full Gradle tests passed.
+- 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
+
+## Active Comic Video Voice Timeline Fill Plan
+
+### Goal
+
+Add a medium-sized local JSON gate that fills an existing `ComicVideoPacket` candidate with author/Codex-provided voice cast, audio cue, subtitle cue, and timing metadata so the packet can pass `validate-comic-video-packet` without generating media.
+
+### Global Strategy
+
+- Implement only a local Kotlin/JVM CLI + JSON file protocol slice:
+  - `fill-comic-video-voice-timeline`
+- Add a small fill input model that carries voice/audio/subtitle/timing metadata and a source packet id.
+- Merge the fill input into an existing `ComicVideoPacket` while preserving panel/source bindings.
+- Keep validation as a separate `validate-comic-video-packet` command, but test the filled packet through the validator.
+- Keep all media/provider/output path fields blank.
+
+### Non-Goals
+
+- No TTS, audio files, image generation, video rendering, provider/API calls, sidecar renderer changes, web server, SQLite, canon, approval, registry, release, or production lock.
+- No automatic inference of character voices or dialogue from hidden canon.
+- No changing the existing `ComicVideoPacketValidationService` safety boundary unless tests prove a bug.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoVoiceTimelineFillService.kt`
+- Focused tests under `app/src/test/kotlin/com/localnovel/engine/`
+
+### Confirmed Facts
+
+- `ComicVideoPacket` already carries `voiceCast`, `audioCues`, `subtitleCues`, and `timing`.
+- `ComicVideoPacketValidationService` requires non-empty voice cast, audio cues, subtitle cues, valid timing, and cross-reference consistency.
+- `create-comic-video-packet` auto-drafts panel tracks from image-facing frame cards but intentionally leaves voice/audio/subtitle empty.
+- Existing CLI commands read and write local JSON files with `--out` and print concise summaries.
+- The owner/user requested an automatic loop with medium-sized project-completion increments to avoid goal drift.
+
+### Assumptions
+
+- A fill file with explicit source packet id is the safest next workbench surface because it keeps author/Codex metadata separate from generated-media claims.
+- The service should reject source packet id mismatch and missing panel tracks before writing output.
+
+### Open Questions
+
+- Later rounds still need a render-ready export format or sidecar bridge after a packet passes validation.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect current packet and validation fields.
+- [x] Step 2: Add `ComicVideoVoiceTimelineFill` model and fill service.
+- [x] Step 3: Add `fill-comic-video-voice-timeline` CLI wiring and help text.
+- [x] Step 4: Add focused tests proving a filled packet can pass validation and unsafe/mismatched fills fail.
+- [x] Step 5: Run focused Gradle tests, full `.\gradlew.bat test --no-daemon --console=plain`, and diff checks.
+
+### Verification
+
+- Focused test task covering `ComicVideoPacket*` tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual trailing-whitespace scan for tracked and untracked changed files.
+- Manual scope check with `git status --short`.
+
+### Risks
+
+- Accidentally letting fill files carry audio/image/video output paths.
+- Accidentally changing panel/source bindings while filling voice timeline fields.
+- Accidentally making validation implicit and hiding why a packet still fails.
+
+### Drift Log
+
+- 2026-06-28: Started voice timeline fill slice as the next medium automatic-loop increment. Scope is metadata fill only; no media generation, provider/API, sidecar rendering, SQLite, canon, approval, registry, release, or production lock.
+- 2026-06-28: Implemented `ComicVideoVoiceTimelineFill`, `ComicVideoVoiceTimelineFillService`, CLI `fill-comic-video-voice-timeline`, help text, and focused tests. The filled packet preserves panel/source bindings, rejects mismatched source ids and media/provider fields, and can pass `validate-comic-video-packet` when voice/audio/subtitle/timing metadata is complete. Focused ComicVideoPacket tests and full Gradle tests passed.
+- 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
+
+## Active Comic Video Packet Auto-Draft Plan
+
+### Goal
+
+Add a local CLI gate that turns a PASS `ImageFacingDeliveryProof` into a draft `ComicVideoPacket` candidate, so Codex can use the existing reviewable storyboard evidence as the starting workbench surface for voiced-comic timing.
+
+### Global Strategy
+
+- Implement only a local Kotlin/JVM CLI + JSON file protocol slice:
+  - `create-comic-video-packet`
+- Source the packet from `ImageFacingDeliveryProof.frameDeliveryCards`.
+- Fill panel tracks deterministically from image-facing frame cards.
+- Keep voice cast, audio cues, and subtitle cues as empty author-fill surfaces in the auto-draft unless later source evidence exists.
+- Keep the result metadata-only and candidate-only; validation remains handled by `validate-comic-video-packet`.
+
+### Non-Goals
+
+- No image, audio, video, provider, remote API, sidecar renderer, web server, SQLite, canon, approval, registry, release, or production-lock work.
+- No attempt to infer actual dialogue, speaker identity, voice identity, subtitles, or rendered durations from visual-only frame cards.
+- No bypass of the existing `ComicVideoPacketValidationService`; auto-created packets must still be validated separately.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoPacketService.kt`
+- Focused tests under `app/src/test/kotlin/com/localnovel/engine/`
+
+### Confirmed Facts
+
+- `ImageFacingDeliveryProof` carries PASS/FAIL source verdict, proof status, source reviewable storyboard id, accepted script id, script packet path/hash, and `frameDeliveryCards`.
+- `ImageFacingDeliveryFrameCard` carries frame id, scene/beat references, visual/camera intent, must-show/do-not-show constraints, continuity anchors, and asset candidate refs.
+- `ComicVideoPacket` already carries source links, panel tracks, voice cast, audio cues, subtitle cues, timing, metadata-only boundary, and validation next step.
+- Existing CLI commands write local JSON files and print concise summaries.
+
+### Assumptions
+
+- A default panel duration of 3000 ms is acceptable for an editable auto-draft because visual frame cards do not contain audio or timing evidence.
+- Empty voice/audio/subtitle lists are correct for this auto-draft; validation can fail until the author fills them.
+
+### Open Questions
+
+- Later workflow still needs a separate author-fill or assistant-fill step for voice cast, spoken lines, subtitle text, and final timing.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect source and target packet structures.
+- [x] Step 2: Add a `ComicVideoPacketService` that creates metadata-only auto-drafts from `ImageFacingDeliveryProof`.
+- [x] Step 3: Add `create-comic-video-packet` CLI wiring and help text.
+- [x] Step 4: Add focused tests for service mapping, source-state rejection, and CLI output.
+- [x] Step 5: Run focused Gradle tests, full `.\gradlew.bat test --no-daemon --console=plain`, and diff checks.
+
+### Verification
+
+- Focused test task covering new and existing Comic Video Packet tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual scope check with `git status --short`.
+
+### Risks
+
+- Accidentally treating visual frame cards as enough evidence for speaker, voice, dialogue, subtitle, or final timing.
+- Accidentally making an auto-draft look validated or production-ready.
+- Accidentally adding media/provider/output path fields during creation.
+
+### Drift Log
+
+- 2026-06-28: Started the auto-draft slice after the owner/user approved proceeding. Scope is only deterministic metadata mapping from PASS `ImageFacingDeliveryProof` to draft `ComicVideoPacket`; validation, media generation, sidecar rendering, provider/API work, SQLite, canon, approval, registry, release, and production lock remain out of scope.
+- 2026-06-28: Implemented `ComicVideoPacketService`, CLI `create-comic-video-packet`, help text, and focused tests. The auto-draft maps image-facing frame cards to panel tracks and leaves voice/audio/subtitle fields empty for author fill; validation remains a separate command. Focused ComicVideoPacket tests and full Gradle tests passed.
+- 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, and manual trailing-whitespace scan passed for changed tracked and new untracked files.
+
+## Active Comic Video Packet Workbench Gate Plan
+
+### Goal
+
+Add the first local JSON contract gate for using Codex as a production workbench that can organize world, script, storyboard, panel, voice, subtitle, and timing metadata toward a future voiced-comic handoff.
+
+### Global Strategy
+
+- Implement only a local Kotlin/JVM CLI + JSON file protocol slice:
+  - `create-comic-video-packet-template`
+  - `validate-comic-video-packet`
+- Keep the packet as metadata and review-contract workbench output, not media production output.
+- Follow existing gate shapes: serializable model classes, a focused service, CLI read/write JSON, `verdict`, `findings`, `evidence`, and tests.
+- Enforce the current boundary that this slice does not create images, audio, video, provider jobs, remote API output, canon, registry writes, approvals, or production locks.
+
+### Non-Goals
+
+- No web app, server, port, OpenAI API, provider API, image generation, audio generation, video rendering, Docker, Android UI, or sidecar renderer changes.
+- No SQLite schema, setting-pack mutation, canon write, formal registry write, runtime scene creation, approval, release, or production lock.
+- No direct database writes or bypass of existing validator/reducer rules.
+- No claim that the project is now a complete one-click voiced-comic generator.
+
+### Confirmed Facts
+
+- The project remains in the canonical `C:\Users\f7212\Projects` workspace on branch `codex/mvp6-checkpoint-branching-spec`.
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md` frames comic/video production as planned contracts first, without implementing image/audio/video generation in the current baseline.
+- Existing gates such as `create-reviewable-storyboard-packet`, `create-image-facing-delivery-proof`, and `validate-candidate-reference-acceptance-packet` already use local JSON inputs/outputs with service-owned validation.
+- The owner/user approved proceeding from the blueprint discussion with the next minimal implementation slice.
+
+### Assumptions
+
+- The useful first step is a workbench packet contract and validator, not media rendering.
+- The packet should be allowed to describe panel, voice, subtitle, and timing intent while forbidding generated-media/provider/completion claims.
+- Future sidecar integration can consume a validated packet later through a separate render-ready handoff gate.
+
+### Open Questions
+
+- Which external renderer or manual workflow should consume a future render-ready timeline is still undecided and intentionally out of scope.
+
+### Implementation Steps
+
+- [x] Step 1: Create this implementation plan and inspect existing JSON gate patterns.
+- [x] Step 2: Add `ComicVideoPacket` models and validation service.
+- [x] Step 3: Add CLI commands for template creation and validation.
+- [x] Step 4: Add focused tests for template output, happy-path validation, boundary rejection, cross-reference checks, and CLI file output.
+- [x] Step 5: Run focused Gradle tests, then full `.\gradlew.bat test --no-daemon --console=plain`.
+
+### Verification
+
+- Focused test task covering the new Comic Video Packet tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Confirm changed files stay limited to the active plan, Kotlin model/service/CLI, and focused tests.
+
+### Risks
+
+- Accidentally implying media generation, provider execution, approval, canon, registry write, or production lock.
+- Accidentally creating a renderer contract too early instead of a metadata validation gate.
+- Accidentally letting remote URLs, provider IDs, generated media paths, or final-output wording pass validation.
+- Accidentally changing runtime state or SQLite instead of keeping this as a file-protocol gate.
+
+### Drift Log
+
+- 2026-06-28: Started the first Comic Video Packet workbench gate after the blueprint discussion. Scope is a local JSON contract and validator only; media generation, sidecar rendering, provider/API work, canon, approval, registry, SQLite, release, and production lock remain out of scope.
+- 2026-06-28: Implemented `ComicVideoPacket` models, `ComicVideoPacketValidationService`, CLI template/validation commands, and focused tests. Focused rerun tests and the full Gradle test command passed; scope stayed metadata-only and did not add media generation, sidecar rendering, provider/API work, SQLite, canon, approval, registry, release, or production lock.
+
 ## Active Option A Lifecycle Progress Alignment Plan
 
 ### Goal
