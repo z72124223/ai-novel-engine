@@ -99,5 +99,6 @@ These must remain open until the user or later review approves answers:
 This support document is ready for review when:
 
 - `git diff --check` passes for this document;
-- `memory/quarterfull_world_memory_capsule.json` remains a known local-memory blocker until a separate owner-approved repair path makes it parse as JSON;
+- `memory/quarterfull_world_memory_capsule.json` remains local-memory support and parses as JSON when read as UTF-8;
+- Windows PowerShell 5.1 default decoding can fail for the capsule, so verification must use an explicit UTF-8 parser command;
 - no formal memory validation, SQLite, setting-pack, migration, Validator, StateReducer, or QuarterFull write action occurs.

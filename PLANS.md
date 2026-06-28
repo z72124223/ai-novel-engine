@@ -1,5 +1,69 @@
 # Plan
 
+## Active Memory Parser Evidence Wording Correction Plan
+
+### Goal
+
+Correct docs/control wording for local memory parser evidence after `03` command capture showed the QuarterFull memory capsule is command/host encoding-sensitive, not universally invalid JSON.
+
+### Global Strategy
+
+- Update only docs/control evidence wording.
+- Keep both memory files untracked/local and do not repair, stage, delete, or ignore them in this slice.
+- Preserve the conservative boundary: local memory is not canon, runtime state, SQLite input/write path, approval evidence, provider/media readiness, or production lock.
+- Record this slice in `PLANS.md` because the repo uses `PLANS.md` as the active handoff and drift-control surface.
+
+### Non-Goals
+
+- No memory JSON edits.
+- No `.gitignore` edits.
+- No staging, commit, push, fetch, cleanup, delete, move, or revert.
+- No app/source/test/schema/runtime/CLI behavior changes.
+- No SQLite/runtime write path, provider/API/media work, canon, approval, or production-lock claim.
+
+### Confirmed Facts
+
+- `03` command capture reported `memory/quarterfull_world_memory_capsule.json` SHA-256 `5a24dfced4475d6ee9eee0d0dc4ed392eb9d347b91a3b94e5941c2d1ce8ee9f6`.
+- Node `JSON.parse` parses `memory/quarterfull_world_memory_capsule.json` and reports status `ACTIVE_LOCAL_WORLD_MEMORY`.
+- Windows PowerShell 5.1 default `Get-Content -Raw | ConvertFrom-Json` can fail due to mojibake/default decoding.
+- Explicit UTF-8 PowerShell reads parse the capsule successfully.
+- The correct interpretation is command/host encoding-sensitive parser behavior, not universal JSON syntax failure.
+- Official progress remains `80%`.
+
+### Assumptions
+
+- The next safe step is a docs/control wording correction only; memory ignore/staging decisions remain separate owner-approved slices.
+
+### Open Questions
+
+- Whether `01` will later approve a precise `.gitignore` apply slice for the two local memory files.
+
+### Implementation Steps
+
+- [x] Step 1: Update `docs/MEMORY_OWNER_DECISION.md` parser status and future gate wording.
+- [x] Step 2: Update `docs/QUARTERFULL_WORLD_ALIGNMENT.md` verification wording.
+- [x] Step 3: Record this slice in `PLANS.md`.
+- [x] Step 4: Run docs-only verification and send evidence to `03`.
+
+### Verification
+
+- `git diff --check -- PLANS.md docs/MEMORY_OWNER_DECISION.md docs/QUARTERFULL_WORLD_ALIGNMENT.md`
+- Trailing whitespace scan on changed docs.
+- Old active workspace path scan on changed docs.
+- Read-only parser evidence: explicit UTF-8 PowerShell OK and Node OK; default PowerShell may fail and must be documented as encoding-sensitive.
+- `git diff --name-only` includes only intended docs.
+
+### Risks
+
+- Accidentally implying memory files are ready to stage.
+- Accidentally erasing the conservative owner-decision boundary.
+- Confusing default PowerShell decoding failure with universal JSON syntax failure.
+
+### Drift Log
+
+- 2026-06-28: Started `minimal memory parser evidence wording correction` after `03` command capture and `01` handoff clarified the parser discrepancy is command/host encoding-sensitive. Scope remains docs/control only; memory files stay untracked/local.
+- 2026-06-28: Verification completed for the wording correction: diff check passed with only LF/CRLF warnings, explicit UTF-8 PowerShell and Node parser checks passed, default PowerShell failure remained documented as encoding-sensitive, and only the intended docs/control files changed.
+
 ## Active Control-Doc Commit Decision / Apply Plan
 
 ### Goal

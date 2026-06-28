@@ -7,7 +7,7 @@ This memo records the owner decision status for the remaining local memory files
 ## Decision Status
 
 - Status: `NEEDS_OWNER_DECISION_FOR_MEMORY`
-- Status: `NEEDS_PARSE_RESULT_RECONCILIATION`
+- Status: `NEEDS_EXPLICIT_UTF8_PARSE_COMMANDS`
 - Current decision: keep both memory files untracked/local for now.
 - This memo does not authorize staging either memory file.
 
@@ -25,10 +25,11 @@ This memo records the owner decision status for the remaining local memory files
 ### `memory/quarterfull_world_memory_capsule.json`
 
 - Parser evidence: Node `JSON.parse` OK.
-- Parser evidence: PowerShell `ConvertFrom-Json` FAIL in 03 canonical verification with `Invalid object passed in, ':' or '}' expected. (263): {`.
-- Current role: local QuarterFull/world support memory with a parser discrepancy.
-- Observed status from Node-readable content: `ACTIVE_LOCAL_WORLD_MEMORY`.
-- Current disposition: keep untracked/local until parser discrepancy is reconciled through a separate 01 owner-approved repair path.
+- Parser evidence: PowerShell `ConvertFrom-Json` OK when the file is read with explicit UTF-8.
+- Parser evidence: Windows PowerShell 5.1 default `Get-Content -Raw` without `-Encoding UTF8` can FAIL due to mojibake/default decoding, with prior 03 evidence `Invalid object passed in, ':' or '}' expected. (263): {`.
+- Current role: local QuarterFull/world support memory with command/host encoding-sensitive parser behavior.
+- Observed status from UTF-8-readable content: `ACTIVE_LOCAL_WORLD_MEMORY`.
+- Current disposition: keep untracked/local unless 01 explicitly approves a later memory staging decision.
 
 ## Boundaries
 
@@ -53,15 +54,15 @@ Known docs/control references include release grouping, tracked handoff, project
 ## Next Possible Owner Decisions
 
 1. Keep both files local-only and optionally add a precise ignore rule later after separate 01 approval.
-2. Repair `memory/quarterfull_world_memory_capsule.json` later only under an explicit 01 owner-approved repair path.
-3. Do not stage either memory file until parser discrepancy is reconciled and 01 explicitly approves staging.
+2. If future verification is needed, use explicit UTF-8 parser commands for `memory/quarterfull_world_memory_capsule.json`.
+3. Do not stage either memory file until 01 explicitly approves staging.
 
 ## Future Repair Acceptance Gates
 
-If a future repair is authorized, the repaired memory file must pass all of these gates before any staging consideration:
+If a future repair or staging review is authorized, the memory file must pass all of these gates before any staging consideration:
 
 - Node `JSON.parse` OK.
-- PowerShell `ConvertFrom-Json` OK.
+- PowerShell `ConvertFrom-Json` OK with an explicit UTF-8 read command.
 - Secret/API key scan clean.
 - Old active workspace path scan clean, or hits classified only as relocation/support context.
 - Forbidden wording scan clean: no canon, approval, registered reference, production-lock, or runtime-state claims.
