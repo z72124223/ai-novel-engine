@@ -1,6 +1,72 @@
 # Plan
 
-## Active Post Final Local Verification Progress Alignment Plan
+## Active Project Completion Closure Decision Brief Plan
+
+### Goal
+
+Create a docs/control decision brief that lets `01` / the user decide what remains before calling this project complete.
+
+### Global Strategy
+
+- Produce decision evidence only:
+  - `PLANS.md`
+  - `docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md`
+- Keep official progress at `Project completion progress: 84%`; this slice frames the remaining decision and does not add product behavior.
+- Present conservative options for closure:
+  - accept the current local product-delivery baseline as the project target and keep formal registry/release as future work;
+  - plan a separate formal registry boundary slice;
+  - plan a release tag / PR readiness slice.
+- Preserve all no-release-tag/no-provider/no-generation/no-approval/no-canon/no-runtime-write boundaries.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No staging/commit/push until `03` reviews the brief.
+- No release tag, branch change, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `43c11ec90c8032c38c83dbbc618f9e9a92ee2978` / `43c11ec docs: align final verification progress`.
+- `03` passed the post-final-local-verification lifecycle/progress alignment push apply.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` displays `Project completion progress: 84%`.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` marks Stage 41 `Project completion closure decision brief` as Next.
+
+### Assumptions
+
+- The remaining gap is a product ownership decision, not a missing local JSON gate in the current pipeline baseline.
+- A decision brief is safer than silently changing the definition of done.
+
+### Open Questions
+
+- Whether the current project target should stop at local product-delivery verification, or whether formal registry / release work is in scope before completion.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm clean pushed 84% baseline and Stage 41 scope.
+- [x] Step 2: Create project completion closure decision brief.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [ ] Step 4: Stage, commit, and push only after review.
+
+### Verification
+
+- `git diff --name-only` should list only `PLANS.md` and `docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md`.
+- `git diff --check -- PLANS.md docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md`.
+- Trailing whitespace scan on changed docs.
+- Confirm progress remains `Project completion progress: 84%`.
+
+### Risks
+
+- Accidentally treating the decision brief as project completion approval.
+- Accidentally implying release tag, formal registry write, provider/media readiness, approval, canon, runtime write, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started Stage 41 project completion closure decision brief after `03` passed pushed progress alignment at 84%. Scope is docs/control decision evidence only.
+- 2026-06-28: Created `docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md` with Option A current-phase closure, Option B formal registry boundary, Option C release packaging, and Option D provider/media production out-of-scope. Official progress remains 84%.
+- 2026-06-28: `03` passed `minimal project completion closure decision brief`; no blocking findings. Next action is exact two-file staging after review.
+
+## Completed Post Final Local Verification Progress Alignment Plan
 
 ### Goal
 
@@ -45,7 +111,7 @@ Align lifecycle and progress docs after the accepted and pushed final local prod
 - [x] Step 1: Confirm pushed final verification baseline and stale lifecycle/progress docs.
 - [x] Step 2: Update lifecycle/progress/plan status wording and official display estimate.
 - [x] Step 3: Run docs-only verification and send to `03`.
-- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+- [x] Step 4: Stage, commit, and push docs/control alignment after review.
 
 ### Verification
 
@@ -66,6 +132,7 @@ Align lifecycle and progress docs after the accepted and pushed final local prod
 - 2026-06-28: Marked Stage 40 final local product-delivery verification as Done, added Stage 41 project completion closure decision brief as Next, and updated official display estimate to `Project completion progress: 84%`.
 - 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
 - 2026-06-28: `03` passed `minimal post-final-local-verification lifecycle/progress alignment`; no blocking findings. Next action is exact three-file staging after review.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply for this docs/control alignment slice. Final pushed HEAD/upstream is `43c11ec90c8032c38c83dbbc618f9e9a92ee2978`; official progress is now 84%.
 
 ## Completed Final Local Product-Delivery Verification Plan
 
