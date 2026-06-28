@@ -1,6 +1,79 @@
 # Plan
 
-## Active Post Closure Decision Brief Progress Alignment Plan
+## Active Owner Closure Decision Intake Repair Plan
+
+### Goal
+
+Replace the rejected Stage 42 owner selection draft with a neutral owner decision intake record that keeps Option A as the current recommendation while leaving the final owner choice pending.
+
+### Global Strategy
+
+- Produce docs/control evidence only:
+  - `PLANS.md`
+  - `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`
+- Remove the rejected `docs/PROJECT_COMPLETION_OWNER_SELECTION.md` draft from the dirty tree.
+- Record `OPTION_A_CLOSE_CURRENT_PHASE_AS_LOCAL_PRODUCT_DELIVERY_BASELINE` as the current recommendation only, not as selected.
+- Keep official progress at `Project completion progress: 84%`; completion/progress wording can be aligned only after explicit owner selection and `03` review.
+- Keep formal registry write, release tag, provider/media production, canon/approval, and production lock out of the current project phase.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No progress increase, project-complete wording, or implicit owner selection in this intake-record slice.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `3e57a1bc654533f30af03446cc8c71e68571f925` / `3e57a1b docs: align closure decision progress`.
+- `03` passed the post-closure-decision-brief lifecycle/progress alignment push apply.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` marks Stage 42 `Owner closure option selection` as Next.
+- `docs/PROJECT_COMPLETION_CLOSURE_DECISION_BRIEF.md` lists Option A as closing the current phase as a local product-delivery baseline and moving formal registry / release / provider-media work to future separately planned projects.
+- `03` rejected the prior selected-Option-A draft because the closure brief framed Option A/B/C as an explicit owner decision, not an implicit `01_control` selection.
+
+### Assumptions
+
+- A neutral decision-intake record can preserve the current recommendation and evidence without changing the definition of done.
+
+### Open Questions
+
+- Whether the owner selects Option A, Option B, or Option C for project closure.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm clean pushed Stage 42 baseline and Option A wording.
+- [x] Step 2: Create owner selection record for Option A.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [x] Step 4: Receive `03` REVISE and identify implicit-selection blocker.
+- [x] Step 5: Replace selected record with neutral owner decision intake record.
+- [x] Step 6: Run docs-only verification and send to `03`.
+- [ ] Step 7: Stage, commit, and push only after review.
+
+### Verification
+
+- `git status --short --untracked-files=all`.
+- `git diff --check -- PLANS.md`.
+- For the new untracked doc, `git diff --no-index --check -- NUL docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`.
+- Trailing whitespace scan on changed docs.
+- Confirm `Project completion progress: 84%` remains unchanged in `docs/PROJECT_COMPLETION_PROGRESS.md`.
+
+### Risks
+
+- Accidentally treating Option A as selected instead of recommended.
+- Accidentally changing progress/completion wording before explicit owner selection.
+- Accidentally implying formal registry write, provider/media readiness, generated media, approval, canon, runtime write, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started Stage 42 owner closure option selection record after `03` passed pushed lifecycle/progress alignment. Scope is docs/control selection evidence only; official progress remains 84%.
+- 2026-06-28: Created `docs/PROJECT_COMPLETION_OWNER_SELECTION.md` selecting Option A under `01_control` as current-phase local product-delivery baseline closure. The record keeps progress at 84% and leaves formal registry, release tag, provider/media production, approval/canon, and production lock out of scope.
+- 2026-06-28: Docs-only verification passed: dirty set is `PLANS.md` plus new `docs/PROJECT_COMPLETION_OWNER_SELECTION.md`; diff/no-index checks returned only LF/CRLF warnings; trailing whitespace scan returned no matches; progress remains 84%.
+- 2026-06-28: `03` returned REVISE for the selected-Option-A draft. Blocking finding: continuing the project does not equal explicit owner selection among A/B/C. Required repair is a neutral decision-intake record or explicit owner choice before selection.
+- 2026-06-28: Replaced the selected Option A draft with `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`. The new record marks Option A as the current recommendation, keeps decision status `PENDING_EXPLICIT_OWNER_SELECTION`, and keeps official progress at 84%.
+- 2026-06-28: Docs-only repair verification passed: dirty set is `PLANS.md` plus new `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`; diff/no-index checks returned only LF/CRLF warnings; trailing whitespace scan returned no matches; progress remains 84%.
+- 2026-06-28: `03` passed `minimal owner closure decision intake record REVISE repair`; no blocking findings. The repair preserves pending owner choice, keeps Option A as recommendation only, and leaves progress at 84%. Next action is exact two-file staging after review.
+
+## Completed Post Closure Decision Brief Progress Alignment Plan
 
 ### Goal
 
@@ -43,7 +116,7 @@ Align lifecycle and progress docs after the accepted and pushed project completi
 - [x] Step 1: Confirm pushed closure decision brief baseline and stale lifecycle/progress docs.
 - [x] Step 2: Update lifecycle/progress/plan status wording while keeping progress at 84%.
 - [x] Step 3: Run docs-only verification and send to `03`.
-- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+- [x] Step 4: Stage, commit, and push docs/control alignment after review.
 
 ### Verification
 
@@ -63,6 +136,7 @@ Align lifecycle and progress docs after the accepted and pushed project completi
 - 2026-06-28: Marked Stage 41 project completion closure decision brief as Done, added Stage 42 owner closure option selection as Next, and kept official progress at `Project completion progress: 84%`.
 - 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
 - 2026-06-28: `03` passed `minimal post-closure-decision-brief lifecycle/progress alignment`; no blocking findings. Next action is exact three-file staging after review.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply for this docs/control alignment slice. Final pushed HEAD/upstream is `3e57a1bc654533f30af03446cc8c71e68571f925`; official progress remains 84%.
 
 ## Completed Project Completion Closure Decision Brief Plan
 
