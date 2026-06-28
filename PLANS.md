@@ -1,6 +1,73 @@
 # Plan
 
-## Active Final Local Product-Delivery Verification Plan
+## Active Post Final Local Verification Progress Alignment Plan
+
+### Goal
+
+Align lifecycle and progress docs after the accepted and pushed final local product-delivery verification bundle.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Mark Stage 40 as Done and make the next slice a project completion closure decision brief.
+- Increase official progress only for the now-accepted final local verification evidence.
+- Preserve all no-release-tag/no-provider/no-generation/no-approval/no-canon/no-runtime-write boundaries.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No `.gitignore`, memory JSON, samples, or unrelated docs beyond the three control files.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `d42808cac2b8096377ed7c7115249d894a1458fe` / `d42808c docs: add final local verification`.
+- `03` passed the final local product-delivery verification report, staging apply, commit apply, push readiness, and push apply.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 40 `Final local product-delivery verification bundle` as Next.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still lists final local product-delivery verification as not yet counted.
+- Official progress is `Project completion progress: 82%` before this alignment.
+
+### Assumptions
+
+- Accepted final local verification evidence is worth a conservative 2-point product-deliverable increase.
+- Remaining completion risk is now mostly explicit owner decision around formal registry/release boundary, not missing local product-path evidence.
+
+### Open Questions
+
+- Whether the next owner decision should exclude formal registry write from the current project target or plan a separate formal registry boundary slice.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm pushed final verification baseline and stale lifecycle/progress docs.
+- [x] Step 2: Update lifecycle/progress/plan status wording and official display estimate.
+- [x] Step 3: Run docs-only verification and send to `03`.
+- [ ] Step 4: Stage, commit, and push docs/control alignment after review.
+
+### Verification
+
+- `git diff --name-only` should list only `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Trailing whitespace scan on the three docs/control files.
+- Confirm displayed progress is `Project completion progress: 84%`.
+
+### Risks
+
+- Accidentally treating local verification evidence as release approval.
+- Accidentally implying provider/media readiness, generated image/video/audio, approval, canon, formal registry write, or production lock.
+- Accidentally jumping to 100% without an explicit owner decision about the remaining formal registry/release boundary.
+
+### Drift Log
+
+- 2026-06-28: Started post-final-local-verification docs/control alignment after `03` passed final verification push apply. Scope is three docs/control files only.
+- 2026-06-28: Marked Stage 40 final local product-delivery verification as Done, added Stage 41 project completion closure decision brief as Next, and updated official display estimate to `Project completion progress: 84%`.
+- 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches.
+- 2026-06-28: `03` passed `minimal post-final-local-verification lifecycle/progress alignment`; no blocking findings. Next action is exact three-file staging after review.
+
+## Completed Final Local Product-Delivery Verification Plan
 
 ### Goal
 
@@ -44,7 +111,7 @@ Create a final local product-delivery verification bundle that records the clean
 - [x] Step 2: Run focused aggregate product-path verification.
 - [x] Step 3: Create final local verification report.
 - [x] Step 4: Run docs-only hygiene checks and send to `03`.
-- [ ] Step 5: Stage, commit, and push only after review.
+- [x] Step 5: Stage, commit, and push only after review.
 
 ### Verification
 
@@ -65,6 +132,7 @@ Create a final local product-delivery verification bundle that records the clean
 - 2026-06-28: Started Stage 40 final local product-delivery verification bundle after `03` passed pushed progress alignment. Scope is docs/control evidence only.
 - 2026-06-28: Focused aggregate product-path verification passed: `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --tests "*ReviewableStoryboardPacketTest" --tests "*ImageFacingDeliveryProofTest" --no-daemon --console=plain` returned BUILD SUCCESSFUL in 30s.
 - 2026-06-28: Created `docs/FINAL_LOCAL_PRODUCT_DELIVERY_VERIFICATION.md` as docs/control evidence only. Hygiene checks passed: changed paths are `PLANS.md` plus the new report, diff/no-index checks returned only LF/CRLF warnings, and trailing whitespace scan returned no matches.
+- 2026-06-28: `03` passed the final local verification report, staging apply, commit apply, push readiness, and push apply. Final pushed HEAD/upstream is `d42808cac2b8096377ed7c7115249d894a1458fe`; official progress remains 82% until progress docs are updated and reviewed.
 
 ## Completed Post E2E Image-Facing Delivery Proof Alignment Plan
 

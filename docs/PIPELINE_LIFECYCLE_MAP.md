@@ -58,7 +58,8 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 | 37 | Memory owner / parser / exact ignore closure | Clean local memory support boundary | Local-only memory support, exact ignore rules | `01_control` | Treating local memory as runtime/canon state or broadly ignoring future memory work | Memory JSON staging, repair/delete/cleanup, SQLite/runtime/provider claims | Done |
 | 38 | Image-facing delivery proof after reviewable storyboard packet | `image_facing_delivery_proof_ready` | Product proof only, no provider/media execution | None | Mistaking proof readiness for generated image/provider readiness | Provider API job, remote download, generated image storage, approval/canon/production lock | Done |
 | 39 | E2E image-facing delivery proof fixture | Accepted draft to `ImageFacingDeliveryProof` product proof fixture | Test/product proof only | None | Proving the gate in isolation but not the product path | Provider API job, remote download, generated image storage, approval/canon/production lock | Done |
-| 40 | Final local product-delivery verification bundle | Local reproducibility and product-path verification evidence | Verification evidence only, no release tag | `01_control` | Treating clean pushed state as release approval without final evidence | Provider/media generation, formal registry write, approval/canon/production lock | Next |
+| 40 | Final local product-delivery verification bundle | Local reproducibility and product-path verification evidence | Verification evidence only, no release tag | `01_control` | Treating clean pushed state as release approval without final evidence | Provider/media generation, formal registry write, approval/canon/production lock | Done |
+| 41 | Project completion closure decision brief | Owner decision on remaining formal registry / release boundary | Docs/control decision only, not release approval | `01_control` | Treating 84% as 100% without explicit target decision | Release tag, formal registry write, approval/canon/production lock | Next |
 
 ## Current Mainline
 
@@ -95,6 +96,7 @@ accepted draft packet
 -> image-facing delivery proof after reviewable storyboard packet
 -> E2E image-facing delivery proof fixture
 -> final local product-delivery verification bundle
+-> project completion closure decision brief
 ```
 
 ## Next Slice Order
@@ -117,7 +119,8 @@ accepted draft packet
 16. Record memory owner/parser evidence and apply exact local-memory ignore rules. Done.
 17. Define and implement the next image-facing delivery proof after `ReviewableStoryboardPacket`. Done.
 18. Build an E2E fixture from accepted draft to `ImageFacingDeliveryProof`. Done.
-19. Produce final local product-delivery verification evidence. Next.
+19. Produce final local product-delivery verification evidence. Done.
+20. Produce a project completion closure decision brief for the remaining formal registry / release boundary. Next.
 
 ## Not Approved
 
