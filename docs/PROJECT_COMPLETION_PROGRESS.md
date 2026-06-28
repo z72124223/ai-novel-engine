@@ -1,6 +1,6 @@
 # Project Completion Progress
 
-Status: `CONTROL_ESTIMATE_ACTIVE`
+Status: `CONTROL_ESTIMATE_CLOSED_CURRENT_PHASE`
 
 Date: 2026-06-28
 
@@ -25,9 +25,9 @@ Rules:
 
 ## Current Display Estimate
 
-Project completion progress: `84%`
+Project completion progress: `100%`
 
-This replaces the previous `79%` display value. The previous table was internally inconsistent: its rows added to `93`, while the displayed total was `79`. The new display value separates product deliverable completion from gate hardening completion.
+This replaces the previous `84%` display value after the owner/user explicitly selected Option A: close the current project phase as the local product-delivery baseline. The 100% value applies only to that selected current-phase baseline, not to future formal registry, release tag, provider/media production, canon, approval, runtime integration, or production-lock work.
 
 ## Product Deliverable Rubric
 
@@ -36,26 +36,28 @@ This is the percentage `01` displays.
 | Area | Weight | Current | Evidence |
 | --- | ---: | ---: | --- |
 | Stable local engine foundation | 20 | 20 | MVP-1 through MVP-6 local runtime, SQLite, validator/reducer, branching, packaging, and recovery evidence are treated as complete. |
-| Novelization intake / quality / revision gates | 15 | 13 | Draft intake, prose quality audit, revision brief, revised draft intake, and accepted draft packet gates exist, but need an end-to-end chapter fixture. |
-| Accepted draft to script packet gates | 15 | 12 | Accepted draft to script packet and structure/source-binding gates exist, but final product proof still depends on storyboard E2E. |
-| Storyboard / asset / candidate-reference JSON gates | 20 | 12 | Many deterministic gates are implemented and reviewed, including candidate-reference acceptance packet validation, the reviewable storyboard packet packaging gate, and the image-facing delivery proof gate; release proof remains open. |
-| Reviewable storyboard packet / image-facing deliverable path | 20 | 17 | E2E happy-path fixture v1 reaches `storyboard_packet_human_review_ready`; story movement audit verifies minimum deterministic story movement evidence; `ReviewableStoryboardPacket` and `ImageFacingDeliveryProof` now exist as named local JSON product artifacts; the E2E fixture reaches the image-facing proof artifact; and final local product-delivery verification evidence has been accepted and pushed. |
+| Novelization intake / quality / revision gates | 15 | 15 | Draft intake, prose quality audit, revision brief, revised draft intake, and accepted draft packet gates are accepted for the selected current-phase local product-delivery baseline. |
+| Accepted draft to script packet gates | 15 | 15 | Accepted draft to script packet and structure/source-binding gates are accepted for the selected current-phase local product-delivery baseline. |
+| Storyboard / asset / candidate-reference JSON gates | 20 | 20 | Deterministic storyboard, asset, image-candidate, candidate-reference, and acceptance-boundary gates are implemented, reviewed, and accepted as local JSON pipeline gates. |
+| Reviewable storyboard packet / image-facing deliverable path | 20 | 20 | `ReviewableStoryboardPacket` and `ImageFacingDeliveryProof` exist as named local JSON product artifacts; the E2E fixture reaches the image-facing proof artifact; and final local product-delivery verification evidence has been accepted and pushed. |
 | Release hygiene, cleanup, packaging, handoff hardening | 10 | 10 | Release hygiene report, grouping preview, focused product-proof reproducibility bundle, tracked handoff manifest, first staging candidate decision brief, staged/committed/pushed control docs, broad implementation bundle, split planning/support docs, memory owner/parser evidence docs, and exact local-memory ignore rules are accepted. This does not imply a release tag, provider/media readiness, canon, or production approval. |
-| Total | 100 | 84 | Product-deliverable control estimate. |
+| Total | 100 | 100 | Selected current-phase local product-delivery baseline. |
 
 ## Gate Hardening Indicator
 
-Gate hardening completion: `84%`
+Gate hardening completion: `100%`
 
-This secondary indicator records how much local JSON gate and source-binding hardening has been accepted by `03`. It must not be displayed as the project completion percentage unless this file is revised again.
+This secondary indicator records how much of the selected current-phase local JSON gate and source-binding hardening has been accepted by `03`. It does not include future formal registry, release tag, provider/media production, canon, approval, runtime integration, or production-lock work.
 
 Counted gate-hardening progress through:
 
-- `minimal reviewable storyboard packet product artifact`: PASS by `03`.
+- `minimal owner Option A selection record`: PASS by `03`.
+- Option A lifecycle/progress alignment for the selected current-phase baseline.
 
-## Not Yet Counted For Product Completion
+## Outside Current Phase
 
-- Any future formal registry decision boundary. This remains not approved until separately planned and reviewed.
+- Formal registry write, release tag, release branch, provider/media production, generated image/video/audio output, asset approval, user approval, approved reference, registered reference, canon application, runtime scene creation from storyboard artifacts, and production lock remain outside this completed current phase.
+- Any future slice that wants one of those surfaces must start as a separate reviewed project or decision brief.
 
 ## Expert Model Note
 
@@ -86,9 +88,11 @@ Counted through:
 - `minimal E2E image-facing delivery proof fixture` plus staging, commit, push readiness, and push apply: PASS by `03`; this completes the previously uncounted accepted-script to `ImageFacingDeliveryProof` fixture and raises the reviewable/image-facing row by 2 points.
 - `minimal final local product-delivery verification bundle` plus staging, commit, push readiness, and push apply: PASS by `03`; this completes the previously uncounted final local verification evidence and raises the reviewable/image-facing row by 2 points.
 - `minimal project completion closure decision brief` plus staging, commit, push readiness, and push apply: PASS by `03`; not counted as a percentage increase because it frames owner options rather than selecting completion scope.
+- `minimal owner Option A selection record` plus staging, commit, push readiness, and push apply: PASS by `03`; this selects the current-phase local product-delivery baseline closure path.
+- `minimal Option A lifecycle/progress alignment`: updates this file to the selected current-phase completion display while keeping future formal registry, release tag, provider/media, approval/canon, runtime integration, and production-lock work outside the current phase.
 
 Display remains:
 
 ```text
-Project completion progress: 84%
+Project completion progress: 100%
 ```

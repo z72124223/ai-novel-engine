@@ -1,6 +1,72 @@
 # Plan
 
-## Active Owner Closure Option A Selection Record Plan
+## Active Option A Lifecycle Progress Alignment Plan
+
+### Goal
+
+Align lifecycle and progress documentation after the pushed explicit Option A owner selection, closing the current project phase as a local product-delivery baseline.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Mark Stage 42 as complete because the owner/user explicitly selected Option A and the selection record was reviewed, committed, and pushed.
+- Set the official display to `Project completion progress: 100%` for the selected current-phase local product-delivery baseline.
+- Keep formal registry write, release tag, provider/media production, canon/approval, runtime scene creation, and production lock outside this completed phase.
+- Send this alignment to `03` before staging/commit/push.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No claim that future formal registry, release packaging, provider/media production, or runtime integration work is complete.
+
+### Confirmed Facts
+
+- This alignment slice started from clean pushed HEAD/upstream `43ae3f51feba95798957eab00dcd88ad36b1a345` / `43ae3f5 docs: record owner option a selection`.
+- `03` passed the Option A selection record, staging apply, commit apply, push readiness, and push apply.
+- `docs/PROJECT_COMPLETION_OWNER_SELECTION.md` records `Selected option: OPTION_A_CLOSE_CURRENT_PHASE_AS_LOCAL_PRODUCT_DELIVERY_BASELINE`.
+- `docs/PROJECT_COMPLETION_OWNER_SELECTION.md` records `Selection source: user` and `Selection input: a`.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 42 `Owner closure option selection` as Next.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still displays `Project completion progress: 84%`.
+
+### Assumptions
+
+- Under Option A, the current phase completion target is the local product-delivery baseline, not the future formal registry / release / provider-media roadmap.
+
+### Open Questions
+
+- Whether `03` accepts raising the official current-phase progress display to 100% with the Option A boundary caveat.
+
+### Implementation Steps
+
+- [x] Step 1: Align lifecycle and progress docs for selected Option A closure.
+- [ ] Step 2: Run docs-only verification and send to `03`.
+- [ ] Step 3: Stage, commit, and push only after `03` accepts the alignment.
+
+### Verification
+
+- `git status --short --untracked-files=all`.
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Trailing whitespace scan on changed docs.
+- Confirm no source/test/schema/runtime/CLI, `.gitignore`, memory JSON, samples, or other docs are changed.
+- Confirm the official progress display is `Project completion progress: 100%` only for the selected current-phase local product-delivery baseline.
+
+### Risks
+
+- Accidentally implying release approval, formal registry completion, provider/media readiness, canon, runtime write, or production lock.
+- Accidentally making 100% look like future roadmap completion instead of current selected-phase completion.
+- Accidentally editing source/runtime files during docs-only closure alignment.
+
+### Drift Log
+
+- 2026-06-28: Started Option A lifecycle/progress alignment after `03` passed and pushed the explicit user Option A selection record at `43ae3f51feba95798957eab00dcd88ad36b1a345`. Scope is docs/control only; future formal registry, release tag, provider/media production, approval/canon, and production lock remain out of scope.
+- 2026-06-28: Updated `docs/PIPELINE_LIFECYCLE_MAP.md` to mark Stage 42 done and close the current phase as a local product-delivery baseline. Updated `docs/PROJECT_COMPLETION_PROGRESS.md` to display `Project completion progress: 100%` only for the selected Option A current-phase baseline, while future formal registry, release tag, provider/media, approval/canon, runtime integration, and production-lock work remain out of scope.
+
+## Completed Owner Closure Option A Selection Record Plan
 
 ### Goal
 
@@ -48,7 +114,7 @@ Record the owner's explicit Option A selection for Stage 42 without yet changing
 - [x] Step 1: Receive explicit owner/user selection of Option A.
 - [x] Step 2: Create the reviewed Option A selection record.
 - [x] Step 3: Send the selection record to `03` for read-only review.
-- [ ] Step 4: Align lifecycle/progress docs only after `03` accepts the selection record.
+- [x] Step 4: Hand lifecycle/progress alignment to the active Option A lifecycle progress alignment plan after `03` accepted and pushed the selection record.
 
 ### Verification
 

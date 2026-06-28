@@ -1,6 +1,6 @@
 # Pipeline Lifecycle Map
 
-Status: `CONTROL_DOC_ACTIVE`
+Status: `CONTROL_DOC_CLOSED_CURRENT_PHASE`
 
 Date: 2026-06-28
 
@@ -14,6 +14,14 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 - Storyboard, asset, image-candidate, and reference-candidate files are JSON pipeline artifacts. They are not canon, not formal registry entries, not production locks, not approved assets, and not runtime writes.
 - Human decision sources are limited to `human`, `user`, or `01_control` unless a future reviewed slice explicitly changes the rule.
 - The current pipeline must not use a web server, port, OpenAI API, external provider API, remote download, image generation, video generation, audio generation, Docker, React/Next, FastAPI/Express/Ktor/Spring server, Android UI, or Rust.
+
+## Current Phase Closure
+
+The owner/user selected Option A in `docs/PROJECT_COMPLETION_OWNER_SELECTION.md`.
+
+The current project phase is closed as a local product-delivery baseline. This means the accepted deliverable is the reviewed Kotlin/JVM CLI plus JSON file protocol pipeline, including reviewable storyboard and image-facing delivery proof artifacts.
+
+This closure does not approve a release tag, release branch, formal registry write, provider/media production, generated media, asset approval, user approval, approved reference, registered reference, canon application, runtime scene creation, or production lock. Any such work must start as a future separately reviewed project or slice.
 
 ## Lifecycle Table
 
@@ -60,7 +68,7 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 | 39 | E2E image-facing delivery proof fixture | Accepted draft to `ImageFacingDeliveryProof` product proof fixture | Test/product proof only | None | Proving the gate in isolation but not the product path | Provider API job, remote download, generated image storage, approval/canon/production lock | Done |
 | 40 | Final local product-delivery verification bundle | Local reproducibility and product-path verification evidence | Verification evidence only, no release tag | `01_control` | Treating clean pushed state as release approval without final evidence | Provider/media generation, formal registry write, approval/canon/production lock | Done |
 | 41 | Project completion closure decision brief | Owner decision on remaining formal registry / release boundary | Docs/control decision only, not release approval | `01_control` | Treating 84% as 100% without explicit target decision | Release tag, formal registry write, approval/canon/production lock | Done |
-| 42 | Owner closure option selection | Selected closure path for current project phase | Owner decision only, not implementation | `01_control` / user | Treating the decision as release, registry write, or production approval | Release tag, formal registry write, provider/media execution, approval/canon/production lock | Next |
+| 42 | Owner closure option selection | Selected closure path for current project phase | Owner decision only, not implementation | `01_control` / user | Treating the decision as release, registry write, or production approval | Release tag, formal registry write, provider/media execution, approval/canon/production lock | Done |
 
 ## Current Mainline
 
@@ -99,6 +107,7 @@ accepted draft packet
 -> final local product-delivery verification bundle
 -> project completion closure decision brief
 -> owner closure option selection
+-> current phase closed as local product-delivery baseline
 ```
 
 ## Next Slice Order
@@ -123,7 +132,8 @@ accepted draft packet
 18. Build an E2E fixture from accepted draft to `ImageFacingDeliveryProof`. Done.
 19. Produce final local product-delivery verification evidence. Done.
 20. Produce a project completion closure decision brief for the remaining formal registry / release boundary. Done.
-21. Select Option A, B, or C for the current project phase. Next.
+21. Select Option A, B, or C for the current project phase. Done.
+22. Current selected phase closed as local product-delivery baseline. Done.
 
 ## Not Approved
 
