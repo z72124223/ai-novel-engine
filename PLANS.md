@@ -1,6 +1,72 @@
 # Plan
 
-## Active Owner Closure Decision Intake Repair Plan
+## Active Owner Closure Option Selection Pending Plan
+
+### Goal
+
+Keep Stage 42 honest after the pushed owner decision intake record: the current project phase still requires an explicit owner/user selection of Option A, B, or C before completion wording or progress alignment.
+
+### Global Strategy
+
+- Update docs/control status only:
+  - `PLANS.md`
+- Record that `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` has been committed and pushed.
+- Preserve Option A as the current recommendation only, not as selected.
+- Keep official progress at `Project completion progress: 84%`.
+- Ask for explicit owner/user selection before creating any selection record or completion alignment.
+
+### Non-Goals
+
+- No Kotlin/source/test/schema/runtime/CLI behavior edits.
+- No Gradle rerun.
+- No release tag, release branch, cleanup, delete, move, revert, DB, server, provider, media generation, approval, canon, formal registry write, or production-lock action.
+- No implicit owner selection, project-complete wording, or progress increase.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `72db12281c91e8bc18305081c2aadde8aec43966` / `72db122 docs: add owner decision intake`.
+- `03` passed the owner decision intake repair, staging apply, commit apply, push readiness, and push apply.
+- `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records `Decision status: PENDING_EXPLICIT_OWNER_SELECTION`.
+- `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records Option A as current recommendation only and `Selection source: none yet.`
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 42 `Owner closure option selection` as Next.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still displays `Project completion progress: 84%`.
+
+### Assumptions
+
+- The owner/user remains the authority for choosing Option A, B, or C.
+
+### Open Questions
+
+- Whether the owner selects Option A, Option B, or Option C for project closure.
+
+### Implementation Steps
+
+- [x] Step 1: Align `PLANS.md` after pushed owner decision intake record.
+- [x] Step 2: Run docs-only verification and send to `03`.
+- [ ] Step 3: Stage, commit, and push only after review.
+- [ ] Step 4: Ask the owner/user for explicit A/B/C selection.
+
+### Verification
+
+- `git status --short --untracked-files=all`.
+- `git diff --check -- PLANS.md`.
+- Trailing whitespace scan on `PLANS.md`.
+- Confirm `Project completion progress: 84%` remains unchanged in `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- Confirm HEAD/upstream remain `72db12281c91e8bc18305081c2aadde8aec43966` before this alignment commit.
+
+### Risks
+
+- Accidentally treating this status alignment as the missing owner selection.
+- Accidentally changing progress/completion wording before explicit owner selection.
+- Accidentally implying formal registry write, provider/media readiness, generated media, approval, canon, runtime write, or production lock.
+
+### Drift Log
+
+- 2026-06-28: Started post-owner-decision-intake `PLANS.md` alignment after `03` passed pushed intake record. Scope is one docs/control file only; official progress remains 84%, and A/B/C remains pending explicit owner/user selection.
+- 2026-06-28: Docs-only verification passed: dirty set is only `PLANS.md`; diff check returned only LF/CRLF warning; trailing whitespace scan returned no matches; `docs/PROJECT_COMPLETION_PROGRESS.md` remains 84%; HEAD/upstream remain `72db12281c91e8bc18305081c2aadde8aec43966`.
+- 2026-06-28: `03` passed `minimal post-owner-decision-intake PLANS alignment`; no blocking findings. Next action is exact one-file staging after review.
+
+## Completed Owner Closure Decision Intake Repair Plan
 
 ### Goal
 
@@ -47,7 +113,7 @@ Replace the rejected Stage 42 owner selection draft with a neutral owner decisio
 - [x] Step 4: Receive `03` REVISE and identify implicit-selection blocker.
 - [x] Step 5: Replace selected record with neutral owner decision intake record.
 - [x] Step 6: Run docs-only verification and send to `03`.
-- [ ] Step 7: Stage, commit, and push only after review.
+- [x] Step 7: Stage, commit, and push only after review.
 
 ### Verification
 
@@ -72,6 +138,7 @@ Replace the rejected Stage 42 owner selection draft with a neutral owner decisio
 - 2026-06-28: Replaced the selected Option A draft with `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`. The new record marks Option A as the current recommendation, keeps decision status `PENDING_EXPLICIT_OWNER_SELECTION`, and keeps official progress at 84%.
 - 2026-06-28: Docs-only repair verification passed: dirty set is `PLANS.md` plus new `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md`; diff/no-index checks returned only LF/CRLF warnings; trailing whitespace scan returned no matches; progress remains 84%.
 - 2026-06-28: `03` passed `minimal owner closure decision intake record REVISE repair`; no blocking findings. The repair preserves pending owner choice, keeps Option A as recommendation only, and leaves progress at 84%. Next action is exact two-file staging after review.
+- 2026-06-28: `03` passed staging apply, commit apply, push readiness, and push apply for this intake record. Final pushed HEAD/upstream is `72db12281c91e8bc18305081c2aadde8aec43966`; official progress remains 84%, and owner selection remains pending.
 
 ## Completed Post Closure Decision Brief Progress Alignment Plan
 
