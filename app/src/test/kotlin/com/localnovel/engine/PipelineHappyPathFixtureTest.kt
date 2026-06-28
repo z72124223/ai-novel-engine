@@ -3,16 +3,22 @@ package com.localnovel.engine
 import com.localnovel.engine.model.AcceptedScriptPacketContinuityAnchorsSummary
 import com.localnovel.engine.model.AcceptedScriptPacketHandoffPacket
 import com.localnovel.engine.model.AcceptedScriptPacketSourceReports
+import com.localnovel.engine.model.ImageFacingDeliveryProof
+import com.localnovel.engine.model.ReviewableStoryboardPacket
 import com.localnovel.engine.model.StoryboardPacketAssetCandidateDraft
 import com.localnovel.engine.model.StoryboardPacketDraft
 import com.localnovel.engine.model.StoryboardPacketFrameDraft
 import com.localnovel.engine.model.StoryboardPacketHumanReviewPreflightReport
 import com.localnovel.engine.model.StoryboardPacketReviewPacket
+import com.localnovel.engine.model.StoryboardStoryMovementAuditReport
+import com.localnovel.engine.service.ImageFacingDeliveryProofService
+import com.localnovel.engine.service.ReviewableStoryboardPacketService
 import com.localnovel.engine.service.StoryboardPacketDraftValidationService
 import com.localnovel.engine.service.StoryboardPacketHumanReviewPreflightService
 import com.localnovel.engine.service.StoryboardPacketReviewService
 import com.localnovel.engine.service.StoryboardPlanningBriefService
 import com.localnovel.engine.service.StoryboardPlanningPreflightService
+import com.localnovel.engine.service.StoryboardStoryMovementAuditService
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -34,6 +40,9 @@ class PipelineHappyPathFixtureTest {
         val storyboardDraftValidationPath = tempDir.resolve("storyboard_packet_draft_validation.json")
         val storyboardReviewPath = tempDir.resolve("storyboard_packet_review.json")
         val humanReviewPreflightPath = tempDir.resolve("storyboard_packet_human_review_preflight.json")
+        val storyMovementAuditPath = tempDir.resolve("storyboard_story_movement_audit.json")
+        val reviewableStoryboardPacketPath = tempDir.resolve("reviewable_storyboard_packet.json")
+        val imageFacingDeliveryProofPath = tempDir.resolve("image_facing_delivery_proof.json")
 
         val acceptedScriptPacket = acceptedScriptPacket()
         writeJson(acceptedScriptPacketPath, acceptedScriptPacket)
@@ -99,6 +108,44 @@ class PipelineHappyPathFixtureTest {
         val reloadedEndpoint = readJson<StoryboardPacketHumanReviewPreflightReport>(humanReviewPreflightPath)
         assertEquals("PASS", reloadedEndpoint.verdict)
         assertEquals("storyboard_packet_human_review_ready", reloadedEndpoint.nextAllowedDownstreamStep)
+
+        val storyMovementAudit = StoryboardStoryMovementAuditService().audit(
+            storyboardPacketDraft = storyboardDraft,
+            storyboardPacketReview = storyboardReview,
+            storyboardHumanReviewPreflight = humanReviewPreflight,
+            storyboardPacketDraftFile = storyboardDraftPath.toString(),
+            storyboardPacketReviewFile = storyboardReviewPath.toString(),
+            storyboardHumanReviewPreflightFile = humanReviewPreflightPath.toString(),
+            auditId = "story-movement-audit-fixture-001",
+        )
+        writeJson(storyMovementAuditPath, storyMovementAudit)
+        assertStoryMovementAudited(storyMovementAudit, storyboardDraft, storyboardReview)
+
+        val reviewableStoryboardPacket = ReviewableStoryboardPacketService().create(
+            storyboardPacketDraft = storyboardDraft,
+            storyboardPacketReview = storyboardReview,
+            storyboardHumanReviewPreflight = humanReviewPreflight,
+            storyboardStoryMovementAudit = storyMovementAudit,
+            storyboardPacketDraftFile = storyboardDraftPath.toString(),
+            storyboardPacketReviewFile = storyboardReviewPath.toString(),
+            storyboardHumanReviewPreflightFile = humanReviewPreflightPath.toString(),
+            storyboardStoryMovementAuditFile = storyMovementAuditPath.toString(),
+            packetId = "reviewable-storyboard-packet-fixture-001",
+        )
+        writeJson(reviewableStoryboardPacketPath, reviewableStoryboardPacket)
+        assertReviewableStoryboardPacket(reviewableStoryboardPacket, storyMovementAudit, storyboardReview, acceptedScriptPacket)
+
+        val imageFacingDeliveryProof = ImageFacingDeliveryProofService().create(
+            reviewableStoryboardPacket = reviewableStoryboardPacket,
+            reviewableStoryboardPacketFile = reviewableStoryboardPacketPath.toString(),
+            proofId = "image-facing-delivery-proof-fixture-001",
+        )
+        writeJson(imageFacingDeliveryProofPath, imageFacingDeliveryProof)
+        assertImageFacingDeliveryProof(imageFacingDeliveryProof, reviewableStoryboardPacket, acceptedScriptPacket)
+
+        val reloadedProof = readJson<ImageFacingDeliveryProof>(imageFacingDeliveryProofPath)
+        assertEquals("PASS", reloadedProof.verdict)
+        assertEquals("image_facing_delivery_proof_ready", reloadedProof.nextAllowedDownstreamStep)
     }
 
     private fun assertReviewableStoryboardPacketSkeleton(
@@ -147,6 +194,108 @@ class PipelineHappyPathFixtureTest {
         assertFalse(endpoint.nextAllowedDownstreamStep.contains("registry", ignoreCase = true))
         assertFalse(endpoint.nextAllowedDownstreamStep.contains("production", ignoreCase = true))
         assertFalse(endpoint.nextAllowedDownstreamStep.contains("image_generation", ignoreCase = true))
+    }
+
+    private fun assertStoryMovementAudited(
+        audit: StoryboardStoryMovementAuditReport,
+        draft: StoryboardPacketDraft,
+        review: StoryboardPacketReviewPacket,
+    ) {
+        assertEquals("PASS", audit.verdict, audit.findings.joinToString { it.ruleId })
+        assertEquals("story_movement_audited", audit.nextAllowedDownstreamStep)
+        assertEquals(review.reviewId, audit.storyboardPacketReviewId)
+        assertEquals(draft.packetId, audit.storyboardPacketDraftId)
+        assertEquals(draft.acceptedScriptPacketId, audit.acceptedScriptPacketId)
+        assertEquals(draft.scriptPacketDraftFile, audit.scriptPacketDraftFile)
+        assertEquals(draft.scriptPacketDraftContentSha256, audit.scriptPacketDraftContentSha256)
+        assertEquals(draft.frames.size, audit.frameCount)
+        assertTrue(audit.evidence.movementEvidenceCount >= 2)
+        assertTrue(audit.evidence.openingPressureEvidenceCount >= 1)
+        assertTrue(audit.evidence.actionEvidenceCount >= 1)
+        assertTrue(audit.evidence.consequenceOrChoiceEvidenceCount >= 1)
+        assertEquals(protectedAnchors.size, audit.evidence.coveredContinuityAnchorCount)
+        assertEquals(0, audit.evidence.forbiddenClaimCount)
+    }
+
+    private fun assertReviewableStoryboardPacket(
+        packet: ReviewableStoryboardPacket,
+        audit: StoryboardStoryMovementAuditReport,
+        review: StoryboardPacketReviewPacket,
+        acceptedScriptPacket: AcceptedScriptPacketHandoffPacket,
+    ) {
+        assertEquals("PASS", packet.verdict, packet.findings.joinToString { it.ruleId })
+        assertEquals("reviewable-storyboard-packet-fixture-001", packet.packetId)
+        assertEquals("reviewable_storyboard_packet_candidate", packet.packetStatus)
+        assertEquals("reviewable_storyboard_packet_ready", packet.nextAllowedDownstreamStep)
+        assertEquals("reviewable_storyboard_packet_packaging_only", packet.downstreamBoundary)
+        assertEquals(review.reviewId, packet.storyboardPacketReviewId)
+        assertEquals(audit.auditId, packet.storyboardStoryMovementAuditId)
+        assertEquals(acceptedScriptPacket.packetId, packet.acceptedScriptPacketId)
+        assertEquals(acceptedScriptPacket.scriptPacketDraftFile, packet.scriptPacketDraftFile)
+        assertEquals(acceptedScriptPacket.scriptPacketDraftContentSha256, packet.scriptPacketDraftContentSha256)
+        assertEquals(2, packet.frameSummaries.size)
+        assertEquals(listOf("frame-001", "frame-002"), packet.frameSummaries.map { it.frameId })
+        assertTrue(packet.movementEvidenceSummary.movementEvidenceCount >= 2)
+        assertEquals(0, packet.evidence.forbiddenClaimCount)
+        assertSafeBoundaryText(
+            listOf(
+                packet.packetStatus,
+                packet.downstreamBoundary,
+                packet.nextAllowedDownstreamStep,
+                packet.remainingResidualRisks.joinToString(" "),
+                packet.frameSummaries.joinToString(" ") { frame ->
+                    listOf(
+                        frame.visualIntent,
+                        frame.cameraIntent,
+                        frame.mustShow.joinToString(" "),
+                        frame.doNotShow.joinToString(" "),
+                        frame.assetCandidateRefs.joinToString(" "),
+                    ).joinToString(" ")
+                },
+            ),
+        )
+    }
+
+    private fun assertImageFacingDeliveryProof(
+        proof: ImageFacingDeliveryProof,
+        packet: ReviewableStoryboardPacket,
+        acceptedScriptPacket: AcceptedScriptPacketHandoffPacket,
+    ) {
+        assertEquals("PASS", proof.verdict, proof.findings.joinToString { it.ruleId })
+        assertEquals("image-facing-delivery-proof-fixture-001", proof.proofId)
+        assertEquals("image_facing_delivery_proof_candidate", proof.proofStatus)
+        assertEquals("image_facing_delivery_proof_ready", proof.nextAllowedDownstreamStep)
+        assertEquals("image_facing_delivery_proof_only", proof.downstreamBoundary)
+        assertEquals(packet.packetId, proof.reviewableStoryboardPacketId)
+        assertEquals(packet.packetStatus, proof.reviewableStoryboardPacketStatus)
+        assertEquals(acceptedScriptPacket.packetId, proof.acceptedScriptPacketId)
+        assertEquals(acceptedScriptPacket.scriptPacketDraftFile, proof.scriptPacketDraftFile)
+        assertEquals(acceptedScriptPacket.scriptPacketDraftContentSha256, proof.scriptPacketDraftContentSha256)
+        assertEquals(packet.frameSummaries.size, proof.frameDeliveryCards.size)
+        assertEquals(packet.frameSummaries.map { it.frameId }, proof.frameDeliveryCards.map { it.frameId })
+        assertEquals(2, proof.evidence.frameWithVisualIntentCount)
+        assertEquals(2, proof.evidence.frameWithCameraIntentCount)
+        assertEquals(2, proof.evidence.frameWithMustShowCount)
+        assertEquals(2, proof.evidence.frameWithDoNotShowCount)
+        assertEquals(2, proof.evidence.frameWithContinuityAnchorCount)
+        assertEquals(0, proof.evidence.forbiddenClaimCount)
+        assertEquals(0, proof.evidence.remoteReferenceCount)
+        assertSafeBoundaryText(
+            listOf(
+                proof.proofStatus,
+                proof.downstreamBoundary,
+                proof.nextAllowedDownstreamStep,
+                proof.frameDeliveryCards.joinToString(" ") { frame ->
+                    listOf(
+                        frame.visualIntent,
+                        frame.cameraIntent,
+                        frame.mustShow.joinToString(" "),
+                        frame.doNotShow.joinToString(" "),
+                        frame.assetCandidateRefs.joinToString(" "),
+                    ).joinToString(" ")
+                },
+            ),
+        )
     }
 
     private fun acceptedScriptPacket(): AcceptedScriptPacketHandoffPacket =

@@ -1,6 +1,72 @@
 # Plan
 
-## Active Post Image-Facing Delivery Proof Alignment Plan
+## Active E2E Image-Facing Delivery Proof Fixture Plan
+
+### Goal
+
+Add the smallest end-to-end product-proof fixture that starts from an accepted script packet, reaches `ReviewableStoryboardPacket`, then produces `ImageFacingDeliveryProof` without adding new production behavior.
+
+### Global Strategy
+
+- Extend existing test/product-proof coverage rather than adding new service/model/CLI surfaces.
+- Reuse the real local JSON service chain already covered by `PipelineHappyPathFixtureTest`, then continue through:
+  - `StoryboardStoryMovementAuditService`
+  - `ReviewableStoryboardPacketService`
+  - `ImageFacingDeliveryProofService`
+- Keep the slice test-only plus `PLANS.md`.
+- Preserve candidate-only, reviewable, non-canon, non-production boundaries.
+
+### Non-Goals
+
+- No new CLI command, model, service, schema migration, SQLite write, runtime `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+- No provider API/job, remote download, image/video/audio generation, output path, registry write, asset approval, approved/registered reference, canon, or production lock.
+- No docs/progress increase in this implementation step; progress can be reconsidered only after review.
+
+### Confirmed Facts
+
+- Current pushed HEAD/upstream are `3ec5e64f6e36f1715c32b5b6c56e1d3da475ae6a` / `3ec5e64 docs: align image-facing proof progress`.
+- `03` passed the post image-facing delivery proof lifecycle/progress alignment push apply.
+- `PipelineHappyPathFixtureTest` currently starts from `AcceptedScriptPacketHandoffPacket` and reaches `StoryboardPacketHumanReviewPreflightReport` with `nextAllowedDownstreamStep=storyboard_packet_human_review_ready`.
+- `ReviewableStoryboardPacketService` can package draft/review/preflight/audit inputs into `ReviewableStoryboardPacket` with `nextAllowedDownstreamStep=reviewable_storyboard_packet_ready`.
+- `ImageFacingDeliveryProofService` can create `ImageFacingDeliveryProof` from a passed `ReviewableStoryboardPacket`.
+
+### Assumptions
+
+- Extending `PipelineHappyPathFixtureTest` is the narrowest coherent E2E proof because it already owns the accepted-script to storyboard-human-review-ready path.
+
+### Open Questions
+
+- Whether later product scoring should increase after `03` accepts the fixture; this slice itself will not change the score.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect current happy-path, reviewable packet, story movement audit, and image-facing proof tests/services.
+- [x] Step 2: Extend the E2E fixture to create story movement audit, reviewable storyboard packet, and image-facing delivery proof.
+- [x] Step 3: Run focused fixture verification and docs/test safety checks.
+- [x] Step 4: Send to `03` for read-only review.
+- [ ] Step 5: Stage, commit, and push only after review.
+
+### Verification
+
+- Focused test: `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --no-daemon --console=plain`.
+- `git diff --check -- PLANS.md app/src/test/kotlin/com/localnovel/engine/PipelineHappyPathFixtureTest.kt`.
+- Trailing whitespace scan on changed files.
+- Safety scan confirming no DB/server/provider/media/runtime implementation surfaces.
+
+### Risks
+
+- Accidentally implying that `ImageFacingDeliveryProof` is provider-ready or generated media.
+- Duplicating too much fixture setup instead of reusing the existing happy-path chain.
+
+### Drift Log
+
+- 2026-06-28: Started Stage 39 E2E fixture slice after `03` passed pushed docs/control alignment. Scope is `PLANS.md` plus `PipelineHappyPathFixtureTest` unless evidence requires otherwise.
+- 2026-06-28: Evidence pass confirmed no new model/service/CLI is needed; the fixture can extend the existing accepted-script-to-human-review-ready chain through story movement audit, reviewable storyboard packet, and image-facing delivery proof.
+- 2026-06-28: Extended `PipelineHappyPathFixtureTest` to create `StoryboardStoryMovementAuditReport`, `ReviewableStoryboardPacket`, and `ImageFacingDeliveryProof` from the existing accepted-script fixture, with boundary assertions for candidate-only product proof output.
+- 2026-06-28: Focused verification passed: `./gradlew.bat test --tests "*PipelineHappyPathFixtureTest" --no-daemon --console=plain` returned BUILD SUCCESSFUL. Diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches; safety scan hits were limited to forbidden-boundary assertion strings inside the test.
+- 2026-06-28: `03` passed `minimal E2E image-facing delivery proof fixture` with no blocking findings; accepted as test/product-proof plus plan only.
+
+## Completed Post Image-Facing Delivery Proof Alignment Plan
 
 ### Goal
 
@@ -42,7 +108,7 @@ Align control documentation after the accepted and pushed `ImageFacingDeliveryPr
 - [x] Step 1: Confirm pushed proof gate baseline and stale docs/control status.
 - [x] Step 2: Update lifecycle/progress/plan status wording.
 - [x] Step 3: Run docs-only verification and send to `03`.
-- [ ] Step 4: Commit and push docs/control alignment after review.
+- [x] Step 4: Commit and push docs/control alignment after review.
 
 ### Verification
 
@@ -61,6 +127,7 @@ Align control documentation after the accepted and pushed `ImageFacingDeliveryPr
 - 2026-06-28: Started post-push docs/control alignment after `03` passed image-facing delivery proof push apply. Scope is three docs/control files only; official progress remains 80%.
 - 2026-06-28: Marked Stage 38 image-facing delivery proof as Done, added Stage 39 E2E image-facing delivery proof fixture as Next, and updated progress evidence while keeping official progress at 80%.
 - 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches; progress display remains 80%.
+- 2026-06-28: `03` passed docs/control alignment, staging apply, commit apply, push readiness, and push apply. Final pushed HEAD/upstream is `3ec5e64f6e36f1715c32b5b6c56e1d3da475ae6a`; official progress remains 80%.
 
 ## Completed Image-Facing Delivery Proof Plan
 
