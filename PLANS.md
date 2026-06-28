@@ -24,8 +24,9 @@ Keep Stage 42 honest after the pushed owner decision intake record: the current 
 
 ### Confirmed Facts
 
-- Current pushed HEAD/upstream are `72db12281c91e8bc18305081c2aadde8aec43966` / `72db122 docs: add owner decision intake`.
+- This status refresh started from clean pushed HEAD/upstream `198aabf4745f7197efed9b04cc38a4f064beb8ad` / `198aabf docs: align owner selection pending plan`.
 - `03` passed the owner decision intake repair, staging apply, commit apply, push readiness, and push apply.
+- `03` passed the post-owner-decision-intake `PLANS.md` alignment, staging apply, commit apply, push readiness, and push apply.
 - `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records `Decision status: PENDING_EXPLICIT_OWNER_SELECTION`.
 - `docs/PROJECT_COMPLETION_OWNER_DECISION_INTAKE.md` records Option A as current recommendation only and `Selection source: none yet.`
 - `docs/PIPELINE_LIFECYCLE_MAP.md` still marks Stage 42 `Owner closure option selection` as Next.
@@ -41,18 +42,15 @@ Keep Stage 42 honest after the pushed owner decision intake record: the current 
 
 ### Implementation Steps
 
-- [x] Step 1: Align `PLANS.md` after pushed owner decision intake record.
-- [x] Step 2: Run docs-only verification and send to `03`.
-- [ ] Step 3: Stage, commit, and push only after review.
-- [ ] Step 4: Ask the owner/user for explicit A/B/C selection.
+- [ ] Step 1: Ask the owner/user for explicit A/B/C selection.
+- [ ] Step 2: Create the corresponding reviewed selection record only after that explicit choice.
+- [ ] Step 3: Align lifecycle/progress docs only after `03` accepts the selection record.
 
 ### Verification
 
 - `git status --short --untracked-files=all`.
-- `git diff --check -- PLANS.md`.
-- Trailing whitespace scan on `PLANS.md`.
 - Confirm `Project completion progress: 84%` remains unchanged in `docs/PROJECT_COMPLETION_PROGRESS.md`.
-- Confirm HEAD/upstream remain `72db12281c91e8bc18305081c2aadde8aec43966` before this alignment commit.
+- Confirm HEAD/upstream are aligned and the worktree is clean before the next owner-selection slice.
 
 ### Risks
 
@@ -64,7 +62,11 @@ Keep Stage 42 honest after the pushed owner decision intake record: the current 
 
 - 2026-06-28: Started post-owner-decision-intake `PLANS.md` alignment after `03` passed pushed intake record. Scope is one docs/control file only; official progress remains 84%, and A/B/C remains pending explicit owner/user selection.
 - 2026-06-28: Docs-only verification passed: dirty set is only `PLANS.md`; diff check returned only LF/CRLF warning; trailing whitespace scan returned no matches; `docs/PROJECT_COMPLETION_PROGRESS.md` remains 84%; HEAD/upstream remain `72db12281c91e8bc18305081c2aadde8aec43966`.
-- 2026-06-28: `03` passed `minimal post-owner-decision-intake PLANS alignment`; no blocking findings. Next action is exact one-file staging after review.
+- 2026-06-28: `03` passed `minimal post-owner-decision-intake PLANS alignment`; no blocking findings. That prior alignment was later staged, committed, and pushed as `198aabf4745f7197efed9b04cc38a4f064beb8ad`.
+- 2026-06-28: Post-push status refresh started from clean pushed HEAD/upstream `198aabf4745f7197efed9b04cc38a4f064beb8ad`; official progress remains 84%, and owner selection remains pending.
+- 2026-06-28: Simplified active plan so it no longer creates a self-referential staging/commit/push loop. The only active next step is explicit owner/user selection of A, B, or C.
+- 2026-06-28: Docs-only verification for this status refresh passed: dirty set is only `PLANS.md`; diff check returned only LF/CRLF warning; trailing whitespace scan returned no matches; progress remains 84%; HEAD/upstream are aligned at `198aabf4745f7197efed9b04cc38a4f064beb8ad`.
+- 2026-06-28: `03` passed `minimal PLANS pending-owner-selection status refresh`; no blocking findings. After this status refresh is committed and pushed, the next project step remains explicit owner/user selection of A, B, or C.
 
 ## Completed Owner Closure Decision Intake Repair Plan
 
