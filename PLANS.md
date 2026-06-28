@@ -1,5 +1,72 @@
 # Plan
 
+## Active Local-Memory Exact Ignore Apply Plan
+
+### Goal
+
+Apply the explicit `01` owner decision to keep the two local memory support files untracked/local while preventing them from continuing to appear as dirty git status noise.
+
+### Global Strategy
+
+- Edit only `.gitignore` and `PLANS.md`.
+- Add anchored exact ignore rules for only:
+  - `/memory/project_directory_memory.json`
+  - `/memory/quarterfull_world_memory_capsule.json`
+- Keep both memory JSON files local-only and do not stage, commit, repair, delete, move, or rewrite them.
+- Keep official progress at `80%`; this is workspace hygiene for local memory support, not product/release progress.
+
+### Non-Goals
+
+- No memory JSON edits.
+- No broad ignore rule such as `/memory/` or `memory/*.json`.
+- No staging, commit, push, fetch, cleanup, delete, move, or revert.
+- No `.gitignore` rule for any docs, source, test, schema, runtime, sample, or app file.
+- No app/source/test/schema/runtime/CLI behavior changes.
+- No SQLite/runtime write path, provider/API/media work, canon, approval, or production-lock claim.
+
+### Confirmed Facts
+
+- `03` passed `minimal remaining memory surface disposition refresh after parser evidence docs`.
+- `01` explicitly decided both memory files are local-only memory support files.
+- `memory/project_directory_memory.json` and `memory/quarterfull_world_memory_capsule.json` must not be staged or committed as part of this decision.
+- HEAD/upstream are expected to be `ba3162103474627d1e99db3b1ce572ef4c4b2d35`.
+- Official progress remains `80%`.
+
+### Assumptions
+
+- Anchored exact ignore rules are sufficient to hide only the two local memory support files and no other memory/docs files.
+
+### Open Questions
+
+- Whether `01` will later authorize a separate commit/push flow for the `.gitignore` and `PLANS.md` hygiene update after `03` review.
+
+### Implementation Steps
+
+- [x] Step 1: Verify baseline, clean index/tracked diff, and exact untracked memory set.
+- [x] Step 2: Add exact two-file local memory ignore rules and record this owner decision in `PLANS.md`.
+- [x] Step 3: Run post-apply verification and send evidence to `03`.
+
+### Verification
+
+- `git diff --name-only` exact changed tracked files: `.gitignore` and `PLANS.md`.
+- `git status --short --untracked-files=all` no longer shows the two memory files as untracked.
+- `git check-ignore -v -- memory/project_directory_memory.json memory/quarterfull_world_memory_capsule.json` matches the two exact rules.
+- `git check-ignore -v -- memory/other.json memory/nested/project_directory_memory.json docs/MEMORY_OWNER_DECISION.md` returns no matches.
+- `git diff --check -- .gitignore PLANS.md`.
+- Trailing whitespace scan on `.gitignore` and changed `PLANS.md` content.
+- Confirm memory JSON files and app/source/test/schema/runtime/CLI files were not changed.
+
+### Risks
+
+- Accidentally adding a broad ignore rule that hides future memory work.
+- Accidentally staging or modifying local memory JSON instead of only ignoring them.
+- Treating local memory support as product/runtime/canon state.
+
+### Drift Log
+
+- 2026-06-28: Started `minimal local-memory exact ignore apply` after `01` explicit owner decision. Scope is exact `.gitignore` and `PLANS.md` only; memory files remain local-only and untouched.
+- 2026-06-28: Post-apply verification confirmed only `.gitignore` and `PLANS.md` changed, the two local memory files are ignored by exact anchored rules, negative ignore checks do not match adjacent paths/docs, and memory/source/runtime files remain untouched.
+
 ## Active Memory Parser Evidence Wording Correction Plan
 
 ### Goal
