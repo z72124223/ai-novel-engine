@@ -2,7 +2,7 @@
 
 Status: `CONTROL_ESTIMATE_ACTIVE`
 
-Date: 2026-06-27
+Date: 2026-06-28
 
 Canonical workspace: `C:\Users\f7212\Projects\AI 劇本`
 
@@ -40,7 +40,7 @@ This is the percentage `01` displays.
 | Accepted draft to script packet gates | 15 | 12 | Accepted draft to script packet and structure/source-binding gates exist, but final product proof still depends on storyboard E2E. |
 | Storyboard / asset / candidate-reference JSON gates | 20 | 12 | Many deterministic gates are implemented and reviewed, including candidate-reference acceptance packet validation and the reviewable storyboard packet packaging gate; image-facing delivery and release proof remain open. |
 | Reviewable storyboard packet / image-facing deliverable path | 20 | 13 | E2E happy-path fixture v1 reaches `storyboard_packet_human_review_ready`; story movement audit verifies minimum deterministic story movement evidence; `ReviewableStoryboardPacket` now exists as a named local JSON product artifact, and adjacent storyboard suite reproducibility is accepted. |
-| Release hygiene, cleanup, packaging, handoff hardening | 10 | 10 | Release hygiene report, grouping preview, focused product-proof reproducibility bundle, tracked handoff manifest, first staging candidate decision brief, control-doc staging dry-run, and control-doc staging apply are accepted; commit, push, and final release verification remain separate future decisions. |
+| Release hygiene, cleanup, packaging, handoff hardening | 10 | 10 | Release hygiene report, grouping preview, focused product-proof reproducibility bundle, tracked handoff manifest, first staging candidate decision brief, staged/committed/pushed control docs, broad implementation bundle, split planning/support docs, memory owner/parser evidence docs, and exact local-memory ignore rules are accepted. This does not imply a release tag, provider/media readiness, canon, or production approval. |
 | Total | 100 | 80 | Product-deliverable control estimate. |
 
 ## Gate Hardening Indicator
@@ -56,7 +56,7 @@ Counted gate-hardening progress through:
 ## Not Yet Counted For Product Completion
 
 - Image-facing delivery proof after the reviewable storyboard packet artifact.
-- Image-facing delivery proof, final verification, actual staging execution, and handoff hardening.
+- Final product-delivery verification beyond the clean pushed local branch.
 - Any future formal registry decision boundary. This remains not approved until separately planned and reviewed.
 
 ## Expert Model Note
@@ -80,6 +80,10 @@ Counted through:
 - `minimal first staging candidate decision brief`: PASS by `03` on 2026-06-27; not counted as a product-deliverable percentage increase because it is not staging approval or product behavior.
 - `minimal control-doc staging candidate dry run`: PASS by `03` on 2026-06-27; not counted as a product-deliverable percentage increase because it did not stage files.
 - `minimal control-doc staging apply`: PASS by `03` on 2026-06-27; not counted as a product-deliverable percentage increase because it staged control docs only and did not commit, push, release, or add product behavior.
+- `minimal control-doc commit apply` and `minimal control-doc push apply`: PASS by `03`; not counted as a product-deliverable percentage increase because they only published reviewed control evidence.
+- `minimal broad implementation bundle commit apply` and `minimal broad implementation bundle push apply`: PASS by `03`; not counted as an additional percentage increase here because the implemented gate capability was already represented in the product-gate rows.
+- `minimal D1 governance-register docs push apply`, `minimal D2 future-planning docs push apply`, and `minimal D3 QuarterFull support doc push apply`: PASS by `03`; not counted as product behavior.
+- `minimal memory owner-decision memo push apply`, `minimal memory parser evidence docs push apply`, and `minimal local-memory exact ignore push apply`: PASS by `03`; not counted as product behavior because they are local-memory ownership and workspace hygiene controls.
 
 Display remains:
 

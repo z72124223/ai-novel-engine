@@ -1,6 +1,76 @@
 # Plan
 
-## Active Local-Memory Exact Ignore Apply Plan
+## Active Post-Clean Lifecycle and Progress Alignment Plan
+
+### Goal
+
+Align control documentation after the accepted local-memory exact ignore commit/push so the project map no longer points at already-completed staging, commit, or push slices.
+
+### Global Strategy
+
+- Update only docs/control status surfaces:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- Keep official progress at `80%`; this slice is lifecycle/progress wording alignment, not a new product-deliverable capability.
+- Make the next product-completion target explicit: image-facing delivery proof after the `ReviewableStoryboardPacket` artifact.
+- Preserve the clean canonical workspace baseline at `C:\Users\f7212\Projects\AI 劇本`.
+
+### Non-Goals
+
+- No `.gitignore` edits.
+- No memory JSON edits, staging, repair, delete, move, or cleanup.
+- No source, test, schema, runtime, sample, or CLI behavior changes.
+- No Gradle test rerun unless a later implementation slice needs it.
+- No formal registry write, asset approval, approved/registered reference, canon, provider job, image/video/audio generation, or production lock.
+
+### Confirmed Facts
+
+- `03` passed `minimal local-memory exact ignore push apply`.
+- Current pushed HEAD/upstream is `66111b4085fbf160dc181c843005a29fad456d33` / `66111b4 chore: ignore local memory support files`.
+- `docs/PIPELINE_LIFECYCLE_MAP.md` still lists older release/staging states as active or next.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` still lists last control review only through early control-doc staging.
+- The top local-memory ignore plan was completed and pushed, so it should no longer be the active plan.
+
+### Assumptions
+
+- Updating lifecycle/progress docs after completed staging/commit/push flow does not itself increase product-deliverable completion.
+
+### Open Questions
+
+- Exact design of the next image-facing delivery proof slice.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm stale lifecycle/progress wording in the three control files.
+- [x] Step 2: Update `PLANS.md` active plan and local-memory ignore plan status.
+- [x] Step 3: Update lifecycle map statuses and next-slice order.
+- [x] Step 4: Update progress document last-control-review and release hygiene wording.
+- [x] Step 5: Run docs-only verification and send evidence to `03`.
+
+### Verification
+
+- `git diff --name-only` should list only:
+  - `PLANS.md`
+  - `docs/PIPELINE_LIFECYCLE_MAP.md`
+  - `docs/PROJECT_COMPLETION_PROGRESS.md`
+- `git diff --check -- PLANS.md docs/PIPELINE_LIFECYCLE_MAP.md docs/PROJECT_COMPLETION_PROGRESS.md`
+- Trailing whitespace scan on the three changed files.
+- Confirm no source/test/schema/runtime/CLI, memory JSON, `.gitignore`, or sample files changed.
+- Confirm displayed progress remains `Project completion progress: 80%`.
+
+### Risks
+
+- Accidentally claiming release completion from docs/control cleanup.
+- Accidentally raising progress without a product-deliverable slice.
+- Leaving the lifecycle map pointing at completed commit/push tasks as the next work item.
+
+### Drift Log
+
+- 2026-06-28: Started `minimal post-clean lifecycle and progress alignment` after `03` passed the exact local-memory ignore push apply. Scope is three docs/control files only; official progress remains 80%.
+- 2026-06-28: Docs-only verification passed: changed files are exactly `PLANS.md`, `docs/PIPELINE_LIFECYCLE_MAP.md`, and `docs/PROJECT_COMPLETION_PROGRESS.md`; diff check returned only LF/CRLF warnings; trailing whitespace scan returned no matches. Remaining older Stage 26/34 references in lower `PLANS.md` sections are historical drift logs, not the active plan.
+
+## Completed Local-Memory Exact Ignore Apply Plan
 
 ### Goal
 
@@ -29,7 +99,7 @@ Apply the explicit `01` owner decision to keep the two local memory support file
 - `03` passed `minimal remaining memory surface disposition refresh after parser evidence docs`.
 - `01` explicitly decided both memory files are local-only memory support files.
 - `memory/project_directory_memory.json` and `memory/quarterfull_world_memory_capsule.json` must not be staged or committed as part of this decision.
-- HEAD/upstream are expected to be `ba3162103474627d1e99db3b1ce572ef4c4b2d35`.
+- HEAD/upstream after push are `66111b4085fbf160dc181c843005a29fad456d33`.
 - Official progress remains `80%`.
 
 ### Assumptions
@@ -38,7 +108,7 @@ Apply the explicit `01` owner decision to keep the two local memory support file
 
 ### Open Questions
 
-- Whether `01` will later authorize a separate commit/push flow for the `.gitignore` and `PLANS.md` hygiene update after `03` review.
+- None for this completed slice. The apply, staging, commit, and push flow was completed and passed `03` review.
 
 ### Implementation Steps
 
@@ -66,6 +136,7 @@ Apply the explicit `01` owner decision to keep the two local memory support file
 
 - 2026-06-28: Started `minimal local-memory exact ignore apply` after `01` explicit owner decision. Scope is exact `.gitignore` and `PLANS.md` only; memory files remain local-only and untouched.
 - 2026-06-28: Post-apply verification confirmed only `.gitignore` and `PLANS.md` changed, the two local memory files are ignored by exact anchored rules, negative ignore checks do not match adjacent paths/docs, and memory/source/runtime files remain untouched.
+- 2026-06-28: `03` passed exact ignore staging, commit, push readiness, and push apply. Final pushed HEAD/upstream is `66111b4085fbf160dc181c843005a29fad456d33`; memory JSON files remain local-only and are not in the commit.
 
 ## Active Memory Parser Evidence Wording Correction Plan
 

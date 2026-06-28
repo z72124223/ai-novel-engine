@@ -2,7 +2,7 @@
 
 Status: `CONTROL_DOC_ACTIVE`
 
-Date: 2026-06-27
+Date: 2026-06-28
 
 Canonical workspace: `C:\Users\f7212\Projects\AI 劇本`
 
@@ -44,7 +44,7 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 | 23 | E2E happy-path fixture | Reviewable storyboard packet skeleton | Product proof only, no runtime write | None | Gate chain discontinuity across real chapter fixture | Provider/API/output/generated/canon/approval/lock | Done |
 | 24 | Story movement audit / reviewable storyboard readiness | `story_movement_audited` | Read-only story movement readiness audit, non-canon | None | Story movement missing despite valid JSON; output/provider/approval short fields | Storyboard image/video finalization, asset approval, production lock | Done |
 | 25 | Reviewable storyboard packet product artifact | `reviewable_storyboard_packet_ready` | Product artifact packaging only, non-canon | Future human review rules | Audited draft/review/preflight source chain drifting before packaging | Storyboard image/video finalization, provider job, asset approval, canon, production lock | Done |
-| 26 | Release hygiene and local reproducibility hardening | Release candidate evidence packet | Cleanup / reproducibility proof only, non-runtime | None | Dirty worktree, untracked service/test files, stale OneDrive path references, incomplete command evidence | New runtime behavior, provider/API calls, DB writes, approval/canon/production claims | In Progress |
+| 26 | Release hygiene and local reproducibility hardening | Clean pushed control / implementation / docs baseline | Cleanup / reproducibility proof only, non-runtime | None | Dirty worktree, untracked service/test files, stale OneDrive path references, incomplete command evidence | New runtime behavior, provider/API calls, DB writes, approval/canon/production claims | Done |
 | 27 | Release grouping preview | Grouping preview report | Read-only grouping plan only, no staging | None | Grouping accepted and unreviewed files together, stale inventory counts | Delete/move/stage/commit/push/revert, DB writes, provider/media/canon claims | Done |
 | 28 | Focused reproducibility bundle | Focused test evidence report | Verification evidence only, no source edits | None | Product-proof tests drifting from grouped artifacts | New code behavior, DB writes, provider/media/canon claims, skipped failing tests | Done |
 | 29 | Tracked handoff manifest | Handoff manifest report | Manifest only, no staging | None | Missing shared tracked files or untracked dependencies from handoff groups | Stage/commit/push/revert, DB writes, provider/media/canon claims | Done |
@@ -52,7 +52,11 @@ This file is the control map for the local novel-to-storyboard pipeline. It desc
 | 31 | First staging candidate decision brief | Staging candidate decision brief | Read-only staging decision prep, no staging | `01_control` | Shared tracked files spanning multiple groups without ownership decision | Stage/commit/push/revert, DB writes, provider/media/canon claims, release approval wording | Done |
 | 32 | Control-doc staging candidate dry run | Dry-run staging candidate report | Read-only exact-file staging simulation, no `git add` | `01_control` | Accidentally treating dry-run as actual staged state | Actual staging, commit, push, cleanup, DB writes, provider/media/canon claims | Done |
 | 33 | Control-doc staging apply | Git index staging of exact control-doc candidate files | Exact-file staging only, no commit | `01_control` | Staging files outside Option A or missing updated control docs | Commit, push, cleanup, broad source/test staging, DB writes, provider/media/canon claims | Done |
-| 34 | Control-doc commit decision / apply | Commit decision or exact control-doc commit apply if separately authorized | Decision boundary first; no push or cleanup | `01_control` | Treating staged state as implicit commit approval | Push, cleanup, broad source/test staging, DB writes, provider/media/canon claims | Next |
+| 34 | Control-doc commit / push apply | Pushed control-doc baseline | Exact-file commit/push only, no cleanup or runtime behavior | `01_control` | Treating staged state as release approval | Cleanup, broad source/test staging, DB writes, provider/media/canon claims | Done |
+| 35 | Broad implementation bundle commit / push apply | Pushed local JSON pipeline gate baseline | Implementation bundle only, no docs/memory cleanup | `01_control` | Shared `Main.kt` / `Models.kt` scope hiding extra files | DB writes, provider/media/canon claims, docs/memory staging | Done |
+| 36 | Remaining planning docs split groups | Pushed D1/D2/D3 docs baselines | Docs/control only | `01_control` | Mixing governance, planning, and QuarterFull support docs without review | Source/runtime edits, memory staging, canon/approval claims | Done |
+| 37 | Memory owner / parser / exact ignore closure | Clean local memory support boundary | Local-only memory support, exact ignore rules | `01_control` | Treating local memory as runtime/canon state or broadly ignoring future memory work | Memory JSON staging, repair/delete/cleanup, SQLite/runtime/provider claims | Done |
+| 38 | Image-facing delivery proof after reviewable storyboard packet | Image-facing delivery proof plan or fixture | Product proof only until separately approved | `01_control` if a decision gate is needed | Mistaking candidate packet readiness for generated image/provider readiness | Provider API job, remote download, generated image storage, approval/canon/production lock | Next |
 
 ## Current Mainline
 
@@ -82,7 +86,11 @@ accepted draft packet
 -> first staging candidate decision brief
 -> control-doc staging candidate dry run
 -> control-doc staging apply
--> control-doc commit decision / apply
+-> control-doc commit / push apply
+-> broad implementation bundle commit / push apply
+-> remaining planning docs split groups
+-> memory owner / parser / exact ignore closure
+-> image-facing delivery proof after reviewable storyboard packet
 ```
 
 ## Next Slice Order
@@ -91,7 +99,7 @@ accepted draft packet
 2. Build an E2E happy-path fixture from accepted draft to reviewable storyboard packet. Done.
 3. Add a read-only story movement audit for storyboard readiness. Done.
 4. Add a named reviewable storyboard packet product artifact. Done.
-5. Perform release hygiene and local reproducibility hardening. In Progress.
+5. Perform release hygiene and local reproducibility hardening. Done.
 6. Produce a read-only release grouping preview. Done.
 7. Produce a focused reproducibility bundle. Done.
 8. Produce a tracked handoff manifest. Done.
@@ -99,7 +107,11 @@ accepted draft packet
 10. Produce the first staging candidate decision brief. Done.
 11. Produce a control-doc staging candidate dry run. Done.
 12. Apply exact control-doc staging candidate to the git index. Done.
-13. Decide whether to apply a control-doc-only commit. Next.
+13. Apply and push the control-doc-only commit. Done.
+14. Apply and push the broad implementation bundle. Done.
+15. Split, commit, and push remaining planning/support docs. Done.
+16. Record memory owner/parser evidence and apply exact local-memory ignore rules. Done.
+17. Define the next image-facing delivery proof after `ReviewableStoryboardPacket`. Next.
 
 ## Not Approved
 
