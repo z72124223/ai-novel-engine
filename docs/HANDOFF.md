@@ -27,6 +27,20 @@ current.
 All other route/control docs below are on-demand evidence, not default startup
 reading.
 
+## Project Cleanup Baseline (2026-07-07)
+
+Housekeeping baseline for non-engineer handoff:
+
+- Large batch commit: `3249db2`; follow-up housekeeping: `fa13693` and ongoing
+  cleanup commits on `codex/mvp6-checkpoint-branching-spec`.
+- `PLANS.md`: read only `CURRENT_PLAN_WINDOW_V0` first; 200+ old `## Active`
+  sections are now labeled `## Historical` and are archive evidence only.
+- CLI code is being split out of the oversized `Main.kt` into
+  `app/src/main/kotlin/com/localnovel/engine/cli/` modules.
+- Default active story samples live in `samples/chenxing/`; Rain Gate remains
+  test/demo only.
+- Full Gradle test suite must pass before each cleanup commit.
+
 ## Active Creative World Source Lock
 
 Current active creative worldview is locked to `塵行`, not Rain Gate.

@@ -1,12 +1,12 @@
-# Plan
+﻿# Plan
 
 > **Startup rule (2026-07-07):** Read only `## Current Plan Window V0`
-> (`CURRENT_PLAN_WINDOW_V0`) first. All other `## ...` sections below are
-> historical evidence unless the current window explicitly references one.
-> Worktree baseline: commit `3249db2` on `codex/mvp6-checkpoint-branching-spec`.
-> Active creative world: `塵行` / 灰關. Rain Gate samples remain test/demo only.
-> Next content step: chenxing scene-packet planning from validated story-input and
-> 09 foundation card samples under `samples/chenxing/`.
+> (`CURRENT_PLAN_WINDOW_V0`) first. All `## Historical ...` sections are archived
+> evidence only. Do not treat them as current work.
+> Worktree baseline: commits `3249db2` + `fa13693` on
+> `codex/mvp6-checkpoint-branching-spec`. Active creative world: `塵行` / 灰關.
+> Rain Gate samples remain test/demo only. Default story samples:
+> `samples/chenxing/`.
 
 ## Current Slice - AI Task Queue SQL V0
 
@@ -1950,7 +1950,7 @@ Scope:
 - Do not delete old plan history in this slice.
 - Do not dispatch B02/B03 directly or start Phase 20/21 or 04/05/06/07/08.
 
-## Active Optimization Goal Mode Handoff First-Read Alignment V0 Docs Control
+## Historical Optimization Goal Mode Handoff First-Read Alignment V0 Docs Control
 
 ### Goal
 
@@ -2052,7 +2052,7 @@ lists available only when a task specifically needs them.
   CRLF warnings, and status was captured for touched files.
 - Gradle was skipped because this slice stayed docs/control only.
 
-## Active Optimization First-Read Compression V0 Docs Control
+## Historical Optimization First-Read Compression V0 Docs Control
 
 ### Goal
 
@@ -2165,7 +2165,7 @@ the active route.
   `git status --short --branch` was captured.
 - Gradle was skipped because this slice stayed docs/control only.
 
-## Active Same Family Status Layer Convergence Rule Patch V0 Docs Control
+## Historical Same Family Status Layer Convergence Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -2264,7 +2264,7 @@ another standalone status layer.
   found, and scoped `git diff --check` reported only the existing PLANS.md
   CRLF warning.
 
-## Active Source Basis Evidence Planning Bundle V0 Docs Control
+## Historical Source Basis Evidence Planning Bundle V0 Docs Control
 
 ### Goal
 
@@ -2358,7 +2358,7 @@ the query/source-scope to future `ScriptReadyScenePacket` chain.
   `docs/HANDOFF.md`, trailing whitespace, and scoped diff check. Gradle was
   skipped because this slice stayed docs/control only.
 
-## Active A Group Optimization Audit Lane V0 Docs Control
+## Historical A Group Optimization Audit Lane V0 Docs Control
 
 ### Goal
 
@@ -2466,7 +2466,7 @@ B組02/B組03 work, rewrite the blueprint directly, or replace B組01.
   the new A組06 docs/control file. A組06 thread readback confirmed title
   `A組06 優化稽核` and active in-progress initial audit.
 
-## Active Source Basis Evidence Planning Route Package V0 Docs Control
+## Historical Source Basis Evidence Planning Route Package V0 Docs Control
 
 ### Goal
 
@@ -2560,7 +2560,7 @@ artifact-shape convergence bundle as shape-only input.
   untouched `docs/HANDOFF.md`, trailing whitespace, and scoped diff check.
   Gradle was skipped because this slice stayed docs/control only.
 
-## Active Query Ref Source Material Artifact Shape Readiness Convergence Bundle V0 Docs Control
+## Historical Query Ref Source Material Artifact Shape Readiness Convergence Bundle V0 Docs Control
 
 ### Goal
 
@@ -2652,7 +2652,7 @@ query/source-scope to future `ScriptReadyScenePacket` chain.
   trailing whitespace, and scoped diff check. Gradle was skipped because this
   slice stayed docs/control only.
 
-## Active A Group Branch Delivery Failure Fallback Rule Patch V0 Docs Control
+## Historical A Group Branch Delivery Failure Fallback Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -2740,7 +2740,7 @@ completion, or stale branches do not become silent waiting loops.
   `docs/HANDOFF.md`, trailing whitespace, and scoped diff check. Gradle was
   skipped because this slice stayed docs/control only.
 
-## Active Verification Timeout False Negative Guard Process Rule Patch V0 Docs Control
+## Historical Verification Timeout False Negative Guard Process Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -2830,7 +2830,7 @@ missing evidence, PASS, FAIL, or NEEDS_REVISION.
   touch runtime, schema, provider/API, SQLite, renderer/ffmpeg/TTS, or media
   files.
 
-## Active Blueprint Progress Display Model Process Rule Patch V0 Docs Control
+## Historical Blueprint Progress Display Model Process Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -2941,7 +2941,7 @@ model update explicitly changes it.
   touch runtime, Kotlin/JVM, schema, provider/API, SQLite, renderer/ffmpeg/TTS,
   or media files.
 
-## Active A Group Proactive Evolution Heartbeat Rule Patch V0 Docs Control
+## Historical A Group Proactive Evolution Heartbeat Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -3050,7 +3050,7 @@ and the dispatch allows exclusion when dirty-conflict risk exists.
   touch runtime, Kotlin/JVM, schema, provider/API, SQLite, renderer/ffmpeg/TTS,
   or media files.
 
-## Active Route Loop Convergence Process Rule Patch V0 Docs Control
+## Historical Route Loop Convergence Process Rule Patch V0 Docs Control
 
 ### Goal
 
@@ -3146,7 +3146,7 @@ and the dispatch allows exclusion when dirty-conflict risk exists.
   no current-slice markers in `docs/HANDOFF.md`, and trailing whitespace.
 - Gradle is skipped because this slice remains docs/control only.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Route Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Route Package V0 Docs Control
 
 ### Goal
 
@@ -3276,7 +3276,7 @@ and B01 explicitly excluded it.
   docs/control-only boundaries.
 - Gradle is skipped because this slice remains docs/control only.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -3408,7 +3408,7 @@ and B01 explicitly excluded it.
   boundaries.
 - Gradle is skipped because this slice remains docs/control only.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status V0 Docs Control
 
 ### Goal
 
@@ -3539,7 +3539,7 @@ and B01 explicitly excluded it.
   cited docs/control paths, no current-slice markers in `docs/HANDOFF.md`, no
   trailing whitespace, and a docs/control-only boundary.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review V0 Docs Control
 
 ### Goal
 
@@ -3661,7 +3661,7 @@ and B01 explicitly excluded it.
   paths, no current-slice markers in `docs/HANDOFF.md`, no trailing whitespace,
   and a docs/control-only boundary.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation V0 Docs Control
 
 ### Goal
 
@@ -3784,7 +3784,7 @@ and B01 explicitly excluded it.
   docs/control paths, no current-slice markers in `docs/HANDOFF.md`, no
   trailing whitespace, and a docs/control-only boundary.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -3914,7 +3914,7 @@ and B01 explicitly excluded it.
   no current-slice markers in `docs/HANDOFF.md`, no trailing whitespace, and a
   docs/control-only boundary.
 
-## Active A Group Evolution System Workflow Alignment V0 Docs Control
+## Historical A Group Evolution System Workflow Alignment V0 Docs Control
 
 ### Goal
 
@@ -4022,7 +4022,7 @@ is not required for this bounded workflow-alignment task.
   media files.
 - No next task was started.
 
-## Active A Group Evolution System Blueprint Priority V0 Docs Control
+## Historical A Group Evolution System Blueprint Priority V0 Docs Control
 
 ### Goal
 
@@ -4113,7 +4113,7 @@ continues.
   At closure time, the splitter turn was active, so 00 did not duplicate the
   handoff or bypass the splitter.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -4253,7 +4253,7 @@ explicitly outside this clean slice.
   files.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review V0 Docs Control
 
 ### Goal
 
@@ -4393,7 +4393,7 @@ the clean slice.
   files.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Route Package V0 Docs Control
 
 ### Goal
 
@@ -4523,7 +4523,7 @@ explicitly outside this clean slice.
   files.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -4661,7 +4661,7 @@ outside the clean slice.
   dispatch.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -4801,7 +4801,7 @@ markers, and B01 has not confirmed that touching it is safe for this slice.
   dispatch.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Package Review V0 Docs Control
 
 ### Goal
 
@@ -4937,7 +4937,7 @@ pointer surface.
   so `docs/HANDOFF.md` was not touched.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Advancement Package V0 Docs Control
 
 ### Goal
 
@@ -5072,7 +5072,7 @@ pointer surface.
   so `docs/HANDOFF.md` was not touched.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -5209,7 +5209,7 @@ pointer surface.
   so `docs/HANDOFF.md` was not touched.
 - No next task was started.
 
-## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -5353,7 +5353,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Concrete Curation Package Review V0 Docs Control
 
 ### Goal
 
@@ -5495,7 +5495,7 @@ Result:
   pointer; no runtime, schema, query, provider/API, media, approval, canon,
   release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Concrete Curation Package V0 Docs Control
 
 ### Goal
 
@@ -5630,7 +5630,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -5760,7 +5760,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active A/B Hold Relay Rule Alignment V0 Docs Control
+## Historical A/B Hold Relay Rule Alignment V0 Docs Control
 
 ### Goal
 
@@ -5841,7 +5841,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The missing relay rule is now in
   the active `B組01` automation prompt and persisted in first-read project docs.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -5977,7 +5977,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Package Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Package Review V0 Docs Control
 
 ### Goal
 
@@ -6113,7 +6113,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Docs Control Curation Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Docs Control Curation Package V0 Docs Control
 
 ### Goal
 
@@ -6248,7 +6248,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Curation Route Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Route Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -6385,7 +6385,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Curation Route Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Route Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -6519,7 +6519,7 @@ Result:
   route card pointer; no runtime, schema, query, provider/API, media, approval,
   canon, release, or production-lock work was introduced.
 
-## Active Query Ref Source Material Authorized Curation Route Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Route Package V0 Docs Control
 
 ### Goal
 
@@ -6646,7 +6646,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The route package remains
   docs/control only and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Route V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Route V0 Docs Control
 
 ### Goal
 
@@ -6770,7 +6770,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The authorized curation route
   remains docs/control only and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Package Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Package Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -6898,7 +6898,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The route decision remains
   docs/control only and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Package Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Package Review Status V0 Docs Control
 
 ### Goal
 
@@ -7024,7 +7024,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The review-status surface remains
   docs/control only and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Package Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Package Review V0 Docs Control
 
 ### Goal
 
@@ -7150,7 +7150,7 @@ Result:
   docs/control review/classification surface and does not start the future
   candidate.
 
-## Active Query Ref Source Material Authorized Curation Package V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Package V0 Docs Control
 
 ### Goal
 
@@ -7276,7 +7276,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The package remains a
   docs/control curation surface and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Review Status Route Decision V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -7402,7 +7402,7 @@ Result:
 - 2026-07-04: Closed this docs/control slice. The route decision remains
   future explicit classification only and does not start the future candidate.
 
-## Active Query Ref Source Material Authorized Curation Review Status V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Review Status V0 Docs Control
 
 ### Goal
 
@@ -7534,7 +7534,7 @@ pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Query Ref Source Material Authorized Curation Packet Review V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Packet Review V0 Docs Control
 
 ### Goal
 
@@ -7661,7 +7661,7 @@ pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Query Ref Source Material Authorized Curation Packet V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Packet V0 Docs Control
 
 ### Goal
 
@@ -7786,7 +7786,7 @@ pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Query Ref Source Material Authorized Curation Plan V0 Docs Control
+## Historical Query Ref Source Material Authorized Curation Plan V0 Docs Control
 
 ### Goal
 
@@ -7909,7 +7909,7 @@ pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Query Ref Source Material Authority Classification V0 Docs Control
+## Historical Query Ref Source Material Authority Classification V0 Docs Control
 
 ### Goal
 
@@ -8032,7 +8032,7 @@ pointer surface.
   Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
   slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status Route Decision V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -8163,7 +8163,7 @@ carries this query-ref route chain, so it remains the preferred pointer surface.
   Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
   slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status V0 Docs Control
 
 ### Goal
 
@@ -8286,7 +8286,7 @@ carries this query-ref route chain, so it remains the preferred pointer surface.
   warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
   only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review V0 Docs Control
 
 ### Goal
 
@@ -8404,7 +8404,7 @@ carries this query-ref route chain, so it remains the preferred pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet V0 Docs Control
 
 ### Goal
 
@@ -8523,7 +8523,7 @@ carries this query-ref route chain, so it remains the preferred pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Protocol V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Material Curation Protocol V0 Docs Control
 
 ### Goal
 
@@ -8640,7 +8640,7 @@ carries this query-ref route chain, so it remains the preferred pointer surface.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Status Route Decision V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Status Route Decision V0 Docs Control
 
 ### Goal
 
@@ -8773,7 +8773,7 @@ obvious route pointer and already carries this chain.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review Status V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review Status V0 Docs Control
 
 ### Goal
 
@@ -8902,7 +8902,7 @@ obvious route pointer and already carries this chain.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review V0 Docs Control
 
 ### Goal
 
@@ -9045,7 +9045,7 @@ is not sufficient as the route pointer.
   `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
   for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet V0 Docs Control
 
 ### Goal
 
@@ -9189,7 +9189,7 @@ is not sufficient as the route pointer.
   warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
   only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Plan V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Plan V0 Docs Control
 
 ### Goal
 
@@ -9325,7 +9325,7 @@ is not sufficient as the route pointer.
   warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
   only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Matrix V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Matrix V0 Docs Control
 
 ### Goal
 
@@ -9466,7 +9466,7 @@ is not sufficient as the route pointer.
   warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
   only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Placeholder Packet V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Placeholder Packet V0 Docs Control
 
 ### Goal
 
@@ -9597,7 +9597,7 @@ is not sufficient as the route pointer.
   accepted Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped
   because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Definition V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Definition V0 Docs Control
 
 ### Goal
 
@@ -9727,7 +9727,7 @@ is not sufficient as the route pointer.
   Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
   slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Source Doc Gap Closure Route V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Source Doc Gap Closure Route V0 Docs Control
 
 ### Goal
 
@@ -9849,7 +9849,7 @@ card is not sufficient as the route pointer.
   Windows LF-to-CRLF warning for `PLANS.md`; `git status --short --branch` was
   checked. Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Reviewed Ref Discovery Matrix V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Reviewed Ref Discovery Matrix V0 Docs Control
 
 ### Goal
 
@@ -9968,7 +9968,7 @@ blocked on missing reviewed refs.
   Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
   because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Evidence Placeholder Packet V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Evidence Placeholder Packet V0 Docs Control
 
 ### Goal
 
@@ -10085,7 +10085,7 @@ concrete query refs.
   passed with only accepted Windows LF-to-CRLF warnings for tracked touched
   files; Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Evidence Surface Definition V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Evidence Surface Definition V0 Docs Control
 
 ### Goal
 
@@ -10201,7 +10201,7 @@ source/story content, or promoting Qingli candidates.
   LF-to-CRLF warnings for tracked touched files; Gradle was skipped because
   this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Query Ref Gap Closure Decision Brief V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Query Ref Gap Closure Decision Brief V0 Docs Control
 
 ### Goal
 
@@ -10318,7 +10318,7 @@ without creating actual query instances or packet content.
   with only accepted Windows LF-to-CRLF warnings for tracked touched files;
   Gradle was skipped because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Unresolved Ref Source Catalog V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Unresolved Ref Source Catalog V0 Docs Control
 
 ### Goal
 
@@ -10423,7 +10423,7 @@ slots as planning gaps instead of inventing or promoting placeholders.
   Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
   because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Packet V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Packet V0 Docs Control
 
 ### Goal
 
@@ -10530,7 +10530,7 @@ placeholders.
   tracked touched files; Gradle was skipped because this slice is docs/control
   only.
 
-## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Plan V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Plan V0 Docs Control
 
 ### Goal
 
@@ -10631,7 +10631,7 @@ work.
   Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
   because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate AI Resolvable Gap Closure Path V0 Docs Control
+## Historical Script Ready Scene Packet Candidate AI Resolvable Gap Closure Path V0 Docs Control
 
 ### Goal
 
@@ -10727,7 +10727,7 @@ future first `ScriptReadyScenePacket` candidate can be classified.
   Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
   because this slice is docs/control only.
 
-## Active Script Ready Scene Packet Candidate Existing Reviewed Evidence Bundle Inventory V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Existing Reviewed Evidence Bundle Inventory V0 Docs Control
 
 ### Goal
 
@@ -10855,7 +10855,7 @@ starting runtime/schema/media/provider/API work, approval, or production lock.
   LF-to-CRLF warnings. Gradle was skipped because no Kotlin/runtime/schema/
   sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Selection V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Reviewed Evidence Bundle Selection V0 Docs Control
 
 ### Goal
 
@@ -10972,7 +10972,7 @@ lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Definition V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Reviewed Evidence Bundle Definition V0 Docs Control
 
 ### Goal
 
@@ -11093,7 +11093,7 @@ lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Gap Resolution V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Reviewed Evidence Bundle Gap Resolution V0 Docs Control
 
 ### Goal
 
@@ -11209,7 +11209,7 @@ execution, approval, or production lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Source Basis Selection Record V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Source Basis Selection Record V0 Docs Control
 
 ### Goal
 
@@ -11323,7 +11323,7 @@ lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Source Basis Decision Brief V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Source Basis Decision Brief V0 Docs Control
 
 ### Goal
 
@@ -11436,7 +11436,7 @@ approval, or production lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Preflight V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Preflight V0 Docs Control
 
 ### Goal
 
@@ -11544,7 +11544,7 @@ lock.
   with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
   Kotlin/runtime/schema/sample files were edited.
 
-## Active Script Ready Scene Packet Candidate Package Definition V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Package Definition V0 Docs Control
 
 ### Goal
 
@@ -11653,7 +11653,7 @@ runtime/CLI/schema work, route execution, approval, or production lock.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Script Ready Scene Packet Candidate Route Decision Brief V0 Docs Control
+## Historical Script Ready Scene Packet Candidate Route Decision Brief V0 Docs Control
 
 ### Goal
 
@@ -11762,7 +11762,7 @@ approval, route execution, or production lock.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Blueprint Route Completion Status And Next Route Options V0 Docs Control
+## Historical Blueprint Route Completion Status And Next Route Options V0 Docs Control
 
 ### Goal
 
@@ -11858,7 +11858,7 @@ implementation, granting final approval, or creating production lock.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Local Package QA Delivery Definition V0 Docs Control
+## Historical Local Package QA Delivery Definition V0 Docs Control
 
 ### Goal
 
@@ -11958,7 +11958,7 @@ or claiming release approval or final media readiness.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Local Renderer Execution Readiness Checklist V0 Docs Control
+## Historical Local Renderer Execution Readiness Checklist V0 Docs Control
 
 ### Goal
 
@@ -12053,7 +12053,7 @@ implementing runtime/schema/CLI, or claiming final media readiness.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Voice Timeline Subtitle SFX Contract V0 Docs Control
+## Historical Voice Timeline Subtitle SFX Contract V0 Docs Control
 
 ### Goal
 
@@ -12144,7 +12144,7 @@ generating media, or claiming final media readiness.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Asset Lifecycle Registry Decision Packet V0 Docs Control
+## Historical Asset Lifecycle Registry Decision Packet V0 Docs Control
 
 ### Goal
 
@@ -12237,7 +12237,7 @@ without choosing an option or starting schema/runtime/storage implementation.
   `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
   docs/control only.
 
-## Active Storyboard Camera Packet Template Review V0 Docs Control
+## Historical Storyboard Camera Packet Template Review V0 Docs Control
 
 ### Goal
 
@@ -12326,7 +12326,7 @@ media.
   for `PLANS.md` and `docs/HANDOFF.md`; final status checked. No Gradle was run
   because this was docs/control only.
 
-## Active Prompt Surface Leakage Boundary V0 Docs Control
+## Historical Prompt Surface Leakage Boundary V0 Docs Control
 
 ### Goal
 
@@ -12406,7 +12406,7 @@ unless fields are explicitly allowed.
   final `git status --short --branch` checked. No Gradle was run because this
   was docs/control only.
 
-## Active AI-Governed Decision Lane Alignment V0
+## Historical AI-Governed Decision Lane Alignment V0
 
 ### Goal
 
@@ -12510,7 +12510,7 @@ an objectively mature proposal to `B組01` under an AI technical approval gate.
   without routine `00` approval, while true stop-condition decisions still
   return to `00` / user.
 
-## Active Chat Window Group-Prefixed Alignment V1
+## Historical Chat Window Group-Prefixed Alignment V1
 
 ### Goal
 
@@ -12648,7 +12648,7 @@ dispatcher.
   web/server, renderer/ffmpeg/TTS, media generation, staging, commit, push, or
   production approval work was performed.
 
-## Active Product Architecture Thinking Loop And Window Factory V0
+## Historical Product Architecture Thinking Loop And Window Factory V0
 
 ### Goal
 
@@ -12753,7 +12753,7 @@ pipeline by default.
   warnings only. No code, CLI, sample, provider/API, SQLite, media, approval,
   production lock, staging, commit, push, or thread creation.
 
-## Active Script-Ready Scene Packet Alignment V0
+## Historical Script-Ready Scene Packet Alignment V0
 
 ### Goal
 
@@ -12851,7 +12851,7 @@ evidence without reading a full world bible or leaking author-only material.
   `git diff --check` PASS with Windows line-ending warnings only; final status
   captured. No scope drift.
 
-## Active Demand-Driven Query Pointer Revision Fix V0
+## Historical Demand-Driven Query Pointer Revision Fix V0
 
 ### Goal
 
@@ -12921,7 +12921,7 @@ possible future 01 decision after review PASS.
   trailing-whitespace scan, and `git diff --check` PASS with Windows line-ending
   warnings only; final git status captured. No scope drift.
 
-## Active Demand-Driven Query Contract Spec V0
+## Historical Demand-Driven Query Contract Spec V0
 
 ### Goal
 
@@ -13049,7 +13049,7 @@ pointed to the contract if needed.
   Windows line-ending warnings only. No Kotlin, CLI, schema, SQLite, provider,
   runtime, media, 04/05/06/07/08, staging, commit, or push work was performed.
 
-## Active Multi-Window Operating Model V0
+## Historical Multi-Window Operating Model V0
 
 ### Goal
 
@@ -13122,7 +13122,7 @@ must assign work according to the accepted blueprint/control docs.
   according to the blueprint. The next step is to notify `01` of the approved
   blueprint route and let `01` assign exactly one bounded task.
 
-## Active Foundation Card Pack Review Gate V0
+## Historical Foundation Card Pack Review Gate V0
 
 ### Goal
 
@@ -13214,7 +13214,7 @@ this.
   PASS and trailing-whitespace scan PASS; final `git diff --check`, git
   status, and process checks complete the Round 3 report.
 
-## Active Foundation Card Pack Validation V0
+## Historical Foundation Card Pack Validation V0
 
 ### Goal
 
@@ -13300,7 +13300,7 @@ Phase 21 work, or round 3.
   final `rg`, `git diff --check`, git status, and process checks are part of
   the completion closure.
 
-## Active 09 Foundation Card JSON Contract V0
+## Historical 09 Foundation Card JSON Contract V0
 
 ### Goal
 
@@ -13377,7 +13377,7 @@ outputs, provider/API integrations, schema changes, Phase 20 / Phase 21, or
   renderer/ffmpeg/TTS/media generation, GUI, staging, commit, push, delete,
   clean, 03 contact, Phase 20 / Phase 21, or round 2.
 
-## Active 09 Foundation Card Execution Packet Preflight V0
+## Historical 09 Foundation Card Execution Packet Preflight V0
 
 ### Goal
 
@@ -13447,7 +13447,7 @@ tools, calling provider/API, staging/committing/pushing, or contacting 03.
   generation, provider/API, SQLite direct writes, web/server, GUI inspection,
   staging, commit, push, 03 contact, Phase 20, or Phase 21.
 
-## Active Blueprint Execution Control Layer V0
+## Historical Blueprint Execution Control Layer V0
 
 ### Goal
 
@@ -13549,7 +13549,7 @@ Phase 20 / Phase 21 renderer-manifest chain by inertia.
   windows toward the control layer. Next step is 01/user route selection, not
   automatic implementation.
 
-## Active Whole Project Blueprint Full Update Package V0
+## Historical Whole Project Blueprint Full Update Package V0
 
 ### Goal
 
@@ -13640,7 +13640,7 @@ foundation organization.
   only; and Phase 20 / Phase 21 remain stopped until explicit 01/user route
   selection.
 
-## Active Phase 19 Local Renderer Manifest Adapter Contract Draft
+## Historical Phase 19 Local Renderer Manifest Adapter Contract Draft
 
 ### Goal
 
@@ -13702,7 +13702,7 @@ Build a deterministic local file-protocol JSON draft layer for `local_renderer_m
 - 2026-07-02: Added Phase 19 focused service/CLI tests, generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_draft_sample.json` through the new CLI, added `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT_V0.md`, and linked the Phase 19 draft artifact from `docs/HANDOFF.md`. Focused tests PASS and sample JSON parse confirms draft-only status, counts, and local-only/no-media/no-provider/no-production/no-readiness boundary fields.
 - 2026-07-02: Phase 19 verification PASS. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse confirmed `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT`, `local_renderer_manifest_adapter_contract_draft_only_not_adapter_execution`, `local_renderer_manifest_adapter_contract_draft_review`, checks=9, findingCount=0, requiredInputs=2, normalizedFieldMapping=2, adapterObligations=3, failStopRules=6, verificationRequirements=3, knownNonGoals=10, and all required local-only/no-media/no-provider/no-production/no-readiness boundary fields. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside local file-protocol JSON contract draft only and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 20.
 
-## Active Phase 18 Local Renderer Manifest Adapter Contract Plan Review
+## Historical Phase 18 Local Renderer Manifest Adapter Contract Plan Review
 
 ### Goal
 
@@ -13763,7 +13763,7 @@ Build a deterministic local file-protocol JSON review gate for `local_renderer_m
 - 2026-07-02: Added Phase 18 focused service/CLI tests, generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json` through the new CLI, added `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_V0.md`, and linked the Phase 18 review gate from `docs/HANDOFF.md`. Focused tests initially exposed two in-scope fail-stop gaps for empty mapping/work/verification content; the service now requires non-empty mapping entries, work items, and verification steps before reporting PASS.
 - 2026-07-02: Phase 18 verification PASS. Focused Gradle tests PASS after the in-scope fail-stop repair; sample CLI generation PASS; UTF-8 JSON parse confirmed `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS`, `local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation`, `local_renderer_manifest_adapter_contract_draft`, checks=8, findingCount=0, and all required local-only/no-media/no-production boundary fields. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside local file-protocol JSON review only and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 19.
 
-## Active Phase 17 Local Renderer Manifest Adapter Contract Plan
+## Historical Phase 17 Local Renderer Manifest Adapter Contract Plan
 
 ### Goal
 
@@ -13826,7 +13826,7 @@ Build a deterministic local file-protocol JSON planning layer for `local_rendere
 - 2026-07-02: Added Phase 17 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=9, findingCount=0, mappedPanelCount=2, unmappedPanelCount=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, `productionApproved=false`, `adapterImplementationExecuted=false`, `adapterExecuted=false`, `rendererInvocation=none`, and `mediaGenerated=false`.
 - 2026-07-02: Phase 17 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check PASS. Scope stayed inside adapter contract planning local file-protocol JSON and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 18.
 
-## Active Blueprint Future Route Integration Map V0
+## Historical Blueprint Future Route Integration Map V0
 
 ### Goal
 
@@ -13882,7 +13882,7 @@ This control note preserves the user's 2026-07-01 instruction to keep future blu
 - Preserve future routes in the blueprint: demand-driven queryers, 09 foundation cards, script-ready scene packet, 04/05/06/07/08 storyboard flow, storyboard/camera packet, asset registry lifecycle, voice timeline, positive human approval gates, local renderer execution path, and external-provider/funding gate.
 - Usage guardrail: 01 lightweight checks may use current/default model; 01 assignment decisions, 02 implementation/verification, and 03 read-only reviews should use `gpt-5.5` with `thinking=xhigh` when supported. Check quota before sending work to 03, before assigning 02, after two completed medium slices, when quota data is older than three hours, and on watchdog wakeups that might advance work. Weekly quota is a hard gate; never exhaust quota completely, and preserve enough for a final handoff/status message.
 
-## Active Phase 16 Local Renderer Manifest Draft JSON Adapter Dry-Run
+## Historical Phase 16 Local Renderer Manifest Draft JSON Adapter Dry-Run
 
 ### Goal
 
@@ -13946,7 +13946,7 @@ Build a deterministic local JSON adapter dry-run gate for `local_renderer_manife
 - 2026-07-01: Added Phase 16 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_adapter_dry_run_report_sample.json` through the new CLI. Focused Gradle tests PASS after switching the optional id flag to `--dry-run-id`; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findingCount=0, mappedPanelCount=2, unmappedPanelCount=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, `productionApproved=false`, `adapterExecuted=false`, `rendererInvocation=none`, and `mediaGenerated=false`.
 - 2026-07-01: Phase 16 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside adapter dry-run local file-protocol JSON and did not execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 17.
 
-## Active Phase 15 Local Renderer Manifest Draft JSON Review Gate
+## Historical Phase 15 Local Renderer Manifest Draft JSON Review Gate
 
 ### Goal
 
@@ -14001,7 +14001,7 @@ Build a deterministic local JSON review gate for `local_renderer_manifest_draft_
 - 2026-07-01: Added Phase 15 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_review_report_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findings=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, and `productionApproved=false`.
 - 2026-07-01: Phase 15 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside review-only local file-protocol JSON and did not approve or generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
 
-## Active Phase 14 Local Renderer Manifest Draft JSON Draft
+## Historical Phase 14 Local Renderer Manifest Draft JSON Draft
 
 ### Goal
 
@@ -14057,7 +14057,7 @@ Build a deterministic draft-only local JSON artifact for `local_renderer_manifes
 - 2026-07-01: Added Phase 14 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findings=0, draftPanelEntries=2, draftManifestFields=46, `draftManifestGenerated=true`, `productionManifestGenerated=false`, and `productionReady=false`.
 - 2026-07-01: Phase 14 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside draft-only local file-protocol JSON and did not generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
 
-## Active Phase 13 Local Renderer Manifest Draft Plan Review Gate
+## Historical Phase 13 Local Renderer Manifest Draft Plan Review Gate
 
 ### Goal
 
@@ -14110,7 +14110,7 @@ Build a deterministic local JSON review gate for `local_renderer_manifest_draft_
 - 2026-07-01: Added Phase 13 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_review_report_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10 and findings=0.
 - 2026-07-01: Phase 13 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; no Java/Gradle/Kotlin processes remained. Scope stayed inside local file-protocol JSON review only and did not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 14.
 
-## Active Phase 12 Local Renderer Manifest Draft Plan
+## Historical Phase 12 Local Renderer Manifest Draft Plan
 
 ### Goal
 
@@ -14163,7 +14163,7 @@ Build a deterministic local JSON planning layer for `local_renderer_manifest_dra
 - 2026-07-01: Added Phase 12 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10 and findings=0.
 - 2026-07-01: Phase 12 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; no Java/Gradle/Kotlin processes remained. Scope stayed inside local file-protocol JSON planning only and did not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
 
-## Active Phase 11C3 Implementation Draft Review Gate Closure
+## Historical Phase 11C3 Implementation Draft Review Gate Closure
 
 ### Goal
 
@@ -14203,7 +14203,7 @@ Close Phase 11 locally for 03 read-only review by adding a concise evidence doc 
 - 2026-07-01: Added Phase 11 evidence doc and `docs/HANDOFF.md` pointer for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`, the sample review report path, downstream boundary, next allowed step, focused-test PASS note, and no-media/no-manifest/no-production-lock boundaries.
 - 2026-07-01: Phase 11C3 verification PASS. Required `rg` strings found in `PLANS.md`, `docs/HANDOFF.md`, and `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_V0.md`; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked. Gradle was not run by instruction.
 
-## Active Phase 11C2 Implementation Draft Review Gate Verification
+## Historical Phase 11C2 Implementation Draft Review Gate Verification
 
 ### Goal
 
@@ -14243,7 +14243,7 @@ Run the focused Phase 11 implementation draft review service/CLI Gradle tests an
 - 2026-07-01: Generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json` through the Phase 11 CLI. UTF-8 JSON parse checks PASS for verdict/status/downstream boundary/next step and local-only/no-media/no-manifest/no-readiness flags.
 - 2026-07-01: Phase 11C2 verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, git status checked, and no Java/Gradle/Kotlin processes remained after verification.
 
-## Active Phase 11C1 Implementation Draft Review Gate Tests
+## Historical Phase 11C1 Implementation Draft Review Gate Tests
 
 ### Goal
 
@@ -14281,7 +14281,7 @@ Add focused service and CLI tests for the Phase 11 implementation draft review g
 - 2026-07-01: Added focused Phase 11C1 service and CLI tests. Service tests cover Rain Gate PASS, wrong draft state/next step, `mediaGenerated=true`, `manifestGenerated=true`, `rendererReady=true`, `mp4ReadinessClaimed=true`, and empty implementation tasks/mapping draft/verification plan. CLI test covers the command shape and output report parse. No Gradle run.
 - 2026-07-01: Phase 11C1 verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check -- PLANS.md` PASS with Windows line-ending warning only, and git status checked. Gradle was not run by instruction.
 
-## Active Phase 11B Implementation Draft Review Gate CLI Wiring
+## Historical Phase 11B Implementation Draft Review Gate CLI Wiring
 
 ### Goal
 
@@ -14317,7 +14317,7 @@ Wire the Phase 11A `LocalRendererAdapterImplementationDraftReviewService` into t
 - 2026-07-01: Added `Main.kt` CLI wiring for `review-local-renderer-adapter-implementation-draft`, including service import, dispatch entry, command handler, concise stdout summary, expected boundary/next-step checks, and help text. No tests, samples, docs beyond `PLANS.md`, or Gradle run.
 - 2026-07-01: Phase 11B verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, and git status checked. Gradle was not run by instruction.
 
-## Active Phase 11A Implementation Draft Review Gate Skeleton
+## Historical Phase 11A Implementation Draft Review Gate Skeleton
 
 ### Goal
 
@@ -14355,7 +14355,7 @@ Add only the Phase 11A model/service skeleton for deterministic review of a Phas
 - 2026-07-01: Added Phase 11A review report model and deterministic service skeleton. The service reviews `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, can read/write JSON paths, enforces local-only/no-media/no-manifest/no-readiness-overclaim boundaries, and does not wire CLI or execute renderer/media/adapter paths.
 - 2026-07-01: Phase 11A verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check -- PLANS.md` PASS with Windows line-ending warning only, and git status checked. Gradle was not run by instruction.
 
-## Active Phase 11 Implementation Draft Review Gate Preflight
+## Historical Phase 11 Implementation Draft Review Gate Preflight
 
 ### Goal
 
@@ -14394,7 +14394,7 @@ Prepare a docs-only Phase 11 preflight packet for `local_renderer_adapter_implem
 - 2026-07-01: Added `docs/CODEX_PHASE11_IMPLEMENTATION_DRAFT_REVIEW_GATE_PREFLIGHT.md` with proposed Phase 11 command, required Phase 10 input status/boundary/next step, review PASS/FAIL output proposal, downstream boundary proposal, next step proposal, fail-stop checks, and explicit non-goals.
 - 2026-07-01: Final Phase 11 preflight verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warning only, and git status checked. No Kotlin/source/sample/Gradle/provider/API/SQLite/renderer/ffmpeg/TTS/media/manifest/staging/commit/push/03 contact.
 
-## Active Local Renderer Adapter Implementation Draft V0
+## Historical Local Renderer Adapter Implementation Draft V0
 
 ### Goal
 
@@ -14487,7 +14487,7 @@ Implement Phase 10: a deterministic local renderer adapter implementation draft 
 - 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_V0.md` and a HANDOFF pointer. The docs state Phase 10 is JSON draft only, not adapter execution, not `ComicVideoRenderHandoffManifest` generation, not renderer/ffmpeg/TTS execution, not media generation, not final media approval, not provider/media handoff, and not canon, registry, release, approval, or production lock.
 - 2026-07-01: Final Phase 10 verification PASS. Focused service/CLI tests PASS using quoted `'-Pkotlin.daemon.jvmargs=-Xmx4096m'`, Rain Gate sample CLI PASS, UTF-8 JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS for touched tracked files with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin processes remained. No renderer/ffmpeg/TTS, media generation, provider/API, direct SQLite write, adapter execution, `ComicVideoRenderHandoffManifest` generation, staging, commit, push, or 03 contact occurred.
 
-## Active Local Renderer Adapter Implementation Plan Review Gate V0
+## Historical Local Renderer Adapter Implementation Plan Review Gate V0
 
 ### Goal
 
@@ -14575,7 +14575,7 @@ Implement Phase 9: a deterministic local renderer adapter implementation plan re
 - 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_V0.md` and a HANDOFF pointer. The docs state Phase 9 is review-gate-only, not adapter implementation, not `ComicVideoRenderHandoffManifest` generation, not renderer/ffmpeg/TTS execution, not media generation, not final media approval, not provider/media handoff, and not canon, registry, release, approval, or production lock.
 - 2026-07-01: Final Phase 9 verification PASS. Focused service/CLI tests PASS, Rain Gate sample CLI PASS, UTF-8 JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS for touched tracked files with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin processes remained. No full regression was run because this slice required focused tests only.
 
-## Active Local Renderer Adapter Implementation Plan V0
+## Historical Local Renderer Adapter Implementation Plan V0
 
 ### Goal
 
@@ -14663,7 +14663,7 @@ Implement Phase 8: a deterministic local renderer adapter implementation plan v0
 - 2026-07-01: Added Phase 8 service/CLI/tests/docs/HANDOFF pointer and generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_sample.json`. Focused tests PASS and sample CLI PASS; final hygiene checks still in progress.
 - 2026-07-01: Final Phase 8 verification PASS. Focused tests PASS, Rain Gate sample CLI PASS, JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin process output remained.
 
-## Active Local Renderer Adapter Dry-Run V0 Implementation Plan
+## Historical Local Renderer Adapter Dry-Run V0 Implementation Plan
 
 ### Goal
 
@@ -14760,7 +14760,7 @@ Implement Phase 7: a deterministic local renderer adapter dry-run v0 that checks
 - 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_DRY_RUN_V0.md` and a HANDOFF pointer. The docs state this is a local JSON dry-run after Phase 6, not adapter implementation, not `ComicVideoRenderHandoffManifest` generation, not renderer execution, not media generation, not final media approval, not provider/media handoff, not canon, registry, release, approval, or production lock.
 - 2026-07-01: Final Phase 7 verification passed. Focused service/CLI tests passed; the Rain Gate Phase 7 sample CLI returned `verdict=PASS` and `LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS`; UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `noExternalPaidProviderTools=true`, `downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan`; required `rg` checks passed; trailing-whitespace scan passed; `git diff --check` passed for touched tracked files; `git status --short --branch` was checked. No full regression was run because this slice required focused tests only.
 
-## Active Local Story Video Preview Handoff Review Gate V0 Implementation Plan
+## Historical Local Story Video Preview Handoff Review Gate V0 Implementation Plan
 
 ### Goal
 
@@ -14855,7 +14855,7 @@ Implement Phase 6: a deterministic local story-video preview handoff review gate
 - 2026-07-01: Added `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_REVIEW_V0.md` and a HANDOFF pointer. The docs state this is a local JSON review gate after Phase 5, not adapter execution, not media generation, not final media approval, not provider/media handoff, not canon, registry, release, approval, or production lock.
 - 2026-07-01: Final Phase 6 verification passed. Focused service/CLI tests passed, the Rain Gate Phase 6 sample CLI returned `verdict=PASS`, UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, `git diff --check` passed for touched tracked files with Windows line-ending warnings only, and `git status --short --branch` was checked. No full regression was run because this slice required focused tests only.
 
-## Active Local Story Video Preview Handoff Draft V0 Implementation Plan
+## Historical Local Story Video Preview Handoff Draft V0 Implementation Plan
 
 ### Goal
 
@@ -14950,7 +14950,7 @@ Implement Phase 5: a deterministic local story-video preview handoff draft v0 th
 - 2026-07-01: Added `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_V0.md` and a HANDOFF pointer. The docs state this is a local JSON handoff draft toward future local preview rendering, not final video, media generation, final media approval, provider/media handoff, canon, registry, release, approval, or production lock.
 - 2026-07-01: Final Phase 5 verification passed. Focused service/CLI tests passed, the Rain Gate Phase 5 sample CLI returned `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, `git diff --check` passed for touched tracked files with Windows line-ending warnings only, and `git status --short --branch` was checked. No Gradle full regression was run because this slice required focused tests only.
 
-## Active Phase 4 HANDOFF Boundary Revision Plan
+## Historical Phase 4 HANDOFF Boundary Revision Plan
 
 ### Goal
 
@@ -15009,7 +15009,7 @@ Apply the 03-requested docs-only revision so the Phase 4 local story video chain
 - 2026-07-01: Started 03-requested Phase 4 HANDOFF boundary wording revision. Scope is docs/PLANS only and specifically excludes code, samples, generated artifacts, Gradle, media generation, staging, commit, and push.
 - 2026-07-01: Updated the Phase 4 HANDOFF bullet to explicitly state the one-command local JSON chain verification is NOT final video, NOT media generation, NOT final media approval, NOT provider/media handoff, NOT canon, NOT registry, NOT release, NOT approval, and NOT production lock. Requested `rg` checks, trailing-whitespace scan, `git diff --check`, and `git status --short --branch` were run for this docs-only revision; Gradle was not run.
 
-## Active Local Story Video Chain Verification V0 Implementation Plan
+## Historical Local Story Video Chain Verification V0 Implementation Plan
 
 ### Goal
 
@@ -15108,7 +15108,7 @@ Implement a one-command local story-to-render chain verification v0 layer so a s
 - 2026-07-01: Generated Rain Gate chain sample outputs under `samples/local_story_input/rain_gate_story_video_chain_outputs/` and `samples/local_story_input/rain_gate_story_video_chain_report_sample.json`; added `docs/CODEX_LOCAL_STORY_VIDEO_CHAIN_V0.md` and a HANDOFF pointer. Existing Phase 1-3 sample files were not overwritten.
 - 2026-07-01: Final Phase 4 verification passed. Focused service/CLI tests passed, Rain Gate chain CLI returned `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`, UTF-8 chain report parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, and `git diff --check` passed for touched tracked files with Windows line-ending warnings only.
 
-## Active Local Render Package / QA Draft V0 Implementation Plan
+## Historical Local Render Package / QA Draft V0 Implementation Plan
 
 ### Goal
 
@@ -15205,7 +15205,7 @@ Implement the local render package / QA draft v0 layer so a validated local stor
 - 2026-07-01: Focused Gradle verification passed for `LocalRenderPackageDraftServiceTest` and `LocalRenderPackageDraftCliTest`: `BUILD SUCCESSFUL in 1m 11s`.
 - 2026-07-01: Final verification passed for required `rg` terms, UTF-8 JSON parse of the sample render package draft, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
 
-## Active Local Asset Prompt Cards V0 Implementation Plan
+## Historical Local Asset Prompt Cards V0 Implementation Plan
 
 ### Goal
 
@@ -15295,7 +15295,7 @@ Implement the local asset/prompt cards v0 layer so a validated local story input
 - 2026-07-01: Focused Gradle verification passed for `LocalAssetPromptCardDraftServiceTest` and `LocalAssetPromptCardDraftCliTest`: `BUILD SUCCESSFUL in 1m 11s`.
 - 2026-07-01: Final verification passed for required `rg` terms, UTF-8 JSON parse of the sample card draft, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
 
-## Active Local Story Input Pack V0 Implementation Plan
+## Historical Local Story Input Pack V0 Implementation Plan
 
 ### Goal
 
@@ -15383,7 +15383,7 @@ Implement the first local story input pack v0 layer so a user story/worldbuildin
 - 2026-07-01: Focused Gradle verification initially hit a command timeout / Kotlin daemon OOM on the large workspace. Rerunning with one-shot `-Pkotlin.daemon.jvmargs=-Xmx1536m` passed: `BUILD SUCCESSFUL in 23s`, with `:app:test UP-TO-DATE` after the successful prior run. The sample validation JSON must be read as UTF-8 in Windows PowerShell to avoid mojibake.
 - 2026-07-01: Final verification passed for UTF-8 JSON parse of the sample validation report, required `rg` terms, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, final `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
 
-## Active Local Demo Productization Readiness Consolidation Plan
+## Historical Local Demo Productization Readiness Consolidation Plan
 
 ### Goal
 
@@ -15463,7 +15463,7 @@ Consolidate the verified local comic-video demo into a clearer review/package/re
 - 2026-07-01: Updated `docs/HANDOFF.md` with a concise pointer to the accepted local demo package, review-bundle manifest, no-external-tools roadmap, 02 package PASS, 03 read-only PASS, and full Gradle regression PASS without claiming staging approval, release, or production lock.
 - 2026-07-01: Verification passed for required `rg` terms, read-only JSON parse confirming `LOCAL_DEMO_PACKAGE_READY`, trailing-whitespace scan, `git diff --check`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run for this docs/readiness batch.
 
-## Active Comic-Video Local Demo Package Plan
+## Historical Comic-Video Local Demo Package Plan
 
 ### Goal
 
@@ -15538,7 +15538,7 @@ Create a local demo package for the verified comic-video workbench result so the
 - 2026-06-30: Added generated package docs `out/codex_local_demo_package/README.md` and `out/codex_local_demo_package/verification_summary.json`, plus tracked evidence note `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`.
 - 2026-06-30: Verification passed for package MP4 size, JSON parsing, required `rg` terms, trailing-whitespace scan, `git diff --check -- PLANS.md docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`, and `git status --short --branch`. `git diff --check` reported only the acceptable Windows line-ending warning for `PLANS.md`; Gradle was not run for this packaging-only slice.
 
-## Active Comic-Video Local Delivery Brief Plan
+## Historical Comic-Video Local Delivery Brief Plan
 
 ### Goal
 
@@ -15610,7 +15610,7 @@ Create a concise user-facing local delivery brief for the comic-video workbench 
 - 2026-06-30: Added `docs/CODEX_COMIC_VIDEO_WORKBENCH_LOCAL_DELIVERY_BRIEF.md` with status `LOCAL_DELIVERY_BRIEF_DRAFT_FOR_USER`, the verified MP4 path and facts, exact rerun command, verification summary, user-facing meaning, non-meaning / boundary statements, and exactly three next decision options for `01` / user.
 - 2026-06-30: Verification passed with `rg` for required delivery brief terms, trailing-whitespace scan over touched files, `git diff --check -- PLANS.md` for touched tracked files, and `git status --short --branch`. `git diff --check` reported only the Windows line-ending warning for `PLANS.md`; Gradle was not run because this is a docs-only slice.
 
-## Active Full Regression Verification After Local Preview Artifact Plan
+## Historical Full Regression Verification After Local Preview Artifact Plan
 
 ### Goal
 
@@ -15679,7 +15679,7 @@ Run one full project regression test after the comic-video focused slices and fr
 - 2026-06-30: Full Gradle regression passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain`. Build result was `BUILD SUCCESSFUL in 2m 40s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code, sample, generated artifact, staging, commit, or push changes were made.
 - 2026-06-30: Final checks passed for `PLANS.md` trailing whitespace and `git diff --check -- PLANS.md`, with only the Windows line-ending warning. `git status --short --branch` was checked. Optional process check found one remaining `java.exe` GradleDaemon 8.10.2 process after a short wait; no stop/cleanup command was run because this slice allowed full-test verification only.
 
-## Active Comic-Video Integrated Local Preview Artifact Verification Plan
+## Historical Comic-Video Integrated Local Preview Artifact Verification Plan
 
 ### Goal
 
@@ -15757,7 +15757,7 @@ Prove that the local comic-video workbench can still generate a real local previ
 - 2026-06-30: Added `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` as concise local artifact evidence. The note explicitly states this is not final media approval, provider/media handoff, canon, registry, release, approval, or production lock.
 - 2026-06-30: Final checks passed: trailing-whitespace scan over touched files had no output; `git diff --check -- PLANS.md` passed with only the Windows line-ending warning; `git status --short --branch` showed the existing dirty/untracked grouped work plus the new artifact evidence note, with generated `out/` artifacts remaining local and ignored.
 
-## Active Comic-Video Samples Focused Verification Plan
+## Historical Comic-Video Samples Focused Verification Plan
 
 ### Goal
 
@@ -15835,7 +15835,7 @@ Verify whether the comic-video sample packs and evidence are coherent as the pra
 - 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoWorkbenchSamplePackTest"`. Build result was `BUILD SUCCESSFUL in 28s` with 5 actionable tasks, 3 executed and 2 up-to-date.
 - 2026-06-30: Sample diff hygiene check passed with `git diff --check -- samples/comic_video_workbench samples/comic_video_workbench_zh_tw samples/comic_video_setting_source`. No sample or Kotlin code edits were made.
 
-## Active Comic-Video Local Renderer / Setting-Source Bridge Focused Verification Plan
+## Historical Comic-Video Local Renderer / Setting-Source Bridge Focused Verification Plan
 
 ### Goal
 
@@ -15915,7 +15915,7 @@ Verify whether the comic-video local renderer and setting-source bridge layer ca
 - 2026-06-30: Started focused local renderer / setting-source bridge verification from `01` `NEXT_TASK`. Read required docs, code, CLI wiring evidence, and tests before verification. Scope is verification-first with no code edits unless a tiny, clear, in-scope failure is proven by the focused tests.
 - 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and the assigned test set: `ComicVideoLocalRendererServiceTest`, `ComicVideoLocalPreviewBuildCliTest`, `SettingComicVideoLocalPreviewBuildCliTest`, `SettingImageFacingProofPreviewBuildCliTest`, and `SettingPackScriptPacketDraftServiceTest`. Build result was `BUILD SUCCESSFUL in 28s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code edits were made.
 
-## Active Comic-Video Production Package Focused Verification Plan
+## Historical Comic-Video Production Package Focused Verification Plan
 
 ### Goal
 
@@ -15990,7 +15990,7 @@ Verify whether the draft comic-video production package layer can be reviewed as
 - 2026-06-30: Started focused production package verification from `01` `NEXT_TASK`. Read required docs, code, CLI wiring evidence, and tests before verification. Scope is verification-first with no code edits unless a tiny, clear, in-scope failure is proven by the focused test.
 - 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoProductionPackage*"`. Build result was `BUILD SUCCESSFUL in 29s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code edits were made.
 
-## Active Codex Handoff Loop 03 Review Request Plan
+## Historical Codex Handoff Loop 03 Review Request Plan
 
 ### Goal
 
@@ -16053,7 +16053,7 @@ Create the smallest useful docs-only `03` review request packet for the handoff-
 - 2026-06-30: Added `docs/CODEX_HANDOFF_LOOP_03_REVIEW_REQUEST.md` with status `REVIEW_REQUEST_DRAFT_FOR_01`, exact candidate files, `03` check scope, `03` must-not-do boundaries, required exactly-one / one concise review report reply shape, and an explicit note that `03` does not exist / is not contacted in this slice unless `01` or the user explicitly creates or sends to it later.
 - 2026-06-30: Verification passed with `rg` for required identifiers and boundary terms, trailing-whitespace scan over touched files, and `git diff --check -- PLANS.md` for touched tracked files. `git diff --check` reported only the expected Windows line-ending warning for `PLANS.md`; Gradle was not run because this is a docs-only slice.
 
-## Active Dirty Worktree Grouping Snapshot Plan
+## Historical Dirty Worktree Grouping Snapshot Plan
 
 ### Goal
 
@@ -16117,7 +16117,7 @@ Create a read-only dirty-worktree grouping snapshot for the current comic-video 
 - 2026-06-30: Added `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md` with handoff-loop protocol/docs, comic-video production package code, local renderer / setting-source bridge code, comic-video tests, comic-video samples, and shared tracked files groups. The report is read-only and decision-support only, with no staging, commit, push, cleanup, deletion, code behavior, provider/API, canon, registry, release, or production-lock authority.
 - 2026-06-30: Verification passed with `rg` for required group names and boundary terms, trailing-whitespace scan over touched files, and `git diff --check` over touched tracked files. Only Windows line-ending warnings appeared. The new untracked snapshot was covered directly by `rg` and whitespace scan.
 
-## Active Codex Handoff Model Policy Repair Plan
+## Historical Codex Handoff Model Policy Repair Plan
 
 ### Goal
 
@@ -16181,7 +16181,7 @@ Persist the correct model-selection policy for governed Codex chat-window handof
 - 2026-06-30: Added `Model Selection Policy` to `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`. Current high-capability task-turn policy is `model=gpt-5.5` and `thinking=xhigh` when the tool supports model/thinking selection; lightweight status reads may use defaults; running tasks are not interrupted just to switch settings; model choice never overrides project boundaries, validators, stop conditions, or explicit user / `01` decisions.
 - 2026-06-30: Added a concise `docs/HANDOFF.md` pointer to the model-selection policy. Verification found the current policy values, confirmed the unsupported higher reasoning label appears only in a prohibition, passed trailing-whitespace scan, and passed `git diff --check` for touched tracked files with only Windows line-ending warnings.
 
-## Active Codex Handoff Smoke Test Integration Plan
+## Historical Codex Handoff Smoke Test Integration Plan
 
 ### Goal
 
@@ -16246,7 +16246,7 @@ Integrate the completed governed handoff-loop smoke test back into the main hand
 - 2026-06-30: Linked `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md` from `docs/HANDOFF.md`, added a short first-smoke-test evidence pointer in `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`, and updated the smoke-test status to `PASS_REPORTED_TO_01`.
 - 2026-06-30: Verification passed with `rg` for smoke-test filename, `PASS_REPORTED_TO_01`, `01` id, `02` id, `NEXT_TASK`, and no-unattended-loop wording; trailing-whitespace scan over touched files; and `git diff --check` over touched tracked files. Only Windows line-ending warnings appeared. New untracked docs were covered by `rg` and whitespace scan directly.
 
-## Active Codex Handoff Smoke Test Plan
+## Historical Codex Handoff Smoke Test Plan
 
 ### Goal
 
@@ -16310,7 +16310,7 @@ Run the first governed docs-only smoke test for the Codex chat-window handoff pr
 - 2026-06-30: Added `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`. The report records distinct `01` and `02` ids from the delegated `NEXT_TASK`, readiness-before-task, governed-not-unattended loop boundary, completion report shape, and stop conditions.
 - 2026-06-30: Verification passed with `rg` for `01` id, `02` id, `NEXT_TASK`, `STOP` / stop conditions, and no-unattended-loop wording; trailing-whitespace scan over touched files; and `git diff --check` over the tracked touched file. `git diff --check` reported only Windows line-ending warnings. The new smoke-test report is untracked, so trailing-whitespace scan covered it directly.
 
-## Active Codex Chat-Window Handoff Loop Protocol Plan
+## Historical Codex Chat-Window Handoff Loop Protocol Plan
 
 ### Goal
 
@@ -16380,7 +16380,7 @@ Establish a Codex chat-window handoff protocol where the current worker reports 
 - 2026-06-30: Validated handoff protocol references and safety wording with `rg`, checked touched-file trailing whitespace, and ran `git diff --check` for the touched protocol files. Results passed with only Windows line-ending warnings.
 - 2026-06-30: Sent the bounded report to thread id `019f0dd1-1543-7f22-b646-5c12d07d168d`, then read the thread and discovered this current window is itself the `01` thread. The app surfaced the sent report back as a `codex_delegation` message in the same source thread, so no independent `NEXT_TASK` was received. Updated the protocol and `docs/HANDOFF.md` with a self-loop stop condition.
 
-## Active Traditional Chinese Production Package Sample Plan
+## Historical Traditional Chinese Production Package Sample Plan
 
 ### Goal
 
@@ -16456,7 +16456,7 @@ Add a Traditional Chinese sample production package and validation report using 
 - 2026-06-30: Added a final documentation sync step after verification showed the blueprint still listed Traditional Chinese production package output as a future step.
 - 2026-06-30: Updated the short-drama workflow blueprint and comic-video CLI workflow docs to reference the implemented Traditional Chinese production package sample and PASS validation evidence.
 
-## Active Comic Video Production Package Codex Skill Plan
+## Historical Comic Video Production Package Codex Skill Plan
 
 ### Goal
 
@@ -16537,7 +16537,7 @@ Add a project-local Codex skill/runbook that lets Codex operate the current comi
 - 2026-06-30: Updated the prototype blueprint, CLI workflow, and current-phase completion addendum to reference the repo-local skill. The skill remains a workflow wrapper only; it grants no provider/API handoff, media generation, approval, canon, registry, release, or production-lock authority.
 - 2026-06-30: Validation passed with PowerShell frontmatter check, required-command `rg` check, guardrail wording check, trailing-whitespace scan, `git diff --check`, `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only existing Windows line-ending warnings. Python-based `init_skill.py` and `quick_validate.py` could not run because no real Python runtime is available in this environment.
 
-## Active Comic Video Production Package Validation CLI Plan
+## Historical Comic Video Production Package Validation CLI Plan
 
 ### Goal
 
@@ -16628,7 +16628,7 @@ Add an independent local validator for `ComicVideoProductionPackageDraft` so the
 - 2026-06-30: Updated prototype/workflow/completion/sample docs to document validation as a local review gate only. It is not asset approval, provider handoff, generated media, canon, registry, release, or production lock.
 - 2026-06-30: Verification passed with focused `ComicVideoProductionPackageValidationServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample validation, `git diff --check`, trailing-whitespace scan, generated validation JSON forbidden-field scan, parsed validation JSON count check, and Java/Gradle/Kotlin process check. As in the previous slice, Gradle verification used the one-shot `ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs=-Xmx1536m` environment variable and did not modify project files.
 
-## Active Comic Video Production Package Draft CLI Plan
+## Historical Comic Video Production Package Draft CLI Plan
 
 ### Goal
 
@@ -16717,7 +16717,7 @@ Add the first implemented next-version prototype command that turns a PASS `Imag
 - 2026-06-30: Updated prototype/workflow/completion/sample docs to document the command as draft-only and review-required. This remains separate from external provider handoff, media generation, registry, approval, canon, release, and production lock.
 - 2026-06-30: Verification passed with focused `ComicVideoProductionPackageDraftServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample generation, `git diff --check`, trailing-whitespace scan, sample JSON forbidden-field scan, and parsed sample JSON count check. The local machine's default 512m Kotlin daemon hit OOM/timeout during the first compile attempt; verification passed after using a one-shot `ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs=-Xmx1536m` environment variable without changing project files.
 
-## Active Codex Short Drama Production Package Prototype Blueprint Plan
+## Historical Codex Short Drama Production Package Prototype Blueprint Plan
 
 ### Goal
 
@@ -16794,7 +16794,7 @@ Record the YouTube/Codex workflow idea as a next-version prototype blueprint for
 - 2026-06-30: Added `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md` and cross-referenced it from the product plan, current workflow, and current-phase completion report. The prototype is explicitly scoped to storyboard tables, prompt packets, asset cards, and Codex skill/runbook planning; it does not alter the current baseline or add provider/media execution.
 - 2026-06-30: Verified docs-only changes with `git diff --check`, trailing-whitespace scan over touched Markdown files, and `rg` cross-reference checks. `git diff --check` reported only existing Windows line-ending warnings. No Gradle test was required because no production code changed in this slice.
 
-## Active One-Command Setting To Local MP4 Preview Wrapper Plan
+## Historical One-Command Setting To Local MP4 Preview Wrapper Plan
 
 ### Goal
 
@@ -16875,7 +16875,7 @@ Add a single local CLI command that takes a public setting pack scene plus an ed
 - 2026-06-30: Updated workflow docs, completion report, and setting-source README to document the one-command wrapper, output directories, verification evidence, and local-preview-only boundary.
 - 2026-06-30: Verified the one-command wrapper with focused `SettingComicVideoLocalPreviewBuildCliTest` and `ComicVideoLocalPreviewBuildCliTest`, full `.\gradlew.bat test --no-daemon --console=plain`, actual one-command MP4 run, `ffprobe`, `ffmpeg` volume detection, preview-frame visual inspection, JSON artifact secret/forbidden-claim scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. All tests passed; `git diff --check` reported only existing Windows line-ending warnings.
 
-## Active Setting Source To Local MP4 Preview Sample Plan
+## Historical Setting Source To Local MP4 Preview Sample Plan
 
 ### Goal
 
@@ -16958,7 +16958,7 @@ Use the newly generated setting-source `ImageFacingDeliveryProof` sample plus a 
 - 2026-06-30: Added `voice_timeline_fill_rain_gate_preview_sample.json`, rendered `out/comic_video_setting_source_preview/rain_gate_setting_preview.mp4`, extracted a preview frame, and extended `ComicVideoLocalPreviewBuildCliTest` with a dry-run setting-source proof plus voice fill path. Actual build report is PASS with packet validation PASS, manifest PASS, local render PASS, 9000 ms total duration, and generated local preview media.
 - 2026-06-30: Verified the setting-source MP4 preview sample with focused `ComicVideoLocalPreviewBuildCliTest`, full `.\gradlew.bat test --no-daemon --console=plain`, `ffprobe` showing 9.000000 seconds with 1920x1080 H.264 video and AAC audio, `ffmpeg` volume detection showing non-silent audio, preview-frame visual inspection, JSON artifact secret/forbidden-claim scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only existing Windows line-ending warnings.
 
-## Active Setting Pack To Image-Facing Proof Preview CLI Plan
+## Historical Setting Pack To Image-Facing Proof Preview CLI Plan
 
 ### Goal
 
@@ -17044,7 +17044,7 @@ Add a local preview CLI that starts from a public setting pack scene and produce
 - 2026-06-30: Added `build-setting-image-facing-proof-preview`, `SettingImageFacingProofPreviewBuildService`, build report models, focused CLI tests, and rerunnable sample output under `samples/comic_video_setting_source/image_facing_preview_build/`. The first CLI probe failed because generated frame text lacked action markers required by `StoryboardStoryMovementAuditService`; fixed the generator to include deterministic movement evidence and reran the command to PASS. Evidence: 3 storyboard frames, 3 image-facing frame delivery cards, 1 excluded secret, PASS story movement audit, PASS reviewable storyboard packet, PASS image-facing delivery proof, and no critical findings. This remains a local preview bridge only; no SQLite, setting-pack apply, formal accepted-script source binding, human decision, provider/API, generated media, registry, release, canon, approval, or production-lock state changed.
 - 2026-06-30: Verified the setting-to-image-facing-proof preview slice with `SettingImageFacingProofPreviewBuildCliTest`, `SettingPackScriptPacketDraftServiceTest`, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample build, forbidden-claim/secret scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. All tests passed; `git diff --check` reported only existing Windows line-ending warnings.
 
-## Active Setting Pack To Script Packet Draft CLI Plan
+## Historical Setting Pack To Script Packet Draft CLI Plan
 
 ### Goal
 
@@ -17118,7 +17118,7 @@ Add a local CLI command that converts a public scene from a setting pack JSON in
 - 2026-06-30: Started setting-pack-to-script-draft slice after the local preview build CLI proved proof/fill -> MP4. Evidence shows the missing upstream bridge is world/setting JSON into structured script packet draft input; scope is restricted to candidate draft generation plus existing draft validation.
 - 2026-06-30: Added `create-setting-script-packet-draft`, `SettingPackScriptPacketDraftService`, build report models, `samples/comic_video_setting_source/`, and focused tests. Ran the command against `setting_pack_rain_gate_sample.json`; it wrote a PASS `ScriptPacketDraftValidationReport`, generated 1 segment, 3 beats, 3 frame candidates, counted 1 excluded secret, and `rg` found no copied secret/director/provider/production/canon/final-video terms in the generated draft/report. This slice stayed within local Kotlin/JVM CLI plus JSON file protocol; no SQLite, setting-pack apply, accepted-script, storyboard approval, image-facing proof, provider/API, registry, release, approval, canon, or production-lock state changed.
 
-## Active Comic Video End-to-End Local Preview Build CLI Plan
+## Historical Comic Video End-to-End Local Preview Build CLI Plan
 
 ### Goal
 
@@ -17197,7 +17197,7 @@ Add a single local CLI command that takes an `ImageFacingDeliveryProof` JSON and
 - 2026-06-30: Started end-to-end local preview build CLI slice after the Traditional Chinese sample proved the step-by-step chain. Scope is one local CLI wrapper over existing gates plus report/docs/tests; no SQLite, provider/API, canon, registry, release, approval, or production-lock work.
 - 2026-06-30: Added `build-comic-video-local-preview`, build report models, and focused CLI tests. Ran the command against `samples/comic_video_workbench_zh_tw/` and generated `out/comic_video_zh_tw_build/zh_tw_build_preview.mp4`; `ffprobe` confirmed 9.000000 seconds, 1920x1080 H.264 video, and AAC audio; audio volume detection confirmed non-silent audio; preview-frame inspection confirmed visible Traditional Chinese text/subtitles. The slice stayed within Kotlin/JVM CLI plus JSON file protocol and local preview media under `out/`; no SQLite, provider/API, canon, registry, release, approval, or production-lock state changed.
 
-## Active Traditional Chinese Comic Video Sample Plan
+## Historical Traditional Chinese Comic Video Sample Plan
 
 ### Goal
 
@@ -17276,7 +17276,7 @@ Add a Traditional Chinese sample path that proves the current Codex workbench ca
 - 2026-06-30: Extended `ComicVideoWorkbenchSamplePackTest` to rerun both English and Traditional Chinese sample packs. Rendered `samples/comic_video_workbench_zh_tw/comic_video_render_handoff_manifest_zh_tw_sample.json` to `out/comic_video_zh_tw/zh_tw_local_render.mp4`; `ffprobe` confirmed a 9.000000 second 1920x1080 H.264 video stream and AAC audio stream, `volumedetect` confirmed non-silent audio, and `zh_tw_preview_001.jpg` visually confirmed Traditional Chinese text/subtitles render correctly.
 - 2026-06-30: Verified this slice with focused sample-pack test, focused `ComicVideo*` tests, local MP4 `ffprobe`, audio volume check, preview-frame inspection, and workflow-doc update. The slice stayed within local Kotlin/JVM CLI plus JSON file protocol and local preview media under `out/`; no SQLite, provider/API, canon, registry, release, approval, or production-lock state changed.
 
-## Active Comic Video Local MP4 Renderer CLI Plan
+## Historical Comic Video Local MP4 Renderer CLI Plan
 
 ### Goal
 
@@ -17357,7 +17357,7 @@ Add a local one-command renderer that can turn a PASS comic video render handoff
 - 2026-06-29: Added `render-comic-video-local` with local render report models, dry-run validation, Java2D panel generation, Windows speech narration, and `ffmpeg` MP4 assembly. The sample manifest rendered to `out/comic_video_local_renderer/sample_local_render.mp4`; `ffprobe` confirmed a 7.833333 second 1920x1080 H.264 video stream and AAC audio stream. Extracted `sample_preview_001.jpg` and visually inspected the frame, then improved word-aware wrapping after spotting an awkward English word split.
 - 2026-06-29: Verified this renderer slice with `ComicVideoLocalRendererServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, `git diff --check`, trailing-whitespace scan, local MP4 `ffprobe`, preview-frame inspection, and process cleanup. Gradle/Kotlin compilation was slow on this machine; switching to in-process Kotlin compiler avoided leaving a runaway Kotlin daemon. No drift from the local-preview renderer plan was detected.
 
-## Active Local Demo MP4 V2 Polish Plan
+## Historical Local Demo MP4 V2 Polish Plan
 
 ### Goal
 
@@ -17427,7 +17427,7 @@ Produce a second playable demo MP4 with Traditional Chinese subtitles/narration 
 - 2026-06-29: Started V2 polish after the user asked for the next step. Evidence confirms local zh-TW speech and Traditional Chinese fonts are available, so the next artifact can be a Chinese narrated MP4 rather than another English rough demo.
 - 2026-06-29: Generated `out/comic_video_demo_v2/demo_v2.mp4` from three comic-style panels, local Traditional Chinese narration, and burned subtitles. `ffprobe` confirmed a 14.066667 second MP4 with 1920x1080 H.264 video and AAC audio; extracted `preview_001.jpg` and visually inspected the frame. No Kotlin runtime, SQLite, provider/API, canon, registry, approval, release, or production-lock behavior changed.
 
-## Active Local Demo MP4 Export Plan
+## Historical Local Demo MP4 Export Plan
 
 ### Goal
 
@@ -17497,7 +17497,7 @@ Produce a playable demo MP4 from the current comic video workbench sample so the
 - 2026-06-29: Started local demo MP4 export after the user clarified that the desired product is a video. Scope is a local prototype artifact under `out/`, using only local `ffmpeg`; no provider/API, SQLite, canon, approval, registry, release, or production-lock work.
 - 2026-06-29: Generated three comic-style panel PNGs, local synthetic narration WAV files, a combined narration track, a silent video, and final `out/comic_video_demo/demo.mp4`. First concat attempt exposed a UTF-8 BOM issue in ffmpeg concat files; fixed by using ASCII relative-path concat manifests. Second video attempt exposed contradictory ffmpeg frame-rate flags; fixed with an `fps` video filter. `ffprobe` confirmed `demo.mp4` has a 1920x1080 H.264 video stream, AAC audio stream, and about 12 seconds duration. Extracted `preview_001.jpg` for visual sanity check.
 
-## Active Comic Video Workbench Sample Pack Plan
+## Historical Comic Video Workbench Sample Pack Plan
 
 ### Goal
 
@@ -17576,7 +17576,7 @@ Add a small, rerunnable sample JSON pack for the current comic video workbench s
 - 2026-06-29: Added `ComicVideoWorkbenchSamplePackTest` and linked the sample pack from workflow/completion docs. First focused run exposed a brittle relative-path assumption; repaired the test to locate the repo sample directory by walking upward from the test working directory. Focused sample-pack test then passed.
 - 2026-06-29: Verified with focused sample-pack test, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, `git diff --check`, trailing-whitespace scan, and scope check. Stopped the remaining Gradle daemon with `.\gradlew.bat --stop`. No drift from the sample-pack plan was detected.
 
-## Active Comic Video Workbench Current Phase Completion Report Plan
+## Historical Comic Video Workbench Current Phase Completion Report Plan
 
 ### Goal
 
@@ -17647,7 +17647,7 @@ Add a current-phase completion report for the Codex-operated comic video workben
 - 2026-06-28: Added `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` and linked it from the workflow doc. It records PASS only for the local JSON workbench phase and keeps final media, provider, sidecar, approval, canon, registry, release, and production-lock work out of scope.
 - 2026-06-28: Verified the completion report with read-back review, `git diff --check`, trailing-whitespace scan, and `git status --short --branch`. No drift from the scoped workbench completion report plan was detected.
 
-## Active Comic Video Voice Timeline Template Plan
+## Historical Comic Video Voice Timeline Template Plan
 
 ### Goal
 
@@ -17721,7 +17721,7 @@ Add a local CLI template command that creates an editable `ComicVideoVoiceTimeli
 - 2026-06-28: Added service and CLI support for `create-comic-video-voice-timeline-fill-template`, plus focused service/CLI tests. The template derives panel ids and timing from the packet and keeps media/provider/output fields blank.
 - 2026-06-28: Updated the workflow doc to use the new template command. Focused `ComicVideoVoiceTimelineFillServiceTest`, focused `ComicVideo*` tests, and full `.\gradlew.bat test --no-daemon --console=plain` all passed. No drift from the metadata-only JSON workbench plan was detected.
 
-## Active Comic Video Workbench CLI Workflow Doc Plan
+## Historical Comic Video Workbench CLI Workflow Doc Plan
 
 ### Goal
 
@@ -17794,7 +17794,7 @@ Add a human-usable CLI workflow document for the current comic video workbench s
 - 2026-06-28: Added `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` and linked it from `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`. The workflow documents only the existing metadata-only CLI JSON chain and keeps final media/provider/approval/canon/registry/release/production-lock work out of scope.
 - 2026-06-28: Verified the docs slice with `git diff --check`, read-back review of the new workflow document, scope check with `git status --short`, and full `.\gradlew.bat test --no-daemon --console=plain` passing. No drift from the plan was detected.
 
-## Active Comic Video Workbench Pipeline Fixture Plan
+## Historical Comic Video Workbench Pipeline Fixture Plan
 
 ### Goal
 
@@ -17865,7 +17865,7 @@ Add an end-to-end CLI evidence fixture that proves the comic video workbench can
 - 2026-06-28: Added `ComicVideoWorkbenchPipelineFixtureTest`, which runs the real CLI JSON chain from PASS `ImageFacingDeliveryProof` through `create-comic-video-packet`, `fill-comic-video-voice-timeline`, `validate-comic-video-packet`, and `create-comic-video-render-handoff-manifest`. Focused ComicVideo tests and full Gradle tests passed.
 - 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
 
-## Active Comic Video Render Handoff Manifest Plan
+## Historical Comic Video Render Handoff Manifest Plan
 
 ### Goal
 
@@ -17938,7 +17938,7 @@ Add a medium-sized local JSON gate that turns a PASS `ComicVideoPacketValidation
 - 2026-06-28: Implemented `ComicVideoRenderHandoffManifest`, `ComicVideoRenderHandoffManifestService`, CLI `create-comic-video-render-handoff-manifest`, help text, and focused tests. The manifest is generated only from PASS `ComicVideoPacketValidationReport`, rejects FAIL sources and media/provider fields, and exports metadata-only panel/voice/subtitle timelines plus render settings. Focused ComicVideo tests and full Gradle tests passed.
 - 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
 
-## Active Comic Video Voice Timeline Fill Plan
+## Historical Comic Video Voice Timeline Fill Plan
 
 ### Goal
 
@@ -18012,7 +18012,7 @@ Add a medium-sized local JSON gate that fills an existing `ComicVideoPacket` can
 - 2026-06-28: Implemented `ComicVideoVoiceTimelineFill`, `ComicVideoVoiceTimelineFillService`, CLI `fill-comic-video-voice-timeline`, help text, and focused tests. The filled packet preserves panel/source bindings, rejects mismatched source ids and media/provider fields, and can pass `validate-comic-video-packet` when voice/audio/subtitle/timing metadata is complete. Focused ComicVideoPacket tests and full Gradle tests passed.
 - 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, manual trailing-whitespace scan passed, and no Java/Gradle process remained after verification.
 
-## Active Comic Video Packet Auto-Draft Plan
+## Historical Comic Video Packet Auto-Draft Plan
 
 ### Goal
 
@@ -18083,7 +18083,7 @@ Add a local CLI gate that turns a PASS `ImageFacingDeliveryProof` into a draft `
 - 2026-06-28: Implemented `ComicVideoPacketService`, CLI `create-comic-video-packet`, help text, and focused tests. The auto-draft maps image-facing frame cards to panel tracks and leaves voice/audio/subtitle fields empty for author fill; validation remains a separate command. Focused ComicVideoPacket tests and full Gradle tests passed.
 - 2026-06-28: `git diff --check` passed with only Windows line-ending warnings, and manual trailing-whitespace scan passed for changed tracked and new untracked files.
 
-## Active Comic Video Packet Workbench Gate Plan
+## Historical Comic Video Packet Workbench Gate Plan
 
 ### Goal
 
@@ -18149,7 +18149,7 @@ Add the first local JSON contract gate for using Codex as a production workbench
 - 2026-06-28: Started the first Comic Video Packet workbench gate after the blueprint discussion. Scope is a local JSON contract and validator only; media generation, sidecar rendering, provider/API work, canon, approval, registry, SQLite, release, and production lock remain out of scope.
 - 2026-06-28: Implemented `ComicVideoPacket` models, `ComicVideoPacketValidationService`, CLI template/validation commands, and focused tests. Focused rerun tests and the full Gradle test command passed; scope stayed metadata-only and did not add media generation, sidecar rendering, provider/API work, SQLite, canon, approval, registry, release, or production lock.
 
-## Active Option A Lifecycle Progress Alignment Plan
+## Historical Option A Lifecycle Progress Alignment Plan
 
 ### Goal
 
@@ -19040,7 +19040,7 @@ Apply the explicit `01` owner decision to keep the two local memory support file
 - 2026-06-28: Post-apply verification confirmed only `.gitignore` and `PLANS.md` changed, the two local memory files are ignored by exact anchored rules, negative ignore checks do not match adjacent paths/docs, and memory/source/runtime files remain untouched.
 - 2026-06-28: `03` passed exact ignore staging, commit, push readiness, and push apply. Final pushed HEAD/upstream is `66111b4085fbf160dc181c843005a29fad456d33`; memory JSON files remain local-only and are not in the commit.
 
-## Active Memory Parser Evidence Wording Correction Plan
+## Historical Memory Parser Evidence Wording Correction Plan
 
 ### Goal
 
@@ -19104,7 +19104,7 @@ Correct docs/control wording for local memory parser evidence after `03` command
 - 2026-06-28: Started `minimal memory parser evidence wording correction` after `03` command capture and `01` handoff clarified the parser discrepancy is command/host encoding-sensitive. Scope remains docs/control only; memory files stay untracked/local.
 - 2026-06-28: Verification completed for the wording correction: diff check passed with only LF/CRLF warnings, explicit UTF-8 PowerShell and Node parser checks passed, default PowerShell failure remained documented as encoding-sensitive, and only the intended docs/control files changed.
 
-## Active Control-Doc Commit Decision / Apply Plan
+## Historical Control-Doc Commit Decision / Apply Plan
 
 ### Goal
 
@@ -20099,7 +20099,7 @@ Add a deterministic E2E happy-path fixture test proving that a coherent local JS
 - 2026-06-27: Verification completed: focused `PipelineHappyPathFixtureTest` passed with `--no-daemon --console=plain`; `git diff --check` over touched files reported only the existing PLANS Windows line-ending warning; new test trailing-whitespace scan was clean; safety scan hits in the test were limited to forbidden-boundary assertion strings.
 - 2026-06-27: `03` returned PASS for `pipeline E2E happy-path fixture v1`; `01` counted it as conservative product-proof progress, not final storyboard delivery, and raised the official display from 59% to 63%.
 
-## Active Candidate Reference Acceptance Packet Validation Plan
+## Historical Candidate Reference Acceptance Packet Validation Plan
 
 ### Goal
 
@@ -20164,7 +20164,7 @@ Add `candidate_reference_acceptance_packet_validation` as a boundary-closure gat
 - 2026-06-27: Verification completed: focused tests passed, `git diff --check` reported only Windows line-ending warnings, new service/test trailing-whitespace scan was clean, and safety scan found only expected forbidden-pattern detectors / negative test fixtures. Existing worktree remains dirty with many pre-existing untracked pipeline files; this slice did not revert or clean them.
 - 2026-06-27: `03` returned PASS for `candidate_reference_acceptance_packet_validation`. `01` updated official product-deliverable progress from 58% to 59%, marked lifecycle Stage 22 done, and set the next slice to an E2E happy-path fixture from accepted draft to reviewable storyboard packet.
 
-## Active Pipeline Lifecycle Map And Progress Rubric Repair Plan
+## Historical Pipeline Lifecycle Map And Progress Rubric Repair Plan
 
 ### Goal
 
@@ -20236,7 +20236,7 @@ Repair project-control documents before the next implementation slice: separate 
 - 2026-06-27: Sent docs/control update to `03` for read-only review. Requested verdict on the 58% product-deliverable progress display, 79% gate-hardening indicator, lifecycle map boundaries, next slice order, and OneDrive canonical-path incident.
 - 2026-06-27: `03` passed the docs/control update. Official display is now `Project completion progress: 58%`. Next approved slice order starts with `candidate_reference_acceptance_packet_validation` as boundary closure only, not formal registry write or asset lock.
 
-## Active Accelerated Candidate Reference Registry Validation And Acceptance Boundary Batch Plan
+## Historical Accelerated Candidate Reference Registry Validation And Acceptance Boundary Batch Plan
 
 ### Goal
 
@@ -20325,7 +20325,7 @@ Continue after `candidate_reference_registry_packet_validation` by validating th
 - 2026-06-26: `03` passed the REVISE P1 repair; `01` counted this validation/acceptance-boundary package and updated displayed project completion progress to 79%.
 - 2026-06-26: `01` moved Codex active global workspace configuration away from OneDrive to `C:\Users\f7212\Projects`, stopped the local OneDrive process/startup/tasks, updated `config.toml`, global state, and process-manager cwd records, and verified active Codex config files have zero `C:\Users\f7212\OneDrive` path hits. Current project progress remains 79%.
 
-## Active Accelerated Candidate Reference Registry Preparation Batch Plan
+## Historical Accelerated Candidate Reference Registry Preparation Batch Plan
 
 ### Goal
 
@@ -20410,7 +20410,7 @@ Continue after `candidate_reference_human_acceptance_ready` by validating an ext
 - 2026-06-25: Sent package-level read-only review request to `03`, noting the user-requested accelerated medium package and deterministic JSON boundary.
 - 2026-06-25: `03` passed the package-level review; `01` counted this registry-preparation package and updated displayed project completion progress to 77%.
 
-## Active Accelerated Image Candidate Result Human Review Batch Plan
+## Historical Accelerated Image Candidate Result Human Review Batch Plan
 
 ### Goal
 
@@ -20499,7 +20499,7 @@ Continue after `image_candidate_result_human_review_ready` by validating an exte
 - 2026-06-25: REVISE P1 repaired by adding item-level image result source binding to candidate reference packet creation and a forged-image-result regression test. Verified with `.\gradlew.bat test --tests "*ImageCandidateResultHumanReviewDecisionIntakeTest" --tests "*ImageCandidateReferencePacketTest" --tests "*ImageCandidateReferencePacketValidationTest" --no-daemon --console=plain`; diff checks found only Windows line-ending warnings.
 - 2026-06-25: `03` passed the REVISE P1 repair; `01` counted this package and updated displayed project completion progress to 75%.
 
-## Active Accelerated Image Candidate External Result Intake Batch Plan
+## Historical Accelerated Image Candidate External Result Intake Batch Plan
 
 ### Goal
 
@@ -20597,7 +20597,7 @@ Continue after `image_candidate_manual_external_action_ready` by validating huma
 - 2026-06-25: Repaired the second-layer P1 bypass by adding an unanchored embedded URL / URI scheme detector for `metadataOnlyReference` in both external result intake and result review preflight. Added regression tests for embedded `https://...` and `provider://...`; focused tests passed and diff checks showed only Windows line-ending warnings.
 - 2026-06-25: Sent second-layer REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
 
-## Active Accelerated Image Candidate Manual Provider Handoff Batch Plan
+## Historical Accelerated Image Candidate Manual Provider Handoff Batch Plan
 
 ### Goal
 
@@ -20696,7 +20696,7 @@ Continue after `image_candidate_manual_provider_handoff_ready` by validating an 
 - 2026-06-25: Repaired REVISE P1 by requiring `acceptedScriptPacketId` and `scriptPacketDraftFile` through decision intake, packet creation, and packet validation; packet creation now rejects blank `decisionIntake.decisionId`, and packet validation reports carry both source fields forward. Added regression tests; focused package tests passed and diff checks showed only Windows line-ending warnings.
 - 2026-06-25: Sent REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
 
-## Active Accelerated Image Candidate Prompt Preparation Batch Plan
+## Historical Accelerated Image Candidate Prompt Preparation Batch Plan
 
 ### Goal
 
@@ -20795,7 +20795,7 @@ Continue the accelerated image-candidate lane after `image_candidate_prompt_prep
 - 2026-06-25: Repaired REVISE P1 by adding `assetType` to the prompt preparation, prompt validation, and provider handoff preflight scan surfaces. Added regression tests for `approved_reference`, `production_locked`, `author_only`, and `hidden truth` asset type values; focused package tests passed and diff checks showed only Windows line-ending warnings.
 - 2026-06-25: Sent REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
 
-## Active Accelerated Asset Candidate Human Review Batch Plan
+## Historical Accelerated Asset Candidate Human Review Batch Plan
 
 ### Goal
 
@@ -20884,7 +20884,7 @@ Continue the accelerated asset-candidate lane after `asset_candidate_human_revie
 - 2026-06-25: Package verification passed with `AssetCandidateHumanReviewDecisionIntakeTest`, `ImageCandidatePreflightTest`, and `ImageCandidateBriefTest`; diff checks showed only Windows line-ending warnings.
 - 2026-06-25: Sent accelerated package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
 
-## Active Accelerated Asset Candidate Batch Plan
+## Historical Accelerated Asset Candidate Batch Plan
 
 ### Goal
 
@@ -20969,7 +20969,7 @@ Accelerate the asset-candidate lane by completing a medium package of adjacent l
 - 2026-06-25: Verification passed with `AssetCandidateDraftValidationTest`, `AssetCandidateReviewPreflightTest`, and the existing `AssetCandidateDraftTest`.
 - 2026-06-25: Sent accelerated package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
 
-## Active Minimal Asset Candidate Draft Gate Plan
+## Historical Minimal Asset Candidate Draft Gate Plan
 
 ### Goal
 
@@ -21051,7 +21051,7 @@ Add a local JSON draft gate after a PASS asset candidate brief. It turns candida
 - 2026-06-25: Diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
 - 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
 
-## Active Minimal Asset Candidate Brief Gate Plan
+## Historical Minimal Asset Candidate Brief Gate Plan
 
 ### Goal
 
@@ -21130,7 +21130,7 @@ Add a local read-only JSON brief gate after a PASS asset candidate preflight. It
 - 2026-06-25: Diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
 - 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
 
-## Active Minimal Asset Candidate Preflight Gate Plan
+## Historical Minimal Asset Candidate Preflight Gate Plan
 
 ### Goal
 
@@ -21222,7 +21222,7 @@ Add a local read-only JSON preflight gate after a PASS human review decision int
 - 2026-06-25: `03` returned REVISE P1: direct `StoryboardPacketReviewPacket` input can match source fields while its own verdict/status/next-step state is invalid. Current repair scope is limited to adding review packet state guards and regression tests.
 - 2026-06-25: REVISE P1 fixed by requiring direct review packet `verdict=PASS`, `reviewStatus=REVIEW_READY`, and `nextAllowedDownstreamStep=storyboard_packet_human_review`; focused asset candidate preflight tests passed.
 
-## Active Minimal Storyboard Packet Human Review Decision Intake Gate Plan
+## Historical Minimal Storyboard Packet Human Review Decision Intake Gate Plan
 
 ### Goal
 
@@ -21317,7 +21317,7 @@ Add a local read-only JSON decision intake gate after a PASS storyboard packet h
 - 2026-06-25: REVISE P1 fixed by requiring accepted checklist coverage for `scene_lock`, `continuity`, `knowledge_boundary`, `downstream_boundary`, and either `asset_candidates` or `assets`; focused decision intake tests passed.
 - 2026-06-25: REVISE P1 diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
 
-## Active Minimal Storyboard Packet Human Review Preflight Plan
+## Historical Minimal Storyboard Packet Human Review Preflight Plan
 
 ### Goal
 
@@ -21410,7 +21410,7 @@ Add a local read-only JSON preflight after a PASS storyboard packet review packe
 - 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewPreflightTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
 - 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Storyboard Packet Review Gate Plan
+## Historical Minimal Storyboard Packet Review Gate Plan
 
 ### Goal
 
@@ -21504,7 +21504,7 @@ Add a local read-only JSON review-ready gate after a PASS storyboard packet draf
 - 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketReviewTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
 - 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Storyboard Packet Draft Gate Plan
+## Historical Minimal Storyboard Packet Draft Gate Plan
 
 ### Goal
 
@@ -21598,7 +21598,7 @@ Add a local read-only JSON validation gate for a `storyboard_packet_draft` after
 - 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketDraftValidationTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
 - 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Storyboard Planning Brief Gate Plan
+## Historical Minimal Storyboard Planning Brief Gate Plan
 
 ### Goal
 
@@ -21689,7 +21689,7 @@ Add a local read-only JSON gate after storyboard planning preflight PASS. It cre
 - 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPlanningBriefTest" --no-daemon`; `git diff --check` on this slice reported only the existing Windows line-ending warning.
 - 2026-06-25: Notified `03` for read-only review of the REVISE fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Storyboard Planning Preflight Plan
+## Historical Minimal Storyboard Planning Preflight Plan
 
 ### Goal
 
@@ -21766,7 +21766,7 @@ Add a local read-only JSON preflight after accepted script packet handoff packet
 - 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPlanningPreflightTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active 01 Progress Display Rule Plan
+## Historical 01 Progress Display Rule Plan
 
 ### Goal
 
@@ -21844,7 +21844,7 @@ Add a control rule requiring `01` to display the current project completion perc
 - 2026-06-25: After `03` PASS for the `Accelerated Image Candidate Manual Provider Handoff Batch` REVISE P1 fix, updated the displayed control estimate to `71%`.
 - 2026-06-25: After `03` PASS for the `Accelerated Image Candidate External Result Intake Batch` REVISE P1 second fix, updated the displayed control estimate to `73%`.
 
-## Active Minimal Accepted Script Packet Handoff Packet Plan
+## Historical Minimal Accepted Script Packet Handoff Packet Plan
 
 ### Goal
 
@@ -21933,7 +21933,7 @@ Add a local read-only JSON handoff packet gate after `validate-script-packet-str
 - 2026-06-25: Completed REVISE fix. Expanded accepted script packet handoff text scanning to include source fields, scene reference fields, location zone fields, visual mustShow/mustNotShow, knowledge pass lists including authorOnlyExtracted, beat ids/list fields, action blocking zones, dialogue knowledge boundaries, interaction choices, storyboard frame ids/beat ids/doNotShow, asset ids/types, and review/secrecy fields. Added asset approval wording patterns for `assets approved` and `asset approval complete`.
 - 2026-06-25: Added regression tests for forbidden claims in previously missed fields and asset approval wording. Verification passed: `.\gradlew.bat test --tests "*AcceptedScriptPacketHandoffPacketTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 
-## Active Minimal Script Packet Draft Structure Bridge Plan
+## Historical Minimal Script Packet Draft Structure Bridge Plan
 
 ### Goal
 
@@ -22011,7 +22011,7 @@ Add a local read-only JSON bridge command that validates a script packet draft t
 - 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*ScriptPacketDraftStructureBridgeTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Script Packet Draft Source-Binding Gate Plan
+## Historical Minimal Script Packet Draft Source-Binding Gate Plan
 
 ### Goal
 
@@ -22100,7 +22100,7 @@ Add a local read-only JSON source-binding gate for a manually/Codex-authored scr
 - [x] Step 6: Add focused Chinese missing-anchor FAIL and Chinese referenced-anchor PASS regression tests.
 - [x] Step 7: Run focused tests and `git diff --check`, then notify `03` again.
 
-## Active Minimal Accepted Draft To Script Packet Preflight Plan
+## Historical Minimal Accepted Draft To Script Packet Preflight Plan
 
 ### Goal
 
@@ -22175,7 +22175,7 @@ Add a local read-only JSON preflight after accepted draft packet PASS. It reads 
 - 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationScriptPacketPreflightTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Accepted Draft Handoff Packet Plan
+## Historical Minimal Accepted Draft Handoff Packet Plan
 
 ### Goal
 
@@ -22251,7 +22251,7 @@ Add a local read-only accepted draft handoff packet gate after revised draft int
 - 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationAcceptedDraftPacketTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Minimal Revised Draft Intake Gate Plan
+## Historical Minimal Revised Draft Intake Gate Plan
 
 ### Goal
 
@@ -22340,7 +22340,7 @@ Add a local read-only revised draft intake gate after the revision brief. It rea
 - [x] Step 7: Add focused FAIL tests for anchor damage and `not only` banned residual.
 - [x] Step 8: Run focused tests and `git diff --check`, then notify `03` again.
 
-## Active Minimal Prose Revision Brief Gate Plan
+## Historical Minimal Prose Revision Brief Gate Plan
 
 ### Goal
 
@@ -22413,7 +22413,7 @@ Add the first local read-only prose revision brief gate after draft intake and p
 - 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationRevisionBriefTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active Draft Prose Quality Audit Plan
+## Historical Draft Prose Quality Audit Plan
 
 ### Goal
 
@@ -22498,7 +22498,7 @@ Add the first local read-only draft prose quality audit for novelization drafts,
 - [x] Step 7: Run focused tests and `git diff --check`.
 - [x] Step 8: Notify `03` thread again with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
 
-## Active 01/02/03 Task Handoff Mode Check
+## Historical 01/02/03 Task Handoff Mode Check
 
 ### Goal
 
@@ -22570,7 +22570,7 @@ Open a safe chat-window task handoff mode where `01` assigns one project-complet
 - 2026-06-25: Dispatched the first task-handoff assignment from `01` to `02`: implement the next smallest `draft prose quality audit` slice, then notify `03` for read-only review instead of returning directly to `01`.
 - 2026-06-25: Verified first dispatch. `02` is active and acknowledged the `draft prose quality audit` task. `git diff --check -- PLANS.md docs\HANDOFF.md` exited 0 with only Windows line-ending warnings. The loop can repeat through chat-window handoffs, but it must not run as unattended infinite automation.
 
-## Active Minimal Draft Intake Gate Plan
+## Historical Minimal Draft Intake Gate Plan
 
 ### Goal
 
@@ -22639,7 +22639,7 @@ Add the first local draft intake gate so prose from Codex, GPT, QuarterFull, man
 - 2026-06-25: Added draft intake JSON report models, pure validation service, CLI command, sample draft, and focused tests.
 - 2026-06-25: Verification passed for the draft intake slice: `.\gradlew.bat test --tests "*NovelizationDraftIntakeValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 
-## Active Minimal Writer Brief Gate Plan
+## Historical Minimal Writer Brief Gate Plan
 
 ### Goal
 
@@ -22716,7 +22716,7 @@ Add the first local JSON writer brief gate so next-chapter drafting has a struct
 - [x] Step 5: Run focused tests and `git diff --check` for the writer-brief/preflight link.
 - [x] Step 6: Notify project `02` window with the completion report and next-work prompt.
 
-## Active Minimal Novelization Preflight Plan
+## Historical Minimal Novelization Preflight Plan
 
 ### Goal
 
@@ -22798,7 +22798,7 @@ Complete the smallest useful project work after the Character Nuwa Gate: add a l
 - [x] Step 6: Run focused tests and `git diff --check` for the direct-gate input slice.
 - [x] Step 7: Notify project `02` window with the next completion report and next-work prompt.
 
-## Active Character Nuwa Gate Implementation Plan
+## Historical Character Nuwa Gate Implementation Plan
 
 ### Goal
 
@@ -22879,7 +22879,7 @@ Implement the first local Kotlin/JVM CLI slice for the Character Nuwa Gate: crea
 - 2026-06-25: Completed Character Nuwa Gate implementation. Added models, pure validation service, CLI template/validation commands, sample gate JSON, and focused tests. Verification passed: `.\gradlew.bat test --tests "*CharacterNuwaGateValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
 - 2026-06-25: Notified project `02` window with the requested completion message through Codex thread tooling.
 
-## Active Character Nuwa Gate And Hard Ban Plan
+## Historical Character Nuwa Gate And Hard Ban Plan
 
 ### Goal
 
@@ -22953,7 +22953,7 @@ Allowed files for this planning slice:
 - 2026-06-25: Started docs-only hardening slice after user approved Character Nuwa Gate and explicitly banned `這不是XX 這是XXX` phrasing.
 - 2026-06-25: Completed docs-only hardening. Added mandatory Character Nuwa Gate rules, full-vs-light character card policy, writer-brief gate status, novelization loop metrics, and hard bans for `這不是XX，這是XXX`, `這不是 X，這是 Y`, `不是XX，而是XXX`, `不是 X，而是 Y`, and `not X, but Y`. Verification passed with `git diff --check` reporting only Windows line-ending warnings.
 
-## Active Humanlike Prose And Dialogue Distillation Plan
+## Historical Humanlike Prose And Dialogue Distillation Plan
 
 ### Goal
 
@@ -23030,7 +23030,7 @@ Allowed files for this planning slice:
 - 2026-06-25: Started docs-only planning slice after the user clarified that dialogue, style, and text generation quality are more important than downstream comic/video packaging, and suggested Nuwa-style distillation.
 - 2026-06-25: Added `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md`, integrated style distillation into the QuarterFull-superiority plan, and verified the docs-only slice with `git diff --check` plus targeted searches for Nuwa, expression DNA, dialogue, anti-AI, style source pack, character voice, and writer brief references.
 
-## Active Comic Video Production Feature Plan
+## Historical Comic Video Production Feature Plan
 
 ### Goal
 
@@ -23108,7 +23108,7 @@ Allowed files for this planning slice:
 - 2026-06-25: User clarified the product target is a finished comic video: video + audio + independent character voices + comic panels + storyboard. Scope updated from visual consistency only to comic-video production planning.
 - 2026-06-25: Added `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md` and verified it stays docs-only while connecting video, audio, voice casting, comic panels, storyboard timing, asset locks, and continuity gates.
 
-## Active Novelization Superiority Plan
+## Historical Novelization Superiority Plan
 
 ### Goal
 
@@ -23184,7 +23184,7 @@ Allowed files for this planning slice:
 - 2026-06-25: Started docs-only planning slice for surpassing QuarterFull in novel-production workflow. Strategy is product capability design, not implementation.
 - 2026-06-25: Completed docs-only plan. Added `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` with a six-layer novelization product spine, three key gates, phased implementation path, success metrics, and first recommended milestone. Verification passed with `git diff --check -- PLANS.md docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`, which reported only the existing Windows line-ending warning for `PLANS.md`.
 
-## Active Directory Hygiene Plan
+## Historical Directory Hygiene Plan
 
 ### Goal
 
@@ -23441,7 +23441,7 @@ Allowed files for this registration slice:
 - 2026-06-24: Started delegated `小說朗讀` registration from `01 主控窗口`. Scope is docs/local-memory only: no SQLite, setting-pack, Kotlin runtime, Node.js implementation, generated video edits, original-folder cleanup, or asset approval.
 - 2026-06-24: Completed delegated `小說朗讀` registration. Added `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md`, updated `docs/PROJECT_STRUCTURE_REPORT.md`, cross-referenced the local subproject from `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` and `docs/HANDOFF.md`, and added `memory/project_directory_memory.json`. Verification passed: JSON parsed, `rg` found canonical path and boundary references, new-file trailing-whitespace scan returned no matches, and `git diff --check` exited 0 with only Windows line-ending warnings. Full Gradle was intentionally skipped because this slice changed only docs/local-memory files and did not touch runtime/schema/CLI implementation.
 
-## Active Implementation Plan
+## Historical Implementation Plan
 
 ### Goal
 
