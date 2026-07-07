@@ -13,7 +13,7 @@
     "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
   },
   "turnaroundStatus": {
-    "陸塵行": "cinematic_turnaround_v2_locked",
+    "陸塵行": "lean_base_plus_opening_stocky_locked",
     "愛醬": "author_reference_sheet_primary_likeness"
   },
   "referenceImagePolicy": {
@@ -31,7 +31,10 @@
     "style": "cinematic_realistic_dark_fantasy",
     "turnaroundDirectory": "world/chenxing/assets/turnaround/",
     "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
-    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_body_reference_turnaround_v1.png",
+    "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+    "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
+    "luChenxingOpeningStockyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
+    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
     "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
     "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
   },
@@ -46,26 +49,46 @@
       "clothingRule": "服裝另做分層素材，不與身材基準綁死。",
       "generationNote": "若自動出圖被審核擋下，改以泳褲/緊身短褲身材參考圖或人工補圖。"
     },
+    "faceReference": {
+      "path": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+      "sourcePath": "C:\\Users\\f7212\\OneDrive\\桌面\\482052296_9222150221199888_7678538151390743485_n.jpg",
+      "lockedTraits": [
+        "oval_round_face",
+        "soft_jaw_with_handsome_potential_when_lean",
+        "straight_medium_nose",
+        "full_lips",
+        "thick_straight_eyebrows",
+        "fair_skin"
+      ],
+      "canonOverrides": [
+        "age_36_not_teen",
+        "buzz_cut_not_messy_top",
+        "glasses_required",
+        "no_facial_hair"
+      ]
+    },
     "facialBoneStructure": {
-      "designIntent": "骨架預留變瘦後變帥的空間。",
-      "openingPhase": "略胖時臉部脂肪遮住骨點，整體偏普通甚至略不好看，不是醜到誇張。",
-      "futureLeanPhase": "同一套顱骨與下顎線，變瘦後顴骨與下顎變清楚，可轉為帥氣。",
-      "rule": "帥與不帥來自同一張臉的脂肪分布變化，不是換成另一個人。"
+      "designIntent": "以作者臉型參考為骨相基準，先定瘦版，再從同一骨相變胖。",
+      "leanBase": "瘦版時骨相較清楚，可帥。",
+      "openingStocky": "同一骨相加臉頰與腹部脂肪，變普通甚至略不好看。",
+      "rule": "帥與不帥來自同一張臉與同一副骨架的脂肪分布變化。"
     },
     "bodyProgressionPlan": {
-      "phaseA_opening": {
-        "label": "opening_stocky",
-        "body": "偏壯、略胖、可行動",
-        "face": "普通偏略不好看",
-        "clothedTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
-        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_body_reference_turnaround_v1.png",
-        "bodyReferenceCoverage": "swim_trunks_minimum_coverage"
+      "workflow": "lean_base_first_then_fatten_for_opening",
+      "phaseB_leanBase": {
+        "label": "lean_base_standard",
+        "body": "偏瘦、線條清楚",
+        "face": "骨相較清楚，可帥",
+        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
+        "status": "locked"
       },
-      "phaseB_future": {
-        "label": "post_progression_lean_handsome",
-        "body": "變瘦後",
-        "face": "骨相露出後變帥",
-        "status": "not_drawn_yet"
+      "phaseA_opening": {
+        "label": "opening_stocky_from_lean_base",
+        "body": "在瘦版基準上增加腹部、臉頰、腰臂軟肉；偏壯略胖，不是肥胖。",
+        "face": "同一臉型加脂肪後變普通偏略不好看",
+        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
+        "clothedTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+        "status": "locked"
       }
     },
     "hair": {

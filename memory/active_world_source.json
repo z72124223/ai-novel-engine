@@ -51,8 +51,10 @@
       "visualStyle": "cinematic_realistic_dark_fantasy",
       "luChenxingSummary": "36歲、平頭、偏壯略胖、沒有鬍渣、戴眼鏡",
       "luChenxingTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
-      "luChenxingBodyReference": "world/chenxing/assets/turnaround/lu_chenxing_body_reference_turnaround_v1.png",
-      "luChenxingBodyProgression": "opening_stocky_to_future_lean_handsome_same_skull",
+      "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+      "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
+      "luChenxingOpeningStockyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
+      "luChenxingBodyProgression": "lean_base_first_then_opening_stocky_same_skull",
       "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
       "aijiangStyleMatchedTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
     }
