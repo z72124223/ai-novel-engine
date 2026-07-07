@@ -53,6 +53,8 @@
       "luChenxingPhotoSet123123": "world/chenxing/assets/reference/photo_set_123123/",
       "luChenxingPhotoMatchTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
       "luChenxingPhotoMatchFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png",
+      "luChenxingPhotoClosestTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "luChenxingPhotoClosestFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_face_turnaround_v2.png",
       "luChenxingTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
       "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
       "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
