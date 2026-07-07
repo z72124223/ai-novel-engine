@@ -2,18 +2,30 @@
   "schemaVersion": "chenxing-character-visual-appearance-v1",
   "status": "AUTHOR_LOCKED",
   "lockedAt": "2026-07-08",
+  "updatedAt": "2026-07-08",
   "locale": "zh-TW",
   "series": "塵行",
-  "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬 before storyboard turnaround completion.",
-  "turnaroundStatus": {
-    "陸塵行": "2d_turnaround_v1_locked",
-    "愛醬": "2d_turnaround_v1_locked"
+  "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬.",
+  "activeVisualStyle": {
+    "label": "cinematic_realistic_dark_fantasy",
+    "formalCover": "world/chenxing/formal/24_series_cover_v1.json",
+    "coverImage": "world/chenxing/assets/cover/chenxing_cover_v1.png",
+    "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
   },
-  "productionAssets": {
-    "style": "2d_anime_comic_flat_cel",
-    "turnaroundDirectory": "world/chenxing/assets/turnaround/",
+  "turnaroundStatus": {
+    "陸塵行": "cinematic_turnaround_v1_locked",
+    "愛醬": "cinematic_turnaround_v1_locked"
+  },
+  "supersededAssets": {
+    "note": "舊 2D 扁平漫畫三視圖保留作歷史試稿，不再作正式視覺基準。",
     "luChenxing2dTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png",
     "aijiang2dTurnaround": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"
+  },
+  "productionAssets": {
+    "style": "cinematic_realistic_dark_fantasy",
+    "turnaroundDirectory": "world/chenxing/assets/turnaround/",
+    "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v1.png",
+    "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v1.png"
   },
   "陸塵行": {
     "age": 36,
@@ -27,13 +39,16 @@
     "facialHairRule": "沒有鬍渣",
     "eyewear": {
       "wearsGlasses": true,
-      "label": "戴眼鏡",
-      "storyUse": "日常眼鏡；颱風與海水環境下可能起霧、沾水或被摘下。"
+      "label": "戴眼鏡"
+    },
+    "costumeInCinematicStyle": {
+      "label": "dark_hooded_traveler",
+      "summary": "深色連帽旅行外套、實用長褲、舊靴、斜背包；質感偏廢墟旅人，與封面背影同一世界觀。"
     },
     "productionNotes": [
-      "體型是明顯偏胖，但不是誇張喜劇造型；仍是能行動、能觀察、能搬工具的實作型青年。",
-      "平頭、無鬍渣、眼鏡，這三點必須在正面、側面、背面三視圖中一致。",
-      "第一卷開場服裝可先走戶外實用風：防風外套、長褲、防滑鞋，不先做修仙世界服裝。"
+      "體型明顯偏胖，但不是誇張喜劇造型。",
+      "平頭、無鬍渣、眼鏡必須在正面、側面、背面一致。",
+      "寫實電影感風格與正式封面一致。"
     ],
     "turnaroundRequirement": {
       "views": [
@@ -41,8 +56,8 @@
         "side",
         "back"
       ],
-      "status": "2d_turnaround_v1_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png"
+      "status": "cinematic_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v1.png"
     }
   },
   "愛醬": {
@@ -52,10 +67,7 @@
     "reproductiveStatus": "spayed",
     "authorReference": {
       "path": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-      "sourcePath": "C:\\Users\\f7212\\OneDrive\\桌面\\LINE_ALBUM_2026613_260624_1.jpg",
-      "type": "character_concept_sheet",
-      "includesTurnaround": true,
-      "note": "作者提供之哈士奇角色概念稿，含正面、側面、背面與毛色參考。"
+      "type": "character_concept_sheet"
     },
     "lockedAppearanceFromReference": {
       "build": "athletic_well_balanced_husky",
@@ -66,29 +78,9 @@
       "tail": "fluffy_plume",
       "fur": "dense_double_coat"
     },
-    "colorPalette": [
-      "black",
-      "dark_gray",
-      "silver_gray",
-      "white",
-      "ice_blue"
-    ],
     "accessoriesPolicy": {
-      "defaultStoryUse": "no_fantasy_gear_in_volume_one_opening",
-      "referenceSheetShows": [
-        "collar",
-        "bandana",
-        "harness",
-        "winter_coat",
-        "tug_toy",
-        "rubber_ball"
-      ],
-      "rule": "概念稿中的項圈、三角巾、挽具、冬衣與玩具僅作參考，不默認第一卷開場就穿戴或出現，除非之後場景需要。"
-    },
-    "canonCorrection": {
-      "referenceSheetSexLabel": "male",
-      "authorLockedSex": "female",
-      "rule": "視覺參考採用哈士奇體型、毛色、五官與三視圖；性別仍以作者定稿為雌性、已絕育。"
+      "defaultStoryUse": "no_collar_no_harness_in_default_reference",
+      "rule": "寫實版三視圖默認不佩戴項圈或挽具。"
     },
     "turnaroundRequirement": {
       "views": [
@@ -96,12 +88,12 @@
         "side",
         "back"
       ],
-      "status": "2d_turnaround_v1_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"
+      "status": "cinematic_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v1.png"
     }
   },
   "linkedDocuments": [
     "world/chenxing/formal/20_protagonist_pair_v1.json",
-    "world/chenxing/formal/21_volume_one_opening_arc_v1.json"
+    "world/chenxing/formal/24_series_cover_v1.json"
   ]
 }

@@ -65,7 +65,13 @@
       "id": "chenxing-formal-23-visual-appearance",
       "path": "world/chenxing/formal/23_character_visual_appearance_v1.json",
       "status": "author_locked",
-      "topic": "陸塵行 and 愛醬 production visual baseline; 愛醬 reference turnaround sheet"
+      "topic": "陸塵行 and 愛醬 cinematic visual baseline matching formal cover"
+    },
+    {
+      "id": "chenxing-formal-24-series-cover",
+      "path": "world/chenxing/formal/24_series_cover_v1.json",
+      "status": "author_locked",
+      "topic": "formal 塵行 cover and cinematic dark-fantasy style lock"
     },
     {
       "id": "chenxing-formal-13-exploration-cadence",

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "chenxing-series-cover-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "formalCover": {
+    "path": "world/chenxing/assets/cover/chenxing_cover_v1.png",
+    "sourcePath": "C:\\Users\\f7212\\Downloads\\ChatGPT Image 2026年6月25日 下午03_01_55.png",
+    "titleTreatment": "塵行",
+    "styleLabel": "cinematic_realistic_dark_fantasy"
+  },
+  "styleDefinition": {
+    "label": "cinematic_realistic_dark_fantasy",
+    "summary": "寫實數位厚塗、電影海報感、暗色調、霧氣與廢墟氛圍、中式懸崖要塞奇幻世界。",
+    "notStyle": [
+      "2d_flat_anime",
+      "chibi",
+      "bright_color_cartoon"
+    ],
+    "palette": [
+      "muted_brown",
+      "stone_gray",
+      "dust_gold",
+      "storm_cloud"
+    ],
+    "useFor": [
+      "series_cover",
+      "character_turnaround",
+      "fortress_world_key_art"
+    ]
+  },
+  "linkedVisualCanon": "world/chenxing/formal/23_character_visual_appearance_v1.json"
+}
