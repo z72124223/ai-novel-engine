@@ -581,10 +581,7 @@ internal object ComicVideoCli {
         return if (report.verdict == "FAIL") 1 else 0
     }
 
-    fun buildSettingComicVideoLocalPreview(
-        options: Map<String, String>,
-        buildSettingImageFacingProofPreview: (Map<String, String>) -> Int,
-    ): Int {
+    fun buildSettingComicVideoLocalPreview(options: Map<String, String>): Int {
         val settingPackPath = Path.of(options.requiredCliOption("setting-pack"))
         val fillPath = Path.of(options.requiredCliOption("voice-timeline-fill"))
         val outputDir = Path.of(options.requiredCliOption("output-dir")).toAbsolutePath().normalize()
@@ -612,7 +609,7 @@ internal object ComicVideoCli {
         options["scene"]?.let { proofOptions["scene"] = it }
 
         println("settingImageFacingPreviewDir=$settingOutputDir")
-        val proofExit = buildSettingImageFacingProofPreview(proofOptions)
+        val proofExit = StoryboardPipelineCli.buildSettingImageFacingProofPreview(proofOptions)
         if (proofExit != 0) {
             println("settingComicVideoPreviewStatus=FAILED_AT_SETTING_IMAGE_FACING_PROOF")
             return proofExit
