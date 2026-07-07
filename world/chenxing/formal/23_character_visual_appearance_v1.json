@@ -31,6 +31,7 @@
     "style": "cinematic_realistic_dark_fantasy",
     "turnaroundDirectory": "world/chenxing/assets/turnaround/",
     "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_body_reference_turnaround_v1.png",
     "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
     "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
   },
@@ -38,7 +39,35 @@
     "age": 36,
     "sex": "male",
     "bodyType": "stocky_slight_overweight",
-    "bodyTypeNote": "作者修正：不要明顯肥胖或大肚子；改為偏壯、略胖、可行動的實作型體型。",
+    "bodyTypeNote": "開場期偏壯略胖；故事後期會變瘦。",
+    "bodyReferencePolicy": {
+      "preferred": "nude_turnaround_for_body_proportion_reference",
+      "reason": "裸體或最小遮蔽的三視圖最直觀顯示身材，方便之後疊衣服。",
+      "clothingRule": "服裝另做分層素材，不與身材基準綁死。",
+      "generationNote": "若自動出圖被審核擋下，改以泳褲/緊身短褲身材參考圖或人工補圖。"
+    },
+    "facialBoneStructure": {
+      "designIntent": "骨架預留變瘦後變帥的空間。",
+      "openingPhase": "略胖時臉部脂肪遮住骨點，整體偏普通甚至略不好看，不是醜到誇張。",
+      "futureLeanPhase": "同一套顱骨與下顎線，變瘦後顴骨與下顎變清楚，可轉為帥氣。",
+      "rule": "帥與不帥來自同一張臉的脂肪分布變化，不是換成另一個人。"
+    },
+    "bodyProgressionPlan": {
+      "phaseA_opening": {
+        "label": "opening_stocky",
+        "body": "偏壯、略胖、可行動",
+        "face": "普通偏略不好看",
+        "clothedTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_body_reference_turnaround_v1.png",
+        "bodyReferenceCoverage": "swim_trunks_minimum_coverage"
+      },
+      "phaseB_future": {
+        "label": "post_progression_lean_handsome",
+        "body": "變瘦後",
+        "face": "骨相露出後變帥",
+        "status": "not_drawn_yet"
+      }
+    },
     "hair": {
       "style": "buzz_cut",
       "label": "平頭"
@@ -54,8 +83,9 @@
       "summary": "深色連帽旅行外套、實用長褲、舊靴、斜背包；質感偏廢墟旅人，與封面背影同一世界觀。"
     },
     "productionNotes": [
-      "體型明顯偏胖，但不是誇張喜劇造型。",
-      "平頭、無鬍渣、眼鏡必須在正面、側面、背面一致。",
+      "身材基準優先用裸體或最小遮蔽三視圖；服裝後疊。",
+      "開場略胖時不帥，變瘦後同一骨架可變帥。",
+      "平頭、無鬍渣、眼鏡在正面與側面必須可辨識。",
       "寫實電影感風格與正式封面一致。"
     ],
     "turnaroundRequirement": {
