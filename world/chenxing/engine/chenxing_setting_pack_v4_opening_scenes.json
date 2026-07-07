@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "chenxing-formal-v4-opening-scenes",
+  "packVersion": 1,
+  "projectId": "chenxing",
+  "name": "塵行開場場景擴充 v4",
+  "description": "補齊大坪海岸到山坡廢墟的場景、連通、轉換與颱風壓力事件，支援第一卷開場試看。",
+  "mode": "PATCH_CANON",
+  "source": {
+    "author": "author-formal-canon",
+    "license": "author",
+    "notes": "Derived from world/chenxing/formal/21_volume_one_opening_arc_v1.json beats 1-9."
+  },
+  "dependencies": [
+    {
+      "packId": "chenxing-formal-v3-opening-modern-costume",
+      "packVersion": 1
+    }
+  ],
+  "entities": {
+    "scenes": [
+      {
+        "id": "scene-hillside-ruin-retreat",
+        "entityVersion": 1,
+        "title": "山坡廢墟避難",
+        "summary": "陸塵行與愛醬在漲潮與颱風外圍壓力下，撤入大坪海岸上方山坡的日治遺留廢棄構造物。",
+        "locationId": "loc-hillside-ruin",
+        "visibility": "public"
+      }
+    ],
+    "sceneContracts": [
+      {
+        "id": "contract-hillside-ruin-retreat",
+        "entityVersion": 1,
+        "sceneId": "scene-hillside-ruin-retreat",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "逆行門計畫全貌",
+          "别界裂縫真相",
+          "兩道門獨立空間模型",
+          "先遣隊全滅細節",
+          "日本人實際封存物內容",
+          "修煉體系完整講解"
+        ],
+        "visibility": "director_only"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-opening-typhoon-bavi-pressure",
+        "entityVersion": 1,
+        "content": "2026年7月，颱風巴威外圍環流逼近台灣北部，基隆八斗子一帶面臨強風、豪雨與長周期浪風險。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-opening-tide-trap-risk",
+        "entityVersion": 1,
+        "content": "大坪海岸潮間帶在漲潮與浪況惡化時，入場路徑可在短時間內被海水封死。",
+        "visibility": "public"
+      }
+    ]
+  },
+  "locationConnections": [
+    {
+      "id": "conn-daping-coast-to-hillside-ruin",
+      "projectId": "chenxing",
+      "fromLocationId": "loc-daping-coast",
+      "toLocationId": "loc-hillside-ruin",
+      "connectionType": "coastal_slope_climb",
+      "bidirectional": true,
+      "travelMinutes": 8,
+      "prerequisites": {},
+      "restrictions": {
+        "weatherSensitive": true,
+        "note": "強風豪雨時攀爬風險上升，但漲潮封路時可能成為唯一避難方向。"
+      },
+      "visibility": "public"
+    }
+  ],
+  "sceneTransitions": [
+    {
+      "id": "transition-daping-to-hillside-ruin",
+      "projectId": "chenxing",
+      "fromSceneId": "scene-daping-coast-opening",
+      "toSceneId": "scene-hillside-ruin-retreat",
+      "transitionType": "weather_forced_retreat",
+      "prerequisites": {
+        "requiredFactIds": [
+          "fact-opening-tide-trap-risk"
+        ]
+      },
+      "costs": {
+        "travelMinutes": 8,
+        "exposureRisk": "wind_and_rain"
+      },
+      "requiredPlayerIntent": "撤退到山坡廢墟",
+      "forcedTransitionAllowed": true,
+      "visibility": "public"
+    }
+  ],
+  "scheduledWorldEvents": [
+    {
+      "id": "world-event-bavi-outer-circulation",
+      "projectId": "chenxing",
+      "eventType": "typhoon_outer_circulation_pressure",
+      "dueTurnNumber": 2,
+      "payload": {
+        "publicEffect": "颱風巴威外圍環流增強，北海岸風浪惡化，天色轉暗，手機訊號不穩。",
+        "allowedNarrativeUses": [
+          "wind_intensifies",
+          "surf_worsens",
+          "sky_darkens",
+          "signal_loss"
+        ],
+        "forbiddenCharacterUses": [
+          "reveal_japanese_secret_deposit",
+          "explain_crossing_mechanism"
+        ]
+      },
+      "visibility": "public"
+    },
+    {
+      "id": "world-event-tide-route-sealed",
+      "projectId": "chenxing",
+      "eventType": "tide_route_sealed",
+      "dueTurnNumber": 3,
+      "payload": {
+        "publicEffect": "漲潮與浪頭封住大坪海岸來時路徑，退回海蝕平台下方已不可行。",
+        "allowedNarrativeUses": [
+          "return_blocked",
+          "shelter_pressure"
+        ],
+        "forbiddenCharacterUses": [
+          "instant_crossing",
+          "fantasy_rescue"
+        ]
+      },
+      "visibility": "public"
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-scene-hillside-ruin-location",
+      "fromType": "scene",
+      "fromId": "scene-hillside-ruin-retreat",
+      "toType": "location",
+      "toId": "loc-hillside-ruin",
+      "relation": "LOCATED_IN",
+      "reason": "山坡避難場景發生在廢棄構造物。"
+    },
+    {
+      "id": "rel-thread-opening-hillside-scene",
+      "fromType": "story_thread",
+      "fromId": "thread-opening-survival-curiosity",
+      "toType": "scene",
+      "toId": "scene-hillside-ruin-retreat",
+      "relation": "REQUIRES",
+      "reason": "開場弧第9拍撤退目標。"
+    }
+  ],
+  "assertions": [],
+  "metadata": {
+    "formalCanonSource": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "storyboardFormalPath": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+    "appliedAt": "2026-07-08"
+  }
+}

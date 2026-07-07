@@ -1,0 +1,42 @@
+{
+  "manifestId": "chenxing-opening-preview-v1",
+  "status": "OPENING_PREVIEW_DRAFT_READY",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "chapter": "第一話　塵",
+  "purpose": "第一卷開場 9 拍試看草案：分鏡、旁白、台詞、引擎場景已對齊。",
+  "formalStoryboard": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+  "voiceTimelineFill": "world/chenxing/preview/opening_v1/voice_timeline_fill_v1.json",
+  "engineScenes": {
+    "opening": "scene-daping-coast-opening",
+    "closing": "scene-hillside-ruin-retreat",
+    "transitionIntent": "撤退到山坡廢墟"
+  },
+  "productionAssets": {
+    "luChenxingOpeningCostume": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+    "luChenxingBodyBaseline": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+  },
+  "shotCount": 10,
+  "shotRange": "shot-00-prologue through shot-09-hillside-retreat",
+  "estimatedDurationSec": 82,
+  "sqlEvidence": {
+    "scenesPack": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
+    "database": "data/story.db",
+    "projectId": "chenxing"
+  },
+  "boundaryFlags": {
+    "canonApproved": false,
+    "mediaGenerated": false,
+    "finalMediaApproval": false,
+    "productionLock": false,
+    "note": "試看文字與分鏡計畫；不是正式成片或發布版本。"
+  },
+  "nextSteps": [
+    "作者審閱 10 鏡分鏡與旁白台詞",
+    "可選：逐鏡出圖（現代裝 + 海岸場景）",
+    "可選：build-setting-comic-video-local-preview 產本地佔位 MP4",
+    "之後進入山坡廢墟內部 beats 10-18"
+  ]
+}

@@ -80,6 +80,12 @@
       "topic": "陸塵行 2026 台灣開場現代服裝：背心汗衫、短袖外套、短褲、登山鞋、側背包"
     },
     {
+      "id": "chenxing-formal-26-opening-storyboard",
+      "path": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+      "status": "author_locked",
+      "topic": "第一卷開場 9 拍分鏡試看：大坪海岸至山坡廢墟"
+    },
+    {
       "id": "chenxing-formal-13-exploration-cadence",
       "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
       "status": "author_locked",

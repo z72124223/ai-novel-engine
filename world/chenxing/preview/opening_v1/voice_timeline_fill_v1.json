@@ -1,0 +1,222 @@
+{
+  "fillId": "voice-timeline-fill-chenxing-opening-v1",
+  "sourceStoryboardFormalPath": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+  "fillStatus": "comic_video_voice_timeline_fill_candidate",
+  "voiceCast": [
+    {
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "displayName": "旁白",
+      "voiceLabel": "local-narrator-oral-story",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "鬼故事式前導與場景敘事旁白。"
+    },
+    {
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "displayName": "陸塵行",
+      "voiceLabel": "local-lu-chenxing-calm-low",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "36歲、低聲實務型語氣。"
+    }
+  ],
+  "audioCues": [
+    {
+      "cueId": "audio-00",
+      "panelId": "shot-00-prologue",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "你知道北部火力發電廠嗎？日本人來台灣時，在北部留下很多建設。二戰結束，他們走得太急。水泥、管道、廠房、坡道，還有半完成的地基，都留在海邊山坡上。後來的人只把這些當廢墟、遺跡，或地方鬼故事。幾乎沒有人知道——當時日本人還留下了一些東西。",
+      "startMillis": 0,
+      "durationMillis": 22000
+    },
+    {
+      "cueId": "audio-01a",
+      "panelId": "shot-01-tide-check",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "2026年7月，颱風巴威還在海上。陸塵行照著潮汐表，估計還有兩小時。",
+      "startMillis": 23000,
+      "durationMillis": 5000
+    },
+    {
+      "cueId": "audio-01b",
+      "panelId": "shot-01-tide-check",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "還來得及。退潮窗口還在。",
+      "startMillis": 29000,
+      "durationMillis": 3000
+    },
+    {
+      "cueId": "audio-02a",
+      "panelId": "shot-02-strange-find",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "海蝕平台上，有不該出現的痕跡。",
+      "startMillis": 33000,
+      "durationMillis": 3500
+    },
+    {
+      "cueId": "audio-02b",
+      "panelId": "shot-02-strange-find",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "這不是天然岩層……誰在這裡接過東西？",
+      "startMillis": 37000,
+      "durationMillis": 4500
+    },
+    {
+      "cueId": "audio-03",
+      "panelId": "shot-03-overfocus",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "他看得太久。好奇心壓過了時間。",
+      "startMillis": 42000,
+      "durationMillis": 4000
+    },
+    {
+      "cueId": "audio-04a",
+      "panelId": "shot-04-water-rises",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "海水比表上漲得快。",
+      "startMillis": 47000,
+      "durationMillis": 3000
+    },
+    {
+      "cueId": "audio-04b",
+      "panelId": "shot-04-water-rises",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "不對——這不是平常漲潮。",
+      "startMillis": 51000,
+      "durationMillis": 3500
+    },
+    {
+      "cueId": "audio-05",
+      "panelId": "shot-05-return-blocked",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "回不去了。",
+      "startMillis": 55000,
+      "durationMillis": 2500
+    },
+    {
+      "cueId": "audio-06",
+      "panelId": "shot-06-wind-worsens",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "巴威的外圍環流壓上來，浪勢一次比一次重。",
+      "startMillis": 58000,
+      "durationMillis": 4500
+    },
+    {
+      "cueId": "audio-07",
+      "panelId": "shot-07-sky-darkens",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "白天像被擰短了一截。",
+      "startMillis": 63000,
+      "durationMillis": 3000
+    },
+    {
+      "cueId": "audio-08",
+      "panelId": "shot-08-no-signal",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "……沒訊號。",
+      "startMillis": 67000,
+      "durationMillis": 2000
+    },
+    {
+      "cueId": "audio-09a",
+      "panelId": "shot-09-hillside-retreat",
+      "voiceId": "voice-narrator",
+      "characterId": "narrator",
+      "text": "唯一能躲的地方，在山坡上——日治時期留下的廢棄構造物。",
+      "startMillis": 70000,
+      "durationMillis": 5000
+    },
+    {
+      "cueId": "audio-09b",
+      "panelId": "shot-09-hillside-retreat",
+      "voiceId": "voice-lu-chenxing",
+      "characterId": "char-lu-chenxing",
+      "text": "愛醬，跟我走。上面那棟……至少能擋風。",
+      "startMillis": 76000,
+      "durationMillis": 4500
+    }
+  ],
+  "subtitleCues": [
+    {
+      "cueId": "subtitle-00",
+      "panelId": "shot-00-prologue",
+      "audioCueId": "audio-00",
+      "text": "（旁白）你知道北部火力發電廠嗎？……當時日本人還留下了一些東西。",
+      "startMillis": 0,
+      "endMillis": 22000
+    },
+    {
+      "cueId": "subtitle-01",
+      "panelId": "shot-01-tide-check",
+      "audioCueId": "audio-01b",
+      "text": "陸塵行：還來得及。退潮窗口還在。",
+      "startMillis": 29000,
+      "endMillis": 32000
+    },
+    {
+      "cueId": "subtitle-02",
+      "panelId": "shot-02-strange-find",
+      "audioCueId": "audio-02b",
+      "text": "陸塵行：這不是天然岩層……誰在這裡接過東西？",
+      "startMillis": 37000,
+      "endMillis": 41500
+    },
+    {
+      "cueId": "subtitle-05",
+      "panelId": "shot-05-return-blocked",
+      "audioCueId": "audio-05",
+      "text": "陸塵行：回不去了。",
+      "startMillis": 55000,
+      "endMillis": 57500
+    },
+    {
+      "cueId": "subtitle-08",
+      "panelId": "shot-08-no-signal",
+      "audioCueId": "audio-08",
+      "text": "陸塵行：……沒訊號。",
+      "startMillis": 67000,
+      "endMillis": 69000
+    },
+    {
+      "cueId": "subtitle-09",
+      "panelId": "shot-09-hillside-retreat",
+      "audioCueId": "audio-09b",
+      "text": "陸塵行：愛醬，跟我走。上面那棟……至少能擋風。",
+      "startMillis": 76000,
+      "endMillis": 80500
+    }
+  ],
+  "timing": {
+    "timelineStatus": "metadata_only_timing_plan",
+    "totalDurationMillis": 82000,
+    "frameRate": "24",
+    "resolution": "1920x1080",
+    "panelDurationMillis": 6000,
+    "backgroundPolicy": "panel_track_only",
+    "outputVideoPath": "",
+    "renderedVideoPath": ""
+  },
+  "boundaryChecklist": [
+    "metadata_only",
+    "manual_voice_plan",
+    "media_execution_absent",
+    "remote_payload_absent",
+    "not_approved_for_release"
+  ],
+  "notes": [
+    "開場試看旁白與台詞計畫；尚未生成配音或影片。",
+    "角色視覺以開場現代服裝三視圖與愛醬生產三視圖為準。"
+  ]
+}

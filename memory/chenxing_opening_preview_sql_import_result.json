@@ -1,0 +1,40 @@
+{
+  "verdict": "PASS",
+  "status": "CHENXING_OPENING_PREVIEW_SCENES_SQL_IMPORT_PASS",
+  "updatedAt": "2026-07-08",
+  "databasePath": "data/story.db",
+  "projectId": "chenxing",
+  "packId": "chenxing-formal-v4-opening-scenes",
+  "packVersion": 1,
+  "settingPackPath": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
+  "storyboardFormalPath": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+  "previewManifest": "world/chenxing/preview/opening_v1/opening_preview_manifest_v1.json",
+  "addedToSql": {
+    "scenes": [
+      "scene-hillside-ruin-retreat"
+    ],
+    "sceneContracts": [
+      "contract-hillside-ruin-retreat"
+    ],
+    "facts": [
+      "fact-opening-typhoon-bavi-pressure",
+      "fact-opening-tide-trap-risk"
+    ],
+    "locationConnections": [
+      "conn-daping-coast-to-hillside-ruin"
+    ],
+    "sceneTransitions": [
+      "transition-daping-to-hillside-ruin"
+    ],
+    "scheduledWorldEvents": [
+      "world-event-bavi-outer-circulation",
+      "world-event-tide-route-sealed"
+    ]
+  },
+  "pipeline": {
+    "validate": "PASS",
+    "preview": "PASS",
+    "apply": "PASS"
+  },
+  "directSqlUsed": false
+}
