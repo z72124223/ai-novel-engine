@@ -49,9 +49,10 @@
       "formalCoverPath": "world/chenxing/formal/24_series_cover_v1.json",
       "formalCoverImage": "world/chenxing/assets/cover/chenxing_cover_v1.png",
       "visualStyle": "cinematic_realistic_dark_fantasy",
-      "luChenxingSummary": "36歲、平頭、中度肥胖、沒有鬍渣、戴眼鏡",
-      "luChenxingTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v1.png",
-      "aijiangTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v1.png"
+      "luChenxingSummary": "36歲、平頭、偏壯略胖、沒有鬍渣、戴眼鏡",
+      "luChenxingTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+      "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "aijiangStyleMatchedTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
     }
   },
   "activeCreativeWorld": {

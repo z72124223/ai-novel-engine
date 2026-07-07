@@ -13,8 +13,14 @@
     "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
   },
   "turnaroundStatus": {
-    "陸塵行": "cinematic_turnaround_v1_locked",
-    "愛醬": "cinematic_turnaround_v1_locked"
+    "陸塵行": "cinematic_turnaround_v2_locked",
+    "愛醬": "author_reference_sheet_primary_likeness"
+  },
+  "referenceImagePolicy": {
+    "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so AI redraws are approximations only.",
+    "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+    "aijiangStyleMatchedAttempt": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png",
+    "rule": "愛醬的長相、毛色分布、體型比例以作者提供之三視圖概念稿為準；電影感重繪版僅作風格參考。"
   },
   "supersededAssets": {
     "note": "舊 2D 扁平漫畫三視圖保留作歷史試稿，不再作正式視覺基準。",
@@ -24,13 +30,15 @@
   "productionAssets": {
     "style": "cinematic_realistic_dark_fantasy",
     "turnaroundDirectory": "world/chenxing/assets/turnaround/",
-    "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v1.png",
-    "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v1.png"
+    "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+    "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+    "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
   },
   "陸塵行": {
     "age": 36,
     "sex": "male",
-    "bodyType": "moderately_obese",
+    "bodyType": "stocky_slight_overweight",
+    "bodyTypeNote": "作者修正：不要明顯肥胖或大肚子；改為偏壯、略胖、可行動的實作型體型。",
     "hair": {
       "style": "buzz_cut",
       "label": "平頭"
@@ -56,8 +64,8 @@
         "side",
         "back"
       ],
-      "status": "cinematic_turnaround_v1_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v1.png"
+      "status": "cinematic_turnaround_v2_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png"
     }
   },
   "愛醬": {
@@ -88,8 +96,9 @@
         "side",
         "back"
       ],
-      "status": "cinematic_turnaround_v1_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v1.png"
+      "status": "author_reference_sheet_primary_likeness",
+      "likenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "styleMatchedAttempt": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
     }
   },
   "linkedDocuments": [
