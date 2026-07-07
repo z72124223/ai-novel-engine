@@ -122,9 +122,17 @@
       "wearsGlasses": true,
       "label": "戴眼鏡"
     },
+    "openingModernCostume": {
+      "formalPath": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "label": "coastal_practical_modern",
+      "summary": "2026 開場：黑色背心汗衫 + 短袖外套 + 短褲 + 登山鞋 + 側背包。",
+      "productionAsset": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "rule": "第一卷台灣開場穿現代裝，不穿古裝。"
+    },
     "costumeInCinematicStyle": {
       "label": "dark_hooded_traveler",
-      "summary": "深色連帽旅行外套、實用長褲、舊靴、斜背包；質感偏廢墟旅人，與封面背影同一世界觀。"
+      "summary": "封面與穿越後意象用；不作 2026 開場穿衣基準。",
+      "usage": "cover_and_post_crossing_imagery_only"
     },
     "productionNotes": [
       "身材基準優先用裸體或最小遮蔽三視圖；服裝後疊。",
@@ -182,6 +190,7 @@
   },
   "linkedDocuments": [
     "world/chenxing/formal/20_protagonist_pair_v1.json",
-    "world/chenxing/formal/24_series_cover_v1.json"
+    "world/chenxing/formal/24_series_cover_v1.json",
+    "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json"
   ]
 }

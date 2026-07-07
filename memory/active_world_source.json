@@ -52,6 +52,8 @@
       "productionTurnaroundPairRule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
       "luChenxingSummary": "36歲、平頭、174cm/80kg、沒有鬍渣、戴眼鏡",
       "luChenxingPhotoSet123123": "world/chenxing/assets/reference/photo_set_123123/",
+      "luChenxingOpeningModernCostume": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "luChenxingOpeningModernCostumeFormal": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
       "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
       "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
       "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",

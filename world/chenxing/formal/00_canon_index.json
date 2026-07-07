@@ -74,6 +74,12 @@
       "topic": "formal 塵行 cover and cinematic dark-fantasy style lock"
     },
     {
+      "id": "chenxing-formal-25-opening-modern-costume",
+      "path": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "status": "author_locked",
+      "topic": "陸塵行 2026 台灣開場現代服裝：背心汗衫、短袖外套、短褲、登山鞋、側背包"
+    },
+    {
       "id": "chenxing-formal-13-exploration-cadence",
       "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
       "status": "author_locked",
