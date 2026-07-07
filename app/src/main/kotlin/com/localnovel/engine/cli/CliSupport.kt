@@ -57,3 +57,11 @@ internal fun printSettingPackValidation(report: com.localnovel.engine.model.Sett
     println("issueCount=${report.issues.size}")
     report.issues.forEach { println("${it.severity}:${it.code}:${it.path}:${it.message}") }
 }
+
+internal fun Path.budgetFailurePath(): Path {
+    val fileName = fileName.toString()
+    val dot = fileName.lastIndexOf('.')
+    val base = if (dot > 0) fileName.substring(0, dot) else fileName
+    val extension = if (dot > 0) fileName.substring(dot) else ".json"
+    return (parent ?: Path.of(".")).resolve("${base}_budget_failure$extension")
+}
