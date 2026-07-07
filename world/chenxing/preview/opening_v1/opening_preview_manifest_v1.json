@@ -1,6 +1,6 @@
 {
   "manifestId": "chenxing-opening-preview-v1",
-  "status": "OPENING_PREVIEW_DRAFT_READY",
+  "status": "OPENING_PREVIEW_TEXT_READY_FRAMES_REJECTED_DRIFT",
   "updatedAt": "2026-07-08",
   "locale": "zh-TW",
   "series": "塵行",
@@ -34,7 +34,8 @@
     { "shotId": "shot-08-no-signal", "path": "world/chenxing/preview/opening_v1/frames/shot_08_no_signal.png" },
     { "shotId": "shot-09-hillside-retreat", "path": "world/chenxing/preview/opening_v1/frames/shot_09_hillside_retreat.png" }
   ],
-  "previewFrameNote": "AI draft frames for author visual review; not final approved production stills.",
+  "previewFrameNote": "REJECTED: 純文字出圖造成角色/服裝/愛醬嚴重飄移；僅保留作反面範例。正式畫面必須 reference-first 綁定鎖定三視圖。",
+  "driftNotice": "world/chenxing/preview/opening_v1/DRIFT_NOTICE.json",
   "sqlEvidence": {
     "scenesPack": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
     "database": "data/story.db",

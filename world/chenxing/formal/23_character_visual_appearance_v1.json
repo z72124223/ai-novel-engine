@@ -31,7 +31,8 @@
     }
   },
   "referenceImagePolicy": {
-    "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so AI redraws are approximations only.",
+    "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so text-only AI redraws are approximations only and must not be treated as canon frames.",
+    "frameGenerationRule": "任何分鏡畫面必須 reference-first：先綁定 productionTurnaroundPair、開場服裝三視圖與 photo_set_123123，再出圖；純文字出圖視為飄移試稿。",
     "aijiangLikenessAuthority": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
     "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
     "rule": "愛醬以作者新生產之三視圖為正式基準；舊概念稿僅作歷史參考。"

@@ -1,0 +1,39 @@
+{
+  "noticeId": "chenxing-opening-preview-drift-v1",
+  "status": "REJECTED_NOT_CANON",
+  "updatedAt": "2026-07-08",
+  "summary": "opening_v1/frames 內 10 張為純文字出圖試稿，未綁定作者鎖定三視圖，角色與服裝飄移嚴重，不得作正式畫面。",
+  "whatIsLocked": {
+    "formalJson": [
+      "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json"
+    ],
+    "productionImages": [
+      "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+    ],
+    "sqlitePointers": "data/story.db 內角色 productionTurnaround / openingModernCostume 路徑"
+  },
+  "whatFailed": {
+    "directory": "world/chenxing/preview/opening_v1/frames/",
+    "reason": "GenerateImage 無法附加參考圖；僅靠文字提示詞，無法遵守已鎖定的臉、身材、服裝、愛醬花紋。",
+    "authorVerdict": "飄移過多，不可採用"
+  },
+  "requiredWorkflowForRealFrames": {
+    "rule": "分鏡畫面必須 reference-first：先餵鎖定三視圖與開場服裝圖，再出每一鏡。",
+    "luChenxingRefs": [
+      "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "world/chenxing/assets/reference/photo_set_123123/"
+    ],
+    "aijiangRef": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+    "acceptableTools": "作者外部可吃參考圖的生產工具（如愛醬三視圖同一流程），或日後支援 image_edit + 參考圖的環境"
+  },
+  "stillValid": {
+    "storyboardText": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+    "voiceTimeline": "world/chenxing/preview/opening_v1/voice_timeline_fill_v1.json",
+    "engineScenes": "scene-daping-coast-opening -> scene-hillside-ruin-retreat"
+  }
+}
