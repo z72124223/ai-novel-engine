@@ -1,0 +1,27 @@
+{
+    "verdict": "PASS",
+    "preflightId": "storyboard-human-review-preflight-rain-gate-preview-sample-001",
+    "storyboardPacketReviewFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_review.json",
+    "storyboardPacketReviewId": "storyboard-review-rain-gate-preview-sample-001",
+    "storyboardPacketDraftFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_draft.json",
+    "storyboardPacketDraftReportFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_draft_validation.json",
+    "storyboardPacketDraftId": "storyboard-draft-rain-gate-preview-sample-001",
+    "storyboardPlanningBriefId": "storyboard-brief-rain-gate-preview-sample-001",
+    "acceptedScriptPacketId": "setting-script-source-script-packet-draft-rain-gate-preview-sample-001",
+    "scriptPacketDraftFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketDraftContentSha256": "0bddbbb19b5eb4e50e3a6d48a9321f0c81a00512d7e556931da2201128fb7383",
+    "reviewStatus": "REVIEW_READY",
+    "nextAllowedDownstreamStep": "storyboard_packet_human_review_ready",
+    "findingCount": 0,
+    "evidence": {
+        "reviewPacketVerdict": "PASS",
+        "reviewStatus": "REVIEW_READY",
+        "reviewNextAllowedDownstreamStep": "storyboard_packet_human_review",
+        "sourceFieldCount": 12,
+        "frameCount": 3,
+        "frameIdCount": 3,
+        "reviewChecklistCount": 5,
+        "protectedContinuityAnchorCount": 4,
+        "residualRiskCount": 3
+    }
+}

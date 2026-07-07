@@ -1,0 +1,502 @@
+{
+    "verdict": "PASS",
+    "packageId": "comic-video-production-package-rain-gate-preview-001",
+    "packageStatus": "comic_video_production_package_candidate",
+    "imageFacingDeliveryProofFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\image_facing_delivery_proof.json",
+    "voiceTimelineFillFile": "samples\\comic_video_setting_source\\voice_timeline_fill_rain_gate_preview_sample.json",
+    "generatedComicVideoPacketId": "comic-video-setting-rain-gate-preview-001",
+    "generatedPacketValidationId": "comic-video-production-package-rain-gate-preview-001-source-validation",
+    "sourceImageFacingDeliveryProofId": "image-facing-delivery-proof-rain-gate-preview-sample-001",
+    "sourceReviewableStoryboardPacketId": "reviewable-storyboard-rain-gate-preview-sample-001",
+    "acceptedScriptPacketId": "setting-script-source-script-packet-draft-rain-gate-preview-sample-001",
+    "scriptPacketDraftFile": "samples\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketDraftContentSha256": "0bddbbb19b5eb4e50e3a6d48a9321f0c81a00512d7e556931da2201128fb7383",
+    "sourceVerdicts": {
+        "reviewableStoryboardPacketVerdict": "PASS",
+        "imageFacingDeliveryProofVerdict": "PASS",
+        "imageFacingDeliveryProofNextAllowedDownstreamStep": "image_facing_delivery_proof_ready"
+    },
+    "storyboardProductionTable": [
+        {
+            "shotId": "shot-001",
+            "panelId": "panel-frame-scene-rain-gate-01",
+            "sourceFrameId": "frame-scene-rain-gate-01",
+            "sceneReference": "scene-rain-gate",
+            "beatReference": "beat-scene-rain-gate-establish",
+            "durationMillis": 3000,
+            "visualGoal": "The viewer can read the location, actor focus, and scene pressure before any choice is implied. The frame establishes Rain Gate Archive Entrance while Lin remains within the visible scene boundary. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "camera": "Make the beat readable as a single comic panel.",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "spokenText": "The archive gate is still ahead, and the sealed letter stays in my hand.",
+            "subtitleText": "Lin: The archive gate is still ahead, and the sealed letter stays in my hand.",
+            "continuityMustShow": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "continuityMustNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        },
+        {
+            "shotId": "shot-002",
+            "panelId": "panel-frame-scene-rain-gate-02",
+            "sourceFrameId": "frame-scene-rain-gate-02",
+            "sceneReference": "scene-rain-gate",
+            "beatReference": "beat-scene-rain-gate-constraint",
+            "durationMillis": 3000,
+            "visualGoal": "The scene pressure is concrete enough for storyboard framing. Lin stays near Sealed Letter, keeping the visible constraint readable. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "camera": "Make the beat readable as a single comic panel.",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "voiceId": "voice-gate-keeper",
+            "characterId": "char-gate-keeper",
+            "spokenText": "Keep the letter visible while I check the boundary.",
+            "subtitleText": "Gate Keeper: Keep the letter visible while I check the boundary.",
+            "continuityMustShow": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "continuityMustNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        },
+        {
+            "shotId": "shot-003",
+            "panelId": "panel-frame-scene-rain-gate-03",
+            "sourceFrameId": "frame-scene-rain-gate-03",
+            "sceneReference": "scene-rain-gate",
+            "beatReference": "beat-scene-rain-gate-choice",
+            "durationMillis": 3000,
+            "visualGoal": "The draft can proceed to review as a candidate scene packet. Lin pauses, leaving room for a cautious next action inside Rain Gate Archive Entrance. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "camera": "Make the beat readable as a single comic panel.",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "spokenText": "Then I choose the cautious path and keep the seal untouched.",
+            "subtitleText": "Lin: Then I choose the cautious path and keep the seal untouched.",
+            "continuityMustShow": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "continuityMustNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        }
+    ],
+    "shotPromptPacketId": "comic-video-production-package-rain-gate-preview-001-shot-prompt-packet",
+    "shotPrompts": [
+        {
+            "shotId": "shot-001",
+            "panelId": "panel-frame-scene-rain-gate-01",
+            "sourceFrameId": "frame-scene-rain-gate-01",
+            "positivePromptDraft": "comic video shot. scene: scene-rain-gate. beat: beat-scene-rain-gate-establish. visual goal: The viewer can read the location, actor focus, and scene pressure before any choice is implied. The frame establishes Rain Gate Archive Entrance while Lin remains within the visible scene boundary. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.. camera: Make the beat readable as a single comic panel.. must show: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.; Rain Gate Archive Entrance; Rain Gate Arrival; Lin; Sealed Letter; Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter. continuity: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.",
+            "negativePromptDraft": "non-public reveal material; remote media references; sealed source-only details; Do not expose non-public source material.; Do not create media output in this planning step.; Do not mark assets or scenes as decided.; non-public source material; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "forbiddenContent": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ]
+        },
+        {
+            "shotId": "shot-002",
+            "panelId": "panel-frame-scene-rain-gate-02",
+            "sourceFrameId": "frame-scene-rain-gate-02",
+            "positivePromptDraft": "comic video shot. scene: scene-rain-gate. beat: beat-scene-rain-gate-constraint. visual goal: The scene pressure is concrete enough for storyboard framing. Lin stays near Sealed Letter, keeping the visible constraint readable. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.. camera: Make the beat readable as a single comic panel.. must show: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.; Rain Gate Archive Entrance; Rain Gate Arrival; Lin; Sealed Letter; Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter. continuity: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.",
+            "negativePromptDraft": "non-public reveal material; remote media references; sealed source-only details; Do not expose non-public source material.; Do not create media output in this planning step.; Do not mark assets or scenes as decided.; non-public source material; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "forbiddenContent": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ]
+        },
+        {
+            "shotId": "shot-003",
+            "panelId": "panel-frame-scene-rain-gate-03",
+            "sourceFrameId": "frame-scene-rain-gate-03",
+            "positivePromptDraft": "comic video shot. scene: scene-rain-gate. beat: beat-scene-rain-gate-choice. visual goal: The draft can proceed to review as a candidate scene packet. Lin pauses, leaving room for a cautious next action inside Rain Gate Archive Entrance. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.. camera: Make the beat readable as a single comic panel.. must show: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.; Rain Gate Archive Entrance; Rain Gate Arrival; Lin; Sealed Letter; Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter. continuity: Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.; Visible location stays Rain Gate Archive Entrance.; Visible actor focus stays Lin.; Visible prop focus stays Sealed Letter.",
+            "negativePromptDraft": "non-public reveal material; remote media references; sealed source-only details; Do not expose non-public source material.; Do not create media output in this planning step.; Do not mark assets or scenes as decided.; non-public source material; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-rain-gate-archive-entrance",
+                "asset-card-asset-lin",
+                "asset-card-asset-gate-keeper",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-gate-lantern"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "forbiddenContent": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ]
+        }
+    ],
+    "assetPromptCards": [
+        {
+            "assetCardId": "asset-card-asset-gate-keeper",
+            "sourceAssetRef": "asset-gate-keeper",
+            "assetType": "scene",
+            "sourcePanelIds": [
+                "panel-frame-scene-rain-gate-01",
+                "panel-frame-scene-rain-gate-02",
+                "panel-frame-scene-rain-gate-03"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-gate-keeper.",
+            "mustRemainStable": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-gate-lantern",
+            "sourceAssetRef": "asset-gate-lantern",
+            "assetType": "scene",
+            "sourcePanelIds": [
+                "panel-frame-scene-rain-gate-01",
+                "panel-frame-scene-rain-gate-02",
+                "panel-frame-scene-rain-gate-03"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-gate-lantern.",
+            "mustRemainStable": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-lin",
+            "sourceAssetRef": "asset-lin",
+            "assetType": "character_or_visual_asset",
+            "sourcePanelIds": [
+                "panel-frame-scene-rain-gate-01",
+                "panel-frame-scene-rain-gate-02",
+                "panel-frame-scene-rain-gate-03"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-lin.",
+            "mustRemainStable": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-rain-gate-archive-entrance",
+            "sourceAssetRef": "asset-rain-gate-archive-entrance",
+            "assetType": "scene",
+            "sourcePanelIds": [
+                "panel-frame-scene-rain-gate-01",
+                "panel-frame-scene-rain-gate-02",
+                "panel-frame-scene-rain-gate-03"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-rain-gate-archive-entrance.",
+            "mustRemainStable": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-sealed-letter",
+            "sourceAssetRef": "asset-sealed-letter",
+            "assetType": "prop",
+            "sourcePanelIds": [
+                "panel-frame-scene-rain-gate-01",
+                "panel-frame-scene-rain-gate-02",
+                "panel-frame-scene-rain-gate-03"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-sealed-letter.",
+            "mustRemainStable": [
+                "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+                "Visible location stays Rain Gate Archive Entrance.",
+                "Visible actor focus stays Lin.",
+                "Visible prop focus stays Sealed Letter.",
+                "Rain Gate Archive Entrance",
+                "Rain Gate Arrival",
+                "Lin",
+                "Sealed Letter",
+                "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        }
+    ],
+    "voiceStyleCards": [
+        {
+            "voiceCardId": "voice-card-voice-lin",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "displayName": "Lin",
+            "voiceLabel": "local-lin-clear",
+            "sourceCueIds": [
+                "audio-001",
+                "audio-003"
+            ],
+            "promptSafeNotes": [
+                "Voice style card is planning metadata only.",
+                "Review character voice continuity before downstream use."
+            ]
+        },
+        {
+            "voiceCardId": "voice-card-voice-gate-keeper",
+            "voiceId": "voice-gate-keeper",
+            "characterId": "char-gate-keeper",
+            "displayName": "Gate Keeper",
+            "voiceLabel": "local-gate-keeper-low",
+            "sourceCueIds": [
+                "audio-002"
+            ],
+            "promptSafeNotes": [
+                "Voice style card is planning metadata only.",
+                "Review character voice continuity before downstream use."
+            ]
+        }
+    ],
+    "nextAllowedDownstreamStep": "comic_video_production_package_review",
+    "boundaryChecklist": [
+        "draft_only",
+        "source_bound",
+        "external_handoff_absent",
+        "media_execution_absent",
+        "review_required"
+    ],
+    "findingCount": 0,
+    "evidence": {
+        "proofVerdict": "PASS",
+        "packetValidationVerdict": "PASS",
+        "packetPanelCount": 3,
+        "storyboardRowCount": 3,
+        "shotPromptCount": 3,
+        "assetCardCount": 5,
+        "voiceStyleCardCount": 2,
+        "audioCueCount": 3,
+        "subtitleCueCount": 3,
+        "totalDurationMillis": 9000
+    }
+}

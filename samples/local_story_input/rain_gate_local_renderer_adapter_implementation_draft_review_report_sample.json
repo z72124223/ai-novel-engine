@@ -1,0 +1,202 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS",
+    "reviewId": "rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourceDraftFile": "samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_sample.json",
+    "sourceDraftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+    "sourcePlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+    "sourcePlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "checks": [
+        {
+            "checkId": "source-draft-present",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Implementation draft review requires an explicit Phase 10 draft file and non-empty source ids.",
+            "evidence": [
+                "proposedCommand=review-local-renderer-adapter-implementation-draft",
+                "draftFile=samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_sample.json",
+                "draftId=rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+                "sourceStoryInputPackId=local-story-input-rain-gate-v0-001",
+                "sourceHandoffId=rain-gate-story-video-preview-handoff-v0-001",
+                "sourceHandoffReviewId=rain-gate-story-video-preview-handoff-review-v0-001",
+                "sourceDryRunId=rain-gate-local-renderer-adapter-dry-run-v0-001",
+                "sourcePlanId=rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+                "sourcePlanReviewId=rain-gate-local-renderer-adapter-implementation-plan-review-v0-001"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "draft-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Implementation draft review requires PASS Phase 10 draft state and draft-review downstream step.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT",
+                "downstreamBoundary=local_renderer_adapter_implementation_draft_only_not_manifest_generation",
+                "nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Implementation draft review requires local-only no-media boundaries with no adapter execution or manifest generation.",
+            "evidence": [
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "manifestGenerated=false",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "boundarySummary.mediaGenerated=false",
+                "boundarySummary.manifestGenerated=false",
+                "boundarySummary.adapterImplementationExecuted=false",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "manifestGenerated=false",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-finalization-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Implementation draft review is not final media approval, not provider/media handoff, and no production lock.",
+            "evidence": [
+                "finalMediaApproval=false",
+                "providerMediaHandoff=false",
+                "canonRegistryOrProductionLock=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "source-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Implementation draft review requires non-empty Phase 10 checks and all required checks PASS.",
+            "evidence": [
+                "checks=10",
+                "requiredFail=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "draft-sections-present",
+            "status": "PASS",
+            "category": "draft_completeness",
+            "message": "Implementation draft review requires implementation tasks, mapping draft, and verification plan.",
+            "evidence": [
+                "implementationTasks=5",
+                "mappingDraftPanels=2",
+                "mappingDraftFields=50",
+                "verificationSteps=4"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "mapping-remains-draft-only",
+            "status": "PASS",
+            "category": "manifest_boundary",
+            "message": "Implementation draft review allows ComicVideoRenderHandoffManifest only as draft mapping notes; no real manifest may be generated.",
+            "evidence": [
+                "draftOnly=true",
+                "mappingManifestGenerated=false",
+                "panelManifestGenerated=0",
+                "panelRendererReady=0",
+                "generatedNowFields=0",
+                "renderSettingsGeneratedNow=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-findings",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Implementation draft review requires no Phase 10 findings.",
+            "evidence": [
+                "findingCount=0",
+                "findings=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-readiness-overclaim",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Implementation draft review must preserve rendererReady=false, mp4ReadinessClaimed=false, manifestGenerated=false, adapterImplementationExecuted=false, and mediaGenerated=false.",
+            "evidence": [
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "manifestGenerated=false",
+                "adapterImplementationExecuted=false",
+                "mediaGenerated=false"
+            ],
+            "requiredForReview": true
+        }
+    ],
+    "draftSummary": {
+        "sourceChecks": 10,
+        "sourceChecksPass": 10,
+        "sourceChecksFail": 0,
+        "implementationTasks": 5,
+        "mappingDraftPanels": 2,
+        "mappingDraftFields": 50,
+        "verificationSteps": 4,
+        "findingCount": 0,
+        "draftOnly": true,
+        "manifestGenerated": false,
+        "adapterImplementationExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "rendererCompatibilitySummary": {
+        "ready": false,
+        "mp4ReadinessClaimed": false,
+        "adapterExecutionStillRequiresExplicitTask": true,
+        "manifestDraftPlanStillRequiresExplicitTask": true,
+        "requiredBeforeManifestDraftPlan": [
+            "Pass Phase 11 implementation draft review.",
+            "Assign a separate local_renderer_manifest_draft_plan task.",
+            "Do not generate ComicVideoRenderHandoffManifest in Phase 11A.",
+            "Do not run renderer/ffmpeg/TTS or generate media.",
+            "Boundary: no media generation, no adapter execution, no real ComicVideoRenderHandoffManifest."
+        ],
+        "summary": "Review gate skeleton only: Phase 10 draft can be reviewed for a future manifest draft plan, but no adapter execution, renderer readiness, MP4 readiness, or media generation is claimed."
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "manifestGenerated": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_adapter_implementation_draft_review_only_not_manifest_generation",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_draft_plan",
+    "findingCount": 0
+}

@@ -1,0 +1,109 @@
+{
+  "fillId": "voice-timeline-fill-sample-001",
+  "sourceComicVideoPacketId": "comic-video-sample-packet-001",
+  "fillStatus": "comic_video_voice_timeline_fill_candidate",
+  "voiceCast": [
+    {
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "displayName": "Lin",
+      "voiceLabel": "local-lin-clear",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Manual voice plan only."
+    },
+    {
+      "voiceId": "voice-gate-guard",
+      "characterId": "char-gate-guard",
+      "displayName": "Gate Guard",
+      "voiceLabel": "local-guard-low",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Manual voice plan only."
+    }
+  ],
+  "audioCues": [
+    {
+      "cueId": "audio-001",
+      "panelId": "panel-frame-lantern-arrival",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "I brought the sealed letter before the rain reaches the archive.",
+      "startMillis": 0,
+      "durationMillis": 2200,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-002",
+      "panelId": "panel-frame-mark-check",
+      "voiceId": "voice-gate-guard",
+      "characterId": "char-gate-guard",
+      "text": "Hold still. I only need to see the wax mark.",
+      "startMillis": 2600,
+      "durationMillis": 2300,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-003",
+      "panelId": "panel-frame-choice",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "Then I will take the side passage and keep it sealed.",
+      "startMillis": 5200,
+      "durationMillis": 2400,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    }
+  ],
+  "subtitleCues": [
+    {
+      "cueId": "subtitle-001",
+      "panelId": "panel-frame-lantern-arrival",
+      "audioCueId": "audio-001",
+      "text": "I brought the sealed letter before the rain reaches the archive.",
+      "startMillis": 0,
+      "endMillis": 2200
+    },
+    {
+      "cueId": "subtitle-002",
+      "panelId": "panel-frame-mark-check",
+      "audioCueId": "audio-002",
+      "text": "Hold still. I only need to see the wax mark.",
+      "startMillis": 2600,
+      "endMillis": 4900
+    },
+    {
+      "cueId": "subtitle-003",
+      "panelId": "panel-frame-choice",
+      "audioCueId": "audio-003",
+      "text": "Then I will take the side passage and keep it sealed.",
+      "startMillis": 5200,
+      "endMillis": 7600
+    }
+  ],
+  "timing": {
+    "timelineStatus": "metadata_only_timing_plan",
+    "totalDurationMillis": 7800,
+    "frameRate": "24",
+    "resolution": "1920x1080",
+    "backgroundPolicy": "panel_track_only",
+    "outputVideoPath": "",
+    "renderedVideoPath": ""
+  },
+  "boundaryChecklist": [
+    "metadata_only",
+    "manual_voice_plan",
+    "media_execution_absent",
+    "remote_payload_absent"
+  ],
+  "notes": [
+    "Local JSON metadata only.",
+    "Sample text is editable before real author review."
+  ]
+}

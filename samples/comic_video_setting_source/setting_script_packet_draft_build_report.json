@@ -1,0 +1,31 @@
+{
+    "verdict": "PASS",
+    "buildId": "setting-script-packet-rain-gate-sample-001",
+    "settingPackFile": "samples\\comic_video_setting_source\\setting_pack_rain_gate_sample.json",
+    "scriptPacketDraftFile": "samples\\comic_video_setting_source\\script_packet_draft_rain_gate_sample.json",
+    "scriptPacketValidationFile": "samples\\comic_video_setting_source\\script_packet_draft_rain_gate_validation.json",
+    "packId": "comic-video-rain-gate-source",
+    "packVersion": 1,
+    "projectId": "comic-video-workbench",
+    "selectedSceneId": "scene-rain-gate",
+    "selectedLocationId": "loc-rain-gate",
+    "outputPacketId": "script-packet-draft-rain-gate-sample-001",
+    "validationVerdict": "PASS",
+    "nextAllowedDownstreamStep": "script_packet_draft_review",
+    "findingCount": 0,
+    "evidence": {
+        "publicSceneCount": 1,
+        "publicLocationCount": 1,
+        "publicCharacterCount": 2,
+        "publicItemCount": 2,
+        "publicFactCount": 2,
+        "publicWorldRuleCount": 1,
+        "selectedCharacterCount": 2,
+        "selectedItemCount": 2,
+        "sceneContractCount": 1,
+        "excludedSecretCount": 1,
+        "generatedSegmentCount": 1,
+        "generatedBeatCount": 3,
+        "generatedFrameCandidateCount": 3
+    }
+}

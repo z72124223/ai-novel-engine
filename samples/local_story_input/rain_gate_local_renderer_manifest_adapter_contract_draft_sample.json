@@ -1,0 +1,551 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT",
+    "draftId": "rain-gate-local-renderer-manifest-adapter-contract-draft-v0-001",
+    "sourcePlanFile": "samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json",
+    "sourcePlanReviewFile": "samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json",
+    "sourcePlanId": "rain-gate-local-renderer-manifest-adapter-contract-plan-v0-001",
+    "sourcePlanReviewId": "rain-gate-local-renderer-manifest-adapter-contract-plan-review-v0-001",
+    "sourcePhase16DryRunId": "rain-gate-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+    "sourceDraftId": "rain-gate-local-renderer-manifest-draft-json-draft-v0-001",
+    "sourceReviewId": "rain-gate-local-renderer-manifest-draft-json-review-v0-001",
+    "sourceManifestDraftPlanId": "rain-gate-local-renderer-manifest-draft-plan-v0-001",
+    "sourceManifestDraftPlanReviewId": "rain-gate-local-renderer-manifest-draft-plan-review-v0-001",
+    "sourceImplementationDraftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+    "sourceImplementationDraftReviewId": "rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourceAdapterImplementationPlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+    "sourceAdapterImplementationPlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceLocalRendererAdapterDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "checks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter contract draft requires explicit Phase 17 plan and Phase 18 review files.",
+            "evidence": [
+                "planFile=samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json",
+                "planReviewFile=samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json",
+                "planId=rain-gate-local-renderer-manifest-adapter-contract-plan-v0-001",
+                "reviewId=rain-gate-local-renderer-manifest-adapter-contract-plan-review-v0-001"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "plan-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter contract draft requires PASS Phase 17 plan state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN",
+                "downstreamBoundary=local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_plan_review"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "plan-review-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter contract draft requires PASS Phase 18 review state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS",
+                "downstreamBoundary=local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_draft"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-alignment",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Adapter contract draft requires Phase 17 and Phase 18 source ids to align.",
+            "evidence": [
+                "sourceIdsPresent=true",
+                "planReviewIdsMatch=true",
+                "phase16DryRunIdsMatch=true",
+                "draftIdsMatch=true",
+                "reviewIdsMatch=true",
+                "storyInputPackIdsMatch=true"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Adapter contract draft requires non-empty PASS source checks and no findings.",
+            "evidence": [
+                "planChecks=9",
+                "reviewChecks=8",
+                "planRequiredFail=0",
+                "reviewRequiredFail=0",
+                "planFindingCount=0",
+                "reviewFindingCount=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Adapter contract draft requires local-only no-media boundaries.",
+            "evidence": [
+                "planLocalOnly=true",
+                "reviewLocalOnly=true",
+                "contractDraftGenerated=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "contractDraftGenerated=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "contract-sections-present",
+            "status": "PASS",
+            "category": "draft_completeness",
+            "message": "Adapter contract draft requires required inputs, field mapping, obligations, fail-stop rules, verification, and non-goals.",
+            "evidence": [
+                "requiredInputs=2",
+                "normalizedFieldMapping=2",
+                "adapterObligations=3",
+                "failStopRules=6",
+                "verificationRequirements=3",
+                "knownNonGoals=10"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "field-mapping-normalized",
+            "status": "PASS",
+            "category": "adapter_mapping",
+            "message": "Adapter contract draft requires normalized field mappings for every mapped panel.",
+            "evidence": [
+                "normalizedFieldMappings=2",
+                "mappedPanelCount=2",
+                "unmappedPanelCount=0",
+                "missingRequiredFieldCount=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "draft-only-boundary",
+            "status": "PASS",
+            "category": "adapter_contract",
+            "message": "Adapter contract draft is draft-only; no adapter implementation, execution, renderer, media, or production approval is allowed.",
+            "evidence": [
+                "contractDraftGenerated=true",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "adapter contract",
+                "no media generation",
+                "ComicVideoRenderHandoffManifest generation=false",
+                "production lock=false"
+            ],
+            "requiredForDraft": true
+        }
+    ],
+    "sourceAlignmentSummary": {
+        "sourceIdsPresent": true,
+        "planReviewIdsMatch": true,
+        "phase16DryRunIdsMatch": true,
+        "draftIdsMatch": true,
+        "reviewIdsMatch": true,
+        "storyInputPackIdsMatch": true,
+        "sourcePlanId": "rain-gate-local-renderer-manifest-adapter-contract-plan-v0-001",
+        "sourcePlanReviewId": "rain-gate-local-renderer-manifest-adapter-contract-plan-review-v0-001",
+        "sourcePhase16DryRunId": "rain-gate-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+        "sourceDraftId": "rain-gate-local-renderer-manifest-draft-json-draft-v0-001",
+        "sourceReviewId": "rain-gate-local-renderer-manifest-draft-json-review-v0-001",
+        "sourceManifestDraftPlanId": "rain-gate-local-renderer-manifest-draft-plan-v0-001",
+        "sourceManifestDraftPlanReviewId": "rain-gate-local-renderer-manifest-draft-plan-review-v0-001",
+        "sourceImplementationDraftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+        "sourceImplementationDraftReviewId": "rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+        "sourceAdapterImplementationPlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+        "sourceAdapterImplementationPlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+        "sourceLocalRendererAdapterDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+        "sourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+        "sourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+        "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001"
+    },
+    "contractDraftSummary": {
+        "sourcePlanChecks": 9,
+        "sourcePlanReviewChecks": 8,
+        "sourcePlanFindings": 0,
+        "sourcePlanReviewFindings": 0,
+        "requiredInputs": 2,
+        "normalizedFieldMappings": 2,
+        "adapterObligations": 3,
+        "failStopRules": 6,
+        "verificationRequirements": 3,
+        "knownNonGoals": 10,
+        "mappedPanelCount": 2,
+        "unmappedPanelCount": 0,
+        "missingRequiredFieldCount": 0,
+        "totalDraftFields": 46,
+        "contractDraftGenerated": true,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "requiredInputs": [
+        {
+            "inputId": "phase17-adapter-contract-plan",
+            "description": "Accepted Phase 17 adapter contract plan JSON.",
+            "sourcePath": "samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json",
+            "requiredStatus": "LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN",
+            "requiredDownstreamBoundary": "local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation",
+            "requiredNextStep": "local_renderer_manifest_adapter_contract_plan_review"
+        },
+        {
+            "inputId": "phase18-adapter-contract-plan-review",
+            "description": "Accepted Phase 18 adapter contract plan review JSON.",
+            "sourcePath": "samples\\local_story_input\\rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json",
+            "requiredStatus": "LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS",
+            "requiredDownstreamBoundary": "local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation",
+            "requiredNextStep": "local_renderer_manifest_adapter_contract_draft"
+        }
+    ],
+    "normalizedFieldMapping": [
+        {
+            "order": 1,
+            "panelId": "local-render-panel-beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "sourceBeatId": "beat-arrival",
+            "startMillis": 0,
+            "endMillis": 4500,
+            "durationMillis": 4500,
+            "normalizedContractFields": [
+                "panelId",
+                "sourceSceneId",
+                "sourceBeatId",
+                "startMillis",
+                "endMillis",
+                "durationMillis",
+                "mappedDraftFieldTargets",
+                "localOnlyBoundaryFlags"
+            ],
+            "sourceMappedDraftFieldTargets": [
+                "panelTimeline.panelId",
+                "panelTimeline.sourceFrameId",
+                "panelTimeline.sceneReference",
+                "panelTimeline.beatReference",
+                "panelTimeline.visualIntent",
+                "panelTimeline.cameraIntent",
+                "panelTimeline.startMillis",
+                "panelTimeline.endMillis",
+                "panelTimeline.displayDurationMillis",
+                "panelTimeline.assetCandidateRefs",
+                "voiceTimeline.cueId",
+                "voiceTimeline.panelId",
+                "voiceTimeline.voiceLabel",
+                "voiceTimeline.text",
+                "voiceTimeline.startMillis",
+                "voiceTimeline.endMillis",
+                "voiceTimeline.durationMillis",
+                "subtitleTimeline.cueId",
+                "subtitleTimeline.panelId",
+                "subtitleTimeline.audioCueId",
+                "subtitleTimeline.text",
+                "subtitleTimeline.startMillis",
+                "subtitleTimeline.endMillis"
+            ],
+            "requiredFieldCount": 8,
+            "missingRequiredFieldCount": 0,
+            "contractDraftOnly": true,
+            "adapterImplementationExecuted": false,
+            "adapterExecuted": false,
+            "mediaGenerated": false,
+            "productionManifestGenerated": false
+        },
+        {
+            "order": 2,
+            "panelId": "local-render-panel-beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "sourceBeatId": "beat-answer",
+            "startMillis": 4500,
+            "endMillis": 9000,
+            "durationMillis": 4500,
+            "normalizedContractFields": [
+                "panelId",
+                "sourceSceneId",
+                "sourceBeatId",
+                "startMillis",
+                "endMillis",
+                "durationMillis",
+                "mappedDraftFieldTargets",
+                "localOnlyBoundaryFlags"
+            ],
+            "sourceMappedDraftFieldTargets": [
+                "panelTimeline.panelId",
+                "panelTimeline.sourceFrameId",
+                "panelTimeline.sceneReference",
+                "panelTimeline.beatReference",
+                "panelTimeline.visualIntent",
+                "panelTimeline.cameraIntent",
+                "panelTimeline.startMillis",
+                "panelTimeline.endMillis",
+                "panelTimeline.displayDurationMillis",
+                "panelTimeline.assetCandidateRefs",
+                "voiceTimeline.cueId",
+                "voiceTimeline.panelId",
+                "voiceTimeline.voiceLabel",
+                "voiceTimeline.text",
+                "voiceTimeline.startMillis",
+                "voiceTimeline.endMillis",
+                "voiceTimeline.durationMillis",
+                "subtitleTimeline.cueId",
+                "subtitleTimeline.panelId",
+                "subtitleTimeline.audioCueId",
+                "subtitleTimeline.text",
+                "subtitleTimeline.startMillis",
+                "subtitleTimeline.endMillis"
+            ],
+            "requiredFieldCount": 8,
+            "missingRequiredFieldCount": 0,
+            "contractDraftOnly": true,
+            "adapterImplementationExecuted": false,
+            "adapterExecuted": false,
+            "mediaGenerated": false,
+            "productionManifestGenerated": false
+        }
+    ],
+    "adapterObligations": [
+        {
+            "obligationId": "adapter-contract-review-gate",
+            "title": "Review adapter contract plan before implementation",
+            "description": "Create a deterministic review gate for this adapter contract plan before any implementation draft.",
+            "sourceRequirementIds": [
+                "explicit-input-contract",
+                "panel-mapping-contract",
+                "field-coverage-contract",
+                "local-boundary-contract"
+            ],
+            "mustPreserve": [
+                "Only reviewed contract requirements may feed a future adapter implementation draft.",
+                "local file-protocol JSON only",
+                "review gate before adapter implementation"
+            ],
+            "mustNotDo": [
+                "Do not implement or execute an adapter.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or final video.",
+                "Do not generate or approve a real production ComicVideoRenderHandoffManifest.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim final media approval, release, canon, registry, approval, or production lock."
+            ],
+            "adapterImplementationExecuted": false,
+            "adapterExecuted": false
+        },
+        {
+            "obligationId": "adapter-contract-input-schema",
+            "title": "Define future adapter input schema",
+            "description": "Specify required input fields for future adapter implementation without creating code execution paths now.",
+            "sourceRequirementIds": [
+                "explicit-input-contract",
+                "panel-mapping-contract",
+                "field-coverage-contract",
+                "local-boundary-contract"
+            ],
+            "mustPreserve": [
+                "A future explicit task can draft the adapter input contract from reviewed JSON.",
+                "local file-protocol JSON only",
+                "review gate before adapter implementation"
+            ],
+            "mustNotDo": [
+                "Do not implement or execute an adapter.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or final video.",
+                "Do not generate or approve a real production ComicVideoRenderHandoffManifest.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim final media approval, release, canon, registry, approval, or production lock."
+            ],
+            "adapterImplementationExecuted": false,
+            "adapterExecuted": false
+        },
+        {
+            "obligationId": "adapter-contract-boundary-tests",
+            "title": "Plan boundary tests for future adapter work",
+            "description": "Future implementation must fail on media/provider/production overclaims and unmapped panels.",
+            "sourceRequirementIds": [
+                "explicit-input-contract",
+                "panel-mapping-contract",
+                "field-coverage-contract",
+                "local-boundary-contract"
+            ],
+            "mustPreserve": [
+                "Future adapter implementation draft has a bounded verification plan.",
+                "local file-protocol JSON only",
+                "review gate before adapter implementation"
+            ],
+            "mustNotDo": [
+                "Do not implement or execute an adapter.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or final video.",
+                "Do not generate or approve a real production ComicVideoRenderHandoffManifest.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim final media approval, release, canon, registry, approval, or production lock."
+            ],
+            "adapterImplementationExecuted": false,
+            "adapterExecuted": false
+        }
+    ],
+    "failStopRules": [
+        {
+            "ruleId": "phase17-plan-must-pass",
+            "description": "Stop if the Phase 17 adapter contract plan is not PASS.",
+            "failureMode": "planVerdict=PASS; planStatus=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN"
+        },
+        {
+            "ruleId": "phase18-review-must-pass",
+            "description": "Stop if the Phase 18 adapter contract plan review is not PASS.",
+            "failureMode": "reviewVerdict=PASS; reviewStatus=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS"
+        },
+        {
+            "ruleId": "source-id-alignment-required",
+            "description": "Stop if the plan and review source ids do not match.",
+            "failureMode": "source alignment mismatch"
+        },
+        {
+            "ruleId": "local-boundary-overclaim",
+            "description": "Stop if any source or output boundary claims media, renderer, provider, adapter execution, production approval, release, canon, registry, or production lock.",
+            "failureMode": "boundary overclaim",
+            "evidence": [
+                "contractDraftGenerated=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false"
+            ]
+        },
+        {
+            "ruleId": "empty-contract-content",
+            "description": "Stop if required inputs, normalized mappings, obligations, fail-stop rules, verification requirements, or non-goals are missing.",
+            "failureMode": "draft section missing"
+        },
+        {
+            "ruleId": "adapter-renderer-media-execution-request",
+            "description": "Stop if the draft asks to execute an adapter, renderer, ffmpeg, TTS, media generation, provider/API, or production manifest approval.",
+            "failureMode": "forbidden execution request"
+        }
+    ],
+    "verificationRequirements": [
+        {
+            "verificationId": "contract-plan-review-json-parse",
+            "commandOrCheck": "Parse reviewed adapter contract plan JSON and confirm PASS boundaries.",
+            "expectedResult": "PASS with local-only/no-media/no-production-approval fields preserved.",
+            "requiresAdapterExecution": false,
+            "requiresRendererExecution": false,
+            "requiresMediaGeneration": false,
+            "requiresProductionManifestApproval": false
+        },
+        {
+            "verificationId": "contract-plan-mapping-coverage",
+            "commandOrCheck": "Verify every Phase 16 mapped panel has one planned adapter contract mapping entry.",
+            "expectedResult": "mappedPanelCount equals draftPanelCount and unmappedPanelCount remains 0.",
+            "requiresAdapterExecution": false,
+            "requiresRendererExecution": false,
+            "requiresMediaGeneration": false,
+            "requiresProductionManifestApproval": false
+        },
+        {
+            "verificationId": "contract-plan-boundary-regression",
+            "commandOrCheck": "Verify future tests fail on mediaGenerated=true, adapterExecuted=true, productionReady=true, or rendererReady=true.",
+            "expectedResult": "Unsafe boundary mutations produce FAIL reports.",
+            "requiresAdapterExecution": false,
+            "requiresRendererExecution": false,
+            "requiresMediaGeneration": false,
+            "requiresProductionManifestApproval": false
+        }
+    ],
+    "knownNonGoals": [
+        "no adapter implementation",
+        "no adapter execution",
+        "no renderer/ffmpeg/TTS execution",
+        "no media generation or final video",
+        "no provider/API calls",
+        "no real production ComicVideoRenderHandoffManifest generation or approval",
+        "no final media approval",
+        "no provider/media handoff",
+        "no canon/registry/release/approval/production lock",
+        "no renderer readiness, MP4 readiness, or final video readiness claim"
+    ],
+    "boundarySummary": {
+        "planLocalOnly": true,
+        "reviewLocalOnly": true,
+        "mediaGenerated": false,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "contractDraftGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "contractDraftGenerated": true,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_manifest_adapter_contract_draft_only_not_adapter_execution",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_adapter_contract_draft_review",
+    "findingCount": 0
+}

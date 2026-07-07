@@ -1,0 +1,182 @@
+{
+    "packetId": "comic-video-sample-packet-001",
+    "reviewableStoryboardPacketFile": "samples/comic_video_workbench/reviewable_storyboard_packet_sample.json",
+    "imageFacingDeliveryProofFile": "samples\\comic_video_workbench\\image_facing_delivery_proof_sample.json",
+    "sourceReviewableStoryboardPacketId": "reviewable-storyboard-packet-sample-001",
+    "sourceImageFacingDeliveryProofId": "image-facing-delivery-proof-sample-001",
+    "acceptedScriptPacketId": "accepted-script-packet-sample-001",
+    "scriptPacketDraftFile": "samples/comic_video_workbench/script_packet_draft_sample.json",
+    "scriptPacketDraftContentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "sourceVerdicts": {
+        "reviewableStoryboardPacketVerdict": "PASS",
+        "imageFacingDeliveryProofVerdict": "PASS",
+        "imageFacingDeliveryProofNextAllowedDownstreamStep": "image_facing_delivery_proof_ready"
+    },
+    "panelTracks": [
+        {
+            "panelId": "panel-frame-lantern-arrival",
+            "sourceFrameId": "frame-lantern-arrival",
+            "sceneReference": "rain-gate",
+            "beatReference": "beat-001-arrival",
+            "visualIntent": "Show Lin entering the rain gate while holding a sealed letter.",
+            "cameraIntent": "Wide shot from under the gate roof, keeping Lin and the lit lantern visible.",
+            "displayDurationMillis": 2600,
+            "mustShow": [
+                "Lin holds the sealed letter in her left hand.",
+                "The gate lantern is lit above the guard desk."
+            ],
+            "doNotShow": [
+                "No culprit reveal.",
+                "No broken letter seal."
+            ],
+            "continuityAnchors": [
+                "The letter remains unopened.",
+                "Rain marks the stone floor near the gate."
+            ],
+            "assetCandidateRefs": [
+                "asset-lin-rain-coat",
+                "asset-sealed-letter",
+                "asset-rain-gate"
+            ]
+        },
+        {
+            "panelId": "panel-frame-mark-check",
+            "sourceFrameId": "frame-mark-check",
+            "sceneReference": "rain-gate",
+            "beatReference": "beat-002-mark-check",
+            "visualIntent": "Show the gate guard checking the visible wax mark before letting Lin continue.",
+            "cameraIntent": "Medium close shot on the letter and the guard's gloved hand.",
+            "displayDurationMillis": 2600,
+            "mustShow": [
+                "The wax mark stays unbroken.",
+                "The guard points at the mark instead of opening the letter."
+            ],
+            "doNotShow": [
+                "No archive room interior.",
+                "No hidden sender name."
+            ],
+            "continuityAnchors": [
+                "The guard checks only the outside mark.",
+                "Lin keeps the letter in view."
+            ],
+            "assetCandidateRefs": [
+                "asset-gate-guard",
+                "asset-sealed-letter"
+            ]
+        },
+        {
+            "panelId": "panel-frame-choice",
+            "sourceFrameId": "frame-choice",
+            "sceneReference": "rain-gate",
+            "beatReference": "beat-003-choice",
+            "visualIntent": "Show Lin choosing the side passage while the main gate remains busy.",
+            "cameraIntent": "Over-shoulder shot from behind Lin toward the narrow side passage.",
+            "displayDurationMillis": 2600,
+            "mustShow": [
+                "The side passage is open but dim.",
+                "Lin still carries the sealed letter."
+            ],
+            "doNotShow": [
+                "No chase scene.",
+                "No letter contents."
+            ],
+            "continuityAnchors": [
+                "The wax mark remains unbroken.",
+                "Rain continues at the gate."
+            ],
+            "assetCandidateRefs": [
+                "asset-lin-rain-coat",
+                "asset-side-passage",
+                "asset-sealed-letter"
+            ]
+        }
+    ],
+    "voiceCast": [
+        {
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "displayName": "Lin",
+            "voiceLabel": "local-lin-clear",
+            "notes": "Manual voice plan only."
+        },
+        {
+            "voiceId": "voice-gate-guard",
+            "characterId": "char-gate-guard",
+            "displayName": "Gate Guard",
+            "voiceLabel": "local-guard-low",
+            "notes": "Manual voice plan only."
+        }
+    ],
+    "audioCues": [
+        {
+            "cueId": "audio-001",
+            "panelId": "panel-frame-lantern-arrival",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "text": "I brought the sealed letter before the rain reaches the archive.",
+            "durationMillis": 2200
+        },
+        {
+            "cueId": "audio-002",
+            "panelId": "panel-frame-mark-check",
+            "voiceId": "voice-gate-guard",
+            "characterId": "char-gate-guard",
+            "text": "Hold still. I only need to see the wax mark.",
+            "startMillis": 2600,
+            "durationMillis": 2300
+        },
+        {
+            "cueId": "audio-003",
+            "panelId": "panel-frame-choice",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "text": "Then I will take the side passage and keep it sealed.",
+            "startMillis": 5200,
+            "durationMillis": 2400
+        }
+    ],
+    "subtitleCues": [
+        {
+            "cueId": "subtitle-001",
+            "panelId": "panel-frame-lantern-arrival",
+            "audioCueId": "audio-001",
+            "text": "I brought the sealed letter before the rain reaches the archive.",
+            "endMillis": 2200
+        },
+        {
+            "cueId": "subtitle-002",
+            "panelId": "panel-frame-mark-check",
+            "audioCueId": "audio-002",
+            "text": "Hold still. I only need to see the wax mark.",
+            "startMillis": 2600,
+            "endMillis": 4900
+        },
+        {
+            "cueId": "subtitle-003",
+            "panelId": "panel-frame-choice",
+            "audioCueId": "audio-003",
+            "text": "Then I will take the side passage and keep it sealed.",
+            "startMillis": 5200,
+            "endMillis": 7600
+        }
+    ],
+    "timing": {
+        "totalDurationMillis": 7800
+    },
+    "boundaryChecklist": [
+        "metadata_only",
+        "source_image_facing_ready",
+        "author_voice_fill_required",
+        "candidate_timing_plan",
+        "manual_voice_plan",
+        "media_execution_absent",
+        "remote_payload_absent",
+        "voice_timeline_metadata_filled"
+    ],
+    "residualRisks": [
+        "Voice cast, audio cues, and subtitle cues require author fill before validation can pass.",
+        "Local JSON metadata only.",
+        "Sample text is editable before real author review.",
+        "Filled voice timeline still requires validate-comic-video-packet before downstream use."
+    ]
+}

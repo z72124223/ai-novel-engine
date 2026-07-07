@@ -1,5 +1,17572 @@
 # Plan
 
+## Current Slice - AI Task Queue SQL V0
+
+Marker: `AI_TASK_QUEUE_SQL_V0`
+
+Status: complete.
+
+Goal:
+
+- Add a controlled SQLite task queue so the user, 00, or B組01 can place tasks
+  into SQL.
+- Allow an AI window to claim the next `READY` task after finishing work.
+- Allow the worker/dispatcher to complete the task with a result and report
+  path.
+- Keep the queue local CLI + SQLite only.
+
+Non-goals:
+
+- No autonomous background daemon in this slice.
+- No provider/API calls, web/server, renderer/ffmpeg/TTS/media generation,
+  direct ad hoc SQL writes, canon/registry/release/final approval/production
+  lock, staging, commit, or push.
+
+Confirmed facts:
+
+- Repository migrations are additive and loaded by `SqliteStoryRepository`.
+- `SqliteStoryRepository` already exposes controlled `withTransaction`,
+  `queryRows`, `executeUpdate`, and `insertRawRow` helpers.
+- CLI commands are dispatched in `Main.kt`.
+
+Implementation steps:
+
+- [x] Step 1: Add `008_ai_task_queue.sql`.
+- [x] Step 2: Add task queue models and service.
+- [x] Step 3: Add CLI commands:
+  `upsert-ai-task`, `claim-ai-task`, `complete-ai-task`, and `list-ai-tasks`.
+- [x] Step 4: Add focused tests for upsert -> claim -> complete.
+- [x] Step 5: Update handoff/docs with the queue usage rule.
+
+Verification results:
+
+- Focused Gradle tests passed for `AiTaskQueueServiceTest` and
+  `AiTaskQueueCliTest`.
+- `list-ai-tasks --db data/story.db --out memory/ai_task_queue_status.json`
+  initialized the main SQLite task queue and returned count `0`.
+- No fake task was inserted.
+
+Verification:
+
+- Focused Gradle tests for task queue service/CLI.
+- JSON parse / whitespace / diff checks for touched files.
+
+## Goal Mode Override - Chenxing Official World Source SQL Index V0
+
+Marker: `CHENXING_OFFICIAL_WORLD_SOURCE_SQL_INDEX_V0`
+
+Status: complete. This overrides the previous docs/control-only query-surface
+window because the user explicitly corrected the data-layer goal: the provided
+Chenxing / `穿越4000年` worldbuilding is formal official source story data and
+must be stored and queried through SQLite, not repeatedly rediscovered from
+loose files.
+
+Goal:
+
+- Store the already captured Chenxing official source text in controlled
+  SQLite tables.
+- Preserve raw text and hashes for source authority.
+- Add a fast single CLI query entrypoint for source lookup.
+- Keep official source storage separate from runtime character knowledge and
+  final canon/entity conversion until later controlled transforms.
+
+Non-goals:
+
+- No direct ad hoc SQL writes outside repository/CLI code.
+- No setting-pack/canon conversion in this slice.
+- No character runtime knowledge writes.
+- No provider/API calls, web/server, renderer/ffmpeg/TTS, media generation,
+  release, final approval, production lock, staging, commit, or push.
+
+Confirmed facts:
+
+- `memory/chenxing_world_source_manifest.json` lists 9 Chenxing source sets
+  and points to raw files under `world/chenxing/raw`.
+- The current world-source SQL import code exists but still labels the import
+  as `not_canon_or_runtime`, which is too ambiguous after the user's correction.
+- Existing `setting_pack` tables are for formal canon/entity import and are not
+  the right first storage surface for untransformed official source text.
+
+Implementation steps:
+
+- [x] Step 1: Inspect current world-source archive import, migration, and CLI.
+- [x] Step 2: Re-label the data model as official source story data while
+  keeping runtime/canon conversion separate.
+- [x] Step 3: Add a fast query CLI over SQL source documents.
+- [x] Step 4: Run focused tests and import the current manifest into
+  `data/story.db` through the CLI.
+- [x] Step 5: Update handoff/docs so new windows use the SQL query entrypoint
+  instead of scanning old files.
+
+Verification results:
+
+- Focused Gradle tests passed for
+  `WorldSourceArchiveImportServiceTest`,
+  `WorldSourceArchiveImportCliTest`, and `WorldSourceQueryCliTest`.
+- Controlled CLI import into `data/story.db` passed:
+  `WORLD_SOURCE_ARCHIVE_SQL_IMPORT_PASS`, 9 documents, 255 query chunks,
+  206344 bytes.
+- Query samples passed for `愛醬` and `灰關`.
+- Active source handoff now says SQL query first, raw files for exact source
+  audit only.
+- Final whitespace, JSON parse, diff-check, and process checks passed with only
+  expected Windows line-ending warnings on tracked files.
+
+Verification:
+
+- Focused Gradle tests for world-source validation/import/query.
+- CLI import into SQLite with 9 documents.
+- CLI query for `愛醬` and a core worldbuilding term.
+- `rg`/whitespace/diff checks for touched files.
+
+## Current Plan Window V0
+
+Marker: `CURRENT_PLAN_WINDOW_V0`
+
+Status: Chenxing first-volume living-world direction decision complete; previous
+Chenxing living-world mainline synthesis discussion packet is B03 PASS.
+
+### Active Slice - Chenxing First Volume Living World Direction Decision V0
+
+Task: `chenxing_first_volume_living_world_direction_decision_v0_docs_control`
+
+Goal: convert the B03-PASSed living-world synthesis discussion packet plus the
+completed A02/A03/A07/A08/A09/A10 branch evidence into one provisional A01
+technical direction decision for Chenxing first-volume planning. This is AI
+technical convergence only and must not become canon, final story approval,
+setting-pack apply, registry, release, final media approval, or production
+lock.
+
+Route-state update:
+
+- Replace the prior `HOLD_FOR_USER_DISCUSSION` state with
+  `AI_TECHNICAL_PROVISIONAL_DIRECTION_SELECTED_FOR_NEXT_DOCS_CONTROL_PLANNING`.
+
+Final-product chain implications:
+
+- scene packet;
+- storyboard/camera;
+- prompt/asset cards;
+- voice/subtitle/SFX;
+- renderer/package QA;
+- human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_FIRST_VOLUME_LIVING_WORLD_DIRECTION_DECISION_V0.md`
+
+Non-goals:
+
+- No canon/final story decision, registry, release, final approval, or
+  production lock.
+- No setting-pack apply, direct SQLite writes, official SQL mutation,
+  runtime/schema/Kotlin change, provider/API, web/server, renderer/ffmpeg/TTS,
+  or media generation.
+- No actual `ScriptReadyScenePacket`, storyboard frames, prompt cards, asset
+  cards, voice/subtitle/SFX timeline, scene prose, story prose, sample JSON,
+  query instances, concrete refs, source-basis selection, or evidence bundle.
+- No Phase 20/21 restart and no 04/05/06/07/08 restart.
+- No staging, commit, push, archive, or window creation.
+
+Confirmed facts:
+
+- B組01 dispatched this task as one A組01-approved implementation package under
+  `a01_package_relay_completion_guard_v0`.
+- B組01 says this package supersedes the prior `HOLD_FOR_USER_DISCUSSION` state
+  for `chenxing_living_world_mainline_synthesis_discussion_packet_v0_docs_control`.
+- B組03 PASS is recorded for the living-world synthesis discussion packet.
+- The required evidence base includes A02 divergent proposal, A03 risk review,
+  A07 living-world foundation, A08 character axis, A09 profession/items/survival
+  economy, A10 profession differentiation, and the B03-PASSed discussion packet.
+- Required worldview guards remain: current-facing protagonist name only
+  `陸知行`; `衛昭` superseded in current-facing derived materials; 愛醬 has an
+  independent story line and must not be reduced to pet/tool/clue-machine/
+  mascot/combat-asset/mount-only; living world first.
+
+Assumptions:
+
+- A single CODEX decision doc is the narrowest adequate surface for this
+  provisional A01 technical direction decision.
+- No current-route or HANDOFF pointer is needed for this bounded decision
+  package.
+
+Drift notes:
+
+- The worktree remains dirty with unrelated modified/untracked files from prior
+  tasks. This slice must not revert or normalize them.
+- `docs/HANDOFF.md` is dirty and not needed for this decision package, so it
+  remains untouched.
+
+Implementation steps:
+
+- [x] Step 1: Inspect the current PLANS window and B03-PASSed living-world
+  synthesis discussion packet.
+- [x] Step 2: Add the Chenxing first-volume living-world direction decision
+  docs/control file.
+- [x] Step 3: Run scoped docs/control verification and report completion to
+  B組01 only.
+
+Verification plan:
+
+- Required string checks for the task name,
+  `AI_TECHNICAL_PROVISIONAL_DIRECTION_SELECTED_FOR_NEXT_DOCS_CONTROL_PLANNING`,
+  `陸知行`, `衛昭`, `superseded`, `愛醬`, `living world first`, `cook`,
+  `apothecary`, `doctor`, `flying dragon`, `no actual ScriptReadyScenePacket`,
+  `no provider/API`, `no SQLite`, and `production lock`.
+- Confirm the selected direction-decision outcome appears exactly once in the
+  new decision doc.
+- Confirm touched files are docs/control only.
+- Confirm no actual scene/story prose, sample JSON, runtime/schema/media, or
+  provider/API files are created.
+- Run trailing-whitespace scan on touched docs.
+- Run scoped `git diff --check`.
+- Capture `git status --short --branch` at end.
+- Gradle is skipped if this remains docs/control only.
+
+Completion notes:
+
+- Decision doc added.
+- Scoped verification passed for required strings, single selected outcome
+  marker, single future-candidate name, no fenced/sample JSON construction,
+  trailing whitespace, and `git diff --check`.
+- `git diff --check` reported only the existing Windows line-ending warning for
+  `PLANS.md`.
+- Existing dirty code, `docs/HANDOFF.md`, storyboard docs, memory/sample/world
+  files, runtime/schema/media/provider/API files, and SQLite data were not
+  touched by this slice.
+- Gradle was skipped because this remained docs/control only.
+
+### Active Slice - Chenxing Living World Mainline Synthesis Discussion Packet V0
+
+Task: `chenxing_living_world_mainline_synthesis_discussion_packet_v0_docs_control`
+
+Goal: convert the completed A04 synthesis into a reviewed A01
+discussion/control surface for Chenxing worldview, character, and profession
+planning. This is a discussion packet only and must not select canon or create
+actual packet, media, runtime, schema, sample, source-basis, or evidence
+artifacts.
+
+Final-product chain implications:
+
+- scene packet;
+- storyboard/camera;
+- prompt/asset cards;
+- voice/subtitle/SFX;
+- renderer/package QA;
+- human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_LIVING_WORLD_MAINLINE_SYNTHESIS_DISCUSSION_PACKET_V0.md`
+
+Non-goals:
+
+- No canon decision, registry, release, final approval, or production lock.
+- No actual `ScriptReadyScenePacket`, storyboard frames, prompt cards, asset
+  cards, voice/subtitle/SFX timeline, renderer package, media generation, or
+  provider/API.
+- No setting-pack apply, SQLite writes, runtime/schema/Kotlin changes, sample
+  JSON, query instances, concrete refs, source-basis selection, or evidence
+  bundle.
+- No direct use of `衛昭` as current-facing protagonist.
+- No reduction of 愛醬 to pet, tool, or mount-only support.
+- No staging, commit, push, archive, or window creation.
+
+Confirmed facts:
+
+- B組01 dispatched this task after B組03 PASS for
+  `chenxing_scene_packet_visual_continuity_requirement_bridge_v0_docs_control`.
+- A組01 reports A04 branch result is complete with status
+  `READY_FOR_A01_DISCUSSION_REVIEW` and not a true stop condition.
+- Required discussion packet must record accepted user decisions: current
+  protagonist name is only `陸知行`; `衛昭` is superseded in current-facing
+  derived materials; 愛醬 has an independent unseen-side storyline; living
+  world first.
+- Required A04 synthesis sections are living-world foundation, 陸知行 curiosity
+  / logic / clue-assembly axis, 愛醬 independent growth / anti-toolification
+  axis, outside-city monster/exhaustion/dragon pressure, inside-city
+  identity/class/profession pressure, and profession ecology with cook /
+  apothecary / doctor distinctions.
+- `docs/CODEX_WORLD_SOURCE_LAYERING_BLUEPRINT_GAP_AUDIT_V0.md` already records
+  current-worldview discussion entrypoints and the source-layer ladder.
+- `docs/CODEX_CHENXING_SCENE_PACKET_VISUAL_CONTINUITY_REQUIREMENT_BRIDGE_V0.md`
+  links Chenxing visual continuity to future scene-packet/storyboard planning
+  without implementation.
+
+Assumptions:
+
+- A single CODEX discussion packet doc is the narrowest adequate surface.
+- Existing current-route or HANDOFF pointers do not need edits for this bounded
+  discussion packet.
+
+Drift notes:
+
+- The worktree remains dirty with unrelated modified/untracked files from
+  previous tasks. This slice must not revert or normalize them.
+- `docs/HANDOFF.md` is dirty and not needed for this discussion packet, so it
+  remains untouched.
+
+Implementation steps:
+
+- [x] Step 1: Inspect current Chenxing source-layer, visual-continuity, and
+  planning evidence.
+- [x] Step 2: Add the Chenxing living-world mainline synthesis discussion
+  packet.
+- [x] Step 3: Run scoped docs/control verification and report completion to
+  B組01 only.
+
+Verification plan:
+
+- Required string checks for
+  `A04_CHENXING_LIVING_WORLD_MAINLINE_SYNTHESIS_V0`, `陸知行`, `衛昭`,
+  `superseded`, `愛醬`, `unseen-side`, `living world first`, `cook`,
+  `apothecary`, `doctor`, `no actual ScriptReadyScenePacket`,
+  `no provider/API`, and `production lock`.
+- Confirm selected discussion-packet outcome appears exactly once in the new
+  discussion packet doc.
+- Confirm touched files are docs/control only.
+- Confirm no actual story prose, canon decision, sample JSON, or
+  runtime/schema/media files are created.
+- Run trailing-whitespace scan on touched docs.
+- Run scoped `git diff --check`.
+- Capture `git status --short --branch` at end.
+- Gradle is skipped if this remains docs/control only.
+
+Completion notes:
+
+- Discussion packet added.
+- Scoped verification passed for required strings, single selected outcome
+  marker, no sample JSON pattern, trailing whitespace, and `git diff --check`.
+- Existing dirty code, `docs/HANDOFF.md`,
+  `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, memory/sample/world files were not
+  touched by this slice.
+- Gradle was skipped because this remained docs/control only.
+
+### Active Slice - Chenxing Scene Packet Visual Continuity Requirement Bridge V0
+
+Task: `chenxing_scene_packet_visual_continuity_requirement_bridge_v0_docs_control`
+
+Goal: bridge the B03-PASSed storyboard eyeline/facing rule into future Chenxing
+scene-packet and storyboard planning requirements. This is a requirement bridge
+only, not actual packet, storyboard, prompt, image, runtime, schema, provider,
+or media work.
+
+Final-product chain tag:
+
+- primary: storyboard/camera;
+- secondary: prompt/asset cards.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_SCENE_PACKET_VISUAL_CONTINUITY_REQUIREMENT_BRIDGE_V0.md`
+
+Non-goals:
+
+- No actual `ScriptReadyScenePacket`.
+- No storyboard frames, prompt cards, image generation, provider/API,
+  renderer, ffmpeg, TTS, or media.
+- No source/story invention, concrete refs, sample JSON, query instances, or
+  evidence bundle.
+- No Kotlin/schema/runtime change.
+- No canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive, or window creation.
+
+Confirmed facts:
+
+- B組01 dispatched this task after B組03 PASS for
+  `storyboard_eyeline_facing_direction_rule_patch_v0_docs_control`.
+- The reviewed eyeline/facing rule selected outcome is
+  `STORYBOARD_EYELINE_FACING_DIRECTION_RULE_PATCH_ALIGNED`.
+- `docs/CODEX_STORYBOARD_EYELINE_FACING_DIRECTION_RULE_PATCH_V0.md` requires
+  `gazeTarget`, `facingTarget`, `eyelineReason`, `nonFacingReason`,
+  `interactionTarget`, and `continuityCheck` for future storyboard/image-facing
+  frames with dialogue, reaction, attention, avoidance, threat monitoring,
+  companion interaction, or interpersonal blocking.
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_CANDIDATE_SKELETON_V0.md` defines
+  Chenxing future scene-packet skeleton sections and keeps them shape-only.
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_SOURCE_REQUIREMENT_MATRIX_V0.md`
+  defines requirement-type-only source planning and preserves no source-basis
+  selection, no evidence bundle, no concrete refs, no sample JSON, no
+  provider/API, no SQLite, and no production lock.
+
+Current worldview guards:
+
+- Current-facing protagonist name is only `陸知行`; `衛昭` is superseded in
+  derived/current-facing materials.
+- 愛醬 has her own story line and must not be reduced to pet, tool, clue
+  machine, mascot, combat asset, or mount-only growth.
+- Living world first; final-product chains serve the world later.
+- Old opening/mainline material remains discussion evidence only, not locked
+  plot, canon, or final-product content.
+
+Assumptions:
+
+- A single CODEX bridge doc is enough for this bounded docs/control task.
+- No existing storyboard or Chenxing docs need pointer edits because B組01 only
+  asked for a bridge package, and the bridge can cite existing reviewed docs.
+
+Drift notes:
+
+- The worktree remains dirty with unrelated modified/untracked files from
+  previous tasks. This slice must not revert or normalize them.
+- `docs/HANDOFF.md` is dirty and not needed for this bridge, so it remains
+  untouched.
+
+Implementation steps:
+
+- [x] Step 1: Inspect reviewed eyeline/facing rule and Chenxing scene-packet
+  planning docs.
+- [x] Step 2: Add Chenxing visual-continuity requirement bridge doc.
+- [x] Step 3: Run scoped docs/control verification and report completion to
+  B組01 only.
+
+Verification plan:
+
+- Required string checks for
+  `chenxing_scene_packet_visual_continuity_requirement_bridge_v0_docs_control`,
+  selected outcome, `gazeTarget`, `facingTarget`, `eyelineReason`,
+  `nonFacingReason`, `interactionTarget`, `continuityCheck`, `陸知行`, `愛醬`,
+  `no actual ScriptReadyScenePacket`, `no image generation`, `no provider/API`,
+  and `production lock`.
+- Confirm the selected visual-continuity bridge outcome appears exactly once.
+- Confirm touched files are docs/control only.
+- Confirm no Kotlin/JVM/runtime/schema/sample/media/provider/API files are
+  touched by this slice.
+- Confirm no generated/sample JSON is introduced.
+- Run trailing-whitespace scan on touched docs.
+- Run scoped `git diff --check` for touched tracked files.
+- Capture `git status --short --branch` at end.
+- Gradle is skipped if this remains docs/control only.
+
+Completion notes:
+
+- Bridge doc added.
+- Scoped verification passed for required strings, single selected outcome
+  marker, docs/control-only touched file set, trailing whitespace, and
+  `git diff --check`.
+- Existing dirty `Models.kt`, `docs/HANDOFF.md`,
+  `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, memory/sample/world files were not
+  touched by this slice.
+- Gradle was skipped because this remained docs/control only.
+
+### Active Slice - Storyboard Eyeline Facing Direction Rule Patch V0
+
+Task: `storyboard_eyeline_facing_direction_rule_patch_v0_docs_control`
+
+Goal: add a docs/control rule requiring future storyboard and image-facing
+planning to carry character eyeline, gaze target, facing target, intentional
+non-facing reason, interaction target, and continuity check whenever a frame
+includes dialogue, reaction, attention, avoidance, threat monitoring,
+companion interaction, or interpersonal blocking.
+
+Final-product chain reduced:
+
+- primary: storyboard/camera;
+- secondary: prompt/asset cards, image-facing delivery proof,
+  renderer/package QA, and human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md`
+- `docs/CODEX_STORYBOARD_EYELINE_FACING_DIRECTION_RULE_PATCH_V0.md`
+
+Non-goals:
+
+- No Kotlin/JVM model, schema, service, validator, runtime, or test changes.
+- No actual storyboard generation.
+- No image generation.
+- No provider/API, browser, web/server, renderer, ffmpeg, TTS, or media
+  generation.
+- No direct SQLite writes.
+- No sample JSON or generated prompt payload.
+- No actual `ScriptReadyScenePacket`, `StoryboardPacket`,
+  `ImageCandidate`, or other packet/query/media instances.
+- No canon, registry, release, final approval, production lock, staging,
+  commit, push, archive, or window creation.
+
+Confirmed facts:
+
+- B組01 dispatched this task after B組03 PASS for
+  `world_source_layering_blueprint_gap_audit_v0_docs_control`.
+- User-facing need: if a character speaks to 愛醬, the frame should make them
+  look at 愛醬 by default unless the packet states an intentional reason not
+  to.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` has future storyboard frame fields
+  such as `subject`, `blocking`, `visibleAction`, `cameraPurpose`,
+  `doNotShow`, and `continuityAnchor`, but no required `gazeTarget`,
+  `facingTarget`, `eyelineReason`, `nonFacingReason`, `interactionTarget`, or
+  `continuityCheck`.
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt` contains
+  `StoryboardPacketFrameDraft` and `ImageFacingDeliveryFrameCard` without
+  explicit gaze/facing fields, but this slice is docs/control only.
+- `docs/AUTHORING_QUALITY_GUIDELINES.md` mentions gaze, head direction, and
+  line of sight at prose quality level, but not as a storyboard/image-facing
+  required rule.
+
+Current worldview guards:
+
+- Current-facing protagonist name is only `陸知行`; `衛昭` is superseded in
+  derived/current-facing materials.
+- 愛醬 has her own story line and must not be reduced to pet, tool, clue
+  machine, mascot, combat asset, or mount-only growth.
+- Living world first; final-product chains serve the world later.
+- Old opening/mainline material remains discussion evidence only, not locked
+  plot, canon, or final-product content.
+
+Assumptions:
+
+- A new CODEX rule-patch doc plus a concise section in
+  `docs/STORYBOARD_AND_CAMERA_PLANNING.md` is the narrowest adequate
+  docs/control surface.
+- The rule should remain a future planning requirement and should not imply
+  current model/schema fields until B組01 dispatches a later implementation
+  package.
+
+Drift notes:
+
+- The worktree remains dirty with unrelated modified/untracked files from
+  previous tasks. This slice must not revert or normalize them.
+- `docs/HANDOFF.md` is dirty and not needed for this rule patch, so it remains
+  untouched.
+
+Implementation steps:
+
+- [x] Step 1: Inspect relevant storyboard/control docs and confirm the gap.
+- [x] Step 2: Add the CODEX eyeline/facing direction rule patch doc.
+- [x] Step 3: Patch `docs/STORYBOARD_AND_CAMERA_PLANNING.md` with the
+  `Eyeline / Facing Direction Rule`.
+- [x] Step 4: Run scoped docs/control verification and report completion to
+  B組01 only.
+
+Verification plan:
+
+- Required string checks across touched docs for
+  `storyboard_eyeline_facing_direction_rule_patch_v0_docs_control`,
+  `Eyeline / Facing Direction Rule`, `gazeTarget`, `facingTarget`,
+  `eyelineReason`, `nonFacingReason`, `interactionTarget`,
+  `continuityCheck`, `intentional non-facing`, `陸知行`, `愛醬`,
+  `no provider/API`, `no SQLite`, `no image generation`, and
+  `production lock`.
+- Confirm the selected eyeline/facing rule outcome marker appears exactly once.
+- Confirm touched files are docs/control only.
+- Confirm no Kotlin/JVM/runtime/schema/sample/media/provider/API files are
+  touched by this slice.
+- Confirm no generated/sample JSON is introduced.
+- Confirm no approval/canon/registry/release/final approval/production-lock
+  language is introduced.
+- Run trailing-whitespace scan on touched docs.
+- Run scoped `git diff --check` for touched tracked files.
+- Capture `git status --short --branch` at end.
+- Gradle is skipped if this remains docs/control only.
+
+Completion notes:
+
+- CODEX rule patch doc added.
+- Storyboard planning doc now records future eyeline/facing fields and review
+  checks.
+- Scoped verification passed for required strings, selected outcome count,
+  docs/control-only touched file set, trailing whitespace, and
+  `git diff --check`.
+- Existing dirty `Models.kt`, `docs/HANDOFF.md`, memory/sample/world files were
+  not touched by this slice.
+- Gradle was skipped because this remained docs/control only.
+
+### Active Slice - World Source Layering Blueprint Gap Audit V0
+
+Task: `world_source_layering_blueprint_gap_audit_v0_docs_control`
+
+Goal: add the verified world-source layering finding into the blueprint/control
+layer and audit whether recent A-group process, evolution, and optimization
+proposals are visible from current blueprint/control entrypoints. This is a
+blueprint/control alignment and gap-audit slice only.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary: prompt/asset cards, storyboard/camera, voice/subtitle/SFX,
+  renderer/package QA, and human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_WORLD_SOURCE_LAYERING_BLUEPRINT_GAP_AUDIT_V0.md`
+- minimal blueprint/control pointer docs only if the audit finds missing or
+  stale first-read visibility.
+
+Non-goals:
+
+- No setting-pack apply.
+- No canon/entity conversion.
+- No runtime character, location, world-rule, or direct ad hoc SQL writes.
+- No SQLite mutation, migration, schema, CLI, Kotlin/JVM implementation,
+  validator, or test code.
+- No actual `ScriptReadyScenePacket`, `ScriptReadyScenePacketCandidate`,
+  `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport` instances.
+- No source-basis selection, evidence bundle, concrete refs, story prose,
+  source rewriting, raw archive mutation, scene prose, storyboard, prompt
+  cards, asset cards, voice/subtitle/SFX timeline, renderer package,
+  generated media, or sample JSON.
+- No provider/API, web/server, renderer/ffmpeg/TTS, media generation,
+  04/05/06/07/08 restart, Phase 20/21 restart, approval, canon, registry,
+  release, final approval, production lock, staging, commit, push, archive, or
+  window creation.
+
+Confirmed facts:
+
+- `world/chenxing/raw/` contains 9 Chenxing raw worldbuilding source files.
+- `memory/chenxing_world_source_manifest.json` lists 9 source sets and
+  classification metadata.
+- `app/src/main/resources/migrations/007_world_source_archive.sql` defines
+  `world_source_archives`, `world_source_documents`, and
+  `world_source_chunks`.
+- `memory/chenxing_world_source_sql_import_result.json` reports
+  `WORLD_SOURCE_ARCHIVE_SQL_IMPORT_PASS`, 1 archive row, 9 document rows, 255
+  chunk rows, and 206344 bytes.
+- `memory/active_world_source.json` points future source lookup to
+  `data/story.db` through `query-world-source --db data/story.db --q <text>`.
+- `docs/HANDOFF.md` already records the official source SQL archive facts but
+  is dirty from prior worktree state, so this slice should avoid editing it.
+- Boundary flags still classify the data as not canon approved, not
+  setting-pack data, not runtime SQLite data, and not approved asset data.
+- The accurate current classification is source archive plus official source
+  SQL archive/query layer exists, while setting-pack/canon/runtime layer is
+  not yet converted and final-product layer is not yet generated.
+
+Current worldview guards:
+
+- Current-facing protagonist name is only `陸知行`; `衛昭` is superseded and
+  must not be used as protagonist name in derived/current-facing docs/control
+  or future planning surfaces.
+- 愛醬 has her own story line and must not be reduced to pet, tool, clue
+  machine, mascot, combat asset, or mount-only growth.
+- Living world first; final-product chains serve the world later.
+- Old opening/mainline material is discussion evidence only, not locked plot,
+  canon, or final-product content.
+- 陸知行 core desire is curiosity, logic, clue assembly, and learning the world.
+- World pressure includes outside-city ecology, exhaustion, waves, vertical
+  danger, and inside-city identity, class, and profession pressure.
+- Profession dignity remains required; if the cook example appears, preserve
+  survival, restoration, and difficult monster-ingredient handling logic.
+
+Assumptions:
+
+- The official source SQL archive is source evidence infrastructure, not
+  setting-pack/canon/runtime SQL and not approval.
+- Minimal pointer updates are acceptable only where the ladder is absent from
+  first-read blueprint/control entrypoints.
+- `docs/HANDOFF.md` stays excluded because it is already dirty and already has
+  the relevant source SQL facts.
+
+Drift notes:
+
+- The worktree has many unrelated modified and untracked files from prior
+  tasks. This slice must not revert or normalize them.
+- Current route-loop convergence rules still apply: do not add another pure
+  status/review/status layer; this audit must reduce final-product uncertainty
+  by clarifying source layers and first-read pointers.
+
+Implementation steps:
+
+- [x] Step 1: Inspect source-layer evidence and current blueprint/control
+  entrypoints.
+- [x] Step 2: Add the world-source layering blueprint gap audit doc.
+- [x] Step 3: Add only minimal source-layer pointers where first-read
+  blueprint/control entrypoints are missing the ladder.
+- [x] Step 4: Run scoped docs/control verification and report completion to
+  B組01 only.
+
+Verification plan:
+
+- Required string checks for `world_source_layering_blueprint_gap_audit_v0_docs_control`,
+  `WORLD_SOURCE_ARCHIVE_SQL_IMPORT_PASS`, `world_source_archives`,
+  `world_source_documents`, `world_source_chunks`, `raw source archive`,
+  `source manifest`, `official source SQL archive`,
+  `setting-pack/canon/runtime layer not yet converted`,
+  `final-product layer not yet generated`, `source layer ladder`,
+  `A-group proposal blueprint reflection audit`,
+  `current-worldview discussion entrypoint`, `no setting-pack apply`,
+  `no canon/entity conversion`, `no runtime writes`,
+  `no direct ad hoc SQL writes`, `no sample JSON`, `no provider/API`,
+  `no SQLite mutation`, and `production lock`.
+- Confirm the selected audit outcome marker appears exactly once across
+  touched docs/control files.
+- Confirm the audit distinguishes the official source SQL archive/query layer
+  from setting-pack/canon/runtime SQL.
+- Confirm no raw source text is copied into new docs beyond short labels,
+  paths, ids, and user-provided guard terms.
+- Confirm no actual packet/query/sample/runtime/media artifacts are created.
+- Confirm the A-group proposal reflection audit names reflected, missing, or
+  stale pointers and any minimal correction made.
+- Run trailing-whitespace scan on touched docs.
+- Run scoped `git diff --check` for touched tracked files.
+- Capture `git status --short --branch` at end.
+- Gradle is skipped if this remains docs/control only.
+
+Completion notes:
+
+- Audit doc added and minimal pointers added to the whole-project blueprint,
+  execution-control index, and current route card.
+- `docs/HANDOFF.md` remains excluded because it is already dirty and already
+  carries the current SQL source archive facts.
+- Scoped verification passed for required strings, single selected outcome
+  marker, source SQL versus setting/canon/runtime separation, HANDOFF
+  exclusion, trailing whitespace, and `git diff --check`.
+- Gradle was skipped because the slice stayed docs/control only.
+
+### Active Slice - Chenxing 09 Scene Packet Source Requirement Matrix V0
+
+Task: `chenxing_09_scene_packet_source_requirement_matrix_v0_docs_control`
+
+Goal: define a Chenxing-only source requirement matrix for future
+`ScriptReadyScenePacket` sections. This maps B03-PASSed skeleton section types
+and field families to source requirement types, allowed visibility tags,
+forbidden visibility tags, missing-info marker shapes, future review question
+shapes, downstream consumer impact, and stop conditions. It is
+requirement-type-only planning, not source selection, evidence selection,
+concrete ref creation, actual packet/query/sample/runtime/media work, SQLite
+work, approval, canon, release, or production lock artifacts.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary readiness: scoped query/source scope, future storyboard/camera
+  readiness, and human approval gates.
+
+Product-distance rule:
+
+- reduce uncertainty about what each future Chenxing scene-packet skeleton
+  section will require from reviewed source material;
+- do not create another status/review/route-decision-only layer.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_SOURCE_REQUIREMENT_MATRIX_V0.md`
+
+Non-goals:
+
+- No source-basis selection.
+- No evidence bundle.
+- No concrete refs.
+- No source/story/query text or Chenxing content filling.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No sample JSON or fenced JSON examples.
+- No query execution, queryer implementation, retrieval runtime, schema,
+  provider/API, SQLite, external lookup, or runtime work.
+- No storyboard/camera artifact, prompt cards, asset cards,
+  voice/subtitle/SFX timeline, renderer package, generated media, runtime
+  objects, or media objects.
+- No mutation of `world/chenxing/raw/*`.
+- No setting-pack apply, direct SQLite writes, Kotlin/JVM runtime, CLI, schema,
+  validator, provider/API, web/server, renderer/ffmpeg/TTS, or media
+  generation.
+- No Rain Gate, Pilot, renderer demo, preview defaults, camera defaults,
+  renderer defaults, or old story assumptions imported into Chenxing.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final approval, production lock, staging, commit, push,
+  archive/window creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- B01 recorded B03 PASS for
+  `chenxing_09_scene_packet_candidate_skeleton_v0_docs_control`.
+- B03 confirmed the prior selected skeleton outcome exactly once.
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_CANDIDATE_SKELETON_V0.md` defines a
+  future Chenxing `ScriptReadyScenePacket` candidate skeleton contract with
+  section names, field families, required/optional markers, future source
+  requirement types, visibility tag requirements, query-surface dependency,
+  review checklist, stop conditions, approval separation, and product-distance
+  rule.
+- The prior skeleton doc explicitly creates no actual packet/candidate
+  instances, no query instances, no query execution, no queryer implementation,
+  no concrete refs, no source-basis selection, no evidence bundle, no
+  source/story/query content, no copied raw prose, no scene prose, no
+  prompt-ready text, no storyboard/camera artifact, no prompt/asset cards, no
+  voice/subtitle/SFX timeline, no renderer package, no sample JSON, no
+  provider/API work, no SQLite work, and no production lock.
+- The current worktree contains unrelated dirty/untracked runtime, docs,
+  sample, memory, raw archive, migration, and queue files; this slice must
+  remain scoped to `PLANS.md` and the new docs/control source requirement
+  matrix file.
+
+Assumptions:
+
+- No current-route-card pointer is needed because the dispatch requires
+  `PLANS.md` plus one dedicated source requirement matrix doc and no narrower
+  pointer was requested.
+- The selected source-requirement-matrix outcome marker should appear exactly
+  once in the new matrix doc, not in `PLANS.md`.
+- Verification can prove the touched file set stayed docs/control only by
+  checking scoped status for the two intended files.
+
+Drift notes:
+
+- Separate completed SQL/task-queue sections exist above
+  `CURRENT_PLAN_WINDOW_V0` in this dirty worktree; they are outside this
+  B01-dispatched clean slice and were not edited by this task.
+- This task remains aligned to the explicit B01 dispatch by updating and
+  verifying the `CURRENT_PLAN_WINDOW_V0` source requirement matrix slice only.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the Chenxing 09 scene packet source requirement matrix
+  docs/control file.
+- [x] Step 3: Run required string, forbidden-pattern, approval-firewall,
+  missing-info-marker, whitespace, scoped diff, touched-file, and final status
+  verification, then report completion to B01.
+
+Verification plan:
+
+- `rg` required strings across touched docs: task name, prior reviewed skeleton
+  outcome, `Chenxing`, `source requirement matrix`, `requirement-type-only`,
+  `reviewed docs/control citation need`, `Chenxing 09 card-family citation
+  need`, `manifest source-id need`, `raw path citation need`, `source scene-id
+  need`, `zone-id need`, `beat-id need`, `character-ref need`,
+  `asset-need-ref need`, `protected-boundary review need`,
+  `visibility review need`, `human approval gate evidence need`, `allowed
+  visibility tags`, `forbidden visibility tags`, `missing-info markers`,
+  `future review questions`, `no source-basis selection`, `no evidence bundle`,
+  `no concrete refs`, `no actual ScriptReadyScenePacket`, `no
+  ScriptReadyScenePacketCandidate`, `no QueryRequest`, `no QueryResponse`,
+  `no QueryScopeReviewReport`, `no sample JSON`, `no query execution`,
+  `no queryer implementation`, `no provider/API`, `no SQLite`, and
+  `production lock`.
+- Confirm the selected matrix outcome marker appears exactly once across
+  touched docs.
+- Confirm no forbidden construction patterns are introduced: actual
+  packet/candidate instances, query instances, query execution, queryer
+  implementation, concrete refs, source-basis assignment, evidence bundle,
+  fenced/sample JSON, source/story/query content, copied raw prose, scene
+  prose, prompt/asset card body, storyboard, voice/subtitle/SFX timeline,
+  renderer/package artifact, runtime object, or media object.
+- Confirm missing-info markers remain empty markers and do not fill Chenxing
+  content.
+- Confirm Rain Gate/Pilot/demo/preview/camera/renderer wording, if mentioned,
+  remains exclusionary only.
+- Confirm B03 PASS, skeleton readiness, source requirement matrix, and future
+  review PASS are not phrased as approval, canon, registry, release, final
+  approval, or production lock.
+- Confirm touched files are docs/control only and no JSON sample, runtime,
+  source, media, schema, provider/API, SQLite, raw archive, or sample files are
+  touched by this slice.
+- Run trailing-whitespace scan on touched docs, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle because this slice should stay docs/control only.
+
+Verification result:
+
+- Required strings were found across the touched docs, including the task name,
+  prior reviewed skeleton outcome, Chenxing, source requirement matrix,
+  requirement-type-only, all required requirement-type labels, allowed
+  visibility tags, forbidden visibility tags, missing-info markers, future
+  review questions, no source-basis selection, no evidence bundle, no concrete
+  refs, no actual packet/query/sample/runtime/provider/API/SQLite boundaries,
+  no Rain Gate, no Pilot, and production lock boundaries.
+- The selected source-requirement-matrix outcome marker appears exactly once
+  across the touched docs.
+- Missing-info marker checks confirmed that markers are empty labels, do not
+  fill Chenxing content, and preserve no concrete refs.
+- Rain Gate, Pilot, local renderer demo, renderer demo, preview defaults,
+  camera defaults, renderer defaults, and old story wording appears only as
+  exclusionary Chenxing-isolation boundary wording.
+- Approval-firewall negative phrase checks found no phrasing that turns B03
+  PASS, skeleton readiness, source requirement matrix, or future review PASS
+  into approval, canon, registry, release, final approval, or production lock.
+- No fenced/sample JSON block was introduced.
+- Touched-file scope stayed docs/control only: `PLANS.md` and the new Chenxing
+  09 scene packet source requirement matrix doc.
+- Trailing-whitespace scan passed for touched docs.
+- Scoped `git diff --check` passed for the touched tracked file; the new matrix
+  doc is untracked and was covered by the whitespace scan.
+- Gradle remains skipped because no Kotlin/source/test/runtime/schema file was
+  intentionally edited by this slice.
+
+Completion notes:
+
+- Added a Chenxing 09 scene packet source requirement matrix docs/control file.
+- Defined mapped skeleton sections and field families, source requirement
+  types, allowed and forbidden visibility tags, missing-info marker shapes,
+  future review question shapes, downstream consumer impact, stop conditions,
+  scoped-query dependency preservation, Chenxing isolation, prompt-surface
+  firewall, approval separation, and product-distance rule.
+- The slice did not select sources, select evidence, create concrete refs,
+  create evidence bundles, fill Chenxing content, create source/story/query
+  text, create actual packet/candidate instances, create query instances, run
+  queries, implement queryers, create sample JSON, mutate raw archives, create
+  storyboard/camera artifacts, prompt/asset cards, voice/subtitle/SFX timelines,
+  renderer packages, media, runtime objects, schema/provider/API/SQLite work,
+  approval, release, or production lock.
+
+### Active Slice - Chenxing 09 Scene Packet Candidate Skeleton V0
+
+Task: `chenxing_09_scene_packet_candidate_skeleton_v0_docs_control`
+
+Goal: define a future `ScriptReadyScenePacket` candidate skeleton contract for
+Chenxing only. This slice is product-chain skeleton planning for section names,
+field families, required/optional markers, future source requirement types,
+visibility tags, query-surface dependency notes, review checklist, and stop
+conditions; it creates no actual packet content, actual candidate instances,
+sample JSON, query artifacts, runtime/schema/provider/API/media work, SQLite
+work, source-basis selection, evidence bundles, approval, canon, release, or
+production lock artifacts.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary readiness: scoped query/source scope, storyboard/camera readiness,
+  and human approval gates.
+
+Product-distance rule:
+
+- reduce uncertainty about future `ScriptReadyScenePacket` candidate shape;
+- do not create another status/review/route-decision layer.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_CANDIDATE_SKELETON_V0.md`
+
+Non-goals:
+
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No query execution, queryer implementation, retrieval runtime, provider/API,
+  schema, SQLite, or external lookup work.
+- No concrete refs, source-basis selection, evidence bundle, source/story/query
+  content, copied raw prose, scene prose, or prompt-ready text.
+- No storyboard/camera artifact, prompt cards, asset cards,
+  voice/subtitle/SFX timeline, renderer package, generated media, runtime
+  objects, or media objects.
+- No mutation of `world/chenxing/raw/*`.
+- No setting-pack apply, direct SQLite writes, Kotlin/JVM runtime, CLI, schema,
+  validator, provider/API, web/server, renderer/ffmpeg/TTS, or media
+  generation.
+- No Rain Gate, Pilot, renderer demo, preview defaults, camera defaults,
+  renderer defaults, or old story assumptions imported into Chenxing.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final approval, production lock, staging, commit, push,
+  archive/window creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- B01 recorded B03 PASS for
+  `chenxing_09_scoped_query_surface_v0_docs_control`.
+- B03 confirmed the prior selected scoped-query-surface outcome exactly once.
+- `docs/CODEX_CHENXING_09_SCOPED_QUERY_SURFACE_V0.md` defines Chenxing-only
+  scoped query surface rules and consumes the shape-readiness outcome as
+  review-only shape evidence, not source-basis selection, query approval, or
+  packet approval.
+- The prior scoped-query-surface doc explicitly creates no actual query rows,
+  no query execution, no queryer implementation, no concrete refs, no
+  source-basis selection, no evidence bundle, no source/story/query invention,
+  no copied raw prose, no scene prose, no prompt-ready text, no actual packet,
+  no storyboard, no prompt/asset cards, no voice/subtitle/SFX timeline, no
+  renderer/package artifacts, no sample JSON, no raw archive mutation, and no
+  approval/canon/release/production lock.
+- The current worktree contains unrelated dirty/untracked runtime, docs,
+  sample, memory, raw archive, and migration files; this slice must remain
+  scoped to `PLANS.md` and the new docs/control skeleton file.
+
+Assumptions:
+
+- No current-route-card pointer is needed because the dispatch requires
+  `PLANS.md` plus one dedicated skeleton doc and no narrower pointer was
+  requested.
+- The selected skeleton outcome marker should appear exactly once in the new
+  skeleton doc, not in `PLANS.md`.
+- Verification can prove the touched file set stayed docs/control only by
+  checking scoped status for the two intended files.
+
+Drift notes:
+
+- A separate `Goal Mode Override` section exists above `CURRENT_PLAN_WINDOW_V0`
+  in this dirty worktree; B01 explicitly classified that drift as non-blocking
+  for this task, and it is outside this B01-dispatched clean slice.
+- This task remains aligned to the explicit B01 dispatch by updating and
+  verifying the `CURRENT_PLAN_WINDOW_V0` scene-packet candidate skeleton slice
+  only.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the Chenxing 09 scene packet candidate skeleton docs/control
+  file.
+- [x] Step 3: Run required string, forbidden-pattern, approval-firewall,
+  whitespace, scoped diff, touched-file, and final status verification, then
+  report completion to B01.
+
+Verification plan:
+
+- `rg` required strings across touched docs: task name, prior reviewed
+  scoped-query outcome, `Chenxing`, `ScriptReadyScenePacket`, `candidate
+  skeleton`, `section names`, `field families`, `required/optional`, `future
+  source requirement types`, `visibility tag requirements`, `query-surface
+  dependency`, `review checklist`, `stop conditions`, `no actual
+  ScriptReadyScenePacket`, `no ScriptReadyScenePacketCandidate`, `no sample
+  JSON`, `no QueryRequest`, `no QueryResponse`, `no QueryScopeReviewReport`,
+  `no query execution`, `no queryer implementation`, `no evidence bundle`,
+  `no source-basis selection`, `no concrete refs`, `no Rain Gate`, `no Pilot`,
+  `no provider/API`, `no SQLite`, and `production lock`.
+- Confirm the selected skeleton outcome marker appears exactly once across
+  touched docs.
+- Confirm no forbidden construction patterns are introduced: actual
+  packet/candidate instances, query instances, query execution, queryer
+  implementation, concrete refs, source-basis assignment, evidence bundle,
+  fenced/sample JSON, copied raw prose, scene prose, prompt/asset card body,
+  storyboard, voice/subtitle/SFX timeline, renderer/package artifact, runtime
+  object, or media object.
+- Confirm Rain Gate/Pilot/demo/preview/camera/renderer wording, if mentioned,
+  remains exclusionary only.
+- Confirm B03 PASS, scoped-query surface, skeleton readiness, and future review
+  PASS are not phrased as approval, canon, registry, release, final approval,
+  or production lock.
+- Confirm touched files are docs/control only and no JSON sample, runtime,
+  source, media, schema, provider/API, SQLite, raw archive, or sample files are
+  touched by this slice.
+- Run trailing-whitespace scan on touched docs, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle because this slice should stay docs/control only.
+
+Verification result:
+
+- Required strings were found across the touched docs, including the task name,
+  prior reviewed scoped-query outcome, Chenxing, `ScriptReadyScenePacket`,
+  candidate skeleton, section names, field families, required/optional markers,
+  future source requirement types, visibility tag requirements,
+  query-surface dependency, review checklist, stop conditions,
+  no-actual-packet/query boundaries, no sample JSON, no query execution, no
+  queryer implementation, no evidence bundle, no source-basis selection, no
+  concrete refs, no Rain Gate, no Pilot, no provider/API, no SQLite, and
+  production lock boundaries.
+- The selected skeleton outcome marker appears exactly once across the touched
+  docs.
+- Rain Gate, Pilot, renderer demo, preview defaults, camera defaults, renderer
+  defaults, and old story wording appears only as exclusionary
+  Chenxing-isolation boundary wording.
+- Approval-firewall negative phrase checks found no phrasing that turns B03
+  PASS, docs PASS, scoped-query surface, skeleton readiness, or future review
+  PASS into approval, canon, registry, release, final approval, or production
+  lock.
+- No fenced/sample JSON block was introduced.
+- Touched-file scope stayed docs/control only: `PLANS.md` and the new Chenxing
+  09 scene packet candidate skeleton doc.
+- Trailing-whitespace scan passed for touched docs.
+- Scoped `git diff --check` passed for the touched tracked file; the new
+  skeleton doc is untracked and was covered by the whitespace scan.
+- Gradle remains skipped because no Kotlin/source/test/runtime/schema file was
+  intentionally edited by this slice.
+
+Completion notes:
+
+- Added a Chenxing 09 scene packet candidate skeleton docs/control file.
+- Defined future `ScriptReadyScenePacket` candidate skeleton section names,
+  field families, required/optional markers, future source requirement types,
+  visibility tag requirements, scoped-query dependency notes, review checklist,
+  stop conditions, approval separation, and product-distance rule.
+- The slice did not create actual packet/candidate instances, query instances,
+  query execution, queryer implementation, concrete refs, source-basis
+  selections, evidence bundles, source/story/query content, copied raw prose,
+  scene prose, prompt-ready text, storyboard/camera artifacts, prompt/asset
+  cards, voice/subtitle/SFX timelines, renderer packages, media, runtime
+  objects, JSON samples, schema/provider/API/SQLite work, approval, release, or
+  production lock.
+
+### Active Slice - Chenxing 09 Scoped Query Surface V0
+
+Task: `chenxing_09_scoped_query_surface_v0_docs_control`
+
+Goal: define Chenxing-only scoped query surface rules for future scene-packet
+gap planning after the B03-PASSed shape-readiness surface. This slice defines
+category, boundary, visibility, consumer-impact, and review-checklist planning
+only; it creates no actual query artifacts, source-basis selection, concrete
+refs, evidence bundles, packets, sample JSON, runtime/schema/provider/API/media
+work, approval, canon, release, or production lock artifacts.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary readiness: storyboard/camera, voice/subtitle/SFX, and human
+  approval gates.
+
+Product-distance rule:
+
+- reduce uncertainty about which future scoped query categories can safely
+  support future `ScriptReadyScenePacket` gap filling;
+- do not create another status-only layer.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_SCOPED_QUERY_SURFACE_V0.md`
+
+Non-goals:
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No query execution, queryer implementation, retrieval runtime, schema,
+  provider/API, SQLite, or external lookup work.
+- No concrete refs, source-basis selection, evidence bundle, source/story/query
+  invention, scene prose, copied raw prose, or prompt-ready text.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No storyboard, prompt cards, asset cards, voice/subtitle/SFX timeline,
+  renderer package, generated media, or sample JSON.
+- No mutation of `world/chenxing/raw/*`.
+- No setting-pack apply, direct SQLite writes, Kotlin/JVM runtime, CLI, schema,
+  validator, provider/API, web/server, renderer/ffmpeg/TTS, or media
+  generation.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final approval, production lock, staging, commit, push,
+  archive/window creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- B01 recorded B03 PASS for
+  `chenxing_09_scene_packet_shape_readiness_v0_docs_control`.
+- B03 confirmed the prior selected shape-readiness outcome exactly once.
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_SHAPE_READINESS_V0.md` defines a future
+  `ScriptReadyScenePacket` section contract, 09 foundation card mapping,
+  prompt-surface firewall, Chenxing isolation, scoped-query dependency,
+  approval separation, review gates, blockers, and product-distance target.
+- The prior shape-readiness doc explicitly creates no actual
+  `ScriptReadyScenePacket`, no actual query rows, no concrete refs, no
+  source-basis selection, no evidence bundle, no sample JSON, no provider/API
+  work, no SQLite work, and no media generation.
+- The current worktree contains unrelated dirty/untracked runtime, docs,
+  sample, memory, raw archive, and migration files; this slice must remain
+  scoped to `PLANS.md` and the new docs/control scoped-query-surface file.
+
+Assumptions:
+
+- No current-route-card pointer is needed because the dispatch only requires
+  `PLANS.md` plus one dedicated scoped-query-surface doc.
+- The selected scoped-query-surface outcome marker should appear exactly once
+  in the new scoped-query-surface doc, not in `PLANS.md`.
+- Verification can prove the touched file set stayed docs/control only by
+  checking scoped status for the two intended files.
+
+Drift notes:
+
+- A separate `Goal Mode Override` section exists above `CURRENT_PLAN_WINDOW_V0`
+  in this dirty worktree; it is outside this B01-dispatched clean slice and was
+  not edited by this task.
+- This task remains aligned to the explicit B01 dispatch by updating and
+  verifying the `CURRENT_PLAN_WINDOW_V0` scoped-query-surface slice only.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the Chenxing 09 scoped query surface docs/control file.
+- [x] Step 3: Run required string, forbidden-pattern, approval-firewall,
+  whitespace, scoped diff, touched-file, and final status verification, then
+  report completion to B01.
+
+Verification plan:
+
+- `rg` required strings across touched docs: task name, prior reviewed
+  shape-readiness outcome, `Chenxing`, `scoped query surface`, `scene packet`,
+  `no QueryRequest`, `no QueryResponse`, `no QueryScopeReviewReport`, `no query
+  execution`, `no queryer implementation`, `no concrete refs`, `no
+  source-basis selection`, `no evidence bundle`, `prompt-surface leakage`,
+  `Chenxing isolation`, `no Rain Gate`, `no Pilot`, `no provider/API`,
+  `no SQLite`, and `production lock`.
+- Confirm the selected scoped-query-surface outcome marker appears exactly once
+  across touched docs.
+- Confirm no forbidden construction patterns are introduced: actual query
+  instances, actual packet instances, query execution, queryer implementation,
+  concrete refs, source-basis assignment, evidence bundle, fenced/sample JSON,
+  copied raw prose, scene prose, prompt/asset card body, storyboard,
+  voice/subtitle/SFX timeline, or renderer/package artifacts.
+- Confirm Rain Gate/Pilot/demo wording, if mentioned, remains exclusionary only.
+- Confirm B03 PASS, shape readiness, and scoped query surface are not phrased as
+  approval, canon, registry, release, final approval, or production lock.
+- Confirm touched files are docs/control only and no JSON sample, runtime,
+  source, media, schema, provider/API, SQLite, or raw archive files are touched
+  by this slice.
+- Run trailing-whitespace scan on touched docs, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle because this slice should stay docs/control only.
+
+Verification result:
+
+- Required strings were found across the touched docs, including the task name,
+  prior reviewed shape-readiness outcome, Chenxing, scoped query surface, scene
+  packet, no-actual-query boundaries, no query execution, no queryer
+  implementation, no concrete refs, no source-basis selection, no evidence
+  bundle, prompt-surface leakage, Chenxing isolation, no Rain Gate, no Pilot,
+  no provider/API, no SQLite, and production lock boundaries.
+- The selected scoped-query-surface outcome marker appears exactly once across
+  the touched docs.
+- Rain Gate, Pilot, local renderer demo, preview defaults, camera defaults,
+  renderer defaults, and old story material appear only as exclusionary
+  Chenxing-isolation boundaries.
+- Approval-firewall negative phrase checks found no phrasing that turns B03
+  PASS, shape readiness, scoped query surface, or future review PASS into
+  approval, canon, registry, release, final approval, or production lock.
+- No fenced/sample JSON block was introduced.
+- Touched-file scope stayed docs/control only: `PLANS.md` and the new Chenxing
+  09 scoped-query-surface doc.
+- Trailing-whitespace scan passed for touched docs.
+- Scoped `git diff --check` passed for the touched tracked file; the new
+  scoped-query-surface doc is untracked and was covered by the whitespace scan.
+- Gradle remains skipped because no Kotlin/source/test/runtime/schema file was
+  intentionally edited by this slice.
+
+Completion notes:
+
+- Added a Chenxing 09 scoped query surface docs/control file.
+- Defined allowed future query surface categories, forbidden query categories
+  and stop conditions, Chenxing-only source boundary, visibility and
+  prompt-surface leakage firewall, downstream consumer impact, review checklist,
+  approval separation, and product-distance rule.
+- The slice did not create actual query instances, actual packets, concrete
+  refs, source-basis selections, evidence bundles, source/story/query content,
+  copied raw prose, prompt-ready text, storyboard, prompt/asset cards,
+  voice/subtitle/SFX timelines, renderer packages, media, runtime objects, JSON
+  samples, schema/provider/API/SQLite work, approval, release, or production
+  lock.
+
+### Active Slice - Chenxing 09 Scene Packet Shape Readiness V0
+
+Task: `chenxing_09_scene_packet_shape_readiness_v0_docs_control`
+
+Goal: define future `ScriptReadyScenePacket` section-contract and
+review-surface planning readiness for Chenxing from the B03-PASSed Chenxing 09
+to scene packet alignment, without creating actual packets, queries, story
+content, refs, assets, storyboard, media, runtime objects, JSON samples,
+schema/provider/API/SQLite work, or approval artifacts.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary readiness: storyboard/camera bridge, prompt/asset card boundaries,
+  voice/subtitle/SFX planning surface, renderer/package QA readiness, and
+  human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_SCENE_PACKET_SHAPE_READINESS_V0.md`
+
+Non-goals:
+
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No query execution, queryer implementation, concrete refs, source-basis
+  selection, evidence bundle, story/source/query invention, scene prose,
+  storyboard, prompt cards, asset cards, voice/subtitle/SFX timeline, renderer
+  package, generated media, or sample JSON.
+- No mutation of `world/chenxing/raw/*`.
+- No setting-pack apply, direct SQLite writes, Kotlin/JVM runtime, CLI, schema,
+  validator, provider/API, web/server, renderer/ffmpeg/TTS, or media
+  generation.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final approval, production lock, staging, commit, push,
+  archive/window creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- B01 recorded B03 PASS for
+  `chenxing_09_to_scene_packet_alignment_v0_docs_control`.
+- B03 confirmed the prior selected alignment outcome exactly once:
+  `CHENXING_09_TO_SCENE_PACKET_ALIGNMENT_READY_FOR_REVIEW`.
+- `docs/CODEX_CHENXING_09_TO_SCENE_PACKET_ALIGNMENT_V0.md` defines an
+  alignment-only bridge, field mapping contract, citation granularity,
+  downstream consumer matrix, visibility/leakage guard, Chenxing isolation,
+  scoped-query dependency, and review-only firewall.
+- The prior alignment doc explicitly creates no actual packet/query/media/
+  runtime/schema work, no provider/API work, no SQLite work, and no media
+  generation.
+- The current worktree contains unrelated dirty/untracked runtime, docs,
+  sample, memory, raw archive, and migration files; this slice must remain
+  scoped to `PLANS.md` and the new docs/control shape-readiness file.
+
+Assumptions:
+
+- No current-route-card pointer is needed because the dispatch only requires
+  `PLANS.md` plus one dedicated shape-readiness doc.
+- The selected shape-readiness outcome marker should appear exactly once in
+  the new shape-readiness doc, not in `PLANS.md`.
+- Verification can prove the touched file set stayed docs/control only by
+  checking scoped status for the two intended files.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the Chenxing 09 scene packet shape-readiness docs/control
+  file.
+- [x] Step 3: Run required string, forbidden-pattern, approval-firewall,
+  whitespace, scoped diff, touched-file, and final status verification, then
+  report completion to B01.
+
+Verification plan:
+
+- `rg` required strings across touched docs: task name, prior reviewed
+  alignment outcome, `Chenxing`, `ScriptReadyScenePacket`, `shape readiness`,
+  `section contract`, `no actual ScriptReadyScenePacket`, `no QueryRequest`,
+  `no QueryResponse`, `no QueryScopeReviewReport`, `prompt-surface firewall`,
+  `Chenxing isolation`, `no Rain Gate`, `no Pilot`, `no provider/API`,
+  `no SQLite`, and `production lock`.
+- Confirm the selected shape-readiness outcome marker appears exactly once
+  across touched docs.
+- Confirm no forbidden construction patterns are introduced: actual
+  packet/query instances, concrete refs, source-basis assignment, evidence
+  bundle, fenced/sample JSON, copied raw prose, scene prose, prompt/asset card
+  body, storyboard, voice/subtitle/SFX timeline, or renderer/package artifact.
+- Confirm Rain Gate/Pilot/demo wording, if mentioned, remains exclusionary only.
+- Confirm B03 PASS and shape readiness are not phrased as approval, canon,
+  registry, release, final approval, or production lock.
+- Confirm touched files are docs/control only and no JSON sample, runtime,
+  source, media, schema, provider/API, SQLite, or raw archive files are touched
+  by this slice.
+- Run trailing-whitespace scan on touched docs, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle because this slice should stay docs/control only.
+
+Verification result:
+
+- Required strings were found across the touched docs, including the task name,
+  reviewed alignment outcome, Chenxing, `ScriptReadyScenePacket`, shape
+  readiness, section contract, no-actual-packet/query boundaries,
+  prompt-surface firewall, Chenxing isolation, no Rain Gate, no Pilot, no
+  provider/API, no SQLite, and production lock boundaries.
+- The selected shape-readiness outcome marker remains exactly once in the new
+  shape-readiness doc.
+- Rain Gate, Pilot, local renderer demo, preview defaults, camera defaults,
+  renderer defaults, unrelated old story content, and unrelated source
+  assumptions appear only as exclusionary Chenxing-isolation boundaries.
+- No fenced/sample JSON block was introduced.
+- Touched-file scope stayed docs/control only: `PLANS.md` and the new Chenxing
+  09 scene packet shape-readiness doc.
+- Gradle remains skipped because no Kotlin/source/test/runtime/schema file was
+  intentionally edited by this slice.
+
+Completion notes:
+
+- Added a Chenxing 09 scene packet shape-readiness docs/control file.
+- Defined the future `ScriptReadyScenePacket` section contract, mapping from
+  reviewed alignment inputs, prompt-surface firewall, Chenxing isolation,
+  scoped-query dependency, approval separation, review gates, blockers, and
+  product-distance target.
+- The slice did not create actual packets, query instances, concrete refs,
+  source-basis selections, evidence bundles, scene prose, prompt/asset cards,
+  storyboard, voice/subtitle/SFX timelines, renderer packages, media, runtime
+  objects, JSON samples, approval, release, or production lock.
+
+### Active Slice - Chenxing 09 To Scene Packet Alignment V0
+
+Task: `chenxing_09_to_scene_packet_alignment_v0_docs_control`
+
+Goal: define an alignment-only docs/control bridge from the B03-PASSed
+Chenxing / `憛菔?` 09 foundation card pack contract sample to future
+`ScriptReadyScenePacket` source-basis planning without creating actual packets,
+queries, story content, refs, assets, storyboard, media, runtime objects, or
+JSON samples.
+
+Final-product chain reduced:
+
+- primary: scene packet;
+- secondary: scoped query/source scope, prompt/asset cards,
+  storyboard/camera bridge, voice/subtitle/SFX planning surface,
+  renderer/package QA readiness, and human approval gates.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_TO_SCENE_PACKET_ALIGNMENT_V0.md`
+
+Non-goals:
+
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No query execution, queryer implementation, concrete refs, source-basis
+  selection, evidence bundle, story/source/query invention, scene prose,
+  storyboard, prompt cards, asset cards, voice/subtitle/SFX timeline, renderer
+  package, generated media, or sample JSON.
+- No mutation of `world/chenxing/raw/*`.
+- No setting-pack apply, direct SQLite writes, Kotlin/JVM runtime, CLI, schema,
+  validator, provider/API, web/server, renderer/ffmpeg/TTS, or media
+  generation.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final approval, production lock, staging, commit, push,
+  archive/window creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- B03 PASS for `chenxing_09_foundation_card_pack_contract_sample_v0_docs_control`
+  is recorded by B01, and the prior selected contract-sample outcome is
+  reviewed as exactly once.
+- `docs/CODEX_CHENXING_09_FOUNDATION_CARD_PACK_CONTRACT_SAMPLE_V0.md` states
+  the Chenxing 09 sample is review-only, non-canon, not setting-pack-applied,
+  not runtime SQLite data, not approved assets, not registry, not release, not
+  final approval, and not production lock.
+- The Chenxing 09 JSON sample cites `memory/active_world_source.json`,
+  `memory/chenxing_world_source_manifest.json`,
+  `memory/quarterfull_world_memory_capsule.json`,
+  `docs/QUARTERFULL_WORLD_ALIGNMENT.md`, and raw source ids/paths under
+  `world/chenxing/raw/`.
+- `docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md` keeps foundation cards
+  candidate-only and explicitly blocks provider/API, SQLite/schema work,
+  renderer/ffmpeg/TTS/media generation, release, and production lock.
+- The current worktree contains unrelated dirty/untracked runtime, docs,
+  sample, memory, and raw archive files; this slice must remain scoped to
+  `PLANS.md` and the new docs/control alignment file.
+
+Assumptions:
+
+- No current-route-card pointer is needed because the dispatch only requires
+  `PLANS.md` plus one dedicated alignment doc.
+- The selected alignment outcome marker should appear exactly once in the new
+  alignment doc, not in `PLANS.md`.
+- Verification can prove the file set stayed docs/control only by checking the
+  scoped status of the two intended files.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the Chenxing 09 to scene packet alignment docs/control file.
+- [x] Step 3: Run required string, forbidden-pattern, whitespace, scoped diff,
+  touched-file, and final status verification, then report completion to B01.
+
+Verification plan:
+
+- `rg` required strings across touched docs: task name, prior reviewed outcome,
+  `alignment-only`, `field mapping contract`, `downstream consumer matrix`,
+  `visibility/leakage guard`, `Chenxing isolation`, `review-only firewall`,
+  `no actual ScriptReadyScenePacket`, `no QueryRequest`, `no QueryResponse`,
+  `no QueryScopeReviewReport`, `no Rain Gate`, `no Pilot`, `no provider/API`,
+  `no SQLite`, and `production lock`.
+- Confirm the selected alignment outcome marker appears exactly once across
+  touched docs.
+- Confirm no forbidden construction patterns are introduced: actual
+  query/packet instances, concrete refs, source-basis assignment, fenced/sample
+  JSON, or copied raw prose.
+- Confirm Rain Gate/Pilot/demo wording, if mentioned, remains exclusionary or
+  test/demo boundary wording only.
+- Confirm touched files are docs/control only and no JSON sample, runtime,
+  source, media, schema, provider/API, SQLite, or raw archive files are touched
+  by this slice.
+- Run trailing-whitespace scan on touched docs, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle because this slice should stay docs/control only.
+
+Verification result:
+
+- Required strings were found across the touched docs, including the task name,
+  prior reviewed outcome, alignment-only bridge, field mapping contract,
+  downstream consumer matrix, visibility/leakage guard, Chenxing isolation,
+  review-only firewall, no-actual-packet/query boundaries, no Rain Gate, no
+  Pilot, no provider/API, no SQLite, and production lock boundaries.
+- The selected alignment outcome marker remains exactly once in the new
+  alignment doc.
+- Rain Gate, Pilot, local renderer demo, old preview defaults, camera defaults,
+  render defaults, asset assumptions, and old story content appear only as
+  exclusionary Chenxing-isolation boundaries.
+- No fenced/sample JSON block was introduced.
+- Touched-file scope stayed docs/control only: `PLANS.md` and the new
+  Chenxing 09 to scene packet alignment doc.
+- Gradle remains skipped because no Kotlin/source/test/runtime/schema file was
+  intentionally edited by this slice.
+
+Completion notes:
+
+- Added a Chenxing 09 to scene packet alignment-only docs/control bridge.
+- Defined field mapping from 09 foundation surfaces to future scene-packet
+  planning needs, citation granularity, downstream consumers,
+  visibility/leakage guard, Chenxing isolation, scoped-query dependency, and
+  review-only firewall.
+- The slice did not create actual packets, query instances, concrete refs,
+  source-basis selections, evidence bundles, scene prose, prompt/asset cards,
+  storyboard, voice/subtitle/SFX timelines, renderer packages, media, runtime
+  objects, JSON samples, approval, release, or production lock.
+
+### Active Slice - Chenxing 09 Foundation Card Pack Contract Sample V0
+
+Task: `chenxing_09_foundation_card_pack_contract_sample_v0_docs_control`
+
+Goal: create one docs/control explanation and one review-only JSON contract
+sample for the first Chenxing / `憛菔?` 09 foundation card pack, so future scene
+packet, prompt/asset card, storyboard/camera, and human approval-gate routes no
+longer depend on Rain Gate story-facing sample data.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_CHENXING_09_FOUNDATION_CARD_PACK_CONTRACT_SAMPLE_V0.md`
+- `docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md` for a minimal sample
+  pointer update.
+- `samples/local_story_input/chenxing_09_foundation_card_pack_contract_sample.json`
+
+Source authorities:
+
+- `memory/active_world_source.json`
+- `memory/chenxing_world_source_manifest.json`
+- `world/chenxing/raw/`
+- `memory/quarterfull_world_memory_capsule.json`
+- `docs/QUARTERFULL_WORLD_ALIGNMENT.md`
+
+Non-goals:
+
+- No deletion of old samples or Rain Gate test/demo files.
+- No mutation, rewrite, summary, retitle, normalization, or edit under
+  `world/chenxing/raw/`.
+- No setting-pack apply, direct SQLite writes, schema/runtime/provider/API/media
+  work, actual `ScriptReadyScenePacket`, storyboard packet, asset registry
+  entry, voice/SFX timeline, renderer package, generated media, canon approval,
+  registry approval, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, B03 contact, or next-task
+  start.
+
+Confirmed facts:
+
+- `memory/active_world_source.json` parses as UTF-8 JSON and locks the active
+  creative world to Chenxing / `塵行`, with source title `穿越4000年`, memory
+  capsule, raw manifest, raw archive root, and alignment doc.
+- `memory/chenxing_world_source_manifest.json` parses as UTF-8 JSON and lists
+  nine raw source sets under `world/chenxing/raw/`; raw text rewrite, summary,
+  and retitle are disallowed by that manifest.
+- `docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md` defines a
+  `FoundationCardPack` sample shape with seven card families.
+- Existing Rain Gate 09 sample remains test/demo only and is not the active
+  creative worldview.
+
+Assumptions:
+
+- The local sample convention is `samples/local_story_input/`, because the
+  existing Rain Gate 09 foundation card contract sample lives there.
+- A review-only JSON sample can include short card summaries derived from
+  reviewed memory/alignment surfaces and source citations to manifest source
+  ids/raw paths, while preserving raw archive integrity.
+- The selected contract-sample outcome marker should appear exactly once in the
+  new docs/control explanation file only.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice and verification plan.
+- [x] Step 2: Add the docs/control explanation file.
+- [x] Step 3: Add the review-only Chenxing JSON contract sample and update the
+  09 contract sample pointer.
+- [x] Step 4: Run JSON/source/raw/archive verification and report completion to
+  B01.
+
+Verification plan:
+
+- Parse the JSON contract sample, `memory/active_world_source.json`, and
+  `memory/chenxing_world_source_manifest.json` as UTF-8 JSON.
+- Verify sample markers: `chenxing_09_foundation_card_pack_contract_sample`,
+  `憛菔?`, `draft/review-only`, `non-canon`, `not setting-pack-applied`,
+  `not runtime SQLite data`, `not production lock`, and citations to
+  `world/chenxing/raw/`.
+- Verify Rain Gate appears only as test/demo-only / non-active-world wording if
+  mentioned.
+- Verify raw archive files under `world/chenxing/raw/` are not modified.
+- Run trailing-whitespace scan on generated docs/JSON files, scoped
+  `git diff --check`, and `git status --short --branch`.
+- Skip Gradle because this slice should remain docs/control plus one
+  review-only JSON sample.
+
+Verification result:
+
+- The Chenxing JSON contract sample, active world source pointer, and Chenxing
+  raw source manifest parse as UTF-8 JSON.
+- Required sample markers are present, including the sample id, `憛菔?`,
+  `draft/review-only`, `non-canon`, `not setting-pack-applied`, not-runtime
+  SQLite status, not-production-lock status, and `world/chenxing/raw/`
+  citations.
+- The selected outcome marker remains exactly once in the new explanation doc.
+- Every checked citation path resolves to an allowed source authority or raw
+  archive path.
+- All nine manifest-listed raw files match their recorded SHA-256 hashes.
+- Rain Gate mentions in touched docs/sample are framed as test/demo-only /
+  non-active-world and no Rain Gate file was deleted or edited.
+- Raw archive files remain outside the edited slice; `world/chenxing/raw/` is
+  untracked in the current dirty worktree, but the manifest hash check passed
+  for every raw file.
+- Gradle remains skipped because this slice did not touch Kotlin/source/test
+  files.
+
+Completion notes:
+
+- Added the Chenxing / `憛菔?` docs/control explanation and review-only JSON
+  contract sample.
+- Updated the 09 foundation card contract sample pointer so Chenxing is the
+  default story-facing sample direction while Rain Gate remains test/demo-only /
+  non-active-world evidence.
+- The slice stayed docs/control plus one review-only JSON contract sample and
+  did not create actual packets, query instances, source-basis selections,
+  runtime data, provider/API work, media, approval, release, or production lock.
+
+### Active Slice
+
+Task: `active_world_source_lock_v0_docs_control`
+
+Goal: prevent future Codex windows from selecting old sample/demo world data as
+the active creative worldview. The only current creative-world source should be
+`塵行`, backed by `memory/quarterfull_world_memory_capsule.json` and
+`docs/QUARTERFULL_WORLD_ALIGNMENT.md`.
+
+Scope:
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_ACTIVE_WORLD_SOURCE_LOCK_V0.md`
+- `memory/active_world_source.json`
+- minimal clarification in the 09 foundation card contract sample pointer if
+  needed.
+
+Non-goals:
+
+- No physical deletion of sample/test files in this slice.
+- No Kotlin source/test edits.
+- No Gradle run unless a later source edit makes it necessary.
+- No direct SQLite writes, schema changes, provider/API, web/server,
+  renderer/ffmpeg/TTS/media generation, canon approval, registry approval,
+  release, final approval, or production lock.
+
+Confirmed facts:
+
+- The user reported that Rain Gate is not their authored worldview and asked to
+  remove old setting/worldview confusion.
+- `memory/quarterfull_world_memory_capsule.json` parses as UTF-8 JSON and names
+  `塵行`, `第一話　塵`, `陸知行`, `愛醬`, and `灰關`.
+- `docs/QUARTERFULL_WORLD_ALIGNMENT.md` records `塵行` as the active creative
+  baseline and says historical repo evidence was not physically deleted in that
+  milestone.
+- Existing Rain Gate files are referenced by docs, samples, and focused tests;
+  deleting them without replacement would likely break verification.
+
+Assumptions:
+
+- The safest immediate cleanup is source-authority locking plus explicit
+  test-only classification for Rain Gate / old samples.
+- Physical deletion should happen only after dependencies are replaced by
+  `塵行` equivalents or marked as obsolete with a checked removal list.
+
+Implementation steps:
+
+- [x] Step 1: Inspect current `塵行`, Rain Gate, and sample/test references.
+- [x] Step 2: Add the active-world source lock document and JSON pointer.
+- [x] Step 3: Update handoff / sample wording so new windows cannot confuse
+  test samples with active worldview.
+- [x] Step 4: Verify required strings, JSON parse, whitespace, and scoped diff.
+
+Verification plan:
+
+- Parse `memory/active_world_source.json` as UTF-8 JSON.
+- `rg` required strings: `ACTIVE_WORLD_SOURCE_LOCK`, `塵行`, `Rain Gate`,
+  `test/demo only`, `not active creative worldview`, and no provider/API /
+  no SQLite / no media generation / no production lock boundaries.
+- Run trailing-whitespace scan for touched files.
+- Run scoped `git diff --check` for touched tracked files.
+- Skip Gradle because this slice remains docs/control and memory pointer only.
+
+Verification result:
+
+- `memory/active_world_source.json` parsed as UTF-8 JSON:
+  `status=ACTIVE_WORLD_SOURCE_LOCK`, `series=塵行`,
+  `nextAllowedContentStep=chenxing_09_foundation_card_pack_contract_sample`.
+- Required string scan passed for active source lock, `塵行`, Rain Gate
+  test/demo-only status, source cleanup boundaries, and future `chenxing` 09
+  card pack replacement pointer.
+- Trailing-whitespace scan passed for touched files.
+- Scoped `git diff --check` passed for touched tracked files with Windows
+  line-ending warnings only for existing tracked docs.
+- Gradle was skipped because no Kotlin source/test files changed.
+
+### Active Slice - Chenxing Raw World Source Archive V0
+
+Task: `chenxing_raw_world_source_archive_v0`
+
+Goal: store the user's provided worldbuilding files word-for-word under a clean
+`塵行` source archive, while keeping classification metadata separate from the
+raw text.
+
+Scope:
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CHENXING_WORLD_SOURCE_ARCHIVE_V0.md`
+- `memory/active_world_source.json`
+- `memory/chenxing_world_source_manifest.json`
+- `world/chenxing/raw/*`
+
+Non-goals:
+
+- Do not rewrite, summarize, correct, translate, or canonically approve the raw
+  source text.
+- Do not convert the source text into setting pack, SQLite runtime data,
+  script packet, storyboard, asset registry, or media output in this slice.
+- Do not delete old samples in this slice.
+- No Kotlin source/test edits, Gradle run, provider/API, web/server,
+  renderer/ffmpeg/TTS, canon approval, registry approval, final approval,
+  release, or production lock.
+
+Confirmed facts:
+
+- The user provided eight attachment text files for `穿越4000年` layers and one
+  inline `愛醬 —— 詳細設定` text block.
+- Attachment SHA-256 and byte sizes were recorded before copying.
+- The user explicitly requested one-word-not-missing classified storage and
+  allowed formatting, but not content changes.
+
+Implementation steps:
+
+- [x] Step 1: Inventory attachment paths, titles, sizes, and hashes.
+- [x] Step 2: Copy attachment raw text files into `world/chenxing/raw/`.
+- [x] Step 3: Store the inline 愛醬 setting as a raw markdown source file.
+- [x] Step 4: Add manifest / docs / handoff pointers and update active source
+  lock.
+- [x] Step 5: Verify hashes, required strings, JSON parse, whitespace, and
+  scoped diff.
+
+Verification plan:
+
+- Compare SHA-256 hashes between attachment files and copied raw files.
+- Parse `memory/chenxing_world_source_manifest.json` and
+  `memory/active_world_source.json` as UTF-8 JSON.
+- `rg` required strings for source archive status, `穿越4000年`, `塵行`,
+  `愛醬`, `一字不漏`, `rawTextUnmodified`, and no provider/API / no SQLite /
+  no media generation / no production lock boundaries.
+- Run trailing-whitespace scan on generated docs/manifest files.
+- Run scoped `git diff --check`.
+- Skip Gradle because no Kotlin source/test files changed.
+
+Verification result:
+
+- All eight attachment-backed raw files match their original attachment
+  SHA-256 hashes exactly.
+- `memory/chenxing_world_source_manifest.json` parsed as UTF-8 JSON:
+  `status=CHENXING_WORLD_SOURCE_RAW_ARCHIVE_READY`, `sourceCount=9`.
+- `memory/active_world_source.json` parsed as UTF-8 JSON and now points to
+  `memory/chenxing_world_source_manifest.json` plus `world/chenxing/raw`.
+- Required string scan passed for `CHENXING_WORLD_SOURCE_RAW_ARCHIVE_READY`,
+  `rawTextUnmodified`, `穿越4000年`, `塵行`, `愛醬`, `一字不漏`, boundaries,
+  and `chenxing_09_foundation_card_pack_contract_sample`.
+- Raw files were not whitespace-normalized because they are preserved source
+  text. Generated docs/manifest files should be checked separately.
+- Manifest-to-file hash verification passed for all nine raw source files.
+- Generated-file trailing-whitespace scan passed for `PLANS.md`,
+  `docs/HANDOFF.md`, `docs/CODEX_ACTIVE_WORLD_SOURCE_LOCK_V0.md`,
+  `docs/CODEX_CHENXING_WORLD_SOURCE_ARCHIVE_V0.md`,
+  `memory/active_world_source.json`, and
+  `memory/chenxing_world_source_manifest.json`.
+- Scoped `git diff --check` passed for touched tracked files with Windows
+  line-ending warnings only for existing tracked docs.
+- Gradle was skipped because no Kotlin source/test files changed.
+
+## Historical Plan Window - Route Convergence
+
+Marker: `HISTORICAL_ROUTE_CONVERGENCE_PLAN_WINDOW_V0`
+
+Status: route-family convergence package candidate completed; entry-layer
+goal-mode optimization batch completed.
+
+### Active Slice
+
+Task: `route_family_convergence_package_candidate_v0_docs_control`
+
+Goal: create one docs/control convergence package candidate deciding whether
+the large `QUERY_REF_SOURCE_MATERIAL` and `SCRIPT_READY_SCENE_PACKET_CANDIDATE`
+route families can be represented by one current-route convergence pointer plus
+on-demand historical evidence.
+
+Scope:
+
+- `PLANS.md`
+- `docs/CODEX_ROUTE_FAMILY_CONVERGENCE_PACKAGE_CANDIDATE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` for a minimal pointer.
+- Exclude `docs/HANDOFF.md` because it is dirty and no handoff pointer is
+  required for this slice.
+
+Non-goals:
+
+- No actual packet, sample JSON, story/source/query invention, concrete refs,
+  evidence bundle, provider/API, SQLite, runtime/schema/media,
+  renderer/ffmpeg/TTS, approval, canon, registry, release, final approval, or
+  production lock.
+- No direct B02/B03 dispatch by A-group windows.
+- No deletion of historical docs, staging, commit, push, archive/window
+  creation, B03 contact, or next-task start.
+
+Confirmed facts:
+
+- A01 approved this exact implementation package as `AI_TECHNICAL_APPROVED`
+  and `READY_FOR_B01_DISPATCH`.
+- A06 same-family chain stop is already represented by
+  `a06-no-new-same-family-status-layer-without-bundle-v0`.
+- Existing entry-layer optimization markers are present:
+  `OPTIMIZED_FIRST_READ_PATH_V0`, `CURRENT_ACTIVE_ROUTE_DIGEST_V0`,
+  `CURRENT_PLAN_WINDOW_V0`, and `CURRENT_GOAL_MODE_OBJECTIVE_V0`.
+- Dispatch input names 36 `QUERY_REF_SOURCE_MATERIAL` docs and 31
+  `SCRIPT_READY_SCENE_PACKET_CANDIDATE` docs.
+- Local file-name scan found 41 `QUERY_REF_SOURCE_MATERIAL` files and 31
+  `SCRIPT_READY_SCENE_PACKET_CANDIDATE` files; the query-ref count drift is
+  recorded as on-demand history evidence, not a deletion reason.
+
+Assumptions:
+
+- The selected convergence package outcome marker should appear exactly once in
+  the new package-candidate document only.
+- Historical docs can be marked on-demand evidence if the current route card,
+  first-read index, and plan window preserve the active route and citeability.
+- `docs/HANDOFF.md` can remain untouched because current-route and first-read
+  pointers already carry the active route.
+
+Implementation steps:
+
+- [x] Step 1: Update `PLANS.md` with this active slice, scope, constraints, and
+  verification plan.
+- [x] Step 2: Add the convergence package candidate document.
+- [x] Step 3: Add a minimal current-route-card pointer.
+- [x] Step 4: Run docs/control verification and report completion to B01.
+
+Verification plan:
+
+- `rg` required strings for the task marker, on-demand historical evidence,
+  final-product chain, both route families, and no provider/API / no SQLite /
+  production lock boundaries.
+- Confirm exactly one selected convergence package candidate outcome marker in
+  touched docs.
+- Confirm no history deletion and touched files stay docs/control only.
+- Confirm `docs/HANDOFF.md` remains untouched/excluded.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if this slice remains docs/control only.
+
+Completion notes:
+
+- Added one route-family convergence package candidate document and one
+  current-route-card pointer.
+- Selected the convergence pointer ready outcome in the package candidate
+  document only.
+- Marked old high-pressure family docs as on-demand historical evidence only;
+  no history deletion was selected.
+- Verification found required markers, exactly one selected outcome marker, no
+  deleted files in status, no HANDOFF marker for this slice, no trailing
+  whitespace, and scoped `git diff --check` reported only the existing PLANS.md
+  CRLF warning.
+- Gradle was skipped because this slice stayed docs/control only.
+
+### Read Rule
+
+Future windows should read this section first. Treat older `## Active ...`
+sections below as historical evidence unless this section names one as current.
+Do not scan the full `PLANS.md` history by default.
+
+Use `rg` to find older plan evidence on demand by marker, route family, file
+path, or task id.
+
+### Current Optimization Queue
+
+- [x] `handoff_first_read_alignment_v0_docs_control`: align
+  `docs/HANDOFF.md` with `OPTIMIZED_FIRST_READ_PATH_V0` and
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0`.
+- [x] `plan_read_window_v0_docs_control`: add this top plan window and connect
+  it to the handoff first-read rules.
+- [x] `route_family_convergence_inventory_v0_read_only`: keep the next
+  optimization decision grounded in the measured route-family counts before
+  starting another docs/control patch.
+- [x] `route_card_active_objective_alignment_v0_docs_control`: align the
+  current route card's `Current Route`, `Active Objective`, and
+  `Next Allowed Step` with goal-mode optimization and convergence inventory,
+  while keeping old route history as on-demand evidence.
+- [x] `execution_control_index_goal_mode_alignment_v0_docs_control`: align the
+  first-read index's required path and current-control-state text with
+  `CURRENT_PLAN_WINDOW_V0` and `CURRENT_GOAL_MODE_OBJECTIVE_V0`.
+
+### Next Coordination Candidate
+
+Do not auto-start another docs/control patch. The next optimization candidate
+should go to A01 as a bounded convergence decision:
+
+`route_family_convergence_package_candidate_v0`
+
+Scope:
+
+- classify whether the 36 `QUERY_REF_SOURCE_MATERIAL` docs and 31
+  `SCRIPT_READY_SCENE_PACKET_CANDIDATE` docs can be represented by one
+  convergence bundle pointer plus on-demand historical evidence;
+- preserve required final-product chains: scene packet, storyboard/camera,
+  prompt/asset cards, voice/subtitle/SFX, renderer/package QA, and human
+  approval gates;
+- do not delete existing history, start implementation, touch runtime/schema,
+  call provider/API, write SQLite, generate media, approve canon/registry, or
+  create production lock.
+
+### Current Evidence Snapshot
+
+- `PLANS.md` contains 206 `## Active` headings, so old headings must be treated
+  as history unless this window names one as current.
+- `docs/` contains 233 files and 137 `CODEX_*.md` files.
+- Largest measured route families: 36 `QUERY_REF_SOURCE_MATERIAL` docs, 31
+  `SCRIPT_READY_SCENE_PACKET_CANDIDATE` docs, and 14 `LOCAL_RENDERER` docs.
+- Verification for `plan_read_window_v0_docs_control` found
+  `CURRENT_PLAN_WINDOW_V0` in both `PLANS.md` and `docs/HANDOFF.md`, confirmed
+  the current plan window appears before historical `## Active ...` headings,
+  found no trailing whitespace, and passed scoped `git diff --check` with only
+  existing CRLF warnings.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` still has stale current-route text
+  around the optimized digest: the `Current Route`, `Active Objective`, and
+  `Next Allowed Step` sections still describe the older A-group evolution
+  priority route.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now defines
+  `goal_mode_optimization_and_route_convergence_v0` and
+  `CURRENT_GOAL_MODE_OBJECTIVE_V0`; the old active-objective and next-step
+  headings were renamed as historical before-goal-mode evidence. Verification
+  found the new markers, found no old active headings, found no trailing
+  whitespace, and `git diff --check` returned only existing CRLF warnings for
+  tracked touched files.
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` still names the older
+  A-group evolution route as current control state and next transition, so it
+  needs the same goal-mode alignment as the route card and handoff.
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` now includes
+  `CURRENT_GOAL_MODE_OBJECTIVE_V0`, `CURRENT_PLAN_WINDOW_V0`, and
+  `CURRENT_GOAL_MODE_CONTROL_STATE_V0` in the optimized first-read path and
+  required first-read section. The old current-control-state heading was
+  renamed as historical before-goal-mode evidence. Verification found the new
+  markers, found no current-control-state heading, found no trailing
+  whitespace, and `git diff --check` returned only existing CRLF warnings for
+  tracked touched files.
+
+### Guardrails
+
+- No Kotlin/JVM, runtime, schema, SQLite, provider/API, renderer/ffmpeg/TTS, web
+  server, media generation, sample JSON, direct database writes, staging,
+  commit, push, canon, registry, release, final approval, or production lock.
+- Do not delete old plan history in this slice.
+- Do not dispatch B02/B03 directly or start Phase 20/21 or 04/05/06/07/08.
+
+## Active Optimization Goal Mode Handoff First-Read Alignment V0 Docs Control
+
+### Goal
+
+Continue goal-mode optimization by aligning the handoff first-read surface with
+the already accepted optimized first-read path, so new windows do not re-expand
+into the old 11-document startup route.
+
+### Global Strategy
+
+Keep `docs/HANDOFF.md` as the stable id/evidence index, but make its current
+first-read override point to `OPTIMIZED_FIRST_READ_PATH_V0` and
+`CURRENT_ACTIVE_ROUTE_DIGEST_V0`. Keep long historical and legacy runtime read
+lists available only when a task specifically needs them.
+
+### Non-Goals
+
+- No Kotlin/JVM, runtime, schema, SQLite, provider/API, renderer/ffmpeg/TTS, web
+  server, media generation, sample JSON, direct database writes, staging,
+  commit, push, canon, registry, release, final approval, or production lock.
+- Do not delete current window ids, stable-point evidence, route history, or
+  safety boundaries.
+- Do not dispatch B02/B03 directly or open extra windows unless drift evidence
+  shows this local slice is insufficient.
+- Do not start Phase 20/21 or 04/05/06/07/08.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` already defines
+  `OPTIMIZED_FIRST_READ_PATH_V0`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` already defines
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0`.
+- `docs/HANDOFF.md` currently remains a first stop for new windows and still
+  lists the older 11-document route in `Current First-Read Override`.
+- `docs/HANDOFF.md` also has a legacy `Read First` list that can make future
+  windows over-read unless it is clearly scoped.
+- `git diff -- docs/HANDOFF.md` shows the first-read override is part of the
+  current dirty handoff addition, so this slice can make a narrow alignment
+  patch without reverting unrelated history.
+
+### Implementation Steps
+
+- [x] Step 1: Read current handoff first-read override, optimized index, route
+  digest marker, and scoped dirty diff evidence.
+- [x] Step 2: Align `docs/HANDOFF.md` so the top override uses the optimized
+  first-read path and scopes legacy read lists to on-demand use.
+- [x] Step 3: Verify markers, retained window ids, first-read wording,
+  trailing whitespace, scoped diff check, and current status.
+
+### Verification
+
+- `rg` required strings:
+  `OPTIMIZED_FIRST_READ_PATH_V0`,
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0`,
+  `on-demand`,
+  `Current active ids`,
+  `A組06 優化稽核`,
+  `no provider/API`,
+  `no SQLite`,
+  `production lock`.
+- Confirm `docs/HANDOFF.md` no longer defaults to the old 11-document startup
+  list for the whole-project voiced-comic route.
+- Run trailing-whitespace scan for touched files.
+- Run scoped `git diff --check` for touched files.
+- Run `git status --short --branch`.
+- Gradle is not expected because this is docs/control only.
+
+### Risks
+
+- `docs/HANDOFF.md` is already dirty and contains many current-window details.
+  This slice must keep edits narrow and preserve ids/evidence boundaries.
+- Over-compression could hide true runtime onboarding requirements; this slice
+  scopes legacy runtime read lists to on-demand task use rather than deleting
+  them.
+
+### Drift Log
+
+- 2026-07-05: Goal mode continued after first-read compression. Evidence shows
+  the optimized index exists but `docs/HANDOFF.md` still presents heavier
+  startup instructions, which can make new windows appear idle or route-heavy.
+
+### Completion Notes
+
+- `docs/HANDOFF.md` now points the current first-read override to
+  `OPTIMIZED_FIRST_READ_PATH_V0` and the top
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0` section before any long route docs.
+- The stale "current priority route is the A-group evolution system" wording was
+  replaced with a pointer to the current route digest, while preserving the
+  A-group evolution loop as on-demand evidence.
+- The legacy runtime read list remains available, but is no longer framed as
+  the default startup path for the current whole-project route.
+- Verification completed: required markers and current active ids were found,
+  the old `^11.` startup-list item was absent, trailing-whitespace scan returned
+  no matches, scoped `git diff --check` returned no errors and only existing
+  CRLF warnings, and status was captured for touched files.
+- Gradle was skipped because this slice stayed docs/control only.
+
+## Active Optimization First-Read Compression V0 Docs Control
+
+### Goal
+
+Start optimization by reducing first-read route cost without deleting historical
+route evidence or cutting required final-product scope.
+
+### Global Strategy
+
+Add a short current-route digest and optimized first-read path to existing
+control documents. Keep the long route-card history available as on-demand
+evidence, but stop requiring future windows to treat every historical pointer as
+the active route.
+
+### Non-Goals
+
+- No Kotlin/JVM, runtime, schema, SQLite, provider/API, renderer/ffmpeg/TTS, web
+  server, media generation, sample JSON, direct database writes, staging,
+  commit, push, canon, registry, release, final approval, or production lock.
+- Do not delete existing route history.
+- Do not dispatch B02/B03 directly.
+- Do not start Phase 20/21 or 04/05/06/07/08.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- Exclude `docs/HANDOFF.md` because it is dirty and already contains many
+  current-window details.
+
+### Confirmed Facts
+
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` is the first-read index.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` is very long and contains many
+  historical route pointers.
+- `docs/CODEX_ROUTE_LOOP_CONVERGENCE_RULE_SET_V0.md` installs the
+  `a06-no-new-same-family-status-layer-without-bundle-v0` rule.
+- `docs/CODEX_A_GROUP_OPTIMIZATION_AUDIT_LANE_V0.md` defines valid
+  optimization as removing waste without removing required product scope.
+- `git status --short --branch` shows a dirty worktree with many unrelated
+  modified/untracked files.
+
+### Assumptions
+
+- The safest first optimization is docs/control-only navigation compression,
+  because it reduces idle-window and route-bloat risk without deleting evidence.
+- Future windows benefit from a short digest that names the current active route,
+  next routing rule, and final-product-chain requirement before reading long
+  pointer history.
+
+### Open Questions
+
+- Whether a later round should physically split or archive historical route-card
+  pointers; this slice does not do that.
+
+### Implementation Steps
+
+- [x] Step 1: Read current first-read, route-card, optimization, evolution, and
+  route-loop evidence.
+- [x] Step 2: Update the plan and first-read index with the optimized
+  first-read path.
+- [x] Step 3: Add a current active route digest to the current route card.
+- [x] Step 4: Run docs/control verification and update completion notes.
+
+### Verification
+
+- `rg` required strings:
+  `OPTIMIZED_FIRST_READ_PATH_V0`,
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0`,
+  `a06-no-new-same-family-status-layer-without-bundle-v0`,
+  `final-product chain`,
+  `on-demand route history`,
+  `no provider/API`,
+  `no SQLite`,
+  `production lock`.
+- Confirm no `docs/HANDOFF.md` current-slice marker is added.
+- Run trailing-whitespace scan for touched files.
+- Run scoped `git diff --check` for touched files.
+- Run `git status --short --branch`.
+- Gradle is not expected because this is docs/control only.
+
+### Risks
+
+- A short digest can become stale if future windows update only the long route
+  history. This slice mitigates that by placing the digest in the same current
+  route card, near the top.
+- Over-compression could hide required boundaries; this slice keeps explicit
+  non-goals and final-product-chain requirements.
+
+### Drift Log
+
+- 2026-07-05: Started optimization from user request. Chosen first step is
+  first-read compression, not feature implementation, because evidence shows
+  route-card and handoff navigation weight is a direct idle-window risk.
+
+### Completion Notes
+
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` now defines
+  `OPTIMIZED_FIRST_READ_PATH_V0` and makes route-specific documents
+  on-demand instead of default reading.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now defines
+  `CURRENT_ACTIVE_ROUTE_DIGEST_V0` near the top, before the long route pointer
+  history.
+- `docs/HANDOFF.md` stayed excluded; marker search for
+  `OPTIMIZED_FIRST_READ_PATH_V0` and `CURRENT_ACTIVE_ROUTE_DIGEST_V0` returned
+  no matches.
+- Verification completed: required strings were found, touched-file trailing
+  whitespace scan returned no matches, scoped `git diff --check` returned no
+  errors and only the existing PLANS.md CRLF warning, and
+  `git status --short --branch` was captured.
+- Gradle was skipped because this slice stayed docs/control only.
+
+## Active Same Family Status Layer Convergence Rule Patch V0 Docs Control
+
+### Goal
+
+Integrate A06's lightweight same-family status-layer convergence rule into the
+route/control layer so status, review, review-status, route-decision,
+route-package, package-review, and curation chains converge instead of adding
+another standalone status layer.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md`
+- `docs/CODEX_ROUTE_LOOP_CONVERGENCE_RULE_SET_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No actual packet, sample, query, media, runtime, or schema work.
+- No source/story invention, evidence bundle, concrete refs, SQLite,
+  provider/API, renderer/ffmpeg/TTS, approval, canon, registry, release, final
+  approval, or production lock.
+- Do not remove safety boundaries to make the route lighter.
+- No staging, commit, push, archive/window creation, direct B03 contact, or
+  next-task start.
+
+### Confirmed Facts
+
+- B03 returned PASS for `source_basis_evidence_planning_bundle_v0_docs_control`.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- Local evidence found no existing
+  `a06-no-new-same-family-status-layer-without-bundle-v0` marker.
+- `docs/CODEX_ROUTE_LOOP_CONVERGENCE_RULE_SET_V0.md` already defines route-loop
+  convergence gates, including the `No-New-Status-Doc Gate`.
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` already records A06 as a
+  planning-only optimization audit lane that reports to A01 and does not
+  dispatch implementation work.
+
+### Assumptions
+
+- The selected process-rule outcome marker should appear exactly once in the
+  route-loop convergence rule-set document only.
+- Existing route-loop, default-route, multi-window, A-group evolution, and
+  current-route docs are sufficient integration surfaces; no new standalone
+  status document is needed.
+- `docs/HANDOFF.md` should remain excluded because it is dirty and no
+  current-slice pointer is required there.
+
+### Implementation Steps
+
+- [x] Step 1: Update `PLANS.md` with the active slice, scope, constraints, and
+  verification plan.
+- [x] Step 2: Add the same-family status-layer convergence rule to route-loop
+  convergence rules.
+- [x] Step 3: Add minimal pointers/rules to A-group evolution, default route,
+  multi-window operating model, and current route card.
+- [x] Step 4: Run docs/control verification and report completion to B01.
+
+### Verification Plan
+
+- `rg` required strings for the A06 rule marker, same-family language,
+  convergence bundle, final-product chain tags, named final-product chains, and
+  no provider/API / no SQLite / production lock boundaries.
+- Confirm the selected process-rule outcome appears exactly once across touched
+  docs.
+- Confirm touched files stay docs/control only.
+- Confirm A windows remain forbidden from direct B02/B03 dispatch.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if this slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Plan updated first.
+- Route-loop rule-set now carries the selected process-rule outcome and A06
+  same-family convergence rule.
+- A-group evolution, default-route rules, multi-window model, and current-route
+  card now point to the same rule without adding a standalone status layer.
+- `docs/HANDOFF.md` remains excluded because it is dirty and not needed for the
+  clean slice.
+- Verification completed: required strings were found, the selected outcome
+  appears exactly once, no direct B02/B03 dispatch permission was found,
+  `docs/HANDOFF.md` has no current-slice marker, no trailing whitespace was
+  found, and scoped `git diff --check` reported only the existing PLANS.md
+  CRLF warning.
+
+## Active Source Basis Evidence Planning Bundle V0 Docs Control
+
+### Goal
+
+Build one docs/control source-basis evidence planning bundle from the reviewed
+route package, preserving shape-only planning and non-approval boundaries for
+the query/source-scope to future `ScriptReadyScenePacket` chain.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SOURCE_BASIS_EVIDENCE_PLANNING_BUNDLE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` for a minimal pointer if needed.
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No actual source-basis selection.
+- No concrete refs, evidence bundle, query instances, sample JSON,
+  story/source invention, actual `ScriptReadyScenePacket`,
+  runtime/schema/provider/API/media work, SQLite, renderer, ffmpeg, TTS,
+  web/server, approval, canon, registry, release, final approval, or
+  production lock.
+- No staging, commit, push, archive/window creation, direct B03 contact, or
+  next-task start.
+
+### Confirmed Facts
+
+- B03 returned PASS for
+  `source_basis_evidence_planning_route_package_v0_docs_control`.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- The reviewed route package selected a ready-for-review route-package outcome.
+- The reviewed route package requires future planning slots for source scene
+  id, zone id, beat id, character refs, asset need refs, `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- The reviewed route package limits admissible evidence-source categories to
+  reviewed docs/control citations only and forbids placeholders as concrete
+  refs.
+- Local evidence found no existing source-basis evidence planning bundle doc
+  with the current bundle marker.
+
+### Assumptions
+
+- A bundle can be ready for future reviewed-evidence selection if each slot
+  names admissible reviewed-doc evidence, gates, and blockers while preserving
+  unresolved values.
+- The selected bundle outcome marker should appear exactly once in the new
+  bundle document only.
+- At most one future candidate may be named if it is not status-only and
+  reduces final-product uncertainty.
+- `docs/HANDOFF.md` should remain excluded because it is dirty and no
+  current-slice pointer is required there.
+
+### Implementation Steps
+
+- [x] Step 1: Update `PLANS.md` with the active slice, scope, constraints, and
+  verification plan.
+- [x] Step 2: Add the source-basis/evidence planning bundle document.
+- [x] Step 3: Add a minimal pointer to the current route card if needed.
+- [x] Step 4: Run docs/control verification and report completion to B01.
+
+### Verification Plan
+
+- `rg` required strings for the bundle name, all eight planning slots,
+  reviewed-doc evidence, and forbidden boundary claims.
+- Confirm the selected bundle outcome appears exactly once across touched docs.
+- Confirm touched files stay docs/control only.
+- Confirm no actual evidence bundle, query instances, concrete refs, sample
+  JSON, runtime/schema/provider/API/media files, or source-basis selection are
+  introduced.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if this slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Plan updated first. Bundle document and current route-card pointer are
+  drafted.
+- Verification passed for required bundle strings, single selected bundle
+  outcome marker, one future candidate marker, docs/control-only scope, no
+  actual-evidence/query/concrete-ref patterns, cited path existence, untouched
+  `docs/HANDOFF.md`, trailing whitespace, and scoped diff check. Gradle was
+  skipped because this slice stayed docs/control only.
+
+## Active A Group Optimization Audit Lane V0 Docs Control
+
+### Goal
+
+Add a dedicated `A組06 優化稽核` planning-only lane so the project can optimize
+and lighten its route without drifting from the final voiced-comic deliverable
+or cutting required work short.
+
+### Global Strategy
+
+Install A組06 as an A-group specialist under A組01. A組06 audits project weight,
+duplicate route layers, repeated status loops, stale handoffs, and task-drift
+risk. It reports optimization proposals to A組01 only; it does not dispatch
+B組02/B組03 work, rewrite the blueprint directly, or replace B組01.
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, schema, CLI, sample JSON, runtime, renderer,
+  ffmpeg, TTS, provider/API, web/server, direct SQLite, media generation, canon,
+  registry, release, approval, production lock, staging, commit, or push.
+- No automatic scheduling or unattended loop.
+- No Phase 20 / Phase 21 restart.
+- No 04/05/06/07/08 restart.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_OPTIMIZATION_AUDIT_LANE_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `docs/HANDOFF.md`
+- Create one Codex thread titled `A組06 優化稽核` after docs are aligned.
+
+### Confirmed Facts
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- Existing docs define `A組01 整合規劃` as blueprint integrator and `B組01 派工`
+  as the only B-group dispatcher.
+- Existing docs define `A_GROUP_EVOLUTION_SYSTEM_V0` for stalls, missed
+  handoffs, root-cause analysis, rule upgrades, and regression checks.
+- Existing docs do not yet define a dedicated `A組06 優化稽核` lane for route
+  weight, duplicate-layer reduction, and "lightweight but not incomplete"
+  auditing.
+
+### Assumptions
+
+- A dedicated A-group optimization lane will reduce pressure on A組01 without
+  creating another dispatch authority.
+- A組06 should be planning-only and should report to A組01 rather than B組01.
+- The first A組06 task should be read-only audit of current route-weight and
+  idle-window causes, not implementation.
+
+### Open Questions
+
+- None for this docs/control slice.
+
+### Implementation Steps
+
+- [x] Step 1: Read current multi-window, evolution, blueprint, handoff, route,
+  and worktree evidence.
+- [x] Step 2: Add A組06 optimization audit lane docs/control packet.
+- [x] Step 3: Update first-read / blueprint / handoff pointers.
+- [x] Step 4: Create `A組06 優化稽核` Codex thread and send its first bounded
+  read-only audit task.
+- [x] Step 5: Run docs-only verification and report.
+
+### Verification
+
+- `rg` required strings for `A_GROUP_OPTIMIZATION_AUDIT_LANE_V0`, `A組06`,
+  `OPTIMIZATION_AUDIT`, `LIGHTWEIGHT_RULE_PROPOSAL`,
+  `CONVERGENCE_PACKAGE_CANDIDATE`, `A組01`, `B組01`, no direct B02/B03
+  dispatch, no media generation, and production-lock boundaries.
+- Trailing-whitespace scan for touched files.
+- Scoped `git diff --check` for touched tracked files.
+- `git status --short --branch`.
+- No Gradle because this slice is docs/control plus thread creation only.
+
+### Risks
+
+- Accidentally making A組06 another dispatcher.
+- Accidentally letting "optimization" mean cutting required final-product
+  scope.
+- Accidentally creating another status-only lane instead of a convergence
+  auditor.
+- Creating the thread in a saved OneDrive project; the prompt must explicitly
+  require the canonical workspace.
+
+### Drift Log
+
+- 2026-07-05: Started docs/control A組06 optimization audit lane after user
+  approved creating a dedicated project-optimization/lightweighting role. Scope
+  is control docs plus one new Codex window only.
+- 2026-07-05: Created live `A組06 優化稽核` window
+  `019f30fe-b469-7ed1-aeea-2cfd3d97ccc3` with a read-only initial
+  optimization audit task. The prompt explicitly requires canonical workspace
+  `C:\Users\f7212\Projects\AI 劇本` and forbids edits, dispatch, Gradle,
+  provider/API, media generation, staging, commit, and push.
+- 2026-07-05: Docs-only verification passed. `rg` found the A組06 role,
+  output-shape, thread-id, A01/B01 authority, no direct B02/B03 dispatch, no
+  media generation, and production-lock boundary strings in touched docs.
+  Trailing-whitespace scan passed. Scoped `git diff --check` passed with only
+  Windows LF-to-CRLF warnings for tracked touched files. `git status
+  --short --branch` confirmed the pre-existing dirty/untracked workspace plus
+  the new A組06 docs/control file. A組06 thread readback confirmed title
+  `A組06 優化稽核` and active in-progress initial audit.
+
+## Active Source Basis Evidence Planning Route Package V0 Docs Control
+
+### Goal
+
+Define one docs/control source-basis/evidence planning route package for the
+query/source-scope to future `ScriptReadyScenePacket` chain, using the reviewed
+artifact-shape convergence bundle as shape-only input.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SOURCE_BASIS_EVIDENCE_PLANNING_ROUTE_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` for a minimal pointer if needed.
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No actual source-basis selection.
+- No concrete refs, evidence bundle, query instances, sample JSON,
+  story/source invention, `ScriptReadyScenePacket`, runtime/schema/provider/API
+  or media work.
+- No SQLite, renderer, ffmpeg, TTS, web/server, restarts, approval, canon,
+  registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, direct B03 contact, or
+  next-task start.
+
+### Confirmed Facts
+
+- B03 returned PASS for
+  `query_ref_source_material_artifact_shape_readiness_convergence_bundle_v0_docs_control`.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- The reviewed convergence bundle selected a shape-ready outcome for future
+  source-basis/evidence planning.
+- The reviewed convergence bundle preserves shape-only `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport` rows, unresolved concrete refs,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- Local evidence found no existing source-basis/evidence planning route package
+  doc with the current route-package marker.
+
+### Assumptions
+
+- A route package can safely define future planning slots and gates if it keeps
+  evidence-source categories limited to reviewed docs/control citations only.
+- The selected route-package outcome marker should appear exactly once in the
+  new route-package document only.
+- A future candidate may be named only if it is not status-only and reduces
+  final-product uncertainty; otherwise the route package should stop at the
+  selected outcome.
+- `docs/HANDOFF.md` should remain excluded because it is dirty and no
+  current-slice pointer is required there.
+
+### Implementation Steps
+
+- [x] Step 1: Update `PLANS.md` with the active slice, scope, constraints, and
+  verification plan.
+- [x] Step 2: Add the source-basis/evidence planning route package document.
+- [x] Step 3: Add a minimal pointer to the current route card if needed.
+- [x] Step 4: Run docs/control verification and report completion to B01.
+
+### Verification Plan
+
+- `rg` required strings for future planning slots, all three query-ref shapes,
+  reviewed docs/control citation limits, and forbidden boundary claims.
+- Confirm the selected route-package outcome appears exactly once across
+  touched docs.
+- Confirm touched files stay docs/control only.
+- Confirm no actual evidence bundle, query instances, concrete refs, sample
+  JSON, runtime/schema/provider/API/media files, or source-basis selection are
+  introduced.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if this slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Plan updated first. Route package document and current route-card pointer are
+  drafted.
+- Verification passed for required planning slot strings, single selected
+  route-package outcome marker, one future candidate marker, docs/control-only
+  scope, no actual-evidence/query/concrete-ref patterns, cited path existence,
+  untouched `docs/HANDOFF.md`, trailing whitespace, and scoped diff check.
+  Gradle was skipped because this slice stayed docs/control only.
+
+## Active Query Ref Source Material Artifact Shape Readiness Convergence Bundle V0 Docs Control
+
+### Goal
+
+Consolidate the reviewed query-ref source-material curation chain into one
+docs/control convergence bundle for artifact-shape readiness in the
+query/source-scope to future `ScriptReadyScenePacket` chain.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_ARTIFACT_SHAPE_READINESS_CONVERGENCE_BUNDLE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` for a minimal pointer if needed.
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution, concrete refs, evidence bundle, source-basis selection,
+  sample JSON, story/source invention, `ScriptReadyScenePacket`,
+  runtime/schema/provider/API/media work, SQLite, renderer, ffmpeg, TTS,
+  web/server, restarts, approval, canon, registry, release, final approval, or
+  production lock.
+- No staging, commit, push, archive/window creation, direct B03 contact, or
+  next-task start.
+
+### Confirmed Facts
+
+- B03 returned PASS for
+  `a_group_branch_delivery_failure_fallback_rule_patch_v0_docs_control`.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- `docs/CODEX_ROUTE_LOOP_CONVERGENCE_RULE_SET_V0.md` defines the
+  `Route Loop Convergence Rule Set`, `Artifact-Shape-Ready Gate`, and
+  `No-New-Status-Doc Gate`.
+- The current query-ref route-package doc records reviewed rows for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, with
+  unresolved/absent concrete refs, citation/path status, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `boundaryCategory`,
+  review gates, `DRAFT_FOR_REVIEW`, and `REVIEW_PASS_NOT_APPROVAL`.
+
+### Assumptions
+
+- A shape-only convergence bundle can be selected if it only defines fields,
+  consumers, visibility, prompt-surface/protected-boundary rules, and review
+  gates while preserving unresolved concrete refs.
+- The selected convergence outcome marker should appear exactly once in the
+  new bundle document only.
+- `docs/HANDOFF.md` should remain excluded because it is dirty and no
+  current-slice pointer is required there.
+
+### Implementation Steps
+
+- [x] Step 1: Update `PLANS.md` with the active slice, scope, constraints, and
+  verification plan.
+- [x] Step 2: Add the artifact-shape readiness convergence bundle document.
+- [x] Step 3: Add a minimal pointer to the current route card if needed.
+- [x] Step 4: Run docs/control verification and report completion to B01.
+
+### Verification Plan
+
+- `rg` required strings for convergence gates, all three query-ref slots,
+  forbidden boundaries, and production-lock guardrails.
+- Confirm the selected convergence outcome appears exactly once across touched
+  docs.
+- Confirm touched files stay docs/control only.
+- Confirm no concrete query refs, actual query instances, sample JSON, or
+  source-basis/evidence bundle content is created.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if this slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Plan updated first. Bundle document and current route-card pointer are
+  drafted.
+- Verification passed for required convergence strings, single selected
+  convergence outcome marker, docs/control-only scope, no actual-instance or
+  concrete-ref patterns, citation path existence, untouched `docs/HANDOFF.md`,
+  trailing whitespace, and scoped diff check. Gradle was skipped because this
+  slice stayed docs/control only.
+
+## Active A Group Branch Delivery Failure Fallback Rule Patch V0 Docs Control
+
+### Goal
+
+Add a docs/control fallback rule for A-group branch delivery failures so A04
+`systemError`, missing synthesis output, userMessage-only turns, repeated empty
+completion, or stale branches do not become silent waiting loops.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_BRANCH_DELIVERY_FAILURE_FALLBACK_RULE_V0.md`
+- `docs/CODEX_A_GROUP_PROACTIVE_EVOLUTION_HEARTBEAT_RULE_SET_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No runtime, schema, provider/API, media, SQLite, renderer, ffmpeg, TTS,
+  web/server, sample JSON, query instances, evidence bundle,
+  source-basis selection, approval, canon, registry, release, final approval,
+  or production lock.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No creation/archive of windows unless separately authorized.
+- No direct B02/B03 dispatch by A-group windows.
+- No staging, commit, push, archive/window creation, or direct B03 contact by
+  B02.
+
+### Upstream Planning/Control Facts
+
+- B03 returned PASS for
+  `verification_timeout_false_negative_guard_process_rule_patch_v0_docs_control`.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- A01 identified A04 branch delivery failure as a process reliability gap, not
+  a human stop condition.
+- Evidence pass found no existing complete A-group branch delivery failure
+  fallback rule marker.
+
+### Assumptions
+
+- The correct fix is a process-rule patch and minimal route/control pointers,
+  not creating, retrying, or archiving windows.
+- A01 may proceed from available A02/A03 evidence when reviewed evidence is
+  enough to form one bounded docs/control package.
+- The selected process-rule outcome marker should appear exactly once in the
+  new rule-set document only.
+
+### Implementation Steps
+
+- [x] Step 1: Add the A-group branch delivery failure fallback rule document.
+- [x] Step 2: Add minimal pointers to proactive heartbeat rules, multi-window
+  operating model, default route rules, and current route card; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required strings for branch delivery failure, detection signals, compact
+  retry, fallback policy, hold status, authority separation, forbidden boundary
+  claims, and product/process-risk impact.
+- Confirm the selected process-rule outcome marker appears exactly once across
+  touched docs.
+- Confirm touched files stay docs/control only.
+- Confirm A windows remain forbidden from direct B02/B03 dispatch.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if the slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Rule document and minimal control pointers are drafted.
+- Verification passed for required strings, single selected outcome marker,
+  docs/control-only file scope, direct-dispatch prohibition, untouched
+  `docs/HANDOFF.md`, trailing whitespace, and scoped diff check. Gradle was
+  skipped because this slice stayed docs/control only.
+
+## Active Verification Timeout False Negative Guard Process Rule Patch V0 Docs Control
+
+### Goal
+
+Add a docs/control verification timeout false-negative guard so incomplete
+`rg` or batch verification output is classified as inconclusive timeout, not as
+missing evidence, PASS, FAIL, or NEEDS_REVISION.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_VERIFICATION_TIMEOUT_FALSE_NEGATIVE_GUARD_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- Exclude `docs/HANDOFF.md` because it is dirty unless a clean no-conflict
+  pointer is proven safe.
+
+### Non-Goals
+
+- No runtime, schema, provider/API, media, SQLite writes, renderer, ffmpeg,
+  TTS, web/server, sample JSON, query instances, evidence bundle,
+  source-basis selection, approval, canon, registry, release, final approval,
+  or production lock.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No direct B02/B03 dispatch by A-group windows.
+- No staging, commit, push, archive/window creation, or direct B03 contact by
+  B02.
+
+### Upstream Planning/Control Facts
+
+- B03 returned PASS for the corrected progress-display process-rule patch.
+- A01 approved this implementation package as `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B組01_DISPATCH`.
+- A02 identified the verification-timeout false-negative gap.
+- A03 returned `SAFE_WITH_GUARDS`.
+- A04 synthesis was unavailable due thread delivery failure, but A01 classified
+  this as AI-resolvable process/control work and not a true stop condition.
+- Evidence pass found no existing complete verification-timeout false-negative
+  guard rule-set marker.
+
+### Assumptions
+
+- The correct correction is a process-rule patch and minimal route/control
+  pointers, not a verifier implementation.
+- A timeout with partial output must be reported as inconclusive until fallback
+  commands complete or remaining gaps are named.
+- The selected process-rule outcome marker should appear exactly once in the
+  new rule-set document only.
+
+### Implementation Steps
+
+- [x] Step 1: Add the verification timeout false-negative guard document.
+- [x] Step 2: Add minimal pointers to default route rules, multi-window
+  operating model, and current route card; do not touch `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required strings for timeout classification, fallback ladder,
+  completed-output verdict rule, dirty-worktree scope guard, metadata fields,
+  false-negative review note, and forbidden boundary claims.
+- Confirm the selected process-rule outcome marker appears exactly once across
+  touched docs.
+- Confirm touched files stay docs/control only.
+- Confirm timeout is never phrased as PASS/FAIL evidence.
+- Check `docs/HANDOFF.md` for current-slice markers while leaving it untouched.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if the slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- The worktree has unrelated dirty and untracked files. This slice must avoid
+  reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Verification timeout false-negative guard file and minimal route/control
+  pointers are added.
+- Verification passed for required timeout guard strings, exactly one selected
+  process-rule outcome marker in the rule-set doc, docs/control-only
+  touched-file scope, no positive timeout-as-PASS/FAIL evidence phrasing, no
+  current-slice markers in `docs/HANDOFF.md`, and trailing whitespace.
+- Gradle is skipped because this slice remains docs/control only and does not
+  touch runtime, schema, provider/API, SQLite, renderer/ffmpeg/TTS, or media
+  files.
+
+## Active Blueprint Progress Display Model Process Rule Patch V0 Docs Control
+
+### Goal
+
+Add a docs/control progress-display rule set that prevents percentage claims
+from being misread as whole-project or final-product completion. Preserve the
+historical local-baseline progress line, but require same-line firewall
+language and keep true final product progress non-numeric until an accepted
+model update explicitly changes it.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_BLUEPRINT_PROGRESS_DISPLAY_MODEL_RULE_SET_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- `docs/CODEX_TRUE_PROJECT_COMPLETION_PROGRESS_MODEL_V0.md`
+- `docs/PROJECT_COMPLETION_PROGRESS.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_A_GROUP_PROACTIVE_EVOLUTION_HEARTBEAT_RULE_SET_V0.md`
+- Exclude `docs/HANDOFF.md` unless a clean no-conflict pointer is proven safe.
+
+### Non-Goals
+
+- No new numeric estimate for true final product progress.
+- No sample JSON, actual query instances, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `ScriptReadyScenePacket`, evidence bundle,
+  source/story/query content, source-basis selection, concrete refs, or
+  packet/candidate content.
+- No Kotlin/JVM code, CLI, runtime, schema, validator implementation, SQLite
+  writes, provider/API, web/server, renderer, ffmpeg, TTS, or media generation.
+- No 04/05/06/07/08 restart, no Phase 20/21 restart, no approval, canon,
+  registry, release, final media approval, production lock, staging, commit,
+  push, archive/window creation, or direct B03 contact by B02.
+
+### Upstream Planning/Control Facts
+
+- B03 returned PASS for
+  `a_group_proactive_evolution_heartbeat_rule_patch_v0_docs_control`.
+- A01 approved the queued implementation package
+  `blueprint_progress_display_model_process_rule_patch_v0_docs_control` with
+  status `READY_FOR_B組01_DISPATCH`.
+- A02 produced `P1_BLUEPRINT_PROGRESS_DISPLAY_MODEL_SEED`.
+- A03 produced `P2_BLUEPRINT_PROGRESS_DISPLAY_MODEL_RISK_REVIEW` with verdict
+  `SAFE_WITH_GUARDS`.
+- A04 produced `P3_BLUEPRINT_PROGRESS_DISPLAY_MODEL_SYNTHESIS` with decision
+  `PROCESS_RULE_PATCH_READY`.
+- Evidence pass found no existing complete `No Naked Percentage`,
+  `Percent Change Gate`, `Completion Claim Firewall`, or aligned
+  progress-display rule-set patch.
+- Existing progress docs already contain local-baseline and true-final-product
+  display lines, but current local-baseline percent lines need same-line
+  firewall tightening.
+
+### Assumptions
+
+- `docs/HANDOFF.md` remains dirty from prior work and should be excluded unless
+  explicitly proven safe for this clean slice.
+- The correct fix is a process-rule patch and minimal pointer updates, not a
+  runtime or progress-calculation implementation.
+- The selected process-rule outcome marker should appear exactly once in the
+  new rule-set document only.
+
+### Implementation Steps
+
+- [x] Step 1: Add the progress-display rule-set document.
+- [x] Step 2: Add minimal pointers and same-line firewall updates in current
+  route, true progress model, project progress display, default route rules,
+  and proactive heartbeat rule set; do not touch `docs/HANDOFF.md` unless
+  proven safe.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required strings for `No Naked Percentage`, the two-line progress
+  display, dispatch-chain metric narrowing, `Percent Change Gate`,
+  `Completion Claim Firewall`, and forbidden finality claims.
+- Confirm the selected process-rule outcome marker appears exactly once across
+  touched docs.
+- Confirm touched files stay docs/control only and no sample/runtime/schema/
+  media files are touched.
+- Confirm no numeric true-final-product percentage is introduced.
+- Confirm any touched local-baseline percent progress line has same-line
+  firewall language.
+- Check `docs/HANDOFF.md` for current-slice markers if it remains excluded.
+- Run trailing-whitespace scan, scoped `git diff --check`, and
+  `git status --short --branch`.
+- Skip Gradle if the slice remains docs/control only.
+
+### Drift Notes
+
+- Canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  canonical.
+- Current worktree has unrelated dirty and untracked files. This slice must
+  avoid reverting or modifying unrelated runtime/schema/media/sample work.
+
+### Completion Notes
+
+- Progress-display rule-set file and minimal pointers/firewall updates are
+  added.
+- Verification passed for required progress-display strings, exactly one
+  selected process-rule outcome marker in the rule-set doc, docs/control-only
+  touched-file scope, no numeric true-final-product percentage, same-line
+  firewall language on touched local-baseline percent progress lines, no
+  current-slice markers in `docs/HANDOFF.md`, and trailing whitespace.
+- Revision correction removed bare local-baseline percentage literals from this
+  current slice while preserving the non-numeric true-final-product rule and
+  dispatch-chain metric semantics.
+- Gradle is skipped because this slice remains docs/control only and does not
+  touch runtime, Kotlin/JVM, schema, provider/API, SQLite, renderer/ffmpeg/TTS,
+  or media files.
+
+## Active A Group Proactive Evolution Heartbeat Rule Patch V0 Docs Control
+
+### Goal
+
+Add an A Group Proactive Evolution Heartbeat Rule Set so A-group cannot close
+with acknowledgement-only replies except explicit config/update-only cases,
+can run bounded EVOLUTION_EVENT heartbeat loops, and can keep A02/A03/A04
+active without drifting, replaying stale packages, repeating PASS loops, or
+bypassing B01.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_PROACTIVE_EVOLUTION_HEARTBEAT_RULE_SET_V0.md`
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md`
+- `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and the dispatch allows exclusion when dirty-conflict risk exists.
+
+### Non-Goals
+
+- No Kotlin/JVM code, CLI, runtime, schema, SQLite, provider/API, web/server,
+  renderer, ffmpeg, TTS, or media generation.
+- No sample JSON.
+- No actual query instances.
+- No `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No evidence bundles.
+- No `ScriptReadyScenePacket`.
+- No story/source content.
+- No concrete refs.
+- No source-basis selection.
+- No canon, registry, release, approval, final media approval, or production
+  lock.
+- No 04/05/06/07/08 or Phase 20/21 restart.
+- No direct B02/B03 dispatch by A-group windows.
+- No new status-only document whose only purpose is to restate freshness or
+  heartbeat status.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream Planning/Control Facts
+
+- B03 returned PASS for the route-loop convergence process-rule patch.
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A02 produced `P1_PROACTIVE_EVOLUTION_HEARTBEAT_SEED`.
+- A03 returned `P2_PROACTIVE_EVOLUTION_HEARTBEAT_RISK_REVIEW` with verdict
+  `SAFE_WITH_GUARDS`.
+- A04 returned `P3_PROACTIVE_EVOLUTION_HEARTBEAT_SYNTHESIS` with decision
+  `PROCESS_RULE_PATCH_READY`.
+- A01 checked current docs for duplicate complete heartbeat rule markers and
+  found none before approving this package.
+- Local evidence check found no complete heartbeat rule-set markers before
+  this patch.
+
+### Assumptions
+
+- A docs/control heartbeat process-rule patch can reduce process/control risk
+  without starting runtime, media, schema, provider/API, approval, or direct B
+  dispatch work.
+- `docs/HANDOFF.md` should remain untouched because it is dirty and not needed
+  for minimal heartbeat integration.
+- The current route-card pointer pattern is sufficient for discoverability.
+
+### Implementation Steps
+
+- [x] Step 1: Add the A Group Proactive Evolution Heartbeat Rule Set document.
+- [x] Step 2: Add minimal heartbeat pointers/rules to A-group evolution,
+  product-architecture thinking loop, default route decisions, multi-window
+  operating model, and current route card; do not touch `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required strings for the heartbeat rule-set title, named rules,
+  EVOLUTION_EVENT trigger map, A02/A03/A04 loop, Product-Distance Ledger,
+  Latest-Package Freshness Check, CONFIG_UPDATE_ONLY exemption, and forbidden
+  claims.
+- Confirm touched files stay docs/control only and no generated/sample/runtime/
+  schema/media files are touched.
+- Confirm no duplicate complete heartbeat rule markers existed before this
+  patch and that new markers are confined to touched control docs.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested heartbeat process-rule patch and minimal pointers in control docs.
+- `docs/HANDOFF.md` is excluded due dirty-conflict risk.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Heartbeat rule-set file and minimal pointers are added.
+- Verification passed for required heartbeat strings, pointer consistency,
+  docs/control-only touched-file scope, no current-slice markers in
+  `docs/HANDOFF.md`, and exactly one selected proactive-evolution process-rule
+  outcome marker in the rule-set doc.
+- Gradle is skipped because this slice remains docs/control only and does not
+  touch runtime, Kotlin/JVM, schema, provider/API, SQLite, renderer/ffmpeg/TTS,
+  or media files.
+
+## Active Route Loop Convergence Process Rule Patch V0 Docs Control
+
+### Goal
+
+Add a docs/control Route Loop Convergence Rule Set to stop repeated
+status/review/route-decision churn and force A/B routing to converge toward
+final-product chain uncertainty reduction. This slice installs a process-rule
+patch only; it does not continue the ordinary query-ref status chain.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_ROUTE_LOOP_CONVERGENCE_RULE_SET_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and the dispatch allows exclusion when dirty-conflict risk exists.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- No `ScriptReadyScenePacket`.
+- No sample JSON.
+- No story/source/query content.
+- No concrete refs.
+- No source-basis selection.
+- No evidence bundle.
+- No Kotlin/JVM, CLI, runtime, schema, SQLite, provider/API, web/server,
+  renderer, ffmpeg, TTS, or media generation.
+- No 04/05/06/07/08 or Phase 20/21 restart.
+- No approval, canon, registry, release, final media approval, or production
+  lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream Planning/Control Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A02 produced a P1 seed.
+- A03 returned `SAFE_WITH_GUARDS`.
+- A04 returned `PROCESS_RULE_PATCH_READY`.
+- A01 checked current docs for duplicate route-loop convergence markers and
+  found none before approving this package.
+- Local evidence check found no existing route-loop convergence rule-set
+  markers before this patch.
+- The route package immediately before this dispatch received B03 PASS, but
+  this slice intentionally interrupts the ordinary status chain to reduce
+  loop/status-doc churn.
+
+### Assumptions
+
+- A docs/control process-rule patch can reduce route-loop churn without
+  starting runtime, media, schema, or approval work.
+- `docs/HANDOFF.md` should remain untouched because it is dirty and not needed
+  for the minimal rule-set integration.
+- The existing current-route-card pointer pattern is the safest place for a
+  minimal route pointer.
+
+### Implementation Steps
+
+- [x] Step 1: Add the Route Loop Convergence Rule Set document.
+- [x] Step 2: Add minimal rule pointers to default route rules, A-group
+  evolution system, and current route card; do not touch `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required strings for the rule-set title, named gates, adjacent PASS
+  stop rule, forbidden claims, and selected process-rule outcome.
+- Confirm touched files stay docs/control only and no generated/sample/runtime/
+  schema/media files are touched.
+- Confirm no duplicate route-loop convergence markers existed before this
+  patch and that the new markers are confined to touched control docs.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested process-rule patch and minimal pointers in control docs.
+- `docs/HANDOFF.md` is excluded due dirty-conflict risk.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Rule-set file and minimal pointers are added.
+- Verification passed for required route-loop convergence strings, exactly one
+  selected process-rule outcome marker, docs/control-only touched-file scope,
+  no current-slice markers in `docs/HANDOFF.md`, and trailing whitespace.
+- Gradle is skipped because this slice remains docs/control only.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Route Package V0 Docs Control
+
+### Goal
+
+Add a docs/control route-package surface for the reviewed docs/control curation
+review-status route-decision state. This slice packages the three query-ref
+route-decision slots, `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport`, while preserving unresolved concrete refs,
+citation/path checks, visibility, prompt-surface guardrails, review gates, and
+non-approval status.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_ROUTE_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No actual query instances.
+- No query execution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle.
+- No packet/candidate content.
+- No sample JSON.
+- No runtime/schema/provider/API/media.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval/canon/registry/release/production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream B03 PASS Facts
+
+- B03 PASS was received for the upstream docs/control curation review-status
+  route-decision slice.
+- The selected aggregate outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_ROUTE_PACKAGE`.
+- B03 confirmed exactly three route-decision rows for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- Each row follows upstream
+  `CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_STATUS_ROW_*`, preserves
+  `DOCS_CONTROL_CURATION_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS` and
+  `DOCS_CONTROL_CURATION_REVIEW_STATUS_PASS_NOT_APPROVAL_FOR_FUTURE_ROUTE_DECISION`,
+  and uses `ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_ROUTE_PACKAGE_ONLY`.
+- B03 confirmed citation/path check found 31 referenced docs/control paths and
+  0 missing paths.
+- B03 confirmed `docs/HANDOFF.md` remains dirty from prior state but has no
+  current-slice markers; the current-route-card pointer is minimal.
+- B03 boundary check held: no actual query instances, query execution,
+  concrete refs, source/story/query invention, Qingli promotion, source-basis
+  selection, evidence bundle, packet/candidate content, sample JSON,
+  runtime/schema/provider/API/media, web/server, direct SQLite,
+  renderer/ffmpeg/TTS, restarts, approval/canon/release/production lock,
+  staging/commit/push/archive/window creation.
+
+### A01 Implementation-Package Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 explicitly approved this next bounded docs/control implementation
+  package.
+- B01 requested this single docs/control task be dispatched to B02 and not sent
+  directly to B03.
+
+### Assumptions
+
+- The reviewed aggregate route-decision outcome safely supports a docs/control
+  route-package surface because it still forbids concrete refs and actual
+  query content.
+- Absent concrete refs still block actual query-ref resolution, actual query
+  instances, evidence bundles, source-basis selection, and actual packet work;
+  they do not block a future docs/control-only review surface.
+- A true stop condition is not supported by reviewed facts unless the route
+  tries to resolve concrete refs or create actual query/source content.
+- Dirty worktree entries outside this slice are pre-existing and should not be
+  edited or reverted.
+
+### Implementation Steps
+
+- [x] Step 1: Add the docs/control curation route-package file with exactly
+  three route-package rows.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream aggregate route-decision outcome, all
+  three query-ref route-package rows, route-package outcome, future
+  docs/control candidate or blocker label, and forbidden claims.
+- Citation/path check against reviewed docs/control inputs.
+- Dirty-file check before any optional pointer touch, confirming
+  `docs/HANDOFF.md` remains excluded and untouched.
+- Check exactly three query-ref route-package rows.
+- Check exactly one selected route-package outcome marker across touched docs.
+- If a future docs/control candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected route-package outcome;
+  if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested docs/control route-package surface, updates `PLANS.md`, and may
+  update the current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Route-package file and current-route-card pointer are added.
+- Verification passed for required labels, exactly three route-package rows,
+  exactly one selected route-package outcome marker, exactly one future
+  docs/control review candidate marker, 32 cited docs/control paths with 0
+  missing paths, no current-slice markers in `docs/HANDOFF.md`, and
+  docs/control-only boundaries.
+- Gradle is skipped because this slice remains docs/control only.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control route-decision surface for the reviewed docs/control curation
+review-status rows. This slice decides whether the route can advance, must
+block on absent concrete refs, or requires a true stop condition. It preserves
+the three query-ref slots: `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport`, while keeping concrete refs unresolved/absent and
+non-approval status explicit.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No actual query instances.
+- No query execution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle.
+- No packet/candidate.
+- No sample JSON.
+- No runtime/schema/provider/API/media.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval/canon/registry/release/production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream B03 PASS Facts
+
+- B03 PASS was received for the upstream docs/control curation review-status
+  slice.
+- The selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B03 confirmed exactly three review-status rows for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- Each row follows upstream
+  `CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_ROW_*`, preserves
+  `DOCS_CONTROL_CURATION_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, and uses
+  `DOCS_CONTROL_CURATION_REVIEW_STATUS_PASS_NOT_APPROVAL_FOR_FUTURE_ROUTE_DECISION`.
+- B03 confirmed the future route-decision candidate appeared exactly once and
+  remained future explicit classification only, docs/control-only,
+  route-decision-only, not auto-started, and not approval.
+- B03 confirmed citation/path check found 30 referenced docs/control paths and
+  0 missing paths.
+- B03 confirmed `docs/HANDOFF.md` remains dirty from prior state but has no
+  current-slice markers; the current-route-card pointer is minimal.
+- B03 boundary check held: no actual query instances, query execution,
+  concrete refs, source/story/query invention, Qingli promotion, source-basis
+  selection, evidence bundle, packet/candidate, sample JSON,
+  runtime/schema/provider/API/media, web/server, direct SQLite,
+  renderer/ffmpeg/TTS, restarts, approval/canon/release/production lock,
+  staging/commit/push/archive/window creation.
+
+### A01 Implementation-Package Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 explicitly approved this next bounded docs/control implementation
+  package.
+- B01 requested this single docs/control task be dispatched to B02 and not sent
+  directly to B03.
+
+### Assumptions
+
+- The reviewed curation review-status outcome safely supports a docs/control
+  route-decision surface because it still forbids concrete refs and actual
+  query content.
+- Absent concrete refs still block actual query-ref resolution, actual query
+  instances, evidence bundles, source-basis selection, and actual packet work;
+  they do not block another docs/control-only route-package classification.
+- A true stop condition is not supported by reviewed facts unless the route
+  tries to resolve concrete refs or create actual query/source content.
+- Dirty worktree entries outside this slice are pre-existing and should not be
+  edited or reverted.
+
+### Implementation Steps
+
+- [x] Step 1: Add the docs/control curation review-status route-decision file
+  with exactly three route-decision rows.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream review-status outcome, all three
+  query-ref route-decision rows, aggregate outcome, future docs/control
+  candidate or blocker label, and forbidden claims.
+- Citation/path check against reviewed docs/control inputs.
+- Dirty-file check before any optional pointer touch, confirming
+  `docs/HANDOFF.md` remains excluded and untouched.
+- Check exactly three query-ref route-decision rows.
+- Check exactly one selected aggregate outcome marker across touched docs.
+- If a future docs/control candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected route-decision outcome;
+  if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested docs/control route-decision surface, updates `PLANS.md`, and may
+  update the current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Route-decision file and current-route-card pointer are added.
+- Verification passed for required labels, exactly three route-decision rows,
+  exactly one selected aggregate outcome marker, exactly one future
+  docs/control candidate marker, 31 cited docs/control paths with 0 missing
+  paths, no current-slice markers in `docs/HANDOFF.md`, and docs/control-only
+  boundaries.
+- Gradle is skipped because this slice remains docs/control only.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control review-status surface for the reviewed docs/control curation
+review rows. This slice records review-status rows for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, preserves the upstream
+non-approval review classification, keeps concrete refs unresolved/absent, and
+may name one future route-decision candidate only if safe.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No actual query instances.
+- No query execution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle.
+- No packet/candidate.
+- No sample JSON.
+- No runtime/schema/provider/API/media.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval/canon/registry/release/production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream B03 PASS Facts
+
+- B03 PASS was received for the upstream docs/control curation review slice.
+- The selected review outcome/status is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_READY_FOR_STATUS`.
+- B03 confirmed exactly three review rows for `QueryRequest`, `QueryResponse`,
+  and `QueryScopeReviewReport`.
+- Each row follows its upstream
+  `CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_ROW_*` row and uses
+  `DOCS_CONTROL_CURATION_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`.
+- B03 confirmed the future review-status candidate appeared exactly once and
+  remained future explicit classification only, docs/control-only,
+  review-status-only, not auto-started, and not approval.
+- B03 confirmed citation/path check found 29 referenced docs/control paths and
+  0 missing paths.
+- B03 confirmed `docs/HANDOFF.md` remains dirty from prior state but has no
+  current-slice markers; the current-route-card pointer is minimal.
+- B03 boundary check held: no actual query instances, query execution,
+  concrete refs, source/story/query invention, Qingli promotion, source-basis
+  selection, evidence bundle, packet/candidate, sample JSON,
+  runtime/provider/API/web/server/SQLite/media work, restarts,
+  approval/canon/release/production lock, staging/commit/push/archive/window
+  creation.
+
+### A01 Implementation-Package Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 explicitly approved this next bounded docs/control implementation
+  package.
+- B01 requested this single docs/control task be dispatched to B02 and not sent
+  directly to B03.
+
+### Assumptions
+
+- The reviewed curation review outcome safely supports a docs/control
+  review-status surface because it still forbids concrete refs and actual query
+  content.
+- A future route-decision candidate can be named only if the review-status rows
+  preserve unresolved concrete-ref status and non-approval guardrails.
+- Dirty worktree entries outside this slice are pre-existing and should not be
+  edited or reverted.
+
+### Implementation Steps
+
+- [x] Step 1: Add the docs/control curation review-status file with exactly
+  three review-status rows.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream review outcome/status, all three
+  query-ref review-status rows, selected review-status outcome, future
+  route-decision candidate or blocker label, and forbidden claims.
+- Citation/path check against reviewed docs/control inputs.
+- Dirty-file check before any optional pointer touch, confirming
+  `docs/HANDOFF.md` remains excluded and untouched.
+- Check exactly three query-ref review-status rows.
+- Check exactly one selected review-status outcome marker across touched docs.
+- If a future route-decision candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected review-status outcome;
+  if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested docs/control review-status surface, updates `PLANS.md`, and may
+  update the current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Completed the docs/control curation review-status file and minimal
+  current-route pointer.
+- Selected the conservative review-status outcome that can advance only to a
+  future explicit docs/control route-decision classification surface; concrete
+  refs remain unresolved/absent and still block actual query/ref/evidence/
+  packet work.
+- Named exactly one future route-decision candidate in the review-status
+  document only.
+- Verification confirmed three docs/control curation review-status rows, one
+  selected review-status outcome marker, one future candidate marker, valid
+  cited docs/control paths, no current-slice markers in `docs/HANDOFF.md`, no
+  trailing whitespace, and a docs/control-only boundary.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation Review V0 Docs Control
+
+### Goal
+
+Add a docs/control review surface for the reviewed docs/control curation rows.
+This slice reviews/classifies the `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport` curation rows, confirms the review remains
+docs/control review/status only, preserves unresolved concrete refs, and may
+name one future review-status or route-decision candidate only if safe.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No actual query instances.
+- No query execution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle.
+- No packet/candidate.
+- No sample JSON.
+- No runtime/schema/provider/API/media.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval/canon/registry/release/production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream B03 PASS Facts
+
+- B03 PASS was received for the upstream docs/control curation slice.
+- The selected docs/control curation outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_READY_FOR_REVIEW`.
+- B03 confirmed exactly three curation rows for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- Each row follows its matching upstream
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_ROW_*`,
+  uses `DOCS_CONTROL_CURATION_READY_FOR_REVIEW_STATUS`, and preserves citation,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `boundaryCategory`, review gates, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, and unresolved concrete-ref status.
+- B03 confirmed the future review candidate appeared exactly once and remained
+  future explicit classification only, docs/control-only, review/status-only,
+  not auto-started, and not approval.
+- B03 confirmed `docs/HANDOFF.md` remains dirty from prior state but has no
+  current-slice markers; the route-card pointer is minimal.
+
+### A01 Implementation-Package Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 requested B01 dispatch this single docs/control task to B02.
+
+### Assumptions
+
+- The reviewed curation outcome safely supports a docs/control review surface
+  because it still forbids concrete refs and actual query content.
+- A future review-status or route-decision candidate can be named only if the
+  review rows preserve unresolved concrete-ref status and non-approval
+  guardrails.
+- Dirty worktree entries outside this slice are pre-existing and should not be
+  edited or reverted.
+
+### Implementation Steps
+
+- [x] Step 1: Add the docs/control curation review file with exactly three
+  review rows.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream curation outcome, all three query-ref
+  review rows, review labels, future review-status or route-decision candidate
+  or blocker label, and forbidden claims.
+- Dirty-file check before any optional pointer touch, confirming
+  `docs/HANDOFF.md` remains excluded and untouched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref curation review rows.
+- Check exactly one selected review outcome/status marker across touched docs.
+- If a future review-status or route-decision candidate is named, verify it
+  appears exactly once across touched docs and is justified by the selected
+  review outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested docs/control review surface, updates `PLANS.md`, and may update the
+  current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Completed the docs/control curation review file and minimal current-route
+  pointer.
+- Selected the conservative review outcome that can advance only to a future
+  explicit docs/control review-status classification surface; concrete refs
+  remain unresolved/absent and still block actual query/ref/evidence/packet
+  work.
+- Named exactly one future review-status candidate in the review document only.
+- Verification confirmed three docs/control curation review rows, one selected
+  review outcome marker, one future candidate marker, valid cited docs/control
+  paths, no current-slice markers in `docs/HANDOFF.md`, no trailing whitespace,
+  and a docs/control-only boundary.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Docs Control Curation V0 Docs Control
+
+### Goal
+
+Add a docs/control curation surface for the reviewed curation advancement
+route-decision chain. This slice defines planning/control curation rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, preserving the
+reviewed route-decision state while keeping concrete refs unresolved/absent.
+It may name one future review/status candidate only if the curation surface
+remains safe, docs/control-only, and non-approval.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_DOCS_CONTROL_CURATION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle.
+- No actual packet/candidate.
+- No sample JSON.
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution, queryer implementation, concrete runtime query-ref
+  resolution, or concrete refs.
+- No runtime/schema/provider/API/web/server/SQLite/media.
+- No direct SQLite writes.
+- No renderer/ffmpeg/TTS.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval/canon/registry/release/final approval/production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Upstream B03 PASS Facts
+
+- B03 PASS was received for the upstream route-decision slice.
+- The selected aggregate route-decision outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`.
+- B03 confirmed exactly three required rows for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- Each row preserves upstream
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROW_*`, prior
+  `ROUTE_PACKAGE_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, review-status
+  `ROUTE_PACKAGE_REVIEW_STATUS_PASS_NOT_APPROVAL_FOR_FUTURE_ROUTE_DECISION`,
+  and uses `ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION_ONLY`.
+- B03 confirmed the future curation candidate appeared exactly once and
+  remained future explicit classification only, docs/control-only,
+  curation-only, not auto-started, and not approval.
+
+### A01 Corrected Implementation-Package Facts
+
+- A01 returned a `CORRECTED_IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 corrected the stale/duplicate A-group workflow-alignment package and
+  approved this query-ref docs/control curation continuation as the correct
+  current PASS-state continuation.
+
+### Assumptions
+
+- The reviewed route-decision outcome safely supports a docs/control curation
+  surface because it still forbids concrete refs and actual query inputs.
+- A future review/status candidate can be named only if the new curation rows
+  keep unresolved concrete-ref status and non-approval guardrails intact.
+- Dirty worktree entries outside this slice are pre-existing and should not be
+  edited or reverted.
+
+### Implementation Steps
+
+- [x] Step 1: Add the docs/control curation file with exactly three curation
+  rows.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream route-decision outcome, all three
+  query-ref curation rows, docs/control curation labels, future review/status
+  candidate or blocker label, and forbidden claims.
+- Dirty-file check before any optional pointer touch, confirming
+  `docs/HANDOFF.md` remains excluded and untouched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref docs/control curation rows.
+- Check exactly one selected docs/control curation outcome/status marker
+  across touched docs.
+- If a future review/status candidate is named, verify it appears exactly once
+  across touched docs and is justified by the docs/control curation outcome; if
+  none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior slices. This task only adds the
+  requested docs/control curation surface, updates `PLANS.md`, and may update
+  the current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation/runtime/media surfaces are in scope.
+
+### Completion Notes
+
+- Completed the docs/control curation file and minimal current-route pointer.
+- Selected the conservative curation outcome that can advance only to a future
+  explicit docs/control review/status classification surface; concrete refs
+  remain unresolved/absent and still block actual query/ref/evidence/packet
+  work.
+- Named exactly one future review/status candidate in the curation document
+  only.
+- Verification confirmed three docs/control curation rows, one selected
+  curation outcome marker, one future candidate marker, valid cited
+  docs/control paths, no current-slice markers in `docs/HANDOFF.md`, no
+  trailing whitespace, and a docs/control-only boundary.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control route-decision surface for the reviewed curation advancement
+route-package review-status chain. This slice decides whether the route may
+advance from review-status into another docs/control curation surface, must
+block on absent concrete refs, or requires a true stop condition. It preserves
+the three future query-ref slots: `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport`.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` only for a minimal current-route
+  pointer if needed.
+
+`docs/HANDOFF.md` remains outside this clean slice because it is already dirty
+and B01 explicitly excluded it.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution and no concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Upstream Review Facts
+
+- B02 completed the upstream curation advancement route-package review-status
+  docs/control slice.
+- B03 reviewed that slice with PASS.
+- The selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B03 confirmed exactly three required route-package review-status rows:
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROW_QueryRequest`,
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROW_QueryResponse`, and
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_ROW_QueryScopeReviewReport`.
+- B03 confirmed each row follows the corresponding upstream
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_ROW_*` row.
+- B03 confirmed each row preserves
+  `ROUTE_PACKAGE_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS` and uses
+  `ROUTE_PACKAGE_REVIEW_STATUS_PASS_NOT_APPROVAL_FOR_FUTURE_ROUTE_DECISION`.
+- B03 confirmed the future route-decision candidate was named exactly once in
+  the reviewed slice as future explicit classification only, docs/control-only,
+  route-decision-only, not auto-started, and not approval.
+- B03 confirmed `docs/HANDOFF.md` remains dirty but has no current-slice
+  markers; the current-route-card pointer is minimal.
+- B03 boundary check held: concrete refs, actual query instances/content/
+  output/verdicts, source-basis selection, evidence bundle, runtime/provider/
+  media work, approval/canon/release/production lock remain absent/unresolved.
+
+### A01 Implementation-Package Facts
+
+- A01 returned an `IMPLEMENTATION_PACKAGE`.
+- A01 decision is `AI_TECHNICAL_APPROVED`.
+- A01 status is `READY_FOR_B01_DISPATCH`.
+- A01 explicitly approved this next bounded docs/control implementation package.
+
+### Assumptions
+
+- Absent concrete refs can remain unresolved while the route advances only to a
+  future docs/control curation/classification surface.
+- Absent concrete refs still block actual query instance creation, concrete
+  runtime query-ref resolution, source-basis selection, evidence bundles, and
+  actual packet work.
+- A true stop condition is not supported by the reviewed facts unless the
+  route decision tries to resolve concrete refs or create actual query/source
+  content.
+
+### Implementation Steps
+
+- [x] Step 1: Add the curation advancement route-package review-status
+  route-decision docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if needed; do not touch
+  `docs/HANDOFF.md`.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification Plan
+
+- `rg` required labels for the upstream review-status outcome, all three
+  query-ref route-decision rows, aggregate route-decision outcome, future
+  candidate or blocker label, and forbidden claims.
+- Dirty-file check confirming `docs/HANDOFF.md` remains excluded and untouched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref route-decision rows.
+- Check exactly one selected aggregate outcome marker across touched docs.
+- If a future docs/control candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected route-decision outcome;
+  if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is skipped because this slice remains docs/control only.
+
+### Drift Notes
+
+- The worktree is already dirty from prior docs/control slices. This task only
+  adds the requested route-decision surface, updates `PLANS.md`, and may update
+  the current-route pointer.
+- `docs/HANDOFF.md` is excluded by dispatch and must not be edited.
+- No implementation or runtime surfaces are in scope.
+
+### Completion Notes
+
+- Completed the route-decision file and minimal current-route pointer.
+- Selected the conservative aggregate route decision that can advance only to a
+  future explicit docs/control curation classification surface; concrete refs
+  remain unresolved/absent and still block actual query/ref/evidence/packet
+  work.
+- Named exactly one future docs/control candidate in the route-decision
+  document only.
+- Verification confirmed three route-decision rows, one selected aggregate
+  outcome marker, one future candidate marker, valid cited docs/control paths,
+  no current-slice markers in `docs/HANDOFF.md`, no trailing whitespace, and a
+  docs/control-only boundary.
+
+## Active A Group Evolution System Workflow Alignment V0 Docs Control
+
+### Goal
+
+Add a docs/control `AGroupEvolutionSystemWorkflowAlignment` that aligns the
+current workflow rules around `A_GROUP_EVOLUTION_SYSTEM_V0` as the
+highest-priority planning/control route before ordinary feature continuation.
+The slice must align the `00-01 分流接頭 -> A組01 -> B組01` handoff rules,
+define how A-group captures `EVOLUTION_EVENT`, `ROOT_CAUSE_ANALYSIS`,
+`RULE_UPGRADE_PROPOSAL`, `REGRESSION_CHECK`, and blueprint-feedback signals,
+identify missing status tags or routing gaps, and select exactly one outcome:
+aligned, needs A-branch, or blocked.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_WORKFLOW_ALIGNMENT_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md`
+
+`docs/HANDOFF.md` remains outside this slice because it is already dirty and
+is not required for this bounded workflow-alignment task.
+
+### Non-Goals
+
+- No implementation/runtime/schema/provider/API/media/SQLite/renderer/
+  ffmpeg/TTS work.
+- No Phase 20/21 old route restart.
+- No 04/05/06/07/08 restart.
+- No B組02 direct contact from A組01/00; B組01 must dispatch.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, or push.
+- No B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- B01 dispatch states `A_GROUP_EVOLUTION_SYSTEM_V0` has been added by 00 into
+  the blueprint and promoted to the highest-priority planning/control route.
+- B01 dispatch states this task is mature docs/control work, does not require
+  routine 00/user approval, and is not a true stop condition.
+- B01 dispatch states B01 is the only B-group dispatch window; B02 must not
+  accept direct B02 contact from A01/00 for this task.
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md` states
+  `A_GROUP_EVOLUTION_SYSTEM_V0` is the highest-priority planning/control route
+  until implemented and reviewed.
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md` defines
+  `EVOLUTION_EVENT`, `ROOT_CAUSE_ANALYSIS`, `RULE_UPGRADE_PROPOSAL`,
+  `EVOLUTION_BLUEPRINT_PATCH`, and `REGRESSION_CHECK` output shapes.
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md` places A-group evolution system
+  at route order 0.5 before ordinary feature-route work.
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md` lists the A-group
+  evolution system as a required first-read route document.
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md` places
+  `a_group_evolution_system_v0` at default route priority 0.
+- `docs/CODEX_ROUTE_STATUS_TAGS_V0.md` tags A-group evolution system as
+  `CONTROL_ONLY` but does not define dedicated evolution lifecycle status
+  tags.
+
+### Assumptions
+
+- The safest bounded alignment is to add one workflow-alignment doc plus
+  minimal first-read/current-route pointers.
+- Dedicated evolution lifecycle status tags can be identified as a non-blocking
+  status-tag gap in this slice rather than editing the status-tag table now.
+- No A-branch is needed for this alignment because the required route, owner
+  handoff, and output shapes already exist in reviewed/control docs.
+
+### Implementation Steps
+
+- [x] Step 1: Add the A-group evolution workflow-alignment docs/control file.
+- [x] Step 2: Add minimal pointers in current-route and execution-control docs.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for `A_GROUP_EVOLUTION_SYSTEM_V0`, highest-priority
+  wording, `00-01 分流接頭`, `A組01`, `B組01`, `EVOLUTION_EVENT`,
+  `ROOT_CAUSE_ANALYSIS`, `RULE_UPGRADE_PROPOSAL`, `REGRESSION_CHECK`, outcome
+  labels, and forbidden claims.
+- Pointer consistency check across touched docs.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let workflow alignment become runtime implementation, schema work,
+  direct SQLite, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, release, or production lock.
+- Do not let A01/00 bypass B01 by contacting B02 directly.
+- Do not let the evolution loop become an unattended infinite loop or a reason
+  to restart Phase 20/21 or 04/05/06/07/08.
+
+### Completion Notes
+
+- The workflow-alignment doc and minimal current-route/execution-control
+  pointers are in place.
+- Verification passed for required terms, pointer consistency, citation paths,
+  trailing whitespace, and docs-only diff checks.
+- Gradle is skipped because this slice is docs/control only and does not touch
+  runtime, Kotlin/JVM, schema, provider/API, SQLite, renderer/ffmpeg/TTS, or
+  media files.
+- No next task was started.
+
+## Active A Group Evolution System Blueprint Priority V0 Docs Control
+
+### Goal
+
+Add the A-group evolution system to the whole-project blueprint and make it the
+highest-priority planning/control route before ordinary feature continuation.
+The system must turn repeated stalls, manual wakeups, missed handoffs, unclear
+route authority, and routine user-return problems into stronger rules,
+blueprint updates, and regression checks before B-group implementation
+continues.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md`
+- `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- `docs/HANDOFF.md`
+
+### Non-Goals
+
+- No Kotlin, CLI, schema, migration, validator, runtime, sample, provider/API,
+  renderer, ffmpeg, TTS, media generation, SQLite direct write, staging, commit,
+  or push.
+- No direct B02 implementation dispatch from 00.
+- No direct B03 review dispatch from 00.
+- No Phase 20/21 restart and no 04/05/06/07/08 restart.
+- No canon, registry, release, final approval, or production-lock claim.
+
+### Confirmed Facts
+
+- User explicitly identified that A-group lacks a true evolution/learning loop.
+- Existing planning docs define A-group proposal, critique, synthesis, branch,
+  and package handoff roles.
+- Existing docs do not enforce an `EVOLUTION_EVENT` root-cause / lesson /
+  rule-upgrade / regression-check loop.
+- `00-01 分流接頭` exists and should route planning/control direction to A01
+  and mature implementation packages to B01.
+- B-group automation `b-01` was paused by user request.
+
+### Assumptions
+
+- A-group evolution can be added as docs/control first without touching runtime
+  or code.
+- The safe next dispatch is to send this priority route through `00-01 分流接頭`
+  so it reaches A01 for classification/package handling, rather than bypassing
+  the new split.
+
+### Implementation Steps
+
+- [x] Step 1: Add the A-group evolution system control document.
+- [x] Step 2: Update blueprint, execution index, thinking loop, operating model,
+  default route rules, current route card, and handoff pointers.
+- [x] Step 3: Verify docs/control strings and route priority, then send the
+  priority route to `00-01 分流接頭` for governed routing.
+
+### Verification
+
+- `rg` must find `A_GROUP_EVOLUTION_SYSTEM_V0`, `EVOLUTION_EVENT`,
+  `ROOT_CAUSE_ANALYSIS`, `RULE_UPGRADE_PROPOSAL`, `REGRESSION_CHECK`,
+  `highest-priority`, `00-01 分流接頭`, `A組01`, and `B組01` in touched docs.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at end.
+- Gradle skipped because this is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the evolution loop become an unattended infinite loop.
+- Do not let A-group bypass B01 by dispatching directly to B02/B03.
+- Do not let every tiny event create a new planning branch; require bounded
+  triggers and one regression check per event.
+- Do not let this priority route claim final product completion.
+
+### Completion Notes
+
+- Added `docs/CODEX_A_GROUP_EVOLUTION_SYSTEM_V0.md`.
+- Updated the whole-project blueprint, execution control index, thinking loop,
+  operating model, default route rules, current route card, route status tags,
+  and handoff first-read pointer so A-group evolution is the current
+  highest-priority docs/control route.
+- Verification passed for required terms, trailing whitespace, and docs-only
+  diff check; Gradle was skipped because no Kotlin/runtime files were touched.
+- Sent the priority route to `00-01 分流接頭` for governed routing toward A組01.
+  At closure time, the splitter turn was active, so 00 did not duplicate the
+  handoff or bypass the splitter.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementRoutePackageReviewStatus`
+that follows the B03-reviewed route-package review outcome/status
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_READY_FOR_STATUS`.
+This slice records review-status rows for `QueryRequest`, `QueryResponse`,
+and `QueryScopeReviewReport`, preserves
+`ROUTE_PACKAGE_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, unresolved concrete
+refs, citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+generic `boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`, and
+decides whether one future route-decision candidate can be named. It must not
+create concrete query-ref runtime inputs, actual query instances, actual query
+content/output/verdicts, runtime work, provider/API/media work, approval,
+canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is excluded because B01 states it remains dirty and
+explicitly outside this clean slice.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_route_package_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-package review slice with PASS.
+- B01 dispatch states the reviewed selected review outcome/status is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_READY_FOR_STATUS`.
+- B01 dispatch states B03 confirmed exactly three required route-package review
+  rows:
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_ROW_QueryRequest`,
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_ROW_QueryResponse`, and
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_ROW_QueryScopeReviewReport`.
+- B01 dispatch states each row follows its upstream
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_ROW_*`, uses
+  `ROUTE_PACKAGE_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, and remains
+  docs/control review/status only.
+- B01 dispatch states the prior future review-status candidate appeared exactly
+  once and remained future explicit classification only, docs/control-only,
+  review-status-only, not auto-started, and not approval.
+- B01 dispatch states `docs/HANDOFF.md` remains dirty but has no current-slice
+  markers; the current-route-card pointer is minimal.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, source-basis selection, evidence bundle, runtime/provider/media
+  work, web/server, direct SQLite writes, approval/canon/release/production
+  lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_V0.md`
+  records exactly one route-package review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `git status --short -- docs\HANDOFF.md ...` confirmed `docs/HANDOFF.md` is
+  modified before this task and therefore excluded.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review outcome/status, this slice may define a docs/control
+  review-status surface without resolving concrete refs.
+- A future route-decision candidate may be named only if this review-status
+  surface remains non-approval, docs/control-only, and does not create concrete
+  query-ref inputs.
+- A minimal current-route-card pointer is sufficient; `docs/HANDOFF.md` remains
+  excluded.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement route-package review-status file.
+- [x] Step 2: Add a minimal current-route-card pointer if still needed.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the review-status outcome, all three query-ref
+  review-status rows, future route-decision candidate or blocker label, and
+  forbidden claims.
+- Dirty-file check before any optional pointer touch; report that
+  `docs/HANDOFF.md` was excluded and not touched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref review-status rows are present.
+- Check exactly one selected review-status outcome marker is present across
+  touched docs.
+- If a future route-decision candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected review-status outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let review-status language imply concrete refs, runtime inputs, or
+  actual query instances.
+- Do not let this review-status surface become source-basis selection,
+  concrete query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not touch `docs/HANDOFF.md` in this slice.
+
+### Completion Notes
+
+- The route-package review-status doc and current-route-card pointer are in
+  place.
+- `docs/HANDOFF.md` remains excluded and untouched for this slice.
+- Verification passed for required terms, exact row/outcome/candidate counts,
+  citation paths, trailing whitespace, and docs-only diff checks.
+- Gradle is skipped because this slice is docs/control only and does not touch
+  runtime, Kotlin/JVM, schema, provider/API, renderer/ffmpeg/TTS, or media
+  files.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementRoutePackageReview`
+that follows the B03-reviewed route-package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_READY_FOR_REVIEW`.
+This slice reviews/classifies the three route-package rows for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, confirms the review remains
+docs/control review/status only, and preserves unresolved concrete refs,
+citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+`boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`. It must not
+create concrete query-ref runtime inputs, actual query instances, actual query
+content/output/verdicts, runtime work, provider/API/media work, approval,
+canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is excluded because B01 states it remains dirty and outside
+the clean slice.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_route_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-package slice with PASS.
+- B01 dispatch states the reviewed selected route-package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_READY_FOR_REVIEW`.
+- B01 dispatch states B03 confirmed exactly three required route-package rows:
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_ROW_QueryRequest`,
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_ROW_QueryResponse`, and
+  `CURATION_ADVANCEMENT_ROUTE_PACKAGE_ROW_QueryScopeReviewReport`.
+- B01 dispatch states each route-package row follows its matching upstream
+  `CURATION_ADVANCEMENT_REVIEW_STATUS_ROUTE_DECISION_ROW_*` row.
+- B01 dispatch states each row uses
+  `ROUTE_PACKAGE_READY_FOR_REVIEW_STATUS_ONLY` and preserves unresolved
+  concrete refs, citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- B01 dispatch states the prior future review/status candidate appeared exactly
+  once and remained future explicit classification only, docs/control-only,
+  review/status-only, not auto-started, and not approval.
+- B01 dispatch states `docs/HANDOFF.md` remains dirty but has no current-slice
+  markers; the current-route-card pointer is minimal.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, source-basis selection, evidence bundle, runtime/provider/media
+  work, web/server, direct SQLite writes, approval/canon/release/production
+  lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_V0.md`
+  records exactly one route-package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `git status --short -- docs\HANDOFF.md ...` confirmed `docs/HANDOFF.md` is
+  modified before this task and therefore excluded.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-package outcome, this slice may define a docs/control
+  review surface without resolving concrete refs.
+- A future review-status or route-decision candidate may be named only if this
+  review surface remains non-approval, docs/control-only, and does not create
+  concrete query-ref inputs.
+- A minimal current-route-card pointer is sufficient; `docs/HANDOFF.md` remains
+  excluded.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement route-package review file.
+- [x] Step 2: Add a minimal current-route-card pointer if still needed.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the route-package outcome, all three query-ref review
+  rows, review labels, future candidate or blocker label, and forbidden claims.
+- Dirty-file check before any optional pointer touch; report that
+  `docs/HANDOFF.md` was excluded and not touched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref review rows are present.
+- Check exactly one selected review outcome/status marker is present across
+  touched docs.
+- If a future review-status or route-decision candidate is named, verify it
+  appears exactly once across touched docs and is justified by the selected
+  review outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let review language imply concrete refs, runtime inputs, or actual
+  query instances.
+- Do not let this review become source-basis selection, concrete query-ref
+  resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not touch `docs/HANDOFF.md` in this slice.
+
+### Completion Notes
+
+- The route-package review doc and current-route-card pointer are in place.
+- `docs/HANDOFF.md` remains excluded and untouched for this slice.
+- Verification passed for required terms, exact row/outcome/candidate counts,
+  citation paths, trailing whitespace, and docs-only diff checks.
+- Gradle is skipped because this slice is docs/control only and does not touch
+  runtime, Kotlin/JVM, schema, provider/API, renderer/ffmpeg/TTS, or media
+  files.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Route Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementRoutePackage`
+that follows the B03-reviewed aggregate route-decision outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_ROUTE_PACKAGE`.
+This slice defines a route-package surface for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` while preserving unresolved
+concrete refs, citation, visibility, `allowedPromptSurface`,
+`protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+`REVIEW_PASS_NOT_APPROVAL`. It must not create concrete query-ref runtime
+inputs, actual query instances, actual query content/output/verdicts, runtime
+work, provider/API/media work, approval, canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_ROUTE_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is excluded because B01 states it remains dirty and is
+explicitly outside this clean slice.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_package_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed selected aggregate outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_ROUTE_PACKAGE`.
+- B01 dispatch states B03 confirmed exactly three required route-decision rows
+  are present, with requested row labels and matching upstream
+  `CURATION_ADVANCEMENT_REVIEW_STATUS_ROW_*` links.
+- B01 dispatch states the prior future docs/control candidate appeared exactly
+  once and remained future explicit classification only, not auto-started, and
+  not approval.
+- B01 dispatch states `docs/HANDOFF.md` remains dirty but has no current-slice
+  markers; `PLANS.md` explicitly excludes it and the current-route-card pointer
+  is minimal.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, source-basis selection, evidence bundle, runtime/provider/media
+  work, approval/canon/release/production lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `git status --short -- docs\HANDOFF.md ...` confirmed `docs/HANDOFF.md` is
+  modified before this task and therefore excluded.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the aggregate route-decision outcome, this slice may define a
+  docs/control route-package surface without resolving concrete refs.
+- A future review/status candidate may be named only if this route-package
+  surface remains non-approval, docs/control-only, and does not create
+  concrete query-ref inputs.
+- A minimal current-route-card pointer is sufficient; `docs/HANDOFF.md` remains
+  excluded.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement route-package file.
+- [x] Step 2: Add a minimal current-route-card pointer if still needed.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the route-package outcome, all three query-ref
+  route-package rows, future candidate or blocker label, and forbidden claims.
+- Dirty-file check before any optional pointer touch; report that
+  `docs/HANDOFF.md` was excluded and not touched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref route-package rows are present.
+- Check exactly one selected route-package outcome marker is present across
+  touched docs.
+- If a future review/status candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected route-package outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let route-package language imply concrete refs, runtime inputs, or
+  actual query instances.
+- Do not let this route package become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not touch `docs/HANDOFF.md` in this slice.
+
+### Completion Notes
+
+- The route-package doc and current-route-card pointer are in place.
+- `docs/HANDOFF.md` remains excluded and untouched for this slice.
+- Verification passed for required terms, exact row/outcome/candidate counts,
+  citation paths, trailing whitespace, and docs-only diff checks.
+- Gradle is skipped because this slice is docs/control only and does not touch
+  runtime, Kotlin/JVM, schema, provider/API, renderer/ffmpeg/TTS, or media
+  files.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementPackageReviewStatusRouteDecision`
+that follows the B03-reviewed review-status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+This slice decides whether the route can advance, must block on absent
+concrete refs, or requires a true stop condition while preserving all three
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` review-status
+rows as non-approval route-decision surfaces. It must not create concrete refs,
+actual query instances, actual query content/output/verdicts, runtime work,
+provider/API/media work, approval, canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is excluded because B01 states it is already dirty and
+outside the clean slice.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_package_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review-status slice with PASS.
+- B01 dispatch states the reviewed selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B01 dispatch states B03 confirmed exactly three required review-status rows
+  are present, with requested row labels and matching upstream
+  `CURATION_ADVANCEMENT_REVIEW_ROW_*` links.
+- B01 dispatch states the prior future candidate appeared exactly once and
+  remained future explicit classification only, not auto-started, and not
+  approval.
+- B01 dispatch states `docs/HANDOFF.md` remains dirty but has no current-slice
+  markers; current-route-card pointer is minimal.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, source-basis selection, evidence bundle, runtime/provider/media
+  work, approval/canon/release/production lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one curation advancement review-status row each for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, keeps
+  concrete refs unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `git status --short --branch -- docs\HANDOFF.md ...` confirmed
+  `docs/HANDOFF.md` is modified before this task and therefore excluded.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review-status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- A future docs/control candidate may be named only if this route-decision
+  surface remains non-approval, docs/control-only, and does not resolve
+  concrete refs.
+- A minimal current-route-card pointer is sufficient; `docs/HANDOFF.md` remains
+  excluded.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement package review-status route-decision file.
+- [x] Step 2: Add a minimal current-route-card pointer if still needed.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the review-status route-decision label, all three
+  query-ref route-decision rows, aggregate outcome, future candidate or blocker
+  label, and forbidden claims.
+- Dirty-file check before any optional pointer touch; report that
+  `docs/HANDOFF.md` was excluded and not touched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref route-decision rows are present.
+- Check exactly one selected aggregate outcome marker is present across
+  touched docs.
+- If a future docs/control candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected route-decision outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let route-decision language imply concrete refs, runtime inputs, or
+  actual query instances.
+- Do not let this route decision become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not touch `docs/HANDOFF.md` in this slice.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched because it is dirty and excluded by dispatch.
+- 2026-07-04: Added the curation advancement package review-status
+  route-decision surface and current-route-card pointer. The selected aggregate
+  outcome and the single future docs/control candidate label are kept in the
+  new route-decision document so count checks stay unambiguous. Verification is
+  docs/control only; Gradle is skipped because no runtime, schema,
+  provider/API, renderer/ffmpeg/TTS, media, or Kotlin/JVM files are in this
+  slice.
+
+### Completion Notes
+
+- The route-decision surface preserves exactly three query-ref rows and keeps
+  concrete refs unresolved/absent.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remained the obvious pointer surface.
+- `docs/HANDOFF.md` was not touched because it is dirty and excluded by this
+  dispatch.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementPackageReviewStatus`
+that follows the B03-reviewed review outcome/status
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_READY_FOR_STATUS`.
+This slice records review-status rows for `QueryRequest`, `QueryResponse`,
+and `QueryScopeReviewReport`, while preserving absent/unresolved concrete refs
+and confirming the prior review remains non-approval, docs/control-only, and
+safe only for future explicit route-decision classification.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is excluded. B01 states it is dirty and has no current-slice
+markers, and B01 has not confirmed that touching it is safe for this slice.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_package_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review slice with PASS.
+- B01 dispatch states the reviewed selected review outcome/status is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_READY_FOR_STATUS`.
+- B01 dispatch states B03 confirmed exactly three required rows are present:
+  `CURATION_ADVANCEMENT_REVIEW_ROW_QueryRequest`,
+  `CURATION_ADVANCEMENT_REVIEW_ROW_QueryResponse`, and
+  `CURATION_ADVANCEMENT_REVIEW_ROW_QueryScopeReviewReport`.
+- B01 dispatch states each row reviews its matching upstream
+  `CURATION_ADVANCEMENT_ROW_*`, uses
+  `ADVANCEMENT_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, and preserves
+  citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  generic `boundaryCategory`, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- B01 dispatch states the future candidate appeared exactly once and remained
+  future explicit classification only, not auto-started, and not approval.
+- B01 dispatch states `docs/HANDOFF.md` is dirty in the worktree but has no
+  current-slice markers; current-route-card pointer is minimal.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, source-basis selection, evidence bundle, runtime/provider/media
+  work, approval/canon/release/production lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_V0.md`
+  records exactly one curation advancement review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `git status --short --branch -- docs\HANDOFF.md ...` confirmed
+  `docs/HANDOFF.md` is modified before this task and therefore excluded.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review outcome/status, this slice may create a docs/control
+  review-status surface without creating concrete query-ref inputs.
+- A future route-decision candidate may be named only if this review-status
+  surface remains non-approval, docs/control-only, and does not resolve
+  concrete refs.
+- A minimal current-route-card pointer is sufficient; `docs/HANDOFF.md` remains
+  excluded.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement package review-status file.
+- [x] Step 2: Add a minimal current-route-card pointer if still needed.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the review-status outcome, all three query-ref
+  review-status rows, future route-decision candidate or blocker label, and
+  forbidden claims.
+- Dirty-file check for `docs/HANDOFF.md`; report that it was not touched.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref review-status rows are present.
+- Check exactly one selected review-status outcome marker is present across
+  touched docs.
+- If a future route-decision candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected review-status outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let review-status language imply concrete refs, runtime inputs, or
+  actual query instances.
+- Do not let this status surface become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not touch `docs/HANDOFF.md` in this slice.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched because it is dirty and excluded by dispatch.
+- 2026-07-04: Added the curation advancement package review-status surface and
+  current-route-card pointer. The selected review-status outcome and the single
+  future route-decision candidate label are kept in the new review-status
+  document so count checks stay unambiguous. Verification is docs/control only;
+  Gradle is skipped because no runtime, schema, provider/API,
+  renderer/ffmpeg/TTS, media, or Kotlin/JVM files are in this slice.
+
+### Completion Notes
+
+- The review-status surface preserves exactly three query-ref rows and keeps
+  concrete refs unresolved/absent.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remained the obvious pointer surface.
+- `docs/HANDOFF.md` was not touched because it is dirty and excluded by this
+  dispatch.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementPackageReview`
+that follows the B03-reviewed advancement package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_READY_FOR_REVIEW`.
+This slice reviews/classifies the three curation advancement rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, while
+confirming advancement remains limited to docs/control curation/review
+surfaces. It must not create concrete refs, actual query instances, actual
+query content/output/verdicts, runtime work, provider/API/media work, approval,
+canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material route chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_advancement_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that advancement package slice with PASS.
+- B01 dispatch states the reviewed selected advancement package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_READY_FOR_REVIEW`.
+- B01 dispatch states B03 confirmed exactly three required curation advancement
+  rows exist, one each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- B01 dispatch states B03 confirmed the prior future candidate appeared exactly
+  once and remained future explicit classification only.
+- B01 dispatch states advancement is limited to docs/control curation/review
+  surfaces.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, runtime/provider/media work, approval, canon, release, and
+  production lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_V0.md`
+  records exactly one curation advancement row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the advancement package outcome, this slice may create a
+  docs/control review surface without creating concrete query-ref inputs.
+- A future status/route-decision candidate may be named only if this review
+  remains non-approval, docs/control-only, and does not resolve concrete refs.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement package review file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the advancement package outcome, all three query-ref
+  advancement review rows, review labels, selected review outcome/status,
+  future candidate or blocker label, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly three query-ref advancement review rows are present.
+- Check exactly one selected review outcome/status marker is present across
+  touched docs.
+- If a future status/route-decision candidate is named, verify it appears
+  exactly once across touched docs and is justified by the selected review
+  outcome/status.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let review status imply concrete refs, runtime inputs, or actual
+  query instances.
+- Do not let this review become source-basis selection, concrete query-ref
+  resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the review cannot safely name one future docs/control status/
+  route-decision candidate, record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Added the curation advancement package review and
+  current-route-card pointer. The selected review outcome/status and the single
+  future status/route-decision candidate label are kept in the new review
+  document so count checks stay unambiguous. Verification is docs/control only;
+  Gradle is skipped because no runtime, schema, provider/API,
+  renderer/ffmpeg/TTS, media, or Kotlin/JVM files are in this slice.
+
+### Completion Notes
+
+- The review surface preserves exactly three query-ref rows and keeps concrete
+  refs unresolved/absent.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remained the obvious pointer surface,
+  so `docs/HANDOFF.md` was not touched.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Advancement Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationAdvancementPackage`
+that follows the B03-reviewed aggregate outcome
+`CONCRETE_CURATION_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`.
+This slice defines a curation advancement package for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, while keeping advancement
+limited to curation/review surfaces. It must not create concrete refs, actual
+query instances, actual query content/output/verdicts, runtime work,
+provider/API/media work, approval, canon, release, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_ADVANCEMENT_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material route chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_concrete_curation_package_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed selected aggregate outcome is
+  `CONCRETE_CURATION_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`.
+- B01 dispatch states B03 confirmed exactly three query-ref route-decision rows
+  exist, one each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- B01 dispatch states B03 confirmed the route can advance only to docs/control
+  curation.
+- B01 dispatch states concrete refs, actual query instances/content/output/
+  verdicts, runtime work, provider/API/media work, approval, canon, release,
+  and production lock remain absent/unresolved.
+- B01 dispatch states the future package appeared exactly once and remained
+  future explicit classification only.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed route advancement only to docs/control curation, this slice may
+  define a curation advancement package without creating concrete query-ref
+  inputs.
+- A future review/status candidate may be named only if the advancement package
+  remains non-approval, docs/control-only, and does not resolve concrete refs.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation advancement package file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the advancement outcome, all three query-ref
+  advancement rows, selected advancement package outcome, future candidate or
+  blocker label, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected advancement package outcome marker is present.
+- Check exactly three query-ref advancement rows are present.
+- If a future review/status candidate is named, verify it appears exactly once
+  across touched docs and is justified by the selected advancement package
+  outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let curation advancement imply concrete refs, runtime inputs, or
+  actual query instances.
+- Do not let the advancement package become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the advancement package cannot safely name one future docs/control
+  review/status candidate, record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Added the curation advancement package and current-route-card
+  pointer. The selected advancement package outcome and the single future
+  review/status candidate label are kept in the new advancement package
+  document so count checks stay unambiguous. Verification is docs/control only;
+  Gradle is skipped because no runtime, schema, provider/API,
+  renderer/ffmpeg/TTS, media, or Kotlin/JVM files are in this slice.
+
+### Completion Notes
+
+- The advancement package preserves exactly three query-ref rows and keeps
+  concrete refs unresolved/absent.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remained the obvious pointer surface,
+  so `docs/HANDOFF.md` was not touched.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlConcreteCurationPackageReviewStatusRouteDecision`
+that follows the B03-reviewed review-status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+This slice decides whether the route can advance beyond review/status surfaces
+or must block, while preserving all three `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport` rows as non-approval route-decision surfaces. It must
+not create actual query instances, runtime refs, concrete refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_concrete_curation_package_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review-status slice with PASS.
+- B01 dispatch states the reviewed selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B01 dispatch states B03 confirmed exactly three query-ref review-status rows
+  exist, one each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- B01 dispatch states each row uses
+  `CONCRETE_PACKAGE_REVIEW_STATUS_PASS_NOT_APPROVAL_FOR_FUTURE_ROUTE_DECISION`
+  and supports future docs/control route-decision classification only.
+- B01 dispatch states B03 confirmed "concrete" remains limited to package
+  structure/review surfaces; concrete refs, actual query content/output/
+  verdicts, runtime/provider/media work, approval, canon, release, and
+  production lock remain absent/unresolved.
+- B01 dispatch states B03 confirmed this exact task candidate appeared exactly
+  once and was future explicit classification only.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one concrete-package review-status row each for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, keeps
+  concrete refs unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review-status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- Since all three rows are explicit non-approval route-decision surfaces and
+  do not attempt concrete ref resolution, the route may advance only to another
+  docs/control curation slice if the aggregate outcome says so.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control concrete curation package review-status route-decision file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the review-status route-decision label, all three
+  query-ref route-decision rows, exactly one aggregate outcome, future
+  candidate or blocker label, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected aggregate outcome marker is present.
+- Check exactly three query-ref route-decision rows are present.
+- If a future package is named, verify it appears exactly once across touched
+  docs and is justified by the selected aggregate outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let route advancement imply concrete refs, runtime inputs, or actual
+  query instances.
+- Do not let the route-decision surface become source-basis selection,
+  concrete query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the route decision cannot safely name one future docs/control package,
+  record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Added the route-decision surface and current-route-card pointer.
+  The selected aggregate decision and the single future package label are kept
+  in the new route-decision document so count checks stay unambiguous.
+  Verification is docs/control only; Gradle is skipped because no runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, or Kotlin/JVM files are in
+  this slice.
+
+### Completion Notes
+
+- The route-decision surface preserves exactly three query-ref rows and keeps
+  concrete refs unresolved/absent.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remained the obvious pointer surface,
+  so `docs/HANDOFF.md` was not touched.
+- No next task was started.
+
+## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlConcreteCurationPackageReviewStatus`
+that follows the B03-reviewed review outcome/status
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_READY_FOR_STATUS`.
+This slice records review-status rows for `QueryRequest`, `QueryResponse`,
+and `QueryScopeReviewReport`, confirms "concrete" remains limited to package
+structure and review surfaces, keeps concrete refs unresolved/absent, preserves
+citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+`boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`, and decides
+whether one future route-decision candidate can be named.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_concrete_curation_package_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review slice with PASS.
+- B01 dispatch states the reviewed selected review outcome/status is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_READY_FOR_STATUS`.
+- B01 dispatch states B03 confirmed exactly three required review rows exist,
+  one each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- B01 dispatch states B03 confirmed "concrete" remains limited to package
+  structure/review surfaces; concrete refs, actual query content/output/
+  verdicts, runtime/provider/media work, approval, canon, release, and
+  production lock remain absent/unresolved.
+- B01 dispatch states B03 confirmed this exact task candidate appeared exactly
+  once and was future explicit classification only.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_V0.md`
+  records exactly one concrete-package review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review outcome/status, this slice may create a docs/control
+  review-status surface without creating concrete query-ref inputs.
+- If the review-status outcome is safe, one future route-decision candidate
+  can be named only in the new review-status doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control concrete curation package review-status file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the review-status outcome, all three query-ref
+  review-status rows, future candidate or blocker label, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review-status outcome marker is present.
+- Check exactly three query-ref review-status rows are present.
+- If a future route-decision candidate is named, verify it appears exactly
+  once across touched docs and is justified by the selected review-status
+  outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one concrete-package review-status row each for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The new doc confirms "concrete" remains limited to package structure
+  and review surfaces; concrete query refs remain unresolved/absent.
+- PASS: The new doc preserves citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The review-status doc records one selected status outcome marker and
+  one future route-decision candidate, future explicit classification only,
+  not auto-start, and not approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the review-status surface convert package structure into concrete
+  query refs, runtime inputs, or actual query instances.
+- Do not let the status surface become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the status surface cannot safely name one future route-decision
+  candidate, record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new review-status doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlConcreteCurationPackageReview`
+that follows the B03-reviewed concrete-package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_READY_FOR_REVIEW`.
+This slice reviews/classifies the three concrete-package rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, confirms
+"concrete" remains limited to package structure and review surfaces, and
+preserves unresolved/absent concrete refs, citation, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_concrete_curation_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that concrete-package slice with PASS.
+- B01 dispatch states the reviewed selected concrete-package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_READY_FOR_REVIEW`.
+- B01 dispatch states B03 confirmed exactly three required concrete-package
+  rows exist, one each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- B01 dispatch states B03 confirmed "concrete" remains limited to package
+  structure/review surfaces, and concrete refs, actual query content/output/
+  verdicts, runtime/provider/media work, approval, canon, release, and
+  production lock remain absent/unresolved.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_V0.md`
+  records exactly one concrete-package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved/absent, and preserves citation, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the concrete-package outcome, this slice may create a docs/control
+  review surface without creating concrete query-ref inputs.
+- If the review outcome is safe, one future status/route-decision candidate
+  can be named only in the new review doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control concrete curation package review file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the concrete-package outcome, all three query-ref
+  review rows, review labels, future candidate label if named, and forbidden
+  claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review outcome/status marker is present.
+- Check exactly three query-ref review rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review outcome/status.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_REVIEW_V0.md`
+  records exactly one concrete-package review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The new doc confirms "concrete" remains limited to package structure
+  and review surfaces; concrete query refs remain unresolved/absent.
+- PASS: The new doc preserves citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The review doc records one selected review outcome/status marker and
+  one future status/route-decision candidate, future explicit classification
+  only, not auto-start, and not approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the review surface convert package structure into concrete query
+  refs, runtime inputs, or actual query instances.
+- Do not let the review become source-basis selection, concrete query-ref
+  resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the review cannot safely name one future status/route-decision candidate,
+  record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new review doc, and the current route card
+  pointer; no runtime, schema, query, provider/API, media, approval, canon,
+  release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Docs Control Concrete Curation Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlConcreteCurationPackage`
+that follows the B03-reviewed aggregate route-decision outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_CONCRETE_DOCS_CONTROL_CURATION_PACKAGE`.
+This slice defines the concrete docs/control curation package structure for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, while keeping
+"concrete" limited to package structure and review surfaces. Concrete query
+refs remain unresolved/absent until future reviewed docs/control citations
+explicitly support them.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_package_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed aggregate outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_CAN_ADVANCE_TO_CONCRETE_DOCS_CONTROL_CURATION_PACKAGE`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, keeps concrete refs
+  unresolved, preserves citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-decision outcome, this slice may create a concrete
+  docs/control curation package structure without creating concrete query-ref
+  inputs.
+- If the concrete package outcome is safe, one future review/status candidate
+  can be named only in the new concrete package doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control concrete curation package file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the route-decision outcome, all three query-ref
+  concrete-package rows, concrete-package structure labels, future candidate
+  label if named, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected concrete-package outcome marker is present.
+- Check exactly three query-ref concrete-package rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected concrete-package outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CONCRETE_CURATION_PACKAGE_V0.md`
+  records exactly one concrete-package structure row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The new doc keeps "concrete" limited to package structure and review
+  surfaces; concrete query refs remain unresolved/absent.
+- PASS: The new doc preserves citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The concrete package doc records one selected concrete-package outcome
+  marker and one future review/status candidate, future explicit
+  classification only, not auto-start, and not approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let "concrete package" mean concrete query refs, runtime inputs, or
+  actual query instances.
+- Do not let the package structure become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the package cannot safely name one future review/status candidate, record
+  the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new concrete package doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationPackageReviewStatusRouteDecision`
+that follows the B03-reviewed review-status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+This slice decides whether the route can advance to one concrete docs/control
+curation package or must block, while preserving the three `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` rows as non-approval,
+unresolved-concrete-ref route-decision surfaces. It must not create actual
+query instances, runtime refs, concrete refs, source/story/query content,
+evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_package_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review-status slice with PASS.
+- B01 dispatch states the reviewed review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one non-approval review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving unresolved
+  concrete-ref status, citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review-status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- If the route-decision outcome is safe, one future concrete docs/control
+  curation package can be named only in the new route-decision doc and only as
+  future explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation package review-status route-decision file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the route-decision label, all three query-ref
+  route-decision rows, exactly one aggregate outcome, future candidate or
+  blocker label, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected aggregate outcome marker is present.
+- Check exactly three query-ref route-decision rows are present.
+- If a future package is named, verify it appears exactly once across touched
+  docs and is justified by the selected aggregate outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The new doc preserves unresolved concrete-ref status, citation,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The route-decision doc names one future docs/control package,
+  future explicit classification only, not auto-start, and not approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the route-decision layer become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the route cannot safely advance to one concrete docs/control curation
+  package, record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new route-decision doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active A/B Hold Relay Rule Alignment V0 Docs Control
+
+### Goal
+
+Persist the missing A/B relay rule so a blocked sub-route does not stop the
+whole blueprint. When `B組01` receives an A-group hold such as
+`HOLD_FOR_A_GROUP_PLANNING`, `HOLD_FOR_EXPLICIT_CLASSIFICATION`, or an
+A-group route-authority gap that is explicitly not a true stop condition,
+`B組01` must route one bounded planning/control request back to `A組01`.
+`B組01` must not ask `00` / user for routine technical continuation, and must
+not invent the planning result itself.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md`
+- `docs/HANDOFF.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, runtime, CLI, schema, tests, or sample JSON.
+- No provider/API, web/server, SQLite, renderer/ffmpeg/TTS, or media
+  generation.
+- No implementation dispatch to `B組02`.
+- No review request to `B組03`.
+- No canon, registry, release, final approval, or production lock.
+- No staging, commit, or push.
+
+### Confirmed Facts
+
+- User reported the previous behavior was wrong: `00` should not do B-group or
+  A-group work, and `B組01` should ask `A組01` when planning is needed.
+- The active `b-01` heartbeat prompt was updated to include the missing rule:
+  if `A組01` returns `A_GROUP_BRANCH_REQUIRED`,
+  `HOLD_FOR_A_GROUP_PLANNING`, or `HOLD_FOR_EXPLICIT_CLASSIFICATION` and it is
+  not a true stop condition, `B組01` must route one bounded planning/control
+  request back to `A組01`.
+- Repository docs did not yet persist this exact relay rule in a concise
+  first-read form.
+
+### Implementation Steps
+
+- [x] Step 1: Update current operating-model docs with the hold relay rule.
+- [x] Step 2: Update first-read handoff summary.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` for `HOLD_FOR_A_GROUP_PLANNING`,
+  `HOLD_FOR_EXPLICIT_CLASSIFICATION`,
+  `A_GROUP_BRANCH_REQUIRED`, `TRUE_STOP_CONDITION`, `B組01`, `A組01`,
+  and `00`.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files.
+- No Gradle because this is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md` now has an
+  `A-Group Hold Relay Rule`.
+- PASS: `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` now has an
+  `A/B Hold Relay Rule`.
+- PASS: `docs/HANDOFF.md` now exposes the same rule in first-read form.
+- PASS: `rg` found the hold statuses, `TRUE_STOP_CONDITION`, `B組01`, and
+  `A組01` in touched docs.
+- PASS: trailing-whitespace scan passed for touched docs.
+- PASS: `git diff --check` passed for touched tracked files with Windows
+  line-ending warnings only.
+
+### Risks / Drift Notes
+
+- Do not let `B組01` become an A-group planner; it only routes the planning
+  request to `A組01`.
+- Do not let `00` become a routine approval gate again.
+- Do not let an A-group hold become a full project stop unless `A組01` returns
+  `TRUE_STOP_CONDITION`.
+
+- 2026-07-04: Closed this docs/control slice. The missing relay rule is now in
+  the active `B組01` automation prompt and persisted in first-read project docs.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationPackageReviewStatus`
+that follows the B03-reviewed package-review outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_READY_FOR_STATUS`.
+This slice records the three rows for `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport` as non-approval review-status surfaces, preserves
+unresolved concrete-ref status, citation, visibility, `allowedPromptSurface`,
+`protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+`REVIEW_PASS_NOT_APPROVAL`, and decides whether one future docs/control
+route-decision candidate can be named. It must not create actual query
+instances, runtime refs, concrete refs, source/story/query content, evidence
+bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_package_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that package-review slice with PASS.
+- B01 dispatch states the reviewed package-review outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_READY_FOR_STATUS`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_V0.md`
+  records exactly one package-review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving
+  `PACKAGE_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, unresolved
+  concrete-ref status, citation rules, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the package-review outcome, this slice may create a docs/control
+  review-status surface without creating concrete query-ref inputs.
+- If the review-status outcome is safe, one future route-decision candidate
+  can be named only in the new review-status doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation package review-status file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the package-review outcome, all three query-ref
+  review-status rows, review-status labels, future candidate or blocker label
+  if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review-status outcome marker is present.
+- Check exactly three query-ref review-status rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review-status outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one non-approval review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- PASS: The new doc preserves unresolved concrete-ref status, citation,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The review-status doc names one future docs/control route-decision
+  candidate, future explicit classification only, not auto-start, and not
+  approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the review-status layer become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the review-status layer cannot safely name one future route-decision
+  candidate, record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new review-status doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Package Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationPackageReview`
+that follows the B03-reviewed curation-package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_READY_FOR_REVIEW`.
+This slice reviews/classifies the three curation-package rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, confirms whether
+the package remains safe as docs/control curation only, and preserves
+unresolved concrete-ref status, citation rules, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+review gates, and `REVIEW_PASS_NOT_APPROVAL`. It must not create actual query
+instances, runtime refs, concrete refs, source/story/query content, evidence
+bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_docs_control_curation_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that curation-package slice with PASS.
+- B01 dispatch states the reviewed curation-package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_V0.md`
+  records exactly one curation-package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving allowed input
+  surfaces, citation requirements, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates, unresolved
+  concrete-ref status, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the curation-package outcome, this slice may create a docs/control
+  package-review surface without creating concrete query-ref inputs.
+- If the package-review outcome is safe, one future status/route-decision
+  candidate can be named only in the new package-review doc and only as future
+  explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation package review file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the curation-package outcome, all three query-ref
+  package-review rows, review labels, future candidate or blocker label if
+  selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected package-review outcome marker is present.
+- Check exactly three query-ref package-review rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected package-review outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_V0.md`
+  records exactly one package-review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The selected package-review outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_REVIEW_READY_FOR_STATUS`.
+- PASS: The new doc confirms the package remains safe as docs/control curation
+  only and preserves unresolved concrete-ref status, citation rules,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The package review names one future bounded status/route-decision
+  candidate, future explicit classification only, not auto-start, and not
+  approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the package review become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the review cannot safely name one future status/route-decision candidate,
+  record the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new package-review doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Docs Control Curation Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedDocsControlCurationPackage`
+that follows the B03-reviewed route-advance outcome
+`QUERY_REF_SOURCE_MATERIAL_ROUTE_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`. This
+slice defines the authorized docs/control curation package for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` as curation surfaces only:
+allowed input surfaces, citation requirements, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+review gates, unresolved concrete-ref status, and `REVIEW_PASS_NOT_APPROVAL`.
+It must not create actual query instances, runtime refs, concrete refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_route_package_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed aggregate outcome is
+  `QUERY_REF_SOURCE_MATERIAL_ROUTE_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving non-approval,
+  citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  generic `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`, while keeping concrete refs unresolved.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-advance outcome, this slice may create a docs/control
+  curation package surface without creating concrete query-ref inputs.
+- If the curation-package outcome is safe, one future review/status candidate
+  can be named only in the new curation package doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the authorized docs/control curation package file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the route-advance outcome, all three query-ref
+  curation-package rows, curation package labels, future candidate or blocker
+  label if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected curation-package outcome marker is present.
+- Check exactly three query-ref curation-package rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected curation-package outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_V0.md`
+  records exactly one curation-package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The selected curation-package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_DOCS_CONTROL_CURATION_PACKAGE_READY_FOR_REVIEW`.
+- PASS: The new doc keeps concrete refs unresolved and preserves allowed input
+  surfaces, citation requirements, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gates,
+  unresolved concrete-ref status, and `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The curation package names one future review/status candidate, future
+  explicit classification only, not auto-start, and not approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the curation package become source-basis selection, concrete
+  query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the package cannot safely name one future review/status candidate, record
+  the exact blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new curation package doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Curation Route Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationRoutePackageReviewStatusRouteDecision`
+that follows the B03-reviewed review-status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+This slice decides whether the route can advance or must block for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, while preserving
+non-approval, citation, visibility, `allowedPromptSurface`,
+`protectedBoundaryRef`, generic `boundaryCategory`, review gate,
+`DRAFT_FOR_REVIEW`, and `REVIEW_PASS_NOT_APPROVAL`. It must keep concrete refs
+unresolved and must not create actual query instances, runtime refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20/21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_route_package_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that review-status slice with PASS.
+- B01 dispatch states the reviewed review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving
+  `ROUTE_PACKAGE_REVIEW_STATUS_NON_APPROVAL_READY_FOR_ROUTE_DECISION`,
+  citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  generic `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`, while keeping concrete refs unresolved.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review-status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- If the aggregate route decision can advance, one future docs/control curation
+  candidate can be named only in the new route-decision doc and only as future
+  explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation route-package review-status route-decision docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed review-status outcome, all three
+  query-ref route-decision rows, the selected aggregate outcome, future
+  candidate or blocker label if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected aggregate outcome marker is present.
+- Check exactly three query-ref route-decision rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected aggregate outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The selected aggregate outcome is
+  `QUERY_REF_SOURCE_MATERIAL_ROUTE_CAN_ADVANCE_TO_DOCS_CONTROL_CURATION`.
+- PASS: The new doc keeps concrete refs unresolved and preserves
+  non-approval, citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, review gate,
+  `DRAFT_FOR_REVIEW`, and `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: The route-decision doc names one future docs/control curation
+  candidate, future explicit classification only, not auto-start, and not
+  approval.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let the aggregate route decision become source-basis selection,
+  concrete query-ref resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- If the route is not safe to advance, record the exact blocker instead of
+  inventing a future path.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new route-decision doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Curation Route Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationRoutePackageReviewStatus`
+that follows the B03-reviewed route-package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_READY_FOR_REVIEW_STATUS`.
+This slice records the three route-package rows as non-approval review-status
+surfaces for `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`,
+preserves citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+generic `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+`REVIEW_PASS_NOT_APPROVAL`, and decides whether one future docs/control
+route-decision candidate is safe to name. It must keep concrete refs
+unresolved and must not create actual query instances, runtime refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_route_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-package slice with PASS.
+- B01 dispatch states the reviewed route-package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_READY_FOR_REVIEW_STATUS`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_V0.md`
+  records exactly one route-package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving citation,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`, while keeping concrete refs unresolved.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-package outcome, this slice may create a docs/control
+  review-status surface without creating concrete query-ref inputs.
+- If the review-status outcome is safe, one future route-decision candidate
+  can be named only in the new review-status doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation route package review-status docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed route-package outcome, all three
+  query-ref review-status rows, review-status labels, future candidate or
+  blocker label if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review-status outcome marker is present.
+- Check exactly three query-ref review-status rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review-status outcome.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files.
+- `git status --short --branch` at the end.
+- Gradle is not required because this slice is docs/control only.
+
+Result:
+
+- PASS: `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one non-approval review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- PASS: The selected review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_REVIEW_STATUS_READY_FOR_ROUTE_DECISION`.
+- PASS: The new doc keeps concrete refs unresolved and preserves citation,
+  visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- PASS: `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` now carries the minimal pointer;
+  `docs/HANDOFF.md` did not need a new pointer.
+- PASS: Required-term `rg`, citation path, row count, selected-marker count,
+  future-candidate count, and trailing-whitespace checks passed before final
+  closeout.
+- PASS: Gradle was skipped because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not let review status become source-basis selection, concrete query-ref
+  resolution, or evidence bundle creation.
+- Do not let `REVIEW_PASS_NOT_APPROVAL` imply user approval, canon, registry,
+  release, final approval, or production lock.
+- Do not name more than one future candidate; if safety is unclear, record the
+  blocker instead.
+
+- 2026-07-04: Opened this docs/control slice. Current evidence supports using
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` as the pointer surface and keeping
+  `docs/HANDOFF.md` untouched.
+- 2026-07-04: Closed this docs/control slice without scope drift. The slice
+  stayed limited to `PLANS.md`, the new review-status doc, and the current
+  route card pointer; no runtime, schema, query, provider/API, media, approval,
+  canon, release, or production-lock work was introduced.
+
+## Active Query Ref Source Material Authorized Curation Route Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationRoutePackage` that
+follows the B03-reviewed curation-route outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_READY_FOR_FUTURE_PACKAGE`.
+This slice defines the route package surface for future query-ref
+source-material curation across `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport`, preserves all three rows as docs/control only with
+citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+`boundaryCategory`, review gates, `DRAFT_FOR_REVIEW`, and
+`REVIEW_PASS_NOT_APPROVAL`, and keeps concrete refs unresolved unless future
+reviewed docs/control citations support resolution. It must not create actual
+query instances, concrete refs, runtime refs, source/story/query content,
+evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_route_v0_docs_control`.
+- B01 dispatch states B03 reviewed that curation-route slice with PASS.
+- B01 dispatch states the reviewed curation-route outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_READY_FOR_FUTURE_PACKAGE`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_V0.md`
+  records exactly one curation-route row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving non-approval,
+  citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  generic `boundaryCategory`, review gate, `DRAFT_FOR_REVIEW`, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the curation-route outcome, this slice may create a docs/control
+  route package surface without creating concrete query-ref inputs.
+- If the route-package outcome is safe, one future review/status package
+  candidate can be named only in the new route-package doc and only as future
+  explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation route package docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed route-ready outcome, all three query-ref
+  route-package rows, package labels, future candidate or blocker label if
+  selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected route-package outcome marker is present.
+- Check exactly three query-ref route-package rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected route-package outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation route package docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed route-ready outcome, all
+  three query-ref route-package rows, package labels, selected route-package
+  outcome, future candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The route-package file has exactly three query-ref route-package rows.
+- PASS: The route-package file has exactly one selected route-package outcome
+  marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the route package become actual query input creation.
+- Do not resolve concrete refs unless future reviewed docs/control citations
+  support resolution.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The route package remains
+  docs/control only and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Route V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationRoute` that follows
+the B03-reviewed route-decision outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_CAN_SUPPORT_FUTURE_DOCS_CONTROL_CURATION_ROUTE`.
+This slice defines the authorized docs/control curation route for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, preserves all
+rows as non-approval with citation, visibility, `allowedPromptSurface`,
+`protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+`REVIEW_PASS_NOT_APPROVAL`, and decides whether the route can name one future
+docs/control curation package candidate. It must not create actual query
+instances, concrete refs, runtime refs, source/story/query content, evidence
+bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_ROUTE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_package_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed route-decision outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_CAN_SUPPORT_FUTURE_DOCS_CONTROL_CURATION_ROUTE`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving
+  `PACKAGE_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`,
+  `REVIEW_PASS_NOT_APPROVAL`, citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, and review-gate rules.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-decision outcome, this slice may create a docs/control
+  authorized curation route without creating concrete query-ref inputs.
+- If the curation-route outcome is safe, one future curation package candidate
+  can be named only in the new route doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation route docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed route-decision outcome, all three
+  query-ref curation-route rows, curation-route labels, future candidate or
+  blocker label if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected curation-route outcome marker is present.
+- Check exactly three query-ref curation-route rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected curation-route outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation route docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed route-decision outcome,
+  all three query-ref curation-route rows, curation-route labels, selected
+  curation-route outcome, future candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The route file has exactly three query-ref curation-route rows.
+- PASS: The route file has exactly one selected curation-route outcome marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the curation route become actual query input creation.
+- Do not resolve concrete refs or promote rows into runtime query refs.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The authorized curation route
+  remains docs/control only and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Package Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`QueryRefSourceMaterialAuthorizedCurationPackageReviewStatusRouteDecision` that
+follows the B03-reviewed package review-status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_REVIEW`.
+This slice decides whether the reviewed package status can support exactly one
+future docs/control curation route, preserves the three query-ref rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, and keeps
+citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`, generic
+`boundaryCategory`, review gates, and `REVIEW_PASS_NOT_APPROVAL` explicit. It
+must not create actual query instances, concrete refs, runtime refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_package_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that package review-status slice with PASS.
+- B01 dispatch states the reviewed package review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+  records exactly one review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserves
+  `PACKAGE_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`,
+  `REVIEW_PASS_NOT_APPROVAL`, citation, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, and review-gate rules.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the review-status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- If the route-decision outcome is safe, one future docs/control curation route
+  candidate can be named only in the new route-decision doc and only as future
+  explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation package review-status route-decision docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed review-status label, all three
+  query-ref route-decision rows, selected route-decision outcome, future
+  candidate or blocker label if selected, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected route-decision outcome marker is present.
+- Check exactly three query-ref route-decision rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected route-decision outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation package review-status route-decision
+  docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed review-status label, all
+  three query-ref route-decision rows, selected route-decision outcome, future
+  candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The route-decision file has exactly three query-ref route-decision
+  rows.
+- PASS: The route-decision file has exactly one selected route-decision outcome
+  marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the route-decision surface become actual query input creation.
+- Do not resolve concrete refs or promote rows into runtime query refs.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The route decision remains
+  docs/control only and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Package Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`QueryRefSourceMaterialAuthorizedCurationPackageReviewStatus` that follows the
+B03-reviewed package-review outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_READY_FOR_REVIEW`.
+This slice records all three rows as
+`PACKAGE_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS` for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, preserves citation, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+review gates, and `REVIEW_PASS_NOT_APPROVAL`, and decides whether the review
+status can name one future docs/control route-decision candidate. It must not
+create actual query instances, concrete refs, runtime refs, source/story/query
+content, evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_package_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that package-review slice with PASS.
+- B01 dispatch states the reviewed package-review outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_V0.md`
+  records exactly one package-review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, classifies them as
+  `PACKAGE_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_STATUS`, and preserves
+  citation, visibility, `allowedPromptSurface`, `protectedBoundaryRef`,
+  generic `boundaryCategory`, review gate, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the package-review outcome, this slice may create a docs/control
+  package review-status surface without creating concrete query-ref inputs.
+- If the review-status outcome is safe, one future route-decision package
+  candidate can be named only in the new review-status doc and only as future
+  explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation package review-status docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed package-review outcome, all three
+  query-ref review-status rows, status labels, future candidate label if named,
+  and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review-status outcome marker is present.
+- Check exactly three query-ref review-status rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review-status outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation package review-status docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed package-review outcome,
+  all three query-ref review-status rows, status labels, selected
+  review-status outcome, future candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The review-status file has exactly three query-ref review-status rows.
+- PASS: The review-status file has exactly one selected review-status outcome
+  marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the review-status surface become actual query input creation.
+- Do not resolve concrete refs or promote rows into runtime query refs.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The review-status surface remains
+  docs/control only and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Package Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationPackageReview` that
+follows the B03-reviewed package outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_READY_FOR_REVIEW`. This
+slice reviews/classifies the three package rows for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, confirms whether the curation
+package remains safe as docs/control only, and preserves citation, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+review gates, and `REVIEW_PASS_NOT_APPROVAL`. It must not create actual query
+instances, concrete refs, runtime refs, source/story/query content, evidence
+bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_package_v0_docs_control`.
+- B01 dispatch states B03 reviewed that package slice with PASS.
+- B01 dispatch states the reviewed package outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_V0.md`
+  records exactly one authorized curation package row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving unresolved
+  concrete-ref status, citation requirements, visibility,
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  review gate, and `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the package outcome, this slice may create a docs/control package
+  review surface without creating concrete query-ref inputs.
+- If the package review outcome is safe, one future status/route-decision
+  package candidate can be named only in the new package-review doc and only as
+  future explicit classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation package review docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed package outcome, all three query-ref
+  package-review rows, review labels, future candidate label if named, and
+  forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected package-review outcome marker is present.
+- Check exactly three query-ref package-review rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected package-review outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation package review docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed package outcome, all three
+  query-ref package-review rows, review labels, selected package-review
+  outcome, future candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The package-review file has exactly three query-ref package-review
+  rows.
+- PASS: The package-review file has exactly one selected package-review outcome
+  marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the package review become actual query input creation.
+- Do not resolve concrete refs or promote rows into runtime query refs.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The package review remains a
+  docs/control review/classification surface and does not start the future
+  candidate.
+
+## Active Query Ref Source Material Authorized Curation Package V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationPackage` that
+follows the B03-reviewed route-decision outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_ROUTE_DECISION_CAN_NAME_FUTURE_CURATION_PACKAGE`.
+This slice defines the authorized curation package surface for `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport`, while preserving unresolved
+concrete-ref status, citation requirements, visibility, `allowedPromptSurface`,
+`protectedBoundaryRef`, generic `boundaryCategory`, review gates, and
+non-approval status. It must not create actual query instances, concrete refs,
+runtime refs, source/story/query content, evidence bundles, actual packet work,
+or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKAGE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_review_status_route_decision_v0_docs_control`.
+- B01 dispatch states B03 reviewed that route-decision slice with PASS.
+- B01 dispatch states the reviewed route-decision outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_ROUTE_DECISION_CAN_NAME_FUTURE_CURATION_PACKAGE`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records exactly one route-decision row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving
+  `REVIEW_PASS_NOT_APPROVAL`, visibility, `allowedPromptSurface`,
+  `protectedBoundaryRef`, generic `boundaryCategory`, citation, and review-gate
+  rules while keeping concrete refs unresolved.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the route-decision outcome, this slice may create a docs/control
+  authorized curation package surface without creating concrete query-ref
+  inputs.
+- If the package outcome is safe, one future review/status package candidate
+  can be named only in the new package doc and only as future explicit
+  classification, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation package docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed route-decision outcome, all three
+  query-ref rows, required boundary fields, future candidate label if named,
+  and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected package outcome marker is present.
+- Check exactly three query-ref authorized curation package rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected package outcome; if none is
+  named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation package docs/control file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed route-decision outcome,
+  all three query-ref package rows, required boundary fields, selected package
+  outcome, future candidate label, and forbidden claims.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The package file has exactly three query-ref authorized curation
+  package rows.
+- PASS: The package file has exactly one selected package outcome marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let the package surface become actual query input creation.
+- Do not resolve concrete refs unless future reviewed docs explicitly support
+  resolution.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The package remains a
+  docs/control curation surface and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`QueryRefSourceMaterialAuthorizedCurationReviewStatusRouteDecision` that follows
+the B03-reviewed status outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_READY_FOR_REVIEW`.
+This slice decides whether the reviewed status authorizes exactly one future
+docs/control curation package candidate while preserving the three query-ref
+rows, `REVIEW_PASS_NOT_APPROVAL`, visibility, prompt-surface,
+protected-boundary, citation, and review-gate rules. It must not create actual
+query instances, concrete runtime refs, concrete refs, source/story/query
+content, evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_review_status_v0_docs_control`.
+- B01 dispatch states B03 reviewed that authorized curation review-status
+  slice with PASS.
+- B01 dispatch states the reviewed status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_V0.md`
+  records exactly one review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, preserving
+  `PACKET_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_CURATION` and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the reviewed status outcome, this slice may create a docs/control
+  route-decision surface without creating concrete query-ref inputs.
+- If the route decision is safe, one future package candidate can be named only
+  in the new route-decision doc and only as future explicit classification, not
+  as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation review-status route-decision docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed status label, all three query-ref rows,
+  the selected route-decision outcome, future candidate label if named, and
+  forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected route-decision outcome marker is present.
+- Check exactly three query-ref route-decision rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected route-decision outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+Result:
+
+- PASS: Added the authorized curation review-status route-decision docs/control
+  file.
+- PASS: Added the current-route-card pointer; `docs/HANDOFF.md` was not needed
+  because the current route card remains the obvious route surface.
+- PASS: Required-term `rg` checks found the reviewed status label, three
+  query-ref rows, selected route-decision outcome, future candidate label,
+  forbidden claims, guardrails, and boundary terms.
+- PASS: Citation-rule/path check found all referenced reviewed docs/control
+  inputs.
+- PASS: The route-decision file has exactly three query-ref route-decision rows.
+- PASS: The route-decision file has exactly one selected outcome marker.
+- PASS: The named future candidate appears exactly once across touched docs.
+- PASS: Trailing-whitespace scan passed for touched docs.
+
+### Risks / Drift Notes
+
+- Do not let a technical review status become approval, canon, registry,
+  release, final approval, or production lock.
+- Do not let the route decision create actual query inputs, concrete refs, or
+  runtime behavior.
+- Do not name more than one future package candidate.
+- Keep any future package candidate future explicit classification only.
+- 2026-07-04: Closed this docs/control slice. The route decision remains
+  future explicit classification only and does not start the future candidate.
+
+## Active Query Ref Source Material Authorized Curation Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationReviewStatus` that
+follows the B03-reviewed packet-review outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_REVIEW_READY_FOR_REVIEW`,
+records all three packet rows as
+`PACKET_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_CURATION`, and decides whether
+the reviewed status is sufficient to name one future docs/control curation
+package candidate. The status surface must preserve non-approval, visibility,
+prompt-surface, protected-boundary, citation, and review-gate rules while
+avoiding actual query instances, query execution, concrete refs, runtime refs,
+source/story/query content, evidence bundles, actual packet work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No concrete refs.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_packet_review_v0_docs_control`.
+- B01 dispatch states B03 reviewed that authorized curation packet review with
+  PASS.
+- B01 dispatch states the reviewed packet-review outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_REVIEW_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_REVIEW_V0.md`
+  records exactly one packet review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, each classified as
+  `PACKET_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_CURATION`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the packet-review outcome, this slice may create a docs/control
+  review-status surface without creating concrete query-ref inputs.
+- If the review status is safe, one future package candidate can be named only
+  in the new review-status doc and only as future explicit classification, not
+  as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation review-status docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed packet-review outcome, all three
+  query-ref rows, `PACKET_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_CURATION`,
+  future candidate label if named, and forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review-status outcome marker is present.
+- Check exactly three query-ref review-status rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review-status outcome; if none
+  is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn review-status rows into actual `QueryRequest`, `QueryResponse`,
+  or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical authorization, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The review-status surface preserves the reviewed packet-review outcome and
+  records exactly one review-status row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- All three rows preserve
+  `PACKET_ROW_REVIEW_PASS_NOT_APPROVAL_FOR_FUTURE_CURATION` and keep concrete
+  refs unresolved.
+- One future route-decision package candidate is named exactly once in the new
+  review-status doc and remains future explicit classification only,
+  docs/control-only, classification/curation/review/status/classification-only,
+  not auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected review-status outcome marker is present;
+  exactly three review-status rows are present; the future candidate name
+  appears exactly once across touched docs; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Query Ref Source Material Authorized Curation Packet Review V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationPacketReview` that
+follows the B03-reviewed packet outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_READY_FOR_REVIEW`,
+reviews/classifies the three authorized curation packet rows for
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, and confirms
+whether the packet can support one future docs/control package without
+resolving concrete refs. The review must preserve citation, visibility,
+`allowedPromptSurface`, `protectedBoundaryRef`, `boundaryCategory`, review
+gate, and non-approval rules while avoiding actual query instances, query
+execution, runtime refs, source/story/query content, evidence bundles, actual
+packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_packet_v0_docs_control`.
+- B01 dispatch states B03 reviewed that authorized curation packet with PASS.
+- B01 dispatch states the reviewed packet outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_V0.md`
+  defines exactly one curation packet row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`, while preserving unresolved
+  concrete input status.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the packet outcome, this slice may create a docs/control review
+  surface without creating concrete query-ref inputs.
+- If the review is safe, one future package candidate can be named only in the
+  new review doc and only as future explicit classification, not as an
+  auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation packet review docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed packet outcome, all three query-ref
+  rows, review/classification labels, future candidate label if named, and
+  forbidden claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected review outcome marker is present.
+- Check exactly three query-ref packet review rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected review outcome; if none is
+  named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn packet review rows into actual `QueryRequest`, `QueryResponse`,
+  or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical authorization, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The authorized curation packet review preserves the reviewed packet outcome
+  and defines exactly one packet review row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- One future review-status package candidate is named exactly once in the new
+  review doc and remains future explicit classification only,
+  docs/control-only, classification/curation/review/classification-only, not
+  auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected review outcome marker is present; exactly
+  three packet review rows are present; the future candidate name appears
+  exactly once across touched docs; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Query Ref Source Material Authorized Curation Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationPacket` that
+follows the B03-reviewed plan outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PLAN_READY_FOR_REVIEW` and
+creates a reviewable curation packet surface for future `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` source-material inputs. The
+packet must remain docs/control-only, keep concrete query-ref runtime inputs
+unresolved unless backed by reviewed docs/control citations, and avoid actual
+query instances, query execution, runtime refs, source/story/query content,
+evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PACKET_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authorized_curation_plan_v0_docs_control`.
+- B01 dispatch states B03 reviewed that authorized curation plan with PASS.
+- B01 dispatch states the reviewed plan outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PLAN_READY_FOR_REVIEW`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PLAN_V0.md`
+  defines exactly one plan row each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`, with citation, visibility, prompt-surface,
+  protected-boundary, review-gate, and non-approval requirements.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the plan outcome, this slice may assemble a docs/control curation
+  packet surface without creating concrete query-ref inputs.
+- If the packet is safe, one future review/classification candidate can be
+  named only in the new packet doc and only as future explicit classification,
+  not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation packet docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the reviewed plan outcome, all three query-ref rows,
+  required boundary fields, future candidate label if named, and forbidden
+  claims.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected packet outcome marker is present.
+- Check exactly three query-ref curation packet rows are present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected packet outcome; if none is
+  named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn curation packet rows into actual `QueryRequest`, `QueryResponse`,
+  or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical authorization, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The authorized curation packet preserves the reviewed plan outcome and
+  defines exactly one curation packet row each for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- One future review/classification package candidate is named exactly once in
+  the new packet doc and remains future explicit classification only,
+  docs/control-only, classification/curation/review/classification-only, not
+  auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected packet outcome marker is present; exactly
+  three curation packet rows are present; the future candidate name appears
+  exactly once across touched docs; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Query Ref Source Material Authorized Curation Plan V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorizedCurationPlan` that follows
+the B03-reviewed authority outcome
+`QUERY_REF_SOURCE_MATERIAL_AUTHORITY_DEFINED_FOR_DOCS_CONTROL_CURATION` and
+defines an authorized curation plan for future `QueryRequest`, `QueryResponse`,
+and `QueryScopeReviewReport` reviewed input surfaces. The plan must remain
+docs/control-only, keep concrete query-ref runtime inputs unresolved, and avoid
+actual query instances, query execution, runtime refs, source/story/query
+content, evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORIZED_CURATION_PLAN_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states B02 completed
+  `query_ref_source_material_authority_classification_v0_docs_control`.
+- B01 dispatch states B03 reviewed that authority classification with PASS.
+- B01 dispatch states the reviewed authority outcome is
+  `QUERY_REF_SOURCE_MATERIAL_AUTHORITY_DEFINED_FOR_DOCS_CONTROL_CURATION`.
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this exact bounded
+  docs/control task.
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORITY_CLASSIFICATION_V0.md`
+  defines allowed source-material surfaces, allowed sources, citation rules,
+  review gates, visibility/protected-boundary rules, and non-approval status.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly approved this implementation package and B03 PASS
+  confirmed the authority outcome, this slice may define a docs/control
+  authorized curation plan without creating concrete query-ref inputs.
+- If the plan is safe, one future package candidate can be named only as a
+  future explicit classification/curation candidate and only in the new plan
+  doc, not as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authorized curation plan docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the authority outcome, all three query-ref slots,
+  allowed source surfaces, forbidden surfaces/claims, future candidate label if
+  named, non-approval status, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `boundaryCategory`, review gates, `no provider/API`, `renderer/ffmpeg/TTS`,
+  and `production lock`.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected plan outcome marker is present.
+- If a future candidate is named, verify it appears exactly once across
+  touched docs and is justified by the selected plan outcome; if none is named,
+  report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn authorized curation planning into actual `QueryRequest`,
+  `QueryResponse`, or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical authorization, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The authorized curation plan preserves the reviewed authority outcome and
+  defines exactly one plan row each for `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`.
+- One future curation packet candidate is named exactly once in the new plan
+  doc and remains future explicit classification only, docs/control-only,
+  classification/curation-only, not auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected plan outcome marker is present; exactly
+  three authorized curation plan rows are present; the future candidate name
+  appears exactly once across touched docs; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Query Ref Source Material Authority Classification V0 Docs Control
+
+### Goal
+
+Add a docs/control `QueryRefSourceMaterialAuthorityClassification` that resolves
+`A_GROUP_ROUTE_AUTHORITY_GAP_FOR_QUERY_REF_SOURCE_MATERIAL` after A01
+technical authorization. The classification must define authority for future
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` source-material
+curation surfaces while preserving unresolved concrete inputs and avoiding
+actual query instances, query execution, runtime refs, source/story/query
+content, evidence bundles, actual packet work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_QUERY_REF_SOURCE_MATERIAL_AUTHORITY_CLASSIFICATION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref source-material chain, so it remains the preferred
+pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch states A01 returned an `IMPLEMENTATION_PACKAGE` with
+  `AI_TECHNICAL_APPROVED` and `READY_FOR_B01_DISPATCH` for this bounded
+  docs/control task.
+- B01 dispatch states A01 resolved
+  `A_GROUP_ROUTE_AUTHORITY_GAP_FOR_QUERY_REF_SOURCE_MATERIAL` into this task.
+- B01 dispatch states B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_material_curation_packet_review_status_route_decision_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+  records
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`.
+- The route-decision doc preserves unresolved `QueryRequest`, `QueryResponse`,
+  and `QueryScopeReviewReport` source-material slots and names no future
+  package candidate.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref source-material route chain.
+
+### Assumptions
+
+- Because A01 explicitly resolved the authority gap into this implementation
+  package, this slice may define docs/control curation authority without
+  treating the prior route decision as a true stop condition.
+- If authority is defined, one future package candidate can be named only as a
+  classification/curation-only candidate and only in the new authority doc, not
+  as an auto-start or approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-material authority classification docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for the authority gap label, all three query-ref slots,
+  selected authority outcome, allowed source-material surfaces,
+  forbidden surfaces/claims, non-approval status, guardrails,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check against reviewed docs/control inputs.
+- Check exactly one selected authority outcome marker is present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected authority outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn authority classification into actual `QueryRequest`,
+  `QueryResponse`, or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical authorization, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The authority gap is resolved as docs/control curation authority, not as
+  actual query-ref input resolution.
+- The three allowed source-material surfaces cover `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport` future reviewed inputs while
+  keeping concrete inputs unresolved.
+- One future package candidate is named exactly once in the new authority doc
+  and remains classification/curation-only, not auto-start and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected authority outcome marker is present; the
+  future candidate name appears exactly once across touched docs; trailing
+  whitespace scan passed; `git diff --check` passed with only the accepted
+  Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
+  slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceMaterialCurationPacketReviewStatusRouteDecision`
+that records a route-decision surface for the source-material curation packet
+review-status chain after B03 PASS. The route-decision surface must preserve
+unresolved concrete `QueryRequest`, `QueryResponse`, and
+`QueryScopeReviewReport` input status, carry B03 PASS only as
+`REVIEW_PASS_NOT_APPROVAL`, keep `REVIEW_STATUS_UNRESOLVED_REVIEW_PASS_NOT_APPROVAL`,
+and avoid creating actual query instances, concrete runtime refs,
+query/source/story content, evidence bundles, actual packets,
+runtime/schema/media work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref route chain, so it remains the preferred pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_material_curation_packet_review_status_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_V0.md`
+  records
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_READY_FOR_REVIEW`.
+- The reviewed status surface follows
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_READY_FOR_REVIEW`, and
+  `BLOCKED_BY_UNRESOLVED_QUERY_REF_INPUTS_REQUIRING_NEW_SOURCE_MATERIAL_CLASSIFICATION`.
+- The reviewed status surface has exactly one unresolved status row each for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, and each row
+  carries `REVIEW_PASS_NOT_APPROVAL` and
+  `REVIEW_STATUS_UNRESOLVED_REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref route chain.
+
+### Assumptions
+
+- Because all three source-material slots remain unresolved, the conservative
+  aggregate route-decision outcome should require A-group classification rather
+  than naming a speculative next package.
+- Each slot should use `ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION` unless
+  reviewed evidence proves a safe docs/control-only continuation that does not
+  invent or resolve concrete inputs.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-material curation packet review-status route-decision docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for route-decision title, reviewed review-status outcome,
+  upstream review/packet/protocol outcomes, blocker label, all three query-ref
+  slots, curation rows/review rows/status rows/route-decision rows, forbidden
+  surfaces/claims, non-approval status, `REVIEW_PASS_NOT_APPROVAL`,
+  `REVIEW_STATUS_UNRESOLVED_REVIEW_PASS_NOT_APPROVAL`, guardrails,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three query-ref source-material route-decision rows are
+  present.
+- Check exactly one selected aggregate route-decision outcome marker is
+  present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn route-decision rows into actual `QueryRequest`, `QueryResponse`,
+  or `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat B03 PASS or `REVIEW_PASS_NOT_APPROVAL` as user approval, canon,
+  registry, release, final approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- Each per-slot route-decision row uses
+  `ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`.
+- The aggregate route-decision outcome is
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`.
+- No future bounded package candidate is named because the selected aggregate
+  route-decision outcome requires A-group classification before any next
+  package can be safely named or dispatched.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected aggregate route-decision outcome marker is
+  present; exactly three query-ref route-decision rows are present; no future
+  candidate statement is present in the new route-decision doc; trailing
+  whitespace scan passed; `git diff --check` passed with only the accepted
+  Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
+  slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceMaterialCurationPacketReviewStatus`
+that records a review-status surface for the source-material curation packet
+review after B03 PASS. The review-status surface must preserve unresolved
+concrete `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` input
+status, carry B03 PASS only as `REVIEW_PASS_NOT_APPROVAL`, and avoid creating
+actual query instances, concrete runtime refs, query/source/story content,
+evidence bundles, actual packets, runtime/schema/media work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref route chain, so it remains the preferred pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_material_curation_packet_review_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_V0.md`
+  records `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_READY_FOR_REVIEW`.
+- The reviewed review surface follows
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_READY_FOR_REVIEW`, and
+  `BLOCKED_BY_UNRESOLVED_QUERY_REF_INPUTS_REQUIRING_NEW_SOURCE_MATERIAL_CLASSIFICATION`.
+- The reviewed review surface has exactly one unresolved review row each for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`, and each row
+  carries `REVIEW_PASS_NOT_APPROVAL`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref route chain.
+
+### Assumptions
+
+- The review-status surface can safely choose a review-status-ready outcome
+  because it records status only and preserves unresolved concrete inputs.
+- A future docs/control route-decision or curation-classification step can be
+  named only if this status surface keeps the next package docs/control-only,
+  classification/curation/review/status/route-decision-only, non-automatic,
+  and non-approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-material curation packet review-status docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for status title, reviewed review-surface outcome,
+  upstream packet/protocol outcomes, blocker label, all three query-ref slots,
+  curation rows/review rows/status rows, forbidden surfaces/claims,
+  non-approval status, `REVIEW_PASS_NOT_APPROVAL`, guardrails,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three query-ref source-material status rows are present.
+- Check exactly one selected current review-status outcome marker is present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn status rows into actual `QueryRequest`, `QueryResponse`, or
+  `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat B03 PASS or `REVIEW_PASS_NOT_APPROVAL` as user approval, canon,
+  registry, release, final approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The review-status outcome is
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_STATUS_READY_FOR_REVIEW`.
+- The review-status surface names exactly one future bounded package candidate
+  in the new docs/control file; it is docs/control-only,
+  classification/curation/review/status/route-decision-only, not auto-start,
+  and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected current review-status outcome marker is
+  present; exactly one future candidate mention is present across touched docs;
+  exactly three query-ref status rows are present; trailing whitespace scan
+  passed; `git diff --check` passed with only the accepted Windows LF-to-CRLF
+  warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
+  only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet Review V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceMaterialCurationPacketReview`
+that records a review surface for the source-material curation packet after
+B03 PASS. The review surface must preserve unresolved concrete `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` input status, carry B03 PASS only
+as `REVIEW_PASS_NOT_APPROVAL`, and avoid creating actual query instances,
+concrete runtime refs, query/source/story content, evidence bundles, actual
+packets, runtime/schema/media work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref route chain, so it remains the preferred pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_material_curation_packet_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_V0.md`
+  records `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_READY_FOR_REVIEW`.
+- The reviewed curation packet follows
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_READY_FOR_REVIEW` and restates
+  `BLOCKED_BY_UNRESOLVED_QUERY_REF_INPUTS_REQUIRING_NEW_SOURCE_MATERIAL_CLASSIFICATION`.
+- The reviewed curation packet has exactly one unresolved curation row each
+  for `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref route chain.
+
+### Assumptions
+
+- The review surface can safely choose a review-ready outcome because it
+  records B03 PASS as technical review evidence only and preserves unresolved
+  concrete inputs.
+- A future docs/control review-status or curation step can be named only if
+  this review keeps the next package docs/control-only, review/curation-only,
+  non-automatic, and non-approval.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-material curation packet review docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for review title, reviewed packet outcome, upstream
+  protocol outcome, blocker label, all three query-ref slots, curation
+  rows/review rows, forbidden surfaces/claims, non-approval status,
+  `REVIEW_PASS_NOT_APPROVAL`, guardrails, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three query-ref source-material review rows are present.
+- Check exactly one selected current review outcome marker is present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn review rows into actual `QueryRequest`, `QueryResponse`, or
+  `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat B03 PASS or `REVIEW_PASS_NOT_APPROVAL` as user approval, canon,
+  registry, release, final approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The review outcome is
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_REVIEW_READY_FOR_REVIEW`.
+- The review names exactly one future bounded package candidate in the new
+  docs/control file; it is docs/control-only, classification/curation/review-
+  only, not auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected current review outcome marker is present;
+  exactly one future candidate mention is present across touched docs; exactly
+  three query-ref review rows are present; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceMaterialCurationPacket`
+that assembles a protocol-governed curation packet surface for future reviewed
+query-ref input source material after B03 PASS on the source-material curation
+protocol. The packet must preserve unresolved concrete `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` input status without creating
+actual query instances, concrete runtime refs, query/source/story content,
+evidence bundles, actual packets, runtime/schema/media work, or approval
+decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref route chain, so it remains the preferred pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_material_curation_protocol_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_V0.md`
+  records `QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_READY_FOR_REVIEW`.
+- The reviewed protocol restates
+  `BLOCKED_BY_UNRESOLVED_QUERY_REF_INPUTS_REQUIRING_NEW_SOURCE_MATERIAL_CLASSIFICATION`
+  and defines allowed source-material surfaces for `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport`.
+- The reviewed protocol distinguishes AI-curated material from
+  user/worldbuilding-required material and preserves citation, review,
+  visibility, prompt-surface, protected-boundary, and non-approval guardrails.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref route chain.
+
+### Assumptions
+
+- The packet can safely choose a review-ready outcome because it carries only
+  unresolved curation rows and does not resolve concrete source material.
+- A future docs/control review surface can be named only if this packet keeps
+  the next package classification/curation-only and non-automatic.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-material curation packet docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for packet title, reviewed protocol outcome, blocker
+  label, all three query-ref slots, allowed source-material surfaces,
+  AI-curatable/user-worldbuilding-required distinction, forbidden
+  surfaces/claims, non-approval status, guardrails, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three query-ref source-material curation rows are present.
+- Check exactly one selected current packet outcome marker is present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn curation rows into actual `QueryRequest`, `QueryResponse`, or
+  `QueryScopeReviewReport` instances.
+- Do not resolve concrete runtime refs, create evidence bundles, or select
+  source basis.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat B03 PASS or `REVIEW_PASS_NOT_APPROVAL` as user approval, canon,
+  registry, release, final approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The packet outcome is
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PACKET_READY_FOR_REVIEW`.
+- The packet names exactly one future bounded package candidate in the new
+  docs/control file; it is docs/control-only, classification/curation-only, not
+  auto-start, and not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected current packet outcome marker is present;
+  exactly one future candidate mention is present across touched docs; exactly
+  three query-ref curation rows are present; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Material Curation Protocol V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceMaterialCurationProtocol`
+that defines protocol rules for future reviewed query-ref input source-material
+curation after A01 classified the route as AI-governed and safe to dispatch.
+The protocol must preserve unresolved concrete `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` inputs without creating actual
+query instances, concrete runtime refs, source/story/query content,
+runtime/schema/media work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the current route card stops being the
+obvious route pointer. Current evidence shows the current route card already
+carries this query-ref route chain, so it remains the preferred pointer surface.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete runtime query-ref resolution.
+- No source/story invention beyond defining allowed docs/control
+  source-material curation rules.
+- No Qingli promotion.
+- No source-basis selection for actual packet work.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says A01 returned `AI_TECHNICAL_APPROVED` and
+  `READY_FOR_B01_DISPATCH` for this docs/control protocol task.
+- B01 dispatch says the route was previously classified as blocked by
+  `BLOCKED_BY_UNRESOLVED_QUERY_REF_INPUTS_REQUIRING_NEW_SOURCE_MATERIAL_CLASSIFICATION`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_STATUS_ROUTE_DECISION_V0.md`
+  selects
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_STATUS_ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`.
+- The current route-decision doc preserves `QueryRequest`, `QueryResponse`,
+  and `QueryScopeReviewReport` rows as unresolved and non-approval.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this query-ref route chain.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` defines
+  `allowedPromptSurface`, `protectedBoundaryRef`, `boundaryCategory`, and the
+  deny-by-default prompt surface rules.
+
+### Assumptions
+
+- The protocol can safely select a review-ready outcome because it defines
+  rules only and does not curate concrete source material.
+- A future docs/control curation step can be named only if this protocol keeps
+  the next package classification/curation-only and non-automatic.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-material curation protocol docs/control file.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms for blocker label, protocol title, all three query-ref
+  slots, allowed source-material surfaces, forbidden surfaces/claims, and
+  non-approval status.
+- Citation-rule/path check against existing reviewed docs/control inputs.
+- Check exactly one selected current protocol outcome marker.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the protocol outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn protocol rules into actual `QueryRequest`, `QueryResponse`, or
+  `QueryScopeReviewReport` instances.
+- Do not curate, promote, or select concrete source material in this slice.
+- Do not infer source/story/query content or convert Qingli-derived candidates
+  into approved source refs.
+- Do not treat A01 technical approval, B03 PASS, or
+  `REVIEW_PASS_NOT_APPROVAL` as user approval, canon, registry, release, final
+  approval, or production lock.
+- Current edits remain docs/control only; no Kotlin/JVM source, runtime,
+  schema, sample JSON, provider/API, renderer/ffmpeg/TTS, media generation,
+  approval, canon, registry, release, or production lock work was added.
+- The protocol outcome is
+  `QUERY_REF_SOURCE_MATERIAL_CURATION_PROTOCOL_READY_FOR_REVIEW`.
+- The protocol names exactly one future bounded package candidate in the new
+  docs/control file; it is classification/curation-only, not auto-start, and
+  not approval.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly one selected current protocol outcome marker is present;
+  exactly one future candidate mention is present in the protocol doc; exactly
+  three query-ref slot rows are present; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Status Route Decision V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapStatusRouteDecision`
+that records the route-decision surface for the reviewed-input-gap status
+chain, preserving unresolved query-ref source-doc gaps and deciding whether the
+route can continue or needs A-group classification, without creating actual
+query instances, concrete refs, source/story/query content, runtime/schema
+work, media work, or approval decisions.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_STATUS_ROUTE_DECISION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope because the current route card remains the
+obvious route pointer and already carries this chain.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instances.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket` or `ScriptReadyScenePacketCandidate`.
+- No sample JSON.
+- No runtime/CLI/schema/validator work.
+- No provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS, or
+  media generation.
+- No 04/05/06/07/08 restart and no Phase 20 / Phase 21 restart.
+- No approval, canon, registry, release, final approval, or production lock.
+- No staging, commit, push, archive/window creation, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_reviewed_input_gap_closure_packet_review_status_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_STATUS_V0.md`
+  records
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_STATUS_READY_FOR_REVIEW`.
+- The reviewed status surface preserves
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- The reviewed status surface keeps `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` rows unresolved and non-approval.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- Because the reviewed inputs remain unresolved and this is a route-decision
+  surface, the conservative aggregate outcome should require A-group
+  classification instead of naming a speculative next package.
+- Each slot should use `ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION` rather
+  than `ROUTE_DECISION_AI_DOCS_CONTROL_NEXT_SAFE` unless the route decision can
+  cite reviewed evidence that a concrete next docs/control task is safe.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc reviewed-input gap status route-decision doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required terms including the doc title, upstream outcome labels,
+  route-decision labels, selected route-decision outcome, three slots,
+  guardrails, `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three route-decision rows are present.
+- Check exactly one selected route-decision outcome is present.
+- If a future candidate is named, verify it appears exactly once and is
+  justified by the selected outcome; if none is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn the route-decision surface into actual query source docs, actual
+  query instances, concrete ref resolution, source-basis selection, or evidence
+  bundle creation.
+- Do not infer a next implementation or docs package without reviewed evidence
+  and explicit future classification.
+- Do not treat route-decision status, B03 PASS, or `REVIEW_PASS_NOT_APPROVAL`
+  as user approval, canon, registry, release, final approval, or production
+  lock.
+- Do not auto-start any future package.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each per-slot route-decision row preserves
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, and
+  `REVIEW_PASS_NOT_APPROVAL` while leaving concrete refs unresolved.
+- Each per-slot route-decision state is
+  `ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`.
+- The aggregate route-decision outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_STATUS_ROUTE_DECISION_REQUIRES_A_GROUP_CLASSIFICATION`;
+  it is technical route classification only and not approval.
+- No future package candidate is named because the selected outcome requires
+  A-group classification before any next package is safe to name.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` term check passed; referenced docs/control
+  paths exist; exactly three anchored route-decision rows are present; exactly
+  one selected route-decision outcome marker is present; exactly one no-future-
+  candidate statement is present; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review Status V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePacketReviewStatus`
+that records the review-status surface for the closure-packet review while
+preserving all unresolved query-ref source-doc gaps as AI-resolvable planning
+work, without creating actual query instances, resolving concrete refs, or
+supplying source/story/query content.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_STATUS_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope because the current route card remains the
+obvious route pointer and already carries this chain.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_reviewed_input_gap_closure_packet_review_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_V0.md`
+  records `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_READY_FOR_REVIEW`.
+- The reviewed closure-packet review preserves
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, and
+  `REVIEW_PASS_NOT_APPROVAL`.
+- The reviewed closure-packet review keeps `QueryRequest`, `QueryResponse`,
+  and `QueryScopeReviewReport` rows unresolved and non-approval.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- The review-status surface can safely choose a review-ready outcome because it
+  records status only and preserves unresolved gaps without resolving them.
+- Each slot status should remain non-approval and preserve the AI-resolvable
+  planning-gap state unless reviewed evidence proves a user/worldbuilding
+  requirement or boundary block.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc closure packet review-status doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs, including the review-status title,
+  upstream outcome labels, selected status outcome, three slots, guardrails,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly three status rows are present.
+- Check exactly one selected status outcome is present.
+- If a future package candidate is named, check it is named exactly once and is
+  justified; otherwise report why none is named.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn the review-status surface into actual query source docs, actual
+  query instances, concrete ref resolution, source-basis selection, or evidence
+  bundle creation.
+- Do not treat review status, B03 PASS, or `REVIEW_PASS_NOT_APPROVAL` as user
+  approval, canon, registry, release, final approval, or production lock.
+- Do not auto-start any future package named by this review-status surface.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each per-slot status row preserves `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, and
+  `REVIEW_PASS_NOT_APPROVAL` while leaving concrete refs unresolved.
+- The current review-status outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_STATUS_READY_FOR_REVIEW`;
+  it is technical review readiness only and not approval.
+- One future package candidate is named exactly once in the new review-status
+  doc; it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly three anchored status rows are present;
+  exactly one selected status outcome marker is present; the future package
+  candidate count is exactly one; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet Review V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePacketReview`
+that creates a review surface for the prior closure packet while preserving
+all unresolved query-ref source-doc gaps as AI-resolvable planning work, without
+creating actual query instances, resolving concrete refs, or supplying
+source/story/query content.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_reviewed_input_gap_closure_packet_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_V0.md`
+  records `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_READY_FOR_REVIEW`.
+- The reviewed closure packet preserves
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`, and
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`.
+- The reviewed closure packet keeps `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` rows unresolved and classification-only.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- The review surface can safely choose a review-ready outcome because it
+  records technical review evidence and preserves unresolved gaps without
+  resolving them.
+- Each slot review status should remain non-approval and preserve the
+  AI-resolvable planning-gap state unless reviewed evidence proves a
+  user/worldbuilding requirement or boundary block.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this small route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc closure packet review surface doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePacketReview`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check each query-ref source-doc slot is represented exactly once in the
+  review surface.
+- Check exactly one current review outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn the review surface into actual query source docs, actual query
+  instances, concrete ref resolution, source-basis selection, or evidence
+  bundle creation.
+- Do not treat B03 PASS, review rows, or `REVIEW_PASS_NOT_APPROVAL` as user
+  approval, canon, registry, release, final approval, or production lock.
+- Do not auto-start any future package named by this review surface.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each per-slot review row preserves `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, and
+  `REVIEW_PASS_NOT_APPROVAL` while leaving concrete refs unresolved.
+- The current review outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_REVIEW_READY_FOR_REVIEW`;
+  it is technical review readiness only and not approval.
+- The future package candidate is named exactly once in the new review-surface
+  doc; it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly three anchored per-slot review rows are
+  present; exactly one selected review outcome marker is present; the future
+  package candidate count is exactly one; trailing whitespace scan passed;
+  `git diff --check` passed with only the accepted Windows LF-to-CRLF warning
+  for `PLANS.md`; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePacket`
+that assembles placeholder/reference/procedural closure rows for the
+AI-resolvable reviewed-input gaps confirmed by the reviewed closure plan,
+without creating actual query instances, resolving concrete refs, or supplying
+source/story/query content.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story/query invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_reviewed_input_gap_closure_plan_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_V0.md`
+  records `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`.
+- The reviewed closure plan preserves
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`, and
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`.
+- The reviewed closure plan assigns `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` source-doc reviewed-input gaps the closure status
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- The closure packet can safely choose a review-ready outcome because it
+  assembles only placeholder/reference/procedural fields and does not resolve
+  the gaps.
+- Each slot closure-packet status should remain AI-resolvable planning work
+  unless reviewed evidence proves a user/worldbuilding requirement or boundary
+  block.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this small route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc reviewed-input gap closure packet doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePacket`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`,
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check each query-ref source-doc slot is represented exactly once in the
+  closure packet.
+- Check exactly one current closure-packet outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn the closure packet into actual query source docs, actual query
+  instances, concrete ref resolution, source-basis selection, or evidence
+  bundle creation.
+- Do not treat placeholder rows as gap closure, reviewed source docs, or
+  approval.
+- Do not auto-start any future package named by this closure packet.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each per-slot closure-packet row preserves
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP` and
+  `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP` while leaving concrete refs
+  unresolved.
+- The current closure-packet outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PACKET_READY_FOR_REVIEW`; it
+  is technical review readiness only and not approval.
+- The future package candidate is named exactly once in the new closure-packet
+  doc; it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly three anchored per-slot closure-packet rows
+  are present; exactly one selected closure-packet outcome marker is present;
+  the future package candidate count is exactly one; trailing whitespace scan
+  passed; `git diff --check` passed with only the accepted Windows LF-to-CRLF
+  warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
+  only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Closure Plan V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePlan`
+that defines a procedural closure plan for the AI-resolvable reviewed-input
+gaps identified by the prior matrix, without creating actual query instances,
+resolving concrete refs, or supplying source/story/query content.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_reviewed_input_gap_matrix_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_V0.md`
+  records `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`.
+- The reviewed matrix preserves
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`, and
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`.
+- The reviewed matrix classifies `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` source-doc reviewed-input gaps as
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- The closure plan can safely choose a review-ready outcome because it defines
+  only procedural docs/control closure steps and does not close the gaps.
+- Each slot closure status should remain AI-resolvable planning work unless
+  reviewed evidence proves a user/worldbuilding requirement or boundary block.
+- A minimal current-route-card pointer is sufficient; no additional
+  `docs/HANDOFF.md` pointer is needed for this small route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc reviewed-input gap closure plan doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapClosurePlan`,
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check each query-ref source-doc slot is represented exactly once in the
+  closure plan.
+- Check exactly one current closure-plan outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn the closure plan into actual query source docs, actual query
+  instances, concrete ref resolution, source-basis selection, or evidence
+  bundle creation.
+- Do not treat the prior matrix's review-ready state as approval or as gap
+  closure.
+- Do not auto-start any future package named by this closure plan.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each per-slot closure status is `CLOSURE_PLAN_DEFINED_FOR_AI_RESOLVABLE_GAP`
+  while each prior reviewed-input gap classification remains
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP`.
+- The current closure-plan outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_CLOSURE_PLAN_READY_FOR_REVIEW`; it
+  is technical review readiness only and not approval.
+- The future package candidate is named exactly once in the new closure-plan
+  doc; it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  remains the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly three anchored per-slot closure rows are
+  present; exactly one selected closure-plan outcome marker is present; the
+  future package candidate count is exactly one; trailing whitespace scan
+  passed; `git diff --check` passed with only the accepted Windows LF-to-CRLF
+  warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
+  only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Reviewed Input Gap Matrix V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapMatrix` that
+classifies the reviewed-input gaps required before future `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` source-doc placeholders can
+become reviewed source docs, without creating actual query instances or
+resolving concrete refs.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_placeholder_packet_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_V0.md`
+  records `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`.
+- The same placeholder packet preserves
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  and `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`.
+- The placeholder packet defines placeholder/reference-only sections for
+  future `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`
+  source-doc surfaces.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` requires
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, and technical-review-only status boundaries.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- Each query-ref source-doc slot should be classified as
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP` because the reviewed placeholder
+  packet defines surfaces, but concrete future source basis and reviewed
+  docs/control citations are still missing.
+- The matrix itself can safely choose
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW` because it
+  only classifies gaps and does not fill them.
+- A minimal `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` pointer is sufficient; no
+  additional `docs/HANDOFF.md` pointer is needed for this small route
+  continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc reviewed-input gap matrix doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocReviewedInputGapMatrix`,
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `reviewed input gap`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check each query-ref source-doc slot has exactly one slot-level
+  classification.
+- Check exactly one current matrix outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn reviewed-input gap classification into actual source docs, actual
+  query instances, concrete query-ref resolution, or source-basis selection.
+- Do not treat templates, placeholders, Qingli-derived candidates, samples,
+  runtime database inspection, direct SQLite writes, provider/API output,
+  renderer/ffmpeg/TTS output, or media artifacts as reviewed source docs.
+- Do not auto-start any future package named by this matrix.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- Each slot-level classification is
+  `REVIEWED_INPUTS_MISSING_AI_PLANNING_GAP` because concrete reviewed source
+  basis and reviewed docs/control citations remain missing.
+- The current matrix outcome is
+  `QUERY_REF_SOURCE_DOC_REVIEWED_INPUT_GAP_MATRIX_READY_FOR_REVIEW`; it is
+  technical review readiness only and not approval.
+- The future package candidate is named exactly once in the new matrix doc; it
+  remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  is the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly three anchored slot-level classification
+  markers are present; exactly one current matrix outcome marker is selected;
+  the future package candidate count is exactly one; trailing whitespace scan
+  passed; `git diff --check` passed with only the accepted Windows LF-to-CRLF
+  warning for `PLANS.md`; Gradle was skipped because this slice is docs/control
+  only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Placeholder Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocPlaceholderPacket` that
+assembles placeholder/reference-only packet sections for future reviewed
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` source-doc
+surfaces, without creating actual query instances or resolving concrete refs.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_definition_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_DEFINITION_V0.md`
+  records `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`.
+- The same definition doc preserves
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  and `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`.
+- The definition doc defines placeholder/reference-only source-doc surfaces
+  for future `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` reviewed query-ref source docs.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` requires
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic
+  `boundaryCategory`, and technical-review-only status boundaries.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- The placeholder packet can safely choose
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW` because it
+  assembles placeholder/reference-only sections and does not create actual
+  source docs, query instances, concrete refs, or source basis.
+- A future docs/control gap matrix can be named only if this placeholder packet
+  remains review-ready and the candidate is classification-only.
+- A minimal `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` pointer is sufficient; no
+  additional `docs/HANDOFF.md` pointer is needed for this small route
+  continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc placeholder packet doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocPlaceholderPacket`,
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `reviewed query-ref source doc`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly one current placeholder-packet outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn placeholder packet sections into actual source docs, actual query
+  instances, concrete query-ref resolution, or source-basis selection.
+- Do not treat templates, placeholders, Qingli-derived candidates, samples,
+  runtime database inspection, direct SQLite writes, provider/API output,
+  renderer/ffmpeg/TTS output, or media artifacts as reviewed source docs.
+- Do not auto-start any future package named by this placeholder packet.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- The current placeholder-packet outcome is
+  `QUERY_REF_SOURCE_DOC_PLACEHOLDER_PACKET_READY_FOR_REVIEW`; it is technical
+  review readiness only and not approval.
+- The future package candidate is named exactly once in the new placeholder
+  packet doc; it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  is the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly one current placeholder-packet outcome
+  marker is selected; the future package candidate count is exactly one;
+  trailing whitespace scan passed; `git diff --check` passed with only the
+  accepted Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped
+  because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Definition V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocDefinition` that defines
+placeholder/reference-only source-doc surfaces for future reviewed
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` source docs,
+without creating actual query instances, resolving concrete refs, or selecting
+source basis.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_DEFINITION_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless evidence shows the current route card
+is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_source_doc_gap_closure_route_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_V0.md`
+  records `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`.
+- The same route doc restates
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  and `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`.
+- The route doc defines reviewed query-ref source-doc requirements for
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` without
+  creating actual query instances.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` defines the common
+  query pattern and requirements, including citation, visibility, and
+  non-approval boundaries.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` provides templates only; it
+  does not provide concrete query refs.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- This definition can safely choose
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW` because it defines
+  surfaces and qualification rules only, not actual source docs or query
+  instances.
+- A minimal `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` pointer is sufficient; no
+  additional `docs/HANDOFF.md` pointer is needed for this small route
+  continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref source-doc definition doc.
+- [x] Step 2: Add a minimal current-route-card pointer if still obvious.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocDefinition`,
+  `QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_DEFINED_FOR_FUTURE_SOURCE_DOCS`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `reviewed query-ref source doc`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule/path check for every referenced docs/control input.
+- Check exactly one current definition outcome is selected.
+- If a future package candidate is named, check it is named exactly once and
+  only because the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn source-doc surface definition into actual query instance
+  creation or concrete query-ref resolution.
+- Do not treat templates, placeholders, Qingli-derived candidates, samples,
+  runtime database inspection, direct SQLite writes, provider/API output,
+  renderer/ffmpeg/TTS output, or media artifacts as reviewed source docs.
+- Do not auto-start any future package named by this definition.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- The current definition outcome is
+  `QUERY_REF_SOURCE_DOC_DEFINITION_READY_FOR_REVIEW`; it is technical review
+  readiness only and not approval.
+- The future package candidate is named exactly once in the new definition doc;
+  it remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  is the obvious current route pointer for this chain.
+- Verification passed: required `rg` string check passed; referenced
+  docs/control paths exist; exactly one current definition outcome marker is
+  selected; the future package candidate count is exactly one; trailing
+  whitespace scan passed; `git diff --check` passed with only the accepted
+  Windows LF-to-CRLF warning for `PLANS.md`; Gradle was skipped because this
+  slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Source Doc Gap Closure Route V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefSourceDocGapClosureRoute` that
+reclassifies the current missing reviewed query-ref source-doc blocker into an
+AI-governed route for future reviewed source-doc creation, without creating
+actual query instances or resolving concrete refs now.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_SOURCE_DOC_GAP_CLOSURE_ROUTE_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+`docs/HANDOFF.md` is not in scope unless the evidence shows the current route
+card is not sufficient as the route pointer.
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No source/story invention.
+- No Qingli promotion.
+- No source-basis selection.
+- No evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says A01 approved this package as `AI_TECHNICAL_APPROVED` /
+  `READY_FOR_B01_DISPATCH`.
+- B01 dispatch names the current blocker as
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_REVIEWED_REF_DISCOVERY_MATRIX_V0.md`
+  classifies `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`
+  refs as `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_V0.md`
+  records
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` defines the
+  `QueryRequest` / `QueryResponse` / `QueryScopeReviewReport` pattern and
+  requirements, but it is not a concrete reviewed source doc for the first
+  packet.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` defines templates, not
+  concrete reviewed query refs.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` requires
+  `allowedPromptSurface`, `protectedBoundaryRef`, and generic
+  `boundaryCategory` guardrails for prompt-facing or protected material.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this chain.
+
+### Assumptions
+
+- A docs/control route can safely define what a reviewed query-ref source doc
+  must contain while keeping actual `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` instances future-only.
+- The current route card pointer is sufficient; `docs/HANDOFF.md` does not need
+  a separate pointer for this small route continuation.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-doc gap closure route doc.
+- [x] Step 2: Add a minimal current-route-card pointer.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefSourceDocGapClosureRoute`,
+  `BLOCKED_BY_MISSING_REVIEWED_QUERY_REF_SOURCE_DOCS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `reviewed query-ref source doc`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation-rule check for every referenced docs/control input.
+- If a future package candidate is named, check it is named exactly once and
+  only because the route is safe.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn source-doc definition into actual query instance creation.
+- Do not treat templates, placeholders, Qingli-derived candidates, samples,
+  runtime database inspection, direct SQLite writes, provider/API output,
+  renderer/ffmpeg/TTS output, or media artifacts as reviewed source docs.
+- Do not auto-start the future package named by this route.
+- Keep technical PASS/status terms separate from user approval, canon,
+  registry, release, final media approval, and production lock.
+- Current edits remain docs/control only; no Kotlin/JVM, runtime, schema,
+  sample JSON, provider/API, renderer/ffmpeg/TTS, media generation, approval,
+  canon, registry, release, or production lock work was added.
+- The future package candidate is named exactly once in the new route doc; it
+  remains classification-only and must not auto-start.
+- `docs/HANDOFF.md` was not changed because `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+  is the obvious current route pointer for this chain.
+- Verification passed: required string checks passed; referenced docs/control
+  paths exist; the future package candidate count is exactly one; trailing
+  whitespace scan passed; `git diff --check` passed with only the accepted
+  Windows LF-to-CRLF warning for `PLANS.md`; `git status --short --branch` was
+  checked. Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Reviewed Ref Discovery Matrix V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefReviewedRefDiscoveryMatrix` that
+inventories possible reviewed source documents for future `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` refs after the placeholder packet
+blocked on missing reviewed refs.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_REVIEWED_REF_DISCOVERY_MATRIX_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution.
+- No source/story invention.
+- No promotion of Qingli candidates.
+- No source-basis selection.
+- No reviewed evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_evidence_placeholder_packet_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_V0.md`
+  records
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`.
+- The placeholder packet says `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` slots remain unresolved because no concrete reviewed
+  docs/control refs exist.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_SURFACE_DEFINITION_V0.md`
+  records `QUERY_REF_EVIDENCE_SURFACE_DEFINED_FOR_FUTURE_REVIEW`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_GAP_CLOSURE_DECISION_BRIEF_V0.md`
+  records `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and
+  `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` define query rules and
+  templates, not concrete first-packet query refs.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- Because reviewed docs/control evidence still contains only rules/templates
+  and placeholder packet surfaces, all three query-ref slots should remain
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`.
+- No future docs/control package should be named unless all three query-ref
+  slots have `DISCOVERY_CANDIDATE_NEEDS_REVIEW`.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref reviewed-ref discovery matrix doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefReviewedRefDiscoveryMatrix`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `QUERY_REF_EVIDENCE_SURFACE_DEFINED_FOR_FUTURE_REVIEW`,
+  `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `DISCOVERY_CANDIDATE_NEEDS_REVIEW`,
+  `NO_REVIEWED_SOURCE_FOUND_AI_PLANNING_GAP`,
+  `USER_WORLDBUILDING_REQUIRED`, `BOUNDARY_BLOCKED`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Citation/path check for every discovery candidate, if any candidate is found.
+- Check every query slot has exactly one classification.
+- Check that no future package is named when not all three slots have
+  `DISCOVERY_CANDIDATE_NEEDS_REVIEW`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not infer candidates from templates, placeholders, samples, hidden
+  material, runtime database inspection, direct SQLite writes, provider/API
+  output, renderer/ffmpeg/TTS output, media artifacts, or unpromoted Qingli
+  candidates.
+- Do not create actual query instances or resolve concrete refs.
+- Do not name a speculative next package if the three query-ref slots do not
+  all have discovery candidates needing review.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; cited docs/control paths
+  exist; no discovery candidates required candidate-path validation; every
+  query-ref slot has exactly one matrix row/classification; no future package is
+  named because not all three slots have `DISCOVERY_CANDIDATE_NEEDS_REVIEW`;
+  trailing whitespace scan passed; `git diff --check` passed with only accepted
+  Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
+  because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Evidence Placeholder Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefEvidencePlaceholderPacket` that
+assembles a placeholder/reference-only packet surface for future `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` refs, while keeping all three
+slots unresolved because no already reviewed docs/control evidence supplies
+concrete query refs.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No concrete query-ref resolution unless already reviewed docs/control
+  evidence plainly exists; if not, keep unresolved.
+- No source/story invention.
+- No promotion of Qingli candidates.
+- No source-basis selection.
+- No reviewed evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_evidence_surface_definition_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_SURFACE_DEFINITION_V0.md`
+  records `QUERY_REF_EVIDENCE_SURFACE_DEFINED_FOR_FUTURE_REVIEW`.
+- That surface definition preserves
+  `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`,
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`, and
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and
+  `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` define query rules and
+  templates, not concrete first-packet query refs.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- Since no already reviewed docs/control evidence supplies concrete query refs,
+  the placeholder packet outcome should report the missing reviewed refs rather
+  than naming a speculative next future package candidate.
+- The placeholder packet can still be drafted for technical review while its
+  query-ref slots remain unresolved.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref evidence placeholder packet doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefEvidencePlaceholderPacket`,
+  `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`,
+  `QUERY_REF_EVIDENCE_SURFACE_DEFINED_FOR_FUTURE_REVIEW`,
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`,
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_READY_FOR_REVIEW`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_MISSING_REVIEWED_REFS`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_BLOCKED_BY_BOUNDARY`,
+  `QUERY_REF_EVIDENCE_PLACEHOLDER_PACKET_REQUIRES_USER_WORLDBUILDING`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Citation/path check for referenced reviewed docs/control surfaces.
+- Check that exactly one placeholder-packet outcome is selected.
+- Check that no future package candidate is named when the selected outcome is
+  blocked by missing reviewed refs.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn placeholder packet fields into actual query instances.
+- Do not invent or promote concrete query refs to make the packet look
+  complete.
+- Do not promote Qingli-derived candidate refs or treat them as sufficient for
+  actual packet work.
+- Keep all query-ref fields placeholder/reference-only metadata.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; cited docs/control paths
+  exist; exactly one selected placeholder-packet outcome marker is present; the
+  packet states no future package candidate is named because it is blocked by
+  missing reviewed refs; trailing whitespace scan passed; `git diff --check`
+  passed with only accepted Windows LF-to-CRLF warnings for tracked touched
+  files; Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Evidence Surface Definition V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefEvidenceSurfaceDefinition` that defines
+the placeholder/reference-only evidence surface needed for future
+`QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` refs, without
+creating actual query instances, resolving concrete refs, inventing
+source/story content, or promoting Qingli candidates.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_EVIDENCE_SURFACE_DEFINITION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No query execution or queryer implementation.
+- No source/story invention.
+- No promotion of Qingli candidates.
+- No source-basis selection.
+- No reviewed evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, renderer/ffmpeg/TTS,
+  media/image/audio/video generation, package generation, QA execution against
+  real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_query_ref_gap_closure_decision_brief_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_GAP_CLOSURE_DECISION_BRIEF_V0.md`
+  selects `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`.
+- The same decision brief preserves Qingli-derived refs as
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW` and keeps query refs as
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` defines the
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` requirement
+  surfaces.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` provides templates, not
+  concrete first-packet query refs.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- The surface definition can be marked ready for future review because reviewed
+  query docs provide enough rule shape for a placeholder/reference-only
+  evidence surface.
+- A future package candidate should be named exactly once in the new definition
+  doc only if the selected definition outcome permits it.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref evidence surface definition doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefEvidenceSurfaceDefinition`,
+  `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`,
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`,
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `QUERY_REF_EVIDENCE_SURFACE_DEFINED_FOR_FUTURE_REVIEW`,
+  `QUERY_REF_EVIDENCE_SURFACE_BLOCKED_BY_MISSING_RULES`,
+  `QUERY_REF_EVIDENCE_SURFACE_BLOCKED_BY_BOUNDARY`,
+  `QUERY_REF_EVIDENCE_SURFACE_REQUIRES_USER_WORLDBUILDING`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Citation/path check for referenced reviewed docs/control surfaces.
+- Check that exactly one current definition outcome is selected.
+- Check that the future package candidate is named exactly once if the selected
+  outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not create actual query evidence instances while defining the evidence
+  surface.
+- Do not promote Qingli-derived candidate refs or treat them as sufficient for
+  actual packet work.
+- Keep all query-ref fields placeholder/reference-only metadata.
+- Keep the future package candidate classification-only; B01/A01/00 must still
+  explicitly classify any later task.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; cited docs/control paths
+  exist; exactly one current-definition outcome marker is present; the future
+  package candidate is named exactly once across touched docs; trailing
+  whitespace scan passed; `git diff --check` passed with only accepted Windows
+  LF-to-CRLF warnings for tracked touched files; Gradle was skipped because
+  this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Query Ref Gap Closure Decision Brief V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateQueryRefGapClosureDecisionBrief` that responds
+to the unresolved ref source catalog, classifies the missing `QueryRequest`,
+`QueryResponse`, and `QueryScopeReviewReport` refs, and decides whether a
+future docs/control-only route can safely define reviewed query-ref evidence
+without creating actual query instances or packet content.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_QUERY_REF_GAP_CLOSURE_DECISION_BRIEF_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No actual `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`
+  instance creation.
+- No source/story invention.
+- No promotion of Qingli candidates.
+- No source-basis selection.
+- No reviewed evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS, media/image/audio/video generation, package generation,
+  QA execution against real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_unresolved_ref_source_catalog_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_UNRESOLVED_REF_SOURCE_CATALOG_V0.md`
+  records partial Qingli-derived refs only as
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`.
+- The catalog keeps `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` refs as
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`.
+- The catalog finds no coherent source/ref set and names no next future package
+  candidate.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and
+  `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` define query surfaces and
+  templates, not concrete first-packet query refs.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- The query-ref gap can be classified as an AI-resolvable docs/control planning
+  gap because reviewed query specs/templates define surfaces that can be used
+  for a future reviewed evidence-surface package.
+- The decision brief should name exactly one future package candidate only
+  inside the new decision brief, while keeping it classification-only and not an
+  automatic dispatch.
+
+### Implementation Steps
+
+- [x] Step 1: Add the query-ref gap closure decision brief doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateQueryRefGapClosureDecisionBrief`,
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`,
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`,
+  `QUERY_REF_GAP_AI_RESOLVABLE_DOCS_CONTROL_ROUTE_AVAILABLE`,
+  `QUERY_REF_GAP_REQUIRES_USER_WORLDBUILDING`,
+  `QUERY_REF_GAP_BLOCKED_BY_BOUNDARY`,
+  `QUERY_REF_GAP_REMAINS_UNRESOLVED_AMBIGUOUS`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation/path check for referenced reviewed docs/control surfaces.
+- Check that exactly one decision outcome is selected.
+- Check that the future package candidate is named exactly once in the new
+  decision brief if the selected outcome permits it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not promote Qingli-derived candidate refs or treat them as sufficient for
+  actual packet work.
+- Do not create actual `QueryRequest`, `QueryResponse`, or
+  `QueryScopeReviewReport` instances.
+- Do not infer query refs from placeholders, unpromoted samples, hidden
+  author-only/review-only material, runtime database inspection, or direct
+  SQLite writes.
+- Keep the future package candidate classification-only; B01/A01/00 must still
+  explicitly classify any later task.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present after an optimized rerun;
+  cited docs/control paths exist; exactly one selected-decision marker is
+  present; the future package candidate is named exactly once in the new
+  decision brief; trailing-whitespace scan passed; `git diff --check` passed
+  with only accepted Windows LF-to-CRLF warnings for tracked touched files;
+  Gradle was skipped because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Unresolved Ref Source Catalog V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateUnresolvedRefSourceCatalog` that catalogs the
+eight unresolved ref slots after
+`REF_RESOLUTION_PACKET_BLOCKED_BY_UNRESOLVED_REVIEWED_REFS`, identifies whether
+existing reviewed project material can supply candidate refs, and keeps missing
+slots as planning gaps instead of inventing or promoting placeholders.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_UNRESOLVED_REF_SOURCE_CATALOG_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No source/story content invention.
+- No source-basis selection.
+- No reviewed evidence bundle creation.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, route execution, concrete
+  story/source content resolution, or promotion of placeholders.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS, media/image/audio/video generation, package generation,
+  QA execution against real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_ref_resolution_packet_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_REF_RESOLUTION_PACKET_V0.md`
+  records `REF_RESOLUTION_PACKET_BLOCKED_BY_UNRESOLVED_REVIEWED_REFS`.
+- That packet classifies source scene id, zone id, beat id, character refs,
+  asset need refs, `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` slots as
+  `REF_SLOT_UNRESOLVED_AI_RESOLVABLE_PLANNING_GAP`.
+- The task forbids deriving candidates from placeholders, unpromoted samples,
+  inferred story/source content, hidden author-only/review-only material,
+  runtime database inspection, or direct SQLite writes.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- Existing reviewed docs/control material likely supplies rule/template paths
+  rather than a coherent set of candidate source refs.
+- If no coherent set of candidate refs is found, this catalog should name no
+  next future package candidate and should report the blocker.
+
+### Implementation Steps
+
+- [x] Step 1: Add the unresolved ref source catalog doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateUnresolvedRefSourceCatalog`,
+  `REF_RESOLUTION_PACKET_BLOCKED_BY_UNRESOLVED_REVIEWED_REFS`,
+  `CANDIDATE_EXISTING_SOURCE_REF_NEEDS_REVIEW`,
+  `NO_EXISTING_SOURCE_REF_FOUND_AI_PLANNING_GAP`,
+  `USER_WORLDBUILDING_REQUIRED`, `BOUNDARY_BLOCKED`,
+  `source scene id`, `zone id`, `beat id`, `character refs`,
+  `asset need refs`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation/path check for every candidate source path; if a candidate path
+  cannot be cited, do not use it as a candidate.
+- Check every required unresolved slot has exactly one classification.
+- If no future package candidate is named, report why.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn rule/template citations into concrete candidate refs.
+- Do not treat sample or placeholder values as reviewed/promoted source refs.
+- Do not name a speculative next package if the catalog remains blocked or
+  incoherent.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; candidate/citation paths
+  exist; every required unresolved slot has exactly one classification; no next
+  future package candidate is named because no coherent set exists;
+  trailing-whitespace scan passed; `git diff --check` passed with only accepted
+  Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
+  because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateReviewedEvidenceBundleRefResolutionPacket` that
+creates a reviewable ref-resolution packet surface after
+`REF_RESOLUTION_PLAN_DEFINED_FOR_FUTURE_PACKET_CLASSIFICATION`, while keeping
+uncited concrete refs unresolved instead of inventing or promoting
+placeholders.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_REF_RESOLUTION_PACKET_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No source/story content invention.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate generation, source-basis selection, evidence
+  bundle creation, route execution, or concrete story/source content
+  resolution.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS, media/image/audio/video generation, package generation,
+  QA execution against real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_ref_resolution_plan_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_REF_RESOLUTION_PLAN_V0.md`
+  records `REF_RESOLUTION_PLAN_DEFINED_FOR_FUTURE_PACKET_CLASSIFICATION`.
+- Upstream outcomes remain `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`
+  and `AI_RESOLVABLE_GAP_CLOSURE_PATH_DEFINED_FOR_FUTURE_CLASSIFICATION`.
+- Existing reviewed docs/control evidence does not cite concrete refs for
+  source scene id, zone id, beat id, character refs, asset need refs,
+  `QueryRequest`, `QueryResponse`, or `QueryScopeReviewReport`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- The selected packet-level outcome should be
+  `REF_RESOLUTION_PACKET_BLOCKED_BY_UNRESOLVED_REVIEWED_REFS`, because the
+  required concrete refs remain uncited.
+- No next future package candidate should be named in this packet while the
+  packet outcome is blocked.
+
+### Implementation Steps
+
+- [x] Step 1: Add the reviewed-evidence bundle ref-resolution packet doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateReviewedEvidenceBundleRefResolutionPacket`,
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`,
+  `AI_RESOLVABLE_GAP_CLOSURE_PATH_DEFINED_FOR_FUTURE_CLASSIFICATION`,
+  `REF_RESOLUTION_PLAN_DEFINED_FOR_FUTURE_PACKET_CLASSIFICATION`,
+  `REF_SLOT_CITED_FROM_REVIEWED_EVIDENCE`,
+  `REF_SLOT_UNRESOLVED_AI_RESOLVABLE_PLANNING_GAP`,
+  `REF_RESOLUTION_PACKET_READY_FOR_REVIEW`,
+  `REF_RESOLUTION_PACKET_BLOCKED_BY_UNRESOLVED_REVIEWED_REFS`,
+  `source scene id`, `zone id`, `beat id`, `character refs`,
+  `asset need refs`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation/path check against reviewed docs/control surfaces only; uncited
+  concrete refs must stay unresolved rather than invented.
+- Check that exactly one packet-level outcome is selected.
+- Since the packet is expected to be blocked, check that no next future package
+  candidate is named.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not promote placeholders, samples, inferred content, author-only/review-only
+  material, runtime database inspection, or direct SQLite writes into evidence.
+- Do not name a speculative next package when the packet is blocked by missing
+  reviewed refs.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; citation paths exist;
+  exactly one packet-level outcome is selected; no next future package candidate
+  is named because the packet is blocked; trailing-whitespace scan passed;
+  `git diff --check` passed with only accepted Windows LF-to-CRLF warnings for
+  tracked touched files; Gradle was skipped because this slice is docs/control
+  only.
+
+## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Ref Resolution Plan V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateReviewedEvidenceBundleRefResolutionPlan` that
+defines how a future bounded task may resolve the missing concrete reviewed
+refs after `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE` and
+`AI_RESOLVABLE_GAP_CLOSURE_PATH_DEFINED_FOR_FUTURE_CLASSIFICATION`, without
+selecting source basis, resolving concrete refs, creating an evidence bundle,
+creating an actual packet/candidate, or starting runtime/media/provider/API
+work.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_REF_RESOLUTION_PLAN_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No source/story content invention.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate, source-basis selection, concrete ref
+  resolution, evidence bundle creation, or route execution.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS, media/image/audio/video generation, package generation,
+  QA execution against real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_ai_resolvable_gap_closure_path_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_AI_RESOLVABLE_GAP_CLOSURE_PATH_V0.md`
+  records `AI_RESOLVABLE_GAP_CLOSURE_PATH_DEFINED_FOR_FUTURE_CLASSIFICATION`.
+- The upstream reviewed result remains
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`.
+- Missing concrete source scene id, zone id, beat id, character refs, asset
+  need refs, `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` refs
+  remain AI-resolvable planning gaps unless reviewed evidence proves a
+  user/worldbuilding blocker or boundary-blocked classification.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` is still the obvious current route
+  pointer for this route chain.
+
+### Assumptions
+
+- The future package candidate should be named exactly once in the new doc and
+  should remain classification-only.
+- Pointer updates can refer to the new doc without repeating the future
+  candidate name, keeping the single-candidate naming rule clean.
+
+### Implementation Steps
+
+- [x] Step 1: Add the reviewed-evidence bundle ref-resolution plan doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateReviewedEvidenceBundleRefResolutionPlan`,
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`,
+  `AI_RESOLVABLE_GAP_CLOSURE_PATH_DEFINED_FOR_FUTURE_CLASSIFICATION`,
+  `AI-resolvable planning gap`, `source scene id`, `zone id`, `beat id`,
+  `character refs`, `asset need refs`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation/path check against reviewed docs/control surfaces only; unresolved
+  concrete refs must remain unresolved rather than invented.
+- Check that the next future package candidate is named exactly once in the new
+  ref-resolution plan doc.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not convert planning gaps into concrete refs.
+- Do not select source basis or create an evidence bundle.
+- Do not use placeholders, samples, hidden author-only/review-only material, or
+  runtime database inspection as evidence sources.
+- Current edits remain docs/control only; no Kotlin, sample JSON, runtime,
+  schema, provider/API, renderer/ffmpeg/TTS, media, approval, canon, registry,
+  release, or production lock work was added.
+- Verification passed: required `rg` strings present; citation paths exist;
+  the next future package candidate is named exactly once in the new plan doc;
+  trailing-whitespace scan passed; `git diff --check` passed with only accepted
+  Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
+  because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate AI Resolvable Gap Closure Path V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateAiResolvableGapClosurePath` that responds to
+`EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE` and defines a safe
+AI-resolvable gap-closure path for the missing concrete refs needed before any
+future first `ScriptReadyScenePacket` candidate can be classified.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_AI_RESOLVABLE_GAP_CLOSURE_PATH_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No source/story content invention.
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, packet candidate, source-basis selection, evidence bundle
+  creation, or route execution.
+- No Kotlin/JVM source, runtime/CLI/schema/validator work, migration,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS, media/image/audio/video generation, package generation,
+  QA execution against real media, or artifact creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B03 contact.
+
+### Confirmed Facts
+
+- B01 dispatch says B03 returned PASS for
+  `script_ready_scene_packet_candidate_existing_reviewed_evidence_bundle_inventory_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_EXISTING_REVIEWED_EVIDENCE_BUNDLE_INVENTORY_V0.md`
+  records outcome `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`.
+- That inventory classifies missing concrete source scene id, zone id, beat id,
+  character refs, asset need refs, `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport` refs as AI-resolvable planning gaps.
+- Reviewed evidence has not proven a true user/worldbuilding blocker or
+  boundary blocker for those missing refs.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` defines
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  and deny-by-default prompt-surface rules.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route/control
+  pointer for this minimal update.
+- The next future package should remain classification-only and should plan how
+  concrete refs will be cited and reviewed, not create the refs or select source
+  basis.
+
+### Implementation Steps
+
+- [x] Step 1: Add the AI-resolvable gap-closure path doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateAiResolvableGapClosurePath`,
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`, `source scene id`,
+  `zone id`, `beat id`, `character refs`, `asset need refs`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `AI-resolvable planning gap`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Citation check against reviewed docs only; if a concrete ref cannot be cited,
+  keep it in the gap-closure path rather than inventing it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting only existing Windows
+  LF-to-CRLF warnings if present.
+- `git status --short --branch` at end.
+- No Gradle because this slice is docs/control only.
+
+### Risks / Drift Notes
+
+- Do not turn an AI-resolvable planning gap into user/worldbuilding blocker
+  unless reviewed evidence proves that blocker.
+- Do not select source basis or create an evidence bundle; this slice defines
+  only the closure path and one future package candidate for later
+  classification.
+- Current edits remain docs/control only; no Kotlin, sample JSON, provider/API,
+  renderer/ffmpeg/TTS, media, approval, canon, registry, release, or production
+  lock work was added.
+- Verification passed: required `rg` strings present; citation paths exist;
+  trailing-whitespace scan passed; `git diff --check` passed with only accepted
+  Windows LF-to-CRLF warnings for tracked touched files; Gradle was skipped
+  because this slice is docs/control only.
+
+## Active Script Ready Scene Packet Candidate Existing Reviewed Evidence Bundle Inventory V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateExistingReviewedEvidenceBundleInventory` that
+inventories existing reviewed docs only and attempts to assemble exactly one
+candidate evidence bundle for future first `ScriptReadyScenePacket` candidate
+classification, without inventing or promoting unreviewed material, creating an
+actual packet, creating a sample, selecting source basis for implementation,
+starting runtime/schema/media/provider/API work, approval, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_EXISTING_REVIEWED_EVIDENCE_BUNDLE_INVENTORY_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No actual `ScriptReadyScenePacket`.
+- No actual `ScriptReadyScenePacketCandidate`.
+- No sample JSON, story content, source content invention, source-basis
+  selection, route execution, runtime/CLI/schema/validator work.
+- No Kotlin/JVM source, migration, provider/API, web/server, direct SQLite
+  writes, queryer implementation, renderer/ffmpeg/TTS, media/image/audio/video
+  generation, package generation, QA execution against real media, artifact
+  creation.
+- No 04/05/06/07/08 restart, Phase 20 / Phase 21 restart.
+- No approval, canon, asset approval, registry approval, release, final media
+  readiness, final approval, or production lock.
+- No staging, commit, push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_selection_v0_docs_control`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_SELECTION_V0.md`
+  records outcome
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_DEFINITION_V0.md`
+  defines only placeholder/reference fields and says no concrete source scene,
+  zone, beat, character, asset, or query refs are selected.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` defines required packet fields such
+  as `sceneReference`, `locationZone`, `charactersPresent`, `characterState`,
+  and `beatList`.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` defines
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` requirements
+  but requires citations and forbids invented ids, facts, assets, approvals,
+  canon, registry state, runtime state, provider/API state, SQLite state, or
+  production lock.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` maps query evidence to
+  future packet sections but says it is not packet generation, not story
+  content, no 04/05/06/07/08 restart, no provider/API, no SQLite, no runtime
+  implementation, no final media approval, and no production lock.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` defines
+  `allowedPromptSurface`, `protectedBoundaryRef`, generic `boundaryCategory`,
+  and deny-by-default prompt-surface rules.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route/control
+  pointer for this narrow update.
+- The correct inventory outcome is
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`, because reviewed docs
+  provide rules/templates and missing-evidence findings, but no reviewed bundle
+  ties the required refs together.
+- Missing concrete refs should be classified as AI-resolvable planning gaps,
+  not true user/worldbuilding blockers, because reviewed docs do not prove the
+  worldbuilding itself is absent.
+
+### Implementation Steps
+
+- [x] Step 1: Add the existing reviewed evidence bundle inventory doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateExistingReviewedEvidenceBundleInventory`,
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_CANDIDATE_FOR_REVIEW`,
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`,
+  `source scene id`, `zone id`, `beat id`, `character refs`,
+  `asset need refs`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Citation check: every candidate bundle ref must point to existing reviewed
+  docs; if it cannot, mark the ref missing rather than inventing it.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- An inventory table may be mistaken for actual packet content. The doc must
+  say no bundle is selected, no source basis is selected, and no actual packet
+  starts.
+- Template/sample query values may be mistaken for reviewed candidate refs. The
+  doc must mark them insufficient unless explicitly reviewed and promoted by
+  existing docs/control evidence.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control inventory slice from B組01 dispatch
+  after B組03 PASS on the reviewed-evidence bundle selection-decision. Scope is
+  one new inventory doc plus minimal HANDOFF/current-route-card pointers. No
+  code, samples, Gradle, provider/API, SQLite, renderer/ffmpeg/TTS, media,
+  packet generation, story/source content, actual `ScriptReadyScenePacket`,
+  actual `ScriptReadyScenePacketCandidate`, source-basis selection for
+  implementation, 04/05/06/07/08, Phase 20/21, approval, production lock,
+  staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the existing reviewed evidence bundle inventory doc plus
+  minimal HANDOFF/current-route-card pointers. Exact outcome is
+  `EXISTING_REVIEWED_EVIDENCE_BUNDLE_NOT_AVAILABLE`; reviewed docs provide
+  template/rule citations but no concrete reviewed source scene, zone, beat,
+  character, asset, or query refs tied into one candidate bundle.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, citation path check passed for listed reviewed docs, trailing-
+  whitespace scan passed, and `git diff --check` passed with only PLANS/HANDOFF
+  LF-to-CRLF warnings. Gradle was skipped because no Kotlin/runtime/schema/
+  sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Selection V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateReviewedEvidenceBundleSelection` that attempts
+exactly one reviewed-evidence bundle selection outcome from existing reviewed
+docs/control evidence only, following the reviewed
+`REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION` outcome,
+without creating an actual `ScriptReadyScenePacket`, actual
+`ScriptReadyScenePacketCandidate`, sample JSON, story/source content,
+runtime/CLI/schema/validator work, route execution, approval, or production
+lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_SELECTION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS execution, image/audio/video media generation, package
+  generation, QA execution against real media, artifact creation, story/source
+  content generation, actual `ScriptReadyScenePacket`, actual
+  `ScriptReadyScenePacketCandidate`, actual packet content, concrete
+  source-basis selection for implementation, source content invention,
+  04/05/06/07/08 restart, Phase 20 / Phase 21 restart, canon, asset approval,
+  registry approval, release, final approval, production lock, staging, commit,
+  push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_definition_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_DEFINITION_V0.md`
+  records outcome
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION`.
+- The definition doc explicitly says it is placeholders/references only and
+  does not fill concrete scene, zone, beat, character, asset, or query refs.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_SELECTION_RECORD_V0.md`
+  records outcome `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`
+  and treats placeholder query/sample values as insufficient.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` already contains the current route
+  pointer chain through the reviewed-evidence bundle definition pointer.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route/control
+  pointer for this narrow update.
+- The correct selection outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`,
+  because the definition exists but no reviewed bundle ties the required refs
+  together.
+- The blocked result should not yet be escalated to
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_USER_WORLDBUILDING`, because
+  the reviewed docs show a reviewed-evidence gap rather than proving missing
+  worldbuilding.
+
+### Implementation Steps
+
+- [x] Step 1: Add the reviewed-evidence bundle selection doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateReviewedEvidenceBundleSelection`,
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION`,
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTED_FOR_FUTURE_SOURCE_BASIS`,
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`,
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_USER_WORLDBUILDING`,
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_BOUNDARY`,
+  `source scene id`, `zone id`, `beat id`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The blocked selection may be mistaken for source-basis selection. The doc
+  must say no bundle is selected and no actual packet/source content starts.
+- The definition document may be mistaken for a selectable bundle. The selection
+  doc must say the definition only defines structure and does not tie concrete
+  refs together.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the reviewed-evidence bundle definition. Scope is one new
+  selection-decision doc plus minimal HANDOFF/current-route-card pointers. No
+  code, samples, Gradle, provider/API, SQLite, renderer/ffmpeg/TTS, media,
+  packet generation, story/source content, actual `ScriptReadyScenePacket`,
+  actual `ScriptReadyScenePacketCandidate`, concrete source-basis selection for
+  implementation, 04/05/06/07/08, Phase 20/21, approval, production lock,
+  staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the reviewed-evidence bundle selection-decision doc plus
+  minimal HANDOFF/current-route-card pointers. Exact outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`;
+  no reviewed bundle was selected and no source-basis or packet work was
+  started.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Definition V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateReviewedEvidenceBundleDefinition` that defines
+the placeholder/reference-only structure for a future reviewed evidence bundle,
+following the reviewed `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE` outcome,
+without selecting a concrete source basis, assembling an actual evidence
+bundle, creating an actual `ScriptReadyScenePacket`, creating an actual
+`ScriptReadyScenePacketCandidate`, sample JSON, story/source content,
+runtime/CLI/schema/validator work, route execution, approval, or production
+lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_DEFINITION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS execution, image/audio/video media generation, package
+  generation, QA execution against real media, artifact creation, story/source
+  content generation, actual `ScriptReadyScenePacket`, actual
+  `ScriptReadyScenePacketCandidate`, actual reviewed evidence bundle, concrete
+  source-basis selection, concrete scene/zone/beat selection, source content
+  invention, 04/05/06/07/08 restart, Phase 20 / Phase 21 restart, canon, asset
+  approval, registry approval, release, final approval, production lock,
+  staging, commit, push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_gap_resolution_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_GAP_RESOLUTION_V0.md`
+  records outcome `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE`.
+- The gap-resolution doc recommends only the future classification-only
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_definition_v0_docs_control`
+  package.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_SELECTION_RECORD_V0.md`
+  records outcome `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`
+  and treats placeholder query/sample values as insufficient for source-basis
+  selection.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` already contains the current
+  script-ready candidate route pointer chain through the reviewed-evidence
+  bundle gap-resolution pointer.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious current route/control
+  pointer for this narrow update.
+- The correct definition outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION`, because
+  this slice can define required fields, evidence categories, review gates,
+  visibility rules, prompt-surface rules, and status terms without selecting
+  concrete refs or assembling an actual bundle.
+- The safest future package candidate is
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_selection_v0_docs_control`,
+  classification-only and not auto-started.
+
+### Implementation Steps
+
+- [x] Step 1: Add the reviewed-evidence bundle definition doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateReviewedEvidenceBundleDefinition`,
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE`,
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION`,
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_BLOCKED_BY_MISSING_RULES`,
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_BLOCKED_BY_USER_WORLDBUILDING`,
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_BLOCKED_BY_BOUNDARY`,
+  `source scene id`, `zone id`, `beat id`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The definition may be mistaken for actual evidence-bundle selection. The doc
+  must say it is placeholders/references only and selects no concrete source
+  basis.
+- The future package recommendation may be mistaken for dispatch. The doc must
+  say it is classification-only and does not auto-start work.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the reviewed-evidence bundle gap-resolution note. Scope is one
+  new reviewed-evidence bundle definition doc plus minimal HANDOFF/current-route
+  card pointers. No code, samples, Gradle, provider/API, SQLite,
+  renderer/ffmpeg/TTS, media, packet generation, evidence-bundle selection,
+  source-basis selection, source content invention, actual
+  `ScriptReadyScenePacket`, actual `ScriptReadyScenePacketCandidate`,
+  04/05/06/07/08, Phase 20/21, approval, production lock, staging, commit,
+  push, or B組03 contact.
+- 2026-07-03: Added the reviewed-evidence bundle definition doc plus minimal
+  HANDOFF/current-route-card pointers. Exact outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_DEFINITION_READY_FOR_FUTURE_SELECTION`; the
+  recommended future package is
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_selection_v0_docs_control`,
+  classification-only and not auto-started.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Reviewed Evidence Bundle Gap Resolution V0 Docs Control
+
+### Goal
+
+Add a docs/control
+`ScriptReadyScenePacketCandidateReviewedEvidenceBundleGapResolution` that
+resolves the reviewed-evidence bundle gap identified by the source-basis
+selection record, without selecting a concrete source-basis bundle, creating an
+actual `ScriptReadyScenePacket`, creating a `ScriptReadyScenePacketCandidate`
+instance, sample JSON, story content, runtime/CLI/schema/validator work, route
+execution, approval, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_REVIEWED_EVIDENCE_BUNDLE_GAP_RESOLUTION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, web/server, direct SQLite writes, queryer implementation,
+  renderer/ffmpeg/TTS execution, image/audio/video media generation, package
+  generation, QA execution against real media, artifact creation, story/source
+  content generation, actual `ScriptReadyScenePacket`, actual
+  `ScriptReadyScenePacketCandidate`, concrete source-basis selection unless
+  explicitly reviewed evidence exists, 04/05/06/07/08 restart, Phase 20 / Phase
+  21 restart, canon, asset approval, registry approval, release, final
+  approval, production lock, staging, commit, push, archive/create windows, or
+  B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_source_basis_selection_record_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PREFLIGHT_V0.md` outcome is
+  `BLOCKED_BY_MISSING_INPUTS`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_DECISION_BRIEF_V0.md`
+  outcome is `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_SELECTION_RECORD_V0.md`
+  outcome is `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`.
+- The selection record says placeholder values such as
+  `rain-gate-scene-placeholder`, `rain-gate-threshold-placeholder`,
+  `beat-approach-gate-placeholder`, and
+  `rain-gate-script-ready-scene-packet-draft-placeholder` are insufficient for
+  `SOURCE_BASIS_SELECTED_FOR_FUTURE_CANDIDATE`.
+- The required unresolved evidence bundle must tie source scene id, zone id,
+  beat id, character refs, asset need refs, query evidence refs, continuity,
+  visibility, prompt-surface rules, and review gates together.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious route/control
+  pointer because it already contains the route decision, package definition,
+  preflight, source-basis decision, and source-basis selection pointers.
+- The correct gap-resolution outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE`: the current blocker is a
+  reviewed-evidence bundle definition/classification gap, not a proven true
+  user/worldbuilding blocker and not a boundary blocker.
+- The safest future package candidate is
+  `script_ready_scene_packet_candidate_reviewed_evidence_bundle_definition_v0_docs_control`.
+
+### Implementation Steps
+
+- [x] Step 1: Add the reviewed-evidence bundle gap-resolution doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateReviewedEvidenceBundleGapResolution`,
+  `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`,
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE`,
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_REQUIRES_USER_WORLDBUILDING`,
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_BLOCKED_BY_BOUNDARY`, `source scene id`,
+  `zone id`, `beat id`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `placeholder-only`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The future package recommendation may be mistaken for dispatch. The doc must
+  say it is classification-only and does not auto-start work.
+- Gap-resolution may be mistaken for source-basis selection. The doc must not
+  select a concrete source-basis bundle from placeholder-only material.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the source-basis selection record. Scope is one reviewed-
+  evidence bundle gap-resolution doc plus minimal HANDOFF/current-route-card
+  pointers. No code, samples, Gradle, provider/API, SQLite,
+  renderer/ffmpeg/TTS, media, packet generation, source content invention,
+  actual `ScriptReadyScenePacket`, actual `ScriptReadyScenePacketCandidate`,
+  concrete source-basis selection, 04/05/06/07/08, Phase 20/21, approval,
+  production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the reviewed-evidence bundle gap-resolution doc plus
+  minimal HANDOFF/current-route-card pointers. Exact outcome is
+  `REVIEWED_EVIDENCE_BUNDLE_GAP_AI_RESOLVABLE`; the recommended future package
+  is `script_ready_scene_packet_candidate_reviewed_evidence_bundle_definition_v0_docs_control`,
+  classification-only and not auto-started.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Source Basis Selection Record V0 Docs Control
+
+### Goal
+
+Add a docs/control `ScriptReadyScenePacketCandidateSourceBasisSelectionRecord`
+that attempts to select one concrete source-basis bundle from existing reviewed
+evidence for a future first `ScriptReadyScenePacket` candidate, or records why
+selection is blocked, without creating an actual packet,
+`ScriptReadyScenePacketCandidate` instance, sample JSON, story content,
+runtime/CLI/schema/validator work, route execution, approval, or production
+lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_SELECTION_RECORD_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, actual `ScriptReadyScenePacket` instance generation,
+  actual `ScriptReadyScenePacketCandidate` instance, actual candidate packet
+  content, actual first packet generation, source content invention, 04/05/06/07/08
+  restart, Phase 20 / Phase 21 restart, canon, asset approval, registry
+  approval, release, final approval, production lock, staging, commit, push,
+  archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_source_basis_decision_brief_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_DECISION_BRIEF_V0.md`
+  outcome is `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`.
+- The decision brief reports missing selected source scene id / scene reference,
+  selected zone id / location reference, selected beat id / beat reference,
+  selected relevant character refs, selected asset need refs, selected
+  `QueryRequest` / `QueryResponse` / `QueryScopeReviewReport` refs if needed,
+  and one explicit source-basis selection record tying those refs together.
+- `samples/local_story_input/rain_gate_demand_driven_query_contract_spec_sample.json`
+  contains query sample ids, but observed scene/zone/beat/source-packet values
+  use `placeholder` naming.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and
+  `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` define query surfaces only;
+  they do not select an actual first-packet source basis.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious route/control
+  pointer because it already contains the route decision, package definition,
+  preflight, and source-basis decision pointers.
+- The safest exact outcome is
+  `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`: the project
+  may have candidate worldbuilding/sample evidence, but reviewed docs/control
+  evidence does not cite a concrete selectable source-basis bundle.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-basis selection record.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateSourceBasisSelectionRecord`,
+  `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`,
+  `SOURCE_BASIS_SELECTED_FOR_FUTURE_CANDIDATE`,
+  `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`,
+  `SOURCE_BASIS_MISSING_REQUIRES_USER_WORLDBUILDING`,
+  `source scene id`, `zone id`, `beat id`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The selection record may be mistaken for actual packet content. It must state
+  that a blocked outcome selects no source bundle and starts no packet work.
+- Placeholder query sample ids may be mistaken for reviewed source ids. The
+  record must explicitly reject placeholder values as insufficient for
+  selection.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the source-basis decision brief. Scope is one new selection
+  record plus minimal HANDOFF/current-route-card pointers. No code, samples,
+  Gradle, provider/API, SQLite, renderer/ffmpeg/TTS, media, packet generation,
+  source content invention, actual `ScriptReadyScenePacket`, actual
+  `ScriptReadyScenePacketCandidate`, 04/05/06/07/08, Phase 20/21, approval,
+  production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the selection record plus minimal HANDOFF/current-route-card
+  pointers. Exact selection outcome is
+  `SOURCE_BASIS_SELECTION_BLOCKED_BY_MISSING_REVIEWED_EVIDENCE`: sample query
+  refs use placeholder scene/zone/beat/source-packet values, and no reviewed
+  bundle ties source scene id, zone id, beat id, character refs, asset need
+  refs, and query evidence refs together.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Source Basis Decision Brief V0 Docs Control
+
+### Goal
+
+Add a docs/control `ScriptReadyScenePacketCandidateSourceBasisDecisionBrief`
+that decides whether reviewed route evidence already contains a selectable
+concrete source basis for a future first `ScriptReadyScenePacket` candidate,
+without creating an actual packet, `ScriptReadyScenePacketCandidate` instance,
+sample JSON, story content, runtime/CLI/schema/validator work, route execution,
+approval, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_SOURCE_BASIS_DECISION_BRIEF_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, actual `ScriptReadyScenePacket` instance generation,
+  actual candidate packet content, actual first packet generation, source
+  content invention, 04/05/06/07/08 restart, Phase 20 / Phase 21 restart,
+  canon, asset approval, registry approval, release, final approval, production
+  lock, staging, commit, push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_preflight_v0_docs_control` with no
+  findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PREFLIGHT_V0.md` outcome is
+  `BLOCKED_BY_MISSING_INPUTS`: reviewed docs/control evidence supplies rules
+  and placeholders, but no selected source scene id, zone id, beat id,
+  character refs, or asset need refs.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PACKAGE_DEFINITION_V0.md`
+  defines placeholders and references only, not actual packet content.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` requires `sceneReference`,
+  `locationZone`, `charactersPresent`, `approvedProps`, `forbiddenProps`,
+  `beatList`, and `reviewSummary` for a packet shape.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` says `QueryRequest`,
+  `QueryResponse`, and `QueryScopeReviewReport` may support future packet
+  sections, but must not invent formal ids, facts, assets, or approvals.
+- Existing query sample ids observed during evidence check are placeholders,
+  not a reviewed concrete first-packet source basis.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious route/control
+  pointer because it already contains the route decision, package definition,
+  and preflight pointers.
+- The correct decision outcome is
+  `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`: no selectable concrete
+  source basis exists in reviewed docs, but the missing item is a future
+  source-basis selection/classification step rather than a confirmed need for
+  new user worldbuilding.
+
+### Implementation Steps
+
+- [x] Step 1: Add the source-basis decision brief.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateSourceBasisDecisionBrief`,
+  `source scene id`, `zone id`, `beat id`, `QueryRequest`, `QueryResponse`,
+  `QueryScopeReviewReport`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `SOURCE_BASIS_AVAILABLE_AS_FUTURE_CANDIDATE`,
+  `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`,
+  `SOURCE_BASIS_MISSING_REQUIRES_USER_WORLDBUILDING`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The decision brief may be mistaken for permission to create the actual first
+  packet. It must keep the selected outcome as a planning gap and require a
+  future explicit classification before any packet work.
+- Placeholder ids may be mistaken for concrete source ids. The brief must state
+  that placeholder sample values are not enough for source basis availability.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the script-ready scene packet candidate preflight. Scope is one
+  new source-basis decision brief plus minimal HANDOFF/current-route-card
+  pointers. No code, samples, Gradle, provider/API, SQLite,
+  renderer/ffmpeg/TTS, media, packet generation, source content invention,
+  actual `ScriptReadyScenePacket`, 04/05/06/07/08, Phase 20/21, approval,
+  production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the source-basis decision brief plus minimal
+  HANDOFF/current-route-card pointers. Exact decision outcome is
+  `SOURCE_BASIS_MISSING_AI_RESOLVABLE_PLANNING_GAP`: no reviewed docs contain
+  a selected concrete first-packet basis, but the missing item is classified as
+  a future planning-selection gap rather than a proven user worldbuilding
+  blocker.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Preflight V0 Docs Control
+
+### Goal
+
+Add a docs/control `ScriptReadyScenePacketCandidatePreflight` that checks
+whether the project can safely enter a future first actual
+`ScriptReadyScenePacket` candidate task, without creating an actual packet,
+`ScriptReadyScenePacketCandidate` instance, sample JSON, story content,
+runtime/CLI/schema/validator work, route execution, approval, or production
+lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PREFLIGHT_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, actual `ScriptReadyScenePacket` instance generation,
+  actual candidate packet content, actual first packet generation, 04/05/06/07/08
+  restart, Phase 20 / Phase 21 restart, canon, asset approval, registry
+  approval, release, final approval, production lock, staging, commit, push,
+  archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_package_definition_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PACKAGE_DEFINITION_V0.md`
+  defines the future `ScriptReadyScenePacketCandidate` package surface as
+  placeholders and references only.
+- The package definition does not select an actual source scene id, zone id,
+  beat id, character reference, or asset need reference.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` requires `sceneReference`,
+  `locationZone`, `charactersPresent`, `approvedProps`, `forbiddenProps`,
+  `beatList`, and `reviewSummary` for a packet shape.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` says future packet
+  work may cite `QueryRequest`, `QueryResponse`, and
+  `QueryScopeReviewReport`, but those must not invent formal ids, facts,
+  assets, or approvals.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` requires
+  `allowedPromptSurface` and `protectedBoundaryRef` controls for prompt-facing
+  material.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious route/control
+  pointer because it already contains the selected route-clarification and
+  package-definition pointers.
+- The safest preflight outcome is a missing prerequisite, not a safe next
+  actual packet candidate, because reviewed docs/control evidence has not
+  selected a concrete source scene/zone/beat/character/asset basis.
+
+### Implementation Steps
+
+- [x] Step 1: Add the script-ready scene packet candidate preflight doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidatePreflight`, `ScriptReadyScenePacket`,
+  `ScriptReadyScenePacketCandidate`, `scene id`, `zone id`, `beat id`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_MISSING_INPUTS`,
+  `BLOCKED_BY_HUMAN_DECISION`, `BLOCKED_BY_BOUNDARY`, `no provider/API`,
+  `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Preflight wording may be mistaken for permission to create the first actual
+  packet. The outcome must state missing prerequisite unless a future explicit
+  task selects concrete source ids and references.
+- Missing-input language may be mistaken for an instruction to infer
+  worldbuilding. The doc must keep missing inputs as blockers/placeholders only.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the script-ready scene packet candidate package definition.
+  Scope is one new preflight doc plus minimal HANDOFF and current-route-card
+  pointers. No code, samples, Gradle, provider/API, SQLite,
+  renderer/ffmpeg/TTS, media, package generation, actual
+  `ScriptReadyScenePacket`, actual first packet, 04/05/06/07/08, Phase 20/21,
+  approval, production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added the preflight doc plus minimal HANDOFF/current-route-card
+  pointers. Exact outcome is `BLOCKED_BY_MISSING_INPUTS`: reviewed docs/control
+  evidence supplies rules and placeholders, but no selected source scene id,
+  zone id, beat id, character refs, or asset need refs for actual first packet
+  work.
+- 2026-07-03: Verification PASS for docs/control slice. `rg` required-string
+  checks passed, trailing-whitespace scan passed, and `git diff --check` passed
+  with only PLANS/HANDOFF LF-to-CRLF warnings. Gradle was skipped because no
+  Kotlin/runtime/schema/sample files were edited.
+
+## Active Script Ready Scene Packet Candidate Package Definition V0 Docs Control
+
+### Goal
+
+Add a docs/control `ScriptReadyScenePacketCandidatePackageDefinition` that
+defines a future reviewable `ScriptReadyScenePacketCandidate`
+package-definition/review-surface as placeholders and references only, without
+creating an actual `ScriptReadyScenePacket`, sample JSON, story content,
+runtime/CLI/schema work, route execution, approval, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PACKAGE_DEFINITION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, actual `ScriptReadyScenePacket` instance generation,
+  actual candidate packet content, 04/05/06/07/08 restart, Phase 20 / Phase 21
+  restart, canon, asset approval, registry approval, release, final approval,
+  production lock, staging, commit, push, archive/create windows, or B組03
+  contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `script_ready_scene_packet_candidate_route_decision_brief_v0_docs_control`
+  with no findings.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_ROUTE_DECISION_BRIEF_V0.md`
+  recommends exactly one future candidate package:
+  `script_ready_scene_packet_candidate_package_definition_v0_docs_control`.
+- The route decision brief says the future package must remain candidate-only
+  and must not create an actual `ScriptReadyScenePacket`, sample JSON, runtime,
+  provider/API, renderer/ffmpeg/TTS, media, approval, or production lock.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` connects
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` evidence to
+  future `ScriptReadyScenePacket` fields without packet generation or
+  04/05/06/07/08 restart.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` defines the packet as a product and
+  authoring contract only, not runtime/schema/UI/animation implementation.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` requires
+  `allowedPromptSurface` and `protectedBoundaryRef` controls for prompt-facing
+  material.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious route/control
+  pointer because it already contains the selected route-clarification pointer
+  and current default-route state.
+
+### Implementation Steps
+
+- [x] Step 1: Add the script-ready scene packet candidate package definition doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidatePackageDefinition`,
+  `ScriptReadyScenePacketCandidate`, `ScriptReadyScenePacket`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `allowedPromptSurface`,
+  `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_MISSING_INPUTS`, `BLOCKED_BY_HUMAN_DECISION`,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Package-definition wording may be mistaken for package generation or actual
+  candidate content. The new doc must keep every field as placeholder/reference
+  only.
+- Review-surface wording may be mistaken for permission to restart
+  04/05/06/07/08 or implement validators. The new doc must keep PASS
+  technical-only and non-approval.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on the script-ready scene packet candidate route decision brief.
+  Scope is one new package-definition doc plus minimal HANDOFF and
+  current-route-card pointers. No code, samples, Gradle, provider/API, SQLite,
+  renderer/ffmpeg/TTS, media, package generation, actual
+  `ScriptReadyScenePacket`, 04/05/06/07/08, Phase 20/21, approval, production
+  lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_PACKAGE_DEFINITION_V0.md`
+  and minimal pointers in `docs/HANDOFF.md` plus
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`. The definition remains
+  placeholder/reference-only and does not create an actual
+  `ScriptReadyScenePacket`, sample JSON, story content, runtime/schema route,
+  validator, media, approval, or production lock. Awaiting docs-only
+  verification before final PASS closure.
+- 2026-07-03: Verification PASS for required string checks,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Script Ready Scene Packet Candidate Route Decision Brief V0 Docs Control
+
+### Goal
+
+Add a docs/control `ScriptReadyScenePacketCandidateRouteDecisionBrief` that
+evaluates whether reviewed route evidence is sufficient to define a future
+`script_ready_scene_packet_candidate` package-definition/review-surface task,
+without creating a packet instance, sample JSON, runtime route, media artifact,
+approval, route execution, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_ROUTE_DECISION_BRIEF_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, actual `ScriptReadyScenePacket` instance generation,
+  04/05/06/07/08 restart, Phase 20 / Phase 21 restart, canon, asset approval,
+  registry approval, release, final approval, production lock, staging, commit,
+  push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `blueprint_route_completion_status_and_next_route_options_v0_docs_control`.
+- `docs/CODEX_BLUEPRINT_ROUTE_COMPLETION_STATUS_AND_NEXT_ROUTE_OPTIONS_V0.md`
+  lists bounded candidate next-route options only and does not dispatch them.
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` connects demand-driven
+  query evidence to future `ScriptReadyScenePacket` fields and says the route
+  is no packet generation, no 04/05/06/07/08 restart, no provider/API, no
+  SQLite/runtime/schema work, no canon, no final media approval, and no
+  production lock.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` defines the packet as a product and
+  authoring contract only and says it does not approve runtime enforcement,
+  schema fields, UI work, or animation integration.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not
+  explicitly listed in `allowedPromptSurface` must not enter prompt surface,
+  and requires `protectedBoundaryRef` plus generic `boundaryCategory` for
+  protected material.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` is the current route-control pointer and
+  already includes the route completion status/options pointer.
+
+### Assumptions
+
+- The evidence is sufficient to recommend exactly one safe future package
+  candidate for A組01/B組01/00 classification: a docs/control-only
+  `ScriptReadyScenePacketCandidate` package-definition/review-surface task.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` remains the obvious pointer because
+  this task clarifies the route after the completed default route and previous
+  status/options packet.
+
+### Implementation Steps
+
+- [x] Step 1: Add the script-ready scene packet candidate route decision brief.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `ScriptReadyScenePacketCandidateRouteDecisionBrief`,
+  `script_ready_scene_packet_candidate`, `ScriptReadyScenePacket`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_MISSING_INPUTS`,
+  `BLOCKED_BY_HUMAN_DECISION`, `no provider/API`, `renderer/ffmpeg/TTS`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- The brief may be mistaken for actual packet generation or route execution.
+  The recommendation must remain candidate-only.
+- Script-ready packet language may be mistaken as approval to restart
+  04/05/06/07/08. The brief must keep that route blocked without explicit
+  future classification and handoff.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on route completion status/options. Scope is one new route
+  decision brief plus minimal HANDOFF and current-route-card pointers. No code,
+  samples, Gradle, provider/API, SQLite, renderer/ffmpeg/TTS, media, package
+  generation, actual `ScriptReadyScenePacket`, 04/05/06/07/08, Phase 20/21,
+  approval, production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_SCRIPT_READY_SCENE_PACKET_CANDIDATE_ROUTE_DECISION_BRIEF_V0.md`
+  and minimal pointers in `docs/HANDOFF.md` plus
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`. The brief recommends exactly one
+  future candidate package:
+  `script_ready_scene_packet_candidate_package_definition_v0_docs_control`,
+  not automatic dispatch or packet generation. Awaiting docs-only verification
+  before final PASS closure.
+- 2026-07-03: Verification PASS for required string checks,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Blueprint Route Completion Status And Next Route Options V0 Docs Control
+
+### Goal
+
+Add a docs/control `BlueprintRouteCompletionStatusAndNextRouteOptions`
+packet that consolidates the reviewed default-route docs/control chain and
+lists candidate next-route options without selecting a route, starting
+implementation, granting final approval, or creating production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_BLUEPRINT_ROUTE_COMPLETION_STATUS_AND_NEXT_ROUTE_OPTIONS_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, package generation, QA execution against real media, artifact
+  creation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, script packet generation, 04/05/06/07/08 restart, Phase
+  20 / Phase 21 restart, canon, asset approval, registry approval, release,
+  final approval, production lock, staging, commit, push, archive/create
+  windows, or B組03 contact.
+
+### Confirmed Facts
+
+- B組01 dispatch says B組03 returned PASS for
+  `local_package_qa_delivery_definition_v0_docs_control`.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` lists the accepted default route order
+  ending with local package / QA / delivery definition.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` already points to
+  `docs/CODEX_LOCAL_PACKAGE_QA_DELIVERY_DEFINITION_V0.md` as current
+  docs/control evidence for the final route item.
+- `docs/HANDOFF.md` already lists the reviewed docs/control chain from
+  demand-driven query contract/spec and templates through local package / QA /
+  delivery definition.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not
+  explicitly listed in `allowedPromptSurface` must not enter prompt surface,
+  and negative prompts are also prompt surface.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` is the obvious current-route pointer
+  for this slice because it owns the default route order and the current final
+  route evidence.
+
+### Implementation Steps
+
+- [x] Step 1: Add the route completion status and next-route options doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `BlueprintRouteCompletionStatusAndNextRouteOptions`,
+  `AI_TECHNICAL_APPROVED`, `QA_PASS_NOT_APPROVAL`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `no provider/API`, `renderer/ffmpeg/TTS`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- A status/options packet may be mistaken for route selection or implementation
+  approval. The new doc must keep options candidate-only.
+- Technical PASS wording may be mistaken for human approval, asset approval,
+  registry approval, canon, release, final media approval, provider/media
+  handoff, or production lock. The new doc must separate those explicitly.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after
+  B組03 PASS on local package / QA / delivery definition. Scope is one new
+  status/options doc plus minimal HANDOFF and current-route-card pointers. No
+  code, samples, Gradle, provider/API, SQLite, renderer/ffmpeg/TTS, media,
+  package generation, QA execution, 04/05/06/07/08, Phase 20/21, approval,
+  production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_BLUEPRINT_ROUTE_COMPLETION_STATUS_AND_NEXT_ROUTE_OPTIONS_V0.md`
+  and minimal pointers in `docs/HANDOFF.md` plus
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`. Awaiting docs-only verification
+  before final PASS closure.
+- 2026-07-03: Verification PASS for required string checks,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Local Package QA Delivery Definition V0 Docs Control
+
+### Goal
+
+Add a docs/control `LocalPackageQaDeliveryDefinition` that defines a
+reviewable local package / QA / delivery surface without generating packages,
+running renderer/ffmpeg/TTS, creating artifacts, implementing runtime/schema,
+or claiming release approval or final media readiness.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_LOCAL_PACKAGE_QA_DELIVERY_DEFINITION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, script packet generation, package generation, QA
+  execution against real media, artifact creation, 04/05/06/07/08 restart,
+  Phase 20 / Phase 21 restart, canon, asset approval, registry approval,
+  release, final approval, production lock, staging, commit, push,
+  archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` lists local package / QA / delivery
+  definition after local renderer execution readiness in the default route
+  order.
+- `docs/CODEX_LOCAL_RENDERER_EXECUTION_READINESS_CHECKLIST_V0.md` allows
+  B組01/A組01/00 to consider another route-selected docs/control task such as
+  local package / QA / delivery definition after technical review PASS.
+- `docs/CODEX_LOCAL_RENDER_PACKAGE_V0.md` defines a local render package / QA
+  draft as reviewable JSON planning and says it is not TTS, not provider/API,
+  not local preview MP4, not release, not canon, not registry, and not
+  production lock.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not
+  explicitly listed in `allowedPromptSurface` must not enter prompt surface,
+  and negative prompts are also prompt surface.
+- `AGENTS.md` keeps this repository bounded to local Kotlin/JVM CLI, SQLite,
+  and JSON file protocol, with no web server, provider/API, or direct SQLite
+  bypass.
+
+### Assumptions
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` is the obvious route pointer for this
+  task because it explicitly contains the default route item. The integration
+  map mentions local package / QA / delivery only as a downstream candidate
+  inside the renderer readiness row, so it does not need a second update here.
+
+### Implementation Steps
+
+- [x] Step 1: Add the local package / QA / delivery definition doc.
+- [x] Step 2: Add minimal HANDOFF and current-route-card pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `LocalPackageQaDeliveryDefinition`, `QA_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_MISSING_INPUTS`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`, `no provider/API`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Delivery wording may be mistaken for package generation, release approval, or
+  final media readiness. The new definition must keep statuses review-only.
+- QA categories may be mistaken for executed QA against real media. The new
+  definition must keep checks as placeholders for future explicit tasks.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after B組03
+  PASS on local renderer execution readiness checklist. Scope is one new
+  `LocalPackageQaDeliveryDefinition` doc plus minimal HANDOFF and current route
+  card pointers. No code, samples, Gradle, provider/API, SQLite, package
+  generation, artifact creation, media, renderer/ffmpeg/TTS execution,
+  04/05/06/07/08, Phase 20/21, release, final approval, production lock,
+  staging, commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_LOCAL_PACKAGE_QA_DELIVERY_DEFINITION_V0.md` and minimal pointers
+  in `docs/HANDOFF.md` plus
+  `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`. Awaiting docs-only verification
+  before final PASS closure.
+- 2026-07-03: Verification PASS for required `rg` terms,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Local Renderer Execution Readiness Checklist V0 Docs Control
+
+### Goal
+
+Add a docs/control `LocalRendererExecutionReadinessChecklist` that defines a
+reviewable readiness decision surface before any future explicit local renderer
+execution task, without running renderer/ffmpeg/TTS, generating media,
+implementing runtime/schema/CLI, or claiming final media readiness.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_LOCAL_RENDERER_EXECUTION_READINESS_CHECKLIST_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS execution, image/audio/video media
+  generation, web/server, direct SQLite writes, queryer implementation, story
+  content generation, script packet generation, 04/05/06/07/08 restart, Phase
+  20 / Phase 21 restart, canon, asset approval, registry approval, release,
+  final approval, production lock, staging, commit, push, archive/create
+  windows, or B組03 contact.
+
+### Confirmed Facts
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` lists local renderer execution
+  readiness after the voice timeline / subtitle / SFX contract in the default
+  route order.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` row 10 is the
+  future local renderer execution path and names a readiness decision brief as
+  the next safe task.
+- `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` records a
+  prior Rain Gate local preview MP4 as local artifact evidence only, not final
+  media approval or production lock.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not
+  explicitly listed in `allowedPromptSurface` must not enter prompt surface,
+  and negative prompts are also prompt surface.
+- `AGENTS.md` keeps this repository bounded to local Kotlin/JVM CLI, SQLite,
+  and JSON file protocol, with no web server, provider/API, or direct SQLite
+  bypass.
+
+### Assumptions
+
+- The integration map row 10 is the obvious current route pointer for this
+  task, so only that row should receive a minimal status update.
+
+### Implementation Steps
+
+- [x] Step 1: Add the local renderer execution readiness checklist doc.
+- [x] Step 2: Add minimal HANDOFF and integration-map pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `LocalRendererExecutionReadinessChecklist`, `ready_for_future_decision`,
+  `blocked_by_missing_inputs`, `BLOCKED_BY_HUMAN_DECISION`,
+  `BLOCKED_BY_BOUNDARY`, `allowedPromptSurface`, `protectedBoundaryRef`,
+  `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`, `no provider/API`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Readiness wording may be mistaken for permission to execute renderer/ffmpeg
+  or generate media. The new checklist must keep PASS technical-only.
+- Output-path and environment checks may be mistaken for implementation. The
+  new checklist must remain a decision surface, not runtime behavior.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after B組03
+  PASS on voice timeline / subtitle / SFX contract. Scope is one new
+  `LocalRendererExecutionReadinessChecklist` doc plus minimal HANDOFF and
+  integration map pointers. No code, samples, Gradle, provider/API, SQLite,
+  media, renderer/ffmpeg/TTS execution, 04/05/06/07/08, Phase 20/21, approval,
+  production lock, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_LOCAL_RENDERER_EXECUTION_READINESS_CHECKLIST_V0.md` and minimal
+  pointers in `docs/HANDOFF.md` plus row 10 of
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`. Awaiting
+  docs-only verification before final PASS closure.
+- 2026-07-03: Verification PASS for required `rg` terms,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Voice Timeline Subtitle SFX Contract V0 Docs Control
+
+### Goal
+
+Add a docs/control `VoiceTimelineSubtitleSfxContract` that defines a
+reviewable future contract surface for dialogue, subtitle, SFX, ambient, and
+timing intent without implementing CLI/runtime/schema, running TTS/renderer,
+generating media, or claiming final media readiness.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_VOICE_TIMELINE_SUBTITLE_SFX_CONTRACT_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS, image/audio/video media generation,
+  web/server, direct SQLite writes, queryer implementation, story content
+  generation, script packet generation, 04/05/06/07/08 restart, Phase 20 /
+  Phase 21 restart, canon, asset approval, registry approval, release, final
+  approval, production lock, staging, commit, push, archive/create windows, or
+  B組03 contact.
+
+### Confirmed Facts
+
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` row 8 is the
+  voice timeline / subtitle / SFX route and names a docs-only contract as the
+  next safe task.
+- `docs/CODEX_STORYBOARD_CAMERA_PACKET_TEMPLATE_REVIEW_V0.md` already treats
+  dialogue/subtitle placeholders, SFX references, `allowedPromptSurface`, and
+  `protectedBoundaryRef` as docs/control planning fields.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not
+  explicitly listed in `allowedPromptSurface` must not enter prompt surface,
+  and negative prompts are also prompt surface.
+- `AGENTS.md` keeps this repository bounded to local Kotlin/JVM CLI, SQLite,
+  and JSON file protocol, with no web server, provider/API, or direct SQLite
+  bypass.
+
+### Assumptions
+
+- The integration map row 8 is the obvious current route pointer for this
+  task, so only that row should receive a minimal status update.
+
+### Implementation Steps
+
+- [x] Step 1: Add the voice timeline / subtitle / SFX contract doc.
+- [x] Step 2: Add minimal HANDOFF and integration-map pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `VoiceTimelineSubtitleSfxContract`, `dialogue`, `subtitle`, `SFX`,
+  `allowedPromptSurface`, `protectedBoundaryRef`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `BLOCKED_BY_HUMAN_DECISION`,
+  `no provider/API`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Audio contract wording may be mistaken for TTS or renderer readiness. The
+  new packet must explicitly stay docs/control only.
+- Dialogue, subtitle, or SFX notes may accidentally become prompt surface. The
+  new packet must preserve deny-by-default `allowedPromptSurface` rules.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after B組03
+  PASS on asset lifecycle registry decision packet. Scope is one new
+  `VoiceTimelineSubtitleSfxContract` doc plus minimal HANDOFF and integration
+  map pointers. No code, samples, Gradle, provider/API, SQLite, media,
+  04/05/06/07/08, Phase 20/21, approval, production lock, staging, commit,
+  push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_VOICE_TIMELINE_SUBTITLE_SFX_CONTRACT_V0.md` and minimal
+  pointers in `docs/HANDOFF.md` plus row 8 of
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`. Awaiting
+  docs-only verification before final PASS closure.
+- 2026-07-03: Verification PASS for required `rg` terms,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Asset Lifecycle Registry Decision Packet V0 Docs Control
+
+### Goal
+
+Add a docs/control `AssetLifecycleRegistryDecisionPacket` that prepares a
+reviewable decision surface for asset lifecycle and registry storage options
+without choosing an option or starting schema/runtime/storage implementation.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_ASSET_LIFECYCLE_REGISTRY_DECISION_PACKET_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS, image/audio/video media generation,
+  web/server, direct SQLite writes, queryer implementation, story content
+  generation, script packet generation, 04/05/06/07/08 restart, Phase 20 /
+  Phase 21 restart, canon, asset approval, registry approval, release, final
+  approval, production lock, staging, commit, push, archive/create windows, or
+  B組03 contact.
+
+### Confirmed Facts
+
+- `docs/CODEX_STORYBOARD_CAMERA_PACKET_TEMPLATE_REVIEW_V0.md` narrowly allows
+  B組01/A組01/00 to consider a future docs/control decision such as
+  `asset_lifecycle_registry_decision_packet` after technical review PASS.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` row 7 is the asset
+  registry lifecycle and open storage decision route and names a storage
+  decision brief as the next safe task.
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` records asset registry planning
+  as future planning and says it does not create an asset database or approve
+  production assets.
+- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md` explicitly keeps same DB
+  versus sidecar DB as an undecided future architecture question.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` says fields not explicitly
+  listed in `allowedPromptSurface` must not enter prompt surface, including
+  negative prompts.
+
+### Assumptions
+
+- The integration map row 7 is the obvious current route pointer for this
+  task, so only that row should receive a minimal status update.
+
+### Implementation Steps
+
+- [x] Step 1: Add the asset lifecycle registry decision packet doc.
+- [x] Step 2: Add minimal HANDOFF and integration-map pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `AssetLifecycleRegistryDecisionPacket`, `draft_files_only`,
+  `same_runtime_sqlite_db`, `sidecar_production_asset_db`,
+  `allowedPromptSurface`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`,
+  `BLOCKED_BY_HUMAN_DECISION`, `no provider/API`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Storage option comparison may be mistaken for an architecture decision. The
+  new packet must explicitly say it does not choose an option.
+- Asset lifecycle labels may be mistaken for approved registry records. The new
+  packet must keep them docs/control labels only until a future approved
+  implementation exists.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after B組03
+  PASS on storyboard/camera packet template review. Scope is one new asset
+  lifecycle registry decision packet plus minimal HANDOFF and integration-map
+  pointers. No code, samples, Gradle, provider/API, SQLite, media,
+  04/05/06/07/08, Phase 20/21, asset approval, registry approval, staging,
+  commit, push, or B組03 contact.
+- 2026-07-03: Added
+  `docs/CODEX_ASSET_LIFECYCLE_REGISTRY_DECISION_PACKET_V0.md` and minimal
+  pointers in `docs/HANDOFF.md` plus row 7 of
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`. Awaiting
+  docs-only verification before final PASS closure.
+- 2026-07-03: Verification PASS for required `rg` terms,
+  trailing-whitespace scan, `git diff --check`, and final status check.
+  `git diff --check` reported only Windows line-ending warnings for
+  `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run because this slice is
+  docs/control only.
+
+## Active Storyboard Camera Packet Template Review V0 Docs Control
+
+### Goal
+
+Add a docs/control packet that defines a reviewable `StoryboardCameraPacket`
+template and checklist, bridging script-ready scene packet evidence into future
+storyboard/camera planning without restarting 04/05/06/07/08 or generating
+media.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_STORYBOARD_CAMERA_PACKET_TEMPLATE_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI command, runtime, schema, migration, sample JSON,
+  provider/API, renderer/ffmpeg/TTS, image/audio/video media generation,
+  web/server, direct SQLite writes, queryer implementation, story content
+  generation, script packet generation, 04/05/06/07/08 restart, Phase 20 /
+  Phase 21 restart, canon, registry, release, final approval, production lock,
+  staging, commit, push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` lists storyboard / camera packet
+  planning after script-ready scene packet alignment in the default route order.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` row 6 is the
+  storyboard/camera packet route and names drafted templates or a review
+  checklist as the next smallest safe docs-only task.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` records storyboard/camera planning as
+  future planning, not an implemented generator, schema, runtime validator, or
+  external API integration.
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md` defines prompt surface as
+  deny-by-default and includes negative prompts as prompt surface.
+
+### Assumptions
+
+- The integration map row 6 is the obvious current route pointer for this
+  task, so only that row should receive a minimal status update.
+
+### Implementation Steps
+
+- [x] Step 1: Add the storyboard/camera packet template review doc.
+- [x] Step 2: Add minimal HANDOFF and integration-map pointers.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs:
+  `StoryboardCameraPacket`, `allowedPromptSurface`, `negative prompts`,
+  `protectedBoundaryRef`, `boundaryCategory`, `DRAFT_FOR_REVIEW`,
+  `REVIEW_PASS_NOT_APPROVAL`, `no provider/API`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- A review PASS could be mistaken for user approval or downstream startup. The
+  new doc must keep PASS technical-only and require a future route decision
+  before any asset lifecycle or other next task starts.
+- Prompt-safe storyboard fields can leak hidden causality if negative prompts or
+  screen descriptions are not treated as prompt surface.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch after B組03
+  PASS on the prompt-surface boundary. Scope is one new storyboard/camera packet
+  review doc plus minimal HANDOFF and integration-map pointers. No code,
+  samples, Gradle, provider/API, SQLite, media, 04/05/06/07/08, Phase 20/21,
+  staging, commit, push, or B組03 contact.
+- 2026-07-03: Added `docs/CODEX_STORYBOARD_CAMERA_PACKET_TEMPLATE_REVIEW_V0.md`
+  and minimal pointers in `docs/HANDOFF.md` plus row 6 of
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`. Awaiting
+  docs-only verification before final PASS closure.
+- 2026-07-03: Verification PASS for the storyboard/camera packet template
+  review docs/control slice: required-string `rg` found `StoryboardCameraPacket`,
+  `allowedPromptSurface`, `negative prompts`, `protectedBoundaryRef`,
+  `boundaryCategory`, `DRAFT_FOR_REVIEW`, `REVIEW_PASS_NOT_APPROVAL`, no
+  provider/API, and production lock boundary text; trailing-whitespace scan
+  passed; `git diff --check` showed only accepted Windows line-ending warnings
+  for `PLANS.md` and `docs/HANDOFF.md`; final status checked. No Gradle was run
+  because this was docs/control only.
+
+## Active Prompt Surface Leakage Boundary V0 Docs Control
+
+### Goal
+
+Add a docs/control boundary for prompt surface leakage so future storyboard,
+asset, prompt, and scene-packet planning keeps hidden author/review material out
+of prompts, negative prompts, screen descriptions, and prompt-safe asset notes
+unless fields are explicitly allowed.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md` if its existing
+  prompt-surface pointer remains the obvious linkage.
+
+### Non-Goals
+
+- No Kotlin/JVM source, CLI, runtime, schema, sample JSON, provider/API, media
+  implementation, direct SQLite writes, 04/05/06/07/08 restart, Phase 20 /
+  Phase 21 restart, canon, registry, release, final approval, production lock,
+  staging, commit, push, archive/create windows, or B組03 contact.
+
+### Confirmed Facts
+
+- `AGENTS.md` keeps this repo bounded to Kotlin/JVM CLI, SQLite, and JSON file
+  protocol and forbids direct SQLite bypasses.
+- `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md` already names
+  `prompt_surface_leakage_boundary_v0_docs_control` as the current
+  prompt-surface candidate.
+- The assigned task is docs/control only and requires a deny-by-default prompt
+  surface boundary.
+
+### Assumptions
+
+- Updating the existing AI-governed decision lane pointer is the smallest
+  obvious blueprint/control linkage.
+
+### Implementation Steps
+
+- [x] Step 1: Add the prompt surface leakage boundary control doc.
+- [x] Step 2: Add minimal HANDOFF and AI-governed pointer links.
+- [x] Step 3: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required boundary strings in touched docs.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch` at the end.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Prompt-surface wording could be mistaken for runtime enforcement. This slice
+  must remain a docs/control rule and explicitly avoid implementation claims.
+- Negative prompts can leak hidden material if treated as a safe dumping ground;
+  the new doc must state they are also prompt surface.
+
+### Drift Log
+
+- 2026-07-03: Started B組02 docs/control slice from B組01 dispatch. Scope is
+  limited to PLANS, one new prompt-surface control doc, HANDOFF pointer, and the
+  existing AI-governed pointer if obvious. No code, samples, Gradle, provider,
+  SQLite, media, staging, commit, push, or B組03 contact.
+- 2026-07-03: Added `docs/CODEX_PROMPT_SURFACE_LEAKAGE_BOUNDARY_V0.md`; updated
+  `docs/HANDOFF.md` and the existing prompt-surface pointer in
+  `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md`. Awaiting docs-only
+  verification before final PASS closure.
+- 2026-07-03: Verification PASS for the prompt-surface docs/control slice:
+  required-string `rg` found the new doc, prompt-surface deny rule,
+  `allowedPromptSurface`, `NegativeBoundaryCard`, `protectedBoundaryRef`,
+  `boundaryCategory`, card names, no provider/API, and production lock boundary
+  text; trailing-whitespace scan passed; `git diff --check` showed only
+  accepted Windows line-ending warnings for `PLANS.md` and `docs/HANDOFF.md`;
+  final `git status --short --branch` checked. No Gradle was run because this
+  was docs/control only.
+
+## Active AI-Governed Decision Lane Alignment V0
+
+### Goal
+
+Update the current A/B chat-window control model so routine technical decisions
+are made by the AI planning windows instead of pausing for `00` / human manual
+approval. `00` remains the product-direction window, while `A組01` can promote
+an objectively mature proposal to `B組01` under an AI technical approval gate.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md`
+- `docs/CODEX_PLANNING_WINDOW_FACTORY_PROTOCOL_V0.md`
+- `docs/HANDOFF.md`
+- Config/status messages to `A組01` and `B組01`
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, CLI command, Gradle, sample JSON, script packet
+  generation, runtime implementation, direct SQLite writes, schema, migration,
+  vector DB, embeddings, provider/API, browser automation, web/server/open
+  ports, renderer/ffmpeg/TTS, media generation, 04/05/06/07/08 restart,
+  Phase 20 / Phase 21 restart, canon, setting-pack conversion, registry
+  approval, asset approval, release, final media approval, approval, production
+  lock, staging, commit, push, delete, clean, or B-group implementation
+  dispatch.
+
+### Confirmed Facts
+
+- The user explicitly corrected that routine decisions should be made by other
+  AI windows, not by `00` or manual human review.
+- The user stated the AI windows may understand these technical decisions
+  better than the human user.
+- Existing docs still framed `00` as a routine route-selection or branch
+  approval point in several current-control sections.
+- `A組01` already produced a `READY_FOR_00_DECISION` candidate for
+  `prompt_surface_leakage_boundary_v0_docs_control`, which now needs
+  reclassification under the AI technical approval gate.
+
+### Assumptions
+
+- A docs/control alignment plus config-only messages to `A組01` and `B組01` is
+  sufficient for this correction.
+- The pending prompt-surface candidate should be re-evaluated by `A組01`, not
+  directly approved by this 00 window.
+
+### Implementation Steps
+
+- [x] Step 1: Add the AI-governed decision lane control doc.
+- [x] Step 2: Align multi-window, thinking-loop, branch-factory, and HANDOFF
+  docs so `00` is not a routine manual gate.
+- [x] Step 3: Send config/status messages to `A組01` and `B組01`.
+- [x] Step 4: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched files:
+  `CODEX_AI_GOVERNED_DECISION_LANE_V0`, `AI_TECHNICAL_APPROVED`,
+  `READY_FOR_B組01_DISPATCH`, `routine manual approval`, `A組01`,
+  `B組01`, `prompt_surface_leakage_boundary_v0_docs_control`,
+  `no provider/API`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- No Gradle expected because this is docs/control and thread-config only.
+
+### Risks
+
+- If AI technical approval is too broad, it could bypass real product,
+  funding, canon, registry, or final approval decisions. The new gate therefore
+  keeps those as stop conditions.
+- If `A組01` directly assigns `B組02`, it bypasses `B組01`; the docs keep
+  `B組01` as the only implementation dispatcher.
+
+### Drift Log
+
+- 2026-07-03: Started after the user corrected that other AI windows should
+  decide routine technical readiness, not `00` or human manual review. Scope is
+  docs/control plus config/status messages. Sent A組01 a reclassification task
+  for the pending prompt-surface candidate under the AI technical approval gate
+  and sent B組01 the matching dispatch rule. No implementation, Gradle,
+  provider, SQLite, media, staging, commit, or push.
+- 2026-07-03: Added `docs/CODEX_AI_GOVERNED_DECISION_LANE_V0.md` and updated
+  current-control docs so routine technical approval can be handled by A組01
+  through `AI_TECHNICAL_APPROVED` / `READY_FOR_B組01_DISPATCH`. Verification
+  PASS: required-string `rg`, trailing-whitespace scan, `git diff --check`
+  with Windows line-ending warnings only, and final `git status --short
+  --branch`. Gradle was not run because this was docs/control and thread
+  coordination only.
+- 2026-07-03: A組01 reclassified
+  `prompt_surface_leakage_boundary_v0_docs_control` as
+  `AI_TECHNICAL_APPROVED` / `READY_FOR_B組01_DISPATCH`. 00 routed exactly one
+  implementation package to B組01 for single-lane dispatch. B組01, not 00, is
+  responsible for converting it into one bounded B組02 task or reporting one
+  blocker.
+- 2026-07-03: Updated heartbeat automation `ai` so future watchdog wakeups use
+  the AI-governed decision lane: `A組01` may route
+  `AI_TECHNICAL_APPROVED` / `READY_FOR_B組01_DISPATCH` packages to `B組01`
+  without routine `00` approval, while true stop-condition decisions still
+  return to `00` / user.
+
+## Active Chat Window Group-Prefixed Alignment V1
+
+### Goal
+
+Align the live Codex chat-window titles, archived obsolete windows, watchdog
+prompt, and current first-read docs with the user's corrected operating model
+and naming rule: the prefix is the group, the number is the flow order inside
+that group, and the suffix is the function. Group A can keep thinking through
+numbered planning windows, while Group B is one single implementation lane
+only. `A組01` integrates Group A thinking; `B組01` is the dedicated Group B
+dispatcher.
+
+### Scope
+
+- Live Codex thread titles / archived obsolete windows.
+- `PLANS.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_WINDOW_TITLE_AND_SINGLE_LANE_ALIGNMENT_V0.md`
+- `AI劇本 全專案窗口監控` heartbeat prompt.
+- Live Codex thread titles for `00`, `A組01` through `A組05`, `B組01`
+  through `B組03`, and archived `90` / `91`.
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, CLI command, Gradle, sample JSON, script packet
+  generation, runtime implementation, direct SQLite writes, schema, migration,
+  vector DB, embeddings, provider/API, browser automation, web/server/open
+  ports, renderer/ffmpeg/TTS, image/audio/video media generation, 04/05/06/07/08
+  restart, Phase 20 / Phase 21, canon, setting-pack conversion, registry
+  approval, asset approval, release, final media approval, approval, production
+  lock, staging, commit, push, delete, clean, or implementation dispatch.
+
+### Confirmed Facts
+
+- The user corrected that the implementation group should only keep one
+  pipeline, not multiple active workers/reviewers.
+- The user corrected that the earlier `20/21/22` global numbering was unclear.
+  The accepted title format is now group prefix + group-local flow number +
+  function suffix.
+- The user corrected that one `01` cannot both integrate Group A thinking and
+  dispatch Group B implementation. The current split is `A組01 整合規劃` and
+  `B組01 派工`.
+- The user asked to archive unnecessary windows directly.
+- The user asked to rename chat windows with consistent Chinese numeric names.
+- Live thread title updates succeeded for `00`, `A組01`, `A組02`, `A組03`,
+  `A組04`, `A組05`, `B組01`, `B組02`, `B組03`, `90`, and `91`.
+- A dedicated `B組01 派工` thread was created:
+  `019f25e7-7b64-7c91-b552-7287ef206e7d`.
+- `90 封存 舊02B副線` and `91 封存 舊03B副線` were archived through Codex
+  thread tools.
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` and `docs/HANDOFF.md`
+  contained current-setting text that still framed global `01` as the
+  implementation dispatcher.
+
+### Assumptions
+
+- Historical PLANS log entries may keep old names as past evidence; only the
+  current-setting sections need to be aligned.
+- `02B` and `03B` should remain recorded as archived historical ids, not
+  deleted from documentation.
+
+### Implementation Steps
+
+- [x] Step 1: Rename active windows and archive obsolete side-lane windows.
+- [x] Step 2: Create the dedicated `B組01 派工` thread.
+- [x] Step 3: Correct the brief `20/21/22` global-numbering mistake and rename
+  live windows to group-prefixed titles.
+- [x] Step 4: Update the heartbeat prompt to use active Chinese group-prefixed
+  titles and the single-lane Group B rule.
+- [x] Step 5: Update current first-read docs and this plan with the aligned
+  window model.
+- [x] Step 6: Send config-update-only messages to active role windows.
+- [x] Step 7: Run docs-only verification and close this alignment slice.
+
+### Verification
+
+- `rg` required strings in touched files:
+  `00 總控決策`, `A組01 整合規劃`, `A組02 發散提案`,
+  `A組03 風險審閱`, `A組04 綜合分支`, `A組05 分支提示詞邊界`,
+  `B組01 派工`, `B組02 實作`, `B組03 審核`,
+  `90 封存 舊02B副線`, `91 封存 舊03B副線`,
+  `B組01 -> B組02 -> B組01 -> B組03 -> B組01`,
+  `A組01` and `B組01` authority split, `archived obsolete`, and
+  `do not route work to archived`.
+- Stale-current-setting check for `20 B組派工`, `21 B組實作`,
+  `22 B組審核`, global `01` as B dispatch authority, and old active
+  `02` / `03` labels in current first-read docs.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- No Gradle expected because this is docs/control and thread-title alignment
+  only.
+
+### Risks
+
+- Historical references to old windows may remain in old completion logs. Do
+  not rewrite history unless a current first-read section is misleading.
+- New Codex windows may still open from the saved OneDrive project entry, so
+  all prompts/docs must keep the canonical workspace warning visible.
+- Archived windows must not receive new work from watchdog or 01 routing.
+- `B組01` must stay dispatch-only and must not become another planning
+  integrator.
+
+### Drift Log
+
+- 2026-07-03: Started chat-window settings alignment after the user asked to
+  check old settings, align them to the new settings, archive unnecessary
+  windows, and rename windows consistently with Chinese numeric titles. Live
+  title changes and 02B/03B archival succeeded through Codex thread tools.
+  Scope remains docs/control plus thread metadata only.
+- 2026-07-03: Added `docs/CODEX_WINDOW_TITLE_AND_SINGLE_LANE_ALIGNMENT_V0.md`;
+  updated current first-read docs and the whole-project watchdog prompt to use
+  `00/01/02/03/11/12/13/14` Chinese numeric titles, with `90` and `91` archived
+  as obsolete side lanes. Sent config-update-only messages to `01`, `02`, and
+  `03`. Verification PASS: required-string `rg`, stale-current-setting `rg`,
+  trailing-whitespace scan, and `git diff --check` with Windows line-ending
+  warnings only. No code, Gradle, runtime, SQLite, media, provider/API,
+  staging, commit, push, or implementation dispatch.
+- 2026-07-03: User corrected the title scheme again: the prefix must be the
+  group, the number must be the flow order inside that group, and the suffix
+  must be the function. Renamed live windows to `00 總控決策`,
+  `A組01 整合規劃`, `A組02 發散提案`, `A組03 風險審閱`,
+  `A組04 綜合分支`, `A組05 分支提示詞邊界`, `B組01 派工`,
+  `B組02 實作`, and `B組03 審核`. Updated the watchdog prompt to the A/B group
+  naming model and corrected current first-read docs so `A組01` is no longer
+  B-group dispatch authority. Scope remains docs/control plus thread metadata
+  only.
+- 2026-07-03: Sent config-update-only messages to `A組01` through `A組05` and
+  `B組01` through `B組03`; each message explicitly said not to edit files, run
+  commands, stage, commit, push, archive, create windows, or start work.
+  Verification PASS: required-string `rg`, stale-current-setting check,
+  authority-split check, trailing-whitespace scan, and `git diff --check` with
+  Windows line-ending warnings only. No Kotlin, Gradle, SQLite, provider/API,
+  web/server, renderer/ffmpeg/TTS, media generation, staging, commit, push, or
+  production approval work was performed.
+
+## Active Product Architecture Thinking Loop And Window Factory V0
+
+### Goal
+
+Add a docs/control protocol for the user's requested two-group workflow:
+planning windows must think deeper, split reusable product architecture into
+fixed cores, variable modules, and composition rules, and open bounded planning
+branch windows when a topic grows too large. Accepted planning proposals may
+then move to the implementation group, which should remain a single-lane
+pipeline by default.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md`
+- `docs/CODEX_PLANNING_WINDOW_FACTORY_PROTOCOL_V0.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/HANDOFF.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, CLI command, Gradle, sample JSON, script packet
+  generation, runtime implementation, direct SQLite writes, schema, migration,
+  vector DB, embeddings, external retrieval, provider/API, GPT automation,
+  browser automation, web/server/open ports, renderer/ffmpeg/TTS, image/audio/
+  video media generation, 04/05/06/07/08 restart or handoff, Phase 20 /
+  Phase 21, canon, setting-pack conversion, registry approval, asset approval,
+  release, final media approval, approval, production lock, staging, commit,
+  push, delete, clean, or new thread creation in this slice.
+
+### Confirmed Facts
+
+- The user rejected a planning model that only makes one proposal and quickly
+  hands it to implementation.
+- The user wants planning to keep refining product architecture, such as
+  separating a character into a stable body/identity core plus interchangeable
+  clothes, expressions, poses, props, and rules.
+- The user wants planning windows to be able to spawn bounded new chat windows
+  for large subtopics, so P1 does not accumulate too much context and drift from
+  the original question.
+- The user asked to switch implementation coordination back to a single-lane
+  pipeline after observing that parallel windows often left only one visible
+  active review window.
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` currently defines `00`,
+  `01`, `02A`, `02B`, `03A`, and `03B`, but it does not yet define the product
+  architecture thinking loop or planning window factory.
+- `docs/HANDOFF.md` points new windows to the multi-window model and current
+  role ids.
+- The worktree is already broadly dirty from prior accepted slices; this task
+  must not revert or modify unrelated work.
+
+### Assumptions
+
+- Two new docs plus concise pointers in the existing operating model and
+  HANDOFF are sufficient for this control slice.
+- This slice should document the planning branch-window capability, not create
+  new P1/P2/P3 branch threads yet.
+
+### Implementation Steps
+
+- [x] Step 1: Add the planning thinking-loop and branch-window factory docs.
+- [x] Step 2: Align the multi-window operating model and HANDOFF pointers.
+- [x] Step 3: Run required docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched files:
+  `PRODUCT_ARCHITECTURE_THINKING_LOOP_V0`,
+  `PLANNING_WINDOW_FACTORY_PROTOCOL_V0`, `P1`, `P2`, `P3`,
+  `SPAWN_REQUEST`, `BRANCH_REPORT`, `fixed core`, `variable modules`,
+  `composition rules`, `single-lane implementation pipeline`, `no provider/API`,
+  `no SQLite`, and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- Final `git status --short --branch`.
+- No Gradle expected because this is docs/control only.
+
+### Risks
+
+- If planning branch windows are allowed to implement directly, the workflow can
+  bypass 01/02/03 review. Keep branch windows planning-only.
+- If the planning loop never produces maturity criteria, it can become endless
+  ideation. Require maturity gates and stop conditions.
+- If product architecture is too abstract, it may stop producing the user's
+  final deliverable. Keep every proposal tied to reusable video/storyboard
+  production capability.
+
+### Drift Log
+
+- 2026-07-02: Started docs/control slice after the user clarified the desired
+  A/B group model. Read current `PLANS.md`, multi-window operating model,
+  HANDOFF first-read override, and targeted route mentions with `rg`. Scope
+  remains documentation/control only with no code, CLI, sample, provider/API,
+  SQLite, media, 04/05/06/07/08, Phase 20/21, approval, production lock,
+  staging, commit, push, or thread creation.
+- 2026-07-02: Added `docs/CODEX_PRODUCT_ARCHITECTURE_THINKING_LOOP_V0.md` and
+  `docs/CODEX_PLANNING_WINDOW_FACTORY_PROTOCOL_V0.md`, then aligned
+  `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` and `docs/HANDOFF.md`. The
+  model now separates Group A planning loops / branch windows from Group B's
+  single-lane implementation pipeline. Verification PASS: required-string `rg`,
+  trailing-whitespace scan, and `git diff --check` with Windows line-ending
+  warnings only. No code, CLI, sample, provider/API, SQLite, media, approval,
+  production lock, staging, commit, push, or thread creation.
+
+## Active Script-Ready Scene Packet Alignment V0
+
+### Goal
+
+Draft `script_ready_scene_packet_alignment_v0` as a bounded docs/spec alignment
+slice. The slice connects the accepted demand-driven query contract/spec to
+the existing script-ready scene packet spec so future 04/05/06/07/08 work can
+use scoped `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport`
+evidence without reading a full world bible or leaking author-only material.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md`
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`
+- `docs/HANDOFF.md`
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, CLI command, Gradle, script packet generation,
+  runtime implementation, direct SQLite writes, schema, migration, vector DB,
+  embeddings, external retrieval, provider/API, GPT automation, browser
+  automation, web/server/open ports, renderer/ffmpeg/TTS, image/audio/video
+  media generation, 04/05/06/07/08 restart or handoff, Phase 20 / Phase 21,
+  canon, setting-pack conversion, registry approval, asset approval, release,
+  final media approval, approval, production lock, staging, commit, push,
+  delete, clean, or contact with 03A/03B/02A.
+
+### Confirmed Facts
+
+- 01 explicitly assigned `script_ready_scene_packet_alignment_v0` after 03A
+  PASS on the demand-driven query pointer revision.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` defines common
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` requirements,
+  visibility levels, minimum-scope rules, source/citation rules, and queryer
+  family expectations.
+- `samples/local_story_input/rain_gate_demand_driven_query_contract_spec_sample.json`
+  demonstrates three query families feeding a future scene-packet alignment
+  draft without reading a full world bible.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` already defines packet fields,
+  visibility rules, 04/05/06/07/08 handoff boundaries, and a 05 query-scope
+  checklist, but it still points mainly to the older query blueprint rather
+  than the accepted contract/spec.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` says the possible
+  next route after the accepted query contract/spec is docs-only
+  `script_ready_scene_packet_alignment_v0`; it is not approval and not
+  auto-start.
+- `git status --short --branch` shows many existing dirty/untracked files from
+  prior accepted slices; this task must not revert or modify unrelated work.
+
+### Assumptions
+
+- A new alignment note plus a small pointer in the existing script-ready spec
+  and HANDOFF is sufficient; no sample JSON change is needed.
+
+### Implementation Steps
+
+- [x] Step 1: Add the alignment note and minimal pointers.
+- [x] Step 2: Run required `rg`, trailing-whitespace, `git diff --check`, and
+  final status verification.
+
+### Verification
+
+- `rg` required strings in touched files:
+  `script_ready_scene_packet_alignment_v0`,
+  `CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0`, `QueryRequest`,
+  `QueryResponse`, `QueryScopeReviewReport`, `author_only`, `review_only`,
+  `production_only`, `user_facing`, `full world bible`,
+  `no 04/05/06/07/08 restart`, `no provider/API`, `no SQLite`, and
+  `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- Final `git status --short --branch`.
+- No Gradle expected because no source/test/runtime file should be touched.
+
+### Risks
+
+- Over-aligning could look like script packet generation or 04/05/06/07/08
+  resumption. Keep this docs-only and explicitly non-generative.
+- The dirty worktree is broad. Keep edits limited to the declared docs files.
+
+### Drift Log
+
+- 2026-07-02: Started 02B docs-only alignment slice from 01. Read
+  strata-agent-loop, AGENTS, current `PLANS.md`, HANDOFF route pointers,
+  current route card, future route integration map, demand-driven query
+  contract/spec, Rain Gate query contract sample, full script-ready scene packet
+  spec, and git status. Scope remains docs/spec alignment only.
+- 2026-07-02: Added `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md`,
+  a small pointer in `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, and a concise
+  HANDOFF pointer/current-next-advice update. The alignment maps
+  `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` evidence to
+  future packet sections while preserving visibility boundaries and no
+  04/05/06/07/08 restart. Required-string `rg`, trailing-whitespace scan, and
+  `git diff --check` PASS with Windows line-ending warnings only; final status
+  captured. No scope drift.
+
+## Active Demand-Driven Query Pointer Revision Fix V0
+
+### Goal
+
+Fix 03A NEEDS_REVISION stale route pointers for
+`demand_driven_query_contract_spec_v0` so completed contract/spec evidence is
+the current pointer and `script_ready_scene_packet_alignment_v0` is only a
+possible future 01 decision after review PASS.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+
+### Non-Goals
+
+- No contract/spec expansion, sample JSON changes, templates changes, Kotlin,
+  CLI, Gradle, runtime queryer implementation, SQLite/schema/vector DB/embedding,
+  provider/API, media generation, 04/05/06/07/08 restart, Phase 20 / Phase 21,
+  canon/registry/release/final media approval/production lock, staging, commit,
+  push, delete, clean, or 03 contact.
+
+### Confirmed Facts
+
+- 03A returned NEEDS_REVISION because `docs/HANDOFF.md` still lists "Draft
+  query request / response templates" as current next-step advice and
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` still frames the
+  demand-driven query layer as a future template/checklist drafting task.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and
+  `samples/local_story_input/rain_gate_demand_driven_query_contract_spec_sample.json`
+  now exist as the contract/spec evidence from the completed slice.
+- The contract/spec says `script_ready_scene_packet_alignment_v0` may be a
+  docs-only recommendation after review, but it is not approval, not dispatch,
+  and not permission to implement queryers or restart downstream windows.
+
+### Implementation Steps
+
+- [x] Step 1: Update only the stale HANDOFF and integration-map pointers.
+- [x] Step 2: Run required `rg`, stale-phrase, whitespace, `git diff --check`,
+  and final status verification.
+
+### Verification
+
+- `rg` in touched files for `CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0`,
+  `rain_gate_demand_driven_query_contract_spec_sample.json`,
+  `script_ready_scene_packet_alignment_v0`, `not approval`, `not auto-start`,
+  `no queryer implementation`, `no provider/API`, `no SQLite`, and
+  `production lock`.
+- Confirm the stale query-template drafting phrase is no longer presented as
+  current next-step advice.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- Final `git status --short --branch`.
+
+### Drift Log
+
+- 2026-07-02: Started 02B revision fix from 01 after 03A NEEDS_REVISION. Read
+  strata-agent-loop, AGENTS, current `PLANS.md`, HANDOFF next-step advice,
+  integration-map demand-driven row, contract/spec, template pointer, 03A
+  findings from the task prompt, and git status. Scope is pointer repair only.
+- 2026-07-02: Updated HANDOFF current next-step advice and the integration-map
+  demand-driven row / recommended task so the completed contract/spec and sample
+  are current evidence. `script_ready_scene_packet_alignment_v0` is now framed
+  only as a possible future docs-only 01 decision after review PASS, not
+  approval and not auto-start. Required-string `rg`, stale-phrase check,
+  trailing-whitespace scan, and `git diff --check` PASS with Windows line-ending
+  warnings only; final git status captured. No scope drift.
+
+## Active Demand-Driven Query Contract Spec V0
+
+### Goal
+
+Draft `demand_driven_query_contract_spec_v0` as a bounded docs/spec/data-contract
+packet. The packet turns the existing demand-driven query blueprint and
+templates into a reviewable contract for future World Card Queryer, Asset
+Queryer, and Situation / Continuity / Pressure Queryer work, while preserving
+minimum-scope retrieval and author-only secrecy boundaries.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md`
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md`
+- `samples/local_story_input/rain_gate_demand_driven_query_contract_spec_sample.json`
+- `docs/HANDOFF.md`
+
+New contract/spec file choice: `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md`
+already exists as a short template packet, but this task needs a clearer
+reviewable contract/spec layer plus a local JSON sample. A new
+`docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` keeps the contract distinct
+from the older template summary; the template doc should only be aligned or
+pointed to the contract if needed.
+
+### Non-Goals
+
+- No Kotlin/JVM source, tests, CLI command, schema, migration, SQLite write,
+  vector DB, embedding, provider/API, browser automation, web/server/open port,
+  renderer/ffmpeg/TTS/media generation, canon, setting-pack conversion,
+  registry approval, asset approval, release, production lock, staging, commit,
+  push, delete, clean, 04/05/06/07/08 restart, Phase 20, Phase 21, or runtime
+  implementation.
+- Do not contact 03A/03B directly. Completion reports go back to 01 only.
+- Do not treat local baseline 100% as true final product completion.
+
+### Confirmed Facts
+
+- Current branch is `codex/mvp6-checkpoint-branching-spec`.
+- Canonical workspace for this task is `C:\Users\f7212\Projects\AI 劇本`;
+  OneDrive is not canonical.
+- `git status --short --branch` shows many existing dirty/untracked files from
+  prior accepted slices; this task must not revert unrelated changes.
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md` says 02B is the spec /
+  data-contract worker and reports to 01 only.
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md` says queryers, SQLite schema, vector DB,
+  retrieval runtime, provider/API calls, media generation, canon, registry,
+  release, final media, and production lock are non-goals.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` places the
+  demand-driven query layer after 09 foundation and before script-ready scene
+  packet alignment, and warns against allowing 04 to read a full world bible.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future product-layer
+  World Card Queryer, Asset Queryer, and Story Card Queryer / Situation /
+  Continuity / Pressure Queryer responsibilities, visibility rules, 05 review
+  checks, and no-runtime boundaries.
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` has short QueryRequest,
+  QueryResponse, and QueryScopeReviewReport templates and already says no
+  provider/API, no SQLite, no runtime enforcement, and not canon approval.
+- `docs/CODEX_09_FOUNDATION_CARD_PACK_REVIEW_V0.md` and
+  `samples/local_story_input/rain_gate_09_foundation_card_pack_review_report_sample.json`
+  record PASS next step `demand_driven_query_contract_spec_v0` but do not start
+  queryer implementation.
+
+### Assumptions
+
+- A single local JSON sample that contains request/response examples for all
+  three queryer families plus one review report is the smallest useful sample.
+- Updating `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md` with a pointer and
+  alignment note is enough; duplicating the full contract there would increase
+  drift risk.
+
+### Open Questions
+
+- Future implementation form remains undecided: file templates, CLI, schema,
+  sidecar storage, query audit logs, and runtime links all require later 01/user
+  decisions.
+
+### Implementation Steps
+
+- [x] Step 1: Add the contract spec, local sample JSON, template pointer, and
+  HANDOFF pointer for `demand_driven_query_contract_spec_v0`.
+- [x] Step 2: Verify JSON parse, required strings, trailing whitespace,
+  `git diff --check`, and final `git status --short --branch`.
+
+### Verification
+
+- UTF-8 JSON parse:
+  `samples/local_story_input/rain_gate_demand_driven_query_contract_spec_sample.json`
+- `rg` required strings in touched docs/sample:
+  `demand_driven_query_contract_spec_v0`, `World Card Queryer`,
+  `Asset Queryer`, `Situation / Continuity / Pressure Queryer`, `author_only`,
+  `review_only`, `production_only`, `user_facing`, `full world bible`,
+  `not canon`, `no provider/API`, `no SQLite`, `no runtime implementation`,
+  and `production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` on touched tracked files, accepting Windows line-ending
+  warnings only.
+- Final `git status --short --branch`.
+- No Gradle run is planned because this is docs/spec/sample JSON only and must
+  not touch Kotlin.
+
+### Risks
+
+- Over-specifying future implementation details could imply CLI/schema/runtime
+  approval. Keep the packet explicitly docs/spec/data-contract only.
+- Under-specifying visibility could permit author_only leakage. Keep visibility
+  and source/citation rules central.
+- Dirty worktree contains unrelated prior work; inspect final status and report
+  only this slice's touched files.
+
+### Drift Log
+
+- 2026-07-02: Started 02B bounded docs/spec/data-contract slice from 01. Read
+  strata-agent-loop, AGENTS, top/current `PLANS.md`, HANDOFF first-read and
+  demand-driven query pointers, multi-window operating model, current route
+  card, future route integration map, demand-driven query blueprint, existing
+  query templates, Round 3 09 foundation card review docs/sample, and git
+  status. Scope remains docs/spec/sample JSON only: no provider/API, no SQLite,
+  no runtime implementation, no media generation, no canon/registry/release/
+  approval/production lock, no 04/05/06/07/08 restart, no Phase 20 / Phase 21,
+  and no staging/commit/push.
+- 2026-07-02: Added the new demand-driven query contract/spec doc, Rain Gate
+  sample JSON, template pointer, and HANDOFF pointer. UTF-8 JSON parse PASS
+  with three requests, three responses, and one review report; required-string
+  `rg` PASS; trailing-whitespace scan PASS; `git diff --check` PASS with
+  Windows line-ending warnings only. No Kotlin, CLI, schema, SQLite, provider,
+  runtime, media, 04/05/06/07/08, staging, commit, or push work was performed.
+
+## Active Multi-Window Operating Model V0
+
+### Goal
+
+Convert the current chat-window workflow into a clearer multi-window operating
+model after the user renamed this window to `00`. The model must separate
+planning, dispatch, implementation, and review/testing so the whole-project
+voiced-comic route can continue without reviving the stopped Phase 20 / Phase
+21 renderer-manifest micro-route or confusing the old local baseline 100% with
+true final completion.
+
+Correction from user: `00` does not dispatch work to 02 / 03. `00` owns
+planning and blueprint updates only. `01` is the only dispatch authority and
+must assign work according to the accepted blueprint/control docs.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_MULTI_WINDOW_OPERATING_MODEL_V0.md`
+- `docs/HANDOFF.md`
+- Codex thread titles / role prompts only
+
+### Confirmed Facts
+
+- The user explicitly said the current chat window should become `00`.
+- The user asked to arrange the other windows.
+- The deep unattended sequence completed 3/3 rounds with 02 PASS and 03 PASS.
+- The next explicit project route is likely
+  `demand_driven_query_contract_spec_v0`, but it must not start automatically.
+- The canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; OneDrive is not
+  the canonical workspace.
+- The project is Kotlin/JVM CLI + SQLite + JSON file protocol, not a web app.
+- The old local baseline 100% is not true final project completion.
+
+### Steps
+
+- [x] Step 1: Pause the stale game/deep unattended heartbeat automation.
+- [x] Step 2: Add the multi-window operating model docs/control packet.
+- [x] Step 3: Rename or create the role windows.
+- [x] Step 4: Run lightweight docs verification and report the final role map.
+
+### Verification
+
+- `rg` required role names and boundaries in touched docs.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are
+  acceptable.
+- Confirm thread titles / created thread ids from Codex app tool output.
+
+### Drift Log
+
+- 2026-07-02: User redirected the workflow from old 01/02/03 layout to a
+  clearer `00` planning/communication window plus separate dispatch, worker,
+  and review/testing windows. This is docs/control and thread arrangement only:
+  no provider/API, no web/server, no direct SQLite writes, no renderer/ffmpeg/TTS
+  media generation, no canon/registry/release/final approval/production lock,
+  no Phase 20 / Phase 21 restart, and no staging/commit/push.
+- 2026-07-02: Paused stale `ai-01-02-03` heartbeat automation and arranged
+  the role windows: `00` current planning window, new `01` dispatch window,
+  existing `02A` implementation worker, new `02B` spec/data-contract worker,
+  existing `03A` read-only reviewer, and new `03B` verification reviewer. New
+  role windows only acknowledged readiness and did not start work.
+- 2026-07-02: Lightweight verification PASS for the multi-window operating
+  model docs/control packet: required strings found, trailing whitespace PASS,
+  `git diff --check` PASS with Windows line-ending warnings only, and git
+  status checked. Existing dirty/untracked project work remains from prior
+  accepted slices; this slice added only the role-model docs/control packet and
+  thread arrangement.
+- 2026-07-02: User clarified that `00` must not dispatch. Added authority
+  correction: `00` plans and updates blueprint/control docs; `01` dispatches
+  according to the blueprint. The next step is to notify `01` of the approved
+  blueprint route and let `01` assign exactly one bounded task.
+
+## Active Foundation Card Pack Review Gate V0
+
+### Goal
+
+Implement the final DEEP_UNATTENDED round 3 slice:
+`09 foundation card pack review gate v0`. The gate reads a non-canon
+`FoundationCardPack` plus a PASS `FOUNDATION_CARD_PACK_VALIDATION_PASS` report,
+confirms technical safety and source alignment, and writes a local JSON review
+report. It must not approve canon, setting-pack conversion, asset registry,
+runtime SQLite data, provider/API, media generation, final product readiness,
+Phase 20 / Phase 21, demand-driven query implementation, or any round after
+this.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/FoundationCardPackReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/FoundationCardPackReviewService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/FoundationCardPackReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/FoundationCardPackReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_09_foundation_card_pack_review_report_sample.json`
+- `docs/CODEX_09_FOUNDATION_CARD_PACK_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Round 1 09 foundation card JSON contract/spec v0 has 02 PASS and 03 PASS.
+- Round 2 foundation card pack validation v0 has 02 PASS and 03 PASS.
+- Round 2 sample validation report status is
+  `FOUNDATION_CARD_PACK_VALIDATION_PASS`, downstream boundary is
+  `foundation_card_pack_validation_v0_only_not_canon_or_runtime`, next step is
+  `09_foundation_card_pack_review`, failed checks are zero, findings are zero,
+  and all seven foundation families are present.
+- The accepted final automatic round must stop after this slice; no round 4 is
+  allowed.
+- The PASS review next step requested by 01 is
+  `demand_driven_query_contract_spec_v0`, but this slice must not implement
+  that future step.
+- The local baseline 100% is not true final product completion.
+
+### Steps
+
+- [x] Step 1: Read Round 1 contract/sample, Round 2 validation report,
+  validation model/service/tests, Main.kt CLI patterns, HANDOFF pointers, and
+  git status.
+- [x] Step 2: Add foundation card pack review models/service and CLI wiring.
+- [x] Step 3: Add focused service/CLI tests, docs, HANDOFF pointer, and sample
+  review report.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse,
+  `rg`, whitespace, `git diff --check`, git status, process check, and report
+  to 01.
+
+### Verification
+
+- Focused Gradle tests only:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.FoundationCardPackReviewServiceTest" --tests "com.localnovel.engine.FoundationCardPackReviewCliTest"`
+- CLI generation:
+  `review-09-foundation-card-pack --pack samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json --validation samples/local_story_input/rain_gate_09_foundation_card_pack_validation_report_sample.json --review rain-gate-09-foundation-card-pack-review-v0-001 --out samples/local_story_input/rain_gate_09_foundation_card_pack_review_report_sample.json`
+- UTF-8 JSON parse for status, downstream boundary, next step, findings,
+  counts, source alignment, technical-only review boundary, and safety flags.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings
+  are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check.
+
+### Drift Log
+
+- 2026-07-02: Started DEEP_UNATTENDED round 3 final automatic slice in canonical
+  workspace. Evidence shows this is a technical review gate after the Round 2
+  validator, not canon/user approval and not a query implementation. Scope
+  remains local file-protocol JSON only: no provider/API, no web/server, no
+  direct SQLite writes or schema/migration, no renderer/ffmpeg/TTS/media
+  generation, no GUI/screenshot, no canon/registry/release/final media
+  approval/approval/production lock, no staging/commit/push/delete/clean, no
+  Phase 20 / Phase 21, no 03 contact, no demand-driven query implementation,
+  and no round after this.
+- 2026-07-02: Added foundation card pack review model/service and CLI command
+  `review-09-foundation-card-pack`. PASS remains technical-only and can only
+  unlock the future contract/spec step `demand_driven_query_contract_spec_v0`.
+- 2026-07-02: Added focused service/CLI tests, review docs, HANDOFF pointer,
+  and generated Rain Gate sample review report. Focused Gradle tests PASS and
+  sample CLI generation PASS before final hygiene closure.
+- 2026-07-02: UTF-8 JSON parse PASS for
+  `FOUNDATION_CARD_PACK_REVIEW_PASS`, downstream boundary
+  `foundation_card_pack_review_only_not_canon_or_runtime`, next step
+  `demand_driven_query_contract_spec_v0`, source alignment, zero failed checks,
+  zero findings, and technical-only safe boundary flags. Required-string `rg`
+  PASS and trailing-whitespace scan PASS; final `git diff --check`, git
+  status, and process checks complete the Round 3 report.
+
+## Active Foundation Card Pack Validation V0
+
+### Goal
+
+Implement `foundation_card_pack_validation_v0`: a deterministic local
+file-protocol JSON validator/service/CLI for 09 `FoundationCardPack` candidate
+packs. It validates the non-canon contract from
+`docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md` and writes a reviewable
+validation report. This slice must not create canon, setting-pack data,
+runtime SQLite data, approved assets, media, provider/API paths, Phase 20 /
+Phase 21 work, or round 3.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/FoundationCardPackValidationModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/FoundationCardPackValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/FoundationCardPackValidationServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/FoundationCardPackValidationCliTest.kt`
+- `samples/local_story_input/rain_gate_09_foundation_card_pack_validation_report_sample.json`
+- `docs/CODEX_09_FOUNDATION_CARD_PACK_VALIDATION_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Round 1 09 foundation card local JSON contract/spec v0 has 02 PASS and 03
+  PASS.
+- The Round 1 contract defines `FoundationCardPack` and sample input
+  `samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json`.
+- The accepted card families are world premise, character foundation, location
+  foundation, system foundation, constraint, asset seed, and situation seed.
+- The 09 organization doc says draft cards must be reviewed before they feed
+  query templates, so the safer PASS next step is `09_foundation_card_pack_review`.
+- Phase 20 / Phase 21 remain stopped and must not resume.
+- The local baseline 100% is not final product completion.
+
+### Steps
+
+- [x] Step 1: Read Round 1 contract/sample, 09 organization/preflight,
+  Main.kt CLI patterns, similar validator service/test patterns, and git
+  status.
+- [x] Step 2: Add foundation card pack validation models/service and CLI
+  wiring.
+- [x] Step 3: Add focused service/CLI tests, docs, HANDOFF pointer, and sample
+  validation report.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse,
+  `rg`, whitespace, `git diff --check`, git status, and report to 01.
+
+### Verification
+
+- Focused Gradle tests only:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.FoundationCardPackValidationServiceTest" --tests "com.localnovel.engine.FoundationCardPackValidationCliTest"`
+- CLI generation:
+  `validate-09-foundation-card-pack --input samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json --validation rain-gate-09-foundation-card-pack-validation-v0-001 --out samples/local_story_input/rain_gate_09_foundation_card_pack_validation_report_sample.json`
+- UTF-8 JSON parse for status, next step, findings, counts, and boundary flags.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings
+  are acceptable.
+- `git status --short --branch`.
+
+### Drift Log
+
+- 2026-07-02: Started DEEP_UNATTENDED round 2 implementation slice. Read the
+  strata-agent-loop skill, Round 1 contract/spec, sample JSON, top `PLANS.md`,
+  similar `validate-local-story-input-pack` model/service/test/CLI patterns,
+  HANDOFF/control references, and git status excerpt. Scope remains local
+  file-protocol JSON validator/report only: no provider/API, no web/server,
+  no direct SQLite writes or schema/migration, no renderer/ffmpeg/TTS/media
+  generation, no GUI/screenshot, no canon/registry/release/final media
+  approval/approval/production lock, no staging/commit/push/delete/clean,
+  no Phase 20 / Phase 21, no 03 contact, and no round 3.
+- 2026-07-02: Added foundation card pack validation model/service, CLI command
+  `validate-09-foundation-card-pack`, focused service/CLI tests, validation
+  docs, and HANDOFF pointer. The PASS next allowed downstream step is
+  `09_foundation_card_pack_review`, chosen because the accepted 09 organization
+  rules require review before query templates.
+- 2026-07-02: Focused service/CLI Gradle tests PASS, sample CLI generation PASS,
+  and UTF-8 JSON parse confirms `FOUNDATION_CARD_PACK_VALIDATION_PASS`, zero
+  failed checks/findings, safe boundary flags, downstream boundary
+  `foundation_card_pack_validation_v0_only_not_canon_or_runtime`, and next
+  allowed step `09_foundation_card_pack_review`. Trailing-whitespace scan PASS;
+  final `rg`, `git diff --check`, git status, and process checks are part of
+  the completion closure.
+
+## Active 09 Foundation Card JSON Contract V0
+
+### Goal
+
+Create the first concrete local file-protocol JSON contract/spec for 09
+foundation cards. This docs/spec slice defines `FoundationCardPack` and a
+plain JSON sample as non-canon candidate evidence only. It must not create
+canon, setting-pack data, runtime SQLite data, approved assets, renderer/media
+outputs, provider/API integrations, schema changes, Phase 20 / Phase 21, or
+04/05/06/07/08 resumption.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md`
+- `docs/HANDOFF.md`
+- `samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json`
+
+### Confirmed Facts
+
+- Whole-project blueprint full update package V0, blueprint execution control
+  layer V0, and 09 foundation card execution packet preflight V0 have 03 PASS.
+- Phase 20 / Phase 21 remain stopped and the old renderer-manifest route must
+  not resume.
+- `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md` defines the accepted 09
+  foundation card families: world premise, character foundation, location
+  foundation, system foundation, constraint, asset seed, and situation seed.
+- 09 foundation cards are candidates only unless later reviewed and approved:
+  not canon, not setting-pack content, not runtime SQLite data, and not
+  approved assets.
+- The previous local baseline 100% is not true final project completion.
+
+### Steps
+
+- [x] Step 1: Read 09 foundation organization, preflight, HANDOFF, execution
+  control, route-card evidence, and current git status.
+- [x] Step 2: Add the 09 foundation card JSON contract/spec doc.
+- [x] Step 3: Add one plain non-canon sample JSON pack and a HANDOFF pointer.
+- [x] Step 4: Run docs/sample verification and report to 01.
+
+### Verification
+
+- `rg` required strings across touched files.
+- UTF-8 JSON parse for the sample JSON if created.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings
+  are acceptable.
+- `git status --short --branch`.
+- No Gradle unless Kotlin code is unexpectedly implemented. This slice should
+  not implement Kotlin code.
+
+### Drift Log
+
+- 2026-07-02: Started DEEP_UNATTENDED round 1 docs/spec slice. Read the
+  strata-agent-loop skill, AGENTS, top `PLANS.md`, 09 foundation organization,
+  09 execution preflight, HANDOFF pointers, execution-control references, and
+  git status excerpt. Scope remains local file-protocol JSON contract/spec plus
+  sample evidence only: no Kotlin, no Gradle, no provider/API, no direct
+  SQLite writes, no schema, no web/server, no renderer/ffmpeg/TTS/media
+  generation, no canon/registry/release/approval/production lock, no staging,
+  commit, push, delete, clean, 03 contact, Phase 20 / Phase 21, or round 2.
+- 2026-07-02: Added `docs/CODEX_09_FOUNDATION_CARD_JSON_CONTRACT_V0.md`, the
+  non-canon sample pack
+  `samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json`,
+  and a concise HANDOFF pointer. The contract defines `FoundationCardPack`,
+  required fields, card families, candidate-only rules, stop conditions, and
+  future next step `foundation_card_pack_validation_v0` without implementing a
+  validator/CLI or creating canon, setting-pack data, runtime data, approved
+  assets, provider/API work, media, release, or production lock.
+- 2026-07-02: Round 1 verification PASS. Required `rg` strings PASS; sample
+  JSON parse PASS with seven required card families and safe boundary flags;
+  trailing-whitespace scan PASS; `git diff --check` PASS with Windows
+  line-ending warnings only; `git status --short --branch` checked. No Kotlin,
+  Gradle, provider/API, direct SQLite writes, schema, web/server,
+  renderer/ffmpeg/TTS/media generation, GUI, staging, commit, push, delete,
+  clean, 03 contact, Phase 20 / Phase 21, or round 2.
+
+## Active 09 Foundation Card Execution Packet Preflight V0
+
+### Goal
+
+Create a GAME_MODE_LOW_INTERFERENCE docs/control preflight packet for the next
+default route: `09 foundation card execution packet`. This slice turns the
+accepted `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md` planning layer into
+a safe future implementation plan without implementing runtime/CLI/schema,
+creating canon or setting-pack data, resuming 04/05/06/07/08, running media
+tools, calling provider/API, staging/committing/pushing, or contacting 03.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_09_FOUNDATION_CARD_EXECUTION_PREFLIGHT_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- User is in GAME_MODE_LOW_INTERFERENCE; only low-load docs/control work is
+  allowed.
+- `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md` defines world premise,
+  character foundation, location foundation, system foundation, constraint,
+  asset seed, and situation seed card families as future planning only.
+- 09 foundation organization is not canon, not a setting pack, not runtime
+  data, not approved asset data, and not permission to start 04/05/06/07/08.
+- `docs/HANDOFF.md` points future windows to the whole-project blueprint
+  control layer and says Phase 20 / Phase 21 must not resume without explicit
+  01/user route selection.
+- The older local product-delivery baseline showing 100% is not true final
+  project completion, final video readiness, provider/media handoff, release,
+  approval, or production lock.
+
+### Steps
+
+- [x] Step 1: Read 09 foundation organization, current HANDOFF pointers, top
+  PLANS, and game-mode boundaries.
+- [x] Step 2: Add the 09 execution preflight packet.
+- [x] Step 3: Add a concise HANDOFF pointer if useful.
+- [x] Step 4: Run docs-only verification and report to 01.
+
+### Verification
+
+- `rg` required strings in touched docs/PLANS.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings
+  are acceptable.
+- `git status --short --branch`.
+- No Gradle, Kotlin compile/test, renderer, ffmpeg, TTS, media generation,
+  provider/API, SQLite direct writes, web/server, GUI, screenshots, staging,
+  commit, push, 03 contact, Phase 20, or Phase 21.
+
+### Drift Log
+
+- 2026-07-02: Started GAME_MODE_LOW_INTERFERENCE docs/control slice. Read the
+  strata-agent-loop skill, AGENTS, top `PLANS.md`, 09 foundation organization,
+  HANDOFF/route-map references, and git status excerpt. Scope remains
+  docs/control only and does not start Phase 20 / Phase 21 or implement the old
+  renderer-manifest route.
+- 2026-07-02: Added `docs/CODEX_09_FOUNDATION_CARD_EXECUTION_PREFLIGHT_V0.md`
+  and a concise HANDOFF pointer. The preflight records 09 foundation card
+  route purpose, stop conditions, follow-up task candidates, and the caveat
+  that the older local baseline 100% is not true final project completion.
+- 2026-07-02: GAME_MODE_LOW_INTERFERENCE docs/control verification PASS. `rg`
+  required strings PASS; trailing-whitespace scan PASS; `git diff --check`
+  PASS with Windows line-ending warnings only; `git status --short --branch`
+  checked. No Gradle, Kotlin compile/test, renderer, ffmpeg, TTS, media
+  generation, provider/API, SQLite direct writes, web/server, GUI inspection,
+  staging, commit, push, 03 contact, Phase 20, or Phase 21.
+
+## Active Blueprint Execution Control Layer V0
+
+### Goal
+
+Add a docs-only execution control layer so future 01/02/03 windows can follow
+the whole-project blueprint without drifting, over-reading, or resuming the old
+Phase 20 / Phase 21 renderer-manifest chain by inertia.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `docs/CODEX_WHOLE_PROJECT_WORK_PACKAGE_V0.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`
+- `docs/CODEX_BLUEPRINT_EXECUTION_CONTROL_INDEX_V0.md`
+- `docs/CODEX_CURRENT_ROUTE_CARD_V0.md`
+- `docs/CODEX_ROUTE_STATUS_TAGS_V0.md`
+- `docs/CODEX_DEFAULT_ROUTE_DECISION_RULES_V0.md`
+
+### Confirmed Facts
+
+- User accepted the whole-project blueprint improvement direction and asked to
+  execute the recommended low-cost control-layer fix.
+- 03 returned PASS for the whole-project blueprint full update package V0.
+- The old Phase 20 / Phase 21 route remains stopped until explicit 01/user
+  route selection.
+- Existing docs already define whole-project blueprint, work package, progress
+  model, approval matrix, demand-driven query templates, and 09 foundation
+  organization.
+- The requested control-layer fix is docs/control only and should not implement
+  runtime features, renderer execution, media generation, provider/API work,
+  SQLite schema changes, canon, registry, release, approval, or production lock.
+
+### Assumptions
+
+- A single execution index plus one current route card, one status-tag table,
+  and one default decision-rule document is enough to reduce navigation cost
+  without adding another implementation route.
+
+### Open Questions
+
+- Which implementation route should be selected after this control layer passes
+  review remains a user/01 decision. The default route can be recommended, but
+  not silently executed.
+
+### Steps
+
+- [x] Step 1: Read current whole-project blueprint, work package, handoff, and
+  progress evidence.
+- [x] Step 2: Update this plan with the control-layer scope and boundaries.
+- [x] Step 3: Add execution index, current route card, route status tags, and
+  default decision rules.
+- [x] Step 4: Update HANDOFF and whole-project blueprint/work-package pointers.
+- [x] Step 5: Run docs-only verification and send to 03 read-only review.
+
+### Verification
+
+- Required string scan across the new control-layer docs and updated pointers.
+- Stale old-route scan to confirm Phase 20 / Phase 21 are still stopped.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch`.
+- No Gradle because this is docs/control only.
+
+### Risks
+
+- Too much control documentation could slow future work. Mitigation: make the
+  execution index the only required first read and treat other docs as
+  on-demand references.
+- Default decision rules could be mistaken for approval. Mitigation: state that
+  defaults only apply after user/01 resumes work and never override human
+  approval gates.
+
+### Drift Log
+
+- 2026-07-02: Started the blueprint execution control layer after the user
+  approved the recommendation. Scope is docs/control only: no Kotlin code, no
+  SQLite writes, no provider/API, no renderer/ffmpeg/TTS, no media generation,
+  no Phase 20 / Phase 21 restart, no canon/registry/release/approval/production
+  lock, and no staging/commit/push.
+- 2026-07-02: Added four first-read control docs: execution index, current route
+  card, route status tags, and default route decision rules. Updated HANDOFF,
+  whole-project blueprint, and work package pointers so future windows start
+  from the control layer instead of over-reading or resuming old phases.
+- 2026-07-02: Docs-only verification PASS for the execution control layer.
+  Required string scan PASS; trailing-whitespace scan PASS; `git diff --check`
+  PASS with Windows line-ending warnings only; strict forbidden approval scan
+  PASS. A broad scan hit only explicit prohibition sentences (`Do not start
+  Phase 20` and `treating silence as approval`), so it was recorded as a false
+  positive rather than a blocker. `git status --short --branch` checked. Gradle
+  was not run because this slice is docs/control only.
+- 2026-07-02: 03 read-only review PASS for the blueprint execution control
+  layer V0. 03 confirmed the execution index is a clear first-read entry, the
+  current route is not Phase 20 / Phase 21, status tags separate
+  planning/review/approval states, default route rules require explicit
+  user/01 continuation, and existing handoff/blueprint docs point future
+  windows toward the control layer. Next step is 01/user route selection, not
+  automatic implementation.
+
+## Active Whole Project Blueprint Full Update Package V0
+
+### Goal
+
+Create a docs-only whole-project work package before splitting future work into
+small or medium tasks. This update fixes stale old-chain wording and adds the
+direction documents for progress, approval, demand-driven query, and 09
+foundation organization.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `docs/CODEX_WHOLE_PROJECT_WORK_PACKAGE_V0.md`
+- `docs/CODEX_TRUE_PROJECT_COMPLETION_PROGRESS_MODEL_V0.md`
+- `docs/CODEX_POSITIVE_APPROVAL_MATRIX_V0.md`
+- `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md`
+- `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`
+
+### Confirmed Facts
+
+- User explicitly redirected the project: do not continue the old route; add the
+  whole project plan into the blueprint.
+- 02 received the urgent stop and reported `STOPPED_BEFORE_EDITS` for Phase 20.
+- Phase 19 is COMPLETE / PASS and 03 review PASS, but Phase 20 is not started
+  as accepted work.
+- Existing future route docs already mention user / 00 input, 09 foundation,
+  demand-driven query, script-ready scene packets, 04/05/06/07/08,
+  storyboard/camera, asset registry, voice timeline, local renderer, human
+  approval, and external provider gates.
+- 03 review of the first whole-project blueprint returned NEEDS_REVISION
+  because supporting docs still contained stale Phase 16 / old-chain wording.
+- User asked to plan work content first rather than execute smallest tasks, then
+  asked for a full update.
+
+### Steps
+
+- [x] Step 1: Stop old Phase 20 handoff route and confirm 02 stopped before edits.
+- [x] Step 2: Read existing blueprint / handoff / planning evidence.
+- [x] Step 3: Add the top-level whole-project blueprint and update pointers.
+- [x] Step 4: Add work package, progress model, approval matrix, query
+  templates, and 09 foundation organization docs.
+- [x] Step 5: Run docs-only verification and send the package to 03 review.
+
+### Verification
+
+- `rg` required strings in touched docs.
+- Trailing-whitespace scan for touched docs.
+- `git diff --check` for touched tracked files, accepting Windows line-ending
+  warnings only.
+- `git status --short --branch`.
+- No Gradle because this is docs/control only.
+
+### Drift Log
+
+- 2026-07-02: User redirected away from the old renderer-manifest micro-phase
+  chain. 01 sent urgent STOP / REDIRECT to 02. 02 reported
+  `STOPPED_BEFORE_EDITS`, so no Phase 20 code/docs/sample edits need cleanup.
+- 2026-07-02: Added `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md` as the top-level
+  whole-project blueprint. It preserves the current local work as one route
+  family and adds the missing total-route view across user input, 09 cards,
+  demand-driven query/retrieval, script-ready packets, 04/05/06/07/08,
+  storyboard/camera, asset registry, voice timeline, renderer execution, human
+  approvals, and optional provider/funding gates.
+- 2026-07-02: Docs-only verification PASS. Required `rg` strings were found in
+  `PLANS.md`, `docs/HANDOFF.md`, `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`,
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`, and
+  `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`; trailing-whitespace scan
+  PASS; `git diff --check` PASS with Windows line-ending warnings only; git
+  status checked. Gradle was not run because this slice was docs/control only.
+- 2026-07-02: Started full update package after user said to plan work content
+  before small/medium tasks and then requested a full update. Added work package,
+  true final progress model, positive approval matrix, demand-driven query
+  templates, and 09 foundation card organization. Updated stale old-chain
+  wording in gap audit and integration map so future windows do not resume
+  Phase 20 / Phase 21 by inertia.
+- 2026-07-02: Full update verification PASS. Required string check PASS; stale
+  old-chain scan found no Phase 16 / old-route recommendations in the two
+  supporting docs; trailing-whitespace scan PASS; `git diff --check` PASS with
+  Windows line-ending warnings only; `git status --short --branch` checked.
+  Gradle was not run because this slice was docs/control only.
+- 2026-07-02: 03 read-only review PASS for the whole-project blueprint full
+  update package V0. 03 confirmed the stale old-chain recommendation issue is
+  fixed; the work package, progress model, approval matrix, demand-driven query
+  templates, and 09 foundation organization remain docs/control planning layers
+  only; and Phase 20 / Phase 21 remain stopped until explicit 01/user route
+  selection.
+
+## Active Phase 19 Local Renderer Manifest Adapter Contract Draft
+
+### Goal
+
+Build a deterministic local file-protocol JSON draft layer for `local_renderer_manifest_adapter_contract_draft`. It reads the accepted Phase 17 `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN` JSON plus the Phase 18 `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS` JSON and writes only a draft adapter contract artifact for a future review gate. This slice must not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, create or approve a real production `ComicVideoRenderHandoffManifest`, claim renderer/MP4/final-video readiness, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 20.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestAdapterContractDraftModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestAdapterContractDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_draft_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 18 is PASS and 01 accepts Phase 18.
+- Phase 18 only allows next step `local_renderer_manifest_adapter_contract_draft`.
+- Phase 17 sample path is `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json`.
+- Phase 18 sample path is `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json`.
+- Phase 17 sample status is `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN`.
+- Phase 18 sample status is `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS`.
+- Phase 17 downstream boundary is `local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation`.
+- Phase 18 downstream boundary is `local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation`.
+- Phase 18 next allowed step is `local_renderer_manifest_adapter_contract_draft`.
+- Phase 17/18 samples preserve local-only/no-media/no-provider/no-production/no-readiness-overclaim boundaries.
+
+### Steps
+
+- [x] Step 1: Read required Phase 19 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 19 draft model/service and CLI wiring for `draft-local-renderer-manifest-adapter-contract`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestAdapterContractDraftServiceTest" --tests "com.localnovel.engine.LocalRendererManifestAdapterContractDraftCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_draft_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT`, `downstreamBoundary=local_renderer_manifest_adapter_contract_draft_only_not_adapter_execution`, `nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_draft_review`, local-only/no-media/no-provider/no-production/no-readiness-overclaim boundaries, checks/finding count, and contract draft section counts.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Quota And Event-Driven Handoff Note
+
+- This is exactly one bounded implementation transition after Phase 18 PASS and user/01 approval.
+- Preserve enough quota for one final status/handoff message.
+- When Phase 19 is complete, report back to 01 through the chat window. Do not contact 03 directly, do not assign Phase 20, and do not continue an unattended loop.
+
+### Drift Log
+
+- 2026-07-02: Started Phase 19 medium slice. Read AGENTS/skill instructions, top `PLANS.md`, Phase 17/18 `docs/HANDOFF.md` and dedicated docs, Phase 17/18 model/service structures, relevant `Main.kt` CLI patterns, and Phase 17/18 Rain Gate sample facts. Scope remains adapter contract draft local JSON only with no adapter implementation/execution, renderer/ffmpeg/TTS, media generation, real production `ComicVideoRenderHandoffManifest` generation or approval, provider/API, SQLite direct writes, web/server, staging/commit/push, 03 contact, or Phase 20 start.
+- 2026-07-02: Added Phase 19 draft model/service and CLI wiring for `draft-local-renderer-manifest-adapter-contract`. The draft service reads Phase 17 plan plus Phase 18 review, validates source state/alignment, source checks/findings, contract sections, normalized mapping, and local-only/no-media/no-provider/no-production/no-readiness boundaries. Output remains contract draft JSON only with no adapter implementation/execution, no renderer execution, no media generation, no production manifest approval, no renderer readiness, and no MP4 readiness claim.
+- 2026-07-02: Added Phase 19 focused service/CLI tests, generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_draft_sample.json` through the new CLI, added `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT_V0.md`, and linked the Phase 19 draft artifact from `docs/HANDOFF.md`. Focused tests PASS and sample JSON parse confirms draft-only status, counts, and local-only/no-media/no-provider/no-production/no-readiness boundary fields.
+- 2026-07-02: Phase 19 verification PASS. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse confirmed `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT`, `local_renderer_manifest_adapter_contract_draft_only_not_adapter_execution`, `local_renderer_manifest_adapter_contract_draft_review`, checks=9, findingCount=0, requiredInputs=2, normalizedFieldMapping=2, adapterObligations=3, failStopRules=6, verificationRequirements=3, knownNonGoals=10, and all required local-only/no-media/no-provider/no-production/no-readiness boundary fields. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside local file-protocol JSON contract draft only and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 20.
+
+## Active Phase 18 Local Renderer Manifest Adapter Contract Plan Review
+
+### Goal
+
+Build a deterministic local file-protocol JSON review gate for `local_renderer_manifest_adapter_contract_plan_review`. It reads the Phase 17 `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN` JSON and writes only a review report that can allow a future adapter contract draft step. This slice must not implement an adapter, execute an adapter, run renderer/ffmpeg/TTS, generate media, create or approve a real production `ComicVideoRenderHandoffManifest`, claim renderer/MP4/final-video readiness, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 19.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestAdapterContractPlanReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestAdapterContractPlanReviewService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractPlanReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractPlanReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 17 is PASS and 01 accepts Phase 17.
+- Phase 17 only allows next step `local_renderer_manifest_adapter_contract_plan_review`.
+- Phase 17 sample path is `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json`.
+- Phase 17 sample status is `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN`.
+- Phase 17 downstream boundary is `local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation`.
+- Phase 17 next allowed step is `local_renderer_manifest_adapter_contract_plan_review`.
+- Phase 17 sample has checks=9, findingCount=0, adapterContractRequirements=4, adapterInputMappingEntries=2, requiredAdapterContractWorkItems=3, verificationSteps=3, mappedPanelCount=2, unmappedPanelCount=0, missingRequiredFieldCount=0, and totalDraftFields=46.
+- Phase 17 sample preserves `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `adapterImplementationExecuted=false`, `adapterExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, `mp4ReadinessClaimed=false`, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, and `productionApproved=false`.
+- Usage guardrail says quota observation is stale, user explicitly allowed exactly one bounded task, and enough quota must remain for one final status/handoff message.
+
+### Steps
+
+- [x] Step 1: Read required Phase 18 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 18 review model/service and CLI wiring for `review-local-renderer-manifest-adapter-contract-plan`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestAdapterContractPlanReviewServiceTest" --tests "com.localnovel.engine.LocalRendererManifestAdapterContractPlanReviewCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS`, `downstreamBoundary=local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation`, `nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_draft`, local-only/no-media/no-production-approval boundaries, checks/finding count, and reviewed content counts.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Quota And Event-Driven Handoff Note
+
+- If the app reports quota exhaustion, weekly quota near 0, or model/thinking unavailable, stop and report to 01 instead of forcing work.
+- Preserve enough quota for one final status/handoff message.
+- Do not wait for any watchdog after verification. When Phase 18 is complete, report back to 01 through the chat window. Do not contact 03 directly, do not assign Phase 19, and do not continue an unattended loop.
+
+### Drift Log
+
+- 2026-07-02: Started Phase 18 medium slice. Read AGENTS, top `PLANS.md`, Phase 17 `docs/HANDOFF.md` entry, Phase 17 docs, Phase 17 model/service/tests, relevant `Main.kt` CLI patterns, parsed Phase 17 sample facts, and checked git status. Scope remains adapter contract plan review only with local file-protocol JSON; no adapter implementation/execution, renderer/ffmpeg/TTS, media generation, real production `ComicVideoRenderHandoffManifest` generation or approval, provider/API, SQLite direct writes, web/server, staging/commit/push, 03 contact, or Phase 19 start.
+- 2026-07-02: Added Phase 18 review model/service and CLI wiring for `review-local-renderer-manifest-adapter-contract-plan`. The review service validates Phase 17 plan state, source ids, source checks/findings, contract requirements, adapter input mapping, work items, verification plan, and local-only/no-media/no-production boundaries. Output remains review-only with no adapter implementation/execution, no renderer execution, no media generation, no production manifest approval, no renderer readiness, and no MP4 readiness claim.
+- 2026-07-02: Added Phase 18 focused service/CLI tests, generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json` through the new CLI, added `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_V0.md`, and linked the Phase 18 review gate from `docs/HANDOFF.md`. Focused tests initially exposed two in-scope fail-stop gaps for empty mapping/work/verification content; the service now requires non-empty mapping entries, work items, and verification steps before reporting PASS.
+- 2026-07-02: Phase 18 verification PASS. Focused Gradle tests PASS after the in-scope fail-stop repair; sample CLI generation PASS; UTF-8 JSON parse confirmed `LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS`, `local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation`, `local_renderer_manifest_adapter_contract_draft`, checks=8, findingCount=0, and all required local-only/no-media/no-production boundary fields. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside local file-protocol JSON review only and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 19.
+
+## Active Phase 17 Local Renderer Manifest Adapter Contract Plan
+
+### Goal
+
+Build a deterministic local file-protocol JSON planning layer for `local_renderer_manifest_adapter_contract_plan`. It reads the Phase 16 `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_ADAPTER_DRY_RUN_PASS` report and writes only a contract plan for a future adapter-contract review step. This slice must not implement an adapter, execute an adapter, run renderer/ffmpeg/TTS, generate media, create or approve a real production `ComicVideoRenderHandoffManifest`, claim renderer/MP4/final-video readiness, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 18.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestAdapterContractPlanModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestAdapterContractPlanService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractPlanServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestAdapterContractPlanCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 16 is PASS and 01 accepts Phase 16.
+- Phase 16 only allows next step `local_renderer_manifest_adapter_contract_plan`.
+- Phase 16 command uses `--dry-run-id` because `--dry-run` conflicts with the repo's existing boolean dry-run parser convention.
+- Phase 16 sample path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_adapter_dry_run_report_sample.json`.
+- Phase 16 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_ADAPTER_DRY_RUN_PASS`.
+- Phase 16 downstream boundary is `local_renderer_manifest_draft_json_adapter_dry_run_only_not_renderer_execution`.
+- Phase 16 next allowed step is `local_renderer_manifest_adapter_contract_plan`.
+- Phase 16 sample has checks=10, findingCount=0, draftPanelCount=2, adapterDryRunMappingEntries=2, mappedPanelCount=2, unmappedPanelCount=0, totalDraftFields=46, mappedDraftFields=46, missingRequiredFieldCount=0, and targetDurationMillis=9000.
+- Phase 16 sample preserves `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `adapterImplementationExecuted=false`, `adapterExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, `mp4ReadinessClaimed=false`, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, and `productionApproved=false`.
+- Blueprint future route integration map v0 is reviewed PASS and accepted, but this task stays inside Phase 17 and does not start future non-renderer routes.
+- Usage guardrail says the last quota observation is fresh enough for exactly one bounded task, and enough quota must remain for one final status/handoff message.
+
+### Steps
+
+- [x] Step 1: Read required Phase 17 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 17 model/service and CLI wiring for `plan-local-renderer-manifest-adapter-contract`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestAdapterContractPlanServiceTest" --tests "com.localnovel.engine.LocalRendererManifestAdapterContractPlanCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN`, `downstreamBoundary=local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation`, `nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_plan_review`, local-only/no-media/no-production-approval boundaries, checks/finding count, and mapped/unmapped panel counts.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Quota And Event-Driven Handoff Note
+
+- If the app reports quota exhaustion, weekly quota near 0, or model/thinking unavailable, stop and report to 01 instead of forcing work.
+- Preserve enough quota for one final status/handoff message.
+- Do not wait for any watchdog after verification. When Phase 17 is complete, report back to 01 through the chat window. Do not contact 03 directly, do not assign Phase 18, and do not continue an unattended loop.
+
+### Drift Log
+
+- 2026-07-02: Started Phase 17 medium slice. Read AGENTS, top `PLANS.md`, Phase 16 and route-map `docs/HANDOFF.md` entries, Phase 16 docs, future route integration map, Phase 16 model/service/tests, relevant `Main.kt` CLI patterns, parsed Phase 16 sample facts, and checked git status. Scope remains adapter contract planning only with local file-protocol JSON; no adapter implementation/execution, renderer/ffmpeg/TTS, media generation, real production `ComicVideoRenderHandoffManifest` generation or approval, provider/API, SQLite direct writes, web/server, staging/commit/push, 03 contact, or Phase 18 start.
+- 2026-07-02: Added Phase 17 model/service and CLI wiring for `plan-local-renderer-manifest-adapter-contract`. CLI input uses `--dry-run-report` instead of `--dry-run` because existing repo command conventions use `--dry-run` as a boolean execution flag. Output remains adapter contract planning only with no adapter implementation/execution, no renderer execution, no media generation, no production manifest approval, no renderer readiness, and no MP4 readiness claim.
+- 2026-07-02: Added Phase 17 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=9, findingCount=0, mappedPanelCount=2, unmappedPanelCount=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, `productionApproved=false`, `adapterImplementationExecuted=false`, `adapterExecuted=false`, `rendererInvocation=none`, and `mediaGenerated=false`.
+- 2026-07-02: Phase 17 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check PASS. Scope stayed inside adapter contract planning local file-protocol JSON and did not implement or execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 18.
+
+## Active Blueprint Future Route Integration Map V0
+
+### Goal
+
+Create a docs-only ordered integration map so future windows do not confuse the current renderer-manifest chain with the whole final product route. This slice must preserve the route families from user / 00 input through 09 foundation, demand-driven query, script-ready packets, 04/05/06/07/08, storyboard/camera, asset registry, voice timeline, current local renderer-manifest work through Phase 16, future local renderer execution, human approval gates, and optional external provider / funding gates. This slice must not start Phase 17 or implement queryers, 09 cards, 04/05/06/07/08, storyboard generation, asset registry, voice timeline, renderer execution, media generation, provider/API, SQLite schema, canon, registry, release, approval, or production lock.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 16 is PASS and 01 accepts Phase 16.
+- Phase 16 only allows `local_renderer_manifest_adapter_contract_plan`, but this assigned task explicitly does not start Phase 17 renderer work.
+- `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md` preserves future route gaps and recommends a docs-only integration map after Phase 16 review.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future World Card Queryer, Asset Queryer, and Story / Situation / Continuity / Pressure Queryer contracts; they are not implemented runtime, schema, CLI, SQLite, provider/API, or GPT automation work.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` defines script-ready scene packets and keeps 04 / 05 / 06 / 07 / 08 paused until explicit 01/user approval.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`, and `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md` are future planning docs, not implemented runtime, image-generation, registry, storage, or provider integrations.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` registers blueprint candidates as non-canon planning entries only.
+- The task's usage guardrail says quota remains inside the freshness window and asks to preserve enough quota for a final handoff/status message.
+
+### Steps
+
+- [x] Step 1: Read required evidence and record this docs-only control plan.
+- [x] Step 2: Add `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md`.
+- [x] Step 3: Add concise pointers in `docs/HANDOFF.md` and `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`.
+- [x] Step 4: Run docs-only verification and close this slice.
+
+### Verification
+
+- `rg` required strings in touched docs/PLANS:
+  `CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0`, `demand-driven query`, `09 foundation`, `04/05/06/07/08`, `storyboard/camera`, `asset registry`, `voice timeline`, `local renderer`, `human approval`, `external provider`, `quota`, `no media generation`, `no provider/API`, `no production lock`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` at end.
+- Do not run Gradle because this slice is docs/control only.
+
+### Drift Log
+
+- 2026-07-02: Started docs-only control slice after Phase 16 03 PASS. Read AGENTS, top `PLANS.md`, `docs/HANDOFF.md`, future route gap audit, no-external-tools roadmap, demand-driven query blueprint, script-ready scene packet spec, storyboard/camera planning, production asset registry planning, asset registry implementation blueprint, blueprint data layer register, and git status. Scope remains docs/control only with no Kotlin, sample, Gradle, SQLite, provider/API, web/server, renderer/ffmpeg/TTS/media generation, production manifest approval, staging/commit/push, 03 contact, or Phase 17 start.
+- 2026-07-02: Added `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_INTEGRATION_MAP_V0.md` and concise pointers in `docs/HANDOFF.md` plus `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`. The new map connects user / 00 input, 09 foundation, demand-driven query, script-ready packets, 04/05/06/07/08, storyboard/camera, asset registry, voice timeline, current local renderer-manifest chain through Phase 16, future local renderer execution, human approval, and external provider gates without starting implementation.
+- 2026-07-02: Docs-only verification PASS. Required `rg` strings found; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked. No Gradle/tests were run because this slice touched only docs/control files and `PLANS.md`.
+
+## 01 Control Note: Future Route Gap Preservation
+
+This control note preserves the user's 2026-07-01 instruction to keep future blueprint gaps visible to new windows while Phase 16 continues. See `docs/CODEX_BLUEPRINT_FUTURE_ROUTE_GAP_AUDIT.md`.
+
+- Active implementation remains Phase 16. Do not start a second 02 task while Phase 16 is in progress.
+- After Phase 16 PASS from 02, 01 should send it to 03 for read-only review before assigning any next task.
+- If Phase 16 receives 03 PASS and quota guardrails permit, consider a docs-only `Blueprint future route integration map v0` before further renderer expansion.
+- Preserve future routes in the blueprint: demand-driven queryers, 09 foundation cards, script-ready scene packet, 04/05/06/07/08 storyboard flow, storyboard/camera packet, asset registry lifecycle, voice timeline, positive human approval gates, local renderer execution path, and external-provider/funding gate.
+- Usage guardrail: 01 lightweight checks may use current/default model; 01 assignment decisions, 02 implementation/verification, and 03 read-only reviews should use `gpt-5.5` with `thinking=xhigh` when supported. Check quota before sending work to 03, before assigning 02, after two completed medium slices, when quota data is older than three hours, and on watchdog wakeups that might advance work. Weekly quota is a hard gate; never exhaust quota completely, and preserve enough for a final handoff/status message.
+
+## Active Phase 16 Local Renderer Manifest Draft JSON Adapter Dry-Run
+
+### Goal
+
+Build a deterministic local JSON adapter dry-run gate for `local_renderer_manifest_draft_json_adapter_dry_run`. It reads the Phase 14 `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT` and Phase 15 `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS`, validates source state/alignment/boundaries, and writes only a dry-run report before any future adapter contract planning step. This slice must not generate or approve a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, claim final video readiness, claim renderer/MP4 readiness, claim final media approval, perform provider/media handoff, stage/commit/push, contact 03, or start Phase 17.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestDraftJsonAdapterDryRunModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestDraftJsonAdapterDryRunService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonAdapterDryRunServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonAdapterDryRunCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_adapter_dry_run_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_DRAFT_JSON_ADAPTER_DRY_RUN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 15 is PASS and 01 accepts Phase 15.
+- Phase 15 only allows next step `local_renderer_manifest_draft_json_adapter_dry_run`.
+- Phase 14 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json`.
+- Phase 15 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_review_report_sample.json`.
+- Phase 14 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT`.
+- Phase 14 downstream boundary is `local_renderer_manifest_draft_json_draft_only_not_production_manifest`.
+- Phase 14 next allowed step is `local_renderer_manifest_draft_json_review`.
+- Phase 15 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS`.
+- Phase 15 downstream boundary is `local_renderer_manifest_draft_json_review_only_not_production_approval`.
+- Phase 15 next allowed step is `local_renderer_manifest_draft_json_adapter_dry_run`.
+- Phase 14 sample has checks=10, findings=0, draftPanelEntries=2, totalDraftFields=46, missingRequiredDraftFields=0, and targetDurationMillis=9000.
+- Phase 15 sample has checks=10, findingCount=0, `productionApproved=false`, and local-only/no-media/no-production boundaries.
+- Phase 14 and Phase 15 samples preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, `mp4ReadinessClaimed=false`, `draftManifestGenerated=true`, `productionManifestGenerated=false`, and `productionReady=false`.
+
+### Steps
+
+- [x] Step 1: Read required Phase 16 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 16 model/service and CLI wiring for `dry-run-local-renderer-manifest-draft-json-adapter`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestDraftJsonAdapterDryRunServiceTest" --tests "com.localnovel.engine.LocalRendererManifestDraftJsonAdapterDryRunCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_adapter_dry_run_report_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_DRAFT_JSON_ADAPTER_DRY_RUN_PASS`, `downstreamBoundary=local_renderer_manifest_draft_json_adapter_dry_run_only_not_renderer_execution`, `nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_plan`, dry-run-only production flags, local-only/no-media/no-readiness flags, checks/finding count, and mapped/unmapped panel counts.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Event-Driven Handoff Note
+
+- Do not wait for any watchdog after verification. When Phase 16 is complete, report back to 01 through the chat window with the concise completion report. Do not contact 03 directly, do not assign Phase 17, and do not continue an unattended loop.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 16 medium slice. Read AGENTS, top `PLANS.md`, Phase 15 `docs/HANDOFF.md` entry, Phase 14/15 docs, Phase 14/15 model/service/tests, relevant `Main.kt` CLI patterns, parsed Phase 14/15 sample facts, and checked git status. Scope remains adapter dry-run only with local file-protocol JSON; no adapter execution, renderer/ffmpeg/TTS, media generation, real production `ComicVideoRenderHandoffManifest` generation or approval, provider/API, SQLite direct writes, web/server, staging/commit/push, 03 contact, or Phase 17 start.
+- 2026-07-01: Added Phase 16 model/service and CLI wiring for `dry-run-local-renderer-manifest-draft-json-adapter`. The service reads Phase 14 draft JSON plus Phase 15 review JSON, validates source state, source id alignment, source checks/findings, local-only/no-media/no-production-approval boundaries, draft field coverage, and one dry-run mapping entry per draft panel. Output remains adapter dry-run only with no adapter execution, no renderer execution, no media generation, no production manifest approval, no renderer readiness, and no MP4 readiness claim.
+- 2026-07-01: CLI option drift note: `--dry-run <id>` conflicts with the repo's existing boolean dry-run parser convention, so Phase 16 uses `--dry-run-id <id>` for the optional dry-run id while keeping the command name `dry-run-local-renderer-manifest-draft-json-adapter`.
+- 2026-07-01: Added Phase 16 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_adapter_dry_run_report_sample.json` through the new CLI. Focused Gradle tests PASS after switching the optional id flag to `--dry-run-id`; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findingCount=0, mappedPanelCount=2, unmappedPanelCount=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, `productionApproved=false`, `adapterExecuted=false`, `rendererInvocation=none`, and `mediaGenerated=false`.
+- 2026-07-01: Phase 16 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside adapter dry-run local file-protocol JSON and did not execute an adapter, run renderer/ffmpeg/TTS, generate media, generate or approve a real production `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 17.
+
+## Active Phase 15 Local Renderer Manifest Draft JSON Review Gate
+
+### Goal
+
+Build a deterministic local JSON review gate for `local_renderer_manifest_draft_json_review`. It reads the Phase 14 `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT`, validates draft-only readiness, and writes only a review report before any future adapter dry-run step. This slice must not approve or generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, claim final video readiness, claim production manifest approval, stage/commit/push, contact 03, or start Phase 16.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestDraftJsonReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestDraftJsonReviewService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_review_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 14 is PASS and 01 accepts Phase 14.
+- Phase 14 only allows next step `local_renderer_manifest_draft_json_review`.
+- Phase 14 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json`.
+- Phase 14 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT`.
+- Phase 14 downstream boundary is `local_renderer_manifest_draft_json_draft_only_not_production_manifest`.
+- Phase 14 next allowed step is `local_renderer_manifest_draft_json_review`.
+- Phase 14 sample has checks=10, findings=0, draftPanelEntries=2, totalDraftFields=46, and missingRequiredDraftFields=0.
+- Phase 14 sample preserves `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, `mp4ReadinessClaimed=false`, `draftManifestGenerated=true`, `productionManifestGenerated=false`, and `productionReady=false`.
+- `JsonSupport` ignores unknown keys, so Phase 15 file review must inspect raw JSON if it needs to reject a forged `productionApproved=true` field.
+
+### Steps
+
+- [x] Step 1: Read required Phase 15 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 15 model/service and CLI wiring for `review-local-renderer-manifest-draft-json`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestDraftJsonReviewServiceTest" --tests "com.localnovel.engine.LocalRendererManifestDraftJsonReviewCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_review_report_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS`, `downstreamBoundary=local_renderer_manifest_draft_json_review_only_not_production_approval`, `nextAllowedDownstreamStep=local_renderer_manifest_draft_json_adapter_dry_run`, review-only/draft-only production flags, local-only/no-media/no-readiness flags, checks, and finding count.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 15 medium slice. Read AGENTS, top `PLANS.md`, Phase 14 `docs/HANDOFF.md` entry, Phase 14 docs, Phase 14 model/service/tests and relevant `Main.kt` CLI patterns, parsed Phase 14 sample facts, checked `JsonSupport`, and checked git status. Scope remains review-only local file-protocol JSON with no production `ComicVideoRenderHandoffManifest` generation or approval, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no provider/API, no SQLite direct writes, no web/server, no staging/commit/push, and no 03 contact.
+- 2026-07-01: Added Phase 15 model/service and CLI wiring for `review-local-renderer-manifest-draft-json`. The service reads Phase 14 draft JSON, validates draft state, source ids, source checks, findings, draft field coverage, local-only/no-media/no-production-approval boundaries, and no renderer/MP4 readiness overclaim. The file entry also scans raw JSON for forged `productionApproved=true`, because normal JSON decoding ignores unknown keys.
+- 2026-07-01: Added Phase 15 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_review_report_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findings=0, `draftManifestGenerated=true`, `productionManifestGenerated=false`, `productionReady=false`, and `productionApproved=false`.
+- 2026-07-01: Phase 15 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside review-only local file-protocol JSON and did not approve or generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
+
+## Active Phase 14 Local Renderer Manifest Draft JSON Draft
+
+### Goal
+
+Build a deterministic draft-only local JSON artifact for `local_renderer_manifest_draft_json_draft`. It reads the Phase 12 `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN` and Phase 13 `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_REVIEW_PASS`, validates both, and writes a local draft JSON packet for later review. This slice must not generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, claim renderer/MP4 readiness, stage/commit/push, contact 03, or start Phase 15.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestDraftJsonDraftModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestDraftJsonDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftJsonDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 13 is PASS and 01 accepts Phase 13.
+- Phase 13 only allows next step `local_renderer_manifest_draft_json_draft`.
+- Phase 12 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json`.
+- Phase 13 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_review_report_sample.json`.
+- Phase 12 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN` with downstream boundary `local_renderer_manifest_draft_plan_only_not_manifest_generation`.
+- Phase 13 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_REVIEW_PASS` with downstream boundary `local_renderer_manifest_draft_plan_review_only_not_manifest_generation`.
+- Phase 13 next allowed step is `local_renderer_manifest_draft_json_draft`.
+- Phase 12/13 samples preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, and `mp4ReadinessClaimed=false`.
+- Phase 12 sample has checks=10, findings=0, panels=2, requiredManifestDraftWorkItems=5, and verificationSteps=5.
+- Phase 13 sample has checks=10, findings=0, and `readyForFutureManifestJsonDraft=true`.
+
+### Steps
+
+- [x] Step 1: Read required Phase 14 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 14 model/service and CLI wiring for `draft-local-renderer-manifest-json`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestDraftJsonDraftServiceTest" --tests "com.localnovel.engine.LocalRendererManifestDraftJsonDraftCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT`, `downstreamBoundary=local_renderer_manifest_draft_json_draft_only_not_production_manifest`, `nextAllowedDownstreamStep=local_renderer_manifest_draft_json_review`, draft-only production flags, local-only/no-media/no-readiness flags, checks, and finding count.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 14 medium slice. Read AGENTS, top `PLANS.md`, Phase 12/13 `docs/HANDOFF.md` entries, Phase 12/13 docs, Phase 12/13 model/service/test and relevant `Main.kt` CLI patterns, parsed Phase 12/13 sample facts, and checked git status. Scope remains draft-only local file-protocol JSON with no real production `ComicVideoRenderHandoffManifest` generation, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no provider/API, no SQLite direct writes, no web/server, no staging/commit/push, and no 03 contact.
+- 2026-07-01: Added Phase 14 model/service and CLI wiring for `draft-local-renderer-manifest-json`. The service reads Phase 12/13 JSON, validates source states, source id alignment, checks, findings, local-only/no-media/no-production-manifest boundaries, draft field coverage, and no renderer/MP4 readiness overclaim. Output remains draft-only with `draftManifestGenerated=true`, `productionManifestGenerated=false`, and `productionReady=false` on PASS.
+- 2026-07-01: Added Phase 14 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_json_draft_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10, findings=0, draftPanelEntries=2, draftManifestFields=46, `draftManifestGenerated=true`, `productionManifestGenerated=false`, and `productionReady=false`.
+- 2026-07-01: Phase 14 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; Java/Gradle/Kotlin process check completed. Scope stayed inside draft-only local file-protocol JSON and did not generate a real production `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
+
+## Active Phase 13 Local Renderer Manifest Draft Plan Review Gate
+
+### Goal
+
+Build a deterministic local JSON review gate for `local_renderer_manifest_draft_plan_review`. It reads the Phase 12 `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN`, validates it, and outputs only a review report for a future real manifest-draft JSON step. This slice must not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, claim renderer/MP4 readiness, stage/commit/push, contact 03, or start Phase 14.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestDraftPlanReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestDraftPlanReviewService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftPlanReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftPlanReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_review_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 12 is PASS and 01 accepts Phase 12.
+- Phase 12 only allows next step `local_renderer_manifest_draft_plan_review`.
+- Phase 12 sample input path is `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json`.
+- Phase 12 sample status is `LOCAL_RENDERER_MANIFEST_DRAFT_PLAN`.
+- Phase 12 downstream boundary is `local_renderer_manifest_draft_plan_only_not_manifest_generation`.
+- Phase 12 boundaries preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, and `mp4ReadinessClaimed=false`.
+- Phase 12 sample has checks=10, checksPass=10, checksFail=0, and findings=0.
+
+### Steps
+
+- [x] Step 1: Read required Phase 13 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 13 model/service and CLI wiring for `review-local-renderer-manifest-draft-plan`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestDraftPlanReviewServiceTest" --tests "com.localnovel.engine.LocalRendererManifestDraftPlanReviewCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_review_report_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_REVIEW_PASS`, `downstreamBoundary=local_renderer_manifest_draft_plan_review_only_not_manifest_generation`, `nextAllowedDownstreamStep=local_renderer_manifest_draft_json_draft`, local-only/no-media/no-manifest/no-readiness flags, checks, and finding count.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 13 medium slice. Read AGENTS, top `PLANS.md`, Phase 12 `docs/HANDOFF.md` entry, Phase 12 docs, Phase 12 sample JSON preview, Phase 12 model/service/tests, relevant `Main.kt` dispatch/handler/help patterns, and git status. Scope remains local file-protocol JSON review only with no real manifest generation, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no provider/API, no SQLite direct writes, no web/server, no staging/commit/push, and no 03 contact.
+- 2026-07-01: Added Phase 13 model/service and CLI wiring for `review-local-renderer-manifest-draft-plan`. The service reads Phase 12 plan JSON, validates plan state, source ids, checks, findings, local-only/no-media/no-manifest boundaries, manifest plan completeness, and no renderer/MP4 readiness overclaim.
+- 2026-07-01: Added Phase 13 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_review_report_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10 and findings=0.
+- 2026-07-01: Phase 13 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; no Java/Gradle/Kotlin processes remained. Scope stayed inside local file-protocol JSON review only and did not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, contact 03, or start Phase 14.
+
+## Active Phase 12 Local Renderer Manifest Draft Plan
+
+### Goal
+
+Build a deterministic local JSON planning layer for `local_renderer_manifest_draft_plan`. It reads the Phase 10 `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT` and Phase 11 `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`, then outputs only a manifest-draft plan for a future reviewed manifest-draft step. This slice must not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, claim renderer/MP4 readiness, stage/commit/push, contact 03, or start Phase 13.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererManifestDraftPlanModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererManifestDraftPlanService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftPlanServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererManifestDraftPlanCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- 03 review result for Phase 11 is PASS and 01 accepts Phase 11.
+- Phase 11 only allows next step `local_renderer_manifest_draft_plan`.
+- Phase 10 sample input path is `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_sample.json`.
+- Phase 11 sample input path is `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json`.
+- Phase 10 status is `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT` with downstream boundary `local_renderer_adapter_implementation_draft_only_not_manifest_generation`.
+- Phase 11 review status is `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS` with downstream boundary `local_renderer_adapter_implementation_draft_review_only_not_manifest_generation`.
+- Phase 10/11 boundaries preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, and `mp4ReadinessClaimed=false`.
+
+### Steps
+
+- [x] Step 1: Read required Phase 12 evidence and record the current implementation plan.
+- [x] Step 2: Add Phase 12 model/service and CLI wiring for `plan-local-renderer-manifest-draft`.
+- [x] Step 3: Add focused service/CLI tests, Rain Gate sample output, docs page, and `docs/HANDOFF.md` pointer.
+- [x] Step 4: Run focused Gradle tests, sample CLI generation, JSON parse checks, `rg`, whitespace scan, `git diff --check`, git status, and process check; close this slice.
+
+### Verification
+
+- Focused Gradle tests:
+  `.\gradlew.bat '-Pkotlin.daemon.jvmargs=-Xmx4096m' test --no-daemon --console=plain --tests "com.localnovel.engine.LocalRendererManifestDraftPlanServiceTest" --tests "com.localnovel.engine.LocalRendererManifestDraftPlanCliTest"`
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json`.
+- UTF-8 JSON parse checks for `status=LOCAL_RENDERER_MANIFEST_DRAFT_PLAN`, `downstreamBoundary=local_renderer_manifest_draft_plan_only_not_manifest_generation`, `nextAllowedDownstreamStep=local_renderer_manifest_draft_plan_review`, local-only/no-media/no-manifest/no-readiness flags, checks, and finding count.
+- `rg` required strings in touched files.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch` and Java/Gradle/Kotlin process check at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 12 medium slice. Read AGENTS, top `PLANS.md`, Phase 11 `docs/HANDOFF.md` entry, Phase 10/11 docs, Phase 10/11 sample JSON previews, Phase 10/11 models/services/tests, relevant `Main.kt` dispatch/handler/help patterns, and git status. Scope remains local file-protocol JSON planning only with no real manifest generation, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no provider/API, no SQLite direct writes, no web/server, no staging/commit/push, and no 03 contact.
+- 2026-07-01: Added Phase 12 model/service and CLI wiring for `plan-local-renderer-manifest-draft`. The service reads Phase 10 and Phase 11 JSON, validates source state/id alignment/boundaries/content, and outputs planning-only JSON with `manifestGenerated=false`, `rendererReady=false`, and `mp4ReadinessClaimed=false`.
+- 2026-07-01: Added Phase 12 focused service/CLI tests, docs page, `docs/HANDOFF.md` pointer, and generated `samples/local_story_input/rain_gate_local_renderer_manifest_draft_plan_sample.json` through the new CLI. Focused Gradle tests PASS; sample CLI generation PASS; UTF-8 JSON parse PASS with checks=10 and findings=0.
+- 2026-07-01: Phase 12 verification PASS. Required `rg` strings found in touched files; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked; no Java/Gradle/Kotlin processes remained. Scope stayed inside local file-protocol JSON planning only and did not generate a real `ComicVideoRenderHandoffManifest`, run renderer/ffmpeg/TTS, generate media, execute adapters, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
+
+## Active Phase 11C3 Implementation Draft Review Gate Closure
+
+### Goal
+
+Close Phase 11 locally for 03 read-only review by adding a concise evidence doc and `docs/HANDOFF.md` pointer for the implementation draft review gate. Keep this slice bounded to docs plus `PLANS.md`; do not edit Kotlin source/tests, run Gradle, regenerate samples, run renderer/ffmpeg/TTS, generate media, execute adapters, generate a real `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_V0.md`
+
+### Confirmed Facts
+
+- Phase 11C2 generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json`.
+- Phase 11 command is `review-local-renderer-adapter-implementation-draft --draft <json> [--review <id>] --out <json>`.
+- The Phase 11 sample report status is `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`.
+- The Phase 11 downstream boundary is `local_renderer_adapter_implementation_draft_review_only_not_manifest_generation`.
+- The Phase 11 next allowed step is `local_renderer_manifest_draft_plan`.
+- Phase 11 closure records no media generation, no real `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, and no production lock.
+
+### Steps
+
+- [x] Step 1: Read required Phase 11C3 evidence and record the docs-only closure plan.
+- [x] Step 2: Add the Phase 11 review-gate evidence doc and update `docs/HANDOFF.md` with a concise pointer.
+- [x] Step 3: Verify required strings, trailing whitespace, `git diff --check`, and git status; close this docs-only slice.
+
+### Verification
+
+- `rg` required Phase 11 strings in `PLANS.md`, `docs/HANDOFF.md`, and `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_V0.md`.
+- Trailing-whitespace scan for `PLANS.md`, `docs/HANDOFF.md`, and the new docs file.
+- `git diff --check -- PLANS.md docs/HANDOFF.md docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_V0.md`; Windows line-ending warnings are acceptable.
+- `git status --short --branch` at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 11C3 docs-only closure slice. Read AGENTS, top `PLANS.md`, `docs/HANDOFF.md`, Phase 11 preflight, Phase 11C2 sample review report, and git status. Scope remains docs/HANDOFF plus `PLANS.md`; no Gradle, Kotlin edits, sample regeneration, media generation, adapter execution, provider/API, SQLite writes, staging/commit/push, or 03 contact.
+- 2026-07-01: Added Phase 11 evidence doc and `docs/HANDOFF.md` pointer for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`, the sample review report path, downstream boundary, next allowed step, focused-test PASS note, and no-media/no-manifest/no-production-lock boundaries.
+- 2026-07-01: Phase 11C3 verification PASS. Required `rg` strings found in `PLANS.md`, `docs/HANDOFF.md`, and `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_V0.md`; trailing-whitespace scan PASS; `git diff --check` PASS with Windows line-ending warnings only; git status checked. Gradle was not run by instruction.
+
+## Active Phase 11C2 Implementation Draft Review Gate Verification
+
+### Goal
+
+Run the focused Phase 11 implementation draft review service/CLI Gradle tests and, if they pass, generate only the Rain Gate Phase 11 sample review report through the new CLI. Keep this slice bounded to verification, sample report generation, and `PLANS.md`; do not update docs/HANDOFF, run renderer/ffmpeg/TTS, generate media, execute adapters, generate a real `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, start web/server, stage/commit/push, or contact 03.
+
+### Scope
+
+- `PLANS.md`
+- `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json`
+
+### Confirmed Facts
+
+- Phase 11A added the review model/service for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`.
+- Phase 11B added CLI command `review-local-renderer-adapter-implementation-draft`.
+- Phase 11C1 added focused service/CLI tests but did not run Gradle.
+- Rain Gate Phase 10 draft sample parses as JSON with `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review`.
+
+### Steps
+
+- [x] Step 1: Read required Phase 11C2 evidence and record the bounded verification plan.
+- [x] Step 2: Run focused Gradle tests for `LocalRendererAdapterImplementationDraftReviewServiceTest` and `LocalRendererAdapterImplementationDraftReviewCliTest`.
+- [x] Step 3: If focused tests PASS, generate the Rain Gate Phase 11 sample review report via CLI and parse-check required local-only/no-media/no-manifest boundaries.
+- [x] Step 4: Run required `rg`, whitespace, `git diff --check`, git status, and Java/Gradle/Kotlin process checks; close this verification slice.
+
+### Verification
+
+- Focused Gradle tests for the two Phase 11 review test classes.
+- CLI generation of `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json`.
+- UTF-8 JSON parse checks for `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS`, `downstreamBoundary=local_renderer_adapter_implementation_draft_review_only_not_manifest_generation`, `nextAllowedDownstreamStep=local_renderer_manifest_draft_plan`, and local-only/no-media/no-manifest/no-readiness flags.
+- `rg`, trailing-whitespace scan, `git diff --check`, git status, and process checks.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 11C2 bounded verification slice. Read AGENTS, top `PLANS.md`, Phase 11C1 tests, Phase 11B CLI handler, Rain Gate Phase 10 draft sample status, and git status. Scope remains focused tests, one generated sample review report, and `PLANS.md`.
+- 2026-07-01: First focused Gradle run failed because Phase 11C1 tests used a relative `samples/...` path that Gradle did not resolve from the test working directory. Applied a tiny test-only path helper fix in `LocalRendererAdapterImplementationDraftReviewServiceTest.kt`; no production Kotlin source was edited.
+- 2026-07-01: Focused Gradle tests PASS after the test-only path helper fix.
+- 2026-07-01: Generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json` through the Phase 11 CLI. UTF-8 JSON parse checks PASS for verdict/status/downstream boundary/next step and local-only/no-media/no-manifest/no-readiness flags.
+- 2026-07-01: Phase 11C2 verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, git status checked, and no Java/Gradle/Kotlin processes remained after verification.
+
+## Active Phase 11C1 Implementation Draft Review Gate Tests
+
+### Goal
+
+Add focused service and CLI tests for the Phase 11 implementation draft review gate, using the existing Phase 11A service/model and Phase 11B CLI command, while keeping this slice bounded to tests plus `PLANS.md`. Do not edit production Kotlin source, generate samples, run Gradle, add docs beyond `PLANS.md`, run renderer/ffmpeg/TTS, generate media, execute adapters, generate a real `ComicVideoRenderHandoffManifest`, call provider/API, write SQLite directly, stage/commit/push, or contact 03.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationDraftReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationDraftReviewCliTest.kt`
+
+### Confirmed Facts
+
+- Phase 11A service/model and Phase 11B CLI wiring exist.
+- The Rain Gate Phase 10 draft sample parses as JSON and has `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, 10 checks, 5 implementation tasks, 2 panel drafts, and 4 verification steps.
+- The Phase 11C1 target test files do not exist before this slice.
+- Existing nearby tests use `kotlin.test`, `Cli().run`, temp directories, `JsonSupport`, and helper functions.
+
+### Steps
+
+- [x] Step 1: Read required Phase 11C1 evidence, nearby test patterns, target-file absence, and Rain Gate sample shape.
+- [x] Step 2: Add focused service and CLI tests for the Phase 11 implementation draft review gate.
+- [x] Step 3: Verify with `rg`, trailing-whitespace scan, `git diff --check -- PLANS.md`, and `git status --short --branch`; do not run Gradle.
+
+### Verification
+
+- `rg` required strings in `PLANS.md` and the two new test files.
+- Trailing-whitespace scan for `PLANS.md` and the two new test files.
+- `git diff --check -- PLANS.md`; new untracked test files are covered by whitespace scan.
+- `git status --short --branch` at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 11C1 bounded test-only slice. Read AGENTS, top `PLANS.md`, Phase 11A model/service, Phase 11B CLI handler references, nearby Phase 8-10 service/CLI tests, Rain Gate Phase 10 draft sample shape, target-file absence check, and git status. Scope remains tests plus `PLANS.md` only.
+- 2026-07-01: Added focused Phase 11C1 service and CLI tests. Service tests cover Rain Gate PASS, wrong draft state/next step, `mediaGenerated=true`, `manifestGenerated=true`, `rendererReady=true`, `mp4ReadinessClaimed=true`, and empty implementation tasks/mapping draft/verification plan. CLI test covers the command shape and output report parse. No Gradle run.
+- 2026-07-01: Phase 11C1 verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check -- PLANS.md` PASS with Windows line-ending warning only, and git status checked. Gradle was not run by instruction.
+
+## Active Phase 11B Implementation Draft Review Gate CLI Wiring
+
+### Goal
+
+Wire the Phase 11A `LocalRendererAdapterImplementationDraftReviewService` into the CLI command `review-local-renderer-adapter-implementation-draft --draft <phase10-draft.json> [--review <id>] --out <review-report.json>` while keeping this slice bounded to `Main.kt` plus `PLANS.md`. Do not add tests, samples, docs beyond `PLANS.md`, Gradle runs, renderer/ffmpeg/TTS, media generation, adapter execution, real `ComicVideoRenderHandoffManifest` generation, provider/API calls, direct SQLite writes, staging/commit/push, or 03 contact.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+
+### Confirmed Facts
+
+- Phase 11A added `LocalRendererAdapterImplementationDraftReviewService` and `LocalRendererAdapterImplementationDraftReviewReport`.
+- Existing Phase 8-10 CLI patterns in `Main.kt` use one dispatch entry, one private function, `writeJson`, concise stdout, and one help line.
+- Phase 11B must not add tests, samples, docs beyond `PLANS.md`, or run Gradle.
+
+### Steps
+
+- [x] Step 1: Read required Phase 11B evidence and existing nearby CLI patterns.
+- [x] Step 2: Add CLI dispatch, service import, command handler, stdout summary, and help text for `review-local-renderer-adapter-implementation-draft`.
+- [x] Step 3: Verify with `rg`, trailing-whitespace scan, `git diff --check`, and `git status --short --branch`; do not run Gradle.
+
+### Verification
+
+- `rg` required strings in `PLANS.md` and `Main.kt`.
+- Trailing-whitespace scan for `PLANS.md` and `Main.kt`.
+- `git diff --check -- PLANS.md app/src/main/kotlin/com/localnovel/engine/Main.kt`; Windows line-ending warnings are acceptable.
+- `git status --short --branch` at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 11B bounded CLI wiring slice. Read AGENTS, top `PLANS.md`, Phase 11A service/model, relevant `Main.kt` command patterns, and git status. Scope remains `Main.kt` plus `PLANS.md` only.
+- 2026-07-01: Added `Main.kt` CLI wiring for `review-local-renderer-adapter-implementation-draft`, including service import, dispatch entry, command handler, concise stdout summary, expected boundary/next-step checks, and help text. No tests, samples, docs beyond `PLANS.md`, or Gradle run.
+- 2026-07-01: Phase 11B verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, and git status checked. Gradle was not run by instruction.
+
+## Active Phase 11A Implementation Draft Review Gate Skeleton
+
+### Goal
+
+Add only the Phase 11A model/service skeleton for deterministic review of a Phase 10 `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, keeping the slice bounded to Kotlin model/service plus `PLANS.md` and preserving no CLI wiring, no tests, no sample generation, no Gradle, no docs beyond `PLANS.md`, no adapter execution, no real `ComicVideoRenderHandoffManifest` generation, no renderer/ffmpeg/TTS, no media generation, no provider/API, no direct SQLite writes, no staging/commit/push, and no 03 contact.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererAdapterImplementationDraftReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererAdapterImplementationDraftReviewService.kt`
+
+### Confirmed Facts
+
+- Phase 11 preflight is complete and proposes `review-local-renderer-adapter-implementation-draft`.
+- Phase 10 draft model/service exist and produce `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`.
+- The Phase 10 draft review model/service files do not exist before this slice.
+- Phase 11A must not wire CLI, add tests, generate samples, run Gradle, or edit docs beyond `PLANS.md`.
+
+### Steps
+
+- [x] Step 1: Read required Phase 11A evidence and confirm target files are absent.
+- [x] Step 2: Add Phase 11A review report model and deterministic service skeleton.
+- [x] Step 3: Verify with `rg`, trailing-whitespace scan, `git diff --check -- PLANS.md`, and `git status --short --branch`; do not run Gradle.
+
+### Verification
+
+- `rg` required strings in `PLANS.md` and the two new Kotlin files.
+- Trailing-whitespace scan for `PLANS.md` and the two new Kotlin files.
+- `git diff --check -- PLANS.md`; new untracked Kotlin files are covered by whitespace scan.
+- `git status --short --branch` at end.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 11A bounded skeleton slice. Read AGENTS, top `PLANS.md`, Phase 11 preflight, Phase 10 implementation draft docs/model/service, Phase 9 review model/service pattern, Phase 10 Rain Gate sample preview, target-file absence check, and git status. Scope remains model/service plus `PLANS.md` only.
+- 2026-07-01: Added Phase 11A review report model and deterministic service skeleton. The service reviews `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, can read/write JSON paths, enforces local-only/no-media/no-manifest/no-readiness-overclaim boundaries, and does not wire CLI or execute renderer/media/adapter paths.
+- 2026-07-01: Phase 11A verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check -- PLANS.md` PASS with Windows line-ending warning only, and git status checked. Gradle was not run by instruction.
+
+## Active Phase 11 Implementation Draft Review Gate Preflight
+
+### Goal
+
+Prepare a docs-only Phase 11 preflight packet for `local_renderer_adapter_implementation_draft_review` so the next code slice can implement the review gate without drifting into adapter execution, `ComicVideoRenderHandoffManifest` generation, renderer/ffmpeg/TTS, media generation, provider/API, SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, or 03 contact.
+
+### Confirmed Facts
+
+- Phase 10 03 review is PASS and 01 accepts Phase 10.
+- Phase 10 HANDOFF only allows `local_renderer_adapter_implementation_draft_review` after PASS.
+- Rain Gate Phase 10 sample has `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, `downstreamBoundary=local_renderer_adapter_implementation_draft_only_not_manifest_generation`, `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review`, 10 checks, 5 implementation tasks, 2 mapping panel drafts, 4 verification steps, `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `rendererReady=false`, `mp4ReadinessClaimed=false`, and `findingCount=0`.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_PHASE11_IMPLEMENTATION_DRAFT_REVIEW_GATE_PREFLIGHT.md`
+
+### Steps
+
+- [x] Step 1: Read only required Phase 11 preflight evidence and record the docs-only plan.
+- [x] Step 2: Add Phase 11 implementation draft review gate preflight packet.
+- [x] Step 3: Verify with `rg`, trailing-whitespace scan, `git diff --check`, and `git status --short --branch`; do not run Gradle.
+
+### Proposed Phase 11 Shape
+
+- Command proposal: `review-local-renderer-adapter-implementation-draft --draft <phase10-draft.json> [--review <id>] --out <review-report.json>`
+- Required input status: `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`
+- Required boundary: `local_renderer_adapter_implementation_draft_only_not_manifest_generation`
+- Required next step: `local_renderer_adapter_implementation_draft_review`
+- Output status proposal: `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS` or FAIL
+- Downstream boundary proposal: `local_renderer_adapter_implementation_draft_review_only_not_manifest_generation`
+- Next step proposal after PASS: `local_renderer_manifest_draft_plan`
+
+### Drift Log
+
+- 2026-07-01: Started bounded Phase 11 preflight packet from 01 `NEXT_TASK`. Read AGENTS, top `PLANS.md`, HANDOFF Phase 10 entry, Phase 10 docs, Rain Gate Phase 10 sample summary, Phase 10 file names via `rg --files`, and git status. Scope remains docs/PLANS only.
+- 2026-07-01: Added `docs/CODEX_PHASE11_IMPLEMENTATION_DRAFT_REVIEW_GATE_PREFLIGHT.md` with proposed Phase 11 command, required Phase 10 input status/boundary/next step, review PASS/FAIL output proposal, downstream boundary proposal, next step proposal, fail-stop checks, and explicit non-goals.
+- 2026-07-01: Final Phase 11 preflight verification PASS. Required `rg` strings found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warning only, and git status checked. No Kotlin/source/sample/Gradle/provider/API/SQLite/renderer/ffmpeg/TTS/media/manifest/staging/commit/push/03 contact.
+
+## Active Local Renderer Adapter Implementation Draft V0
+
+### Goal
+
+Implement Phase 10: a deterministic local renderer adapter implementation draft v0 that reads the Phase 5 preview handoff, accepted Phase 8 implementation plan, and accepted Phase 9 implementation plan review report, then writes a local JSON draft for a future manifest-draft/review step without generating `ComicVideoRenderHandoffManifest`, running renderer/ffmpeg/TTS, generating media, executing an adapter, or claiming renderer/MP4 readiness.
+
+### Global Strategy
+
+- Add small Kotlin draft models and a deterministic draft service that consumes `LocalStoryVideoPreviewHandoffDraft`, `LocalRendererAdapterImplementationPlanDraft`, and `LocalRendererAdapterImplementationPlanReviewReport`.
+- Add a file-protocol-only CLI command: `draft-local-renderer-adapter-implementation --handoff <phase5-handoff.json> --plan <phase8-plan.json> --plan-review <phase9-review.json> [--draft <id>] --out <draft.json>`.
+- Require Phase 5 `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, Phase 8 PASS plan state, Phase 9 PASS review state, aligned story/handoff/review/dry-run/plan ids where present, local-only/no-media boundaries, no findings, non-empty preview panels, required adapter work items, implementation steps, verification plan, and mapping notes.
+- Output only local JSON draft data with checks, summaries, adapter mapping draft notes, implementation tasks, verification plan for a future manifest-draft step, encoded local-only/no-media boundaries, `downstreamBoundary=local_renderer_adapter_implementation_draft_only_not_manifest_generation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review`.
+- Use `ComicVideoRenderHandoffManifest` field names only as future target field names inside draft notes. Do not instantiate, serialize, or generate that manifest.
+- Preserve hard boundaries: local file-protocol JSON only, no SQLite writes, no provider/API, no web/server, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock, no generated `out/` artifact edits, no staging/commit/push, and no 03 contact.
+
+### Non-Goals
+
+- No adapter execution, real adapter output, `ComicVideoRenderHandoffManifest` generation, renderer/ffmpeg/TTS execution, media generation, MP4 generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, generated `out/` artifact edits, staging, commit, push, new thread creation/contact, or unattended loop.
+- Do not modify Phase 5, Phase 8, or Phase 9 sample outputs unless compile/test correctness proves a tiny deterministic fixture repair is necessary.
+- Do not refactor Phase 1-9 behavior unless compile correctness requires a narrow import or CLI wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererAdapterImplementationDraftModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererAdapterImplementationDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- 03 review result for Phase 9 is PASS and 01 accepts Phase 9.
+- The requested Phase 10 target files were absent before this slice started.
+- Phase 9 HANDOFF entry only allows `local_renderer_adapter_implementation_draft` after PASS.
+- Phase 5 Rain Gate handoff sample has `status=LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, `handoffId=rain-gate-story-video-preview-handoff-v0-001`, `sourceStoryInputPackId=local-story-input-rain-gate-v0-001`, and 2 preview panels.
+- Phase 8 Rain Gate plan sample has `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT`, `planId=rain-gate-local-renderer-adapter-implementation-plan-v0-001`, `sourceDryRunId=rain-gate-local-renderer-adapter-dry-run-v0-001`, `sourceHandoffId=rain-gate-story-video-preview-handoff-v0-001`, `sourceReviewId=rain-gate-story-video-preview-handoff-review-v0-001`, `sourceStoryInputPackId=local-story-input-rain-gate-v0-001`, 5 required work items, 2 per-panel mapping notes, `downstreamBoundary=local_renderer_adapter_implementation_plan_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review`.
+- Phase 9 Rain Gate review sample has `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_PASS`, `reviewId=rain-gate-local-renderer-adapter-implementation-plan-review-v0-001`, matching Phase 8/5 source ids, `downstreamBoundary=local_renderer_adapter_implementation_plan_review_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft`.
+- Current git status shows existing dirty/untracked work from prior accepted slices; Phase 10 must only add/narrowly modify its own files plus shared `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md`.
+
+### Assumptions
+
+- A PASS Phase 10 draft with `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review` is the correct governed bridge before any future manifest-draft/review step.
+- Phase 10 can draft field mapping notes from Phase 5 preview panels plus Phase 8 mapping plan without generating `ComicVideoRenderHandoffManifest`.
+- The Rain Gate Phase 10 sample should be a new JSON file under `samples/local_story_input/`.
+
+### Open Questions
+
+- Whether a future manifest-draft step should generate a `ComicVideoRenderHandoffManifest` remains a later explicit 01/user decision.
+- Whether future local renderer adapter implementation should target the current comic-video renderer directly or a story-video-specific bridge remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Confirm Phase 10 target files are absent and read Phase 10 evidence, Phase 5/8/9 docs/models/services/tests/samples, relevant CLI wiring, AGENTS, PLANS, HANDOFF, and git status before code edits.
+- [x] Step 2: Add Phase 10 implementation draft models and deterministic draft service.
+- [x] Step 3: Add `draft-local-renderer-adapter-implementation` CLI wiring and help text.
+- [x] Step 4: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 5: Generate Rain Gate Phase 10 sample implementation draft through the new CLI.
+- [x] Step 6: Add docs page and HANDOFF pointer.
+- [x] Step 7: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, status, and process checks, then close this plan.
+
+### Verification
+
+- Run focused tests for `LocalRendererAdapterImplementationDraftServiceTest` and `LocalRendererAdapterImplementationDraftCliTest`.
+- Run the new CLI against the Rain Gate Phase 5 handoff, Phase 8 plan, and Phase 9 review samples and confirm `verdict=PASS` and `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`.
+- Parse the sample draft JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `rendererReady=false`, `mp4ReadinessClaimed=false`, `downstreamBoundary=local_renderer_adapter_implementation_draft_only_not_manifest_generation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review`.
+- `rg` touched files for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, `draft-local-renderer-adapter-implementation`, `local_renderer_adapter_implementation_draft_only_not_manifest_generation`, `local_renderer_adapter_implementation_draft_review`, `no media generation`, `no production lock`, `final media approval`, `provider/media handoff`, and `ComicVideoRenderHandoffManifest` prohibition wording.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+- Check for remaining Java/Gradle/Kotlin processes after verification.
+
+### Risks
+
+- Accidentally generating a real manifest would violate the task; keep adapter mapping as draft notes only and set `manifestGenerated=false`.
+- Accidentally treating Phase 10 PASS as renderer readiness or MP4 readiness would overstate the product state; keep `rendererReady=false` and `mp4ReadinessClaimed=false`.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are shared dirty files, so edits must remain narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Resumed Phase 10 from 01 `NEXT_TASK_RESUME`. Re-read strata-agent-loop, confirmed Phase 10 target files were absent, read AGENTS, top `PLANS.md`, HANDOFF Phase 9 entry, Phase 8/9/5 docs, Phase 5/8/9 models/services/samples, relevant `Main.kt` CLI wiring/help, and git status before code edits.
+- 2026-07-01: Added Phase 10 implementation draft models/service and `draft-local-renderer-adapter-implementation` CLI wiring/help. The service validates Phase 5 handoff state, Phase 8 plan state, Phase 9 review state, source id alignment, local-only/no-media boundaries, no source findings, non-empty preview/mapping/planning sections, mapping-draft-only `ComicVideoRenderHandoffManifest` notes, and no renderer/MP4 readiness overclaim.
+- 2026-07-01: Added focused Phase 10 service and CLI tests covering happy path, Phase 9 review FAIL, wrong Phase 9 downstream step, forged media/manifest boundaries, source id mismatch, and missing preview/mapping content.
+- 2026-07-01: Initial focused Gradle verification with the task's unquoted environment-style Kotlin heap setting failed in `:app:compileKotlin` due Kotlin compiler OOM in existing `Models.kt`; rerunning with explicit quoted `'-Pkotlin.daemon.jvmargs=-Xmx4096m'` passed focused service/CLI tests. This did not change project behavior.
+- 2026-07-01: Generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_draft_sample.json` via the new CLI. The sample has `verdict=PASS`, `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT`, 10/10 checks PASS, 2 preview panels, 5 implementation tasks, `manifestGenerated=false`, `mediaGenerated=false`, `rendererReady=false`, `mp4ReadinessClaimed=false`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review`.
+- 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_V0.md` and a HANDOFF pointer. The docs state Phase 10 is JSON draft only, not adapter execution, not `ComicVideoRenderHandoffManifest` generation, not renderer/ffmpeg/TTS execution, not media generation, not final media approval, not provider/media handoff, and not canon, registry, release, approval, or production lock.
+- 2026-07-01: Final Phase 10 verification PASS. Focused service/CLI tests PASS using quoted `'-Pkotlin.daemon.jvmargs=-Xmx4096m'`, Rain Gate sample CLI PASS, UTF-8 JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS for touched tracked files with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin processes remained. No renderer/ffmpeg/TTS, media generation, provider/API, direct SQLite write, adapter execution, `ComicVideoRenderHandoffManifest` generation, staging, commit, push, or 03 contact occurred.
+
+## Active Local Renderer Adapter Implementation Plan Review Gate V0
+
+### Goal
+
+Implement Phase 9: a deterministic local renderer adapter implementation plan review gate v0 that reads the accepted Phase 8 implementation plan JSON and validates it before any future adapter implementation draft, without implementing the adapter, generating `ComicVideoRenderHandoffManifest`, running renderer/ffmpeg/TTS, generating media, or claiming renderer/MP4 readiness.
+
+### Global Strategy
+
+- Add small Kotlin review report models and a deterministic review service that consumes only `LocalRendererAdapterImplementationPlanDraft`.
+- Add a file-protocol-only CLI command: `review-local-renderer-adapter-implementation-plan --plan <phase8-plan.json> [--review <id>] --out <review-report.json>`.
+- Require Phase 8 `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT`, `downstreamBoundary=local_renderer_adapter_implementation_plan_only_not_implementation`, `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review`, local-only/no-media boundaries, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `targetManifestFieldMappingPlan.planningOnly=true`, `targetManifestFieldMappingPlan.manifestGenerated=false`, all required source validation checks PASS, non-empty source ids and planning sections, and no findings.
+- Output only review JSON with checks, plan summary, boundary summary, renderer compatibility summary that preserves no renderer/MP4 readiness claim, encoded local-only/no-media boundaries, `downstreamBoundary=local_renderer_adapter_implementation_plan_review_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft`.
+- Preserve hard boundaries: local file-protocol JSON only, no SQLite writes, no provider/API, no web/server, no renderer/ffmpeg/TTS, no media generation, no adapter implementation execution, no `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock, no generated `out/` artifact edits, no staging/commit/push, and no 03 contact.
+
+### Non-Goals
+
+- No adapter implementation, adapter implementation draft, renderer adapter execution, `ComicVideoRenderHandoffManifest` generation, renderer/ffmpeg/TTS execution, media generation, MP4 generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, generated `out/` artifact edits, staging, commit, push, new thread creation/contact, or unattended loop.
+- Do not modify Phase 8 plan sample output unless compile/test correctness proves a tiny deterministic fixture repair is necessary.
+- Do not refactor Phase 1-8 behavior unless compile correctness requires a narrow import or CLI wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererAdapterImplementationPlanReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererAdapterImplementationPlanReviewService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationPlanReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationPlanReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_review_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- 03 review result for Phase 8 is PASS and 01 accepts Phase 8.
+- Phase 8 HANDOFF entry only allows `local_renderer_adapter_implementation_review` after PASS.
+- Phase 8 sample plan has `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT`, `downstreamBoundary=local_renderer_adapter_implementation_plan_only_not_implementation`, `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review`, non-empty source ids, required work items, target manifest field mapping notes, implementation steps, risk checklist, verification plan, `planningOnly=true`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- Existing Phase 8 CLI, service, tests, docs, and sample exist and are recorded as PASS in `PLANS.md`.
+- Current git status shows existing dirty/untracked work from prior accepted slices; Phase 9 must only add/narrowly modify its own files plus shared `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md`.
+
+### Assumptions
+
+- A PASS Phase 9 review report with `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft` is the correct governed bridge before any future adapter implementation draft task.
+- Treating Phase 8 planning notes as review-only evidence prevents accidental `ComicVideoRenderHandoffManifest` generation or renderer readiness claims.
+- The Rain Gate Phase 9 sample should be a new JSON file under `samples/local_story_input/`.
+
+### Open Questions
+
+- Whether a future adapter implementation draft should generate `ComicVideoRenderHandoffManifest` remains a later explicit 01/user decision.
+- Whether future local renderer adapter implementation should target the current comic-video renderer directly or a story-video-specific bridge remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Read Phase 9 evidence, Phase 8 docs/models/service/tests/sample, relevant CLI wiring, review-gate patterns, AGENTS, PLANS, HANDOFF, and git status before code edits.
+- [x] Step 2: Add Phase 9 review report models and deterministic review service.
+- [x] Step 3: Add `review-local-renderer-adapter-implementation-plan` CLI wiring and help text.
+- [x] Step 4: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 5: Generate Rain Gate Phase 9 sample review report through the new CLI.
+- [x] Step 6: Add docs page and HANDOFF pointer.
+- [x] Step 7: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, status, and process checks, then close this plan.
+
+### Verification
+
+- Run focused tests for `LocalRendererAdapterImplementationPlanReviewServiceTest` and `LocalRendererAdapterImplementationPlanReviewCliTest`.
+- Run the new CLI against `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_sample.json` and confirm `verdict=PASS` and `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_PASS`.
+- Parse the sample review JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `noExternalPaidProviderTools=true`, `downstreamBoundary=local_renderer_adapter_implementation_plan_review_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft`.
+- `rg` touched files for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_PASS`, `review-local-renderer-adapter-implementation-plan`, `local_renderer_adapter_implementation_plan_review_only_not_implementation`, `local_renderer_adapter_implementation_draft`, `no media generation`, `no production lock`, `final media approval`, `provider/media handoff`, and `ComicVideoRenderHandoffManifest` prohibition wording.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+- Check for remaining Java/Gradle/Kotlin processes after verification.
+
+### Risks
+
+- Accidentally treating Phase 9 PASS as adapter implementation approval would violate the task; keep output review-only and allow only implementation draft as a later governed step.
+- Accidentally generating or serializing `ComicVideoRenderHandoffManifest` would violate the boundary; review Phase 8 notes only.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are shared dirty files, so edits must remain narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 9 local renderer adapter implementation plan review gate v0 from 01 `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF Phase 8 entry, Phase 8 docs/model/service/tests/sample, relevant `Main.kt` CLI wiring/help, existing review gate patterns, and git status before code edits.
+- 2026-07-01: Added Phase 9 review report models and `LocalRendererAdapterImplementationPlanReviewService`. The service validates Phase 8 PASS state, source ids, local-only/no-media boundaries, planning-only target mapping notes, required source validation checks, required work items, implementation steps, risk checklist, verification plan, and no findings.
+- 2026-07-01: Added `review-local-renderer-adapter-implementation-plan` CLI wiring/help and focused service/CLI tests. Generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_review_report_sample.json`; the sample has `verdict=PASS`, `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_PASS`, checks 8/8 PASS, `manifestGenerated=false`, `adapterImplementationExecuted=false`, `mediaGenerated=false`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft`.
+- 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_REVIEW_V0.md` and a HANDOFF pointer. The docs state Phase 9 is review-gate-only, not adapter implementation, not `ComicVideoRenderHandoffManifest` generation, not renderer/ffmpeg/TTS execution, not media generation, not final media approval, not provider/media handoff, and not canon, registry, release, approval, or production lock.
+- 2026-07-01: Final Phase 9 verification PASS. Focused service/CLI tests PASS, Rain Gate sample CLI PASS, UTF-8 JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS for touched tracked files with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin processes remained. No full regression was run because this slice required focused tests only.
+
+## Active Local Renderer Adapter Implementation Plan V0
+
+### Goal
+
+Implement Phase 8: a deterministic local renderer adapter implementation plan v0 that reads the reviewed Phase 7 dry-run report and writes a concrete local JSON planning artifact for a future adapter implementation review, without implementing the adapter, generating `ComicVideoRenderHandoffManifest`, running renderer/ffmpeg/TTS, generating media, or claiming renderer/MP4 readiness.
+
+### Global Strategy
+
+- Add small Kotlin plan report models and a deterministic service that consumes only `LocalRendererAdapterDryRunReport`.
+- Add a file-protocol-only CLI command: `plan-local-renderer-adapter-implementation --dry-run-report <phase7-report.json> [--plan <id>] --out <plan.json>`.
+- Require Phase 7 `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS`, `downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation`, `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan`, local-only/no-media boundaries, `manifestGenerated=false`, `localRendererReady=false`, all checks PASS, mapped panels greater than zero, `missingRequiredFieldCount=0`, and `qaFail=0`.
+- Output only planning JSON with required work items, target manifest field mapping plan notes, implementation steps, risk checklist, verification plan, encoded local-only/no-media boundaries, `downstreamBoundary=local_renderer_adapter_implementation_plan_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review`.
+- Use `ComicVideoRenderHandoffManifest` field names only as future target field names inside planning notes. Do not instantiate, serialize, or generate that manifest.
+- Preserve hard boundaries: local file-protocol JSON only, no SQLite writes, no provider/API, no web/server, no renderer/ffmpeg/TTS, no media generation, no adapter implementation execution, no `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock, no staging/commit/push, and no 03 contact.
+
+### Non-Goals
+
+- No adapter implementation, renderer adapter execution, `ComicVideoRenderHandoffManifest` generation, renderer/ffmpeg/TTS execution, media generation, MP4 generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, generated `out/` artifact edits, staging, commit, push, new thread creation/contact, or unattended loop.
+- Do not modify Phase 7 dry-run sample output unless compile/test correctness proves a tiny deterministic fixture repair is necessary.
+- Do not refactor Phase 1-7 behavior unless compile correctness requires a narrow import or CLI wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererAdapterImplementationPlanModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererAdapterImplementationPlanService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationPlanServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterImplementationPlanCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- 03 review result for Phase 7 is PASS and 01 accepts Phase 7.
+- Phase 7 HANDOFF entry only allows `local_renderer_adapter_implementation_plan` after PASS.
+- Phase 7 sample report has `verdict=PASS`, `status=LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS`, `downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation`, `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan`, two mapped panels, `missingRequiredFieldCount=0`, `qaFail=0`, `manifestGenerated=false`, `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- Existing `ComicVideoRenderHandoffManifest` has `panelTimeline`, `voiceTimeline`, `subtitleTimeline`, and `renderSettings` fields, but Phase 8 must not generate that manifest.
+- Current git status shows existing dirty/untracked work from prior accepted slices; Phase 8 must only add/narrowly modify its own files plus shared `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md`.
+
+### Assumptions
+
+- A PASS Phase 8 plan with `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review` is the correct governed bridge before any future adapter implementation task.
+- Target manifest field names can be referenced safely as planning text as long as no `ComicVideoRenderHandoffManifest` object/file is produced.
+- The Rain Gate Phase 8 sample should be a new JSON file under `samples/local_story_input/`.
+
+### Open Questions
+
+- Whether a future adapter implementation should produce a `ComicVideoRenderHandoffManifest` remains a later explicit 01/user decision.
+- Whether future local renderer adapter implementation should target the current comic-video renderer directly or a story-video-specific bridge remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Read Phase 8 evidence, Phase 7 docs/models/service/tests/sample, relevant CLI wiring, minimal render manifest field references, AGENTS, PLANS, HANDOFF, and git status before code edits.
+- [x] Step 2: Add Phase 8 implementation plan models and deterministic planning service.
+- [x] Step 3: Add `plan-local-renderer-adapter-implementation` CLI wiring and help text.
+- [x] Step 4: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 5: Generate Rain Gate Phase 8 sample implementation plan through the new CLI.
+- [x] Step 6: Add docs page and HANDOFF pointer.
+- [x] Step 7: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, status, and process checks, then close this plan.
+
+### Verification
+
+- Run focused tests for `LocalRendererAdapterImplementationPlanServiceTest` and `LocalRendererAdapterImplementationPlanCliTest`.
+- Run the new CLI against `samples/local_story_input/rain_gate_local_renderer_adapter_dry_run_report_sample.json` and confirm `verdict=PASS` and `status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT`.
+- Parse the sample plan JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `manifestGenerated=false`, `noExternalPaidProviderTools=true`, `downstreamBoundary=local_renderer_adapter_implementation_plan_only_not_implementation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_review`.
+- `rg` touched files for `LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT`, `plan-local-renderer-adapter-implementation`, `local_renderer_adapter_implementation_plan_only_not_implementation`, `local_renderer_adapter_implementation_review`, `no media generation`, `no production lock`, `final media approval`, `provider/media handoff`, and `ComicVideoRenderHandoffManifest` prohibition wording.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+- Check for remaining Java/Gradle/Kotlin processes after verification.
+
+### Risks
+
+- Accidentally making Phase 8 look like adapter implementation would violate the task; keep every output explicitly planning-only.
+- Accidentally generating or serializing `ComicVideoRenderHandoffManifest` would violate the boundary; use only textual target field mapping notes.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are shared dirty files, so edits must remain narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 8 local renderer adapter implementation plan v0 from 01 `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF Phase 7 entry, Phase 7 docs/model/service/tests/sample, relevant `Main.kt` CLI wiring/help/parser, minimal `ComicVideoRenderHandoffManifest` model/service field references, and git status before code edits.
+- 2026-07-01: 01 took over the active Phase 8 slice after 02 appeared stalled after partial model/service work. Scope stayed inside the assigned Phase 8 files and boundaries.
+- 2026-07-01: Added Phase 8 service/CLI/tests/docs/HANDOFF pointer and generated `samples/local_story_input/rain_gate_local_renderer_adapter_implementation_plan_sample.json`. Focused tests PASS and sample CLI PASS; final hygiene checks still in progress.
+- 2026-07-01: Final Phase 8 verification PASS. Focused tests PASS, Rain Gate sample CLI PASS, JSON boundary parse PASS, required `rg` terms found, trailing-whitespace scan PASS, `git diff --check` PASS with Windows line-ending warnings only, `git status --short --branch` checked, and no Java/Gradle/Kotlin process output remained.
+
+## Active Local Renderer Adapter Dry-Run V0 Implementation Plan
+
+### Goal
+
+Implement Phase 7: a deterministic local renderer adapter dry-run v0 that checks whether the reviewed Phase 5 handoff can be mapped toward the existing local comic-video renderer requirements, without creating a `ComicVideoRenderHandoffManifest`, executing renderer/ffmpeg/TTS, generating media, or claiming MP4 readiness.
+
+### Global Strategy
+
+- Add a small Kotlin dry-run report model and service for Phase 5 handoff plus Phase 6 review report JSON.
+- Add a file-protocol-only CLI command: `dry-run-local-renderer-adapter --handoff <phase5-handoff.json> --review <phase6-review-report.json> --out <dry-run-report.json>`.
+- Require Phase 5 `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, Phase 5 no-media downstream boundary, Phase 5 `nextAllowedDownstreamStep=local_preview_handoff_review`, Phase 6 `verdict=PASS`, Phase 6 no-media review boundary, and Phase 6 `nextAllowedDownstreamStep=local_renderer_adapter_dry_run`.
+- Validate handoff/review source id consistency, local-only/no-media boundaries, `localRendererCompatibility.ready=false`, non-empty ordered panels, positive durations, text/caption availability, visual/audio references, and QA zero-fail summary.
+- Output only a dry-run report with mapping notes and missing-field counts. Do not create or serialize `ComicVideoRenderHandoffManifest`.
+- Preserve hard boundaries: file-protocol JSON only, no SQLite writes, no provider/API, no renderer/ffmpeg/TTS, no media generation, no adapter implementation execution, no `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock.
+- Add focused service and CLI tests, a Rain Gate sample dry-run report JSON, docs, and HANDOFF pointer.
+
+### Non-Goals
+
+- No renderer/ffmpeg/TTS execution, MP4 generation, adapter implementation execution, `ComicVideoRenderHandoffManifest` generation, media generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, generated `out/` artifact edits, or unattended loop.
+- Do not modify Phase 5 or Phase 6 sample outputs unless a tiny deterministic serialization fix is required for compile/test correctness.
+- Do not refactor existing Phase 1-6 behavior unless compile correctness requires a tiny compatibility import or wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRendererAdapterDryRunModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRendererAdapterDryRunService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterDryRunServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRendererAdapterDryRunCliTest.kt`
+- `samples/local_story_input/rain_gate_local_renderer_adapter_dry_run_report_sample.json`
+- `docs/CODEX_LOCAL_RENDERER_ADAPTER_DRY_RUN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- Phase 6 local story-video preview handoff review gate v0 has 02 PASS and 03 read-only PASS, and 01 accepts Phase 6.
+- Phase 6 sample review verdict is `PASS`.
+- Phase 6 sample downstream boundary is `local_story_video_preview_handoff_review_only_not_media_generation`.
+- Phase 6 sample next allowed downstream step is `local_renderer_adapter_dry_run`.
+- Phase 5 sample handoff status is `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`.
+- Phase 5 sample handoff downstream boundary is `local_story_video_preview_handoff_draft_only_not_media_generation`.
+- Phase 5 sample handoff next allowed downstream step is `local_preview_handoff_review`.
+- Phase 5/6 samples preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- Phase 5/6 deliberately preserve `localRendererCompatibility.ready=false`; direct renderer readiness and MP4 readiness must not be claimed.
+- Existing `ComicVideoRenderHandoffManifest` requires panel, voice, subtitle, and render settings fields; Phase 7 may inspect these requirements but must not create that manifest.
+- Current git status shows existing dirty/untracked work from prior slices; this slice must only add/narrowly modify Phase 7 files.
+
+### Assumptions
+
+- A PASS dry-run report with `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan` is the correct local-only bridge to a future explicit adapter implementation planning task.
+- The reviewed Phase 5 handoff has enough deterministic data for an adapter planning dry-run if panel ids, source ids, durations, cue text, visual prompt refs, audio cue refs, and QA summary are present.
+- The Phase 7 sample should be a new file under `samples/local_story_input/` and should not overwrite Phase 5 or Phase 6 sample outputs.
+
+### Open Questions
+
+- Whether a future adapter implementation should actually write `ComicVideoRenderHandoffManifest` remains a later explicit 01/user decision.
+- Whether future local preview generation should use the existing comic-video renderer or a story-video-specific renderer remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Read Phase 7 evidence, Phase 5/6 docs/models/services/tests/samples, local render package docs, local preview artifact boundary, existing renderer manifest field requirements, CLI patterns, and git status before code edits.
+- [x] Step 2: Add Phase 7 dry-run report models and deterministic dry-run service.
+- [x] Step 3: Add `dry-run-local-renderer-adapter` CLI wiring and help text.
+- [x] Step 4: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 5: Generate Rain Gate Phase 7 sample dry-run report through the new CLI.
+- [x] Step 6: Add docs page and HANDOFF pointer.
+- [x] Step 7: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, and status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalRendererAdapterDryRunServiceTest` and `LocalRendererAdapterDryRunCliTest`.
+- Run the new CLI against the Rain Gate Phase 5 handoff sample and Phase 6 review report sample and confirm verdict `PASS`.
+- Parse the dry-run report JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `noExternalPaidProviderTools=true`, `downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan`.
+- `rg` touched files for `LOCAL_RENDERER_ADAPTER_DRY_RUN`, `dry-run-local-renderer-adapter`, `local_renderer_adapter_dry_run_only_not_media_generation`, `local_renderer_adapter_implementation_plan`, `no media generation`, `no production lock`, `final media approval`, `provider/media handoff`, and `ComicVideoRenderHandoffManifest` prohibition wording.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+
+### Risks
+
+- Accidentally creating `ComicVideoRenderHandoffManifest` would violate the Phase 7 boundary; the output must remain a dry-run report only.
+- Accidentally treating dry-run PASS as renderer readiness or MP4 readiness would overstate the product state; keep the report explicit that adapter implementation and later dry-run/renderer steps remain required.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are already dirty shared files, so edits must be narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 7 local renderer adapter dry-run v0 from 01 `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF Phase 5/6/local story video entries, Phase 5/6 docs, Phase 4/local render package docs, local preview artifact boundary note, Phase 5/6 models/services/tests/samples, existing `ComicVideoRenderHandoffManifest` field requirements and manifest service, relevant `Main.kt` CLI patterns, and git status before code edits.
+- 2026-07-01: Added Phase 7 `LocalRendererAdapterDryRunReport` models and `LocalRendererAdapterDryRunService`. The service validates Phase 5/6 source states, id matches, local-only/no-media boundaries, `ready=false`, PASS review checks, preview plan mappability, and QA zero-fail summary; it produces mapping notes only and does not generate `ComicVideoRenderHandoffManifest`.
+- 2026-07-01: Added `dry-run-local-renderer-adapter` CLI wiring and help text. The command reads only supplied Phase 5/6 JSON files, writes one dry-run report JSON, prints a concise mapping/boundary summary, returns nonzero on `FAIL`, and does not run renderer/ffmpeg/TTS or generate media.
+- 2026-07-01: Added focused Phase 7 service and CLI tests covering the verified adapter dry-run PASS path plus fail-stop behavior for review verdict `FAIL`, handoff/review id mismatch, and forged `mediaGenerated=true` boundary.
+- 2026-07-01: Generated `samples/local_story_input/rain_gate_local_renderer_adapter_dry_run_report_sample.json` through the new Phase 7 CLI. The sample verdict is `PASS`, status is `LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS`, checks are 9/9 PASS, mapped panels are 2/2, missing required field count is 0, `manifestGenerated=false`, and the next allowed step is `local_renderer_adapter_implementation_plan`.
+- 2026-07-01: Added `docs/CODEX_LOCAL_RENDERER_ADAPTER_DRY_RUN_V0.md` and a HANDOFF pointer. The docs state this is a local JSON dry-run after Phase 6, not adapter implementation, not `ComicVideoRenderHandoffManifest` generation, not renderer execution, not media generation, not final media approval, not provider/media handoff, not canon, registry, release, approval, or production lock.
+- 2026-07-01: Final Phase 7 verification passed. Focused service/CLI tests passed; the Rain Gate Phase 7 sample CLI returned `verdict=PASS` and `LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS`; UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, `noExternalPaidProviderTools=true`, `downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation`, and `nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan`; required `rg` checks passed; trailing-whitespace scan passed; `git diff --check` passed for touched tracked files; `git status --short --branch` was checked. No full regression was run because this slice required focused tests only.
+
+## Active Local Story Video Preview Handoff Review Gate V0 Implementation Plan
+
+### Goal
+
+Implement Phase 6: a deterministic local story-video preview handoff review gate v0 that validates the Phase 5 handoff JSON before any future adapter/dry-run renderer task, without running renderer/ffmpeg/TTS, generating media, or claiming MP4 readiness.
+
+### Global Strategy
+
+- Add a small Kotlin review report model and review service for Phase 5 handoff JSON.
+- Add a file-protocol-only CLI command: `review-local-story-video-preview-handoff --handoff <handoff.json> --out <review-report.json>`.
+- Require `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, the Phase 5 downstream boundary, and `nextAllowedDownstreamStep=local_preview_handoff_review`.
+- Validate required readiness checks, preview plan, QA summary, local-only boundaries, and the intentional `localRendererCompatibility.ready=false` signal.
+- Produce a PASS/FAIL review report that allows only `local_renderer_adapter_dry_run` on PASS.
+- Preserve hard boundaries: file-protocol JSON only, no SQLite writes, no provider/API, no renderer/ffmpeg/TTS, no media generation, no adapter execution, no `ComicVideoRenderHandoffManifest` generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock.
+- Add focused service and CLI tests, a Rain Gate sample review report JSON, docs, and HANDOFF pointer.
+
+### Non-Goals
+
+- No renderer/ffmpeg/TTS execution, MP4 generation, adapter execution, `ComicVideoRenderHandoffManifest` generation, media generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, generated `out/` artifact edits, or unattended loop.
+- Do not modify Phase 5 sample output unless a tiny deterministic serialization fix is required for compile/test correctness.
+- Do not refactor existing Phase 1-5 behavior unless compile correctness requires a tiny compatibility import or wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalStoryVideoPreviewHandoffReviewModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalStoryVideoPreviewHandoffReviewService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoPreviewHandoffReviewServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoPreviewHandoffReviewCliTest.kt`
+- `samples/local_story_input/rain_gate_story_video_preview_handoff_review_report_sample.json`
+- `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_REVIEW_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- Phase 5 local story-video preview handoff draft v0 has 02 PASS and 03 read-only PASS, and 01 accepts Phase 5.
+- Phase 5 sample status is `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`.
+- Phase 5 sample downstream boundary is `local_story_video_preview_handoff_draft_only_not_media_generation`.
+- Phase 5 sample next allowed downstream step is `local_preview_handoff_review`.
+- Phase 5 sample has nine readiness checks, all required checks PASS, two preview panels, target duration 9000 ms, and QA failure count zero.
+- Phase 5 boundaries preserve `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- Phase 5 deliberately records `localRendererCompatibility.ready=false` because adapter/dry-run renderer work is still required.
+- Existing local media generation commands are separate `render-comic-video-local` / local preview build paths and must not be invoked in this slice.
+- Current git status shows existing dirty/untracked work from prior slices; this slice must only add/narrowly modify Phase 6 files.
+
+### Assumptions
+
+- A PASS review report with `nextAllowedDownstreamStep=local_renderer_adapter_dry_run` is the correct local-only bridge to a future adapter dry-run task.
+- Treating `localRendererCompatibility.ready=false` as expected keeps the review gate honest and prevents false MP4 readiness claims.
+- The Phase 6 sample should be a new file under `samples/local_story_input/` and should not overwrite Phase 5 handoff output.
+
+### Open Questions
+
+- Whether a future adapter dry-run should map to `ComicVideoRenderHandoffManifest` directly remains a later explicit 01/user decision.
+- Whether future local preview generation should use the existing comic-video renderer or a story-video-specific adapter remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Read Phase 6 evidence, Phase 5 handoff models/service/tests/sample, HANDOFF entries, docs, CLI patterns, and git status before code edits.
+- [x] Step 2: Add Phase 6 review report models and deterministic review service.
+- [x] Step 3: Add `review-local-story-video-preview-handoff` CLI wiring and help text.
+- [x] Step 4: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 5: Generate Rain Gate Phase 6 sample review report through the new CLI.
+- [x] Step 6: Add docs page and HANDOFF pointer.
+- [x] Step 7: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, and status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalStoryVideoPreviewHandoffReviewServiceTest` and `LocalStoryVideoPreviewHandoffReviewCliTest`.
+- Run the new CLI against the Rain Gate Phase 5 sample handoff and confirm verdict `PASS`.
+- Parse the review report JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- `rg` touched files for review/PASS status strings, `review-local-story-video-preview-handoff`, `local_story_video_preview_handoff_review_only_not_media_generation`, `local_renderer_adapter_dry_run`, `no media generation`, `no production lock`, `final media approval`, and `provider/media handoff`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+
+### Risks
+
+- Accidentally treating `localRendererCompatibility.ready=false` as failure would block the intended Phase 6 review gate; it must remain expected when missing adapter/dry-run work is explicit.
+- Accidentally claiming renderer/MP4 readiness would overstate the local product state; keep the report review-only and not media generation.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are already dirty shared files, so edits must be narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 6 local story-video preview handoff review gate v0 from 01 `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF Phase 5/local story video entries, Phase 4-5 docs, Phase 5 models/service/tests/sample, relevant `Main.kt` CLI patterns, existing review/validation gate patterns, and git status before code edits.
+- 2026-07-01: Added Phase 6 `LocalStoryVideoPreviewHandoffReviewReport` models and `LocalStoryVideoPreviewHandoffReviewService`. The service validates Phase 5 status, downstream boundary, next step, required readiness PASS, preview plan duration, QA summary, local-only boundaries, zero upstream findings, and preserves `localRendererCompatibility.ready=false` as the expected not-yet-direct-renderable signal.
+- 2026-07-01: Added `review-local-story-video-preview-handoff` CLI wiring and help text. The command reads only the supplied handoff JSON, writes one review report JSON, prints a concise summary, returns nonzero on `FAIL`, and does not run renderer/ffmpeg/TTS or generate media.
+- 2026-07-01: Added focused Phase 6 service and CLI tests covering the verified handoff review PASS path plus fail-stop behavior for wrong handoff status, required readiness failure, and forged `mediaGenerated=true` boundary.
+- 2026-07-01: Generated `samples/local_story_input/rain_gate_story_video_preview_handoff_review_report_sample.json` through the new Phase 6 CLI. The sample verdict is `PASS`, checks are 10/10 PASS, required readiness is 9/9 PASS, panel count is 2, target duration is 9000 ms, `localRendererCompatibility.ready=false` is preserved, and the next allowed step is `local_renderer_adapter_dry_run`.
+- 2026-07-01: Added `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_REVIEW_V0.md` and a HANDOFF pointer. The docs state this is a local JSON review gate after Phase 5, not adapter execution, not media generation, not final media approval, not provider/media handoff, not canon, registry, release, approval, or production lock.
+- 2026-07-01: Final Phase 6 verification passed. Focused service/CLI tests passed, the Rain Gate Phase 6 sample CLI returned `verdict=PASS`, UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, `git diff --check` passed for touched tracked files with Windows line-ending warnings only, and `git status --short --branch` was checked. No full regression was run because this slice required focused tests only.
+
+## Active Local Story Video Preview Handoff Draft V0 Implementation Plan
+
+### Goal
+
+Implement Phase 5: a deterministic local story-video preview handoff draft v0 that maps the verified Phase 4 chain/report plus render package, asset/prompt cards, and story input into a review-only JSON package for a future local preview renderer step, without running renderer/ffmpeg/TTS or generating media.
+
+### Global Strategy
+
+- Add a small Kotlin model and draft service for `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`.
+- Add a file-protocol-only CLI command: `draft-local-story-video-preview-handoff --chain-report <json> --render-package <json> --asset-prompt-cards <json> --story-input <json> --out <handoff.json>`.
+- Require explicit source files and validate statuses/ids across all inputs.
+- Build a preview plan from Phase 3 timeline/panel plan and Phase 2 cards, with caption/dialogue cues, asset prompt references, audio cue references, and QA summary.
+- Keep `localRendererCompatibility` honest: mark current direct renderer readiness false when the existing comic-video local renderer still expects the older `ComicVideoRenderHandoffManifest` path.
+- Preserve hard boundaries: file-protocol JSON only, no SQLite writes, no provider/API, no renderer/ffmpeg/TTS, no media generation, no final media approval, no provider/media handoff, no canon/registry/release/approval/production lock.
+- Add focused service and CLI tests, a Rain Gate sample handoff JSON, docs, and HANDOFF pointer.
+
+### Non-Goals
+
+- No renderer/ffmpeg/TTS execution, MP4 generation, `ComicVideoRenderHandoffManifest` generation, media generation, provider/API calls, web/server, direct SQLite writes, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, generated `out/` artifact edits, or unattended loop.
+- Do not modify Phase 1-4 sample outputs except adding the new Phase 5 sample handoff file.
+- Do not refactor existing Phase 1-4 behavior unless compile correctness requires a tiny compatibility import or wiring fix.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalStoryVideoPreviewHandoffModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalStoryVideoPreviewHandoffDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoPreviewHandoffDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoPreviewHandoffDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_story_video_preview_handoff_draft_sample.json`
+- `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- Phase 1 local story input pack v0 is PASS.
+- Phase 2 local asset/prompt cards v0 is PASS.
+- Phase 3 local render package / QA draft v0 is PASS.
+- Phase 4 local story-to-render chain verification v0 passed 03 re-review after HANDOFF boundary revision.
+- Existing local MP4 renderer path uses `ComicVideoRenderHandoffManifest`, while Phase 4 outputs `LocalRenderPackageDraft`; direct compatibility should not be claimed without an adapter.
+- Rain Gate Phase 4 chain report status is `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`.
+- Rain Gate Phase 4 render package status is `LOCAL_RENDER_PACKAGE_DRAFT`.
+- Rain Gate Phase 4 asset/prompt cards status is `LOCAL_ASSET_PROMPT_CARDS_DRAFT`.
+- The Rain Gate story input pack id is `local-story-input-rain-gate-v0-001`.
+- Current git status shows existing dirty/untracked work from prior slices; this slice must only add/narrowly modify Phase 5 files.
+
+### Assumptions
+
+- A review-only preview handoff draft with `localRendererCompatibility.ready=false` is useful because it exposes exactly what must be adapted before a future local MP4 generation slice.
+- Matching `sourceStoryInputPackId` across chain report, render package, asset/prompt cards, and story input is the primary v0 source integrity check.
+- The Phase 5 sample should be a new file under `samples/local_story_input/` and should not overwrite Phase 1-4 samples.
+
+### Open Questions
+
+- Whether a future task should implement an adapter from `LocalStoryVideoPreviewHandoffDraft` to `ComicVideoRenderHandoffManifest` remains a later explicit 01/user decision.
+- Whether future local preview generation should use the existing comic-video renderer or a story-video-specific renderer remains a later explicit 01/user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add Phase 5 preview handoff models and deterministic draft service.
+- [x] Step 2: Add `draft-local-story-video-preview-handoff` CLI wiring and help text.
+- [x] Step 3: Add focused service/CLI tests for happy path and fail-stop behavior.
+- [x] Step 4: Generate Rain Gate Phase 5 sample handoff output through the new CLI.
+- [x] Step 5: Add docs page and HANDOFF pointer.
+- [x] Step 6: Run focused tests, sample CLI verification, JSON boundary parse, `rg`, whitespace, diff, and status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalStoryVideoPreviewHandoffDraftServiceTest` and `LocalStoryVideoPreviewHandoffDraftCliTest`.
+- Run the new CLI against Rain Gate Phase 4 sample files and confirm `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`.
+- Parse the handoff JSON as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- `rg` touched files for `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, `draft-local-story-video-preview-handoff`, `local_story_video_preview_handoff_draft_only_not_media_generation`, `local_preview_handoff_review`, `no media generation`, `no production lock`, `final media approval`, and `provider/media handoff`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch`.
+
+### Risks
+
+- Overstating compatibility with the existing local renderer would create a false product claim; keep direct readiness false unless an adapter exists.
+- The handoff could drift into media generation language; keep every output explicitly draft-only and not media generation.
+- `Main.kt`, `PLANS.md`, and `docs/HANDOFF.md` are already dirty shared files, so edits must be narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started Phase 5 local story-video preview handoff draft v0 from 01 `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF local entries, Phase 1-4 docs, local preview evidence docs, comic-video workflow docs, Phase 1-4 models/services/tests, existing comic-video render handoff/local renderer models and services, Rain Gate chain/render/cards/story sample files, and git status before code edits.
+- 2026-07-01: Added Phase 5 `LocalStoryVideoPreviewHandoffDraft` models and `LocalStoryVideoPreviewHandoffDraftService`. The service validates explicit input files, Phase 4 chain status, Phase 3 render package status, Phase 2 cards status, source id matches, local-only boundaries, and render plan presence; it builds a review-only preview plan and explicitly records `localRendererCompatibility.ready=false` until an adapter/dry-run step exists.
+- 2026-07-01: Added `draft-local-story-video-preview-handoff` CLI wiring and help text. The command reads only supplied JSON files, writes one handoff draft JSON, prints a concise summary, returns nonzero on `FAIL`, and does not run renderer/ffmpeg/TTS or generate media.
+- 2026-07-01: Added focused Phase 5 service and CLI tests covering the verified Rain Gate-style happy path and fail-stop behavior when the chain report is not `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`.
+- 2026-07-01: Generated `samples/local_story_input/rain_gate_story_video_preview_handoff_draft_sample.json` through the new Phase 5 CLI. The sample status is `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, readiness checks are 9/9 PASS, panel count is 2, target duration is 9000 ms, and `localRendererCompatibility.ready=false` is recorded as an honest review-only boundary.
+- 2026-07-01: Added `docs/CODEX_LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_V0.md` and a HANDOFF pointer. The docs state this is a local JSON handoff draft toward future local preview rendering, not final video, media generation, final media approval, provider/media handoff, canon, registry, release, approval, or production lock.
+- 2026-07-01: Final Phase 5 verification passed. Focused service/CLI tests passed, the Rain Gate Phase 5 sample CLI returned `LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT`, UTF-8 JSON parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, `git diff --check` passed for touched tracked files with Windows line-ending warnings only, and `git status --short --branch` was checked. No Gradle full regression was run because this slice required focused tests only.
+
+## Active Phase 4 HANDOFF Boundary Revision Plan
+
+### Goal
+
+Apply the 03-requested docs-only revision so the Phase 4 local story video chain entry in `docs/HANDOFF.md` explicitly carries the same final-media and provider/media boundary exclusions as the dedicated chain document.
+
+### Global Strategy
+
+- Touch only `PLANS.md` and `docs/HANDOFF.md`.
+- Keep the revision wording narrow and additive.
+- Do not change Kotlin code, tests, sample JSON, generated `out/` artifacts, or any other docs.
+- Verify with `rg`, trailing-whitespace scan, `git diff --check`, and `git status --short --branch`.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, generated artifact edits, Gradle runs, SQLite writes, provider/API calls, web/server, renderer/ffmpeg/TTS execution, media generation, staging, commit, push, new thread creation/contact, or unattended loop.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- Workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- 03 review result for Phase 4 is `NEEDS_REVISION`.
+- 03 finding says the Phase 4 HANDOFF bullet omits explicit `final media approval` and `provider/media handoff` exclusions.
+- `docs/HANDOFF.md` has a local story video chain verification v0 bullet that currently says it does not call provider/API, run renderer/ffmpeg/TTS, generate media, produce final video, approve canon/registry/release, or create production lock.
+
+### Assumptions
+
+- A single wording update to the existing Phase 4 HANDOFF bullet is enough for the requested revision.
+
+### Open Questions
+
+- None for this bounded 03 revision.
+
+### Implementation Steps
+
+- [x] Step 1: Update the Phase 4 HANDOFF bullet with explicit boundary wording.
+- [x] Step 2: Run requested docs-only verification and update this plan with the result.
+
+### Verification
+
+- `rg` in `docs/HANDOFF.md` for `final media approval` and `provider/media handoff` near the local story video chain entry.
+- `rg` in touched files for `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`, `no media generation`, `no production lock`, `final media approval`, and `provider/media handoff`.
+- Trailing-whitespace scan for touched files.
+- `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- `git status --short --branch`.
+
+### Risks
+
+- Over-broad wording could imply a product decision beyond the Phase 4 boundary fix; keep the change strictly negative/exclusionary.
+
+### Drift Log
+
+- 2026-07-01: Started 03-requested Phase 4 HANDOFF boundary wording revision. Scope is docs/PLANS only and specifically excludes code, samples, generated artifacts, Gradle, media generation, staging, commit, and push.
+- 2026-07-01: Updated the Phase 4 HANDOFF bullet to explicitly state the one-command local JSON chain verification is NOT final video, NOT media generation, NOT final media approval, NOT provider/media handoff, NOT canon, NOT registry, NOT release, NOT approval, and NOT production lock. Requested `rg` checks, trailing-whitespace scan, `git diff --check`, and `git status --short --branch` were run for this docs-only revision; Gradle was not run.
+
+## Active Local Story Video Chain Verification V0 Implementation Plan
+
+### Goal
+
+Implement a one-command local story-to-render chain verification v0 layer so a story input JSON can deterministically produce a validation report, asset/prompt cards draft, local render package draft, and chain report without external tools or media generation.
+
+### Global Strategy
+
+- Add a small Kotlin model and verification service for local story video chain reports.
+- Add a file-protocol-only CLI command: `verify-local-story-video-chain --story-input <json> --output-dir <dir> --out <chain-report.json>`.
+- Read only the story input JSON, then run Phase 1 validation, Phase 2 asset/prompt cards drafting, and Phase 3 render package drafting in memory.
+- Write intermediate JSON artifacts under `--output-dir` and write the chain report to `--out`.
+- Stop the chain on the first failed stage and return nonzero.
+- Preserve explicit boundaries: no SQLite writes, no provider/API calls, no renderer/ffmpeg/TTS invocation, and no media generation.
+- Add Rain Gate chain sample outputs in a new sample output directory so existing Phase 1-3 sample files are not overwritten.
+- Add focused verification service and CLI tests.
+- Document how this makes the local workbench repeatable without claiming final video or production output.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, media generation, renderer/ffmpeg/TTS execution, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+- Do not modify generated `out/` demo package artifacts.
+- Do not modify existing Phase 1-3 sample outputs unless a later explicit task requests regeneration.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalStoryVideoChainModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalStoryVideoChainVerificationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoChainVerificationServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryVideoChainVerificationCliTest.kt`
+- `samples/local_story_input/rain_gate_story_video_chain_report_sample.json`
+- `samples/local_story_input/rain_gate_story_video_chain_outputs/`
+- `docs/CODEX_LOCAL_STORY_VIDEO_CHAIN_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- `01` assigned `NEXT_TASK` for local story-to-render chain verification v0 implementation.
+- Phase 1 local story input pack v0 is `PASS`.
+- Phase 2 local asset/prompt cards v0 is `PASS`.
+- Phase 3 local render package / QA draft v0 is `PASS`.
+- `docs/HANDOFF.md` already points to the Phase 1, Phase 2, and Phase 3 local JSON entry points and explicitly says they do not generate final video or production output.
+- The Rain Gate story input sample has pack id `local-story-input-rain-gate-v0-001`.
+- The Rain Gate validation sample has verdict `PASS`.
+- The Rain Gate asset/prompt cards sample has status `LOCAL_ASSET_PROMPT_CARDS_DRAFT`.
+- The Rain Gate render package draft sample has status `LOCAL_RENDER_PACKAGE_DRAFT`.
+- Existing CLI commands use `readJson`, `writeJson`, concise stdout summary lines, and nonzero exit on `FAIL`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- The chain report can use deterministic default output names under `--output-dir`: validation report, asset/prompt cards draft, and render package draft.
+- A chain report schema with stage results, generated files, counts, boundaries, downstream boundary, next step, findings, and optional generated artifact objects is sufficient for this v0.
+- Boundary text can explicitly say "no provider/API", "no media generation", and "no production lock" as exclusions, but it must not claim approval, release, canon, registry, or production lock.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether this chain should later call the renderer or convert to an existing comic-video render handoff manifest remains a future explicit `01` task.
+- Whether future custom user stories should store chain outputs under `samples/`, `out/`, or a new project package directory remains a later product decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add local story video chain v0 models and verification service.
+- [x] Step 2: Add `verify-local-story-video-chain` CLI wiring and help text.
+- [x] Step 3: Add focused verification service/CLI tests.
+- [x] Step 4: Generate the Rain Gate chain sample output through the new CLI.
+- [x] Step 5: Add docs page and HANDOFF pointer.
+- [x] Step 6: Run focused tests, sample CLI verification, whitespace/diff/status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalStoryVideoChainVerificationServiceTest` and `LocalStoryVideoChainVerificationCliTest`.
+- Run `.\gradlew.bat :app:run --args="verify-local-story-video-chain --story-input samples/local_story_input/rain_gate_story_input_pack_sample.json --output-dir samples/local_story_input/rain_gate_story_video_chain_outputs --out samples/local_story_input/rain_gate_story_video_chain_report_sample.json"` and confirm status `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`.
+- Parse the chain report as UTF-8 and confirm `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- The chain wrapper could drift into a hidden renderer or media generator; keep it JSON-only and service-only.
+- Writing intermediate sample outputs could be mistaken for regenerating Phase 1-3 accepted sample files; keep new chain outputs in a separate directory.
+- `Main.kt` and `docs/HANDOFF.md` are already dirty shared tracked files, so edits must stay narrow and additive.
+- Sample JSON contains Traditional Chinese, so Windows PowerShell checks should read it as UTF-8.
+
+### Drift Log
+
+- 2026-07-01: Started local story video chain verification v0 implementation from `01` `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, HANDOFF local entries, Phase 1/2/3 docs, Main.kt CLI patterns, Phase 1/2/3 models and services, Rain Gate story/validation/cards/render-package samples, and current git status before editing.
+- 2026-07-01: Added `LocalStoryVideoChainReport` v0 models and `LocalStoryVideoChainVerificationService`. The service reads a story input pack object, runs story validation, asset/prompt card drafting, and render package drafting in memory, computes deterministic generated file paths, stops on failed stages, and records boundaries including `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, and `ttsInvocation=none`.
+- 2026-07-01: Added `verify-local-story-video-chain --story-input <json> --output-dir <dir> --out <chain-report.json>` CLI wiring and help text. The command reads only the story input JSON, writes intermediate JSON artifacts under `--output-dir`, writes the chain report to `--out`, prints a concise summary, and does not touch SQLite, provider/API, web/server, renderer/ffmpeg/TTS, or media generation.
+- 2026-07-01: Focused chain service/CLI tests passed after correcting the service test path expectation to use platform-native `Path` output. Also made chain report boundaries encode explicit default values so the sample report itself shows `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and related fail-stop boundaries.
+- 2026-07-01: Generated Rain Gate chain sample outputs under `samples/local_story_input/rain_gate_story_video_chain_outputs/` and `samples/local_story_input/rain_gate_story_video_chain_report_sample.json`; added `docs/CODEX_LOCAL_STORY_VIDEO_CHAIN_V0.md` and a HANDOFF pointer. Existing Phase 1-3 sample files were not overwritten.
+- 2026-07-01: Final Phase 4 verification passed. Focused service/CLI tests passed, Rain Gate chain CLI returned `LOCAL_STORY_VIDEO_CHAIN_VERIFIED`, UTF-8 chain report parse confirmed `mediaGenerated=false`, `rendererInvocation=none`, `providerInvocation=none`, `ttsInvocation=none`, and `noExternalPaidProviderTools=true`, required `rg` checks passed, trailing-whitespace scan passed, and `git diff --check` passed for touched tracked files with Windows line-ending warnings only.
+
+## Active Local Render Package / QA Draft V0 Implementation Plan
+
+### Goal
+
+Implement the local render package / QA draft v0 layer so a validated local story input pack plus local asset/prompt cards can become a deterministic, reviewable render-planning package and QA checklist without generating media.
+
+### Global Strategy
+
+- Add a small Kotlin model and deterministic draft service for local render package / QA draft JSON.
+- Add a draft-only CLI command: `draft-local-render-package --story-input <json> --asset-prompt-cards <cards.json> --out <render-package.json>`.
+- Require `asset/prompt cards` status `LOCAL_ASSET_PROMPT_CARDS_DRAFT`.
+- Require `sourceStoryInputPackId` in the cards to match the story input pack id.
+- Keep the command file-protocol only: read JSON, validate preconditions in memory, write JSON package, and print a concise summary.
+- Derive a simple timeline/panel plan from story beats and duration target.
+- Add QA checklist items that expose local-only, no-provider, no-media-generation, and no-production-lock boundaries.
+- Add the Rain Gate render package draft as a local fixture.
+- Add focused draft service and CLI tests.
+- Document how this package prepares later local rendering without invoking external paid/provider tools and without generating media in this slice.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, media generation, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+- Do not modify generated `out/` demo package artifacts.
+- Do not call `render-comic-video-local`, `build-comic-video-local-preview`, `build-setting-comic-video-local-preview`, ffmpeg, TTS, or any renderer in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalRenderPackageModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalRenderPackageDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRenderPackageDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalRenderPackageDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_local_render_package_draft_sample.json`
+- `docs/CODEX_LOCAL_RENDER_PACKAGE_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- `01` assigned `NEXT_TASK` for local render package / QA draft v0 implementation.
+- `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md` names Medium Phase C as `Local Render Package And QA`.
+- The roadmap Phase C includes MP4 as a later product goal, but this assigned slice explicitly forbids media generation.
+- Phase 1 local story input pack v0 is `PASS`.
+- Phase 2 local asset/prompt cards v0 is `PASS`.
+- The Rain Gate story input sample has 2 beats and `durationTargetMillis=9000`.
+- The Rain Gate asset/prompt cards sample has status `LOCAL_ASSET_PROMPT_CARDS_DRAFT`, 2 character cards, 1 scene card, 2 beat cards, 2 visual prompt cards, 2 audio cue cards, `providerInvocation=none`, `ttsInvocation=none`, and `downstreamBoundary=local_asset_prompt_cards_draft_only`.
+- Existing comic-video render workflow separates metadata-only render handoff manifests from explicit local render commands.
+- Existing CLI commands use `readJson`, `writeJson`, concise stdout summary lines, and nonzero exit on `FAIL`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- A v0 render package schema with timeline plan, panel plan, scene plan, asset prompt references, QA checklist, render boundary, findings, and evidence is sufficient for this phase.
+- Even-duration allocation across beats is acceptable for the deterministic v0 timeline plan.
+- Boundary text can explicitly say "no provider/API", "no media generation", and "no production lock" as exclusions, but it must not claim approval, release, canon, registry, or production lock.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether this render package should later convert into an existing `ComicVideoRenderHandoffManifest` is a future explicit `01` task.
+- Whether a future local renderer should consume this v0 package directly or via an adapter remains a later design decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add local render package / QA draft v0 models and deterministic draft service.
+- [x] Step 2: Add `draft-local-render-package` CLI wiring and help text.
+- [x] Step 3: Add focused draft service/CLI tests.
+- [x] Step 4: Generate the Rain Gate render package draft sample through the new CLI.
+- [x] Step 5: Add docs page and HANDOFF pointer.
+- [x] Step 6: Run focused tests, sample CLI verification, whitespace/diff/status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalRenderPackageDraftServiceTest` and `LocalRenderPackageDraftCliTest`.
+- Run `.\gradlew.bat :app:run --args="draft-local-render-package --story-input samples/local_story_input/rain_gate_story_input_pack_sample.json --asset-prompt-cards samples/local_story_input/rain_gate_asset_prompt_cards_draft_sample.json --out samples/local_story_input/rain_gate_local_render_package_draft_sample.json"` and confirm status `LOCAL_RENDER_PACKAGE_DRAFT`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- The draft could accidentally sound like actual rendering or media generation; keep all status and boundary fields draft-only.
+- Duration splitting must remain deterministic and simple rather than becoming a hidden renderer.
+- `Main.kt` and `docs/HANDOFF.md` are already dirty shared tracked files, so edits must stay narrow and additive.
+- Sample JSON contains Traditional Chinese, so Windows PowerShell checks should read it as UTF-8.
+
+### Drift Log
+
+- 2026-07-01: Started local render package / QA draft v0 implementation from `01` `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, no-external-tools roadmap Phase C, local story input pack v0 docs, local asset/prompt cards v0 docs, comic-video render handoff/local preview workflow evidence, Main.kt CLI patterns, local story/asset models and service, ComicVideo production/local render model naming evidence, Rain Gate story input sample, Rain Gate asset/prompt cards sample, and current git status before editing.
+- 2026-07-01: Added `LocalRenderPackageDraft` v0 models and `LocalRenderPackageDraftService`. The service requires `LOCAL_ASSET_PROMPT_CARDS_DRAFT`, refuses mismatched `sourceStoryInputPackId`, preserves local-only/no-external/file-protocol constraints, creates deterministic timeline/panel/scene plans, links asset prompt references, and emits QA checks without renderer/media execution.
+- 2026-07-01: Added `draft-local-render-package --story-input <json> --asset-prompt-cards <cards.json> --out <render-package.json>` CLI wiring and help text. The command reads JSON, writes render package draft JSON, prints a concise summary, and does not touch SQLite, provider/API, web/server, or media generation.
+- 2026-07-01: Added focused draft service and CLI tests, generated `samples/local_story_input/rain_gate_local_render_package_draft_sample.json`, added `docs/CODEX_LOCAL_RENDER_PACKAGE_V0.md`, and updated `docs/HANDOFF.md` with a Phase 3 pointer. CLI generation returned `status=LOCAL_RENDER_PACKAGE_DRAFT`, 2 timeline items, 1 scene plan, 2 panel plans, 2 asset prompt references, 7 QA checks, `qaFail=0`, `timelineTotalDurationMillis=9000`, and `findings=0`.
+- 2026-07-01: Focused Gradle verification passed for `LocalRenderPackageDraftServiceTest` and `LocalRenderPackageDraftCliTest`: `BUILD SUCCESSFUL in 1m 11s`.
+- 2026-07-01: Final verification passed for required `rg` terms, UTF-8 JSON parse of the sample render package draft, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
+
+## Active Local Asset Prompt Cards V0 Implementation Plan
+
+### Goal
+
+Implement the local asset/prompt cards v0 layer so a validated local story input pack can become structured, reviewable local cards for characters, scenes, beats, visual prompt seeds, audio cues, and later render planning.
+
+### Global Strategy
+
+- Add a small Kotlin model and deterministic draft service for local asset/prompt cards.
+- Add a draft-only CLI command: `draft-local-asset-prompt-cards --story-input <json> --story-validation <report.json> --out <cards.json>`.
+- Require a `PASS` story validation report whose `packId` matches the story input pack id.
+- Keep the command file-protocol only: read JSON, validate preconditions in memory, write JSON cards, and print a concise summary.
+- Add the Rain Gate sample card draft as a local fixture.
+- Add focused draft service and CLI tests.
+- Document how this turns validated story input into reviewable local cards without external paid/provider tools.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, media generation, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+- Do not modify generated `out/` demo package artifacts.
+- Do not turn the card draft into a render package, provider handoff, approved asset set, or MP4 in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalAssetPromptCardModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalAssetPromptCardDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalAssetPromptCardDraftServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalAssetPromptCardDraftCliTest.kt`
+- `samples/local_story_input/rain_gate_asset_prompt_cards_draft_sample.json`
+- `docs/CODEX_LOCAL_ASSET_PROMPT_CARDS_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- `01` assigned `NEXT_TASK` for local asset/prompt cards v0 implementation.
+- `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md` names Medium Phase B as `Local Asset / Prompt Cards`.
+- Phase 1 local story input pack v0 exists, and its Rain Gate sample validation report is `PASS`.
+- The Rain Gate story input sample has 2 characters, 1 scene, 2 beats, `durationTargetMillis=9000`, and local-only/no-external/file-protocol constraints.
+- Existing comic-video production package docs already use provider-neutral draft prompt text and asset/voice cards without provider submission or media generation.
+- Existing CLI commands use `readJson`, `writeJson`, concise stdout summary lines, and nonzero exit on `FAIL`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- A v0 card schema with character, scene, beat, visual prompt, audio cue, render intent, local constraints, boundaries, findings, and evidence is sufficient for this phase.
+- The draft should be deterministic from the story input JSON and validation report; no AI/provider calls are needed.
+- Boundary text can explicitly say "no provider/API", "no media generation", and "no production lock" as exclusions, but it must not claim approval, release, canon, registry, or production lock.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- The exact first user-custom story/worldbuilding input remains a future decision after this v0 card layer exists.
+- Whether these cards should feed a render package generator is a later explicit `01` task.
+
+### Implementation Steps
+
+- [x] Step 1: Add local asset/prompt card v0 models and deterministic draft service.
+- [x] Step 2: Add `draft-local-asset-prompt-cards` CLI wiring and help text.
+- [x] Step 3: Add focused draft service/CLI tests.
+- [x] Step 4: Generate the Rain Gate sample card draft through the new CLI.
+- [x] Step 5: Add docs page and HANDOFF pointer.
+- [x] Step 6: Run focused tests, sample CLI verification, whitespace/diff/status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalAssetPromptCardDraftServiceTest` and `LocalAssetPromptCardDraftCliTest`.
+- Run `.\gradlew.bat :app:run --args="draft-local-asset-prompt-cards --story-input samples/local_story_input/rain_gate_story_input_pack_sample.json --story-validation samples/local_story_input/rain_gate_story_input_pack_validation_sample.json --out samples/local_story_input/rain_gate_asset_prompt_cards_draft_sample.json"` and confirm status `LOCAL_ASSET_PROMPT_CARDS_DRAFT`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- The draft could accidentally sound like provider execution or final media approval; keep all card statuses local and review-only.
+- `Main.kt` and `docs/HANDOFF.md` are already dirty shared tracked files, so edits must stay narrow and additive.
+- Sample JSON contains Traditional Chinese, so Windows PowerShell checks should read it as UTF-8.
+
+### Drift Log
+
+- 2026-07-01: Started local asset/prompt cards v0 implementation from `01` `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, no-external-tools roadmap Phase B, local story input pack v0 docs, comic-video workflow production package/prompt-card evidence, Main.kt CLI patterns, local story input pack models/validator/tests, Rain Gate story input sample, validation report, HANDOFF, and current git status before editing.
+- 2026-07-01: Added `LocalAssetPromptCardsDraft` v0 models and `LocalAssetPromptCardDraftService`. The service requires a `PASS` story validation report, refuses mismatched `packId`, preserves local-only/no-external/file-protocol constraints, carries character visual/voice cues, links beats to scenes and character cards, and emits review-only visual prompt/audio cue cards with `providerInvocation=none` and `ttsInvocation=none`.
+- 2026-07-01: Added `draft-local-asset-prompt-cards --story-input <json> --story-validation <report.json> --out <cards.json>` CLI wiring and help text. The command reads JSON, writes cards JSON, prints a concise summary, and does not touch SQLite, provider/API, web/server, or media generation.
+- 2026-07-01: Added focused draft service and CLI tests, generated `samples/local_story_input/rain_gate_asset_prompt_cards_draft_sample.json`, added `docs/CODEX_LOCAL_ASSET_PROMPT_CARDS_V0.md`, and updated `docs/HANDOFF.md` with a Phase 2 pointer. CLI generation returned `status=LOCAL_ASSET_PROMPT_CARDS_DRAFT`, 2 character cards, 1 scene card, 2 beat cards, 2 visual prompt cards, 2 audio cue cards, and `findings=0`.
+- 2026-07-01: Focused Gradle verification passed for `LocalAssetPromptCardDraftServiceTest` and `LocalAssetPromptCardDraftCliTest`: `BUILD SUCCESSFUL in 1m 11s`.
+- 2026-07-01: Final verification passed for required `rg` terms, UTF-8 JSON parse of the sample card draft, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
+
+## Active Local Story Input Pack V0 Implementation Plan
+
+### Goal
+
+Implement the first local story input pack v0 layer so a user story/worldbuilding idea can become validated local file-protocol JSON before any custom comic-video generation work.
+
+### Global Strategy
+
+- Add a small Kotlin model and validator for local story input packs.
+- Add a validation-only CLI command: `validate-local-story-input-pack --input <json> --out <report.json>`.
+- Keep the command file-protocol only: read JSON, validate in memory, write JSON report, and print a concise summary.
+- Add a Traditional Chinese Rain Gate sample and validation report as local fixtures.
+- Add focused validator and CLI tests.
+- Document how this enables local-only progression from user worldbuilding to the comic-video workbench without paid/provider tools.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, media generation, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+- Do not modify generated `out/` demo package artifacts.
+- Do not convert the story input pack into a comic-video packet or MP4 in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/LocalStoryInputPackModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/LocalStoryInputPackValidationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryInputPackValidationServiceTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/LocalStoryInputPackValidationCliTest.kt`
+- `samples/local_story_input/rain_gate_story_input_pack_sample.json`
+- `samples/local_story_input/rain_gate_story_input_pack_validation_sample.json`
+- `docs/CODEX_LOCAL_STORY_INPUT_PACK_V0.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- `01` assigned `NEXT_TASK` for local story input pack v0 implementation.
+- The roadmap names `Local Story Input Pack` as the next no-external-tools phase.
+- Existing comic-video workbench commands use Kotlin/JVM CLI plus JSON file protocol.
+- Existing validation commands read JSON with `readJson`, write JSON with `writeJson`, print summary lines, and return nonzero on `FAIL`.
+- Existing production package validation uses `@Serializable` models, a service returning `verdict`, `findings`, and `evidence`, and focused Kotlin tests.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- A v0 schema with pack metadata, characters, scenes, beats, visual/audio style, duration target, and local-only constraints is sufficient for the first local input layer.
+- This v0 validator should be practical rather than exhaustive; later phases can add asset/prompt cards and render-package QA.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- The user's first custom world/story input remains a future product decision after this v0 validation layer exists.
+- Whether to connect validated story input packs to setting-source or comic-video packet generation remains a later explicit `01` task.
+
+### Implementation Steps
+
+- [x] Step 1: Add local story input pack v0 models and validation service.
+- [x] Step 2: Add `validate-local-story-input-pack` CLI wiring and help text.
+- [x] Step 3: Add focused validator/CLI tests.
+- [x] Step 4: Add Rain Gate Traditional Chinese sample pack and validation report.
+- [x] Step 5: Add docs page and HANDOFF pointer.
+- [x] Step 6: Run focused tests, sample CLI validation, whitespace/diff/status checks, then update this plan.
+
+### Verification
+
+- Run focused tests for `LocalStoryInputPackValidationServiceTest` and `LocalStoryInputPackValidationCliTest`.
+- Run `.\gradlew.bat :app:run --args="validate-local-story-input-pack --input samples/local_story_input/rain_gate_story_input_pack_sample.json --out samples/local_story_input/rain_gate_story_input_pack_validation_sample.json"` and confirm report `PASS`.
+- Run trailing-whitespace scan for all touched source/docs/sample files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- The schema could overreach into media generation or provider/prompt automation; keep it input validation only.
+- Forbidden-boundary scanning must catch release/canon/registry/production-lock claims without blocking the required local-only/no-external constraint language.
+- `Main.kt` and `docs/HANDOFF.md` are already dirty shared tracked files, so this slice must keep edits narrow and additive.
+
+### Drift Log
+
+- 2026-07-01: Started local story input pack v0 implementation from `01` `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, no-external-tools roadmap, review-bundle manifest, comic-video workflow JSON/CLI evidence, Main.kt CLI patterns, production package model/validation/test patterns, and current git status before editing.
+- 2026-07-01: Added `LocalStoryInputPack` v0 models and `LocalStoryInputPackValidationService`. Validation checks pack id/title/locale, characters, scenes, beats, duration bound, local-only/no-external/file-protocol constraints, cross references, and forbidden final/release/canon/registry/production-lock or downstream execution claims.
+- 2026-07-01: Added `validate-local-story-input-pack --input <json> --out <report.json>` CLI wiring and help text. The command reads JSON, writes a validation report, prints a summary, and does not touch SQLite, provider/API, web/server, or media generation.
+- 2026-07-01: Added focused validator and CLI tests, Traditional Chinese Rain Gate sample input, v0 docs page, and HANDOFF pointer. Ran the CLI against the sample and generated `samples/local_story_input/rain_gate_story_input_pack_validation_sample.json` with `verdict=PASS`, `findingCount=0`, and `nextAllowedDownstreamStep=local_story_input_pack_validated_for_review`.
+- 2026-07-01: Focused Gradle verification initially hit a command timeout / Kotlin daemon OOM on the large workspace. Rerunning with one-shot `-Pkotlin.daemon.jvmargs=-Xmx1536m` passed: `BUILD SUCCESSFUL in 23s`, with `:app:test UP-TO-DATE` after the successful prior run. The sample validation JSON must be read as UTF-8 in Windows PowerShell to avoid mojibake.
+- 2026-07-01: Final verification passed for UTF-8 JSON parse of the sample validation report, required `rg` terms, trailing-whitespace scan across touched files, `git diff --check -- PLANS.md docs/HANDOFF.md app/src/main/kotlin/com/localnovel/engine/Main.kt`, final `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only acceptable Windows line-ending warnings for touched tracked files.
+
+## Active Local Demo Productization Readiness Consolidation Plan
+
+### Goal
+
+Consolidate the verified local comic-video demo into a clearer review/package/readiness layer while preserving the user constraint: no external paid/provider tools for the near-term local demo/product path.
+
+### Global Strategy
+
+- Keep this medium batch docs-only plus `PLANS.md`.
+- Add one review-bundle manifest that tells `01` what files belong together if preserving the current local demo/workbench work.
+- Add one Traditional Chinese roadmap for continuing local video automation without paid/provider tools.
+- Update `docs/HANDOFF.md` with a concise pointer to the accepted local demo package and `03` read-only `PASS`, without claiming release, staging approval, or production lock.
+- Do not run Gradle for this docs/readiness batch.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, generated `out/` artifact edits, direct SQLite writes, provider/API calls, web/server, final media approval, production media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_LOCAL_DEMO_REVIEW_BUNDLE_MANIFEST.md`
+- `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- Control thread `01` is `019f0dd1-1543-7f22-b646-5c12d07d168d`.
+- Worker thread `02` is `019f1882-d5c6-72a3-893c-6d43cd097835`.
+- Reviewer thread `03` is `019f1ad1-2926-70c3-b85c-267df6fe331e`.
+- `01` assigned `NEXT_TASK` for local demo productization readiness consolidation.
+- `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md` records status `LOCAL_DEMO_PACKAGE_READY`.
+- `out/codex_local_demo_package/` contains `rain_gate_one_command_preview.mp4`, `README.md`, and `verification_summary.json`.
+- `out/codex_local_demo_package/verification_summary.json` is valid JSON and contains `LOCAL_DEMO_PACKAGE_READY`, `287815`, `9.000000`, `h264`, `1920x1080`, `aac`, and `reviewer03=PASS`.
+- `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` records the Rain Gate local preview artifact as `PASS`.
+- Prior verification includes focused production package `PASS`, focused local renderer / setting-source `PASS`, focused samples `PASS`, integrated local MP4 artifact `PASS`, full Gradle regression `PASS`, and `03` read-only `PASS`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- The review-bundle manifest can list the practical review scope without approving staging, commit, release, or production lock.
+- A roadmap can define local automation phases without requiring code changes in this slice.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether `01` wants a later review/staging bundle, a new custom story input, or another read-only review remains a future decision.
+- Whether external tools should be introduced later depends on future monetization/funding and explicit user/`01` approval.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/CODEX_LOCAL_DEMO_REVIEW_BUNDLE_MANIFEST.md`.
+- [x] Step 2: Add `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md`.
+- [x] Step 3: Update `docs/HANDOFF.md` with a concise accepted-local-demo pointer.
+- [x] Step 4: Verify required terms, JSON validity, whitespace, tracked diff, and final git status.
+
+### Verification
+
+- `rg` must find `LOCAL_DEMO_REVIEW_BUNDLE_DRAFT`, `codex_local_demo_package`, `rain_gate_one_command_preview.mp4`, `full Gradle regression PASS`, `03 read-only PASS`, `no external paid/provider tools`, `file-protocol JSON`, `fail-stop`, `no production lock`, and `no staging approval` in touched docs.
+- Parse `out/codex_local_demo_package/verification_summary.json` read-only and confirm it is valid JSON containing `LOCAL_DEMO_PACKAGE_READY`.
+- Run trailing-whitespace scan for `PLANS.md`, `docs/HANDOFF.md`, `docs/CODEX_LOCAL_DEMO_REVIEW_BUNDLE_MANIFEST.md`, and `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md`.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- Review-bundle language could accidentally sound like staging approval or release approval.
+- The dirty worktree spans docs, code, tests, and samples; the manifest must not pretend a narrow file set is independent when shared files are involved.
+- The roadmap could drift into external provider/API integration unless boundaries stay explicit.
+
+### Drift Log
+
+- 2026-07-01: Started local demo productization readiness consolidation from `01` `NEXT_TASK`. Read strata-agent-loop, AGENTS, top `PLANS.md`, local demo package evidence, local delivery brief, local preview artifact verification, dirty-worktree grouping snapshot, HANDOFF, generated package README, generated verification summary JSON, package file list, and git status/inventory before editing.
+- 2026-07-01: Added `docs/CODEX_LOCAL_DEMO_REVIEW_BUNDLE_MANIFEST.md` with status `LOCAL_DEMO_REVIEW_BUNDLE_DRAFT`, accepted package path, exact generated package files, dirty tracked review files, untracked docs/code/tests/sample files, exclusions, prior verification, and suggested review order.
+- 2026-07-01: Added `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md` in Traditional Chinese with the near-term no external paid/provider tools goal, locally automatable steps, file-protocol JSON boundary, three medium phases, fail-stop rules, and future-only external-tool statement.
+- 2026-07-01: Updated `docs/HANDOFF.md` with a concise pointer to the accepted local demo package, review-bundle manifest, no-external-tools roadmap, 02 package PASS, 03 read-only PASS, and full Gradle regression PASS without claiming staging approval, release, or production lock.
+- 2026-07-01: Verification passed for required `rg` terms, read-only JSON parse confirming `LOCAL_DEMO_PACKAGE_READY`, trailing-whitespace scan, `git diff --check`, and final `git status --short --branch`. `git diff --check` reported only acceptable Windows line-ending warnings for `PLANS.md` and `docs/HANDOFF.md`; Gradle was not run for this docs/readiness batch.
+
+## Active Comic-Video Local Demo Package Plan
+
+### Goal
+
+Create a local demo package for the verified comic-video workbench result so the user can inspect and share the local MP4 artifact without relying on external paid/provider tools.
+
+### Global Strategy
+
+- Keep this slice to `PLANS.md`, one tracked docs evidence note, and generated package files under `out/codex_local_demo_package/`.
+- Copy the already verified Rain Gate local preview MP4 into the package instead of regenerating media.
+- Include a Traditional Chinese user-facing `README.md` and a machine-readable `verification_summary.json`.
+- Treat the package as local demo evidence only, not final media approval, provider/media production, release, canon, registry, approval, or production lock.
+- Do not run Gradle for this packaging-only slice.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, direct SQLite writes, provider/API calls, web/server, final media approval, production media handoff, canon, registry, release, approval, production lock, staging, commit, push, new thread creation/contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`
+- Generated files under `out/codex_local_demo_package/`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for creating a local demo package.
+- Branch is `codex/mvp6-checkpoint-branching-spec`.
+- Control thread `01` is `019f0dd1-1543-7f22-b646-5c12d07d168d`.
+- Worker thread `02` is `019f1882-d5c6-72a3-893c-6d43cd097835`.
+- Reviewer thread `03` is `019f1ad1-2926-70c3-b85c-267df6fe331e` and user-provided context says its read-only review returned `PASS`.
+- Source MP4 `out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4` exists and has byte size `287815`.
+- Verified source MP4 facts are duration `9.000000`, video stream `h264` at `1920x1080`, and audio stream `aac`.
+- Prior checks are focused production package `PASS`, focused local renderer / setting-source `PASS`, focused samples `PASS`, integrated local MP4 artifact `PASS`, full Gradle regression `PASS`, and reviewer03 `PASS`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- Copying the verified MP4 is sufficient for this local demo package because the package step is not a media regeneration step.
+- Generated files under `out/codex_local_demo_package/` are acceptable local artifacts for user inspection.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether to package, stage, commit, or turn this into a formal release remains a future `01` / user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Create `out/codex_local_demo_package/` and copy the verified MP4 into it.
+- [x] Step 2: Add generated `README.md` and `verification_summary.json` to the package.
+- [x] Step 3: Add tracked docs evidence note `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`.
+- [x] Step 4: Verify required terms, MP4 byte size, whitespace, tracked diff, and final git status.
+
+### Verification
+
+- Confirm package MP4 exists at `out/codex_local_demo_package/rain_gate_one_command_preview.mp4` and has byte size `287815`.
+- `rg` must find `LOCAL_DEMO_PACKAGE_READY`, `rain_gate_one_command_preview.mp4`, `287815`, `9.000000`, `h264`, `aac`, `reviewer03`, `no provider/API`, and `no production lock` in touched package/docs files.
+- Run trailing-whitespace scan for `PLANS.md`, `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`, and `out/codex_local_demo_package/README.md`.
+- Run `git diff --check -- PLANS.md docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- The package could be mistaken for a formal release unless boundaries are explicit.
+- The generated package under `out/` may be ignored/untracked by Git, so the tracked docs evidence note must record what was created.
+- Existing dirty worktree contents are broad; this slice must not clean, stage, or reorganize them.
+
+### Drift Log
+
+- 2026-06-30: Started local demo package slice from `01` `NEXT_TASK`. Read required AGENTS boundary evidence, top `PLANS.md`, local delivery brief, local preview artifact verification, 03 review request packet, `git status --short --branch`, and confirmed the source MP4 exists with byte size `287815`.
+- 2026-06-30: Created `out/codex_local_demo_package/`, copied `rain_gate_one_command_preview.mp4`, and verified the package copy exists with byte size `287815`.
+- 2026-06-30: Added generated package docs `out/codex_local_demo_package/README.md` and `out/codex_local_demo_package/verification_summary.json`, plus tracked evidence note `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`.
+- 2026-06-30: Verification passed for package MP4 size, JSON parsing, required `rg` terms, trailing-whitespace scan, `git diff --check -- PLANS.md docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`, and `git status --short --branch`. `git diff --check` reported only the acceptable Windows line-ending warning for `PLANS.md`; Gradle was not run for this packaging-only slice.
+
+## Active Comic-Video Local Delivery Brief Plan
+
+### Goal
+
+Create a concise user-facing local delivery brief for the comic-video workbench so the user can understand where the video is, how it was generated, how to rerun it, what passed, and what it does not yet mean.
+
+### Global Strategy
+
+- Keep this slice docs-only plus `PLANS.md`.
+- Use Traditional Chinese first for the user-facing brief.
+- Ground the brief in the verified artifact evidence, workflow docs, completion report, grouping snapshot, and current git status.
+- Include exactly three next decision options for `01` / user.
+- Do not rerun Gradle or modify code, samples, or generated `out/` artifacts.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, generated `out/` artifact edits, direct SQLite writes, provider/API calls, web/server, final media approval, production media handoff, canon, registry, release, approval, production lock, staging, commit, push, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_COMIC_VIDEO_WORKBENCH_LOCAL_DELIVERY_BRIEF.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for a concise user-facing local delivery brief.
+- `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` records status `PASS_LOCAL_ARTIFACT_VERIFIED`.
+- The local preview artifact is `out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4`.
+- The MP4 facts are byte size `287815`, duration `9.000000`, video stream `h264` at `1920x1080`, and audio stream `aac`.
+- The full Gradle regression passed after the local preview artifact PASS.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` documents the one-command Rain Gate setting-source local preview flow.
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` says the current phase is a PASS local Kotlin/JVM CLI plus JSON file protocol capability, not formal registry, release, provider/media production, final art, final voice acting, approval, canon, runtime integration, or production lock.
+- `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md` says practical review/staging choices still require explicit `NEXT_TASK` from `01`.
+- Current `git status --short --branch` shows existing dirty/untracked grouped work and no staged changes.
+
+### Assumptions
+
+- A single concise docs brief is enough for the user-facing delivery explanation.
+- The brief should not duplicate all engineering details from prior evidence docs.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Which of the three next decision options `01` / user wants remains a future decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/CODEX_COMIC_VIDEO_WORKBENCH_LOCAL_DELIVERY_BRIEF.md`.
+- [x] Step 2: Verify required brief terms with `rg`.
+- [x] Step 3: Run whitespace, tracked diff, and status checks; update this plan and report back to `01`.
+
+### Verification
+
+- `rg` must find `LOCAL_DELIVERY_BRIEF_DRAFT_FOR_USER`, `rain_gate_one_command_preview.mp4`, `287815`, `9.000000`, `h264`, `aac`, `full Gradle regression PASS`, `not formal final media approval`, and `exactly three options`.
+- Run trailing-whitespace scan for `PLANS.md` and `docs/CODEX_COMIC_VIDEO_WORKBENCH_LOCAL_DELIVERY_BRIEF.md`.
+- Run `git diff --check -- PLANS.md`; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+- Do not run Gradle for this docs-only slice.
+
+### Risks
+
+- Overstating local preview evidence as formal final media approval.
+- Letting next options imply staging, commit, or production lock without explicit `01` / user decision.
+- Making the brief too technical for the user-facing purpose.
+
+### Drift Log
+
+- 2026-06-30: Started user-facing local delivery brief from `01` `NEXT_TASK`. Read required AGENTS, top `PLANS.md`, local preview artifact evidence, workflow one-command/local preview sections, current-phase completion/boundary sections, dirty-worktree practical decision sections, and `git status --short --branch`. Scope is docs-only plus `PLANS.md`; Gradle is not run in this slice.
+- 2026-06-30: Added `docs/CODEX_COMIC_VIDEO_WORKBENCH_LOCAL_DELIVERY_BRIEF.md` with status `LOCAL_DELIVERY_BRIEF_DRAFT_FOR_USER`, the verified MP4 path and facts, exact rerun command, verification summary, user-facing meaning, non-meaning / boundary statements, and exactly three next decision options for `01` / user.
+- 2026-06-30: Verification passed with `rg` for required delivery brief terms, trailing-whitespace scan over touched files, `git diff --check -- PLANS.md` for touched tracked files, and `git status --short --branch`. `git diff --check` reported only the Windows line-ending warning for `PLANS.md`; Gradle was not run because this is a docs-only slice.
+
+## Active Full Regression Verification After Local Preview Artifact Plan
+
+### Goal
+
+Run one full project regression test after the comic-video focused slices and fresh local preview MP4 artifact PASS, so `01` can decide later about packaging, review, staging, or commit direction with current test evidence.
+
+### Global Strategy
+
+- Keep this slice verification-only.
+- Update `PLANS.md` before running the full test.
+- Run the full Gradle test suite once with the assigned Kotlin daemon memory setting.
+- If the full test passes, do not edit code.
+- If the full test fails, record the exact failure summary in `PLANS.md`, do not fix in this slice, and report `FAIL` or `BLOCKED`.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, generated `out/` artifact edits, direct SQLite writes, provider/API calls, web/server, final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for full regression verification after the comic-video local preview artifact PASS.
+- `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` records status `PASS_LOCAL_ARTIFACT_VERIFIED`.
+- The fresh local preview artifact path is `out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4`.
+- The artifact evidence note records MP4 byte size `287815`, duration `9.000000`, video stream `h264` at `1920x1080`, and audio stream `aac`.
+- `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md` practical decisions say review/staging choices still require a new explicit `NEXT_TASK` from `01`.
+- `git status --short --branch` currently shows existing tracked dirty files, untracked comic-video code/tests/samples/docs, and no staged changes.
+
+### Assumptions
+
+- The full test may take longer than focused tests because it compiles and runs the whole test suite.
+- A passing full test does not approve staging, commit, release, production lock, or final media.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Which review, packaging, staging, or commit direction `01` wants remains a future decision after full regression evidence.
+
+### Implementation Steps
+
+- [x] Step 1: Run the full Gradle test suite once.
+- [x] Step 2: Record PASS/FAIL/BLOCKED in this plan without code edits.
+- [x] Step 3: Run whitespace, tracked diff, status, and optional process checks; report back to `01`.
+
+### Verification
+
+- Set `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'`.
+- Run `.\gradlew.bat test --no-daemon --console=plain`.
+- Run trailing-whitespace scan for `PLANS.md`.
+- Run `git diff --check -- PLANS.md`; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+- If practical, check whether Java / Gradle / Kotlin processes remain after the test.
+
+### Risks
+
+- Full regression failure may arise from broad or pre-existing dirty-worktree interactions.
+- Full regression can compile or execute tests outside the comic-video slice even though no code edits are allowed here.
+- Environment-specific failures should be reported exactly rather than fixed in this slice.
+
+### Drift Log
+
+- 2026-06-30: Started full regression verification from `01` `NEXT_TASK`. Read required AGENTS, top `PLANS.md`, local preview artifact evidence, dirty-worktree practical decision sections, and `git status --short --branch` before running tests. Scope is `PLANS.md` only unless the result must be reported as failure evidence.
+- 2026-06-30: Full Gradle regression passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain`. Build result was `BUILD SUCCESSFUL in 2m 40s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code, sample, generated artifact, staging, commit, or push changes were made.
+- 2026-06-30: Final checks passed for `PLANS.md` trailing whitespace and `git diff --check -- PLANS.md`, with only the Windows line-ending warning. `git status --short --branch` was checked. Optional process check found one remaining `java.exe` GradleDaemon 8.10.2 process after a short wait; no stop/cleanup command was run because this slice allowed full-test verification only.
+
+## Active Comic-Video Integrated Local Preview Artifact Verification Plan
+
+### Goal
+
+Prove that the local comic-video workbench can still generate a real local preview MP4 artifact from the documented Rain Gate / setting-source sample flow.
+
+### Global Strategy
+
+- Use the documented one-command setting-source local preview path, not an invented command shape.
+- Generate a fresh local preview artifact under `out/codex_integrated_local_preview_verification/`.
+- Treat the generated MP4 as local artifact evidence only, not final media approval or provider/media handoff.
+- Verify file existence, nonzero byte size, and `ffprobe` duration / stream evidence if `ffprobe` is available.
+- Record factual evidence in `PLANS.md` and, if useful, a concise docs evidence note.
+
+### Non-Goals
+
+- No Kotlin code edits, sample edits, direct SQLite writes, provider/API calls, web/server, formal final media approval, provider/media handoff, canon, registry, release, approval, production lock, staging, commit, push, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- Optional `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md`
+- Generated local artifacts under `out/codex_integrated_local_preview_verification/`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for integrated local preview artifact verification.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` documents the shortest setting-source local preview path as `build-setting-comic-video-local-preview`.
+- The documented command uses `samples/comic_video_setting_source/setting_pack_rain_gate_sample.json`, `scene-rain-gate`, `samples/comic_video_setting_source/voice_timeline_fill_rain_gate_preview_sample.json`, `--output-dir`, `--out-video`, `--build`, and `--panel-duration-ms 3000`.
+- `Main.kt` wires `build-setting-comic-video-local-preview` and forwards it through setting image-facing proof generation and comic-video local preview generation.
+- `Main.kt` supports caller-provided `--output-dir` and `--out-video` for the setting-source preview wrapper.
+- The Rain Gate setting pack sample contains public scene `scene-rain-gate`.
+- The Rain Gate voice timeline fill sample targets `sourceComicVideoPacketId` `comic-video-setting-rain-gate-preview-001` and declares `totalDurationMillis` 9000 at `1920x1080`.
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` records earlier PASS evidence for one-command setting-source local preview MP4 at 9 seconds with H.264 video and AAC audio.
+- The dirty-worktree grouping snapshot says generated local renderer outputs may appear under `out/` and are not part of formal final media approval, canon, registry, release, or production lock.
+
+### Assumptions
+
+- `ffprobe` may be available because prior project evidence used it; availability will be checked before reporting stream details.
+- The local Windows speech voice / ffmpeg environment may affect non-dry-run rendering. If the documented command fails due to environment tooling, this slice will report the exact failure instead of fixing code.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether generated local preview artifact evidence should be retained, cleaned, or included in a future review bundle remains a future `01` decision.
+
+### Implementation Steps
+
+- [x] Step 1: Run the documented one-command Rain Gate setting-source local preview command to generate a fresh MP4 under `out/codex_integrated_local_preview_verification/`.
+- [x] Step 2: Verify MP4 existence and nonzero byte size.
+- [x] Step 3: Check `ffprobe` availability and, if available, verify duration and video/audio streams.
+- [x] Step 4: Add concise docs evidence note if useful.
+- [x] Step 5: Update this plan with PASS/FAIL/BLOCKED and run whitespace, diff, and status checks before reporting to `01`.
+
+### Verification
+
+- Run `.\gradlew.bat :app:run --args="build-setting-comic-video-local-preview --setting-pack samples/comic_video_setting_source/setting_pack_rain_gate_sample.json --scene scene-rain-gate --voice-timeline-fill samples/comic_video_setting_source/voice_timeline_fill_rain_gate_preview_sample.json --output-dir out/codex_integrated_local_preview_verification --out-video out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4 --build codex-integrated-local-preview-verification-001 --panel-duration-ms 3000"`.
+- Verify `out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4` exists and has byte size greater than zero.
+- If available, run `ffprobe` on the MP4 and record duration plus video/audio stream evidence.
+- Run trailing-whitespace scan for touched files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- Non-dry-run rendering depends on local external tools such as `ffmpeg`, `ffprobe`, and Windows speech synthesis.
+- Generated files under `out/` are local artifacts and should not be mistaken for final media approval.
+- Adding an evidence note could be mistaken as provider/media handoff unless boundaries are explicit.
+
+### Drift Log
+
+- 2026-06-30: Started integrated local preview artifact verification from `01` `NEXT_TASK`. Read required docs, grouping snapshot sections, Main.kt CLI wiring, and Rain Gate sample input files before artifact generation. Selected the documented `build-setting-comic-video-local-preview` Rain Gate flow with a fresh `out/codex_integrated_local_preview_verification/` output path.
+- 2026-06-30: Ran the documented Rain Gate one-command local preview command with `out/codex_integrated_local_preview_verification/` output. Command exit code was 0. The local preview build report is PASS with `buildStatus=local_preview_video_built`, `mediaGenerated=true`, `packetValidationVerdict=PASS`, `manifestVerdict=PASS`, `localRenderVerdict=PASS`, `totalDurationMillis=9000`, and `findingCount=0`.
+- 2026-06-30: Verified `out/codex_integrated_local_preview_verification/rain_gate_one_command_preview.mp4` exists with byte size 287815. `ffprobe` is available and reported duration `9.000000`, video stream `h264` at `1920x1080`, and audio stream `aac`.
+- 2026-06-30: Added `docs/CODEX_COMIC_VIDEO_LOCAL_PREVIEW_ARTIFACT_VERIFICATION.md` as concise local artifact evidence. The note explicitly states this is not final media approval, provider/media handoff, canon, registry, release, approval, or production lock.
+- 2026-06-30: Final checks passed: trailing-whitespace scan over touched files had no output; `git diff --check -- PLANS.md` passed with only the Windows line-ending warning; `git status --short --branch` showed the existing dirty/untracked grouped work plus the new artifact evidence note, with generated `out/` artifacts remaining local and ignored.
+
+## Active Comic-Video Samples Focused Verification Plan
+
+### Goal
+
+Verify whether the comic-video sample packs and evidence are coherent as the practical handoff layer for turning worldbuilding/settings into the local comic-video workflow.
+
+### Global Strategy
+
+- Keep this slice focused on sample verification first.
+- Use only the assigned focused Gradle test for `ComicVideoWorkbenchSamplePackTest`.
+- Run the assigned sample `git diff --check` hygiene check.
+- If both checks pass, do not edit samples or code.
+- If a check fails with a tiny, unambiguous fixture issue inside the exact sample group, record the failure, make the smallest scoped fix, and rerun the same checks.
+- If failure is broad, unclear, outside scope, encoding-related without a safe minimal fix, or product/canon-level, report `FAIL` / `BLOCKED` and stop.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, final media generation, final media approval, production media handoff, canon, registry, release, approval, production lock, staging, commit, push, Kotlin code edits, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- Focused verification command only unless a tiny in-scope sample fixture fix is proven necessary:
+  - `samples/comic_video_workbench/`
+  - `samples/comic_video_workbench_zh_tw/`
+  - `samples/comic_video_setting_source/`
+  - `app/src/test/kotlin/com/localnovel/engine/ComicVideoWorkbenchSamplePackTest.kt` for verification evidence only
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for focused verification of the comic-video samples group.
+- The dirty-worktree grouping snapshot identifies the sample group as local JSON sample packs and production package evidence for English, Traditional Chinese, and setting-source Rain Gate workflows.
+- The grouping snapshot records the samples as evidence, not formal canon, approval, registry, release, production lock, or provider media.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` identifies committed sample packs at `samples/comic_video_workbench/`, `samples/comic_video_workbench_zh_tw/`, and `samples/comic_video_setting_source/`.
+- The workflow doc says sample media outputs stay outside source control unless separately approved.
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` records PASS evidence for the committed sample pack, setting-source sample, local preview MP4 evidence, and production-package sample addendum while explicitly excluding final media, provider/media production, canon, release, approval, and production lock.
+- `rg --files` listed files under all three sample directories, including English workbench JSON, Traditional Chinese workbench JSON plus production package preview, and Rain Gate setting-source script/proof/production package preview artifacts.
+- `ComicVideoWorkbenchSamplePackTest` reruns the English and Traditional Chinese sample packs through the CLI JSON protocol, checks committed validation and render handoff manifests are PASS, verifies three panels / voice cues / subtitles, and checks expected total durations of 7800 ms and 9000 ms.
+
+### Assumptions
+
+- `PLANS.md` plus the completion report should be enough for this verification slice unless the focused sample checks expose a result that needs a separate factual note.
+- `git diff --check -- samples/...` may be silent if sample files are currently untracked; the command result still records the requested hygiene check for the sample paths.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether the sample group should be staged together with code/docs or reviewed as a separate evidence bundle remains a future `01` decision.
+
+### Implementation Steps
+
+- [x] Step 1: Run the focused Gradle test for `ComicVideoWorkbenchSamplePackTest`.
+- [x] Step 2: Run sample `git diff --check` hygiene check.
+- [x] Step 3: If PASS, update this plan and report without sample/code edits; if FAIL, classify the failure before any fix.
+- [x] Step 4: Run whitespace, tracked diff, and status checks; report back to `01`.
+
+### Verification
+
+- Set `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'`.
+- Run `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoWorkbenchSamplePackTest"`.
+- Run `git diff --check -- samples/comic_video_workbench samples/comic_video_workbench_zh_tw samples/comic_video_setting_source`.
+- Run trailing-whitespace scan for touched files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- Sample files include Traditional Chinese text that can display incorrectly in the default PowerShell code page.
+- Sample paths are untracked in the current dirty worktree, so review/staging decisions must be made explicitly by `01`.
+- Fixing sample failures could accidentally become product/canon decision-making; this slice must stay verification-only unless a tiny fixture issue is proven.
+
+### Drift Log
+
+- 2026-06-30: Started focused sample group verification from `01` `NEXT_TASK`. Read required docs, sample directory file list, grouping evidence, current-phase completion evidence, and `ComicVideoWorkbenchSamplePackTest` before verification. Scope is verification-first with no sample or code edits unless a tiny, clear fixture issue is proven by the focused checks.
+- 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoWorkbenchSamplePackTest"`. Build result was `BUILD SUCCESSFUL in 28s` with 5 actionable tasks, 3 executed and 2 up-to-date.
+- 2026-06-30: Sample diff hygiene check passed with `git diff --check -- samples/comic_video_workbench samples/comic_video_workbench_zh_tw samples/comic_video_setting_source`. No sample or Kotlin code edits were made.
+
+## Active Comic-Video Local Renderer / Setting-Source Bridge Focused Verification Plan
+
+### Goal
+
+Verify whether the comic-video local renderer and setting-source bridge layer can be reviewed as a coherent code/test group for the eventual local video output workflow.
+
+### Global Strategy
+
+- Keep this slice focused on verification first.
+- Use only the assigned focused Gradle test set for local renderer, local preview build, setting-source preview bridge, and setting-pack script draft bridge.
+- If the focused tests pass, do not edit code.
+- If focused tests fail with a small, clear issue inside the exact local renderer / setting-source bridge code/test group, record the failure, make the smallest scoped fix, and rerun the same focused tests.
+- If failure is broad, unclear, outside scope, or architectural/product-level, report `FAIL` / `BLOCKED` and stop.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, final media approval, production media handoff, canon, registry, release, approval, production lock, staging, commit, push, production-package code edits, sample edits, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- Focused verification command only unless a tiny in-scope fix is proven necessary:
+  - `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoLocalRendererService.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/service/SettingPackScriptPacketDraftService.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/service/SettingImageFacingProofPreviewBuildService.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/Main.kt` local renderer / setting-source CLI wiring only
+  - `app/src/test/kotlin/com/localnovel/engine/ComicVideoLocalRendererServiceTest.kt`
+  - `app/src/test/kotlin/com/localnovel/engine/ComicVideoLocalPreviewBuildCliTest.kt`
+  - `app/src/test/kotlin/com/localnovel/engine/SettingComicVideoLocalPreviewBuildCliTest.kt`
+  - `app/src/test/kotlin/com/localnovel/engine/SettingImageFacingProofPreviewBuildCliTest.kt`
+  - `app/src/test/kotlin/com/localnovel/engine/SettingPackScriptPacketDraftServiceTest.kt`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for focused verification of the comic-video local renderer / setting-source bridge code group.
+- The dirty-worktree grouping snapshot identifies local preview MP4 rendering, one-command local preview wrapper behavior, setting-pack-to-script draft bridge, and setting-to-image-facing-proof preview bridge as this group.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` states the workflow is Kotlin/JVM CLI plus JSON file protocol and that local preview media may be generated under `out/`, while forbidding provider jobs, registry entries, canon changes, approvals, releases, and production locks.
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` records the current-phase local workbench verdict as `PASS`, including setting-source bridge, local preview renderer, and one-command setting-source wrapper evidence.
+- `ComicVideoLocalRendererService` supports dry-run PASS reports without media generation and non-dry-run local PNG/WAV/MP4 artifacts from a PASS render handoff manifest.
+- `SettingPackScriptPacketDraftService` derives a script packet draft from public setting-pack scene data and excludes non-public / author-only source material.
+- `SettingImageFacingProofPreviewBuildService` builds planning brief and storyboard draft surfaces for a local-preview image-facing proof bridge from setting-derived script data.
+- `Main.kt` wires `render-comic-video-local`, `build-comic-video-local-preview`, `build-setting-comic-video-local-preview`, `create-setting-script-packet-draft`, and `build-setting-image-facing-proof-preview`.
+- Focused tests cover renderer dry-run PASS/FAIL behavior, local preview build dry-runs, setting-source proof bridge PASS/FAIL behavior, one-command setting wrapper PASS/missing-scene behavior, and setting-pack script draft bridge non-public text exclusion.
+
+### Assumptions
+
+- `PLANS.md` plus the completion report should be enough for this verification slice unless the focused test exposes a result that needs a separate factual note.
+- Test-generated local media/temp outputs are allowed only if the focused tests create them; the read evidence suggests these focused tests mainly use dry-runs and temp directories.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether this group is ready for staging or broader review remains a future `01` decision after focused verification.
+
+### Implementation Steps
+
+- [x] Step 1: Run the assigned focused Gradle test set for local renderer / setting-source bridge.
+- [x] Step 2: If PASS, update this plan and report without code edits; if FAIL, classify the failure before any fix.
+- [x] Step 3: Run whitespace, diff, and status checks; report back to `01`.
+
+### Verification
+
+- Set `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'`.
+- Run `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoLocalRendererServiceTest" --tests "com.localnovel.engine.ComicVideoLocalPreviewBuildCliTest" --tests "com.localnovel.engine.SettingComicVideoLocalPreviewBuildCliTest" --tests "com.localnovel.engine.SettingImageFacingProofPreviewBuildCliTest" --tests "com.localnovel.engine.SettingPackScriptPacketDraftServiceTest"`.
+- Run trailing-whitespace scan for touched files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- Focused tests may compile broader project sources even though test execution is filtered.
+- Local renderer behavior may depend on local OS tools or fonts if non-dry-run execution occurs; this slice uses the assigned tests rather than manual media generation.
+- Fixing a failure could accidentally drift into production package code, sample files, provider/media handoff, or final approval language.
+
+### Drift Log
+
+- 2026-06-30: Started focused local renderer / setting-source bridge verification from `01` `NEXT_TASK`. Read required docs, code, CLI wiring evidence, and tests before verification. Scope is verification-first with no code edits unless a tiny, clear, in-scope failure is proven by the focused tests.
+- 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and the assigned test set: `ComicVideoLocalRendererServiceTest`, `ComicVideoLocalPreviewBuildCliTest`, `SettingComicVideoLocalPreviewBuildCliTest`, `SettingImageFacingProofPreviewBuildCliTest`, and `SettingPackScriptPacketDraftServiceTest`. Build result was `BUILD SUCCESSFUL in 28s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code edits were made.
+
+## Active Comic-Video Production Package Focused Verification Plan
+
+### Goal
+
+Verify whether the draft comic-video production package layer can be reviewed as a coherent code/test group for the eventual video output workflow.
+
+### Global Strategy
+
+- Keep this slice focused on verification first.
+- Use only the assigned focused Gradle test pattern for `ComicVideoProductionPackage*`.
+- If the focused test passes, do not edit code.
+- If the focused test fails with a small, clear issue inside the exact production package code/test group, record the failure, make the smallest scoped fix, and rerun the same focused test.
+- If failure is broad, unclear, outside scope, or architectural, report `FAIL` / `BLOCKED` and stop.
+
+### Non-Goals
+
+- No direct SQLite writes, provider/API calls, web/server, final media generation, canon, registry, release, approval, production lock, staging, commit, push, sample edits, local renderer changes, setting-source bridge changes, `03` contact, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- Focused verification command only unless a tiny in-scope fix is proven necessary:
+  - `app/src/main/kotlin/com/localnovel/engine/model/ComicVideoProductionPackageModels.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoProductionPackageDraftService.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoProductionPackageValidationService.kt`
+  - `app/src/main/kotlin/com/localnovel/engine/Main.kt` production-package CLI wiring only
+  - `app/src/test/kotlin/com/localnovel/engine/ComicVideoProductionPackageDraftServiceTest.kt`
+  - `app/src/test/kotlin/com/localnovel/engine/ComicVideoProductionPackageValidationServiceTest.kt`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for focused verification of the comic-video production package code group.
+- The dirty-worktree grouping snapshot identifies production package models, draft service, validation service, CLI wiring, and focused tests as the relevant group.
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md` defines the product target as an accepted chapter flowing toward a timed comic video timeline and rendered video, with data contracts and validators before image generation.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` records `create-comic-video-production-package-draft` and `validate-comic-video-production-package` as draft-only / review-only local JSON workflow commands.
+- `ComicVideoProductionPackageDraftService` creates storyboard production rows, shot prompt drafts, asset prompt cards, and voice style cards from a PASS image-facing proof and voice timeline fill, then enforces draft-only boundary text checks.
+- `ComicVideoProductionPackageValidationService` validates package state, source fields, storyboard rows, shot prompts, asset cards, voice cards, cross references, and forbidden provider/API/final/canon/approval text.
+- `Main.kt` wires `create-comic-video-production-package-draft` and `validate-comic-video-production-package` CLI commands.
+- Focused tests cover draft creation, validation, CLI JSON writes, mismatch failure, unsafe prompt text failure, and no-database behavior.
+
+### Assumptions
+
+- `PLANS.md` plus the completion report should be enough for this verification slice unless the focused test exposes a result that needs a separate factual note.
+- The current worker session cannot independently prove its own active model/thinking setting from project files; the required `model=gpt-5.5` / `thinking=xhigh` policy will be used for the completion report tool call when available.
+
+### Open Questions
+
+- Whether this group is ready for staging or broader review remains a future `01` decision after focused verification.
+
+### Implementation Steps
+
+- [x] Step 1: Run the focused Gradle test for `com.localnovel.engine.ComicVideoProductionPackage*`.
+- [x] Step 2: If PASS, update this plan and report without code edits; if FAIL, classify the failure before any fix.
+- [x] Step 3: Run whitespace, diff, and status checks; report back to `01`.
+
+### Verification
+
+- Set `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'`.
+- Run `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoProductionPackage*"`.
+- Run trailing-whitespace scan for touched files.
+- Run `git diff --check` for touched tracked files; Windows line-ending warnings are acceptable.
+- Check `git status --short --branch` at the end.
+
+### Risks
+
+- Focused test may fail from shared `Main.kt` / `Models.kt` changes outside the narrow production package group.
+- Focused test may compile broader project sources even though test execution is filtered.
+- Fixing a failure could accidentally drift into local renderer, setting-source bridge, samples, or production approval language.
+
+### Drift Log
+
+- 2026-06-30: Started focused production package verification from `01` `NEXT_TASK`. Read required docs, code, CLI wiring evidence, and tests before verification. Scope is verification-first with no code edits unless a tiny, clear, in-scope failure is proven by the focused test.
+- 2026-06-30: Focused Gradle verification passed with `$env:ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs='-Xmx1536m'` and `.\gradlew.bat test --no-daemon --console=plain --tests "com.localnovel.engine.ComicVideoProductionPackage*"`. Build result was `BUILD SUCCESSFUL in 29s` with 5 actionable tasks, 3 executed and 2 up-to-date. No code edits were made.
+
+## Active Codex Handoff Loop 03 Review Request Plan
+
+### Goal
+
+Create the smallest useful docs-only `03` review request packet for the handoff-loop docs group so `01` can decide later whether to create or contact a reviewer.
+
+### Global Strategy
+
+- Keep this slice docs-only plus `PLANS.md`.
+- Draft a review request packet only; do not create or contact `03`.
+- Make the review scope exact and narrow around existing handoff-loop evidence.
+- Keep the packet decision-support only, not review approval, staging approval, or production decision.
+- Verify with `rg`, trailing-whitespace scan, and `git diff --check`.
+
+### Non-Goals
+
+- No Kotlin code changes, sample changes, SQLite direct writes, provider/API calls, web/server, Gradle, staging, commit, push, canon, registry, release, production lock, creation of `03`, message to `03`, approval, or unattended infinite loop.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_HANDOFF_LOOP_03_REVIEW_REQUEST.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for a docs-only `03` review request draft.
+- Model-selection policy is available in the protocol as `model=gpt-5.5` with `thinking=xhigh` when the tool supports model/thinking selection.
+- The handoff-loop evidence docs exist: `docs/HANDOFF.md`, `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`, `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`, and `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md`.
+- `03` does not exist and is not contacted in this slice unless `01` or the user explicitly creates or sends to it later.
+
+### Assumptions
+
+- The review request should include `PLANS.md` only for relevant top handoff-loop planning entries, not as a full project-history review.
+
+### Open Questions
+
+- Whether to create or contact `03` remains a future `01` or user decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/CODEX_HANDOFF_LOOP_03_REVIEW_REQUEST.md`.
+- [x] Step 2: Verify the review request packet and touched files.
+- [x] Step 3: Mark this plan complete and report back to `01`.
+
+### Verification
+
+- `rg` must find `CODEX_HANDOFF_LOOP_03_REVIEW_REQUEST`, `REVIEW_REQUEST_DRAFT_FOR_01`, `019f0dd1-1543-7f22-b646-5c12d07d168d`, `019f1882-d5c6-72a3-893c-6d43cd097835`, `no staging`, `no unattended infinite loop`, and exactly-one / one concise review report wording in touched docs.
+- Trailing-whitespace scan over touched files.
+- `git diff --check` over touched tracked files; Windows line-ending warnings are acceptable.
+
+### Risks
+
+- Accidentally treating a review request draft as an actual `03` handoff.
+- Accidentally implying review approval, staging approval, canon, registry, release, or production lock authority.
+- Accidentally broadening from handoff-loop docs into comic-video code or samples.
+
+### Drift Log
+
+- 2026-06-30: Started docs-only `03` review request draft from `01` `NEXT_TASK`. Scope is `PLANS.md` plus one new docs file, with no creation of `03`, no message to `03`, no staging, no code behavior change, and no unattended infinite loop.
+- 2026-06-30: Added `docs/CODEX_HANDOFF_LOOP_03_REVIEW_REQUEST.md` with status `REVIEW_REQUEST_DRAFT_FOR_01`, exact candidate files, `03` check scope, `03` must-not-do boundaries, required exactly-one / one concise review report reply shape, and an explicit note that `03` does not exist / is not contacted in this slice unless `01` or the user explicitly creates or sends to it later.
+- 2026-06-30: Verification passed with `rg` for required identifiers and boundary terms, trailing-whitespace scan over touched files, and `git diff --check -- PLANS.md` for touched tracked files. `git diff --check` reported only the expected Windows line-ending warning for `PLANS.md`; Gradle was not run because this is a docs-only slice.
+
+## Active Dirty Worktree Grouping Snapshot Plan
+
+### Goal
+
+Create a read-only dirty-worktree grouping snapshot for the current comic-video and handoff-loop work so `01` can choose the next review or staging direction without guessing.
+
+### Global Strategy
+
+- Keep this slice documentation-only and read-only except for the snapshot report and `PLANS.md`.
+- Use current `git status`, `git diff --stat`, and focused `rg --files` evidence.
+- Group dirty and untracked work into practical review bundles.
+- Explicitly mark the report as decision-support only, not staging approval.
+- Verify with `rg`, trailing-whitespace scan, and `git diff --check`.
+
+### Non-Goals
+
+- No staging, commit, push, deletion, cleanup, file move, Kotlin behavior change, schema, SQLite, provider/API, web/server, Gradle, canon, registry, release, production lock, media handoff, or `03` review.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for a read-only dirty-worktree grouping snapshot.
+- `git status --short --untracked-files=all` currently reports 7 tracked modified paths and 56 untracked paths before adding this snapshot.
+- Current untracked path classes before adding this snapshot: docs 3, agents 1, main-code 6, tests 8, samples 38.
+- Current tracked modified paths are `PLANS.md`, `Main.kt`, `Models.kt`, `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`, `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`, `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`, and `docs/HANDOFF.md`.
+
+### Assumptions
+
+- The grouping snapshot should not supersede `docs/TRACKED_HANDOFF_MANIFEST.md`; it should provide a current, narrower decision-support view for comic-video and handoff-loop work.
+
+### Open Questions
+
+- Which group `01` wants reviewed or prepared first remains a future decision.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md`.
+- [x] Step 2: Verify the grouping report and touched files.
+- [x] Step 3: Mark this plan complete and report back to `01`.
+
+### Verification
+
+- `rg` must find the group names, `read-only`, `decision-support`, `no staging`, `Main.kt`, `Models.kt`, `PLANS.md`, and `CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md` in the grouping report.
+- Trailing-whitespace scan over touched files.
+- `git diff --check` over touched tracked files; Windows line-ending warnings are acceptable.
+
+### Risks
+
+- Accidentally treating a grouping snapshot as staging approval.
+- Missing a shared tracked dependency such as `Main.kt`, `Models.kt`, or `PLANS.md`.
+- Mixing handoff-loop docs with comic-video runtime code in one review bundle without `01` approval.
+
+### Drift Log
+
+- 2026-06-30: Started read-only dirty-worktree grouping snapshot from `01` `NEXT_TASK`. Scope is docs-only, decision-support only, and uses canonical workspace `C:\Users\f7212\Projects\AI 劇本`.
+- 2026-06-30: Ran read-only inventory commands: `git status --short --branch`, `git status --short --untracked-files=all`, `git diff --stat`, and focused `rg --files`. Current basis before adding the snapshot was 7 tracked modified paths and 56 untracked paths: docs 3, agents 1, main-code 6, tests 8, samples 38.
+- 2026-06-30: Added `docs/CODEX_DIRTY_WORKTREE_GROUPING_SNAPSHOT.md` with handoff-loop protocol/docs, comic-video production package code, local renderer / setting-source bridge code, comic-video tests, comic-video samples, and shared tracked files groups. The report is read-only and decision-support only, with no staging, commit, push, cleanup, deletion, code behavior, provider/API, canon, registry, release, or production-lock authority.
+- 2026-06-30: Verification passed with `rg` for required group names and boundary terms, trailing-whitespace scan over touched files, and `git diff --check` over touched tracked files. Only Windows line-ending warnings appeared. The new untracked snapshot was covered directly by `rg` and whitespace scan.
+
+## Active Codex Handoff Model Policy Repair Plan
+
+### Goal
+
+Persist the correct model-selection policy for governed Codex chat-window handoff turns.
+
+### Global Strategy
+
+- Keep this slice docs-only.
+- Record the policy in `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`.
+- Add one concise pointer from `docs/HANDOFF.md`.
+- Avoid touching the smoke-test report unless needed.
+- Verify that current policy says `gpt-5.5` with `thinking=xhigh`, and that the unsupported higher label appears only as a prohibition.
+
+### Non-Goals
+
+- No Kotlin code, schema, SQLite, provider/API, web/server, Gradle, staging, commit, push, canon, registry, release, production lock, media handoff, `03` review, or next-task execution.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for this model-policy repair slice.
+- The required current policy is `gpt-5.5` with `thinking=xhigh`.
+- The latest assignment says `thinking=xhigh` is the highest supported reasoning setting in this environment.
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md` does not yet contain a model-selection policy section.
+
+### Assumptions
+
+- The smoke-test report should remain unchanged because it records historical smoke-test evidence, not model policy.
+
+### Open Questions
+
+- None for this slice.
+
+### Implementation Steps
+
+- [x] Step 1: Add `Model Selection Policy` to the protocol.
+- [x] Step 2: Add a concise pointer from `docs/HANDOFF.md`.
+- [x] Step 3: Verify touched files and report back to `01`.
+
+### Verification
+
+- `rg` must find `gpt-5.5`, `thinking=xhigh`, `Model Selection Policy`, `NEXT_TASK`, and no-unattended-loop / stop-condition boundary wording in touched docs.
+- `rg` must show the unsupported higher label only in a prohibition, not as current policy.
+- Trailing-whitespace scan over touched files.
+- `git diff --check` over touched tracked files; Windows line-ending warnings are acceptable.
+
+### Risks
+
+- Accidentally recording an unsupported reasoning value as the current policy.
+- Accidentally letting model choice appear to override validators, stop conditions, or explicit user / `01` decisions.
+
+### Drift Log
+
+- 2026-06-30: Started model-policy repair from `01` `NEXT_TASK`. Scope remains docs-only and uses canonical workspace `C:\Users\f7212\Projects\AI 劇本`.
+- 2026-06-30: Added `Model Selection Policy` to `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`. Current high-capability task-turn policy is `model=gpt-5.5` and `thinking=xhigh` when the tool supports model/thinking selection; lightweight status reads may use defaults; running tasks are not interrupted just to switch settings; model choice never overrides project boundaries, validators, stop conditions, or explicit user / `01` decisions.
+- 2026-06-30: Added a concise `docs/HANDOFF.md` pointer to the model-selection policy. Verification found the current policy values, confirmed the unsupported higher reasoning label appears only in a prohibition, passed trailing-whitespace scan, and passed `git diff --check` for touched tracked files with only Windows line-ending warnings.
+
+## Active Codex Handoff Smoke Test Integration Plan
+
+### Goal
+
+Integrate the completed governed handoff-loop smoke test back into the main handoff documentation.
+
+### Global Strategy
+
+- Keep this slice docs-only.
+- Link the smoke-test evidence from `docs/HANDOFF.md`.
+- Update the smoke-test status to show that `02` reported back and `01` received the report.
+- Mention the first smoke test briefly in the protocol document.
+- Verify with `rg`, trailing-whitespace scan, and `git diff --check`.
+
+### Non-Goals
+
+- No Kotlin code, schema, SQLite, provider/API, web/server, Gradle, staging, commit, push, canon, registry, release, production lock, media handoff, `03` review, or next-task execution.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for this integration slice.
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md` exists.
+- The smoke-test report currently has status `PASS_PENDING_02_COMPLETION_REPORT`.
+- `02` sent the smoke-test completion report back to `01` in the previous slice.
+- `docs/HANDOFF.md` already links to the protocol but not the smoke-test evidence.
+
+### Assumptions
+
+- A short reference from the protocol to the first smoke-test report is enough; no protocol redesign is needed.
+
+### Open Questions
+
+- None for this slice.
+
+### Implementation Steps
+
+- [x] Step 1: Update handoff and protocol docs with the smoke-test evidence reference.
+- [x] Step 2: Update smoke-test status to `PASS_REPORTED_TO_01`.
+- [x] Step 3: Verify touched files and report back to `01`.
+
+### Verification
+
+- `rg` must find `CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`, `PASS_REPORTED_TO_01`, `01` id, `02` id, `NEXT_TASK`, and no-unattended-loop wording in touched docs.
+- Trailing-whitespace scan over touched files.
+- `git diff --check` over touched tracked files; Windows line-ending warnings are acceptable.
+
+### Risks
+
+- Accidentally implying unattended infinite automation is approved.
+- Accidentally starting another task instead of reporting back to `01`.
+
+### Drift Log
+
+- 2026-06-30: Started smoke-test integration from `01` `NEXT_TASK`. Scope remains docs-only and uses canonical workspace `C:\Users\f7212\Projects\AI 劇本`.
+- 2026-06-30: Linked `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md` from `docs/HANDOFF.md`, added a short first-smoke-test evidence pointer in `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`, and updated the smoke-test status to `PASS_REPORTED_TO_01`.
+- 2026-06-30: Verification passed with `rg` for smoke-test filename, `PASS_REPORTED_TO_01`, `01` id, `02` id, `NEXT_TASK`, and no-unattended-loop wording; trailing-whitespace scan over touched files; and `git diff --check` over touched tracked files. Only Windows line-ending warnings appeared. New untracked docs were covered by `rg` and whitespace scan directly.
+
+## Active Codex Handoff Smoke Test Plan
+
+### Goal
+
+Run the first governed docs-only smoke test for the Codex chat-window handoff protocol assigned by `01` to `02`.
+
+### Global Strategy
+
+- Keep this slice documentation-only.
+- Record evidence that `01` and `02` are distinct by the delegated thread ids in the `NEXT_TASK`.
+- Add a short smoke-test report under `docs/`.
+- Verify the report with `rg`, trailing-whitespace scan, and `git diff --check`.
+- Report back to `01` using the existing completion report template.
+
+### Non-Goals
+
+- No Kotlin code, schema, SQLite, provider/API, web/server, Gradle, staging, commit, push, canon, registry, release, production lock, media generation, `03` review, or new task execution.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`
+
+### Confirmed Facts
+
+- The current workspace path is `C:\Users\f7212\Projects\AI 劇本`.
+- `01` assigned `NEXT_TASK` for a governed handoff-loop smoke test.
+- The assignment names control thread `01` id `019f0dd1-1543-7f22-b646-5c12d07d168d`.
+- The assignment names worker thread `02` id `019f1882-d5c6-72a3-893c-6d43cd097835`.
+- The `01` and `02` ids in the assignment are distinct.
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md` defines `NEXT_TASK`, `STOP`, stop conditions, self-loop prevention, and no unattended infinite loop.
+
+### Assumptions
+
+- The delegated `02` id is the intended worker id even though `list_threads` by that id did not return a thread summary.
+- A docs-only report is enough for this smoke test because the acceptance criteria do not require runtime, Gradle, or code behavior.
+
+### Open Questions
+
+- Whether a later slice should wire a discoverable `03` thread into the same protocol.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`.
+- [x] Step 2: Verify the smoke-test report and touched files.
+- [x] Step 3: Mark this plan complete and report back to `01`.
+
+### Verification
+
+- `rg` must find the `01` id, `02` id, `NEXT_TASK`, `STOP` or stop conditions, and no-unattended-loop wording in the smoke-test report or protocol docs.
+- Trailing-whitespace scan over touched files.
+- `git diff --check` over touched files; Windows line-ending warnings are acceptable.
+
+### Risks
+
+- Accidentally treating this smoke test as permission for unattended infinite automation.
+- Accidentally starting another task instead of reporting back to `01`.
+
+### Drift Log
+
+- 2026-06-30: Started the governed Codex handoff smoke test from `01` `NEXT_TASK`. Scope is docs-only and uses canonical workspace `C:\Users\f7212\Projects\AI 劇本`.
+- 2026-06-30: Added `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`. The report records distinct `01` and `02` ids from the delegated `NEXT_TASK`, readiness-before-task, governed-not-unattended loop boundary, completion report shape, and stop conditions.
+- 2026-06-30: Verification passed with `rg` for `01` id, `02` id, `NEXT_TASK`, `STOP` / stop conditions, and no-unattended-loop wording; trailing-whitespace scan over touched files; and `git diff --check` over the tracked touched file. `git diff --check` reported only Windows line-ending warnings. The new smoke-test report is untracked, so trailing-whitespace scan covered it directly.
+
+## Active Codex Chat-Window Handoff Loop Protocol Plan
+
+### Goal
+
+Establish a Codex chat-window handoff protocol where the current worker reports completed work to the existing `01` chat window and `01` assigns the next smallest verified task.
+
+### Global Strategy
+
+- Treat `01` as the decision/control chat window and this current window as the worker/reporting window.
+- Document the handoff packet shape, stop conditions, and loop viability.
+- Preserve the existing project rule: this can repeat until the project ends, but it must not become unattended infinite automation.
+- Use Codex thread tools only for a bounded report to the known `01` thread after the protocol is documented.
+
+### Non-Goals
+
+- No scheduler, background automation, web server, external API, provider/media execution, SQLite writes, Kotlin code changes, commits, pushes, registry, canon, approval, release, or production lock.
+- No self-triggering infinite loop that bypasses `01`, `03`, user approval, or verification.
+- No file staging or branch changes.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`
+- `docs/HANDOFF.md`
+
+### Confirmed Facts
+
+- `docs/HANDOFF.md` already states the project-completion loop is chat-window only: `01 -> 02 -> 03 -> 01`.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` says the engineering loop is `01` selects, `02` executes/verifies, `03` reviews, then `01` chooses the next milestone.
+- Codex app thread search found an existing thread titled `01` with id `019f0dd1-1543-7f22-b646-5c12d07d168d`.
+- Existing project rules forbid unattended infinite loops and scheduler advancement.
+
+### Assumptions
+
+- The current worker can report to `01`, but `01` should issue only one next task at a time.
+- A protocol document plus one bounded report to `01` is the safest first implementation of the requested handoff system.
+
+### Open Questions
+
+- Whether the user wants future reports to `01` sent automatically at every completed slice, or manually confirmed after the worker summarizes completion.
+- Whether a separate `03` chat thread should be wired into the same Codex app thread-tool flow later.
+
+### Implementation Steps
+
+- [x] Step 1: Add the chat-window handoff protocol document.
+- [x] Step 2: Link the protocol from `docs/HANDOFF.md`.
+- [x] Step 3: Validate references, whitespace, and loop safety wording.
+- [x] Step 4: Send a bounded completion report to the known `01` thread asking for one next task only.
+
+### Verification
+
+- `rg` checks for `01` thread id, stop conditions, no unattended automation, and report template.
+- `git diff --check`.
+- Trailing-whitespace scan over touched files.
+- Codex thread-tool check that the `01` thread exists before sending any report.
+- Self-loop check: if the current worker is already the same `01` thread, stop instead of treating echoed delegation as a next-task assignment.
+
+### Risks
+
+- Mistaking repeatable handoff for permission to run unattended forever.
+- Sending an execution request to `01` instead of a decision-only assignment request.
+- Future `01` cwd metadata may still mention OneDrive, so every report must repeat the canonical workspace path.
+
+### Drift Log
+
+- 2026-06-30: Started the Codex chat-window handoff loop protocol slice after the user requested a system where completed work is reported to `01` and `01` assigns the next task. Found an existing Codex thread titled `01`; scope remains docs/protocol plus one bounded report only.
+- 2026-06-30: Added `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md` and linked it from `docs/HANDOFF.md`. The protocol defines the report template, `01` next-task reply shape, stop conditions, Codex app thread procedure, and the feasibility boundary: repeatable governed loop is allowed; unattended infinite automation is not.
+- 2026-06-30: Validated handoff protocol references and safety wording with `rg`, checked touched-file trailing whitespace, and ran `git diff --check` for the touched protocol files. Results passed with only Windows line-ending warnings.
+- 2026-06-30: Sent the bounded report to thread id `019f0dd1-1543-7f22-b646-5c12d07d168d`, then read the thread and discovered this current window is itself the `01` thread. The app surfaced the sent report back as a `codex_delegation` message in the same source thread, so no independent `NEXT_TASK` was received. Updated the protocol and `docs/HANDOFF.md` with a self-loop stop condition.
+
+## Active Traditional Chinese Production Package Sample Plan
+
+### Goal
+
+Add a Traditional Chinese sample production package and validation report using the existing local comic-video workbench CLI.
+
+### Global Strategy
+
+- Use the existing `samples/comic_video_workbench_zh_tw/` source proof and voice timeline fill.
+- Generate the production package draft through `create-comic-video-production-package-draft`.
+- Validate it through `validate-comic-video-production-package`.
+- Update sample documentation so the generated files are discoverable and rebuildable.
+- Keep this as local JSON evidence only.
+
+### Non-Goals
+
+- No Kotlin code changes, schema changes, migrations, SQLite writes, provider/API calls, generated provider media, approval, canon, registry, release, or production lock.
+- No external tool handoff export in this slice.
+- No attempt to repair unrelated existing sample text encoding unless validation proves it blocks the package.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `samples/comic_video_workbench_zh_tw/README.md`
+- `samples/comic_video_workbench_zh_tw/production_package_preview/production_package_draft_zh_tw_sample.json`
+- `samples/comic_video_workbench_zh_tw/production_package_preview/production_package_validation_zh_tw_sample.json`
+
+### Confirmed Facts
+
+- `samples/comic_video_workbench_zh_tw/image_facing_delivery_proof_zh_tw_sample.json` exists.
+- `samples/comic_video_workbench_zh_tw/voice_timeline_fill_zh_tw_sample.json` exists.
+- The current CLI workflow documents `create-comic-video-production-package-draft` and `validate-comic-video-production-package`.
+- The next-version blueprint lists Traditional Chinese production package output as the next suggested implementation step.
+
+### Assumptions
+
+- The existing Traditional Chinese sample proof and voice fill remain valid inputs for the production package draft command.
+- A sample-level production package is enough for this stage; a setting-pack-derived Traditional Chinese source can be a later slice.
+
+### Open Questions
+
+- Later work can decide whether to create a setting-pack-derived Traditional Chinese world sample instead of this existing workbench sample.
+
+### Implementation Steps
+
+- [x] Step 1: Generate the Traditional Chinese production package draft JSON.
+- [x] Step 2: Validate the Traditional Chinese production package draft JSON.
+- [x] Step 3: Update the Traditional Chinese sample README with rebuild commands and expected PASS evidence.
+- [x] Step 4: Verify package counts, validation status, whitespace, and plan alignment.
+- [x] Step 5: Update cross-document references so the blueprint and CLI workflow reflect the implemented sample.
+
+### Verification
+
+- Run `create-comic-video-production-package-draft` against the Traditional Chinese proof and voice fill.
+- Run `validate-comic-video-production-package` against the generated draft.
+- Inspect JSON status/count fields.
+- Run `git diff --check`.
+- Run a trailing-whitespace scan over touched files.
+- Check documentation references with `rg`.
+
+### Risks
+
+- Existing sample text may display incorrectly in some terminals because of encoding/code page behavior.
+- The existing Traditional Chinese sample is a workbench sample, not a setting-pack-derived sample.
+
+### Drift Log
+
+- 2026-06-30: Started the Traditional Chinese production package sample slice after the repo-local Codex skill/runbook was added and validated. This slice stays inside the local JSON workbench and does not change Kotlin code.
+- 2026-06-30: Generated `samples/comic_video_workbench_zh_tw/production_package_preview/production_package_draft_zh_tw_sample.json` through `create-comic-video-production-package-draft`. The command returned PASS with 3 storyboard rows, 3 shot prompts, 5 asset prompt cards, 2 voice style cards, 9000 ms total duration, and 0 findings.
+- 2026-06-30: Validated the Traditional Chinese production package draft through `validate-comic-video-production-package`. The validation report returned PASS with 0 cross-reference mismatches, 0 prompt safety findings, 0 remote/provider references, 0 forbidden claims, 0 forbidden statuses, 0 author-only leaks, and 0 findings.
+- 2026-06-30: Updated `samples/comic_video_workbench_zh_tw/README.md` with the new production package files, rebuild commands, expected PASS counts, and local-only boundary. Verification passed with explicit UTF-8 JSON parsing/count assertions, trailing-whitespace scan, README command lookup, and `git diff --check`. Default PowerShell JSON parsing without `-Encoding UTF8` misread the existing Traditional Chinese sample text, so UTF-8 was used for the final assertions.
+- 2026-06-30: Added a final documentation sync step after verification showed the blueprint still listed Traditional Chinese production package output as a future step.
+- 2026-06-30: Updated the short-drama workflow blueprint and comic-video CLI workflow docs to reference the implemented Traditional Chinese production package sample and PASS validation evidence.
+
+## Active Comic Video Production Package Codex Skill Plan
+
+### Goal
+
+Add a project-local Codex skill/runbook that lets Codex operate the current comic-video production package workflow through official CLI commands only, from source evidence checks through draft package creation and validation.
+
+### Global Strategy
+
+- Keep this as a repo-local skill under `.agents/skills/comic-video-production-package/`.
+- Mirror existing repo skill style: concise `SKILL.md`, official CLI commands, strict guardrails, no extra clutter.
+- Teach Codex to operate the current workbench sequence:
+  - inspect existing proof/voice fill/package artifacts;
+  - create or reuse setting-source image-facing proof;
+  - build local preview MP4 when requested;
+  - create production package draft;
+  - validate production package;
+  - report PASS/FAIL counts and boundaries.
+- Keep all provider/API/media-handoff work out of the skill.
+
+### Non-Goals
+
+- No Kotlin code changes, schema changes, migrations, SQLite writes, generated media, external provider/API calls, OpenAI API calls, web/server, registry, approval, canon, release, or production lock.
+- No global Codex skill installation.
+- No provider handoff export, human review decision intake, or Traditional Chinese package sample in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `.agents/skills/comic-video-production-package/SKILL.md`
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+
+### Confirmed Facts
+
+- Existing repo-local skills are under `.agents/skills/setting-pack/` and `.agents/skills/story-turn/`.
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md` names `.agents/skills/comic-video-production-package/SKILL.md` as the planned project-local skill path.
+- Current official commands include `build-setting-image-facing-proof-preview`, `build-comic-video-local-preview`, `build-setting-comic-video-local-preview`, `create-comic-video-production-package-draft`, and `validate-comic-video-production-package`.
+- The Rain Gate sample package draft and validation report are PASS.
+- The local environment does not expose a working `python` or `py` runtime, so `skill-creator`'s `init_skill.py` and `quick_validate.py` cannot run here.
+
+### Assumptions
+
+- A single concise `SKILL.md` is enough for the first repo-local skill because existing repo skills use that shape.
+- PowerShell checks for frontmatter, required fields, command names, and forbidden provider-handoff wording are sufficient fallback validation when Python scripts are unavailable.
+
+### Open Questions
+
+- Later work can decide whether to add `agents/openai.yaml` metadata if repo-local skill discovery needs UI metadata.
+- Later work can add references or scripts if the skill grows beyond a concise runbook.
+
+### Implementation Steps
+
+- [x] Step 1: Add `.agents/skills/comic-video-production-package/SKILL.md`.
+- [x] Step 2: Cross-reference the skill from prototype/workflow/completion docs.
+- [x] Step 3: Validate skill frontmatter, workflow command names, forbidden wording, and whitespace.
+- [x] Step 4: Update this plan with verification and drift notes.
+
+### Verification
+
+- PowerShell frontmatter/required-field check for the new `SKILL.md`.
+- `rg` check that required official command names are present.
+- `rg` forbidden-provider/approval/canon/production-lock scan over the skill file.
+- `git diff --check`.
+- Trailing-whitespace scan over touched files.
+- `git status --short --branch`.
+
+### Risks
+
+- Accidentally making the skill sound like it may call external providers.
+- Accidentally turning validation into approval.
+- Accidentally bypassing CLI validators with manual JSON edits.
+- Skill-creator init/validate scripts cannot be run because Python is unavailable in this environment.
+
+### Drift Log
+
+- 2026-06-30: Started repo-local Codex skill/runbook slice after production package draft and validation commands reached PASS. Python is unavailable, so this slice will manually create the minimal SKILL.md and validate it with PowerShell/rg checks.
+- 2026-06-30: Added `.agents/skills/comic-video-production-package/SKILL.md` as a repo-local workflow skill. It instructs Codex to use only official Gradle CLI commands for evidence inspection, setting-to-proof preview, local MP4 preview, production package draft creation, package validation, and reporting.
+- 2026-06-30: Updated the prototype blueprint, CLI workflow, and current-phase completion addendum to reference the repo-local skill. The skill remains a workflow wrapper only; it grants no provider/API handoff, media generation, approval, canon, registry, release, or production-lock authority.
+- 2026-06-30: Validation passed with PowerShell frontmatter check, required-command `rg` check, guardrail wording check, trailing-whitespace scan, `git diff --check`, `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only existing Windows line-ending warnings. Python-based `init_skill.py` and `quick_validate.py` could not run because no real Python runtime is available in this environment.
+
+## Active Comic Video Production Package Validation CLI Plan
+
+### Goal
+
+Add an independent local validator for `ComicVideoProductionPackageDraft` so the newly generated storyboard rows, shot prompt drafts, asset prompt cards, and voice style cards have a PASS/FAIL report before any future review or optional handoff work.
+
+### Global Strategy
+
+- Keep this as a Kotlin/JVM CLI plus JSON file protocol slice.
+- Reuse the existing production package draft model and safety vocabulary:
+  - source-bound;
+  - draft-only;
+  - external handoff absent;
+  - media execution absent;
+  - review required.
+- Validate structure, source linkage, row/prompt/card cross references, prompt safety text, and forbidden provider/final/canon/approval/production-lock wording.
+- Emit a `ComicVideoProductionPackageValidationReport` as local JSON evidence.
+- Do not add external provider execution or handoff.
+
+### Non-Goals
+
+- No provider/API/tool submission, OpenAI API, Seedance/RunningHub automation, generated media, final art, final voice acting, SQLite writes, schema migrations, formal registry, release, approval, canon, runtime scene creation, or production lock.
+- No change to `create-comic-video-production-package-draft` output shape unless validation evidence proves it is required.
+- No Codex skill/runbook implementation in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/ComicVideoProductionPackageModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoProductionPackageValidationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoProductionPackageValidationServiceTest.kt`
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+- `samples/comic_video_setting_source/production_package_preview/production_package_validation.json`
+- `samples/comic_video_setting_source/README.md`
+
+### Confirmed Facts
+
+- `ComicVideoProductionPackageDraft` is already produced by `create-comic-video-production-package-draft`.
+- The Rain Gate sample package draft is PASS with 3 storyboard rows, 3 shot prompts, 5 asset prompt cards, 2 voice style cards, 9000 ms total duration, and 0 findings.
+- The draft command records `nextAllowedDownstreamStep=comic_video_production_package_review`, not provider handoff.
+- Existing validators already block provider/media/final/canon/approval wording in adjacent comic-video packet and image-candidate prompt paths.
+- The local machine previously required one-shot `ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs=-Xmx1536m` to avoid Kotlin daemon OOM during verification.
+
+### Assumptions
+
+- Validation should fail if any storyboard row lacks a matching shot prompt, if shot prompt asset card refs are missing, or if voice style card cue bindings are inconsistent with row voice ids.
+- Validation should preserve the draft output as candidate-only and should not strip content on PASS.
+- The first validator can focus on structure/cross-reference/safety text and leave human quality judgment to later review tooling.
+
+### Open Questions
+
+- Later work can add an explicit human review decision intake for production packages.
+- Later work can decide whether a provider handoff export is ever allowed after validation and user approval.
+
+### Implementation Steps
+
+- [x] Step 1: Add validation report models and validation service.
+- [x] Step 2: Add CLI command/help for `validate-comic-video-production-package`.
+- [x] Step 3: Add focused service/CLI tests, including a prompt-safety failure.
+- [x] Step 4: Generate Rain Gate sample validation JSON and update docs.
+- [x] Step 5: Run focused/full tests, diff checks, forbidden-claim scans, and record verification.
+
+### Verification
+
+- Focused `ComicVideoProductionPackageValidationServiceTest`.
+- Focused `ComicVideo*` tests.
+- Full `.\gradlew.bat test --no-daemon --console=plain` with one-shot Kotlin daemon memory if needed.
+- Actual CLI validation run against `samples/comic_video_setting_source/production_package_preview/production_package_draft.json`.
+- `git diff --check`.
+- Trailing-whitespace scan over touched files.
+- Forbidden provider/final/canon/approval/production-lock scan over generated validation JSON.
+- Java/Gradle/Kotlin process check.
+
+### Risks
+
+- Accidentally treating package validation as approval.
+- Accidentally allowing prompt text to carry provider/job/API or author-only content.
+- Accidentally making validation too loose to catch broken cross references.
+- Accidentally adding provider handoff language as the next step.
+
+### Drift Log
+
+- 2026-06-30: Started production-package validation slice after the first draft command reached PASS. Scope is local validation report only; no provider handoff, media generation, approval, canon, registry, release, or production lock.
+- 2026-06-30: Added `ComicVideoProductionPackageValidationReport` models, `ComicVideoProductionPackageValidationService`, CLI command `validate-comic-video-production-package`, and focused validation tests. The validator checks PASS draft state, source fields, storyboard/shot/asset/voice cross references, prompt safety, remote/provider references, forbidden completion claims, forbidden status wording, and author-only leaks.
+- 2026-06-30: Generated `samples/comic_video_setting_source/production_package_preview/production_package_validation.json` from the Rain Gate production package draft. The report is PASS with 3 storyboard rows, 3 shot prompts, 5 asset prompt cards, 2 voice style cards, 0 cross-reference mismatches, 0 prompt safety findings, 0 remote/provider references, 0 forbidden claims, 0 forbidden statuses, 0 author-only leaks, and 0 findings.
+- 2026-06-30: Updated prototype/workflow/completion/sample docs to document validation as a local review gate only. It is not asset approval, provider handoff, generated media, canon, registry, release, or production lock.
+- 2026-06-30: Verification passed with focused `ComicVideoProductionPackageValidationServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample validation, `git diff --check`, trailing-whitespace scan, generated validation JSON forbidden-field scan, parsed validation JSON count check, and Java/Gradle/Kotlin process check. As in the previous slice, Gradle verification used the one-shot `ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs=-Xmx1536m` environment variable and did not modify project files.
+
+## Active Comic Video Production Package Draft CLI Plan
+
+### Goal
+
+Add the first implemented next-version prototype command that turns a PASS `ImageFacingDeliveryProof` plus an edited `ComicVideoVoiceTimelineFill` into a reviewable `ComicVideoProductionPackageDraft` JSON containing a storyboard production table, shot prompt packets, and asset prompt cards.
+
+### Global Strategy
+
+- Keep the current baseline intact: Kotlin/JVM CLI plus JSON file protocol, no SQLite writes, no web/server, no provider/API execution.
+- Build on existing comic-video models and safety style:
+  - source proof readiness from `ComicVideoPacketService`;
+  - voice fill structure from `ComicVideoVoiceTimelineFillService`;
+  - prompt safety ideas from `ImageCandidatePromptPreparationService` and `ImageCandidatePromptValidationService`.
+- Make this first slice draft-only and reviewable:
+  - output package status must be candidate/prototype only;
+  - prompt text must be provider-neutral and unsubmitted;
+  - asset cards must be candidate-only and source-bound.
+- Do not introduce an external handoff command in this slice.
+
+### Non-Goals
+
+- No external provider/tool handoff, OpenAI API, Seedance/RunningHub automation, rendered final media, final art, final voice acting, formal registry, release, approval, canon, runtime scene creation, production lock, SQLite writes, or schema migrations.
+- No replacement of `build-setting-comic-video-local-preview`.
+- No full asset registry implementation; this slice creates candidate production-package cards only.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoProductionPackageDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoProductionPackageDraftServiceTest.kt`
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+- optionally one generated sample JSON under `samples/comic_video_setting_source/production_package_preview/`
+
+### Confirmed Facts
+
+- `ImageFacingDeliveryProof` already carries frame delivery cards with frame id, scene/beat references, visual intent, camera intent, must-show, do-not-show, continuity anchors, and asset candidate references.
+- `ComicVideoVoiceTimelineFill` already carries voice cast, audio cues, subtitle cues, timing, and media/provider fields that must remain blank.
+- `ComicVideoVoiceTimelineFillService.fill` requires `sourceComicVideoPacketId` to match a `ComicVideoPacket`, so this new command should create the packet from proof first and then validate the fill through the existing service.
+- `ComicVideoPacketValidationService` already blocks non-empty media/provider fields, remote URLs, forbidden final/approved/canon/production-lock claims, and broken cross references.
+- The new docs-only prototype blueprint identifies storyboard tables, shot prompt packets, asset cards, and Codex skill/runbook packaging as the next candidate layer.
+
+### Assumptions
+
+- A single draft command is the safest first implementation because it improves the creator-facing package without adding provider execution.
+- Asset cards can initially be derived from `assetCandidateRefs`, voice cast entries, and scene references, then later be replaced by stronger asset registry inputs.
+- The first command can validate by internally producing and validating a filled `ComicVideoPacket`, instead of inventing a separate source validator.
+
+### Open Questions
+
+- Later work may add a separate `validate-comic-video-production-package` command if the draft surface needs independent review gates.
+- Later work may decide whether to generate a project-local Codex skill/runbook after the JSON draft command is proven useful.
+
+### Implementation Steps
+
+- [x] Step 1: Add production package draft models and service.
+- [x] Step 2: Add CLI command and help text.
+- [x] Step 3: Add focused service/CLI tests.
+- [x] Step 4: Update workflow/prototype docs and generate one sample package JSON.
+- [x] Step 5: Run focused tests and diff/claim checks, then record verification.
+
+### Verification
+
+- Focused `ComicVideoProductionPackageDraftServiceTest`.
+- Focused `ComicVideo*` tests if compile surface touches shared models.
+- Actual CLI dry/sample run against the setting-source proof plus voice fill if practical.
+- `git diff --check`.
+- Trailing-whitespace scan over touched files.
+- Forbidden provider/final/canon/approval/production-lock claim scan over generated package JSON.
+- `git status --short --branch`.
+
+### Risks
+
+- Accidentally treating prompt packets as provider submission.
+- Accidentally letting author-only or hidden-truth wording into prompts.
+- Accidentally generating "approved/final/production-ready" wording that existing scanners would reject downstream.
+- Accidentally duplicating too much of the existing comic-video validation logic instead of reusing it.
+
+### Drift Log
+
+- 2026-06-30: Started the first implemented production-package prototype slice after the user reopened goal mode and confirmed the project needs the missing storyboard/prompt/asset-card layer. Scope is one local JSON draft command only; no provider handoff or current-baseline replacement.
+- 2026-06-30: Added `ComicVideoProductionPackageDraft` models in a separate model file, `ComicVideoProductionPackageDraftService`, CLI command `create-comic-video-production-package-draft`, and focused service/CLI tests. The command internally creates and validates a comic-video packet from the proof plus voice fill before emitting storyboard rows, shot prompt drafts, asset prompt cards, and voice style cards.
+- 2026-06-30: Generated `samples/comic_video_setting_source/production_package_preview/production_package_draft.json` from the Rain Gate setting-source proof and voice fill. The sample is PASS with 3 storyboard rows, 3 shot prompts, 5 asset prompt cards, 2 voice style cards, 9000 ms total duration, and 0 findings.
+- 2026-06-30: Updated prototype/workflow/completion/sample docs to document the command as draft-only and review-required. This remains separate from external provider handoff, media generation, registry, approval, canon, release, and production lock.
+- 2026-06-30: Verification passed with focused `ComicVideoProductionPackageDraftServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample generation, `git diff --check`, trailing-whitespace scan, sample JSON forbidden-field scan, and parsed sample JSON count check. The local machine's default 512m Kotlin daemon hit OOM/timeout during the first compile attempt; verification passed after using a one-shot `ORG_GRADLE_PROJECT_kotlin_daemon_jvmargs=-Xmx1536m` environment variable without changing project files.
+
+## Active Codex Short Drama Production Package Prototype Blueprint Plan
+
+### Goal
+
+Record the YouTube/Codex workflow idea as a next-version prototype blueprint for a production package layer, without changing the current completed local workbench baseline.
+
+### Global Strategy
+
+- Keep the current official baseline unchanged: Kotlin/JVM CLI, SQLite where applicable, JSON file protocol, local validation gates, and local preview MP4 output.
+- Treat the referenced external workflow as research input only. The project has verified the video title/description and lack of public captions, but has not verified every spoken Codex segment detail.
+- Add a docs-only prototype blueprint for the missing production-package layer:
+  - storyboard table;
+  - prompt packet;
+  - asset cards;
+  - Codex skill/runbook packaging;
+  - optional external video-tool handoff as a future reviewed slice.
+- Keep all provider/media execution, APIs, registry, release, approval, canon, and production lock out of this slice.
+
+### Non-Goals
+
+- No Kotlin code, schema, migration, tests, CLI behavior, SQLite writes, renderer changes, web/server, API/provider calls, generated media, external automation, formal registry, release, canon approval, or production lock.
+- No claim that the referenced YouTube workflow is proven superior or that its spoken details have been fully transcribed.
+- No replacement of the current one-command setting-to-local-MP4 preview baseline.
+
+### Scope
+
+- `PLANS.md`
+- `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+
+### Confirmed Facts
+
+- The current workbench can produce a local preview MP4 through `build-setting-comic-video-local-preview`.
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md` explicitly says final art, final voice acting, provider/media production, formal registry, release, approval, canon, runtime integration, and production lock are not complete.
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md` already identifies future layers for locked assets, comic panel packets, voice casting, timed video timelines, and external/downstream video generation.
+- The referenced YouTube page metadata identifies the video as `【附免费skill技能】【Seedance2.0】手把手教你用Codex智能体跑通精品AI短剧全流程 #aieducation`.
+- The referenced YouTube page description includes external workflow/material links, but no public caption track was available during inspection.
+
+### Assumptions
+
+- The useful part to imitate is likely the Codex-as-operator workflow packaging, not any specific external provider dependency.
+- A production package layer is needed if the final product target is a higher-quality voiced comic/short-drama video rather than only local preview MP4 evidence.
+- The safest first prototype is a docs-only contract for prompt packets and asset cards before implementing new commands.
+
+### Open Questions
+
+- The user may later provide the exact Codex segment transcript or screenshots from the video for a more faithful comparison.
+- The project still needs a separate decision before any external tool, provider handoff, or automation is implemented.
+
+### Implementation Steps
+
+- [x] Step 1: Add a docs-only prototype blueprint for the Codex short-drama production package layer.
+- [x] Step 2: Cross-reference the prototype from the existing product plan, workflow doc, and current-phase completion report.
+- [x] Step 3: Verify docs-only changes and record drift/verification evidence.
+
+### Verification
+
+- Read back the new/changed docs.
+- `git diff --check`.
+- Trailing-whitespace scan for touched Markdown files.
+- `rg` cross-reference check for the new blueprint.
+- No Gradle test required unless production code changes.
+
+### Risks
+
+- Accidentally implying the external workflow is validated project truth.
+- Accidentally making provider/media production sound like part of the current baseline.
+- Accidentally weakening the current local validation-first architecture by presenting prompt packs as a bypass.
+
+### Drift Log
+
+- 2026-06-30: Started docs-only next-version prototype blueprint after the user clarified that the external workflow should not update the formal blueprint yet because its quality is unverified. This slice only records the potential upgrade as a candidate production-package layer.
+- 2026-06-30: Added `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md` and cross-referenced it from the product plan, current workflow, and current-phase completion report. The prototype is explicitly scoped to storyboard tables, prompt packets, asset cards, and Codex skill/runbook planning; it does not alter the current baseline or add provider/media execution.
+- 2026-06-30: Verified docs-only changes with `git diff --check`, trailing-whitespace scan over touched Markdown files, and `rg` cross-reference checks. `git diff --check` reported only existing Windows line-ending warnings. No Gradle test was required because no production code changed in this slice.
+
+## Active One-Command Setting To Local MP4 Preview Wrapper Plan
+
+### Goal
+
+Add a single local CLI command that takes a public setting pack scene plus an edited voice timeline fill JSON and produces the same verified local preview MP4 chain that currently requires two wrapper commands.
+
+### Global Strategy
+
+- Keep the implementation inside Kotlin/JVM CLI plus JSON file protocol.
+- Reuse existing wrapper boundaries instead of duplicating validators:
+  - `build-setting-image-facing-proof-preview`;
+  - `build-comic-video-local-preview`.
+- Write setting-proof artifacts and comic-video artifacts into separate subdirectories under one output directory.
+- Keep the new command as orchestration only; it must not create SQLite state, provider jobs, canon, registry entries, releases, approvals, or production locks.
+- Require the voice timeline fill as caller-provided JSON, so the command does not pretend to generate final acting or author-approved dialogue.
+
+### Non-Goals
+
+- No automatic voice-fill generation, final script writing, final voice acting, final art, provider/API execution, web/server, SQLite writes, setting-pack apply, formal accepted-script source binding, canon application, registry write, release, or production lock.
+- No rewrite of existing proof, comic-video, validation, or renderer services.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/SettingComicVideoLocalPreviewBuildCliTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+- `samples/comic_video_setting_source/README.md`
+- generated local files under `out/setting_comic_video_one_command_preview/`
+
+### Confirmed Facts
+
+- `build-setting-image-facing-proof-preview` already produces a PASS `ImageFacingDeliveryProof` from `samples/comic_video_setting_source/setting_pack_rain_gate_sample.json`.
+- `build-comic-video-local-preview` already produces a PASS local preview MP4 from the generated proof plus `voice_timeline_fill_rain_gate_preview_sample.json`.
+- The existing dry-run flag is supported by `build-comic-video-local-preview`.
+- The current sample MP4 `out/comic_video_setting_source_preview/rain_gate_setting_preview.mp4` has been verified as 9 seconds, 1920x1080 H.264 video, AAC audio, non-silent, and visually nonblank.
+
+### Assumptions
+
+- A thin command wrapper is the safest next step because it improves user ergonomics without bypassing existing validator/report artifacts.
+- Keeping proof and video artifacts in subdirectories is clearer than flattening all JSON files into one folder.
+
+### Open Questions
+
+- Later work can add an optional deterministic voice-fill draft generator, but this slice keeps voice fill explicit.
+
+### Implementation Steps
+
+- [x] Step 1: Add `build-setting-comic-video-local-preview` CLI dispatch/help and orchestration method.
+- [x] Step 2: Add focused CLI tests for PASS dry-run and missing-scene failure behavior.
+- [x] Step 3: Run actual one-command sample build to local MP4 and verify media.
+- [x] Step 4: Update docs/sample README and record verification evidence.
+- [x] Step 5: Run focused/full tests, diff checks, secret/claim scans, and process checks.
+
+### Verification
+
+- Focused one-command CLI tests.
+- Actual one-command CLI run against the setting source sample.
+- `ffprobe` and audio volume check on the generated MP4 when not dry-run.
+- Preview-frame visual inspection when practical.
+- `git diff --check`.
+- Trailing-whitespace scan.
+- Secret/forbidden-claim scan over JSON artifacts.
+- `git status --short --branch`.
+- Java/Gradle/Kotlin process check.
+
+### Risks
+
+- Accidentally hiding intermediate failed reports from the user.
+- Accidentally implying the wrapper creates approved script/storyboard/image/voice/video assets.
+- Accidentally mismatching generated proof packet id and voice fill packet id.
+
+### Drift Log
+
+- 2026-06-30: Started one-command setting-to-local-MP4 preview wrapper after the two-step setting-source sample reached a verified local MP4. Scope is orchestration only; existing validators and renderer remain the authority.
+- 2026-06-30: Added `build-setting-comic-video-local-preview`, wired help/dispatch, and added `SettingComicVideoLocalPreviewBuildCliTest`. Focused test passed for dry-run PASS and missing-scene failure; the wrapper stops before comic-video build if setting-to-proof fails.
+- 2026-06-30: Ran the one-command wrapper against `samples/comic_video_setting_source/setting_pack_rain_gate_sample.json` plus `voice_timeline_fill_rain_gate_preview_sample.json`; it produced `out/setting_comic_video_one_command_preview/rain_gate_one_command_preview.mp4`. Verification showed 9.000000 seconds, 1920x1080 H.264 video, AAC audio, non-silent audio, PASS proof report, PASS comic-video local preview report, and a nonblank preview frame.
+- 2026-06-30: Updated workflow docs, completion report, and setting-source README to document the one-command wrapper, output directories, verification evidence, and local-preview-only boundary.
+- 2026-06-30: Verified the one-command wrapper with focused `SettingComicVideoLocalPreviewBuildCliTest` and `ComicVideoLocalPreviewBuildCliTest`, full `.\gradlew.bat test --no-daemon --console=plain`, actual one-command MP4 run, `ffprobe`, `ffmpeg` volume detection, preview-frame visual inspection, JSON artifact secret/forbidden-claim scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. All tests passed; `git diff --check` reported only existing Windows line-ending warnings.
+
+## Active Setting Source To Local MP4 Preview Sample Plan
+
+### Goal
+
+Use the newly generated setting-source `ImageFacingDeliveryProof` sample plus a local voice timeline fill to produce a playable local preview MP4, proving the current workbench can move from public setting pack data to a video artifact through existing JSON gates.
+
+### Global Strategy
+
+- Keep the implementation inside Kotlin/JVM CLI plus JSON file protocol.
+- Do not add a new renderer or external provider.
+- Reuse the existing chain:
+  - setting-source local-preview `ImageFacingDeliveryProof`;
+  - manually authored local `ComicVideoVoiceTimelineFill`;
+  - `build-comic-video-local-preview`;
+  - local MP4 output under `out/`.
+- Keep the voice fill sample editable metadata, not final acting or provider media.
+
+### Non-Goals
+
+- No SQLite writes, setting-pack apply, formal accepted-script source binding, human approval/decision, web/server, OpenAI API, external provider, registry write, release, canon application, or production lock.
+- No new one-command setting-to-video CLI in this slice.
+- No claim of final art, final voice acting, final subtitles, or production media.
+
+### Scope
+
+- `PLANS.md`
+- `samples/comic_video_setting_source/`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoWorkbenchSamplePackTest.kt` or a narrow adjacent test
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+- generated local files under `out/comic_video_setting_source_preview/`
+
+### Confirmed Facts
+
+- `samples/comic_video_setting_source/image_facing_preview_build/image_facing_delivery_proof.json` is PASS and has 3 frame delivery cards.
+- The setting-source proof frame ids are `frame-scene-rain-gate-01`, `frame-scene-rain-gate-02`, and `frame-scene-rain-gate-03`.
+- Existing comic-video local preview build requires a PASS `ImageFacingDeliveryProof` and a matching `ComicVideoVoiceTimelineFill`.
+- Existing `build-comic-video-local-preview` can write intermediate JSON artifacts and render a local MP4 without provider access.
+- Full Gradle tests passed after the setting-to-image-facing-proof preview slice.
+
+### Assumptions
+
+- A small English local voice fill is enough to prove the setting-source video path because this slice is about the JSON/video bridge, not final language or voice quality.
+- A sample MP4 under `out/` is acceptable as local preview evidence and should not be treated as source-controlled production media.
+
+### Open Questions
+
+- Later work should decide whether to add a formal deterministic voice-fill generator from script/proof data or keep voice fill as an author/Codex-edited JSON file.
+- Later work should decide whether the first setting-source MP4 sample should be Traditional Chinese.
+
+### Implementation Steps
+
+- [x] Step 1: Add a setting-source voice timeline fill sample that matches the generated proof packet id and panel ids.
+- [x] Step 2: Run `build-comic-video-local-preview` against the setting-source proof and voice fill to generate a local preview MP4.
+- [x] Step 3: Add focused dry-run/sample coverage for the setting-source proof plus voice fill path.
+- [x] Step 4: Update docs and sample README with the proof-to-video command and boundary notes.
+- [x] Step 5: Run focused/full tests, MP4 checks, diff checks, and process checks.
+
+### Verification
+
+- Focused sample/build tests.
+- Actual `build-comic-video-local-preview` run against `samples/comic_video_setting_source/image_facing_preview_build/image_facing_delivery_proof.json`.
+- `ffprobe` on the generated MP4.
+- Audio volume check on the generated MP4.
+- Preview-frame visual inspection if practical.
+- `git diff --check`.
+- Trailing-whitespace scan.
+- Scope check with `git status --short --branch`.
+- Java/Gradle/Kotlin process check.
+
+### Risks
+
+- Accidentally treating local preview MP4 output as final production media.
+- Mismatching voice fill panel ids with packet panel ids.
+- Accidentally adding provider/media output fields into the source voice fill JSON.
+- Accidentally implying this slice adds automatic voice generation or final acting.
+
+### Drift Log
+
+- 2026-06-30: Started setting-source-to-local-MP4 preview sample slice after the setting-to-image-facing-proof preview bridge reached PASS. This slice reuses existing comic-video build/render commands and adds only a local voice fill sample plus verification evidence.
+- 2026-06-30: Added `voice_timeline_fill_rain_gate_preview_sample.json`, rendered `out/comic_video_setting_source_preview/rain_gate_setting_preview.mp4`, extracted a preview frame, and extended `ComicVideoLocalPreviewBuildCliTest` with a dry-run setting-source proof plus voice fill path. Actual build report is PASS with packet validation PASS, manifest PASS, local render PASS, 9000 ms total duration, and generated local preview media.
+- 2026-06-30: Verified the setting-source MP4 preview sample with focused `ComicVideoLocalPreviewBuildCliTest`, full `.\gradlew.bat test --no-daemon --console=plain`, `ffprobe` showing 9.000000 seconds with 1920x1080 H.264 video and AAC audio, `ffmpeg` volume detection showing non-silent audio, preview-frame visual inspection, JSON artifact secret/forbidden-claim scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. `git diff --check` reported only existing Windows line-ending warnings.
+
+## Active Setting Pack To Image-Facing Proof Preview CLI Plan
+
+### Goal
+
+Add a local preview CLI that starts from a public setting pack scene and produces a PASS `ImageFacingDeliveryProof` through candidate script/storyboard JSON artifacts, creating the next verified bridge toward setting-driven comic-video output.
+
+### Global Strategy
+
+- Keep the implementation inside Kotlin/JVM CLI plus JSON file protocol.
+- Reuse the existing `create-setting-script-packet-draft` logic and existing storyboard/image-facing validators where possible.
+- Create only local preview / candidate artifacts:
+  - setting-derived `ScriptPacketDraft`;
+  - script draft validation report;
+  - local-preview storyboard planning brief;
+  - storyboard packet draft;
+  - storyboard packet validation;
+  - storyboard review packet;
+  - human-review preflight readiness report;
+  - story movement audit;
+  - reviewable storyboard packet;
+  - image-facing delivery proof.
+- Keep this bridge explicitly separate from formal novelization accepted-draft source binding, human decision, canon, registry, release, provider media, and production lock.
+
+### Non-Goals
+
+- No SQLite writes, setting-pack apply, formal accepted-script source binding, human approval/decision, web/server, OpenAI API, external provider, media generation, registry write, release, canon application, or production lock.
+- No direct MP4 generation in this slice. That remains the next downstream step once proof plus voice fill exist.
+- No claim that storyboard review is formally approved; this only reaches review-ready / candidate proof surfaces for local preview.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/SettingImageFacingProofPreviewBuildService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/SettingImageFacingProofPreviewBuildCliTest.kt`
+- `samples/comic_video_setting_source/`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+
+### Confirmed Facts
+
+- `ImageFacingDeliveryProofService` requires a PASS `ReviewableStoryboardPacket`.
+- `ReviewableStoryboardPacketService` requires PASS storyboard review, human-review preflight, and story movement audit reports.
+- `StoryboardPacketDraftValidationService`, `StoryboardPacketReviewService`, `StoryboardPacketHumanReviewPreflightService`, `StoryboardStoryMovementAuditService`, and `ImageFacingDeliveryProofService` can operate through local JSON service inputs without SQLite or provider access.
+- `StoryboardStoryMovementAuditService` requires deterministic movement evidence; generated storyboard frames must include action and consequence/choice markers, not only static visual description.
+- Formal `AcceptedScriptPacketHandoffPacketService` requires source-binding reports from novelization accepted draft/preflight; setting pack data alone cannot truthfully satisfy that formal source chain.
+- The previous slice generated a PASS setting-derived `ScriptPacketDraft` and validation report from `samples/comic_video_setting_source/setting_pack_rain_gate_sample.json`.
+
+### Assumptions
+
+- A local preview bridge that creates a planning brief from a PASS setting-derived script draft is acceptable if it is explicitly not formal accepted-script source binding or human decision.
+- Producing a PASS image-facing proof from setting data is the next useful evidence before connecting to voice fill and MP4.
+
+### Open Questions
+
+- Later work must decide whether to add a formal setting-specific accepted-script gate or keep this as preview-only while formal novelization gates remain separate.
+
+### Implementation Steps
+
+- [x] Step 1: Add setting image-facing preview build report models.
+- [x] Step 2: Add `SettingImageFacingProofPreviewBuildService` for planning brief and storyboard draft derivation.
+- [x] Step 3: Add `build-setting-image-facing-proof-preview` CLI command and help text.
+- [x] Step 4: Add focused tests and sample generated artifacts.
+- [x] Step 5: Run the command, verify PASS proof, update docs, and record drift evidence.
+
+### Verification
+
+- Focused setting image-facing preview build tests.
+- Focused `SettingPackScriptPacketDraft*`, `ImageFacingDeliveryProof*`, and `ComicVideo*` tests if adjacent behavior is touched.
+- Actual CLI run against `samples/comic_video_setting_source/setting_pack_rain_gate_sample.json`.
+- Secret/forbidden-claim scan over generated preview artifacts.
+- `git diff --check`.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- Accidentally implying local preview review readiness is a formal human approval or accepted-script source binding.
+- Accidentally leaking non-public setting source material into storyboard or image-facing fields.
+- Accidentally generating image/video/provider/canon/registry/release/production-lock claims in text fields scanned by downstream validators.
+
+### Drift Log
+
+- 2026-06-30: Started setting-pack-to-image-facing-proof preview slice after confirming the formal accepted-script handoff path requires novelization accepted-draft source binding. This slice uses a clearly labeled local preview bridge instead of pretending setting data satisfies formal novelization gates.
+- 2026-06-30: Added `build-setting-image-facing-proof-preview`, `SettingImageFacingProofPreviewBuildService`, build report models, focused CLI tests, and rerunnable sample output under `samples/comic_video_setting_source/image_facing_preview_build/`. The first CLI probe failed because generated frame text lacked action markers required by `StoryboardStoryMovementAuditService`; fixed the generator to include deterministic movement evidence and reran the command to PASS. Evidence: 3 storyboard frames, 3 image-facing frame delivery cards, 1 excluded secret, PASS story movement audit, PASS reviewable storyboard packet, PASS image-facing delivery proof, and no critical findings. This remains a local preview bridge only; no SQLite, setting-pack apply, formal accepted-script source binding, human decision, provider/API, generated media, registry, release, canon, approval, or production-lock state changed.
+- 2026-06-30: Verified the setting-to-image-facing-proof preview slice with `SettingImageFacingProofPreviewBuildCliTest`, `SettingPackScriptPacketDraftServiceTest`, full `.\gradlew.bat test --no-daemon --console=plain`, actual CLI sample build, forbidden-claim/secret scan, `git diff --check`, trailing-whitespace scan, `git status --short --branch`, and Java/Gradle/Kotlin process check. All tests passed; `git diff --check` reported only existing Windows line-ending warnings.
+
+## Active Setting Pack To Script Packet Draft CLI Plan
+
+### Goal
+
+Add a local CLI command that converts a public scene from a setting pack JSON into a validated `ScriptPacketDraft`, creating the first verifiable bridge from world/setting data toward the comic-video pipeline.
+
+### Global Strategy
+
+- Keep the implementation inside Kotlin/JVM CLI plus JSON file protocol.
+- Read a setting pack JSON file and use only public scene, location, character, item, fact, and world-rule data.
+- Exclude secrets, director-only goals, forbidden reveal text, registry claims, provider fields, media output paths, and production-lock language.
+- Output a candidate `ScriptPacketDraft`, run the existing `ScriptPacketDraftValidationService`, and write a build report with source counts and validation evidence.
+- Treat the output as upstream draft input only. It does not become accepted script, reviewable storyboard, image-facing proof, canon, registry, release, approval, or production lock.
+
+### Non-Goals
+
+- No SQLite writes, setting-pack apply, formal canon mutation, web/server, OpenAI API, external provider, media generation, registry write, release, approval, or production lock.
+- No bypass of accepted-script, storyboard, image-facing, comic-video validation, or render gates.
+- No final narrative quality claim; the command creates a deterministic local draft that still needs downstream review gates.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/SettingPackScriptPacketDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/SettingPackScriptPacketDraftServiceTest.kt`
+- `samples/comic_video_setting_source/`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+
+### Confirmed Facts
+
+- `ScriptPacketDraft` is the current structured upstream input before accepted script, storyboard, image-facing proof, comic-video packet, validation, render handoff, and local preview MP4.
+- `ScriptPacketDraftValidationService` can validate a draft without SQLite or provider access.
+- `ImageFacingDeliveryProof` must come from a PASS reviewable storyboard packet; direct proof creation from setting data would bypass existing gates.
+- `SettingPack` model contains scenes, locations, characters, items, facts, world rules, scene contracts, secrets, and relations.
+- Existing comic-video build and renderer commands can already create a local MP4 once a PASS image-facing proof and voice fill exist.
+
+### Assumptions
+
+- A deterministic setting-pack-to-script-draft command is the correct next bridge because it moves the project closer to "world/setting -> video" without pretending downstream review gates have run.
+- A small public rain-gate setting sample is enough for this slice.
+
+### Open Questions
+
+- Later work must add a reviewed path from this generated script draft through accepted-script/storyboard/image-facing gates, then generate or fill voice cues.
+
+### Implementation Steps
+
+- [x] Step 1: Add setting-pack script draft build report models.
+- [x] Step 2: Add `SettingPackScriptPacketDraftService`.
+- [x] Step 3: Add `create-setting-script-packet-draft` CLI command and help text.
+- [x] Step 4: Add a sample setting source pack plus focused tests.
+- [x] Step 5: Run the command, validate generated output, update docs, and record drift evidence.
+
+### Verification
+
+- Focused setting-pack script draft tests.
+- Focused `ScriptPacketDraft*` and `ComicVideo*` tests if adjacent behavior is touched.
+- Actual CLI run against the sample setting source pack.
+- `git diff --check`.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- Accidentally copying author-only or director-only text into visible script draft fields.
+- Accidentally implying the generated script draft is accepted, approved, canon, registry-ready, or production-ready.
+- Generating too much prose instead of a compact structured draft that downstream gates can inspect.
+
+### Drift Log
+
+- 2026-06-30: Started setting-pack-to-script-draft slice after the local preview build CLI proved proof/fill -> MP4. Evidence shows the missing upstream bridge is world/setting JSON into structured script packet draft input; scope is restricted to candidate draft generation plus existing draft validation.
+- 2026-06-30: Added `create-setting-script-packet-draft`, `SettingPackScriptPacketDraftService`, build report models, `samples/comic_video_setting_source/`, and focused tests. Ran the command against `setting_pack_rain_gate_sample.json`; it wrote a PASS `ScriptPacketDraftValidationReport`, generated 1 segment, 3 beats, 3 frame candidates, counted 1 excluded secret, and `rg` found no copied secret/director/provider/production/canon/final-video terms in the generated draft/report. This slice stayed within local Kotlin/JVM CLI plus JSON file protocol; no SQLite, setting-pack apply, accepted-script, storyboard approval, image-facing proof, provider/API, registry, release, approval, canon, or production-lock state changed.
+
+## Active Comic Video End-to-End Local Preview Build CLI Plan
+
+### Goal
+
+Add a single local CLI command that takes an `ImageFacingDeliveryProof` JSON and an edited `ComicVideoVoiceTimelineFill` JSON, runs the official comic video pipeline, and optionally renders a playable local preview MP4.
+
+### Global Strategy
+
+- Keep the implementation inside Kotlin/JVM CLI plus JSON file protocol.
+- Reuse existing services instead of bypassing gates:
+  - `ComicVideoPacketService`
+  - `ComicVideoVoiceTimelineFillService`
+  - `ComicVideoPacketValidationService`
+  - `ComicVideoRenderHandoffManifestService`
+  - `ComicVideoLocalRendererService`
+- Write every intermediate JSON artifact into a caller-provided output directory so the full chain remains inspectable.
+- Support `--dry-run` to verify the full JSON chain and renderer preflight without generating media.
+- Treat any generated media as local preview output under `out/`, not canon, registry, release, approval, provider output, or production lock.
+
+### Non-Goals
+
+- No web server, OpenAI API, external provider, SQLite writes, setting-pack mutation, formal registry, release, canon approval, or production lock.
+- No final art direction or final voice acting.
+- No replacement of the existing step-by-step CLI commands.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoLocalPreviewBuildCliTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- generated local files under `out/comic_video_zh_tw_build/`
+
+### Confirmed Facts
+
+- The current step-by-step pipeline can produce PASS English and Traditional Chinese sample manifests.
+- `render-comic-video-local` can render the Traditional Chinese manifest to a verified MP4.
+- Existing service boundaries already validate source proof, voice fill, packet validation, render handoff manifest, and local renderer preconditions.
+- The worktree contains uncommitted comic video renderer and sample-pack changes from previous goal slices.
+
+### Assumptions
+
+- A single build command materially improves the user-facing workbench because it removes manual command chaining.
+- The command should still write intermediate JSON files so failures remain inspectable.
+
+### Open Questions
+
+- Later work can add a higher-level command that derives the proof/fill from a formal setting pack or session packet.
+
+### Implementation Steps
+
+- [x] Step 1: Add build report models.
+- [x] Step 2: Add `build-comic-video-local-preview` CLI command.
+- [x] Step 3: Add focused CLI tests for dry-run PASS output and failed validation handling.
+- [x] Step 4: Run the command on the Traditional Chinese sample and verify the generated MP4.
+- [x] Step 5: Update workflow docs and record verification/drift evidence.
+
+### Verification
+
+- Focused build CLI test.
+- Focused `ComicVideo*` tests.
+- Actual `build-comic-video-local-preview` run against the Traditional Chinese sample.
+- `ffprobe` and audio volume check on generated MP4.
+- Preview-frame visual inspection.
+- `git diff --check`.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- If build output names are too implicit, authors may not know which intermediate file failed; the report must list paths.
+- `--dry-run` should not create MP4/WAV/PNG media, but it may still write JSON artifacts.
+- This is still local preview output, not final production media.
+
+### Drift Log
+
+- 2026-06-30: Started end-to-end local preview build CLI slice after the Traditional Chinese sample proved the step-by-step chain. Scope is one local CLI wrapper over existing gates plus report/docs/tests; no SQLite, provider/API, canon, registry, release, approval, or production-lock work.
+- 2026-06-30: Added `build-comic-video-local-preview`, build report models, and focused CLI tests. Ran the command against `samples/comic_video_workbench_zh_tw/` and generated `out/comic_video_zh_tw_build/zh_tw_build_preview.mp4`; `ffprobe` confirmed 9.000000 seconds, 1920x1080 H.264 video, and AAC audio; audio volume detection confirmed non-silent audio; preview-frame inspection confirmed visible Traditional Chinese text/subtitles. The slice stayed within Kotlin/JVM CLI plus JSON file protocol and local preview media under `out/`; no SQLite, provider/API, canon, registry, release, approval, or production-lock state changed.
+
+## Active Traditional Chinese Comic Video Sample Plan
+
+### Goal
+
+Add a Traditional Chinese sample path that proves the current Codex workbench can take world/setting-facing scene metadata through the official comic video JSON pipeline and render a playable Chinese voiced-comic MP4.
+
+### Global Strategy
+
+- Keep the existing English `samples/comic_video_workbench/` baseline intact.
+- Add a separate `samples/comic_video_workbench_zh_tw/` sample pack with:
+  - PASS `ImageFacingDeliveryProof` source JSON;
+  - Traditional Chinese voice timeline fill;
+  - generated packet, validation, and render handoff manifest outputs from the official CLI;
+  - README commands for rerun.
+- Use the existing `render-comic-video-local` command to render a local Chinese MP4 under `out/comic_video_zh_tw/`.
+- Treat generated MP4/WAV/PNG files as local preview output only, not canon, registry, release, approval, provider output, or production lock.
+
+### Non-Goals
+
+- No web server, OpenAI API, external provider, SQLite writes, setting-pack mutation, formal registry, release, canon approval, or production lock.
+- No final art direction, final voice acting, or production media claim.
+- No broad renderer redesign in this slice.
+
+### Scope
+
+- `PLANS.md`
+- `samples/comic_video_workbench_zh_tw/`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoWorkbenchSamplePackTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- generated local files under `out/comic_video_zh_tw/`
+
+### Confirmed Facts
+
+- `render-comic-video-local` can render a PASS sample manifest to MP4 with H.264 video and AAC audio.
+- Existing sample pack is English and remains useful as a baseline.
+- The local renderer can display Traditional Chinese text because the prior V2 demo rendered Chinese subtitles correctly.
+- The official comic video JSON chain remains: proof -> packet -> voice fill -> validation -> render handoff manifest -> local renderer.
+- The current worktree already contains uncommitted renderer/sample-pack changes from prior slices.
+
+### Assumptions
+
+- A small three-panel Traditional Chinese rain-gate sample is sufficient for this segment to prove Chinese story-facing output.
+- The sample can be setting/world-facing without being formal canon or a setting-pack mutation.
+
+### Open Questions
+
+- Later work should connect the sample source to a formal setting pack or session-derived scene packet if the user wants canon-accurate production output.
+
+### Implementation Steps
+
+- [x] Step 1: Add Traditional Chinese source proof/fill sample files and README.
+- [x] Step 2: Generate derived packet, validation report, and render handoff manifest through official CLI commands.
+- [x] Step 3: Extend sample-pack test coverage for the Traditional Chinese sample.
+- [x] Step 4: Render and verify a local Traditional Chinese MP4 under `out/comic_video_zh_tw/`.
+- [x] Step 5: Update workflow docs and run verification/drift checks.
+
+### Verification
+
+- Focused sample-pack test.
+- Focused `ComicVideo*` tests if sample coverage changes adjacent behavior.
+- `render-comic-video-local` against the Traditional Chinese manifest.
+- `ffprobe` on the generated MP4.
+- Extract and visually inspect a preview frame.
+- `git diff --check`.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- Validators may reject sample wording if it implies final media, approval, canon, registry, release, provider jobs, or production lock.
+- Local Windows synthetic speech may pronounce Traditional Chinese unevenly.
+- The sample proves local preview output, not final production-quality media.
+
+### Drift Log
+
+- 2026-06-30: Reopened goal mode after context reset. No active goal existed, so a new goal was created with the same segmented final-video objective. This slice is scoped to a Traditional Chinese sample path and local MP4 proof, using the renderer already added in the previous slice.
+- 2026-06-30: Added `samples/comic_video_workbench_zh_tw/` with Traditional Chinese image-facing proof, voice timeline fill, generated packet/template/filled packet/validation/manifest, and README. First validation failed because a note used "正式 / 核准" wording; replaced it with neutral local-preview wording and reran the official CLI chain to PASS.
+- 2026-06-30: Extended `ComicVideoWorkbenchSamplePackTest` to rerun both English and Traditional Chinese sample packs. Rendered `samples/comic_video_workbench_zh_tw/comic_video_render_handoff_manifest_zh_tw_sample.json` to `out/comic_video_zh_tw/zh_tw_local_render.mp4`; `ffprobe` confirmed a 9.000000 second 1920x1080 H.264 video stream and AAC audio stream, `volumedetect` confirmed non-silent audio, and `zh_tw_preview_001.jpg` visually confirmed Traditional Chinese text/subtitles render correctly.
+- 2026-06-30: Verified this slice with focused sample-pack test, focused `ComicVideo*` tests, local MP4 `ffprobe`, audio volume check, preview-frame inspection, and workflow-doc update. The slice stayed within local Kotlin/JVM CLI plus JSON file protocol and local preview media under `out/`; no SQLite, provider/API, canon, registry, release, approval, or production-lock state changed.
+
+## Active Comic Video Local MP4 Renderer CLI Plan
+
+### Goal
+
+Add a local one-command renderer that can turn a PASS comic video render handoff manifest into a playable MP4, so the Codex workbench advances from JSON-only handoff toward the user's requested video product.
+
+### Global Strategy
+
+- Keep the system inside Kotlin/JVM CLI plus JSON file protocol.
+- Add a local-only renderer command that:
+  - reads `ComicVideoRenderHandoffManifest`;
+  - generates simple comic-style PNG panels from manifest timeline text;
+  - uses local Windows speech synthesis for narration;
+  - uses local `ffmpeg` to assemble a playable MP4;
+  - writes an optional JSON render report for evidence.
+- Treat this as local preview / product output evidence, not canon, registry, provider media, release, approval, or production lock.
+- Keep generated MP4 / WAV / PNG files under `out/` or a caller-provided output directory, not committed source.
+
+### Non-Goals
+
+- No web server, OpenAI API, external TTS/image/video provider, Docker, Android UI, SQLite writes, setting-pack mutation, canon approval, formal registry, release tag, or production lock.
+- No final art direction or final voice acting in this slice.
+- No raising or changing existing runtime context / Validator / StateReducer rules.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ComicVideoLocalRendererService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoLocalRendererServiceTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+
+### Confirmed Facts
+
+- User explicitly requested goal mode and final playable video output, with segmented work to avoid drift.
+- A playable V2 MP4 prototype exists at `out/comic_video_demo_v2/demo_v2.mp4`.
+- Existing CLI already creates a PASS `ComicVideoRenderHandoffManifest` with panel, voice, subtitle, and render settings timelines.
+- `ComicVideoRenderHandoffManifest` is currently metadata-only and points to `external_manual_renderer_handoff`.
+- Local `ffmpeg`, `ffprobe`, Traditional Chinese fonts, and Windows `Microsoft Hanhan Desktop|zh-TW` voice are available on this machine.
+- The worktree already contains uncommitted sample-pack/documentation changes from prior slices.
+
+### Assumptions
+
+- The safest first production-facing increment is a local renderer command with a dry-run/testable path plus an actual local MP4 execution path.
+- Prototype comic panels generated from manifest text are acceptable for this slice; later slices can improve art quality and asset consistency.
+
+### Open Questions
+
+- Later work must decide whether final-quality images and voices remain local/manual, use approved provider handoff, or use another explicitly approved media path.
+
+### Implementation Steps
+
+- [x] Step 1: Add local renderer report models and service validation/dry-run planning.
+- [x] Step 2: Wire `render-comic-video-local` CLI command and help text.
+- [x] Step 3: Add focused tests for PASS/FAIL dry-run behavior and CLI report output.
+- [x] Step 4: Run the command on the sample manifest to create a verified local MP4 under `out/`.
+- [x] Step 5: Update workflow docs, run verification, and record drift evidence.
+
+### Verification
+
+- Focused renderer tests.
+- Focused `ComicVideo*` tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain` unless a narrower failure requires repair first.
+- `git diff --check`.
+- Actual local MP4 command run against the sample manifest, followed by `ffprobe`.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- Local speech synthesis is Windows-specific and robotic.
+- `ffmpeg` availability is local-machine dependent, so tests should cover dry-run behavior without requiring media tools.
+- Generated panels are preview quality; final art may require a later explicit asset / provider / manual-production decision.
+- This expands the workbench from metadata-only handoff to local media output, so docs must keep canon, approval, registry, release, and production-lock boundaries explicit.
+
+### Drift Log
+
+- 2026-06-29: Goal mode started after the user requested segmented completion toward final video output. Evidence shows the missing bridge is a local renderer command from PASS render handoff manifest to MP4; this slice is scoped to local preview media generation only.
+- 2026-06-29: Added `render-comic-video-local` with local render report models, dry-run validation, Java2D panel generation, Windows speech narration, and `ffmpeg` MP4 assembly. The sample manifest rendered to `out/comic_video_local_renderer/sample_local_render.mp4`; `ffprobe` confirmed a 7.833333 second 1920x1080 H.264 video stream and AAC audio stream. Extracted `sample_preview_001.jpg` and visually inspected the frame, then improved word-aware wrapping after spotting an awkward English word split.
+- 2026-06-29: Verified this renderer slice with `ComicVideoLocalRendererServiceTest`, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, `git diff --check`, trailing-whitespace scan, local MP4 `ffprobe`, preview-frame inspection, and process cleanup. Gradle/Kotlin compilation was slow on this machine; switching to in-process Kotlin compiler avoided leaving a runaway Kotlin daemon. No drift from the local-preview renderer plan was detected.
+
+## Active Local Demo MP4 V2 Polish Plan
+
+### Goal
+
+Produce a second playable demo MP4 with Traditional Chinese subtitles/narration and more comic-like panel art, improving on the first rough `demo.mp4` while keeping the artifact local under `out/`.
+
+### Global Strategy
+
+- Keep `out/comic_video_demo/demo.mp4` as the first verified rough demo.
+- Generate `out/comic_video_demo_v2/demo_v2.mp4` with:
+  - 1920x1080 comic-style panel cards;
+  - Traditional Chinese scene text and subtitles;
+  - local Windows `Microsoft Hanhan Desktop` synthetic speech;
+  - no provider/API calls and no external media services.
+- Use local PowerShell/System.Drawing for visual frames and local System.Speech/ffmpeg for audio/video assembly.
+- Do not change Kotlin runtime behavior or SQLite state in this slice.
+
+### Non-Goals
+
+- No OpenAI API, external TTS provider, image provider, sidecar integration, SQLite writes, canon/approval/registry/release/production lock.
+- No claim that V2 is final production art or final voice acting.
+- No committing large MP4 output unless explicitly requested later.
+
+### Scope
+
+- `PLANS.md`
+- generated local files under `out/comic_video_demo_v2/`
+
+### Confirmed Facts
+
+- First playable MP4 exists at `out/comic_video_demo/demo.mp4` and has H.264 video plus AAC audio.
+- Windows has `Microsoft Hanhan Desktop|zh-TW` installed for local speech synthesis.
+- Windows has Traditional Chinese fonts available, including `NotoSansTC-VF.ttf`.
+- `ffmpeg` and `ffprobe` are available.
+- Worktree contains uncommitted sample-pack/documentation changes from prior slices.
+- V2 playable MP4 exists at `out/comic_video_demo_v2/demo_v2.mp4` and has 1920x1080 H.264 video plus AAC audio.
+
+### Assumptions
+
+- A better local prototype video with Chinese subtitles and narration is the next most useful artifact for the user.
+- Local Windows speech quality is acceptable for a demo pass, even if not final character performance.
+
+### Open Questions
+
+- Later work can replace prototype visuals and local synthetic narration with real panel art and voice production.
+
+### Implementation Steps
+
+- [x] Step 1: Verify local Chinese speech and font availability.
+- [x] Step 2: Generate V2 comic-style panel frames and Chinese narration under `out/comic_video_demo_v2/`.
+- [x] Step 3: Compose and verify `demo_v2.mp4` with `ffmpeg`/`ffprobe`.
+- [x] Step 4: Update plan with V2 evidence and report the playable file path.
+
+### Verification
+
+- `ffprobe` confirms MP4 duration plus video/audio streams.
+- Extract a preview frame and visually inspect it.
+- `git status --short --branch` confirms generated media remains under `out/`.
+
+### Risks
+
+- Local speech synthesis may sound robotic.
+- System.Drawing text rendering may need fallback if the selected font behaves differently on this machine.
+- V2 remains a prototype; it improves inspectability but is not final production media.
+
+### Drift Log
+
+- 2026-06-29: Started V2 polish after the user asked for the next step. Evidence confirms local zh-TW speech and Traditional Chinese fonts are available, so the next artifact can be a Chinese narrated MP4 rather than another English rough demo.
+- 2026-06-29: Generated `out/comic_video_demo_v2/demo_v2.mp4` from three comic-style panels, local Traditional Chinese narration, and burned subtitles. `ffprobe` confirmed a 14.066667 second MP4 with 1920x1080 H.264 video and AAC audio; extracted `preview_001.jpg` and visually inspected the frame. No Kotlin runtime, SQLite, provider/API, canon, registry, approval, release, or production-lock behavior changed.
+
+## Active Local Demo MP4 Export Plan
+
+### Goal
+
+Produce a playable demo MP4 from the current comic video workbench sample so the user can inspect an actual video artifact instead of only JSON metadata.
+
+### Global Strategy
+
+- Treat this as a local prototype export under `out/`, not as formal project canon, registry, provider/media production, release, or production lock.
+- Use locally available `ffmpeg` only:
+  - generate simple comic-style panel frames;
+  - generate local synthetic narration with the built-in `flite` audio source if usable;
+  - burn subtitles into the video;
+  - export `out/comic_video_demo/demo.mp4`.
+- Do not add web servers, OpenAI/API calls, external providers, SQLite writes, or new runtime engine behavior.
+- Keep source-control changes limited to `PLANS.md` unless a small helper script becomes necessary.
+
+### Non-Goals
+
+- No provider/API calls, no OpenAI API, no generated model images, no external TTS provider, no sidecar renderer integration, no SQLite writes, no canon/approval/registry/release/production lock.
+- No claim that this is final production-quality comic art or voice acting.
+- No committing large binary MP4 output unless explicitly requested later.
+
+### Scope
+
+- `PLANS.md`
+- generated local files under `out/comic_video_demo/`
+
+### Confirmed Facts
+
+- User explicitly clarified the desired product is a video, not JSON artifacts.
+- Local `ffmpeg` and `ffprobe` are available.
+- Python is not available from `python` on PATH.
+- The current sample pack provides a three-panel comic video workbench chain and PASS validation/manifest evidence.
+- The worktree already contains uncommitted sample-pack changes from the previous slice.
+
+### Assumptions
+
+- A simple playable MP4 is more valuable to the user now than another committed JSON-only increment.
+- Robotic local narration is acceptable for this first demo if it plays with the video; if local TTS fails, a silent subtitled MP4 is still better than no video.
+
+### Open Questions
+
+- Future work can replace prototype frames and narration with real artwork/voice once a media-production path is explicitly approved.
+
+### Implementation Steps
+
+- [x] Step 1: Check local media tooling and current worktree state.
+- [x] Step 2: Generate local panel frames, subtitle file, and audio assets under `out/comic_video_demo/`.
+- [x] Step 3: Compose and verify `demo.mp4` with `ffmpeg`/`ffprobe`.
+- [x] Step 4: Update plan with evidence and report the playable file path.
+
+### Verification
+
+- `ffprobe` confirms MP4 container, duration, video stream, and audio stream when audio generation succeeds.
+- File exists at `out/comic_video_demo/demo.mp4`.
+- Optional visual sanity check through local media metadata or screenshot extraction.
+- `git status --short --branch` confirms generated media remains untracked under `out/` and source changes stay scoped.
+
+### Risks
+
+- Local TTS quality may be robotic or unavailable.
+- Generated frames are prototype text/comic cards, not production art.
+- This intentionally goes beyond the repo's previous JSON-only product boundary, so the output must remain local prototype evidence unless separately reviewed.
+
+### Drift Log
+
+- 2026-06-29: Started local demo MP4 export after the user clarified that the desired product is a video. Scope is a local prototype artifact under `out/`, using only local `ffmpeg`; no provider/API, SQLite, canon, approval, registry, release, or production-lock work.
+- 2026-06-29: Generated three comic-style panel PNGs, local synthetic narration WAV files, a combined narration track, a silent video, and final `out/comic_video_demo/demo.mp4`. First concat attempt exposed a UTF-8 BOM issue in ffmpeg concat files; fixed by using ASCII relative-path concat manifests. Second video attempt exposed contradictory ffmpeg frame-rate flags; fixed with an `fps` video filter. `ffprobe` confirmed `demo.mp4` has a 1920x1080 H.264 video stream, AAC audio stream, and about 12 seconds duration. Extracted `preview_001.jpg` for visual sanity check.
+
+## Active Comic Video Workbench Sample Pack Plan
+
+### Goal
+
+Add a small, rerunnable sample JSON pack for the current comic video workbench so an author can inspect a concrete local file-protocol chain from PASS `ImageFacingDeliveryProof` to PASS metadata-only render handoff manifest.
+
+### Global Strategy
+
+- Keep the slice inside Kotlin/JVM CLI plus JSON file protocol.
+- Add only sample inputs, generated sample metadata outputs, documentation, and a focused test that proves the sample pack still runs through the CLI.
+- Use official CLI commands to produce deterministic sample output artifacts:
+  - `create-comic-video-packet`
+  - `create-comic-video-voice-timeline-fill-template`
+  - `fill-comic-video-voice-timeline`
+  - `validate-comic-video-packet`
+  - `create-comic-video-render-handoff-manifest`
+- Keep sample text away from validation-forbidden claims such as final media, approval, canon, registry, release, provider/API, rendered output, and production lock.
+
+### Non-Goals
+
+- No generated images, audio files, rendered subtitles, MP4 output, provider/API calls, sidecar renderer execution, SQLite writes, web server, canon, approval, registry, release, or production lock.
+- No changing official project completion progress.
+- No new runtime behavior beyond verifying the sample pack.
+
+### Scope
+
+- `PLANS.md`
+- `samples/comic_video_workbench/`
+- `app/src/test/kotlin/com/localnovel/engine/ComicVideoWorkbenchSamplePackTest.kt`
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`
+- `docs/COMIC_VIDEO_WORKBENCH_CURRENT_PHASE_COMPLETION.md`
+
+### Confirmed Facts
+
+- The current branch is clean and synchronized at `d406737 feat: add comic video workbench pipeline`.
+- `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md` documents the CLI chain but points at `out/comic_video/...`, not a committed sample pack.
+- `samples/` currently contains general sample files but no comic video workbench sample directory.
+- `ComicVideoWorkbenchPipelineFixtureTest` already proves the CLI chain with temp files.
+- `ImageFacingDeliveryProof` and `ComicVideoVoiceTimelineFill` models contain the fields needed for a static sample input pair.
+
+### Assumptions
+
+- A committed sample pack should include both source JSON files and generated metadata outputs so the author can inspect the whole chain without first running commands.
+- A focused test that reruns the sample source files through temp outputs is safer than only checking that static output files exist.
+
+### Open Questions
+
+- Future slices may add a richer multi-character chapter sample or installDist examples.
+
+### Implementation Steps
+
+- [x] Step 1: Inspect existing sample layout, workflow docs, and workbench fixture patterns.
+- [x] Step 2: Add sample source files and README under `samples/comic_video_workbench/`.
+- [x] Step 3: Generate committed sample output JSON through official CLI commands.
+- [x] Step 4: Add a focused sample-pack test and update docs.
+- [x] Step 5: Run focused/full verification and drift checks.
+
+### Verification
+
+- Focused sample-pack test.
+- Focused `ComicVideo*` tests.
+- Full test command: `.\gradlew.bat test --no-daemon --console=plain`.
+- `git diff --check`.
+- Manual trailing-whitespace scan for changed files.
+- Scope check with `git status --short --branch`.
+
+### Risks
+
+- Sample text accidentally triggers the comic video validator's forbidden-claim scanners.
+- Static generated outputs drift from services if future code changes are made without updating the pack.
+- Accidentally implying final media output rather than metadata-only handoff.
+
+### Drift Log
+
+- 2026-06-29: Started comic video workbench sample pack slice after the user accepted the next step. Scope is committed local JSON samples plus verification only; no media generation, provider/API, sidecar, SQLite, canon, approval, registry, release, or production-lock work.
+- 2026-06-29: Added `samples/comic_video_workbench/` source files and README, then generated packet, voice fill template, filled packet, validation report, and render handoff manifest through the official CLI commands. The committed sample validation and manifest both returned PASS.
+- 2026-06-29: Added `ComicVideoWorkbenchSamplePackTest` and linked the sample pack from workflow/completion docs. First focused run exposed a brittle relative-path assumption; repaired the test to locate the repo sample directory by walking upward from the test working directory. Focused sample-pack test then passed.
+- 2026-06-29: Verified with focused sample-pack test, focused `ComicVideo*` tests, full `.\gradlew.bat test --no-daemon --console=plain`, `git diff --check`, trailing-whitespace scan, and scope check. Stopped the remaining Gradle daemon with `.\gradlew.bat --stop`. No drift from the sample-pack plan was detected.
+
 ## Active Comic Video Workbench Current Phase Completion Report Plan
 
 ### Goal

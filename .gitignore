@@ -25,3 +25,7 @@ codex-jdk*/
 # Local-only memory support files.
 /memory/project_directory_memory.json
 /memory/quarterfull_world_memory_capsule.json
+
+# IDE / agent terminal session artifacts.
+/terminals/
+/agent-tools/

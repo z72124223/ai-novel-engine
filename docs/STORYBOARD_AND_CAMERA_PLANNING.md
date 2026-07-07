@@ -103,13 +103,63 @@ storyboardFrames:
       background: []
     visibleAction: ""
     dialogueOrAudio: ""
+    gazeTarget: ""
+    facingTarget: ""
+    eyelineReason: ""
+    nonFacingReason: ""
+    interactionTarget: ""
+    continuityCheck: ""
     doNotShow: []
     continuityAnchor: []
     oiioiiPromptNotes: []
     reviewNotes: []
 ```
 
-This is a future documentation shape, not an implemented schema.
+These eyeline/facing fields are future documentation requirements only, not an
+implemented schema.
+
+### 4.2.1 Eyeline / Facing Direction Rule
+
+Every future storyboard or image-facing frame that includes dialogue, reaction,
+attention, avoidance, threat monitoring, companion interaction, or
+interpersonal blocking must carry explicit eyeline and facing direction fields:
+
+- `gazeTarget`: who or what the character is looking at;
+- `facingTarget`: where the face/body is oriented;
+- `eyelineReason`: why that gaze/facing choice is correct for the beat;
+- `nonFacingReason`: required when a character speaks or reacts while not
+  facing the interaction target, and must state the intentional non-facing
+  reason;
+- `interactionTarget`: required for dialogue or directed action;
+- `continuityCheck`: confirms gaze/facing matches prior blocking unless it is
+  intentionally changed.
+
+If 陸知行 speaks to 愛醬, default `gazeTarget`, `facingTarget`, and
+`interactionTarget` should target 愛醬. If he does not look at 愛醬 while
+speaking, the frame must state why: fear, concealment, watching danger, shame,
+deliberate coldness, tactical attention, or another beat-specific intentional
+non-facing reason. If 愛醬 reacts to 陸知行, the frame must state whether she
+looks at him, turns an ear/body toward him, ignores him deliberately, watches a
+threat, or tracks scent/sound.
+
+For Chenxing examples, current-facing protagonist name is only 陸知行; 衛昭 is
+superseded in derived/current-facing materials. 愛醬 has her own story line and
+must not be reduced to pet, tool, clue machine, mascot, combat asset, or
+mount-only growth. Living world first; final-product chains serve the world
+later. Old opening/mainline material remains discussion evidence only, not
+locked plot, canon, or final-product content.
+
+Review checks:
+
+- dialogue frames without eyeline/facing target are incomplete;
+- contradictory gaze/facing versus visible action is a drift risk;
+- accidental back-facing is a fail unless explicitly intentional;
+- gaze/facing must not reveal author-only information or
+  character-inaccessible knowledge;
+- this rule supports storyboard/camera, prompt/asset cards, image-facing
+  delivery proof, renderer/package QA, and human approval gates.
+
+See `docs/CODEX_STORYBOARD_EYELINE_FACING_DIRECTION_RULE_PATCH_V0.md`.
 
 ### 4.3 Storyboard images
 

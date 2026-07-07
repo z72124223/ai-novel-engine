@@ -1,0 +1,191 @@
+{
+    "status": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+    "draftId": "local-story-input-rain-gate-v0-001-asset-prompt-cards-v0",
+    "sourceStoryInputPackFile": "samples\\local_story_input\\rain_gate_story_input_pack_sample.json",
+    "sourceStoryValidationReportFile": "samples\\local_story_input\\rain_gate_story_input_pack_validation_sample.json",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "sourceStoryValidationId": "local-story-input-rain-gate-v0-001-validation-v0",
+    "sourceTitle": "雨門本地故事輸入包",
+    "locale": "zh-TW",
+    "localOnlyConstraints": {
+        "localOnly": true,
+        "noExternalPaidProviderTools": true,
+        "fileProtocolJsonOnly": true,
+        "notes": [
+            "local-only story input for this repo CLI",
+            "no external paid/provider tools",
+            "file-protocol JSON only"
+        ]
+    },
+    "characterCards": [
+        {
+            "cardId": "local-character-card-char-lin",
+            "sourceCharacterId": "char-lin",
+            "name": "林",
+            "role": "主角",
+            "visualCue": "深色濕外套，手腕有清楚可見的銀色印記，姿態疲憊但警覺。",
+            "voiceCue": "低而穩的女聲，語氣克制但帶急迫感。",
+            "publicMotivation": "不遮掩印記，取得進入雨門的機會。",
+            "cardBoundary": "local_character_asset_card_review_only",
+            "reviewStatus": "local_review_required"
+        },
+        {
+            "cardId": "local-character-card-char-gatekeeper",
+            "sourceCharacterId": "char-gatekeeper",
+            "name": "守門人",
+            "role": "關口審視者",
+            "visualCue": "胸前提著燈，半張臉被雨與燈光切開。",
+            "voiceCue": "乾冷、簡短、像在核對規則。",
+            "publicMotivation": "確認林是否能通過雨門。",
+            "cardBoundary": "local_character_asset_card_review_only",
+            "reviewStatus": "local_review_required"
+        }
+    ],
+    "sceneCards": [
+        {
+            "cardId": "local-scene-card-scene-rain-gate",
+            "sourceSceneId": "scene-rain-gate",
+            "title": "雨門關口",
+            "location": "暴雨中的石門前",
+            "mood": "緊張、安靜、被注視",
+            "visibleSituation": "林走進燈光範圍，守門人低頭看她手腕上的銀色印記。",
+            "visualStyleSeed": "短劇式緊張感，寫實、清楚、可讀。 | 冷藍雨色、琥珀燈光、深灰石門。 | 以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。 | 繁體中文字幕，高對比，盡量單行。",
+            "cardBoundary": "local_scene_asset_card_review_only",
+            "reviewStatus": "local_review_required"
+        }
+    ],
+    "beatCards": [
+        {
+            "cardId": "local-beat-card-beat-arrival",
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "sceneTitle": "雨門關口",
+            "characterIds": [
+                "char-lin",
+                "char-gatekeeper"
+            ],
+            "characterCardIds": [
+                "local-character-card-char-lin",
+                "local-character-card-char-gatekeeper"
+            ],
+            "narrativeIntent": "建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+            "dialogueIntent": "守門人要求林把手腕留在燈光裡。",
+            "visualIntent": "中景，燈光反射在手腕印記上，石門保持壓迫感。",
+            "audioIntent": "雨聲鋪底，燈鏈短促晃動。",
+            "cardBoundary": "local_beat_asset_card_review_only",
+            "reviewStatus": "local_review_required"
+        },
+        {
+            "cardId": "local-beat-card-beat-answer",
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "sceneTitle": "雨門關口",
+            "characterIds": [
+                "char-lin"
+            ],
+            "characterCardIds": [
+                "local-character-card-char-lin"
+            ],
+            "narrativeIntent": "林選擇坦白面對檢查，而不是遮掩印記。",
+            "dialogueIntent": "林說她會讓印記留在光裡。",
+            "visualIntent": "近景，林把手腕抬到燈光下，雨水從袖口滴落。",
+            "audioIntent": "林的聲音穩定，雨聲略微壓低。",
+            "cardBoundary": "local_beat_asset_card_review_only",
+            "reviewStatus": "local_review_required"
+        }
+    ],
+    "visualPromptCards": [
+        {
+            "cardId": "local-visual-prompt-beat-arrival",
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "promptSeed": "Story: 雨門本地故事輸入包 | Scene: 雨門關口 at 暴雨中的石門前 | Mood: 緊張、安靜、被注視 | Beat: 建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。 | Visual intent: 中景，燈光反射在手腕印記上，石門保持壓迫感。 | Style: 短劇式緊張感，寫實、清楚、可讀。 | Palette: 冷藍雨色、琥珀燈光、深灰石門。 | Camera: 以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+            "negativeBoundaryNotes": [
+                "No provider/API invocation.",
+                "No media generation.",
+                "No final approval, release, canon, registry, or production lock claim.",
+                "No generated media path or provider job id."
+            ],
+            "providerInvocation": "none",
+            "submissionStatus": "not_submitted",
+            "reviewStatus": "local_review_required"
+        },
+        {
+            "cardId": "local-visual-prompt-beat-answer",
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "promptSeed": "Story: 雨門本地故事輸入包 | Scene: 雨門關口 at 暴雨中的石門前 | Mood: 緊張、安靜、被注視 | Beat: 林選擇坦白面對檢查，而不是遮掩印記。 | Visual intent: 近景，林把手腕抬到燈光下，雨水從袖口滴落。 | Style: 短劇式緊張感，寫實、清楚、可讀。 | Palette: 冷藍雨色、琥珀燈光、深灰石門。 | Camera: 以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+            "negativeBoundaryNotes": [
+                "No provider/API invocation.",
+                "No media generation.",
+                "No final approval, release, canon, registry, or production lock claim.",
+                "No generated media path or provider job id."
+            ],
+            "providerInvocation": "none",
+            "submissionStatus": "not_submitted",
+            "reviewStatus": "local_review_required"
+        }
+    ],
+    "audioCueCards": [
+        {
+            "cardId": "local-audio-cue-beat-arrival",
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "characterIds": [
+                "char-lin",
+                "char-gatekeeper"
+            ],
+            "voiceCueSummary": "林: 低而穩的女聲，語氣克制但帶急迫感。 | 守門人: 乾冷、簡短、像在核對規則。",
+            "audioIntent": "雨聲鋪底，燈鏈短促晃動。",
+            "audioStyleSeed": "自然繁中口語，克制但有壓力。 | 極低音脈衝，不走英雄感。 | 雨聲、燈鏈、石門內的輕微回音。",
+            "ttsInvocation": "none",
+            "reviewStatus": "local_review_required"
+        },
+        {
+            "cardId": "local-audio-cue-beat-answer",
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "characterIds": [
+                "char-lin"
+            ],
+            "voiceCueSummary": "林: 低而穩的女聲，語氣克制但帶急迫感。",
+            "audioIntent": "林的聲音穩定，雨聲略微壓低。",
+            "audioStyleSeed": "自然繁中口語，克制但有壓力。 | 極低音脈衝，不走英雄感。 | 雨聲、燈鏈、石門內的輕微回音。",
+            "ttsInvocation": "none",
+            "reviewStatus": "local_review_required"
+        }
+    ],
+    "renderIntent": {
+        "targetDurationMillis": 9000,
+        "estimatedBeatCount": 2,
+        "suggestedPanelCount": 2,
+        "locale": "zh-TW",
+        "renderBoundary": "local_render_planning_only",
+        "summary": "Local render planning seed for 雨門本地故事輸入包: 2 beat(s), 9000 ms target."
+    },
+    "boundaries": [
+        "file-protocol JSON only",
+        "no provider/API",
+        "no media generation",
+        "no final media approval",
+        "no release",
+        "no canon/registry",
+        "no production lock"
+    ],
+    "downstreamBoundary": "local_asset_prompt_cards_draft_only",
+    "nextAllowedDownstreamStep": "local_asset_prompt_cards_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "storyValidationVerdict": "PASS",
+        "characterCardCount": 2,
+        "sceneCardCount": 1,
+        "beatCardCount": 2,
+        "visualPromptCardCount": 2,
+        "audioCueCardCount": 2,
+        "targetDurationMillis": 9000,
+        "localOnlyDeclared": true,
+        "noExternalPaidProviderToolsDeclared": true,
+        "fileProtocolJsonOnlyDeclared": true
+    }
+}

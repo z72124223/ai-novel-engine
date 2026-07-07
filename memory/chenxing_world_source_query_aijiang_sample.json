@@ -1,0 +1,69 @@
+{
+    "verdict": "PASS",
+    "status": "WORLD_SOURCE_QUERY_PASS",
+    "query": "愛醬",
+    "classification": "companion_detailed_setting",
+    "hitCount": 5,
+    "hits": [
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-09-aijiang-detail:chunk-0001",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-09-aijiang-detail",
+            "classification": "companion_detailed_setting",
+            "title": "愛醬詳細設定",
+            "heading": "愛醬詳細設定",
+            "chunkOrder": 1,
+            "snippet": "# 愛醬詳細設定",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-09-aijiang-detail:chunk-0002",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-09-aijiang-detail",
+            "classification": "companion_detailed_setting",
+            "title": "愛醬詳細設定",
+            "heading": "愛醬 —— 詳細設定",
+            "chunkOrder": 2,
+            "snippet": "# 愛醬 —— 詳細設定",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-09-aijiang-detail:chunk-0003",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-09-aijiang-detail",
+            "classification": "companion_detailed_setting",
+            "title": "愛醬詳細設定",
+            "heading": "基本資料",
+            "chunkOrder": 3,
+            "snippet": "## 基本資料 - **品種：** 長毛哈士奇 - **性別：** 待定 - **來歷：** 2026年地球，陸知行的狗，被他當作自己的孩子。隨主角一起穿越。",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-09-aijiang-detail:chunk-0004",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-09-aijiang-detail",
+            "classification": "companion_detailed_setting",
+            "title": "愛醬詳細設定",
+            "heading": "外觀特徵",
+            "chunkOrder": 4,
+            "snippet": "## 外觀特徵 - **眼睛：** 淡藍色。若仔細看，會發現瞳孔裡有類似藍寶石的紋路——細密的、像寶石切面的光紋。在普通光線下只是好看的淡藍色，但在某些角度或特定光源下，紋路會變得明顯。 - **毛色：** 長毛哈士奇的典型毛色（灰白/黑白），但在這個世界的光線下，有時候會呈現出一種這個世界的人沒見過的質感。 - **體型：** 長毛哈士奇標準體型，在這個世界裡比大部分家犬/獵犬都大。",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-09-aijiang-detail:chunk-0005",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-09-aijiang-detail",
+            "classification": "companion_detailed_setting",
+            "title": "愛醬詳細設定",
+            "heading": "性格特徵",
+            "chunkOrder": 5,
+            "snippet": "## 性格特徵 - **服從性極高：** 陸知行有寵物訓練執照和專業技能，愛醬被訓練得非常好。口令、手勢、眼神都能接收。 - **極度觀察主人：** 愛醬非常擅長觀察陸知行的情緒和意圖。主人緊張牠會緊張，主人放鬆牠才放鬆。這種共情能力在這個世界裡可能會以某種方式被放大。 - **愛乾淨：** 非常愛乾淨。在灰關那種髒亂的環境裡，牠會表現出明顯的嫌棄。 - **喜歡香水味，尤其是女生身上的：** ...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        }
+    ]
+}

@@ -1,0 +1,951 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT",
+    "planId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+    "sourceDryRunReportFile": "samples\\local_story_input\\rain_gate_local_renderer_adapter_dry_run_report_sample.json",
+    "sourceDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+    "sourceReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "sourceValidationChecks": [
+        {
+            "checkId": "explicit-source-file",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Implementation plan requires an explicit Phase 7 dry-run report file.",
+            "evidence": [
+                "dryRunReportFile=samples\\local_story_input\\rain_gate_local_renderer_adapter_dry_run_report_sample.json"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "phase7-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Implementation plan requires PASS Phase 7 dry-run state and the implementation-plan downstream step.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS",
+                "downstreamBoundary=local_renderer_adapter_dry_run_only_not_media_generation",
+                "nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "source-ids-present",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Implementation plan requires dry-run, handoff, review, and story input source ids.",
+            "evidence": [
+                "dryRunId=rain-gate-local-renderer-adapter-dry-run-v0-001",
+                "sourceHandoffId=rain-gate-story-video-preview-handoff-v0-001",
+                "sourceReviewId=rain-gate-story-video-preview-handoff-review-v0-001",
+                "sourceStoryInputPackId=local-story-input-rain-gate-v0-001"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Implementation plan requires local-only no-media boundaries and no manifest generation.",
+            "evidence": [
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "manifestGenerated=false",
+                "noExternalPaidProviderTools=true"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "not-renderer-ready",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Implementation plan requires localRendererReady=false to remain preserved.",
+            "evidence": [
+                "localRendererReady=false"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "phase7-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Implementation plan requires all required Phase 7 checks to remain PASS with no findings.",
+            "evidence": [
+                "checks=9",
+                "requiredFail=0",
+                "findingCount=0"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "mapping-summary-pass",
+            "status": "PASS",
+            "category": "adapter_mapping",
+            "message": "Implementation plan requires mapped panels, zero missing required fields, and zero QA failures.",
+            "evidence": [
+                "mappedPanelCount=2",
+                "unmappedPanelCount=0",
+                "missingRequiredFieldCount=0",
+                "qaFail=0"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "mapping-notes-planning-only",
+            "status": "PASS",
+            "category": "manifest_boundary",
+            "message": "Implementation plan requires Phase 7 mapping notes to be planning-only with no manifest generation.",
+            "evidence": [
+                "mappingNotes=2",
+                "manifestGeneratedNotes=0"
+            ],
+            "requiredForPlan": true
+        }
+    ],
+    "requiredAdapterWorkItems": [
+        {
+            "workItemId": "adapter-input-contract",
+            "title": "Define the local adapter input contract.",
+            "description": "Use the Phase 7 dry-run report as the only accepted source for a future adapter implementation.",
+            "sourceEvidence": [
+                "sourceDryRunId=rain-gate-local-renderer-adapter-dry-run-v0-001",
+                "sourceHandoffId=rain-gate-story-video-preview-handoff-v0-001",
+                "sourceReviewId=rain-gate-story-video-preview-handoff-review-v0-001"
+            ],
+            "targetOutcome": "A future adapter implementation can verify source ids and dry-run boundaries before mapping.",
+            "mustNotDo": [
+                "Do not implement adapter execution in Phase 8.",
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 8.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "panel-timeline-mapper",
+            "title": "Plan panel timeline field mapping.",
+            "description": "Map Phase 7 panel notes to future ComicVideoRenderPanelTimelineItem fields.",
+            "sourceEvidence": [
+                "mappedPanelCount=2",
+                "targetDurationMillis=9000"
+            ],
+            "targetOutcome": "Future implementation has explicit panelTimeline mapping rules before any manifest is generated.",
+            "mustNotDo": [
+                "Do not implement adapter execution in Phase 8.",
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 8.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "voice-subtitle-mapper",
+            "title": "Plan voice and subtitle timeline field mapping.",
+            "description": "Map Phase 7 audio cue and caption/dialogue notes to future voiceTimeline and subtitleTimeline fields.",
+            "sourceEvidence": [
+                "audioCueReferenceCount=2",
+                "panelCount=2"
+            ],
+            "targetOutcome": "Future implementation can create deterministic local voice/subtitle metadata without TTS.",
+            "mustNotDo": [
+                "Do not implement adapter execution in Phase 8.",
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 8.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "render-settings-policy",
+            "title": "Plan render settings defaults.",
+            "description": "Choose deterministic metadata-only render settings for a future adapter implementation.",
+            "sourceEvidence": [
+                "rendererReady=false"
+            ],
+            "targetOutcome": "Future implementation has explicit frame rate, resolution, and renderer boundary policy.",
+            "mustNotDo": [
+                "Do not implement adapter execution in Phase 8.",
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 8.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "fail-stop-verification",
+            "title": "Plan fail-stop verification before any media step.",
+            "description": "Require a later adapter implementation review and renderer dry-run before media generation can be considered.",
+            "sourceEvidence": [
+                "nextAllowedDownstreamStep=local_renderer_adapter_implementation_plan"
+            ],
+            "targetOutcome": "The future adapter path remains governed and cannot jump directly to MP4 generation.",
+            "mustNotDo": [
+                "Do not implement adapter execution in Phase 8.",
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 8.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        }
+    ],
+    "targetManifestFieldMappingPlan": {
+        "planningOnly": true,
+        "manifestGenerated": false,
+        "targetManifestFieldMappingPlanNote": "Planning notes only. ComicVideoRenderHandoffManifest is not generated in Phase 8.",
+        "panelTimelineFields": [
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "panelId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].panelId",
+                "implementationNote": "Carry the stable panel id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "sourceFrameId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedPanelTimelineFields.wouldMapSourceFrameIdFrom",
+                "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "sceneReference",
+                "sourcePath": "$.dryRunMappingPlan[{order}].sourceSceneId",
+                "implementationNote": "Carry local source scene id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "beatReference",
+                "sourcePath": "$.dryRunMappingPlan[{order}].sourceBeatId",
+                "implementationNote": "Carry local source beat id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "visualIntent",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedPanelTimelineFields.wouldMapVisualIntentFrom",
+                "implementationNote": "Map visual intent text only; do not call an image provider.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "cameraIntent",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedPanelTimelineFields.wouldMapCameraIntentFrom",
+                "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "startMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].startMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "endMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].endMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "displayDurationMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].durationMillis",
+                "implementationNote": "Carry duration from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "panelTimeline",
+                "targetField": "assetCandidateRefs",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedPanelTimelineFields.wouldMapAssetCandidateRefsFrom",
+                "implementationNote": "Resolve local asset references only in a future adapter.",
+                "required": true,
+                "generatedNow": false
+            }
+        ],
+        "voiceTimelineFields": [
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "cueId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedVoiceTimelineFields.wouldMapCueIdFrom",
+                "implementationNote": "Carry local audio cue card id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "panelId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].panelId",
+                "implementationNote": "Link voice cue to panel id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "voiceLabel",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedVoiceTimelineFields.wouldNeedVoiceLabelsFrom",
+                "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "text",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedVoiceTimelineFields.wouldMapTextFrom",
+                "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "startMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].startMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "endMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].endMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "voiceTimeline",
+                "targetField": "durationMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].durationMillis",
+                "implementationNote": "Carry duration from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            }
+        ],
+        "subtitleTimelineFields": [
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "cueId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedSubtitleTimelineFields.wouldMapCueIdFrom",
+                "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "panelId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].panelId",
+                "implementationNote": "Link subtitle cue to panel id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "audioCueId",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedSubtitleTimelineFields.wouldMapAudioCueIdFrom",
+                "implementationNote": "Carry local audio cue id.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "text",
+                "sourcePath": "$.dryRunMappingPlan[{order}].proposedSubtitleTimelineFields.wouldMapTextFrom",
+                "implementationNote": "Carry caption/dialogue text from local JSON.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "startMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].startMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "subtitleTimeline",
+                "targetField": "endMillis",
+                "sourcePath": "$.dryRunMappingPlan[{order}].endMillis",
+                "implementationNote": "Carry timing from Phase 7 notes.",
+                "required": true,
+                "generatedNow": false
+            }
+        ],
+        "renderSettingsFields": [
+            {
+                "targetSection": "renderSettings",
+                "targetField": "timelineStatus",
+                "sourcePath": "$.adapterMappingSummary",
+                "implementationNote": "Future adapter should use metadata_only_timing_plan until media generation is explicitly assigned.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "renderSettings",
+                "targetField": "totalDurationMillis",
+                "sourcePath": "$.adapterMappingSummary.targetDurationMillis",
+                "implementationNote": "Use 9000 ms from Phase 7.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "renderSettings",
+                "targetField": "frameRate",
+                "sourcePath": "constant:24",
+                "implementationNote": "Use local deterministic default unless 01/user assigns a different local renderer policy.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "renderSettings",
+                "targetField": "resolution",
+                "sourcePath": "constant:1920x1080",
+                "implementationNote": "Use local deterministic default matching current local preview evidence.",
+                "required": true,
+                "generatedNow": false
+            },
+            {
+                "targetSection": "renderSettings",
+                "targetField": "rendererBoundary",
+                "sourcePath": "constant:local_renderer_adapter_planned_only",
+                "implementationNote": "Planning-only boundary; do not run renderer.",
+                "required": true,
+                "generatedNow": false
+            }
+        ],
+        "perPanelMappingNotes": [
+            {
+                "order": 1,
+                "panelId": "local-render-panel-beat-arrival",
+                "sourceSceneId": "scene-rain-gate",
+                "sourceBeatId": "beat-arrival",
+                "durationMillis": 4500,
+                "plannedPanelTimelineMapping": [
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[1].panelId",
+                        "implementationNote": "Carry the stable panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sourceFrameId",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedPanelTimelineFields.wouldMapSourceFrameIdFrom",
+                        "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sceneReference",
+                        "sourcePath": "$.dryRunMappingPlan[1].sourceSceneId",
+                        "implementationNote": "Carry local source scene id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "beatReference",
+                        "sourcePath": "$.dryRunMappingPlan[1].sourceBeatId",
+                        "implementationNote": "Carry local source beat id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "visualIntent",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedPanelTimelineFields.wouldMapVisualIntentFrom",
+                        "implementationNote": "Map visual intent text only; do not call an image provider.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "cameraIntent",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedPanelTimelineFields.wouldMapCameraIntentFrom",
+                        "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "displayDurationMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].durationMillis",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "assetCandidateRefs",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedPanelTimelineFields.wouldMapAssetCandidateRefsFrom",
+                        "implementationNote": "Resolve local asset references only in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedVoiceTimelineMapping": [
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "cueId",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedVoiceTimelineFields.wouldMapCueIdFrom",
+                        "implementationNote": "Carry local audio cue card id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[1].panelId",
+                        "implementationNote": "Link voice cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "voiceLabel",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedVoiceTimelineFields.wouldNeedVoiceLabelsFrom",
+                        "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "text",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedVoiceTimelineFields.wouldMapTextFrom",
+                        "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "durationMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].durationMillis",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedSubtitleTimelineMapping": [
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "cueId",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedSubtitleTimelineFields.wouldMapCueIdFrom",
+                        "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[1].panelId",
+                        "implementationNote": "Link subtitle cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "audioCueId",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedSubtitleTimelineFields.wouldMapAudioCueIdFrom",
+                        "implementationNote": "Carry local audio cue id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "text",
+                        "sourcePath": "$.dryRunMappingPlan[1].proposedSubtitleTimelineFields.wouldMapTextFrom",
+                        "implementationNote": "Carry caption/dialogue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[1].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "manifestGenerated": false,
+                "note": "Per-panel implementation plan only; ComicVideoRenderHandoffManifest is not generated."
+            },
+            {
+                "order": 2,
+                "panelId": "local-render-panel-beat-answer",
+                "sourceSceneId": "scene-rain-gate",
+                "sourceBeatId": "beat-answer",
+                "durationMillis": 4500,
+                "plannedPanelTimelineMapping": [
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[2].panelId",
+                        "implementationNote": "Carry the stable panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sourceFrameId",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedPanelTimelineFields.wouldMapSourceFrameIdFrom",
+                        "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sceneReference",
+                        "sourcePath": "$.dryRunMappingPlan[2].sourceSceneId",
+                        "implementationNote": "Carry local source scene id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "beatReference",
+                        "sourcePath": "$.dryRunMappingPlan[2].sourceBeatId",
+                        "implementationNote": "Carry local source beat id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "visualIntent",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedPanelTimelineFields.wouldMapVisualIntentFrom",
+                        "implementationNote": "Map visual intent text only; do not call an image provider.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "cameraIntent",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedPanelTimelineFields.wouldMapCameraIntentFrom",
+                        "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "displayDurationMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].durationMillis",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "assetCandidateRefs",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedPanelTimelineFields.wouldMapAssetCandidateRefsFrom",
+                        "implementationNote": "Resolve local asset references only in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedVoiceTimelineMapping": [
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "cueId",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedVoiceTimelineFields.wouldMapCueIdFrom",
+                        "implementationNote": "Carry local audio cue card id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[2].panelId",
+                        "implementationNote": "Link voice cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "voiceLabel",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedVoiceTimelineFields.wouldNeedVoiceLabelsFrom",
+                        "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "text",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedVoiceTimelineFields.wouldMapTextFrom",
+                        "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "durationMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].durationMillis",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedSubtitleTimelineMapping": [
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "cueId",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedSubtitleTimelineFields.wouldMapCueIdFrom",
+                        "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "panelId",
+                        "sourcePath": "$.dryRunMappingPlan[2].panelId",
+                        "implementationNote": "Link subtitle cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "audioCueId",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedSubtitleTimelineFields.wouldMapAudioCueIdFrom",
+                        "implementationNote": "Carry local audio cue id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "text",
+                        "sourcePath": "$.dryRunMappingPlan[2].proposedSubtitleTimelineFields.wouldMapTextFrom",
+                        "implementationNote": "Carry caption/dialogue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "startMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].startMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "endMillis",
+                        "sourcePath": "$.dryRunMappingPlan[2].endMillis",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "manifestGenerated": false,
+                "note": "Per-panel implementation plan only; ComicVideoRenderHandoffManifest is not generated."
+            }
+        ]
+    },
+    "implementationSteps": [
+        {
+            "order": 1,
+            "stepId": "define-adapter-model",
+            "description": "Future task defines adapter output models and validation checks, still file-protocol JSON only.",
+            "acceptance": [
+                "No renderer execution.",
+                "No media generation.",
+                "No provider/API calls."
+            ],
+            "failStop": [
+                "Stop if the model would bypass Phase 8 review.",
+                "Stop if it claims final media approval."
+            ]
+        },
+        {
+            "order": 2,
+            "stepId": "implement-mapping-service",
+            "description": "Future task maps Phase 8-approved plan data into adapter metadata with strict fail-stop checks.",
+            "acceptance": [
+                "All source ids preserved.",
+                "All boundary fields remain local-only.",
+                "Manifest generation only if explicitly assigned later."
+            ],
+            "failStop": [
+                "Stop on missing panel/audio/subtitle mapping.",
+                "Stop on any media/provider/renderer invocation."
+            ]
+        },
+        {
+            "order": 3,
+            "stepId": "add-focused-tests",
+            "description": "Future task adds happy-path and fail-stop tests for adapter implementation.",
+            "acceptance": [
+                "Tests prove no media generation.",
+                "Tests prove manifest boundary is explicit."
+            ],
+            "failStop": [
+                "Stop if tests require ffmpeg/TTS/provider tools."
+            ]
+        },
+        {
+            "order": 4,
+            "stepId": "run-review-gate",
+            "description": "Future task sends adapter implementation result to a local JSON review gate before renderer dry-run.",
+            "acceptance": [
+                "Next downstream step is review-only.",
+                "No MP4 readiness claim."
+            ],
+            "failStop": [
+                "Stop if review is skipped.",
+                "Stop if output jumps to renderer execution."
+            ]
+        }
+    ],
+    "riskChecklist": [
+        {
+            "riskId": "manifest-generation-drift",
+            "risk": "Planning notes could be mistaken for an actual ComicVideoRenderHandoffManifest.",
+            "mitigation": "Keep manifestGenerated=false and planningOnly=true in every Phase 8 output.",
+            "failStop": "Stop if a future slice generates manifest JSON without explicit 01/user assignment."
+        },
+        {
+            "riskId": "renderer-readiness-overclaim",
+            "risk": "A PASS plan could be misread as renderer readiness or MP4 readiness.",
+            "mitigation": "Keep downstream boundary to implementation review only and state no media generation.",
+            "failStop": "Stop if docs or output claim final video, MP4 readiness, or renderer readiness."
+        },
+        {
+            "riskId": "provider-or-tts-drift",
+            "risk": "Voice/prompt planning could drift into external provider or TTS invocation.",
+            "mitigation": "Keep providerInvocation=none, ttsInvocation=none, and noExternalPaidProviderTools=true.",
+            "failStop": "Stop if any provider/API/TTS command is introduced."
+        }
+    ],
+    "verificationPlan": [
+        {
+            "verificationId": "focused-tests",
+            "commandOrCheck": "./gradlew.bat test --tests \"com.localnovel.engine.LocalRendererAdapterImplementationPlan*\"",
+            "expectedResult": "PASS for service and CLI focused tests.",
+            "requiresMediaGeneration": false
+        },
+        {
+            "verificationId": "sample-cli",
+            "commandOrCheck": "plan-local-renderer-adapter-implementation --dry-run-report <phase7-report.json> --plan <id> --out <plan.json>",
+            "expectedResult": "Sample plan JSON has LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT and PASS.",
+            "requiresMediaGeneration": false
+        },
+        {
+            "verificationId": "boundary-parse",
+            "commandOrCheck": "Parse sample JSON and verify mediaGenerated=false, rendererInvocation=none, providerInvocation=none, ttsInvocation=none, manifestGenerated=false.",
+            "expectedResult": "All local-only boundary fields remain safe.",
+            "requiresMediaGeneration": false
+        }
+    ],
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "manifestGenerated": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false
+    },
+    "downstreamBoundary": "local_renderer_adapter_implementation_plan_only_not_implementation",
+    "nextAllowedDownstreamStep": "local_renderer_adapter_implementation_review",
+    "findingCount": 0
+}

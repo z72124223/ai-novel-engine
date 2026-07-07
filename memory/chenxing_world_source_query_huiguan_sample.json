@@ -1,0 +1,68 @@
+{
+    "verdict": "PASS",
+    "status": "WORLD_SOURCE_QUERY_PASS",
+    "query": "灰關",
+    "hitCount": 5,
+    "hits": [
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-08-volume-opening:chunk-0004",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-08-volume-opening",
+            "classification": "volume_one_opening_skeleton_luochen",
+            "title": "第一卷開局骨架：落塵",
+            "heading": "一、開場策略",
+            "chunkOrder": 4,
+            "snippet": "## 一、開場策略 **不從穿越的瞬間開始。** 第一章的第一個畫面：灰關外城的凡人市集，清晨。一個穿著不合身的粗布衣服的年輕男人，蹲在一個簡陋的攤位前，面前擺著幾把剛修好的農具和一把磨得還算鋒利的短刀。他身邊趴著一隻巨大的、毛色不像這個世界任何已知犬獸的長毛狗。 他已經在灰關待了四十七天。 讀者不知道他怎麼來的、怎麼活過前面那四十七天的。他也不急著解釋。他只是在想辦法掙到今天的飯錢。 ...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-08-volume-opening:chunk-0006",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-08-volume-opening",
+            "classification": "volume_one_opening_skeleton_luochen",
+            "title": "第一卷開局骨架：落塵",
+            "heading": "表面衝突：活下去",
+            "chunkOrder": 6,
+            "snippet": "### 表面衝突：活下去 主角（暫稱「他」，名字後面再定）在灰關外城沒有身份。灰關的制度很清楚——沒有登記的人不是「居民」，只是「流民」。流民可以在外城待著，但不能進入內城，不能使用內城的資源，最重要的是——**外城的城牆薄、防禦陣法覆蓋不完整，夜襲時外城永遠是第一個被放棄的區域。** 他需要在灰關取得正式身份。 取得身份的途徑： 1. **有一技之長被官署認可** —— 鐵匠...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-08-volume-opening:chunk-0007",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-08-volume-opening",
+            "classification": "volume_one_opening_skeleton_luochen",
+            "title": "第一卷開局骨架：落塵",
+            "heading": "深層衝突：這個世界的道理他接不接受？",
+            "chunkOrder": 7,
+            "snippet": "### 深層衝突：這個世界的道理他接不接受？ 灰關的規則：修仙者可以徵用任何凡人的財產和勞動，只要「合理補償」。但「合理」的定義權在修仙者手裡。 主角會親眼看到這種事情發生——一個修仙者的弟子看上了某個凡人攤販的東西，拿走了，丟下幾枚銅幣當作「補償」。攤販不敢說話。周圍的人習以為常。 **主角的反應不是「站出來主持正義」——他不是那種人。** 他冷冷地看著，記住了...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-08-volume-opening:chunk-0010",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-08-volume-opening",
+            "classification": "volume_one_opening_skeleton_luochen",
+            "title": "第一卷開局骨架：落塵",
+            "heading": "場景二：外城夜襲（第2-3章）",
+            "chunkOrder": 10,
+            "snippet": "### 場景二：外城夜襲（第2-3章） 灰關外城遭遇一次規模不大的夜間獸潮。不是大災難，只是荒野裡的低階異獸群因為某種原因朝灰關方向移動。 外城的防禦陣法啟動了，但有一段牆的陣法節點老化，覆蓋出現缺口。軍卒在缺口處拼死抵抗。幾隻異獸突破了防線衝進了外城邊緣的居民區。 主角所在的區域正好在缺口附近。 **這一場不是「主角覺醒天賦打敗怪物」的橋段。** 這一場...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        },
+        {
+            "chunkId": "chenxing-world-source-manifest-v0:chenxing-world-raw-08-volume-opening:chunk-0011",
+            "archiveId": "chenxing-world-source-manifest-v0",
+            "sourceId": "chenxing-world-raw-08-volume-opening",
+            "classification": "volume_one_opening_skeleton_luochen",
+            "title": "第一卷開局骨架：落塵",
+            "heading": "場景三：愛醬事件（第4-5章）",
+            "chunkOrder": 11,
+            "snippet": "### 場景三：愛醬事件（第4-5章） 主角在蘇橋的幫助下開始接觸灰關的匠師行會，嘗試用自己的技能獲得正式身份。過程中他展現了一些這個世界的人沒見過的技術思路——不是超越時代的黑科技，而是**解決問題的方式不同**。比如修理一個陣法基座時，他不懂靈力運作，但他看出了結構力學的問題。 這引起了兩種反應： - 有些人覺得他有點意思 - 有些人覺得他不守規矩 一個要塞內城修仙者家族的年輕弟...",
+            "officialSourceData": true,
+            "sourceAuthorityStatus": "official_source"
+        }
+    ]
+}

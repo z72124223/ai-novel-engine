@@ -1,0 +1,215 @@
+{
+    "packetId": "script-packet-draft-rain-gate-sample-001",
+    "source": {
+        "inputType": "settingPack",
+        "sourceId": "comic-video-rain-gate-source:scene-rain-gate",
+        "sourceTitle": "Rain Gate Source Pack / Rain Gate Arrival",
+        "excerptSummary": "Setting pack local preview source for Rain Gate Arrival. Lin reaches the archive gate before the rain crosses the threshold. A covered gate faces the archive yard while rain marks the stone threshold.",
+        "transformationStatus": "converted_draft"
+    },
+    "segments": [
+        {
+            "segmentId": "segment-scene-rain-gate",
+            "sceneReference": {
+                "type": "sceneCandidate",
+                "candidateId": "scene-rain-gate",
+                "notes": "Derived from setting pack JSON for local preview draft review."
+            },
+            "scenePurpose": "Present the public scene state at Rain Gate Archive Entrance and the immediate pressure around Rain Gate Arrival.",
+            "playerObjective": "Observe the visible constraints before choosing a cautious next action.",
+            "locationZone": {
+                "zoneId": "zone-loc-rain-gate",
+                "publicName": "Rain Gate Archive Entrance",
+                "constraints": "A covered gate faces the archive yard while rain marks the stone threshold."
+            },
+            "visualSetup": {
+                "publicDescription": "Lin reaches the archive gate before the rain crosses the threshold. A covered gate faces the archive yard while rain marks the stone threshold. Lin is visible in the frame. Sealed Letter remains readable as a local prop.",
+                "cameraIntent": "Use readable comic framing that keeps the location, visible actor, and main constraint in one panel.",
+                "mustShow": [
+                    "Rain Gate Archive Entrance",
+                    "Rain Gate Arrival",
+                    "Lin",
+                    "Sealed Letter"
+                ],
+                "mustNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            "knowledgePass": {
+                "publicFacts": [
+                    "Rain has not crossed the archive threshold yet.",
+                    "The letter seal is visible without opening the letter.",
+                    "Couriers may carry sealed letters into the archive gate, but gate staff may only check the visible seal."
+                ],
+                "characterKnowledgeClaims": [
+                    "char-lin can act only from visible public setting information in Rain Gate Archive Entrance.",
+                    "char-gate-keeper can act only from visible public setting information in Rain Gate Archive Entrance."
+                ]
+            },
+            "beatList": [
+                {
+                    "beatId": "beat-scene-rain-gate-establish",
+                    "visibleAction": "The frame establishes Rain Gate Archive Entrance while Lin remains within the visible scene boundary.",
+                    "causalLink": "The setting source names Rain Gate Arrival as the public scene focus.",
+                    "characterIds": [
+                        "char-lin",
+                        "char-gate-keeper"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The viewer can read the location, actor focus, and scene pressure before any choice is implied."
+                },
+                {
+                    "beatId": "beat-scene-rain-gate-constraint",
+                    "visibleAction": "Lin stays near Sealed Letter, keeping the visible constraint readable.",
+                    "causalLink": "The generated draft carries only public facts and world rules from the setting pack.",
+                    "characterIds": [
+                        "char-lin",
+                        "char-gate-keeper"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The scene pressure is concrete enough for storyboard framing."
+                },
+                {
+                    "beatId": "beat-scene-rain-gate-choice",
+                    "visibleAction": "Lin pauses, leaving room for a cautious next action inside Rain Gate Archive Entrance.",
+                    "causalLink": "A script packet draft must preserve player-facing agency instead of forcing an unearned answer.",
+                    "characterIds": [
+                        "char-lin",
+                        "char-gate-keeper"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The draft can proceed to review as a candidate scene packet."
+                }
+            ],
+            "actionLines": [
+                {
+                    "lineId": "action-1",
+                    "actorId": "char-lin",
+                    "line": "The frame establishes Rain Gate Archive Entrance while Lin remains within the visible scene boundary.",
+                    "blockingZone": "zone-loc-rain-gate",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                },
+                {
+                    "lineId": "action-2",
+                    "actorId": "char-lin",
+                    "line": "Lin stays near Sealed Letter, keeping the visible constraint readable.",
+                    "blockingZone": "zone-loc-rain-gate",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                },
+                {
+                    "lineId": "action-3",
+                    "actorId": "char-lin",
+                    "line": "Lin pauses, leaving room for a cautious next action inside Rain Gate Archive Entrance.",
+                    "blockingZone": "zone-loc-rain-gate",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                }
+            ],
+            "dialogueLines": [
+                {
+                    "lineId": "dialogue-scene-rain-gate-public",
+                    "speakerId": "char-lin",
+                    "line": "We can only act on what is visible here.",
+                    "knowledgeBoundary": "The line is limited to public visible setting information.",
+                    "subtext": "Caution without exposing non-public source material."
+                }
+            ],
+            "interactionChoices": [
+                {
+                    "choiceId": "choice-observe-scene-rain-gate",
+                    "label": "Observe the visible constraint.",
+                    "allowedBecause": "The visible location, actor focus, and public facts are already present in the scene.",
+                    "likelyStateEffect": "The next beat can preserve continuity while keeping non-public material outside the visible draft."
+                }
+            ]
+        }
+    ],
+    "assetNeeds": [
+        {
+            "assetType": "location",
+            "candidateName": "Rain Gate Archive Entrance",
+            "candidateReason": "Needed to frame the setting-derived scene location."
+        },
+        {
+            "assetType": "character",
+            "candidateName": "Lin",
+            "candidateReason": "Needed as visible actor focus for the setting-derived scene."
+        },
+        {
+            "assetType": "character",
+            "candidateName": "Gate Keeper",
+            "candidateReason": "Needed as visible actor focus for the setting-derived scene."
+        },
+        {
+            "assetType": "prop",
+            "candidateName": "Sealed Letter",
+            "candidateReason": "Needed as visible prop or constraint from the setting pack."
+        },
+        {
+            "assetType": "prop",
+            "candidateName": "Gate Lantern",
+            "candidateReason": "Needed as visible prop or constraint from the setting pack."
+        }
+    ],
+    "storyboardNotes": {
+        "cameraLanguage": "Keep each frame readable for later comic-video panel planning.",
+        "continuityLocks": [
+            "Scene remains tied to setting pack comic-video-rain-gate-source and public scene scene-rain-gate.",
+            "Visible location stays Rain Gate Archive Entrance.",
+            "Visible actor focus stays Lin.",
+            "Visible prop focus stays Sealed Letter."
+        ],
+        "frameCandidates": [
+            {
+                "frameId": "frame-scene-rain-gate-01",
+                "beatId": "beat-scene-rain-gate-establish",
+                "framePurpose": "The viewer can read the location, actor focus, and scene pressure before any choice is implied.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            {
+                "frameId": "frame-scene-rain-gate-02",
+                "beatId": "beat-scene-rain-gate-constraint",
+                "framePurpose": "The scene pressure is concrete enough for storyboard framing.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            {
+                "frameId": "frame-scene-rain-gate-03",
+                "beatId": "beat-scene-rain-gate-choice",
+                "framePurpose": "The draft can proceed to review as a candidate scene packet.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "Rain Gate Archive Entrance, Rain Gate Arrival, Lin, Sealed Letter",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            }
+        ]
+    },
+    "secrecyKnowledgeNotes": {
+        "authorOnlyExcluded": true,
+        "reviewOnlyNotes": "Non-public source material was excluded from visible fields."
+    },
+    "reviewSummary": {
+        "reviewerNotes": "Deterministic setting-pack draft for local review gates."
+    }
+}

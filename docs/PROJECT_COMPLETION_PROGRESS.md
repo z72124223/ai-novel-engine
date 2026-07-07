@@ -8,6 +8,10 @@ Canonical workspace: `C:\Users\f7212\Projects\AI 劇本`
 
 This file defines the project-completion percentage shown by `01` after every `03` review report. The displayed percentage is a control estimate for product deliverable completion, not a runtime metric, not SQLite data, and not approval to skip `03` review.
 
+Whole-product progress note: for the newer voiced-comic product route, also read
+`docs/CODEX_TRUE_PROJECT_COMPLETION_PROGRESS_MODEL_V0.md` and
+`docs/CODEX_BLUEPRINT_PROGRESS_DISPLAY_MODEL_RULE_SET_V0.md`. The 100% value in this file remains the selected older local product-delivery baseline only; not final media approval, not release, not production lock, not canon, not registry, not video completion, and not true product completion.
+
 ## Display Rule
 
 After every `03` PASS / REVISE / FAIL report, `01` must include:
@@ -25,9 +29,9 @@ Rules:
 
 ## Current Display Estimate
 
-Project completion progress: `100%`
+Project completion progress: `100%` -- metric object: selected current-phase local product-delivery baseline; scope: old local baseline; evidence range: counted through owner Option A and local baseline alignment; non-meaning: not final media approval, not release, not production lock, not canon, not registry, not video completion, not true product completion; change gate: accepted final-product capability movement only.
 
-This replaces the previous `84%` display value after the owner/user explicitly selected Option A: close the current project phase as the local product-delivery baseline. The 100% value applies only to that selected current-phase baseline, not to future formal registry, release tag, provider/media production, canon, approval, runtime integration, or production-lock work.
+This replaces the previous `84%` display value after the owner/user explicitly selected Option A: close the current project phase as the local product-delivery baseline. The 100% value applies only to that selected current-phase baseline; not final media approval, not release, not production lock, not canon, not registry, not video completion, and not true product completion.
 
 ## Product Deliverable Rubric
 
@@ -45,9 +49,9 @@ This is the percentage `01` displays.
 
 ## Gate Hardening Indicator
 
-Gate hardening completion: `100%`
+Gate hardening completion: `100%` -- metric object: selected current-phase local JSON gate and source-binding hardening; scope: old local gate-hardening evidence; evidence range: counted through accepted local gate-hardening slices; non-meaning: not final media approval, not release, not production lock, not canon, not registry, not video completion, not true product completion; change gate: accepted final-product capability movement only.
 
-This secondary indicator records how much of the selected current-phase local JSON gate and source-binding hardening has been accepted by `03`. It does not include future formal registry, release tag, provider/media production, canon, approval, runtime integration, or production-lock work.
+This secondary indicator records how much of the selected current-phase local JSON gate and source-binding hardening has been accepted by `03`. It does not include future final media approval, release, production lock, canon, registry, provider/media production, approval, or runtime integration work.
 
 Counted gate-hardening progress through:
 
@@ -94,5 +98,5 @@ Counted through:
 Display remains:
 
 ```text
-Project completion progress: 100%
+Project completion progress: 100% -- metric object: selected current-phase local product-delivery baseline; scope: old local baseline; evidence range: counted through owner Option A and local baseline alignment; non-meaning: not final media approval, not release, not production lock, not canon, not registry, not video completion, not true product completion; change gate: accepted final-product capability movement only.
 ```

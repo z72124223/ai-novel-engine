@@ -1,0 +1,87 @@
+{
+  "sourceLockId": "active-world-source-lock-v0",
+  "status": "ACTIVE_WORLD_SOURCE_LOCK",
+  "updatedAt": "2026-07-06",
+  "locale": "zh-TW",
+  "canonicalWorkspace": "C:\\Users\\f7212\\Projects\\AI 劇本",
+  "activeCreativeWorld": {
+    "series": "塵行",
+    "chapter": "第一話　塵",
+    "protagonist": "陸知行",
+    "companion": "愛醬",
+    "firstMajorLocation": "灰關",
+    "providedSourceTitle": "穿越4000年",
+    "titleRelationshipStatus": "unresolved_title_alias_or_working_title",
+    "memoryCapsule": "memory/quarterfull_world_memory_capsule.json",
+    "rawSourceManifest": "memory/chenxing_world_source_manifest.json",
+    "officialSqlImportResult": "memory/chenxing_world_source_sql_import_result.json",
+    "officialSqlDatabase": "data/story.db",
+    "officialSqlTables": [
+      "world_source_archives",
+      "world_source_documents",
+      "world_source_chunks"
+    ],
+    "requiredQueryEntrypoint": "query-world-source --db data/story.db --q <text>",
+    "rawArchiveRoot": "world/chenxing/raw",
+    "alignmentDoc": "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+    "sourceRootHint": "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀\\quarterfull\\塵行\\"
+  },
+  "allowedCreativeWorldSources": [
+    "memory/active_world_source.json",
+    "memory/chenxing_world_source_manifest.json",
+    "world/chenxing/raw",
+    "data/story.db:world_source_archives/world_source_documents/world_source_chunks",
+    "memory/chenxing_world_source_sql_import_result.json",
+    "memory/quarterfull_world_memory_capsule.json",
+    "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+    "future chenxing 09 foundation card pack"
+  ],
+  "disallowedCreativeWorldSources": [
+    {
+      "pattern": "rain_gate*",
+      "classification": "test/demo only",
+      "reason": "Rain Gate is not the user's authored worldview and must not be used as active creative worldview."
+    },
+    {
+      "pattern": "comic_video_setting_source/setting_pack_rain_gate_sample.json",
+      "classification": "test/demo only",
+      "reason": "Pipeline fixture only; not the user's story setting pack."
+    },
+    {
+      "pattern": "pilot turn logs and pilot stress evidence",
+      "classification": "runtime/stress evidence only",
+      "reason": "Useful for engine behavior, not for replacing the active creative worldview."
+    },
+    {
+      "pattern": "local renderer / manifest chain samples",
+      "classification": "pipeline evidence only",
+      "reason": "Useful for data-contract verification, not for story source selection."
+    }
+  ],
+  "cleanupPolicy": {
+    "physicalDeletionAllowedNow": false,
+    "reason": "Existing sample/demo files are referenced by docs and focused tests; deleting them before replacement can break verification.",
+    "preferredCleanupPath": [
+      "lock active source authority to 塵行",
+      "create chenxing 09 foundation card pack",
+      "replace story-facing Rain Gate samples with chenxing equivalents",
+      "run dependency scan",
+      "delete only unreferenced obsolete samples"
+    ]
+  },
+  "nextAllowedContentStep": "chenxing_09_foundation_card_pack_contract_sample",
+  "boundaryFlags": {
+    "canonApproved": false,
+    "settingPackData": false,
+    "runtimeSqliteData": false,
+    "approvedAssetData": false,
+    "providerApiCalls": false,
+    "rendererInvocation": "none",
+    "ffmpegInvocation": "none",
+    "ttsInvocation": "none",
+    "mediaGenerated": false,
+    "finalMediaApproval": false,
+    "releaseApproved": false,
+    "productionLock": false
+  }
+}

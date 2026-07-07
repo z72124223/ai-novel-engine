@@ -1,0 +1,80 @@
+{
+    "packId": "local-story-input-rain-gate-v0-001",
+    "title": "雨門本地故事輸入包",
+    "locale": "zh-TW",
+    "worldPremise": "雨門是一座只接受可見證據與當場選擇的關口。主角林在雨中抵達，必須讓守門人看見手腕上的銀色印記，才能取得通行回應。",
+    "characters": [
+        {
+            "id": "char-lin",
+            "name": "林",
+            "role": "主角",
+            "visualCue": "深色濕外套，手腕有清楚可見的銀色印記，姿態疲憊但警覺。",
+            "voiceCue": "低而穩的女聲，語氣克制但帶急迫感。",
+            "publicMotivation": "不遮掩印記，取得進入雨門的機會。"
+        },
+        {
+            "id": "char-gatekeeper",
+            "name": "守門人",
+            "role": "關口審視者",
+            "visualCue": "胸前提著燈，半張臉被雨與燈光切開。",
+            "voiceCue": "乾冷、簡短、像在核對規則。",
+            "publicMotivation": "確認林是否能通過雨門。"
+        }
+    ],
+    "scenes": [
+        {
+            "id": "scene-rain-gate",
+            "title": "雨門關口",
+            "location": "暴雨中的石門前",
+            "mood": "緊張、安靜、被注視",
+            "visibleSituation": "林走進燈光範圍，守門人低頭看她手腕上的銀色印記。"
+        }
+    ],
+    "beats": [
+        {
+            "id": "beat-arrival",
+            "sceneId": "scene-rain-gate",
+            "characterIds": [
+                "char-lin",
+                "char-gatekeeper"
+            ],
+            "narrativeIntent": "建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+            "dialogueIntent": "守門人要求林把手腕留在燈光裡。",
+            "visualIntent": "中景，燈光反射在手腕印記上，石門保持壓迫感。",
+            "audioIntent": "雨聲鋪底，燈鏈短促晃動。"
+        },
+        {
+            "id": "beat-answer",
+            "sceneId": "scene-rain-gate",
+            "characterIds": [
+                "char-lin"
+            ],
+            "narrativeIntent": "林選擇坦白面對檢查，而不是遮掩印記。",
+            "dialogueIntent": "林說她會讓印記留在光裡。",
+            "visualIntent": "近景，林把手腕抬到燈光下，雨水從袖口滴落。",
+            "audioIntent": "林的聲音穩定，雨聲略微壓低。"
+        }
+    ],
+    "visualStyle": {
+        "tone": "短劇式緊張感，寫實、清楚、可讀。",
+        "colorPalette": "冷藍雨色、琥珀燈光、深灰石門。",
+        "cameraNotes": "以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。",
+        "subtitleStyle": "繁體中文字幕，高對比，盡量單行。"
+    },
+    "audioStyle": {
+        "voiceDirection": "自然繁中口語，克制但有壓力。",
+        "musicMood": "極低音脈衝，不走英雄感。",
+        "soundDesign": "雨聲、燈鏈、石門內的輕微回音。"
+    },
+    "durationTargetMillis": 9000,
+    "constraints": {
+        "localOnly": true,
+        "noExternalPaidProviderTools": true,
+        "fileProtocolJsonOnly": true,
+        "notes": [
+            "local-only story input for this repo CLI",
+            "no external paid/provider tools",
+            "file-protocol JSON only"
+        ]
+    }
+}

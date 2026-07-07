@@ -23,6 +23,12 @@ import com.localnovel.engine.model.ComicVideoPacket
 import com.localnovel.engine.model.ComicVideoPacketSourceVerdicts
 import com.localnovel.engine.model.ComicVideoPacketValidationReport
 import com.localnovel.engine.model.ComicVideoPanelTrack
+import com.localnovel.engine.model.ComicVideoProductionPackageDraft
+import com.localnovel.engine.model.ComicVideoLocalPreviewBuildEvidence
+import com.localnovel.engine.model.ComicVideoLocalPreviewBuildFinding
+import com.localnovel.engine.model.ComicVideoLocalPreviewBuildReport
+import com.localnovel.engine.model.ComicVideoLocalRenderReport
+import com.localnovel.engine.model.ComicVideoRenderHandoffManifest
 import com.localnovel.engine.model.ComicVideoSubtitleCue
 import com.localnovel.engine.model.ComicVideoTiming
 import com.localnovel.engine.model.ComicVideoVoiceCast
@@ -52,6 +58,16 @@ import com.localnovel.engine.model.CharacterNuwaSampleLines
 import com.localnovel.engine.model.ChapterContinuityAnchorFile
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.LocalAssetPromptCardsDraft
+import com.localnovel.engine.model.LocalRenderPackageDraft
+import com.localnovel.engine.model.LocalRendererAdapterDryRunReport
+import com.localnovel.engine.model.LocalRendererAdapterImplementationPlanDraft
+import com.localnovel.engine.model.LocalRendererAdapterImplementationPlanReviewReport
+import com.localnovel.engine.model.LocalStoryInputPack
+import com.localnovel.engine.model.LocalStoryInputPackValidationReport
+import com.localnovel.engine.model.LocalStoryVideoChainReport
+import com.localnovel.engine.model.LocalStoryVideoPreviewHandoffDraft
+import com.localnovel.engine.model.LocalStoryVideoPreviewHandoffReviewReport
 import com.localnovel.engine.model.NovelizationDraftIntakeReport
 import com.localnovel.engine.model.NovelizationAcceptedDraftPacket
 import com.localnovel.engine.model.NovelizationProseQualityAuditReport
@@ -64,6 +80,7 @@ import com.localnovel.engine.model.NovelizationWriterBriefValidationReport
 import com.localnovel.engine.model.NovelizationPreflightReport
 import com.localnovel.engine.model.NovelizationWriterBrief
 import com.localnovel.engine.model.ScriptPacketDraft
+import com.localnovel.engine.model.ScriptPacketDraftValidationReport
 import com.localnovel.engine.model.ScriptPacketDraftStructureBridgeReport
 import com.localnovel.engine.model.StoryboardPacketDraft
 import com.localnovel.engine.model.StoryboardPacketDraftValidationReport
@@ -76,9 +93,16 @@ import com.localnovel.engine.model.StoryboardPlanningBrief
 import com.localnovel.engine.model.SettingPack
 import com.localnovel.engine.model.SettingPackEntities
 import com.localnovel.engine.model.SettingPackEntity
+import com.localnovel.engine.model.SettingPackScriptPacketDraftBuildEvidence
+import com.localnovel.engine.model.SettingPackScriptPacketDraftBuildFinding
+import com.localnovel.engine.model.SettingPackScriptPacketDraftBuildReport
+import com.localnovel.engine.model.SettingImageFacingProofPreviewBuildEvidence
+import com.localnovel.engine.model.SettingImageFacingProofPreviewBuildFinding
+import com.localnovel.engine.model.SettingImageFacingProofPreviewBuildReport
 import com.localnovel.engine.model.SettingPackSource
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
+import com.localnovel.engine.service.AiTaskQueueService
 import com.localnovel.engine.service.AcceptedScriptPacketHandoffPacketService
 import com.localnovel.engine.service.AssetCandidateBriefService
 import com.localnovel.engine.service.AssetCandidateDraftService
@@ -107,6 +131,25 @@ import com.localnovel.engine.service.ImageCandidateReferencePacketValidationServ
 import com.localnovel.engine.service.ImageCandidateResultHumanReviewDecisionIntakeService
 import com.localnovel.engine.service.ImageCandidateResultReviewPreflightService
 import com.localnovel.engine.service.ImageFacingDeliveryProofService
+import com.localnovel.engine.service.LocalAssetPromptCardDraftService
+import com.localnovel.engine.service.LocalRendererAdapterDryRunService
+import com.localnovel.engine.service.LocalRendererAdapterImplementationDraftReviewService
+import com.localnovel.engine.service.LocalRendererAdapterImplementationDraftService
+import com.localnovel.engine.service.LocalRendererAdapterImplementationPlanService
+import com.localnovel.engine.service.LocalRendererAdapterImplementationPlanReviewService
+import com.localnovel.engine.service.LocalRendererManifestDraftPlanService
+import com.localnovel.engine.service.LocalRendererManifestDraftPlanReviewService
+import com.localnovel.engine.service.LocalRendererManifestDraftJsonDraftService
+import com.localnovel.engine.service.LocalRendererManifestDraftJsonReviewService
+import com.localnovel.engine.service.LocalRendererManifestDraftJsonAdapterDryRunService
+import com.localnovel.engine.service.LocalRendererManifestAdapterContractPlanService
+import com.localnovel.engine.service.LocalRendererManifestAdapterContractPlanReviewService
+import com.localnovel.engine.service.LocalRendererManifestAdapterContractDraftService
+import com.localnovel.engine.service.LocalRenderPackageDraftService
+import com.localnovel.engine.service.LocalStoryInputPackValidationService
+import com.localnovel.engine.service.LocalStoryVideoChainVerificationService
+import com.localnovel.engine.service.LocalStoryVideoPreviewHandoffDraftService
+import com.localnovel.engine.service.LocalStoryVideoPreviewHandoffReviewService
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.CapabilityContractResolver
 import com.localnovel.engine.service.CharacterNuwaGateValidationService
@@ -114,12 +157,17 @@ import com.localnovel.engine.service.ChapterContinuityAuditService
 import com.localnovel.engine.service.CheckpointService
 import com.localnovel.engine.service.ComicVideoPacketService
 import com.localnovel.engine.service.ComicVideoPacketValidationService
+import com.localnovel.engine.service.ComicVideoLocalRendererService
+import com.localnovel.engine.service.ComicVideoProductionPackageDraftService
+import com.localnovel.engine.service.ComicVideoProductionPackageValidationService
 import com.localnovel.engine.service.ComicVideoRenderHandoffManifestService
 import com.localnovel.engine.service.ComicVideoVoiceTimelineFillService
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
 import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
 import com.localnovel.engine.service.DependencyGraphService
+import com.localnovel.engine.service.FoundationCardPackReviewService
+import com.localnovel.engine.service.FoundationCardPackValidationService
 import com.localnovel.engine.service.ImpactAnalyzer
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.NarrativeQualityAuditInput
@@ -139,6 +187,8 @@ import com.localnovel.engine.service.SettingPackDiffService
 import com.localnovel.engine.service.SettingPackImportService
 import com.localnovel.engine.service.SettingPackParser
 import com.localnovel.engine.service.SettingPackSchemaValidator
+import com.localnovel.engine.service.SettingPackScriptPacketDraftService
+import com.localnovel.engine.service.SettingImageFacingProofPreviewBuildService
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
 import com.localnovel.engine.service.StoryboardPacketDraftValidationService
@@ -155,6 +205,8 @@ import com.localnovel.engine.service.ScriptPacketDraftStructureBridgeService
 import com.localnovel.engine.service.ScriptPacketDraftValidationService
 import com.localnovel.engine.service.TimelineBranchService
 import com.localnovel.engine.service.TurnRunner
+import com.localnovel.engine.service.WorldSourceArchiveImportService
+import com.localnovel.engine.service.WorldSourceQueryService
 import com.localnovel.engine.service.canonicalHash
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
@@ -202,6 +254,13 @@ class Cli {
                 "validate-setting-pack" -> validateSettingPack(options)
                 "preview-setting-import" -> previewSettingImport(options)
                 "apply-setting-pack" -> applySettingPack(options)
+                "validate-world-source-archive" -> validateWorldSourceArchive(options)
+                "apply-world-source-archive" -> applyWorldSourceArchive(options)
+                "query-world-source" -> queryWorldSource(options)
+                "upsert-ai-task" -> upsertAiTask(options)
+                "claim-ai-task" -> claimAiTask(options)
+                "complete-ai-task" -> completeAiTask(options)
+                "list-ai-tasks" -> listAiTasks(options)
                 "export-setting-pack" -> exportSettingPack(options)
                 "diff-setting-pack" -> diffSettingPack(options)
                 "impact-report" -> impactReport(options)
@@ -210,6 +269,8 @@ class Cli {
                 "audit-context" -> auditContext(options)
                 "audit-narrative-quality" -> auditNarrativeQuality(options)
                 "audit-chapter-continuity" -> auditChapterContinuity(options)
+                "create-setting-script-packet-draft" -> createSettingScriptPacketDraft(options)
+                "build-setting-image-facing-proof-preview" -> buildSettingImageFacingProofPreview(options)
                 "validate-script-packet-draft" -> validateScriptPacketDraft(options)
                 "validate-script-packet-source-binding" -> validateScriptPacketSourceBinding(options)
                 "validate-script-packet-structure-bridge" -> validateScriptPacketStructureBridge(options)
@@ -229,6 +290,36 @@ class Cli {
                 "fill-comic-video-voice-timeline" -> fillComicVideoVoiceTimeline(options)
                 "validate-comic-video-packet" -> validateComicVideoPacket(options)
                 "create-comic-video-render-handoff-manifest" -> createComicVideoRenderHandoffManifest(options)
+                "create-comic-video-production-package-draft" -> createComicVideoProductionPackageDraft(options)
+                "validate-comic-video-production-package" -> validateComicVideoProductionPackage(options)
+                "validate-local-story-input-pack" -> validateLocalStoryInputPack(options)
+                "validate-09-foundation-card-pack" -> validate09FoundationCardPack(options)
+                "review-09-foundation-card-pack" -> review09FoundationCardPack(options)
+                "draft-local-asset-prompt-cards" -> draftLocalAssetPromptCards(options)
+                "draft-local-render-package" -> draftLocalRenderPackage(options)
+                "verify-local-story-video-chain" -> verifyLocalStoryVideoChain(options)
+                "draft-local-story-video-preview-handoff" -> draftLocalStoryVideoPreviewHandoff(options)
+                "review-local-story-video-preview-handoff" -> reviewLocalStoryVideoPreviewHandoff(options)
+                "dry-run-local-renderer-adapter" -> dryRunLocalRendererAdapter(options)
+                "plan-local-renderer-adapter-implementation" -> planLocalRendererAdapterImplementation(options)
+                "review-local-renderer-adapter-implementation-plan" -> reviewLocalRendererAdapterImplementationPlan(options)
+                "draft-local-renderer-adapter-implementation" -> draftLocalRendererAdapterImplementation(options)
+                "review-local-renderer-adapter-implementation-draft" -> reviewLocalRendererAdapterImplementationDraft(options)
+                "plan-local-renderer-manifest-draft" -> planLocalRendererManifestDraft(options)
+                "review-local-renderer-manifest-draft-plan" -> reviewLocalRendererManifestDraftPlan(options)
+                "draft-local-renderer-manifest-json" -> draftLocalRendererManifestJson(options)
+                "review-local-renderer-manifest-draft-json" -> reviewLocalRendererManifestDraftJson(options)
+                "dry-run-local-renderer-manifest-draft-json-adapter" ->
+                    dryRunLocalRendererManifestDraftJsonAdapter(options)
+                "plan-local-renderer-manifest-adapter-contract" ->
+                    planLocalRendererManifestAdapterContract(options)
+                "review-local-renderer-manifest-adapter-contract-plan" ->
+                    reviewLocalRendererManifestAdapterContractPlan(options)
+                "draft-local-renderer-manifest-adapter-contract" ->
+                    draftLocalRendererManifestAdapterContract(options)
+                "render-comic-video-local" -> renderComicVideoLocal(options)
+                "build-comic-video-local-preview" -> buildComicVideoLocalPreview(options)
+                "build-setting-comic-video-local-preview" -> buildSettingComicVideoLocalPreview(options)
                 "validate-asset-candidate-preflight" -> validateAssetCandidatePreflight(options)
                 "create-asset-candidate-brief" -> createAssetCandidateBrief(options)
                 "create-asset-candidate-draft" -> createAssetCandidateDraft(options)
@@ -673,6 +764,516 @@ class Cli {
             println("${it.ruleId}:${it.severity}:${it.message}")
         }
         return 0
+    }
+
+    private fun createSettingScriptPacketDraft(options: Map<String, String>): Int {
+        val settingPackPath = Path.of(options.required("setting-pack"))
+        val draftPath = Path.of(options.required("out"))
+        val validationPath = options["validation-out"]?.let { Path.of(it) } ?: derivedJsonPath(draftPath, "_validation")
+        val reportPath = options["report-out"]?.let { Path.of(it) } ?: derivedJsonPath(draftPath, "_build_report")
+        val pack = readJson<SettingPack>(settingPackPath)
+        val result = SettingPackScriptPacketDraftService().create(
+            settingPack = pack,
+            settingPackFile = settingPackPath.toString(),
+            requestedSceneId = options["scene"] ?: "",
+            packetId = options["packet"] ?: "",
+        )
+        val findings = result.findings.toMutableList()
+        var validationVerdict = ""
+        var validationFindingCount = 0
+        var outputPacketId = ""
+
+        val draft = result.draft
+        if (draft != null) {
+            outputPacketId = draft.packetId
+            writeJson(draftPath, draft)
+            val validation = ScriptPacketDraftValidationService().validate(
+                packet = draft,
+                packetFile = draftPath.toString(),
+            )
+            validationVerdict = validation.verdict
+            validationFindingCount = validation.findingCount
+            writeJson(validationPath, validation)
+            if (validation.verdict == "FAIL") {
+                findings += settingScriptPacketDraftBuildFinding(
+                    ruleId = "SCRIPT_PACKET_DRAFT_VALIDATION_FAILED",
+                    category = "validation",
+                    severity = "CRITICAL",
+                    path = validationPath.toString(),
+                    message = "Setting-pack script packet draft creation requires the generated draft to pass existing draft validation.",
+                    evidence = validation.findings.map { it.ruleId },
+                )
+            }
+        }
+
+        val hasBlockingFinding = findings.any { it.severity == "CRITICAL" || it.severity == "MAJOR" }
+        val verdict = when {
+            draft == null || hasBlockingFinding -> "FAIL"
+            validationVerdict == "PASS_WITH_WARNINGS" || findings.isNotEmpty() -> "PASS_WITH_WARNINGS"
+            else -> "PASS"
+        }
+        val buildId = (options["build"] ?: "").ifBlank {
+            "setting-script-packet-draft-${pack.packId}-${result.selectedSceneId.ifBlank { "unselected" }}"
+        }
+        val report = SettingPackScriptPacketDraftBuildReport(
+            verdict = verdict,
+            buildId = buildId,
+            settingPackFile = settingPackPath.toString(),
+            scriptPacketDraftFile = if (draft != null) draftPath.toString() else "",
+            scriptPacketValidationFile = if (validationVerdict.isNotBlank()) validationPath.toString() else "",
+            packId = pack.packId,
+            packVersion = pack.packVersion,
+            projectId = pack.projectId,
+            selectedSceneId = result.selectedSceneId,
+            selectedLocationId = result.selectedLocationId,
+            outputPacketId = outputPacketId,
+            validationVerdict = validationVerdict,
+            nextAllowedDownstreamStep = if (verdict != "FAIL") "script_packet_draft_review" else "",
+            blockedReason = if (verdict == "FAIL") {
+                findings.filter { it.severity == "CRITICAL" || it.severity == "MAJOR" }.joinToString("; ") { it.ruleId }
+            } else {
+                ""
+            },
+            findingCount = findings.size,
+            findings = findings,
+            evidence = result.evidence.withValidationFindingCount(validationFindingCount),
+        )
+        writeJson(reportPath, report)
+        printSettingScriptPacketDraftBuildReport(report)
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun derivedJsonPath(base: Path, suffix: String): Path {
+        val fileName = base.fileName?.toString() ?: "output.json"
+        val stem = fileName.removeSuffix(".json")
+        return base.parent?.resolve("$stem$suffix.json") ?: Path.of("$stem$suffix.json")
+    }
+
+    private fun SettingPackScriptPacketDraftBuildEvidence.withValidationFindingCount(
+        validationFindingCount: Int,
+    ): SettingPackScriptPacketDraftBuildEvidence =
+        copy(validationFindingCount = validationFindingCount)
+
+    private fun settingScriptPacketDraftBuildFinding(
+        ruleId: String,
+        category: String,
+        severity: String,
+        path: String,
+        message: String,
+        evidence: List<String> = emptyList(),
+        suggestedFix: String = "",
+    ): SettingPackScriptPacketDraftBuildFinding =
+        SettingPackScriptPacketDraftBuildFinding(ruleId, category, severity, path, message, evidence, suggestedFix)
+
+    private fun printSettingScriptPacketDraftBuildReport(report: SettingPackScriptPacketDraftBuildReport) {
+        println("verdict=${report.verdict}")
+        println("buildId=${report.buildId}")
+        println("packId=${report.packId}")
+        println("projectId=${report.projectId}")
+        println("selectedSceneId=${report.selectedSceneId}")
+        println("selectedLocationId=${report.selectedLocationId}")
+        println("outputPacketId=${report.outputPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketValidationFile=${report.scriptPacketValidationFile}")
+        println("validationVerdict=${report.validationVerdict}")
+        println("generatedBeats=${report.evidence.generatedBeatCount}")
+        println("generatedFrameCandidates=${report.evidence.generatedFrameCandidateCount}")
+        println("excludedSecrets=${report.evidence.excludedSecretCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+    }
+
+    private fun buildSettingImageFacingProofPreview(options: Map<String, String>): Int {
+        val settingPackPath = Path.of(options.required("setting-pack"))
+        val outputDir = Path.of(options.required("output-dir"))
+        Files.createDirectories(outputDir)
+
+        val scriptDraftPath = outputDir.resolve("script_packet_draft.json")
+        val scriptValidationPath = outputDir.resolve("script_packet_draft_validation.json")
+        val settingBuildReportPath = outputDir.resolve("setting_script_packet_draft_build_report.json")
+        val planningBriefPath = outputDir.resolve("storyboard_planning_brief.json")
+        val storyboardDraftPath = outputDir.resolve("storyboard_packet_draft.json")
+        val storyboardDraftValidationPath = outputDir.resolve("storyboard_packet_draft_validation.json")
+        val storyboardReviewPath = outputDir.resolve("storyboard_packet_review.json")
+        val humanReviewPreflightPath = outputDir.resolve("storyboard_human_review_preflight.json")
+        val storyMovementAuditPath = outputDir.resolve("storyboard_story_movement_audit.json")
+        val reviewableStoryboardPath = outputDir.resolve("reviewable_storyboard_packet.json")
+        val proofPath = outputDir.resolve("image_facing_delivery_proof.json")
+        val reportPath = options["report-out"]?.let { Path.of(it) }
+            ?: outputDir.resolve("setting_image_facing_proof_preview_build_report.json")
+
+        val buildId = (options["build"] ?: "").ifBlank { "setting-image-facing-proof-preview-build" }
+        val findings = mutableListOf<SettingImageFacingProofPreviewBuildFinding>()
+        val pack = readJson<SettingPack>(settingPackPath)
+        val previewService = SettingImageFacingProofPreviewBuildService()
+
+        var settingBuildReport: SettingPackScriptPacketDraftBuildReport? = null
+        var scriptValidation: ScriptPacketDraftValidationReport? = null
+        var planningBrief: StoryboardPlanningBrief? = null
+        var storyboardDraft: StoryboardPacketDraft? = null
+        var storyboardDraftValidation: StoryboardPacketDraftValidationReport? = null
+        var storyboardReview: StoryboardPacketReviewPacket? = null
+        var humanReviewPreflight: StoryboardPacketHumanReviewPreflightReport? = null
+        var storyMovementAudit: StoryboardStoryMovementAuditReport? = null
+        var reviewableStoryboard: com.localnovel.engine.model.ReviewableStoryboardPacket? = null
+        var proof: ImageFacingDeliveryProof? = null
+
+        try {
+            val settingResult = SettingPackScriptPacketDraftService().create(
+                settingPack = pack,
+                settingPackFile = settingPackPath.toString(),
+                requestedSceneId = options["scene"] ?: "",
+                packetId = options["script-packet"] ?: "",
+            )
+            val scriptDraft = settingResult.draft
+            if (scriptDraft == null) {
+                settingBuildReport = SettingPackScriptPacketDraftBuildReport(
+                    verdict = "FAIL",
+                    buildId = "$buildId-setting-script-draft",
+                    settingPackFile = settingPackPath.toString(),
+                    packId = pack.packId,
+                    packVersion = pack.packVersion,
+                    projectId = pack.projectId,
+                    selectedSceneId = settingResult.selectedSceneId,
+                    selectedLocationId = settingResult.selectedLocationId,
+                    findingCount = settingResult.findings.size,
+                    findings = settingResult.findings,
+                    evidence = settingResult.evidence,
+                )
+                writeJson(settingBuildReportPath, settingBuildReport)
+                findings += previewBuildFinding(
+                    ruleId = "SETTING_SCRIPT_PACKET_DRAFT_BUILD_FAILED",
+                    category = "setting_script_draft",
+                    severity = "CRITICAL",
+                    path = settingBuildReportPath.toString(),
+                    message = "Setting image-facing preview requires a generated setting script packet draft.",
+                    evidence = settingResult.findings.map { it.ruleId },
+                )
+            } else {
+                writeJson(scriptDraftPath, scriptDraft)
+                val scriptText = Files.readString(scriptDraftPath).removePrefix("\uFEFF")
+                scriptValidation = ScriptPacketDraftValidationService().validate(
+                    packet = scriptDraft,
+                    packetFile = scriptDraftPath.toString(),
+                )
+                writeJson(scriptValidationPath, scriptValidation)
+                val settingBuildVerdict = when {
+                    scriptValidation?.verdict == "FAIL" -> "FAIL"
+                    settingResult.findings.any { it.severity == "CRITICAL" || it.severity == "MAJOR" } -> "FAIL"
+                    scriptValidation?.verdict == "PASS_WITH_WARNINGS" || settingResult.findings.isNotEmpty() -> "PASS_WITH_WARNINGS"
+                    else -> "PASS"
+                }
+                settingBuildReport = SettingPackScriptPacketDraftBuildReport(
+                    verdict = settingBuildVerdict,
+                    buildId = "$buildId-setting-script-draft",
+                    settingPackFile = settingPackPath.toString(),
+                    scriptPacketDraftFile = scriptDraftPath.toString(),
+                    scriptPacketValidationFile = scriptValidationPath.toString(),
+                    packId = pack.packId,
+                    packVersion = pack.packVersion,
+                    projectId = pack.projectId,
+                    selectedSceneId = settingResult.selectedSceneId,
+                    selectedLocationId = settingResult.selectedLocationId,
+                    outputPacketId = scriptDraft.packetId,
+                    validationVerdict = scriptValidation?.verdict.orEmpty(),
+                    nextAllowedDownstreamStep = if (settingBuildVerdict == "FAIL") "" else "script_packet_draft_review",
+                    blockedReason = if (settingBuildVerdict == "FAIL") {
+                        (settingResult.findings.map { it.ruleId } + scriptValidation?.findings.orEmpty().map { it.ruleId })
+                            .filter { it.isNotBlank() }
+                            .distinct()
+                            .joinToString("; ")
+                    } else {
+                        ""
+                    },
+                    findingCount = settingResult.findings.size,
+                    findings = settingResult.findings,
+                    evidence = settingResult.evidence.withValidationFindingCount(scriptValidation?.findingCount ?: 0),
+                )
+                writeJson(settingBuildReportPath, settingBuildReport)
+                addStageFailure(
+                    findings = findings,
+                    verdict = settingBuildReport?.verdict.orEmpty(),
+                    stageRuleId = "SETTING_SCRIPT_PACKET_DRAFT_BUILD_NOT_PASS",
+                    category = "setting_script_draft",
+                    path = settingBuildReportPath,
+                    message = "Setting image-facing preview requires a non-failing setting script draft build.",
+                    evidence = settingBuildReport?.findings.orEmpty().map { it.ruleId },
+                )
+
+                planningBrief = previewService.createPlanningBrief(
+                    scriptPacketDraft = scriptDraft,
+                    scriptPacketDraftText = scriptText,
+                    scriptPacketDraftFile = scriptDraftPath.toString(),
+                    scriptPacketValidation = scriptValidation ?: error("Missing script validation"),
+                    settingBuildReport = settingBuildReport ?: error("Missing setting build report"),
+                    settingBuildReportFile = settingBuildReportPath.toString(),
+                    briefId = options["storyboard-brief"] ?: "",
+                )
+                writeJson(planningBriefPath, planningBrief)
+                addStageFailure(
+                    findings = findings,
+                    verdict = planningBrief?.verdict.orEmpty(),
+                    stageRuleId = "STORYBOARD_PLANNING_BRIEF_FAILED",
+                    category = "storyboard_planning",
+                    path = planningBriefPath,
+                    message = "Setting image-facing preview requires PASS local preview storyboard planning brief.",
+                    evidence = planningBrief?.findings.orEmpty().map { it.ruleId },
+                )
+
+                storyboardDraft = previewService.createStoryboardDraft(
+                    scriptPacketDraft = scriptDraft,
+                    planningBrief = planningBrief ?: error("Missing planning brief"),
+                    planningBriefFile = planningBriefPath.toString(),
+                    draftId = options["storyboard-draft"] ?: "",
+                )
+                writeJson(storyboardDraftPath, storyboardDraft)
+
+                storyboardDraftValidation = StoryboardPacketDraftValidationService().validate(
+                    storyboardPlanningBrief = planningBrief ?: error("Missing planning brief"),
+                    storyboardPacketDraft = storyboardDraft ?: error("Missing storyboard draft"),
+                    storyboardPlanningBriefFile = planningBriefPath.toString(),
+                    storyboardPacketDraftFile = storyboardDraftPath.toString(),
+                )
+                writeJson(storyboardDraftValidationPath, storyboardDraftValidation)
+                addStageFailure(
+                    findings = findings,
+                    verdict = storyboardDraftValidation?.verdict.orEmpty(),
+                    stageRuleId = "STORYBOARD_PACKET_DRAFT_VALIDATION_FAILED",
+                    category = "storyboard_draft",
+                    path = storyboardDraftValidationPath,
+                    message = "Setting image-facing preview requires PASS storyboard packet draft validation.",
+                    evidence = storyboardDraftValidation?.findings.orEmpty().map { it.ruleId },
+                )
+
+                storyboardReview = StoryboardPacketReviewService().create(
+                    storyboardPacketDraft = storyboardDraft ?: error("Missing storyboard draft"),
+                    storyboardPacketDraftReport = storyboardDraftValidation ?: error("Missing storyboard draft validation"),
+                    reviewId = options["storyboard-review"] ?: "",
+                    storyboardPacketDraftFile = storyboardDraftPath.toString(),
+                    storyboardPacketDraftReportFile = storyboardDraftValidationPath.toString(),
+                )
+                writeJson(storyboardReviewPath, storyboardReview)
+                addStageFailure(
+                    findings = findings,
+                    verdict = storyboardReview?.verdict.orEmpty(),
+                    stageRuleId = "STORYBOARD_PACKET_REVIEW_FAILED",
+                    category = "storyboard_review",
+                    path = storyboardReviewPath,
+                    message = "Setting image-facing preview requires PASS storyboard packet review.",
+                    evidence = storyboardReview?.findings.orEmpty().map { it.ruleId },
+                )
+
+                humanReviewPreflight = StoryboardPacketHumanReviewPreflightService().validate(
+                    storyboardPacketReview = storyboardReview ?: error("Missing storyboard review"),
+                    preflightId = options["human-review-preflight"] ?: "",
+                    storyboardPacketReviewFile = storyboardReviewPath.toString(),
+                )
+                writeJson(humanReviewPreflightPath, humanReviewPreflight)
+                addStageFailure(
+                    findings = findings,
+                    verdict = humanReviewPreflight?.verdict.orEmpty(),
+                    stageRuleId = "STORYBOARD_HUMAN_REVIEW_PREFLIGHT_FAILED",
+                    category = "storyboard_review",
+                    path = humanReviewPreflightPath,
+                    message = "Setting image-facing preview requires PASS human-review preflight readiness.",
+                    evidence = humanReviewPreflight?.findings.orEmpty().map { it.ruleId },
+                )
+
+                storyMovementAudit = StoryboardStoryMovementAuditService().audit(
+                    storyboardPacketDraft = storyboardDraft ?: error("Missing storyboard draft"),
+                    storyboardPacketReview = storyboardReview ?: error("Missing storyboard review"),
+                    storyboardHumanReviewPreflight = humanReviewPreflight ?: error("Missing human review preflight"),
+                    storyboardPacketDraftFile = storyboardDraftPath.toString(),
+                    storyboardPacketReviewFile = storyboardReviewPath.toString(),
+                    storyboardHumanReviewPreflightFile = humanReviewPreflightPath.toString(),
+                    auditId = options["story-movement-audit"] ?: "",
+                )
+                writeJson(storyMovementAuditPath, storyMovementAudit)
+                addStageFailure(
+                    findings = findings,
+                    verdict = storyMovementAudit?.verdict.orEmpty(),
+                    stageRuleId = "STORY_MOVEMENT_AUDIT_FAILED",
+                    category = "story_movement",
+                    path = storyMovementAuditPath,
+                    message = "Setting image-facing preview requires PASS story movement audit.",
+                    evidence = storyMovementAudit?.findings.orEmpty().map { it.ruleId },
+                )
+
+                reviewableStoryboard = ReviewableStoryboardPacketService().create(
+                    storyboardPacketDraft = storyboardDraft ?: error("Missing storyboard draft"),
+                    storyboardPacketReview = storyboardReview ?: error("Missing storyboard review"),
+                    storyboardHumanReviewPreflight = humanReviewPreflight ?: error("Missing human review preflight"),
+                    storyboardStoryMovementAudit = storyMovementAudit ?: error("Missing story movement audit"),
+                    storyboardPacketDraftFile = storyboardDraftPath.toString(),
+                    storyboardPacketReviewFile = storyboardReviewPath.toString(),
+                    storyboardHumanReviewPreflightFile = humanReviewPreflightPath.toString(),
+                    storyboardStoryMovementAuditFile = storyMovementAuditPath.toString(),
+                    packetId = options["reviewable-storyboard"] ?: "",
+                )
+                writeJson(reviewableStoryboardPath, reviewableStoryboard)
+                addStageFailure(
+                    findings = findings,
+                    verdict = reviewableStoryboard?.verdict.orEmpty(),
+                    stageRuleId = "REVIEWABLE_STORYBOARD_PACKET_FAILED",
+                    category = "reviewable_storyboard",
+                    path = reviewableStoryboardPath,
+                    message = "Setting image-facing preview requires PASS reviewable storyboard packet.",
+                    evidence = reviewableStoryboard?.findings.orEmpty().map { it.ruleId },
+                )
+
+                proof = ImageFacingDeliveryProofService().create(
+                    reviewableStoryboardPacket = reviewableStoryboard ?: error("Missing reviewable storyboard"),
+                    reviewableStoryboardPacketFile = reviewableStoryboardPath.toString(),
+                    proofId = options["proof"] ?: "",
+                )
+                writeJson(proofPath, proof)
+                addStageFailure(
+                    findings = findings,
+                    verdict = proof?.verdict.orEmpty(),
+                    stageRuleId = "IMAGE_FACING_DELIVERY_PROOF_FAILED",
+                    category = "image_facing",
+                    path = proofPath,
+                    message = "Setting image-facing preview requires PASS image-facing delivery proof.",
+                    evidence = proof?.findings.orEmpty().map { it.ruleId },
+                )
+            }
+        } catch (exception: Exception) {
+            findings += previewBuildFinding(
+                ruleId = "SETTING_IMAGE_FACING_PREVIEW_BUILD_EXCEPTION",
+                category = "execution",
+                severity = "CRITICAL",
+                path = "$.execution",
+                message = "Setting image-facing preview build failed before completing the JSON chain.",
+                evidence = listOf(exception::class.java.simpleName, exception.message.orEmpty()),
+            )
+        }
+
+        val verdict = if (proof?.verdict == "PASS" && findings.none { it.severity == "CRITICAL" || it.severity == "MAJOR" }) {
+            "PASS"
+        } else {
+            "FAIL"
+        }
+        val report = SettingImageFacingProofPreviewBuildReport(
+            verdict = verdict,
+            buildId = buildId,
+            buildStatus = if (verdict == "PASS") "local_preview_image_facing_proof_built" else "FAIL",
+            settingPackFile = settingPackPath.toString(),
+            outputDir = outputDir.toString(),
+            settingScriptPacketDraftBuildReportFile = settingBuildReportPath.toString(),
+            scriptPacketDraftFile = if (Files.exists(scriptDraftPath)) scriptDraftPath.toString() else "",
+            scriptPacketValidationFile = if (Files.exists(scriptValidationPath)) scriptValidationPath.toString() else "",
+            storyboardPlanningBriefFile = if (Files.exists(planningBriefPath)) planningBriefPath.toString() else "",
+            storyboardPacketDraftFile = if (Files.exists(storyboardDraftPath)) storyboardDraftPath.toString() else "",
+            storyboardPacketDraftValidationFile = if (Files.exists(storyboardDraftValidationPath)) storyboardDraftValidationPath.toString() else "",
+            storyboardPacketReviewFile = if (Files.exists(storyboardReviewPath)) storyboardReviewPath.toString() else "",
+            storyboardHumanReviewPreflightFile = if (Files.exists(humanReviewPreflightPath)) humanReviewPreflightPath.toString() else "",
+            storyboardStoryMovementAuditFile = if (Files.exists(storyMovementAuditPath)) storyMovementAuditPath.toString() else "",
+            reviewableStoryboardPacketFile = if (Files.exists(reviewableStoryboardPath)) reviewableStoryboardPath.toString() else "",
+            imageFacingDeliveryProofFile = if (Files.exists(proofPath)) proofPath.toString() else "",
+            packId = pack.packId,
+            projectId = pack.projectId,
+            selectedSceneId = settingBuildReport?.selectedSceneId.orEmpty(),
+            scriptPacketDraftId = settingBuildReport?.outputPacketId.orEmpty(),
+            storyboardPlanningBriefId = planningBrief?.briefId.orEmpty(),
+            storyboardPacketDraftId = storyboardDraft?.packetId.orEmpty(),
+            storyboardPacketReviewId = storyboardReview?.reviewId.orEmpty(),
+            storyboardHumanReviewPreflightId = humanReviewPreflight?.preflightId.orEmpty(),
+            storyboardStoryMovementAuditId = storyMovementAudit?.auditId.orEmpty(),
+            reviewableStoryboardPacketId = reviewableStoryboard?.packetId.orEmpty(),
+            imageFacingDeliveryProofId = proof?.proofId.orEmpty(),
+            nextAllowedDownstreamStep = if (verdict == "PASS") proof?.nextAllowedDownstreamStep.orEmpty() else "",
+            blockedReason = if (verdict == "FAIL") findings.joinToString("; ") { it.ruleId } else "",
+            findingCount = findings.size,
+            findings = findings,
+            evidence = SettingImageFacingProofPreviewBuildEvidence(
+                settingScriptDraftBuildVerdict = settingBuildReport?.verdict.orEmpty(),
+                scriptPacketValidationVerdict = scriptValidation?.verdict.orEmpty(),
+                storyboardPlanningBriefVerdict = planningBrief?.verdict.orEmpty(),
+                storyboardPacketDraftValidationVerdict = storyboardDraftValidation?.verdict.orEmpty(),
+                storyboardPacketReviewVerdict = storyboardReview?.verdict.orEmpty(),
+                storyboardHumanReviewPreflightVerdict = humanReviewPreflight?.verdict.orEmpty(),
+                storyboardStoryMovementAuditVerdict = storyMovementAudit?.verdict.orEmpty(),
+                reviewableStoryboardPacketVerdict = reviewableStoryboard?.verdict.orEmpty(),
+                imageFacingDeliveryProofVerdict = proof?.verdict.orEmpty(),
+                generatedScriptSegmentCount = scriptValidation?.segmentCount ?: 0,
+                generatedStoryboardFrameCount = storyboardDraft?.frames?.size ?: 0,
+                generatedImageFrameCardCount = proof?.frameDeliveryCards?.size ?: 0,
+                excludedSecretCount = settingBuildReport?.evidence?.excludedSecretCount ?: 0,
+                findingCountAcrossStages = listOf(
+                    settingBuildReport?.findingCount ?: 0,
+                    scriptValidation?.findingCount ?: 0,
+                    planningBrief?.findingCount ?: 0,
+                    storyboardDraftValidation?.findingCount ?: 0,
+                    storyboardReview?.findingCount ?: 0,
+                    humanReviewPreflight?.findingCount ?: 0,
+                    storyMovementAudit?.findingCount ?: 0,
+                    reviewableStoryboard?.findingCount ?: 0,
+                    proof?.findingCount ?: 0,
+                ).sum(),
+            ),
+        )
+        writeJson(reportPath, report)
+        printSettingImageFacingProofPreviewBuildReport(report)
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun addStageFailure(
+        findings: MutableList<SettingImageFacingProofPreviewBuildFinding>,
+        verdict: String,
+        stageRuleId: String,
+        category: String,
+        path: Path,
+        message: String,
+        evidence: List<String>,
+    ) {
+        if (verdict.trim().uppercase() == "PASS") return
+        findings += previewBuildFinding(
+            ruleId = stageRuleId,
+            category = category,
+            severity = "CRITICAL",
+            path = path.toString(),
+            message = message,
+            evidence = evidence,
+        )
+    }
+
+    private fun previewBuildFinding(
+        ruleId: String,
+        category: String,
+        severity: String,
+        path: String,
+        message: String,
+        evidence: List<String> = emptyList(),
+        suggestedFix: String = "",
+    ): SettingImageFacingProofPreviewBuildFinding =
+        SettingImageFacingProofPreviewBuildFinding(ruleId, category, severity, path, message, evidence, suggestedFix)
+
+    private fun printSettingImageFacingProofPreviewBuildReport(report: SettingImageFacingProofPreviewBuildReport) {
+        println("verdict=${report.verdict}")
+        println("buildId=${report.buildId}")
+        println("buildStatus=${report.buildStatus}")
+        println("packId=${report.packId}")
+        println("projectId=${report.projectId}")
+        println("selectedSceneId=${report.selectedSceneId}")
+        println("scriptPacketDraftId=${report.scriptPacketDraftId}")
+        println("storyboardPacketDraftId=${report.storyboardPacketDraftId}")
+        println("reviewableStoryboardPacketId=${report.reviewableStoryboardPacketId}")
+        println("imageFacingDeliveryProofId=${report.imageFacingDeliveryProofId}")
+        println("imageFacingDeliveryProofFile=${report.imageFacingDeliveryProofFile}")
+        println("imageFacingDeliveryProofVerdict=${report.evidence.imageFacingDeliveryProofVerdict}")
+        println("generatedStoryboardFrames=${report.evidence.generatedStoryboardFrameCount}")
+        println("generatedImageFrameCards=${report.evidence.generatedImageFrameCardCount}")
+        println("excludedSecrets=${report.evidence.excludedSecretCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
     }
 
     private fun validateScriptPacketDraft(options: Map<String, String>): Int {
@@ -1252,6 +1853,1502 @@ class Cli {
             println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
         }
         return if (manifest.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createComicVideoProductionPackageDraft(options: Map<String, String>): Int {
+        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
+        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val panelDurationMillis = options["panel-duration-ms"]?.toIntOrNull()
+            ?: options["panel-duration-ms"]?.let { error("--panel-duration-ms must be an integer.") }
+            ?: 3000
+        val draft = ComicVideoProductionPackageDraftService().create(
+            imageFacingDeliveryProof = readJson<ImageFacingDeliveryProof>(proofPath),
+            voiceTimelineFill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+            imageFacingDeliveryProofFile = proofPath.toString(),
+            voiceTimelineFillFile = fillPath.toString(),
+            packageId = options["package"] ?: "",
+            packetId = options["packet"] ?: "",
+            panelDurationMillis = panelDurationMillis,
+        )
+        options["out"]?.let { writeJson(Path.of(it), draft) }
+        println("verdict=${draft.verdict}")
+        println("packageId=${draft.packageId}")
+        println("packageStatus=${draft.packageStatus}")
+        println("generatedComicVideoPacketId=${draft.generatedComicVideoPacketId}")
+        println("generatedPacketValidationId=${draft.generatedPacketValidationId}")
+        println("sourceImageFacingDeliveryProofId=${draft.sourceImageFacingDeliveryProofId}")
+        println("acceptedScriptPacketId=${draft.acceptedScriptPacketId}")
+        println("storyboardRows=${draft.storyboardProductionTable.size}")
+        println("shotPrompts=${draft.shotPrompts.size}")
+        println("assetPromptCards=${draft.assetPromptCards.size}")
+        println("voiceStyleCards=${draft.voiceStyleCards.size}")
+        println("totalDurationMillis=${draft.evidence.totalDurationMillis}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateComicVideoProductionPackage(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("production-package-draft"))
+        val report = ComicVideoProductionPackageValidationService().validate(
+            draft = readJson<ComicVideoProductionPackageDraft>(draftPath),
+            draftFile = draftPath.toString(),
+            validationId = options["validation"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("validationId=${report.validationId}")
+        println("packageId=${report.packageId}")
+        println("packageStatus=${report.packageStatus}")
+        println("sourceImageFacingDeliveryProofId=${report.sourceImageFacingDeliveryProofId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("storyboardRows=${report.evidence.storyboardRowCount}")
+        println("shotPrompts=${report.evidence.shotPromptCount}")
+        println("assetPromptCards=${report.evidence.assetCardCount}")
+        println("voiceStyleCards=${report.evidence.voiceStyleCardCount}")
+        println("crossReferenceMismatches=${report.evidence.crossReferenceMismatchCount}")
+        println("promptSafetyFindings=${report.evidence.promptSafetyFindingCount}")
+        println("remoteOrProviderReferences=${report.evidence.remoteOrProviderReferenceCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("authorOnlyLeaks=${report.evidence.authorOnlyLeakCount}")
+        println("totalDurationMillis=${report.evidence.totalDurationMillis}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateLocalStoryInputPack(options: Map<String, String>): Int {
+        val inputPath = Path.of(options.required("input"))
+        val report = LocalStoryInputPackValidationService().validate(
+            pack = readJson<LocalStoryInputPack>(inputPath),
+            packFile = inputPath.toString(),
+            validationId = options["validation"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("validationId=${report.validationId}")
+        println("packId=${report.packId}")
+        println("title=${report.title}")
+        println("locale=${report.locale}")
+        println("characters=${report.evidence.characterCount}")
+        println("scenes=${report.evidence.sceneCount}")
+        println("beats=${report.evidence.beatCount}")
+        println("linkedBeats=${report.evidence.linkedBeatCount}")
+        println("durationTargetMillis=${report.evidence.durationTargetMillis}")
+        println("localOnly=${report.evidence.localOnlyDeclared}")
+        println("noExternalPaidProviderTools=${report.evidence.noExternalPaidProviderToolsDeclared}")
+        println("fileProtocolJsonOnly=${report.evidence.fileProtocolJsonOnlyDeclared}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validate09FoundationCardPack(options: Map<String, String>): Int {
+        val inputPath = Path.of(options.required("input"))
+        val outPath = Path.of(options.required("out"))
+        val report = FoundationCardPackValidationService().validateFile(
+            inputPath = inputPath,
+            outPath = outPath,
+            validationId = options["validation"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("validationId=${report.validationId}")
+        println("packId=${report.packId}")
+        println("title=${report.title}")
+        println("locale=${report.locale}")
+        println("cards=${report.evidence.cardCount}")
+        println("requiredFamilies=${report.evidence.requiredFamilyCount}")
+        println("presentRequiredFamilies=${report.evidence.presentRequiredFamilyCount}")
+        println("missingFamilies=${report.evidence.missingFamilies.joinToString(",")}")
+        println("duplicateCardIds=${report.evidence.duplicateCardIdCount}")
+        println("missingSourceNotes=${report.evidence.missingSourceNotesCount}")
+        println("missingRetrievalTags=${report.evidence.missingRetrievalTagsCount}")
+        println("missingDownstreamUse=${report.evidence.missingDownstreamUseCount}")
+        println("unsafeBoundaryFlags=${report.evidence.unsafeBoundaryFlagCount}")
+        println("readinessClaims=${report.evidence.readinessClaimCount}")
+        println("eligibilityClaims=${report.evidence.eligibilityClaimCount}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("candidateOnly=${report.boundarySummary.candidateOnly}")
+        println("canonApproved=${report.boundarySummary.canonApproved}")
+        println("settingPackData=${report.boundarySummary.settingPackData}")
+        println("runtimeSqliteData=${report.boundarySummary.runtimeSqliteData}")
+        println("approvedAssetData=${report.boundarySummary.approvedAssetData}")
+        println("providerApiCalls=${report.boundarySummary.providerApiCalls}")
+        println("mediaGenerated=${report.boundarySummary.mediaGenerated}")
+        println("finalMediaApproval=${report.boundarySummary.finalMediaApproval}")
+        println("productionLock=${report.boundarySummary.productionLock}")
+        println("allRendererInvocationNone=${report.boundarySummary.allRendererInvocationNone}")
+        println("allFfmpegInvocationNone=${report.boundarySummary.allFfmpegInvocationNone}")
+        println("allTtsInvocationNone=${report.boundarySummary.allTtsInvocationNone}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("progressCaveat=${report.progressCaveat}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun review09FoundationCardPack(options: Map<String, String>): Int {
+        val packPath = Path.of(options.required("pack"))
+        val validationPath = Path.of(options.required("validation"))
+        val outPath = Path.of(options.required("out"))
+        val report = FoundationCardPackReviewService().reviewFile(
+            packPath = packPath,
+            validationPath = validationPath,
+            outPath = outPath,
+            reviewId = options["review"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourceValidationId=${report.sourceValidationId}")
+        println("packId=${report.packId}")
+        println("title=${report.title}")
+        println("locale=${report.locale}")
+        println("sourceAligned=${report.evidence.sourceAligned}")
+        println("sourcePackFileMatches=${report.evidence.sourcePackFileMatches}")
+        println("packIdAligned=${report.evidence.packIdAligned}")
+        println("titleAligned=${report.evidence.titleAligned}")
+        println("localeAligned=${report.evidence.localeAligned}")
+        println("cards=${report.evidence.cardCount}")
+        println("requiredFamilies=${report.evidence.requiredFamilyCount}")
+        println("presentRequiredFamilies=${report.evidence.presentRequiredFamilyCount}")
+        println("missingFamilies=${report.evidence.missingFamilies.joinToString(",")}")
+        println("validationFailedChecks=${report.evidence.validationFailedCheckCount}")
+        println("validationFindings=${report.evidence.validationFindingCount}")
+        println("reviewFailedChecks=${report.evidence.reviewFailedCheckCount}")
+        println("duplicateCardIds=${report.evidence.duplicateCardIdCount}")
+        println("missingTraceability=${report.evidence.missingTraceabilityCount}")
+        println("missingDownstreamUse=${report.evidence.missingDownstreamUseCount}")
+        println("unsafeBoundaryFlags=${report.evidence.unsafeBoundaryFlagCount}")
+        println("readinessClaims=${report.evidence.readinessClaimCount}")
+        println("eligibilityClaims=${report.evidence.eligibilityClaimCount}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("technicalReviewOnly=${report.boundarySummary.technicalReviewOnly}")
+        println("candidateOnly=${report.boundarySummary.candidateOnly}")
+        println("validationPass=${report.boundarySummary.validationPass}")
+        println("humanApproval=${report.boundarySummary.humanApproval}")
+        println("canonApproval=${report.boundarySummary.canonApproval}")
+        println("settingPackConversion=${report.boundarySummary.settingPackConversion}")
+        println("runtimeSqliteData=${report.boundarySummary.runtimeSqliteData}")
+        println("assetRegistryApproval=${report.boundarySummary.assetRegistryApproval}")
+        println("providerApiCalls=${report.boundarySummary.providerApiCalls}")
+        println("mediaGenerated=${report.boundarySummary.mediaGenerated}")
+        println("finalMediaApproval=${report.boundarySummary.finalMediaApproval}")
+        println("productionLock=${report.boundarySummary.productionLock}")
+        println("demandDrivenQueryImplementation=${report.boundarySummary.demandDrivenQueryImplementation}")
+        println("allRendererInvocationNone=${report.boundarySummary.allRendererInvocationNone}")
+        println("allFfmpegInvocationNone=${report.boundarySummary.allFfmpegInvocationNone}")
+        println("allTtsInvocationNone=${report.boundarySummary.allTtsInvocationNone}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("progressCaveat=${report.progressCaveat}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalAssetPromptCards(options: Map<String, String>): Int {
+        val storyInputPath = Path.of(options.required("story-input"))
+        val storyValidationPath = Path.of(options.required("story-validation"))
+        val draft = LocalAssetPromptCardDraftService().create(
+            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            storyValidationReport = readJson<LocalStoryInputPackValidationReport>(storyValidationPath),
+            storyInputPackFile = storyInputPath.toString(),
+            storyValidationReportFile = storyValidationPath.toString(),
+            draftId = options["draft"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), draft) }
+        println("status=${draft.status}")
+        println("draftId=${draft.draftId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("sourceStoryValidationId=${draft.sourceStoryValidationId}")
+        println("characters=${draft.characterCards.size}")
+        println("scenes=${draft.sceneCards.size}")
+        println("beats=${draft.beatCards.size}")
+        println("visualPromptCards=${draft.visualPromptCards.size}")
+        println("audioCueCards=${draft.audioCueCards.size}")
+        println("targetDurationMillis=${draft.renderIntent.targetDurationMillis}")
+        println("localOnly=${draft.localOnlyConstraints.localOnly}")
+        println("noExternalPaidProviderTools=${draft.localOnlyConstraints.noExternalPaidProviderTools}")
+        println("fileProtocolJsonOnly=${draft.localOnlyConstraints.fileProtocolJsonOnly}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.status == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalRenderPackage(options: Map<String, String>): Int {
+        val storyInputPath = Path.of(options.required("story-input"))
+        val assetPromptCardsPath = Path.of(options.required("asset-prompt-cards"))
+        val draft = LocalRenderPackageDraftService().create(
+            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            assetPromptCards = readJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
+            storyInputPackFile = storyInputPath.toString(),
+            assetPromptCardsFile = assetPromptCardsPath.toString(),
+            packageId = options["package"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), draft) }
+        println("status=${draft.status}")
+        println("packageId=${draft.packageId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("sourceAssetPromptCardsStatus=${draft.sourceAssetPromptCardsStatus}")
+        println("timelineItems=${draft.timelinePlan.size}")
+        println("scenePlans=${draft.scenePlan.size}")
+        println("panelPlans=${draft.panelPlan.size}")
+        println("assetPromptReferences=${draft.assetPromptReferences.size}")
+        println("qaChecks=${draft.qaChecklist.size}")
+        println("qaPass=${draft.evidence.qaPassCount}")
+        println("qaFail=${draft.evidence.qaFailCount}")
+        println("targetDurationMillis=${draft.evidence.targetDurationMillis}")
+        println("timelineTotalDurationMillis=${draft.evidence.timelineTotalDurationMillis}")
+        println("localOnly=${draft.localOnlyConstraints.localOnly}")
+        println("noExternalPaidProviderTools=${draft.localOnlyConstraints.noExternalPaidProviderTools}")
+        println("fileProtocolJsonOnly=${draft.localOnlyConstraints.fileProtocolJsonOnly}")
+        println("renderBoundary=${draft.renderBoundary}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.status == "FAIL") 1 else 0
+    }
+
+    private fun verifyLocalStoryVideoChain(options: Map<String, String>): Int {
+        val storyInputPath = Path.of(options.required("story-input"))
+        val outputDir = Path.of(options.required("output-dir"))
+        val reportPath = Path.of(options.required("out"))
+        val result = LocalStoryVideoChainVerificationService().verify(
+            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            storyInputPackFile = storyInputPath.toString(),
+            outputDir = outputDir.toString(),
+            chainReportFile = reportPath.toString(),
+            chainId = options["chain"] ?: "",
+        )
+        writeJson(Path.of(result.report.generatedFiles.storyValidationReportFile), result.storyValidationReport)
+        result.assetPromptCardsDraft?.let {
+            writeJson(Path.of(result.report.generatedFiles.assetPromptCardsFile), it)
+        }
+        result.localRenderPackageDraft?.let {
+            writeJson(Path.of(result.report.generatedFiles.localRenderPackageFile), it)
+        }
+        writeJson(reportPath, result.report)
+        println("status=${result.report.status}")
+        println("chainId=${result.report.chainId}")
+        println("sourceStoryInputPackId=${result.report.sourceStoryInputPackId}")
+        println("storyValidation=${result.report.stageResults.storyValidation.status}")
+        println("assetPromptCards=${result.report.stageResults.assetPromptCards.status}")
+        println("localRenderPackage=${result.report.stageResults.localRenderPackage.status}")
+        println("validationReportFile=${result.report.generatedFiles.storyValidationReportFile}")
+        println("assetPromptCardsFile=${result.report.generatedFiles.assetPromptCardsFile}")
+        println("localRenderPackageFile=${result.report.generatedFiles.localRenderPackageFile}")
+        println("chainReportFile=${result.report.generatedFiles.chainReportFile}")
+        println("characters=${result.report.counts.characters}")
+        println("scenes=${result.report.counts.scenes}")
+        println("beats=${result.report.counts.beats}")
+        println("visualPromptCards=${result.report.counts.visualPromptCards}")
+        println("audioCueCards=${result.report.counts.audioCueCards}")
+        println("panelPlans=${result.report.counts.panelPlans}")
+        println("qaChecks=${result.report.counts.qaChecks}")
+        println("qaPass=${result.report.counts.qaPass}")
+        println("qaFail=${result.report.counts.qaFail}")
+        println("targetDurationMillis=${result.report.counts.targetDurationMillis}")
+        println("mediaGenerated=${result.report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${result.report.boundaries.rendererInvocation}")
+        println("providerInvocation=${result.report.boundaries.providerInvocation}")
+        println("ttsInvocation=${result.report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${result.report.boundaries.noExternalPaidProviderTools}")
+        println("downstreamBoundary=${result.report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${result.report.nextAllowedDownstreamStep}")
+        println("blockedReason=${result.report.blockedReason}")
+        println("findings=${result.report.findingCount}")
+        result.report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (result.report.status == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalStoryVideoPreviewHandoff(options: Map<String, String>): Int {
+        val chainReportPath = Path.of(options.required("chain-report"))
+        val renderPackagePath = Path.of(options.required("render-package"))
+        val assetPromptCardsPath = Path.of(options.required("asset-prompt-cards"))
+        val storyInputPath = Path.of(options.required("story-input"))
+        val outPath = Path.of(options.required("out"))
+        val draft = LocalStoryVideoPreviewHandoffDraftService().create(
+            chainReport = readJson<LocalStoryVideoChainReport>(chainReportPath),
+            renderPackage = readJson<LocalRenderPackageDraft>(renderPackagePath),
+            assetPromptCards = readJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
+            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            chainReportFile = chainReportPath.toString(),
+            renderPackageFile = renderPackagePath.toString(),
+            assetPromptCardsFile = assetPromptCardsPath.toString(),
+            storyInputFile = storyInputPath.toString(),
+            handoffId = options["handoff"] ?: "",
+        )
+        writeJson(outPath, draft)
+        println("status=${draft.status}")
+        println("handoffId=${draft.handoffId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("sourceChainStatus=${draft.sourceChainStatus}")
+        println("sourceRenderPackageStatus=${draft.sourceRenderPackageStatus}")
+        println("sourceAssetPromptCardsStatus=${draft.sourceAssetPromptCardsStatus}")
+        println("readinessChecks=${draft.evidence.readinessCheckCount}")
+        println("readinessPass=${draft.evidence.readinessPassCount}")
+        println("readinessFail=${draft.evidence.readinessFailCount}")
+        println("scenes=${draft.evidence.sceneCount}")
+        println("panels=${draft.evidence.panelCount}")
+        println("visualPromptReferences=${draft.evidence.visualPromptReferenceCount}")
+        println("audioCueReferences=${draft.evidence.audioCueReferenceCount}")
+        println("targetDurationMillis=${draft.evidence.targetDurationMillis}")
+        println("localRendererReady=${draft.localRendererCompatibility.ready}")
+        println("mediaGenerated=${draft.boundaries.mediaGenerated}")
+        println("rendererInvocation=${draft.boundaries.rendererInvocation}")
+        println("providerInvocation=${draft.boundaries.providerInvocation}")
+        println("ttsInvocation=${draft.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${draft.boundaries.noExternalPaidProviderTools}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.status == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalStoryVideoPreviewHandoff(options: Map<String, String>): Int {
+        val handoffPath = Path.of(options.required("handoff"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalStoryVideoPreviewHandoffReviewService().review(
+            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            handoffFile = handoffPath.toString(),
+            reviewId = options["review"] ?: "",
+        )
+        writeJson(outPath, report)
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("reviewId=${report.reviewId}")
+        println("sourceHandoffId=${report.sourceHandoffId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("handoffStatus=${report.handoffStatus}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("readinessChecks=${report.readinessSummary.readinessChecks}")
+        println("requiredReadinessPass=${report.readinessSummary.requiredReadinessPass}")
+        println("requiredReadinessFail=${report.readinessSummary.requiredReadinessFail}")
+        println("previewPanels=${report.readinessSummary.previewPanels}")
+        println("targetDurationMillis=${report.readinessSummary.previewTargetDurationMillis}")
+        println("qaFail=${report.readinessSummary.qaFail}")
+        println("localRendererReady=${report.rendererCompatibilitySummary.ready}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun dryRunLocalRendererAdapter(options: Map<String, String>): Int {
+        val handoffPath = Path.of(options.required("handoff"))
+        val reviewPath = Path.of(options.required("review"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererAdapterDryRunService().dryRun(
+            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            review = readJson<LocalStoryVideoPreviewHandoffReviewReport>(reviewPath),
+            handoffFile = handoffPath.toString(),
+            reviewFile = reviewPath.toString(),
+            dryRunId = options["dry-run-id"] ?: "",
+        )
+        writeJson(outPath, report)
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("dryRunId=${report.dryRunId}")
+        println("sourceHandoffId=${report.sourceHandoffId}")
+        println("sourceReviewId=${report.sourceReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("sceneCount=${report.adapterMappingSummary.sceneCount}")
+        println("panelCount=${report.adapterMappingSummary.panelCount}")
+        println("mappedPanelCount=${report.adapterMappingSummary.mappedPanelCount}")
+        println("unmappedPanelCount=${report.adapterMappingSummary.unmappedPanelCount}")
+        println("missingRequiredFieldCount=${report.adapterMappingSummary.missingRequiredFieldCount}")
+        println("targetDurationMillis=${report.adapterMappingSummary.targetDurationMillis}")
+        println("qaFail=${report.adapterMappingSummary.qaFail}")
+        println("localRendererReady=${report.rendererCompatibilitySummary.ready}")
+        println("manifestGenerated=${report.rendererCompatibilitySummary.manifestGenerated}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun planLocalRendererAdapterImplementation(options: Map<String, String>): Int {
+        val dryRunReportPath = Path.of(options.required("dry-run-report"))
+        val outPath = Path.of(options.required("out"))
+        val plan = LocalRendererAdapterImplementationPlanService().plan(
+            dryRunReport = readJson<LocalRendererAdapterDryRunReport>(dryRunReportPath),
+            dryRunReportFile = dryRunReportPath.toString(),
+            planId = options["plan"] ?: "",
+        )
+        writeJson(outPath, plan)
+        val checksPass = plan.sourceValidationChecks.count { it.status == "PASS" }
+        val checksFail = plan.sourceValidationChecks.count { it.status != "PASS" }
+        println("verdict=${plan.verdict}")
+        println("status=${plan.status}")
+        println("planId=${plan.planId}")
+        println("sourceDryRunId=${plan.sourceDryRunId}")
+        println("sourceHandoffId=${plan.sourceHandoffId}")
+        println("sourceReviewId=${plan.sourceReviewId}")
+        println("sourceStoryInputPackId=${plan.sourceStoryInputPackId}")
+        println("checks=${plan.sourceValidationChecks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("requiredAdapterWorkItems=${plan.requiredAdapterWorkItems.size}")
+        println("implementationSteps=${plan.implementationSteps.size}")
+        println("riskChecks=${plan.riskChecklist.size}")
+        println("verificationSteps=${plan.verificationPlan.size}")
+        println("planningOnly=${plan.targetManifestFieldMappingPlan.planningOnly}")
+        println("manifestGenerated=${plan.boundaries.manifestGenerated}")
+        println("mediaGenerated=${plan.boundaries.mediaGenerated}")
+        println("rendererInvocation=${plan.boundaries.rendererInvocation}")
+        println("providerInvocation=${plan.boundaries.providerInvocation}")
+        println("ttsInvocation=${plan.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${plan.boundaries.noExternalPaidProviderTools}")
+        println("adapterImplementationExecuted=${plan.boundaries.adapterImplementationExecuted}")
+        println("downstreamBoundary=${plan.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${plan.nextAllowedDownstreamStep}")
+        println("blockedReason=${plan.blockedReason}")
+        println("findings=${plan.findingCount}")
+        plan.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (plan.verdict == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalRendererAdapterImplementationPlan(options: Map<String, String>): Int {
+        val planPath = Path.of(options.required("plan"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererAdapterImplementationPlanReviewService().review(
+            plan = readJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
+            planFile = planPath.toString(),
+            reviewId = options["review"] ?: "",
+        )
+        writeJson(outPath, report)
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourcePlanId=${report.sourcePlanId}")
+        println("sourceDryRunId=${report.sourceDryRunId}")
+        println("sourceHandoffId=${report.sourceHandoffId}")
+        println("sourceReviewId=${report.sourceReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("requiredAdapterWorkItems=${report.planSummary.requiredAdapterWorkItems}")
+        println("targetMappingNoteCount=${report.planSummary.targetMappingNoteCount}")
+        println("implementationSteps=${report.planSummary.implementationSteps}")
+        println("riskChecks=${report.planSummary.riskChecks}")
+        println("verificationSteps=${report.planSummary.verificationSteps}")
+        println("planningOnly=${report.planSummary.planningOnly}")
+        println("manifestGenerated=${report.boundaries.manifestGenerated}")
+        println("adapterImplementationExecuted=${report.boundaries.adapterImplementationExecuted}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${report.rendererCompatibilitySummary.ready}")
+        println("mp4ReadinessClaimed=${report.rendererCompatibilitySummary.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalRendererAdapterImplementation(options: Map<String, String>): Int {
+        val handoffPath = Path.of(options.required("handoff"))
+        val planPath = Path.of(options.required("plan"))
+        val planReviewPath = Path.of(options.required("plan-review"))
+        val outPath = Path.of(options.required("out"))
+        val draft = LocalRendererAdapterImplementationDraftService().draft(
+            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            plan = readJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
+            planReview = readJson<LocalRendererAdapterImplementationPlanReviewReport>(planReviewPath),
+            handoffFile = handoffPath.toString(),
+            planFile = planPath.toString(),
+            planReviewFile = planReviewPath.toString(),
+            draftId = options["draft"] ?: "",
+        )
+        writeJson(outPath, draft)
+        val checksPass = draft.checks.count { it.status == "PASS" }
+        val checksFail = draft.checks.count { it.status != "PASS" }
+        println("verdict=${draft.verdict}")
+        println("status=${draft.status}")
+        println("draftId=${draft.draftId}")
+        println("sourcePlanId=${draft.sourcePlanId}")
+        println("sourcePlanReviewId=${draft.sourcePlanReviewId}")
+        println("sourceDryRunId=${draft.sourceDryRunId}")
+        println("sourceHandoffId=${draft.sourceHandoffId}")
+        println("sourceHandoffReviewId=${draft.sourceHandoffReviewId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("checks=${draft.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("previewPanelCount=${draft.implementationDraftSummary.previewPanelCount}")
+        println("mappingDraftPanelCount=${draft.implementationDraftSummary.mappingDraftPanelCount}")
+        println("requiredAdapterWorkItems=${draft.implementationDraftSummary.requiredAdapterWorkItems}")
+        println("implementationTasks=${draft.implementationTasks.size}")
+        println("verificationSteps=${draft.verificationPlan.size}")
+        println("targetMappingNoteCount=${draft.implementationDraftSummary.targetMappingNoteCount}")
+        println("missingMappingNoteCount=${draft.implementationDraftSummary.missingMappingNoteCount}")
+        println("mediaGenerated=${draft.boundaries.mediaGenerated}")
+        println("rendererInvocation=${draft.boundaries.rendererInvocation}")
+        println("providerInvocation=${draft.boundaries.providerInvocation}")
+        println("ttsInvocation=${draft.boundaries.ttsInvocation}")
+        println("manifestGenerated=${draft.boundaries.manifestGenerated}")
+        println("adapterImplementationExecuted=${draft.boundaries.adapterImplementationExecuted}")
+        println("noExternalPaidProviderTools=${draft.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${draft.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${draft.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.verdict == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalRendererAdapterImplementationDraft(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererAdapterImplementationDraftReviewService().reviewFile(
+            draftPath = draftPath,
+            outPath = outPath,
+            reviewId = options["review"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourceDraftId=${report.sourceDraftId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("statusMatchesExpected=${report.status == "LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS"}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("downstreamBoundaryMatchesExpected=${report.downstreamBoundary == "local_renderer_adapter_implementation_draft_review_only_not_manifest_generation"}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("nextStepMatchesExpected=${report.nextAllowedDownstreamStep == "local_renderer_manifest_draft_plan"}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun planLocalRendererManifestDraft(options: Map<String, String>): Int {
+        val implementationDraftPath = Path.of(options.required("implementation-draft"))
+        val draftReviewPath = Path.of(options.required("draft-review"))
+        val outPath = Path.of(options.required("out"))
+        val plan = LocalRendererManifestDraftPlanService().planFile(
+            implementationDraftPath = implementationDraftPath,
+            draftReviewPath = draftReviewPath,
+            outPath = outPath,
+            planId = options["plan"] ?: "",
+        )
+        val checksPass = plan.checks.count { it.status == "PASS" }
+        val checksFail = plan.checks.count { it.status != "PASS" }
+        println("verdict=${plan.verdict}")
+        println("status=${plan.status}")
+        println("planId=${plan.planId}")
+        println("sourceDraftId=${plan.sourceDraftId}")
+        println("sourceDraftReviewId=${plan.sourceDraftReviewId}")
+        println("sourcePlanId=${plan.sourcePlanId}")
+        println("sourcePlanReviewId=${plan.sourcePlanReviewId}")
+        println("sourceDryRunId=${plan.sourceDryRunId}")
+        println("sourceHandoffId=${plan.sourceHandoffId}")
+        println("sourceHandoffReviewId=${plan.sourceHandoffReviewId}")
+        println("sourceStoryInputPackId=${plan.sourceStoryInputPackId}")
+        println("checks=${plan.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("manifestPanels=${plan.manifestFieldPlan.panelManifestPlans.size}")
+        println("manifestFields=${plan.manifestDraftPlanSummary.mappingDraftFields}")
+        println("requiredManifestDraftWorkItems=${plan.requiredManifestDraftWorkItems.size}")
+        println("verificationSteps=${plan.verificationPlan.size}")
+        println("planningOnly=${plan.manifestFieldPlan.planningOnly}")
+        println("manifestGenerated=${plan.boundaries.manifestGenerated}")
+        println("adapterImplementationExecuted=${plan.boundaries.adapterImplementationExecuted}")
+        println("mediaGenerated=${plan.boundaries.mediaGenerated}")
+        println("rendererInvocation=${plan.boundaries.rendererInvocation}")
+        println("providerInvocation=${plan.boundaries.providerInvocation}")
+        println("ttsInvocation=${plan.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${plan.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${plan.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${plan.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${plan.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${plan.nextAllowedDownstreamStep}")
+        println("blockedReason=${plan.blockedReason}")
+        println("findings=${plan.findingCount}")
+        plan.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (plan.verdict == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalRendererManifestDraftPlan(options: Map<String, String>): Int {
+        val planPath = Path.of(options.required("plan"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererManifestDraftPlanReviewService().reviewFile(
+            planPath = planPath,
+            outPath = outPath,
+            reviewId = options["review"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourceManifestDraftPlanId=${report.sourceManifestDraftPlanId}")
+        println("sourceImplementationDraftId=${report.sourceImplementationDraftId}")
+        println("sourceImplementationDraftReviewId=${report.sourceImplementationDraftReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("manifestPanels=${report.planReviewSummary.manifestPanels}")
+        println("manifestFields=${report.planReviewSummary.manifestFields}")
+        println("requiredManifestDraftWorkItems=${report.planReviewSummary.requiredManifestDraftWorkItems}")
+        println("verificationSteps=${report.planReviewSummary.verificationSteps}")
+        println("readyForFutureManifestJsonDraft=${report.manifestDraftPlanReadinessSummary.readyForFutureManifestJsonDraft}")
+        println("manifestGenerated=${report.boundaries.manifestGenerated}")
+        println("adapterImplementationExecuted=${report.boundaries.adapterImplementationExecuted}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${report.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${report.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalRendererManifestJson(options: Map<String, String>): Int {
+        val planPath = Path.of(options.required("plan"))
+        val planReviewPath = Path.of(options.required("plan-review"))
+        val outPath = Path.of(options.required("out"))
+        val draft = LocalRendererManifestDraftJsonDraftService().draftFile(
+            planPath = planPath,
+            planReviewPath = planReviewPath,
+            outPath = outPath,
+            draftId = options["draft"] ?: "",
+        )
+        val checksPass = draft.checks.count { it.status == "PASS" }
+        val checksFail = draft.checks.count { it.status != "PASS" }
+        println("verdict=${draft.verdict}")
+        println("status=${draft.status}")
+        println("draftId=${draft.draftId}")
+        println("sourceManifestDraftPlanId=${draft.sourceManifestDraftPlanId}")
+        println("sourceManifestDraftPlanReviewId=${draft.sourceManifestDraftPlanReviewId}")
+        println("sourceImplementationDraftId=${draft.sourceImplementationDraftId}")
+        println("sourceImplementationDraftReviewId=${draft.sourceImplementationDraftReviewId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("checks=${draft.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("draftPanelEntries=${draft.draftPanelManifestEntries.size}")
+        println("draftManifestFields=${draft.draftFieldCoverageSummary.totalDraftFields}")
+        println("missingRequiredDraftFields=${draft.draftFieldCoverageSummary.missingRequiredDraftFields}")
+        println("draftOnly=${draft.draftManifestSummary.draftOnly}")
+        println("draftManifestGenerated=${draft.boundaries.draftManifestGenerated}")
+        println("productionManifestGenerated=${draft.boundaries.productionManifestGenerated}")
+        println("productionReady=${draft.boundaries.productionReady}")
+        println("adapterImplementationExecuted=${draft.boundaries.adapterImplementationExecuted}")
+        println("mediaGenerated=${draft.boundaries.mediaGenerated}")
+        println("rendererInvocation=${draft.boundaries.rendererInvocation}")
+        println("providerInvocation=${draft.boundaries.providerInvocation}")
+        println("ttsInvocation=${draft.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${draft.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${draft.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${draft.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.verdict == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalRendererManifestDraftJson(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererManifestDraftJsonReviewService().reviewFile(
+            draftPath = draftPath,
+            outPath = outPath,
+            reviewId = options["review"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourceDraftId=${report.sourceDraftId}")
+        println("sourceManifestDraftPlanId=${report.sourceManifestDraftPlanId}")
+        println("sourceManifestDraftPlanReviewId=${report.sourceManifestDraftPlanReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("draftPanelEntries=${report.draftManifestReviewSummary.draftPanelEntries}")
+        println("draftManifestFields=${report.draftManifestReviewSummary.draftManifestFields}")
+        println("missingRequiredDraftFields=${report.draftFieldCoverageReviewSummary.missingRequiredDraftFields}")
+        println("draftManifestGenerated=${report.boundaries.draftManifestGenerated}")
+        println("productionManifestGenerated=${report.boundaries.productionManifestGenerated}")
+        println("productionReady=${report.boundaries.productionReady}")
+        println("productionApproved=${report.boundaries.productionApproved}")
+        println("adapterImplementationExecuted=${report.boundaries.adapterImplementationExecuted}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${report.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${report.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun dryRunLocalRendererManifestDraftJsonAdapter(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val reviewPath = Path.of(options.required("review"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererManifestDraftJsonAdapterDryRunService().dryRunFile(
+            draftPath = draftPath,
+            reviewPath = reviewPath,
+            outPath = outPath,
+            dryRunId = options["dry-run"] ?: options["dry-run-id"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("dryRunId=${report.dryRunId}")
+        println("sourceDraftId=${report.sourceDraftId}")
+        println("sourceReviewId=${report.sourceReviewId}")
+        println("sourceManifestDraftPlanId=${report.sourceManifestDraftPlanId}")
+        println("sourceManifestDraftPlanReviewId=${report.sourceManifestDraftPlanReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("draftPanelCount=${report.panelMappingSummary.draftPanelCount}")
+        println("adapterDryRunMappingEntries=${report.panelMappingSummary.adapterDryRunMappingEntries}")
+        println("mappedPanelCount=${report.panelMappingSummary.mappedPanelCount}")
+        println("unmappedPanelCount=${report.panelMappingSummary.unmappedPanelCount}")
+        println("totalDraftFields=${report.draftFieldCoverageSummary.totalDraftFields}")
+        println("mappedDraftFields=${report.draftFieldCoverageSummary.mappedDraftFields}")
+        println("missingRequiredFieldCount=${report.panelMappingSummary.missingRequiredFieldCount}")
+        println("draftManifestGenerated=${report.boundaries.draftManifestGenerated}")
+        println("productionManifestGenerated=${report.boundaries.productionManifestGenerated}")
+        println("productionReady=${report.boundaries.productionReady}")
+        println("productionApproved=${report.boundaries.productionApproved}")
+        println("adapterImplementationExecuted=${report.boundaries.adapterImplementationExecuted}")
+        println("adapterExecuted=${report.boundaries.adapterExecuted}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${report.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${report.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun planLocalRendererManifestAdapterContract(options: Map<String, String>): Int {
+        val dryRunReportPath = Path.of(options.required("dry-run-report"))
+        val outPath = Path.of(options.required("out"))
+        val plan = LocalRendererManifestAdapterContractPlanService().planFile(
+            dryRunReportPath = dryRunReportPath,
+            outPath = outPath,
+            planId = options["plan"] ?: "",
+        )
+        val checksPass = plan.checks.count { it.status == "PASS" }
+        val checksFail = plan.checks.count { it.status != "PASS" }
+        println("verdict=${plan.verdict}")
+        println("status=${plan.status}")
+        println("planId=${plan.planId}")
+        println("sourcePhase16DryRunId=${plan.sourcePhase16DryRunId}")
+        println("sourceDraftId=${plan.sourceDraftId}")
+        println("sourceReviewId=${plan.sourceReviewId}")
+        println("sourceManifestDraftPlanId=${plan.sourceManifestDraftPlanId}")
+        println("sourceStoryInputPackId=${plan.sourceStoryInputPackId}")
+        println("checks=${plan.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("adapterContractRequirements=${plan.adapterContractRequirements.size}")
+        println("adapterInputMappingEntries=${plan.adapterInputMappingPlan.entries.size}")
+        println("requiredAdapterContractWorkItems=${plan.requiredAdapterContractWorkItems.size}")
+        println("verificationSteps=${plan.verificationPlan.size}")
+        println("draftPanelCount=${plan.adapterContractPlanSummary.draftPanelCount}")
+        println("mappedPanelCount=${plan.adapterContractPlanSummary.mappedPanelCount}")
+        println("unmappedPanelCount=${plan.adapterContractPlanSummary.unmappedPanelCount}")
+        println("missingRequiredFieldCount=${plan.adapterContractPlanSummary.missingRequiredFieldCount}")
+        println("draftManifestGenerated=${plan.boundaries.draftManifestGenerated}")
+        println("productionManifestGenerated=${plan.boundaries.productionManifestGenerated}")
+        println("productionReady=${plan.boundaries.productionReady}")
+        println("productionApproved=${plan.boundaries.productionApproved}")
+        println("adapterImplementationExecuted=${plan.boundaries.adapterImplementationExecuted}")
+        println("adapterExecuted=${plan.boundaries.adapterExecuted}")
+        println("mediaGenerated=${plan.boundaries.mediaGenerated}")
+        println("rendererInvocation=${plan.boundaries.rendererInvocation}")
+        println("providerInvocation=${plan.boundaries.providerInvocation}")
+        println("ttsInvocation=${plan.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${plan.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${plan.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${plan.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${plan.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${plan.nextAllowedDownstreamStep}")
+        println("blockedReason=${plan.blockedReason}")
+        println("findings=${plan.findingCount}")
+        plan.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (plan.verdict == "FAIL") 1 else 0
+    }
+
+    private fun reviewLocalRendererManifestAdapterContractPlan(options: Map<String, String>): Int {
+        val planPath = Path.of(options.required("plan"))
+        val outPath = Path.of(options.required("out"))
+        val report = LocalRendererManifestAdapterContractPlanReviewService().reviewFile(
+            planPath = planPath,
+            outPath = outPath,
+            reviewId = options["review"] ?: "",
+        )
+        val checksPass = report.checks.count { it.status == "PASS" }
+        val checksFail = report.checks.count { it.status != "PASS" }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("reviewId=${report.reviewId}")
+        println("sourcePlanId=${report.sourcePlanId}")
+        println("sourcePhase16DryRunId=${report.sourcePhase16DryRunId}")
+        println("sourceDraftId=${report.sourceDraftId}")
+        println("sourceReviewId=${report.sourceReviewId}")
+        println("sourceStoryInputPackId=${report.sourceStoryInputPackId}")
+        println("checks=${report.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("adapterContractRequirements=${report.reviewedContractRequirementsSummary.requirementCount}")
+        println("adapterInputMappingEntries=${report.reviewedInputMappingSummary.mappingEntries}")
+        println("requiredAdapterContractWorkItems=${report.reviewedWorkItemsSummary.workItemCount}")
+        println("verificationSteps=${report.verificationReviewSummary.verificationStepCount}")
+        println("mappedPanelCount=${report.adapterContractPlanReviewSummary.mappedPanelCount}")
+        println("unmappedPanelCount=${report.adapterContractPlanReviewSummary.unmappedPanelCount}")
+        println("missingRequiredFieldCount=${report.adapterContractPlanReviewSummary.missingRequiredFieldCount}")
+        println("draftManifestGenerated=${report.boundaries.draftManifestGenerated}")
+        println("productionManifestGenerated=${report.boundaries.productionManifestGenerated}")
+        println("productionReady=${report.boundaries.productionReady}")
+        println("productionApproved=${report.boundaries.productionApproved}")
+        println("adapterImplementationExecuted=${report.boundaries.adapterImplementationExecuted}")
+        println("adapterExecuted=${report.boundaries.adapterExecuted}")
+        println("mediaGenerated=${report.boundaries.mediaGenerated}")
+        println("rendererInvocation=${report.boundaries.rendererInvocation}")
+        println("providerInvocation=${report.boundaries.providerInvocation}")
+        println("ttsInvocation=${report.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${report.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${report.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${report.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${report.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun draftLocalRendererManifestAdapterContract(options: Map<String, String>): Int {
+        val planPath = Path.of(options.required("plan"))
+        val planReviewPath = Path.of(options.required("plan-review"))
+        val outPath = Path.of(options.required("out"))
+        val draft = LocalRendererManifestAdapterContractDraftService().draftFile(
+            planPath = planPath,
+            planReviewPath = planReviewPath,
+            outPath = outPath,
+            draftId = options["draft"] ?: "",
+        )
+        val checksPass = draft.checks.count { it.status == "PASS" }
+        val checksFail = draft.checks.count { it.status != "PASS" }
+        println("verdict=${draft.verdict}")
+        println("status=${draft.status}")
+        println("draftId=${draft.draftId}")
+        println("sourcePlanId=${draft.sourcePlanId}")
+        println("sourcePlanReviewId=${draft.sourcePlanReviewId}")
+        println("sourcePhase16DryRunId=${draft.sourcePhase16DryRunId}")
+        println("sourceDraftId=${draft.sourceDraftId}")
+        println("sourceReviewId=${draft.sourceReviewId}")
+        println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
+        println("checks=${draft.checks.size}")
+        println("checksPass=$checksPass")
+        println("checksFail=$checksFail")
+        println("requiredInputs=${draft.requiredInputs.size}")
+        println("normalizedFieldMappings=${draft.normalizedFieldMapping.size}")
+        println("adapterObligations=${draft.adapterObligations.size}")
+        println("failStopRules=${draft.failStopRules.size}")
+        println("verificationRequirements=${draft.verificationRequirements.size}")
+        println("knownNonGoals=${draft.knownNonGoals.size}")
+        println("mappedPanelCount=${draft.contractDraftSummary.mappedPanelCount}")
+        println("unmappedPanelCount=${draft.contractDraftSummary.unmappedPanelCount}")
+        println("missingRequiredFieldCount=${draft.contractDraftSummary.missingRequiredFieldCount}")
+        println("contractDraftGenerated=${draft.boundaries.contractDraftGenerated}")
+        println("productionManifestGenerated=${draft.boundaries.productionManifestGenerated}")
+        println("productionReady=${draft.boundaries.productionReady}")
+        println("productionApproved=${draft.boundaries.productionApproved}")
+        println("adapterImplementationExecuted=${draft.boundaries.adapterImplementationExecuted}")
+        println("adapterExecuted=${draft.boundaries.adapterExecuted}")
+        println("mediaGenerated=${draft.boundaries.mediaGenerated}")
+        println("rendererInvocation=${draft.boundaries.rendererInvocation}")
+        println("providerInvocation=${draft.boundaries.providerInvocation}")
+        println("ttsInvocation=${draft.boundaries.ttsInvocation}")
+        println("noExternalPaidProviderTools=${draft.boundaries.noExternalPaidProviderTools}")
+        println("rendererReady=${draft.boundaries.rendererReady}")
+        println("mp4ReadinessClaimed=${draft.boundaries.mp4ReadinessClaimed}")
+        println("downstreamBoundary=${draft.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.verdict == "FAIL") 1 else 0
+    }
+
+    private fun renderComicVideoLocal(options: Map<String, String>): Int {
+        val manifestPath = Path.of(options.required("render-handoff-manifest"))
+        val outputVideoPath = Path.of(options.required("out-video"))
+        val defaultWorkDir = outputVideoPath
+            .toAbsolutePath()
+            .normalize()
+            .parent
+            ?.resolve(outputVideoPath.fileName.toString().removeSuffix(".mp4") + "_work")
+            ?: Path.of("out", "comic_video_local_render_work")
+        val report = ComicVideoLocalRendererService().render(
+            manifest = readJson<ComicVideoRenderHandoffManifest>(manifestPath),
+            manifestFile = manifestPath.toString(),
+            outputVideoPath = outputVideoPath,
+            workDir = Path.of(options["work-dir"] ?: defaultWorkDir.toString()),
+            voiceName = options["voice-name"] ?: "Microsoft Hanhan Desktop",
+            dryRun = options["dry-run"] == "true",
+            renderId = options["render"] ?: "",
+        )
+        options["report-out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("renderId=${report.renderId}")
+        println("renderStatus=${report.renderStatus}")
+        println("manifestId=${report.manifestId}")
+        println("packetId=${report.packetId}")
+        println("outputVideoPath=${report.outputVideoPath}")
+        println("workDir=${report.workDir}")
+        println("dryRun=${report.dryRun}")
+        println("mediaGenerated=${report.mediaGenerated}")
+        println("localRendererBoundary=${report.localRendererBoundary}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun buildComicVideoLocalPreview(options: Map<String, String>): Int {
+        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
+        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val outputDir = Path.of(options.required("output-dir")).toAbsolutePath().normalize()
+        val buildId = options["build"] ?: "comic-video-local-preview-build"
+        val packetId = options["packet"] ?: "$buildId-packet"
+        val fillTemplateId = options["fill-template"] ?: "$buildId-voice-timeline-fill-template"
+        val validationId = options["validation"] ?: "$buildId-validation"
+        val manifestId = options["manifest"] ?: "$buildId-render-handoff-manifest"
+        val renderId = options["render"] ?: "$buildId-local-render"
+        val panelDurationMillis = options["panel-duration-ms"]?.toIntOrNull()
+            ?: options["panel-duration-ms"]?.let { error("--panel-duration-ms must be an integer.") }
+            ?: 3000
+        val packetPath = outputDir.resolve("comic_video_packet.json")
+        val fillTemplatePath = outputDir.resolve("voice_timeline_fill_template.json")
+        val filledPacketPath = outputDir.resolve("comic_video_packet_filled.json")
+        val validationPath = outputDir.resolve("comic_video_packet_validation.json")
+        val manifestPath = outputDir.resolve("comic_video_render_handoff_manifest.json")
+        val renderReportPath = outputDir.resolve("comic_video_local_render_report.json")
+        val buildReportPath = Path.of(
+            options["report-out"] ?: outputDir.resolve("comic_video_local_preview_build_report.json").toString(),
+        )
+        val outputVideoPath = Path.of(
+            options["out-video"] ?: outputDir.resolve("comic_video_local_preview.mp4").toString(),
+        )
+        val workDir = Path.of(options["work-dir"] ?: outputDir.resolve("local_render_work").toString())
+        val dryRun = options["dry-run"] == "true"
+        val findings = mutableListOf<ComicVideoLocalPreviewBuildFinding>()
+        var proofVerdict = ""
+        var packetPanelCount = 0
+        var voiceCastCount = 0
+        var audioCueCount = 0
+        var subtitleCueCount = 0
+        var packetValidationVerdict = ""
+        var manifestVerdict = ""
+        var localRenderVerdict = ""
+        var totalDurationMillis = 0
+        var renderReport: ComicVideoLocalRenderReport? = null
+
+        val report = try {
+            Files.createDirectories(outputDir)
+            val proof = readJson<ImageFacingDeliveryProof>(proofPath)
+            proofVerdict = proof.verdict
+            val packet = ComicVideoPacketService().create(
+                imageFacingDeliveryProof = proof,
+                imageFacingDeliveryProofFile = proofPath.toString(),
+                packetId = packetId,
+                panelDurationMillis = panelDurationMillis,
+            )
+            packetPanelCount = packet.panelTracks.size
+            writeJson(packetPath, packet)
+
+            val fillTemplate = ComicVideoVoiceTimelineFillService().createTemplate(
+                packet = packet,
+                fillId = fillTemplateId,
+                voiceId = options["voice-id"] ?: "voice-manual-001",
+                characterId = options["character-id"] ?: "char-manual-001",
+                displayName = options["display-name"] ?: "Manual Voice",
+                voiceLabel = options["voice-label"] ?: "local-manual-voice",
+            )
+            writeJson(fillTemplatePath, fillTemplate)
+
+            val filledPacket = ComicVideoVoiceTimelineFillService().fill(
+                packet = packet,
+                fill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+            )
+            voiceCastCount = filledPacket.voiceCast.size
+            audioCueCount = filledPacket.audioCues.size
+            subtitleCueCount = filledPacket.subtitleCues.size
+            totalDurationMillis = filledPacket.timing.totalDurationMillis
+            writeJson(filledPacketPath, filledPacket)
+
+            val validation = ComicVideoPacketValidationService().validate(
+                packet = filledPacket,
+                packetFile = filledPacketPath.toString(),
+                validationId = validationId,
+            )
+            packetValidationVerdict = validation.verdict
+            writeJson(validationPath, validation)
+            if (validation.verdict == "FAIL") {
+                findings += buildFinding(
+                    ruleId = "COMIC_VIDEO_PACKET_VALIDATION_FAILED",
+                    category = "validation",
+                    severity = "CRITICAL",
+                    path = validationPath.toString(),
+                    message = "End-to-end local preview build requires PASS comic video packet validation.",
+                    evidence = validation.findings.map { it.ruleId },
+                )
+            }
+
+            val manifest = ComicVideoRenderHandoffManifestService().create(
+                validationReport = validation,
+                validationReportFile = validationPath.toString(),
+                manifestId = manifestId,
+            )
+            manifestVerdict = manifest.verdict
+            writeJson(manifestPath, manifest)
+            if (manifest.verdict == "FAIL") {
+                findings += buildFinding(
+                    ruleId = "COMIC_VIDEO_RENDER_HANDOFF_FAILED",
+                    category = "render_handoff",
+                    severity = "CRITICAL",
+                    path = manifestPath.toString(),
+                    message = "End-to-end local preview build requires PASS render handoff manifest.",
+                    evidence = manifest.findings.map { it.ruleId },
+                )
+            }
+
+            renderReport = ComicVideoLocalRendererService().render(
+                manifest = manifest,
+                manifestFile = manifestPath.toString(),
+                outputVideoPath = outputVideoPath,
+                workDir = workDir,
+                voiceName = options["voice-name"] ?: "Microsoft Hanhan Desktop",
+                dryRun = dryRun,
+                renderId = renderId,
+            )
+            localRenderVerdict = renderReport?.verdict.orEmpty()
+            writeJson(renderReportPath, renderReport)
+            if (renderReport?.verdict == "FAIL") {
+                findings += buildFinding(
+                    ruleId = "COMIC_VIDEO_LOCAL_RENDER_FAILED",
+                    category = "local_render",
+                    severity = "CRITICAL",
+                    path = renderReportPath.toString(),
+                    message = "End-to-end local preview build requires PASS local render report.",
+                    evidence = renderReport?.findings.orEmpty().map { it.ruleId },
+                )
+            }
+
+            val verdict = if (validation.verdict == "PASS" && manifest.verdict == "PASS" && renderReport?.verdict == "PASS") {
+                "PASS"
+            } else {
+                "FAIL"
+            }
+            comicVideoLocalPreviewBuildReport(
+                verdict = verdict,
+                buildStatus = when {
+                    verdict == "FAIL" -> "FAIL"
+                    dryRun -> "DRY_RUN"
+                    else -> "local_preview_video_built"
+                },
+                buildId = buildId,
+                proofPath = proofPath,
+                fillPath = fillPath,
+                outputDir = outputDir,
+                packetPath = packetPath,
+                fillTemplatePath = fillTemplatePath,
+                filledPacketPath = filledPacketPath,
+                validationPath = validationPath,
+                manifestPath = manifestPath,
+                renderReportPath = renderReportPath,
+                outputVideoPath = outputVideoPath,
+                packetId = packet.packetId,
+                validationId = validation.validationId,
+                manifestId = manifest.manifestId,
+                renderId = renderReport?.renderId.orEmpty(),
+                dryRun = dryRun,
+                mediaGenerated = renderReport?.mediaGenerated == true,
+                nextAllowedDownstreamStep = if (verdict == "PASS") renderReport?.nextAllowedDownstreamStep.orEmpty() else "",
+                findings = findings,
+                renderReport = renderReport,
+                proofVerdict = proofVerdict,
+                packetPanelCount = packetPanelCount,
+                voiceCastCount = voiceCastCount,
+                audioCueCount = audioCueCount,
+                subtitleCueCount = subtitleCueCount,
+                packetValidationVerdict = packetValidationVerdict,
+                manifestVerdict = manifestVerdict,
+                localRenderVerdict = localRenderVerdict,
+                totalDurationMillis = totalDurationMillis,
+            )
+        } catch (exception: Exception) {
+            findings += buildFinding(
+                ruleId = "COMIC_VIDEO_LOCAL_PREVIEW_BUILD_EXCEPTION",
+                category = "execution",
+                severity = "CRITICAL",
+                path = "$.execution",
+                message = "End-to-end local preview build failed before completing the pipeline.",
+                evidence = listOf(exception::class.java.simpleName, exception.message.orEmpty()),
+            )
+            comicVideoLocalPreviewBuildReport(
+                verdict = "FAIL",
+                buildStatus = "FAIL",
+                buildId = buildId,
+                proofPath = proofPath,
+                fillPath = fillPath,
+                outputDir = outputDir,
+                packetPath = packetPath,
+                fillTemplatePath = fillTemplatePath,
+                filledPacketPath = filledPacketPath,
+                validationPath = validationPath,
+                manifestPath = manifestPath,
+                renderReportPath = renderReportPath,
+                outputVideoPath = outputVideoPath,
+                packetId = packetId,
+                validationId = validationId,
+                manifestId = manifestId,
+                renderId = renderId,
+                dryRun = dryRun,
+                mediaGenerated = false,
+                nextAllowedDownstreamStep = "",
+                findings = findings,
+                renderReport = renderReport,
+                proofVerdict = proofVerdict,
+                packetPanelCount = packetPanelCount,
+                voiceCastCount = voiceCastCount,
+                audioCueCount = audioCueCount,
+                subtitleCueCount = subtitleCueCount,
+                packetValidationVerdict = packetValidationVerdict,
+                manifestVerdict = manifestVerdict,
+                localRenderVerdict = localRenderVerdict,
+                totalDurationMillis = totalDurationMillis,
+            )
+        }
+
+        writeJson(buildReportPath, report)
+        printComicVideoLocalPreviewBuildReport(report)
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun comicVideoLocalPreviewBuildReport(
+        verdict: String,
+        buildStatus: String,
+        buildId: String,
+        proofPath: Path,
+        fillPath: Path,
+        outputDir: Path,
+        packetPath: Path,
+        fillTemplatePath: Path,
+        filledPacketPath: Path,
+        validationPath: Path,
+        manifestPath: Path,
+        renderReportPath: Path,
+        outputVideoPath: Path,
+        packetId: String,
+        validationId: String,
+        manifestId: String,
+        renderId: String,
+        dryRun: Boolean,
+        mediaGenerated: Boolean,
+        nextAllowedDownstreamStep: String,
+        findings: List<ComicVideoLocalPreviewBuildFinding>,
+        renderReport: ComicVideoLocalRenderReport?,
+        proofVerdict: String,
+        packetPanelCount: Int,
+        voiceCastCount: Int,
+        audioCueCount: Int,
+        subtitleCueCount: Int,
+        packetValidationVerdict: String,
+        manifestVerdict: String,
+        localRenderVerdict: String,
+        totalDurationMillis: Int,
+    ): ComicVideoLocalPreviewBuildReport =
+        ComicVideoLocalPreviewBuildReport(
+            verdict = verdict,
+            buildId = buildId,
+            buildStatus = buildStatus,
+            imageFacingDeliveryProofFile = proofPath.toString(),
+            voiceTimelineFillFile = fillPath.toString(),
+            outputDir = outputDir.toString(),
+            packetFile = packetPath.toString(),
+            voiceTimelineFillTemplateFile = fillTemplatePath.toString(),
+            filledPacketFile = filledPacketPath.toString(),
+            packetValidationFile = validationPath.toString(),
+            renderHandoffManifestFile = manifestPath.toString(),
+            localRenderReportFile = renderReportPath.toString(),
+            outputVideoPath = outputVideoPath.toString(),
+            packetId = packetId,
+            validationId = validationId,
+            manifestId = manifestId,
+            renderId = renderId,
+            dryRun = dryRun,
+            mediaGenerated = mediaGenerated,
+            nextAllowedDownstreamStep = nextAllowedDownstreamStep,
+            blockedReason = if (verdict == "FAIL") {
+                findings.filter { it.severity == "CRITICAL" || it.severity == "MAJOR" }.joinToString("; ") { it.ruleId }
+            } else {
+                ""
+            },
+            findingCount = findings.size,
+            findings = findings,
+            renderReport = renderReport,
+            evidence = ComicVideoLocalPreviewBuildEvidence(
+                proofVerdict = proofVerdict,
+                packetPanelCount = packetPanelCount,
+                voiceCastCount = voiceCastCount,
+                audioCueCount = audioCueCount,
+                subtitleCueCount = subtitleCueCount,
+                packetValidationVerdict = packetValidationVerdict,
+                manifestVerdict = manifestVerdict,
+                localRenderVerdict = localRenderVerdict,
+                totalDurationMillis = totalDurationMillis,
+            ),
+        )
+
+    private fun buildFinding(
+        ruleId: String,
+        category: String,
+        severity: String,
+        path: String,
+        message: String,
+        evidence: List<String> = emptyList(),
+        suggestedFix: String = "",
+    ): ComicVideoLocalPreviewBuildFinding =
+        ComicVideoLocalPreviewBuildFinding(ruleId, category, severity, path, message, evidence, suggestedFix)
+
+    private fun printComicVideoLocalPreviewBuildReport(report: ComicVideoLocalPreviewBuildReport) {
+        println("verdict=${report.verdict}")
+        println("buildId=${report.buildId}")
+        println("buildStatus=${report.buildStatus}")
+        println("packetId=${report.packetId}")
+        println("validationId=${report.validationId}")
+        println("manifestId=${report.manifestId}")
+        println("renderId=${report.renderId}")
+        println("outputDir=${report.outputDir}")
+        println("outputVideoPath=${report.outputVideoPath}")
+        println("dryRun=${report.dryRun}")
+        println("mediaGenerated=${report.mediaGenerated}")
+        println("packetValidationVerdict=${report.evidence.packetValidationVerdict}")
+        println("manifestVerdict=${report.evidence.manifestVerdict}")
+        println("localRenderVerdict=${report.evidence.localRenderVerdict}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+    }
+
+    private fun buildSettingComicVideoLocalPreview(options: Map<String, String>): Int {
+        val settingPackPath = Path.of(options.required("setting-pack"))
+        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val outputDir = Path.of(options.required("output-dir")).toAbsolutePath().normalize()
+        val buildId = options["build"] ?: "setting-comic-video-local-preview-build"
+        val settingOutputDir = outputDir.resolve("setting_image_facing_preview")
+        val videoOutputDir = outputDir.resolve("comic_video_local_preview")
+        val proofPath = settingOutputDir.resolve("image_facing_delivery_proof.json")
+        val fill = readJson<ComicVideoVoiceTimelineFill>(fillPath)
+        val packetId = options["packet"]
+            ?: fill.sourceComicVideoPacketId.ifBlank { "$buildId-packet" }
+
+        val proofOptions = mutableMapOf(
+            "setting-pack" to settingPackPath.toString(),
+            "output-dir" to settingOutputDir.toString(),
+            "build" to (options["setting-proof-build"] ?: "$buildId-setting-image-facing-proof"),
+            "script-packet" to (options["script-packet"] ?: "$buildId-script-packet-draft"),
+            "storyboard-brief" to (options["storyboard-brief"] ?: "$buildId-storyboard-brief"),
+            "storyboard-draft" to (options["storyboard-draft"] ?: "$buildId-storyboard-draft"),
+            "storyboard-review" to (options["storyboard-review"] ?: "$buildId-storyboard-review"),
+            "human-review-preflight" to (options["human-review-preflight"] ?: "$buildId-human-review-preflight"),
+            "story-movement-audit" to (options["story-movement-audit"] ?: "$buildId-story-movement-audit"),
+            "reviewable-storyboard" to (options["reviewable-storyboard"] ?: "$buildId-reviewable-storyboard"),
+            "proof" to (options["proof"] ?: "$buildId-image-facing-proof"),
+        )
+        options["scene"]?.let { proofOptions["scene"] = it }
+
+        println("settingImageFacingPreviewDir=$settingOutputDir")
+        val proofExit = buildSettingImageFacingProofPreview(proofOptions)
+        if (proofExit != 0) {
+            println("settingComicVideoPreviewStatus=FAILED_AT_SETTING_IMAGE_FACING_PROOF")
+            return proofExit
+        }
+
+        val videoOptions = mutableMapOf(
+            "image-facing-delivery-proof" to proofPath.toString(),
+            "voice-timeline-fill" to fillPath.toString(),
+            "output-dir" to videoOutputDir.toString(),
+            "out-video" to (options["out-video"] ?: outputDir.resolve("setting_comic_video_local_preview.mp4").toString()),
+            "build" to (options["comic-video-build"] ?: "$buildId-comic-video"),
+            "packet" to packetId,
+            "validation" to (options["validation"] ?: "$buildId-comic-video-validation"),
+            "manifest" to (options["manifest"] ?: "$buildId-render-handoff-manifest"),
+            "render" to (options["render"] ?: "$buildId-local-render"),
+        )
+        listOf(
+            "panel-duration-ms",
+            "voice-name",
+            "work-dir",
+            "report-out",
+            "voice-id",
+            "character-id",
+            "display-name",
+            "voice-label",
+        ).forEach { key ->
+            options[key]?.let { videoOptions[key] = it }
+        }
+        if (options["dry-run"] == "true") {
+            videoOptions["dry-run"] = "true"
+        }
+
+        println("comicVideoLocalPreviewDir=$videoOutputDir")
+        val videoExit = buildComicVideoLocalPreview(videoOptions)
+        println("settingComicVideoPreviewStatus=${if (videoExit == 0) "PASS" else "FAILED_AT_COMIC_VIDEO_LOCAL_PREVIEW"}")
+        return videoExit
     }
 
     private fun validateStoryboardPacketHumanReviewDecision(options: Map<String, String>): Int {
@@ -2775,6 +4872,135 @@ class Cli {
         return 0
     }
 
+    private fun validateWorldSourceArchive(options: Map<String, String>): Int {
+        val manifest = Path.of(options.required("manifest"))
+        val report = WorldSourceArchiveImportService().validateManifestFile(manifest)
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("manifestId=${report.manifestId}")
+        println("sourceCount=${report.evidence.sourceCount}")
+        println("verifiedSourceCount=${report.evidence.verifiedSourceCount}")
+        println("hashMismatchCount=${report.evidence.hashMismatchCount}")
+        println("missingRawFileCount=${report.evidence.missingRawFileCount}")
+        println("unsafeBoundaryFlagCount=${report.evidence.unsafeBoundaryFlagCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("findings=${report.findingCount}")
+        return if (report.verdict == "PASS") 0 else 1
+    }
+
+    private fun applyWorldSourceArchive(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val manifest = Path.of(options.required("manifest"))
+        val databasePath = Path.of(options["db"] ?: "data/story.db")
+        val result = WorldSourceArchiveImportService(repository).applyManifestFile(
+            manifestPath = manifest,
+            databasePath = databasePath,
+        )
+        options["out"]?.let { writeJson(Path.of(it), result) }
+        println("verdict=${result.verdict}")
+        println("status=${result.status}")
+        println("archiveId=${result.archiveId}")
+        println("archiveRowsWritten=${result.archiveRowsWritten}")
+        println("documentRowsWritten=${result.documentRowsWritten}")
+        println("chunkRowsWritten=${result.chunkRowsWritten}")
+        println("sourceCount=${result.sourceCount}")
+        println("totalByteSize=${result.totalByteSize}")
+        println("downstreamBoundary=${result.downstreamBoundary}")
+        println("nextAllowedDownstreamStep=${result.nextAllowedDownstreamStep}")
+        println("findings=${result.findingCount}")
+        return if (result.verdict == "PASS") 0 else 1
+    }
+
+    private fun queryWorldSource(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val report = WorldSourceQueryService(repository).query(
+            text = options.required("q"),
+            classification = options["classification"].orEmpty(),
+            limit = options["limit"]?.toIntOrNull() ?: 10,
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("status=${report.status}")
+        println("query=${report.query}")
+        println("hitCount=${report.hitCount}")
+        report.hits.forEach {
+            println("- ${it.sourceId} ${it.title} [${it.heading}] ${it.snippet}")
+        }
+        return 0
+    }
+
+    private fun upsertAiTask(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val payloadJson = options["payload"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
+            ?: options["payload-json"]
+            ?: "{}"
+        val result = AiTaskQueueService(repository).upsertTask(
+            taskId = options.required("task"),
+            title = options.required("title"),
+            payloadJson = payloadJson,
+            taskType = options["type"] ?: "implementation",
+            ownerRole = options["owner"] ?: "B組01",
+            targetRole = options["target"] ?: "B組02",
+            priority = options["priority"]?.toIntOrNull() ?: 100,
+            status = options["status"] ?: "READY",
+            source = options["source"] ?: "user",
+            actor = options["actor"] ?: "user",
+        )
+        options["out"]?.let { writeJson(Path.of(it), result) }
+        println("status=${result.status}")
+        println("taskId=${result.task?.taskId.orEmpty()}")
+        println("taskStatus=${result.task?.status.orEmpty()}")
+        println("targetRole=${result.task?.targetRole.orEmpty()}")
+        println("priority=${result.task?.priority ?: 0}")
+        return 0
+    }
+
+    private fun claimAiTask(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val result = AiTaskQueueService(repository).claimNextTask(
+            worker = options.required("worker"),
+            targetRole = options["target"].orEmpty(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), result) }
+        println("status=${result.status}")
+        println("taskId=${result.task?.taskId.orEmpty()}")
+        println("taskStatus=${result.task?.status.orEmpty()}")
+        println("title=${result.task?.title.orEmpty()}")
+        println("nextAllowedStep=${result.nextAllowedStep}")
+        return 0
+    }
+
+    private fun completeAiTask(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val result = AiTaskQueueService(repository).completeTask(
+            taskId = options.required("task"),
+            worker = options.required("worker"),
+            resultStatus = options.required("result"),
+            summary = options["summary"].orEmpty(),
+            reportPath = options["report"].orEmpty(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), result) }
+        println("status=${result.status}")
+        println("taskId=${result.task?.taskId.orEmpty()}")
+        println("taskStatus=${result.task?.status.orEmpty()}")
+        println("result=${result.task?.resultStatus.orEmpty()}")
+        println("nextAllowedStep=${result.nextAllowedStep}")
+        return 0
+    }
+
+    private fun listAiTasks(options: Map<String, String>): Int {
+        val repository = repository(options)
+        val report = AiTaskQueueService(repository).listTasks(status = options["status"].orEmpty())
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("status=${report.status}")
+        println("count=${report.count}")
+        report.tasks.forEach {
+            println("- ${it.taskId} ${it.status} priority=${it.priority} target=${it.targetRole} title=${it.title}")
+        }
+        return 0
+    }
+
     private fun exportSettingPack(options: Map<String, String>): Int {
         val repository = repository(options)
         repository.initialize()
@@ -2867,7 +5093,7 @@ class Cli {
             val token = args[index]
             require(token.startsWith("--")) { "Expected option starting with --, got '$token'." }
             val key = token.removePrefix("--")
-            if (key == "record") {
+            if (key == "record" || key == "dry-run") {
                 options[key] = "true"
                 index += 1
                 continue
@@ -2913,6 +5139,13 @@ class Cli {
               validate-setting-pack [--db <path>] --file <path> [--out <path>]
               preview-setting-import [--db <path>] --file <path> [--out <path>]
               apply-setting-pack [--db <path>] --file <path> [--out <path>]
+              validate-world-source-archive --manifest <path> [--out <path>]
+              apply-world-source-archive [--db <path>] --manifest <path> [--out <path>]
+              query-world-source [--db <path>] --q <text> [--classification <id>] [--limit <n>] [--out <path>]
+              upsert-ai-task [--db <path>] --task <id> --title <text> [--payload <json-file> | --payload-json <json>] [--type <text>] [--owner <role>] [--target <role>] [--priority <n>] [--status READY] [--source <text>] [--actor <text>] [--out <path>]
+              claim-ai-task [--db <path>] --worker <id> [--target <role>] [--out <path>]
+              complete-ai-task [--db <path>] --task <id> --worker <id> --result <PASS|FAIL|NEEDS_REVISION|BLOCKED> [--summary <text>] [--report <path>] [--out <path>]
+              list-ai-tasks [--db <path>] [--status <READY|IN_PROGRESS|DONE|FAIL|NEEDS_REVISION|BLOCKED>] [--out <path>]
               export-setting-pack [--db <path>] --project <id> --pack <id> --version <n> --out <path>
               diff-setting-pack [--db <path>] --file <path> [--out <path>]
               impact-report [--db <path>] --file <path> [--out <path>]
@@ -2921,6 +5154,8 @@ class Cli {
               audit-context --file <path> [--out <path>]
               audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]
               audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]
+              create-setting-script-packet-draft --setting-pack <path> [--scene <id>] [--packet <id>] [--build <id>] --out <path> [--validation-out <path>] [--report-out <path>]
+              build-setting-image-facing-proof-preview --setting-pack <path> --output-dir <path> [--scene <id>] [--build <id>] [--script-packet <id>] [--storyboard-brief <id>] [--storyboard-draft <id>] [--storyboard-review <id>] [--human-review-preflight <id>] [--story-movement-audit <id>] [--reviewable-storyboard <id>] [--proof <id>] [--report-out <path>]
               validate-script-packet-draft --packet <path> [--out <path>]
               validate-script-packet-source-binding --script-packet-draft <path> --script-packet-preflight <path> --accepted-draft-packet <path> [--out <path>]
               validate-script-packet-structure-bridge --script-packet-draft <path> --script-packet-preflight <path> --accepted-draft-packet <path> [--out <path>]
@@ -2940,6 +5175,32 @@ class Cli {
               fill-comic-video-voice-timeline --comic-video-packet <path> --voice-timeline-fill <path> [--out <path>]
               validate-comic-video-packet --comic-video-packet <path> [--validation <id>] [--out <path>]
               create-comic-video-render-handoff-manifest --comic-video-packet-validation <path> [--manifest <id>] [--out <path>]
+              create-comic-video-production-package-draft --image-facing-delivery-proof <path> --voice-timeline-fill <path> [--package <id>] [--packet <id>] [--panel-duration-ms <n>] [--out <path>]
+              validate-comic-video-production-package --production-package-draft <path> [--validation <id>] [--out <path>]
+              validate-local-story-input-pack --input <path> [--validation <id>] --out <path>
+              validate-09-foundation-card-pack --input <path> --out <path> [--validation <id>]
+              review-09-foundation-card-pack --pack <path> --validation <path> --out <path> [--review <id>]
+              draft-local-asset-prompt-cards --story-input <path> --story-validation <path> [--draft <id>] --out <path>
+              draft-local-render-package --story-input <path> --asset-prompt-cards <path> [--package <id>] --out <path>
+              verify-local-story-video-chain --story-input <path> --output-dir <dir> [--chain <id>] --out <path>
+              draft-local-story-video-preview-handoff --chain-report <path> --render-package <path> --asset-prompt-cards <path> --story-input <path> [--handoff <id>] --out <path>
+              review-local-story-video-preview-handoff --handoff <path> [--review <id>] --out <path>
+              dry-run-local-renderer-adapter --handoff <path> --review <path> [--dry-run-id <id>] --out <path>
+              plan-local-renderer-adapter-implementation --dry-run-report <path> [--plan <id>] --out <path>
+              review-local-renderer-adapter-implementation-plan --plan <path> [--review <id>] --out <path>
+              draft-local-renderer-adapter-implementation --handoff <path> --plan <path> --plan-review <path> [--draft <id>] --out <path>
+              review-local-renderer-adapter-implementation-draft --draft <path> [--review <id>] --out <path>
+              plan-local-renderer-manifest-draft --implementation-draft <path> --draft-review <path> [--plan <id>] --out <path>
+              review-local-renderer-manifest-draft-plan --plan <path> [--review <id>] --out <path>
+              draft-local-renderer-manifest-json --plan <path> --plan-review <path> [--draft <id>] --out <path>
+              review-local-renderer-manifest-draft-json --draft <path> [--review <id>] --out <path>
+              dry-run-local-renderer-manifest-draft-json-adapter --draft <path> --review <path> [--dry-run-id <id>] --out <path>
+              plan-local-renderer-manifest-adapter-contract --dry-run-report <path> [--plan <id>] --out <path>
+              review-local-renderer-manifest-adapter-contract-plan --plan <path> [--review <id>] --out <path>
+              draft-local-renderer-manifest-adapter-contract --plan <path> --plan-review <path> [--draft <id>] --out <path>
+              render-comic-video-local --render-handoff-manifest <path> --out-video <path> [--work-dir <path>] [--voice-name <name>] [--render <id>] [--report-out <path>] [--dry-run]
+              build-comic-video-local-preview --image-facing-delivery-proof <path> --voice-timeline-fill <path> --output-dir <path> [--out-video <path>] [--work-dir <path>] [--build <id>] [--packet <id>] [--validation <id>] [--manifest <id>] [--render <id>] [--panel-duration-ms <n>] [--voice-name <name>] [--report-out <path>] [--dry-run]
+              build-setting-comic-video-local-preview --setting-pack <path> --voice-timeline-fill <path> --output-dir <path> [--scene <id>] [--out-video <path>] [--build <id>] [--packet <id>] [--panel-duration-ms <n>] [--voice-name <name>] [--dry-run]
               validate-asset-candidate-preflight --human-review-decision-intake <path> --storyboard-packet-review <path> [--preflight <id>] [--out <path>]
               create-asset-candidate-brief --asset-candidate-preflight <path> [--brief <id>] [--out <path>]
               create-asset-candidate-draft --asset-candidate-brief <path> [--draft <id>] [--out <path>]

@@ -1,0 +1,396 @@
+{
+    "verdict": "PASS",
+    "packageId": "comic-video-production-package-zh-tw-sample-001",
+    "packageStatus": "comic_video_production_package_candidate",
+    "imageFacingDeliveryProofFile": "samples\\comic_video_workbench_zh_tw\\image_facing_delivery_proof_zh_tw_sample.json",
+    "voiceTimelineFillFile": "samples\\comic_video_workbench_zh_tw\\voice_timeline_fill_zh_tw_sample.json",
+    "generatedComicVideoPacketId": "comic-video-zh-tw-sample-packet-001",
+    "generatedPacketValidationId": "comic-video-production-package-zh-tw-sample-001-source-validation",
+    "sourceImageFacingDeliveryProofId": "image-facing-delivery-proof-zh-tw-sample-001",
+    "sourceReviewableStoryboardPacketId": "reviewable-storyboard-packet-zh-tw-sample-001",
+    "acceptedScriptPacketId": "accepted-script-packet-zh-tw-sample-001",
+    "scriptPacketDraftFile": "samples/comic_video_workbench_zh_tw/script_packet_draft_zh_tw_sample.json",
+    "scriptPacketDraftContentSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "sourceVerdicts": {
+        "reviewableStoryboardPacketVerdict": "PASS",
+        "imageFacingDeliveryProofVerdict": "PASS",
+        "imageFacingDeliveryProofNextAllowedDownstreamStep": "image_facing_delivery_proof_ready"
+    },
+    "storyboardProductionTable": [
+        {
+            "shotId": "shot-001",
+            "panelId": "panel-frame-rain-gate-arrival",
+            "sourceFrameId": "frame-rain-gate-arrival",
+            "sceneReference": "雨門",
+            "beatReference": "beat-001-遞信",
+            "durationMillis": 3000,
+            "visualGoal": "林披著雨衣抵達門樓，左手握著一封蠟印未破的信。",
+            "camera": "從屋簷下的中遠景看向雨幕，保留燈籠、守衛桌與信封。",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-lin-rain-coat",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-rain-gate"
+            ],
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "spokenText": "我把封緘信帶到雨門了，雨還沒漫進檔案室。",
+            "subtitleText": "林：我把封緘信帶到雨門了，雨還沒漫進檔案室。",
+            "continuityMustShow": [
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。"
+            ],
+            "continuityMustNotShow": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。"
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        },
+        {
+            "shotId": "shot-002",
+            "panelId": "panel-frame-wax-mark-check",
+            "sourceFrameId": "frame-wax-mark-check",
+            "sceneReference": "雨門",
+            "beatReference": "beat-002-查蠟印",
+            "durationMillis": 3000,
+            "visualGoal": "守衛伸手檢查信封外側蠟印，沒有拆開信封。",
+            "camera": "中近景聚焦信封、手套與蠟印，背景保留雨門輪廓。",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-gate-guard",
+                "asset-card-asset-sealed-letter"
+            ],
+            "voiceId": "voice-gate-guard",
+            "characterId": "char-gate-guard",
+            "spokenText": "停一下。我只看蠟印，不拆信。",
+            "subtitleText": "守衛：停一下。我只看蠟印，不拆信。",
+            "continuityMustShow": [
+                "守衛只看外側蠟印。",
+                "信封仍在林的視線內。"
+            ],
+            "continuityMustNotShow": [
+                "不要顯示檔案室內部。",
+                "不要顯示信件內文。"
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        },
+        {
+            "shotId": "shot-003",
+            "panelId": "panel-frame-side-passage-choice",
+            "sourceFrameId": "frame-side-passage-choice",
+            "sceneReference": "雨門",
+            "beatReference": "beat-003-走側廊",
+            "durationMillis": 3000,
+            "visualGoal": "林轉向狹窄側廊，主門仍有人聲與雨聲交錯。",
+            "camera": "從林肩後看向側廊，讓信封與未破蠟印留在畫面邊緣。",
+            "onScreenAssetCardIds": [
+                "asset-card-asset-lin-rain-coat",
+                "asset-card-asset-side-passage",
+                "asset-card-asset-sealed-letter"
+            ],
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "spokenText": "那我走側廊，信會保持封好。",
+            "subtitleText": "林：那我走側廊，信會保持封好。",
+            "continuityMustShow": [
+                "側廊昏暗但可通行。",
+                "林仍帶著封好的信。"
+            ],
+            "continuityMustNotShow": [
+                "不要顯示追逐場面。",
+                "不要顯示信件內容。"
+            ],
+            "productionNotes": [
+                "Source-bound draft row.",
+                "Review before downstream use."
+            ]
+        }
+    ],
+    "shotPromptPacketId": "comic-video-production-package-zh-tw-sample-001-shot-prompt-packet",
+    "shotPrompts": [
+        {
+            "shotId": "shot-001",
+            "panelId": "panel-frame-rain-gate-arrival",
+            "sourceFrameId": "frame-rain-gate-arrival",
+            "positivePromptDraft": "comic video shot. scene: 雨門. beat: beat-001-遞信. visual goal: 林披著雨衣抵達門樓，左手握著一封蠟印未破的信。. camera: 從屋簷下的中遠景看向雨幕，保留燈籠、守衛桌與信封。. must show: 信封仍未拆封。; 雨水打在石地上。; 門樓燈籠亮著。. continuity: 蠟印保持完整。; 林知道信不能被拆開。",
+            "negativePromptDraft": "不要顯示信件內容。; 不要顯示幕後主使。; non-public source material; remote media references; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-lin-rain-coat",
+                "asset-card-asset-sealed-letter",
+                "asset-card-asset-rain-gate"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。",
+                "蠟印保持完整。",
+                "林知道信不能被拆開。"
+            ],
+            "forbiddenContent": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。"
+            ]
+        },
+        {
+            "shotId": "shot-002",
+            "panelId": "panel-frame-wax-mark-check",
+            "sourceFrameId": "frame-wax-mark-check",
+            "positivePromptDraft": "comic video shot. scene: 雨門. beat: beat-002-查蠟印. visual goal: 守衛伸手檢查信封外側蠟印，沒有拆開信封。. camera: 中近景聚焦信封、手套與蠟印，背景保留雨門輪廓。. must show: 守衛只看外側蠟印。; 信封仍在林的視線內。. continuity: 守衛沒有拆信。; 蠟印仍未破。",
+            "negativePromptDraft": "不要顯示檔案室內部。; 不要顯示信件內文。; non-public source material; remote media references; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-gate-guard",
+                "asset-card-asset-sealed-letter"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "守衛只看外側蠟印。",
+                "信封仍在林的視線內。",
+                "守衛沒有拆信。",
+                "蠟印仍未破。"
+            ],
+            "forbiddenContent": [
+                "不要顯示檔案室內部。",
+                "不要顯示信件內文。"
+            ]
+        },
+        {
+            "shotId": "shot-003",
+            "panelId": "panel-frame-side-passage-choice",
+            "sourceFrameId": "frame-side-passage-choice",
+            "positivePromptDraft": "comic video shot. scene: 雨門. beat: beat-003-走側廊. visual goal: 林轉向狹窄側廊，主門仍有人聲與雨聲交錯。. camera: 從林肩後看向側廊，讓信封與未破蠟印留在畫面邊緣。. must show: 側廊昏暗但可通行。; 林仍帶著封好的信。. continuity: 信仍保持封好。; 雨門場景仍在同一晚。",
+            "negativePromptDraft": "不要顯示追逐場面。; 不要顯示信件內容。; non-public source material; remote media references; generated-output claims; decision-state claims",
+            "referenceAssetCardIds": [
+                "asset-card-asset-lin-rain-coat",
+                "asset-card-asset-side-passage",
+                "asset-card-asset-sealed-letter"
+            ],
+            "durationMillis": 3000,
+            "mustPreserve": [
+                "側廊昏暗但可通行。",
+                "林仍帶著封好的信。",
+                "信仍保持封好。",
+                "雨門場景仍在同一晚。"
+            ],
+            "forbiddenContent": [
+                "不要顯示追逐場面。",
+                "不要顯示信件內容。"
+            ]
+        }
+    ],
+    "assetPromptCards": [
+        {
+            "assetCardId": "asset-card-asset-gate-guard",
+            "sourceAssetRef": "asset-gate-guard",
+            "assetType": "scene",
+            "sourcePanelIds": [
+                "panel-frame-wax-mark-check"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-gate-guard.",
+            "mustRemainStable": [
+                "守衛沒有拆信。",
+                "蠟印仍未破。",
+                "守衛只看外側蠟印。",
+                "信封仍在林的視線內。"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "不要顯示檔案室內部。",
+                "不要顯示信件內文。"
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-lin-rain-coat",
+            "sourceAssetRef": "asset-lin-rain-coat",
+            "assetType": "character_or_visual_asset",
+            "sourcePanelIds": [
+                "panel-frame-rain-gate-arrival",
+                "panel-frame-side-passage-choice"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-lin-rain-coat.",
+            "mustRemainStable": [
+                "蠟印保持完整。",
+                "林知道信不能被拆開。",
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。",
+                "信仍保持封好。",
+                "雨門場景仍在同一晚。",
+                "側廊昏暗但可通行。",
+                "林仍帶著封好的信。"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。",
+                "不要顯示追逐場面。"
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-rain-gate",
+            "sourceAssetRef": "asset-rain-gate",
+            "assetType": "scene",
+            "sourcePanelIds": [
+                "panel-frame-rain-gate-arrival"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-rain-gate.",
+            "mustRemainStable": [
+                "蠟印保持完整。",
+                "林知道信不能被拆開。",
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。"
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-sealed-letter",
+            "sourceAssetRef": "asset-sealed-letter",
+            "assetType": "prop",
+            "sourcePanelIds": [
+                "panel-frame-rain-gate-arrival",
+                "panel-frame-wax-mark-check",
+                "panel-frame-side-passage-choice"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-sealed-letter.",
+            "mustRemainStable": [
+                "蠟印保持完整。",
+                "林知道信不能被拆開。",
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。",
+                "守衛沒有拆信。",
+                "蠟印仍未破。",
+                "守衛只看外側蠟印。",
+                "信封仍在林的視線內。",
+                "信仍保持封好。",
+                "雨門場景仍在同一晚。",
+                "側廊昏暗但可通行。"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。",
+                "不要顯示檔案室內部。",
+                "不要顯示信件內文。",
+                "不要顯示追逐場面。"
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        },
+        {
+            "assetCardId": "asset-card-asset-side-passage",
+            "sourceAssetRef": "asset-side-passage",
+            "assetType": "character_or_visual_asset",
+            "sourcePanelIds": [
+                "panel-frame-side-passage-choice"
+            ],
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-side-passage.",
+            "mustRemainStable": [
+                "信仍保持封好。",
+                "雨門場景仍在同一晚。",
+                "側廊昏暗但可通行。",
+                "林仍帶著封好的信。"
+            ],
+            "allowedVariation": [
+                "Camera angle and framing may vary only when source continuity remains readable.",
+                "Lighting and scale may vary only when the asset identity remains clear."
+            ],
+            "forbiddenDrift": [
+                "不要顯示追逐場面。",
+                "不要顯示信件內容。"
+            ],
+            "promptSafeDetails": [
+                "Use visible source-bound details only.",
+                "Keep this card as candidate planning material."
+            ]
+        }
+    ],
+    "voiceStyleCards": [
+        {
+            "voiceCardId": "voice-card-voice-lin",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "displayName": "林",
+            "voiceLabel": "local-hanhan-lin",
+            "sourceCueIds": [
+                "audio-001",
+                "audio-003"
+            ],
+            "promptSafeNotes": [
+                "Voice style card is planning metadata only.",
+                "Review character voice continuity before downstream use."
+            ]
+        },
+        {
+            "voiceCardId": "voice-card-voice-gate-guard",
+            "voiceId": "voice-gate-guard",
+            "characterId": "char-gate-guard",
+            "displayName": "守衛",
+            "voiceLabel": "local-hanhan-guard",
+            "sourceCueIds": [
+                "audio-002"
+            ],
+            "promptSafeNotes": [
+                "Voice style card is planning metadata only.",
+                "Review character voice continuity before downstream use."
+            ]
+        }
+    ],
+    "nextAllowedDownstreamStep": "comic_video_production_package_review",
+    "boundaryChecklist": [
+        "draft_only",
+        "source_bound",
+        "external_handoff_absent",
+        "media_execution_absent",
+        "review_required"
+    ],
+    "findingCount": 0,
+    "evidence": {
+        "proofVerdict": "PASS",
+        "packetValidationVerdict": "PASS",
+        "packetPanelCount": 3,
+        "storyboardRowCount": 3,
+        "shotPromptCount": 3,
+        "assetCardCount": 5,
+        "voiceStyleCardCount": 2,
+        "audioCueCount": 3,
+        "subtitleCueCount": 3,
+        "totalDurationMillis": 9000
+    }
+}

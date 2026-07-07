@@ -79,6 +79,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "004_scene_thread_runtime.sql",
                     "005_setting_pack_runtime.sql",
                     "006_checkpoint_branching_runtime.sql",
+                    "007_world_source_archive.sql",
+                    "008_ai_task_queue.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -1360,9 +1362,10 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
 
     internal fun insertRawRow(connection: Connection, tableName: String, row: Map<String, String?>) {
-        require(tableName.matches(Regex("[a-zA-Z_]+"))) { "Unsafe table name: $tableName" }
+        val identifierPattern = Regex("[a-zA-Z_][a-zA-Z0-9_]*")
+        require(tableName.matches(identifierPattern)) { "Unsafe table name: $tableName" }
         val columns = row.keys.toList()
-        require(columns.all { it.matches(Regex("[a-zA-Z_]+")) }) { "Unsafe column in $tableName" }
+        require(columns.all { it.matches(identifierPattern) }) { "Unsafe column in $tableName" }
         val placeholders = columns.joinToString(", ") { "?" }
         val sql = "INSERT OR REPLACE INTO $tableName(${columns.joinToString(", ")}) VALUES ($placeholders)"
         connection.prepareStatement(sql).use { statement ->

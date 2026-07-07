@@ -1,0 +1,59 @@
+{
+    "verdict": "PASS",
+    "status": "WORLD_SOURCE_ARCHIVE_SQL_IMPORT_PASS",
+    "archiveId": "chenxing-world-source-manifest-v0",
+    "sourceManifestPath": "memory\\chenxing_world_source_manifest.json",
+    "databasePath": "data\\story.db",
+    "archiveRowsWritten": 1,
+    "documentRowsWritten": 9,
+    "chunkRowsWritten": 255,
+    "sourceCount": 9,
+    "totalByteSize": 206344,
+    "validation": {
+        "verdict": "PASS",
+        "status": "WORLD_SOURCE_ARCHIVE_VALIDATION_PASS",
+        "manifestId": "chenxing-world-source-manifest-v0",
+        "sourceManifestPath": "memory\\chenxing_world_source_manifest.json",
+        "nextAllowedDownstreamStep": "world_source_archive_sql_import",
+        "evidence": {
+            "sourceCount": 9,
+            "verifiedSourceCount": 9,
+            "totalByteSize": 206344,
+            "projectLabel": "塵行",
+            "providedSourceTitle": "穿越4000年",
+            "titleRelationshipStatus": "unresolved_title_alias_or_working_title"
+        },
+        "checks": [
+            {
+                "ruleId": "WORLD_SOURCE_MANIFEST_STATUS",
+                "status": "PASS",
+                "detail": "CHENXING_WORLD_SOURCE_RAW_ARCHIVE_READY"
+            },
+            {
+                "ruleId": "WORLD_SOURCE_SOURCE_SETS_PRESENT",
+                "status": "PASS",
+                "detail": "sourceSets=9"
+            },
+            {
+                "ruleId": "WORLD_SOURCE_RAW_ARCHIVE_FLAGS",
+                "status": "PASS",
+                "detail": "rawTextUnmodified=true, classificationOnly=true"
+            },
+            {
+                "ruleId": "WORLD_SOURCE_BOUNDARY_FLAGS_SAFE",
+                "status": "PASS",
+                "detail": "unsafeBoundaryFlagCount=0"
+            },
+            {
+                "ruleId": "WORLD_SOURCE_IDS_UNIQUE",
+                "status": "PASS",
+                "detail": "sourceIds=9"
+            },
+            {
+                "ruleId": "WORLD_SOURCE_RAW_FILES_VERIFIED",
+                "status": "PASS",
+                "detail": "verified=9/9, hashMismatchCount=0"
+            }
+        ]
+    }
+}

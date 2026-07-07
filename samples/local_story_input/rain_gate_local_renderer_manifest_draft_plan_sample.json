@@ -1,0 +1,822 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_MANIFEST_DRAFT_PLAN",
+    "planId": "rain-gate-local-renderer-manifest-draft-plan-v0-001",
+    "sourceImplementationDraftFile": "samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_sample.json",
+    "sourceDraftReviewFile": "samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json",
+    "sourceDraftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+    "sourceDraftReviewId": "rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourcePlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+    "sourcePlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "checks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft plan requires explicit Phase 10 implementation draft and Phase 11 review files.",
+            "evidence": [
+                "implementationDraftFile=samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_sample.json",
+                "draftReviewFile=samples\\local_story_input\\rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json",
+                "draftId=rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+                "reviewId=rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+                "sourceStoryInputPackId=local-story-input-rain-gate-v0-001",
+                "sourceHandoffId=rain-gate-story-video-preview-handoff-v0-001"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "implementation-draft-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft plan requires PASS Phase 10 implementation draft state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT",
+                "downstreamBoundary=local_renderer_adapter_implementation_draft_only_not_manifest_generation",
+                "nextAllowedDownstreamStep=local_renderer_adapter_implementation_draft_review"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "draft-review-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft plan requires PASS Phase 11 implementation draft review state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS",
+                "downstreamBoundary=local_renderer_adapter_implementation_draft_review_only_not_manifest_generation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_draft_plan"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "source-ids-align",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Manifest draft plan requires Phase 10 and Phase 11 source ids to align.",
+            "evidence": [
+                "draftIdAligned=true",
+                "planIdAligned=true",
+                "planReviewIdAligned=true",
+                "dryRunIdAligned=true",
+                "handoffIdAligned=true",
+                "handoffReviewIdAligned=true",
+                "storyInputPackIdAligned=true"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Manifest draft plan requires local-only no-media boundaries across Phase 10 and Phase 11 inputs.",
+            "evidence": [
+                "draftLocalOnly=true",
+                "reviewLocalOnly=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "manifestGenerated=false",
+                "adapterImplementationExecuted=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "manifestGenerated=false",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "no-findings-in-sources",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft plan requires no findings in Phase 10 draft or Phase 11 review.",
+            "evidence": [
+                "draftFindingCount=0",
+                "reviewFindingCount=0"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "review-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft plan requires non-empty Phase 11 checks with all required checks PASS.",
+            "evidence": [
+                "reviewChecks=9",
+                "reviewRequiredFail=0"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "required-content-present",
+            "status": "PASS",
+            "category": "plan_completeness",
+            "message": "Manifest draft plan requires implementation tasks, mapping draft, verification plan, and target duration.",
+            "evidence": [
+                "implementationTasks=5",
+                "mappingDraftPanels=2",
+                "mappingDraftFields=46",
+                "verificationSteps=4",
+                "targetDurationMillis=9000"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "manifest-remains-plan-only",
+            "status": "PASS",
+            "category": "manifest_boundary",
+            "message": "Manifest draft plan may mention ComicVideoRenderHandoffManifest only as planning notes; no real manifest may be generated.",
+            "evidence": [
+                "draftOnly=true",
+                "mappingManifestGenerated=false",
+                "panelManifestGenerated=0",
+                "panelRendererReady=0",
+                "generatedNowFields=0",
+                "renderSettingsGeneratedNow=false"
+            ],
+            "requiredForPlan": true
+        },
+        {
+            "checkId": "no-readiness-overclaim",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Manifest draft plan must preserve rendererReady=false and mp4ReadinessClaimed=false.",
+            "evidence": [
+                "draft.rendererReady=false",
+                "draft.mp4ReadinessClaimed=false",
+                "review.rendererReady=false",
+                "review.mp4ReadinessClaimed=false",
+                "reviewCompatibility.ready=false",
+                "reviewCompatibility.mp4ReadinessClaimed=false"
+            ],
+            "requiredForPlan": true
+        }
+    ],
+    "manifestDraftPlanSummary": {
+        "sourceDraftChecks": 10,
+        "sourceDraftReviewChecks": 9,
+        "sourceDraftReviewChecksPass": 9,
+        "sourceDraftReviewChecksFail": 0,
+        "implementationTasks": 5,
+        "mappingDraftPanels": 2,
+        "mappingDraftFields": 46,
+        "requiredManifestDraftWorkItems": 5,
+        "verificationSteps": 5,
+        "targetDurationMillis": 9000,
+        "findingCount": 0,
+        "planningOnly": true,
+        "manifestGenerated": false,
+        "adapterImplementationExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "sourceAlignmentSummary": {
+        "draftIdAligned": true,
+        "planIdAligned": true,
+        "planReviewIdAligned": true,
+        "dryRunIdAligned": true,
+        "handoffIdAligned": true,
+        "handoffReviewIdAligned": true,
+        "storyInputPackIdAligned": true,
+        "draftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+        "reviewSourceDraftId": "rain-gate-local-renderer-adapter-implementation-draft-v0-001",
+        "draftSourcePlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+        "reviewSourcePlanId": "rain-gate-local-renderer-adapter-implementation-plan-v0-001",
+        "draftSourcePlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+        "reviewSourcePlanReviewId": "rain-gate-local-renderer-adapter-implementation-plan-review-v0-001",
+        "draftSourceDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+        "reviewSourceDryRunId": "rain-gate-local-renderer-adapter-dry-run-v0-001",
+        "draftSourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+        "reviewSourceHandoffId": "rain-gate-story-video-preview-handoff-v0-001",
+        "draftSourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+        "reviewSourceHandoffReviewId": "rain-gate-story-video-preview-handoff-review-v0-001",
+        "draftSourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+        "reviewSourceStoryInputPackId": "local-story-input-rain-gate-v0-001"
+    },
+    "manifestFieldPlan": {
+        "planningOnly": true,
+        "manifestGenerated": false,
+        "panelManifestPlans": [
+            {
+                "order": 1,
+                "panelId": "local-render-panel-beat-arrival",
+                "sourceSceneId": "scene-rain-gate",
+                "sourceBeatId": "beat-arrival",
+                "startMillis": 0,
+                "endMillis": 4500,
+                "durationMillis": 4500,
+                "plannedPanelTimelineFields": [
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-arrival",
+                        "implementationNote": "Carry the stable panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sourceFrameId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=sourceFrameId]",
+                        "plannedValueHint": "local-visual-prompt-beat-arrival",
+                        "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sceneReference",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=sceneReference]",
+                        "plannedValueHint": "scene-rain-gate",
+                        "implementationNote": "Carry local source scene id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "beatReference",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=beatReference]",
+                        "plannedValueHint": "beat-arrival",
+                        "implementationNote": "Carry local source beat id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "visualIntent",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=visualIntent]",
+                        "plannedValueHint": "中景，燈光反射在手腕印記上，石門保持壓迫感。",
+                        "implementationNote": "Map visual intent text only; do not call an image provider.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "cameraIntent",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=cameraIntent]",
+                        "plannedValueHint": "雨門關口",
+                        "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "0",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "displayDurationMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=displayDurationMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "assetCandidateRefs",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetPanelTimelineDraft[targetField=assetCandidateRefs]",
+                        "plannedValueHint": "local-character-card-char-lin,local-character-card-char-gatekeeper",
+                        "implementationNote": "Resolve local asset references only in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedVoiceTimelineFields": [
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "cueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=cueId]",
+                        "plannedValueHint": "local-audio-cue-beat-arrival",
+                        "implementationNote": "Carry local audio cue card id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-arrival",
+                        "implementationNote": "Link voice cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "voiceLabel",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=voiceLabel]",
+                        "plannedValueHint": "林: 低而穩的女聲，語氣克制但帶急迫感。 | 守門人: 乾冷、簡短、像在核對規則。 | 雨聲鋪底，燈鏈短促晃動。",
+                        "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "text",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=text]",
+                        "plannedValueHint": "守門人要求林把手腕留在燈光裡。 / 建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+                        "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "0",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "durationMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetVoiceTimelineDraft[targetField=durationMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedSubtitleTimelineFields": [
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "cueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=cueId]",
+                        "plannedValueHint": "local-audio-cue-beat-arrival",
+                        "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-arrival",
+                        "implementationNote": "Link subtitle cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "audioCueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=audioCueId]",
+                        "plannedValueHint": "local-audio-cue-beat-arrival",
+                        "implementationNote": "Carry local audio cue id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "text",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=text]",
+                        "plannedValueHint": "守門人要求林把手腕留在燈光裡。 / 建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+                        "implementationNote": "Carry caption/dialogue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "0",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-arrival].targetSubtitleTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "manifestGenerated": false,
+                "rendererReady": false,
+                "note": "Manifest draft field plan only; no ComicVideoRenderHandoffManifest is generated."
+            },
+            {
+                "order": 2,
+                "panelId": "local-render-panel-beat-answer",
+                "sourceSceneId": "scene-rain-gate",
+                "sourceBeatId": "beat-answer",
+                "startMillis": 4500,
+                "endMillis": 9000,
+                "durationMillis": 4500,
+                "plannedPanelTimelineFields": [
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-answer",
+                        "implementationNote": "Carry the stable panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sourceFrameId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=sourceFrameId]",
+                        "plannedValueHint": "local-visual-prompt-beat-answer",
+                        "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "sceneReference",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=sceneReference]",
+                        "plannedValueHint": "scene-rain-gate",
+                        "implementationNote": "Carry local source scene id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "beatReference",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=beatReference]",
+                        "plannedValueHint": "beat-answer",
+                        "implementationNote": "Carry local source beat id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "visualIntent",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=visualIntent]",
+                        "plannedValueHint": "近景，林把手腕抬到燈光下，雨水從袖口滴落。",
+                        "implementationNote": "Map visual intent text only; do not call an image provider.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "cameraIntent",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=cameraIntent]",
+                        "plannedValueHint": "雨門關口",
+                        "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "9000",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "displayDurationMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=displayDurationMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "panelTimeline",
+                        "targetField": "assetCandidateRefs",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetPanelTimelineDraft[targetField=assetCandidateRefs]",
+                        "plannedValueHint": "local-character-card-char-lin",
+                        "implementationNote": "Resolve local asset references only in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedVoiceTimelineFields": [
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "cueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=cueId]",
+                        "plannedValueHint": "local-audio-cue-beat-answer",
+                        "implementationNote": "Carry local audio cue card id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-answer",
+                        "implementationNote": "Link voice cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "voiceLabel",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=voiceLabel]",
+                        "plannedValueHint": "林: 低而穩的女聲，語氣克制但帶急迫感。 | 林的聲音穩定，雨聲略微壓低。",
+                        "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "text",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=text]",
+                        "plannedValueHint": "林說她會讓印記留在光裡。 / 林選擇坦白面對檢查，而不是遮掩印記。",
+                        "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "9000",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "voiceTimeline",
+                        "targetField": "durationMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetVoiceTimelineDraft[targetField=durationMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry duration from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "plannedSubtitleTimelineFields": [
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "cueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=cueId]",
+                        "plannedValueHint": "local-audio-cue-beat-answer",
+                        "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "panelId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=panelId]",
+                        "plannedValueHint": "local-render-panel-beat-answer",
+                        "implementationNote": "Link subtitle cue to panel id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "audioCueId",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=audioCueId]",
+                        "plannedValueHint": "local-audio-cue-beat-answer",
+                        "implementationNote": "Carry local audio cue id.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "text",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=text]",
+                        "plannedValueHint": "林說她會讓印記留在光裡。 / 林選擇坦白面對檢查，而不是遮掩印記。",
+                        "implementationNote": "Carry caption/dialogue text from local JSON.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "startMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=startMillis]",
+                        "plannedValueHint": "4500",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    },
+                    {
+                        "targetSection": "subtitleTimeline",
+                        "targetField": "endMillis",
+                        "sourceDraftPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-answer].targetSubtitleTimelineDraft[targetField=endMillis]",
+                        "plannedValueHint": "9000",
+                        "implementationNote": "Carry timing from Phase 7 notes.",
+                        "required": true,
+                        "generatedNow": false
+                    }
+                ],
+                "manifestGenerated": false,
+                "rendererReady": false,
+                "note": "Manifest draft field plan only; no ComicVideoRenderHandoffManifest is generated."
+            }
+        ],
+        "renderSettingsPlan": {
+            "totalDurationMillis": 9000,
+            "generatedNow": false
+        },
+        "note": "Planning only. A later explicit review step is required before any real manifest draft."
+    },
+    "requiredManifestDraftWorkItems": [
+        {
+            "workItemId": "manifest-draft-work-item-1",
+            "sourceImplementationTaskId": "implementation-draft-task-1",
+            "title": "Plan manifest draft: Define the local adapter input contract.",
+            "description": "Use the Phase 7 dry-run report as the only accepted source for a future adapter implementation.",
+            "targetOutcome": "A future adapter implementation can verify source ids and dry-run boundaries before mapping.",
+            "mustNotDo": [
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 12.",
+                "Do not execute adapter implementation.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "manifest-draft-work-item-2",
+            "sourceImplementationTaskId": "implementation-draft-task-2",
+            "title": "Plan manifest draft: Plan panel timeline field mapping.",
+            "description": "Map Phase 7 panel notes to future ComicVideoRenderPanelTimelineItem fields.",
+            "targetOutcome": "Future implementation has explicit panelTimeline mapping rules before any manifest is generated.",
+            "mustNotDo": [
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 12.",
+                "Do not execute adapter implementation.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "manifest-draft-work-item-3",
+            "sourceImplementationTaskId": "implementation-draft-task-3",
+            "title": "Plan manifest draft: Plan voice and subtitle timeline field mapping.",
+            "description": "Map Phase 7 audio cue and caption/dialogue notes to future voiceTimeline and subtitleTimeline fields.",
+            "targetOutcome": "Future implementation can create deterministic local voice/subtitle metadata without TTS.",
+            "mustNotDo": [
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 12.",
+                "Do not execute adapter implementation.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "manifest-draft-work-item-4",
+            "sourceImplementationTaskId": "implementation-draft-task-4",
+            "title": "Plan manifest draft: Plan render settings defaults.",
+            "description": "Choose deterministic metadata-only render settings for a future adapter implementation.",
+            "targetOutcome": "Future implementation has explicit frame rate, resolution, and renderer boundary policy.",
+            "mustNotDo": [
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 12.",
+                "Do not execute adapter implementation.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        },
+        {
+            "workItemId": "manifest-draft-work-item-5",
+            "sourceImplementationTaskId": "implementation-draft-task-5",
+            "title": "Plan manifest draft: Plan fail-stop verification before any media step.",
+            "description": "Require a later adapter implementation review and renderer dry-run before media generation can be considered.",
+            "targetOutcome": "The future adapter path remains governed and cannot jump directly to MP4 generation.",
+            "mustNotDo": [
+                "Do not generate ComicVideoRenderHandoffManifest in Phase 12.",
+                "Do not execute adapter implementation.",
+                "Do not run renderer/ffmpeg/TTS.",
+                "Do not generate media or claim final media approval.",
+                "Do not call provider/API or create provider/media handoff.",
+                "Do not claim canon, registry, release, approval, or production lock."
+            ]
+        }
+    ],
+    "verificationPlan": [
+        {
+            "verificationId": "manifest-draft-plan-verification-1",
+            "sourceVerificationId": "implementation-draft-verification-1",
+            "commandOrCheck": "./gradlew.bat test --tests \"com.localnovel.engine.LocalRendererAdapterImplementationPlan*\"",
+            "expectedResult": "PASS for service and CLI focused tests.",
+            "requiresMediaGeneration": false,
+            "requiresManifestGeneration": false
+        },
+        {
+            "verificationId": "manifest-draft-plan-verification-2",
+            "sourceVerificationId": "implementation-draft-verification-2",
+            "commandOrCheck": "plan-local-renderer-adapter-implementation --dry-run-report <phase7-report.json> --plan <id> --out <plan.json>",
+            "expectedResult": "Sample plan JSON has LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_PLAN_DRAFT and PASS.",
+            "requiresMediaGeneration": false,
+            "requiresManifestGeneration": false
+        },
+        {
+            "verificationId": "manifest-draft-plan-verification-3",
+            "sourceVerificationId": "implementation-draft-verification-3",
+            "commandOrCheck": "Parse sample JSON and verify mediaGenerated=false, rendererInvocation=none, providerInvocation=none, ttsInvocation=none, manifestGenerated=false.",
+            "expectedResult": "All local-only boundary fields remain safe.",
+            "requiresMediaGeneration": false,
+            "requiresManifestGeneration": false
+        },
+        {
+            "verificationId": "manifest-draft-plan-verification-4",
+            "sourceVerificationId": "future-manifest-draft-review-gate",
+            "commandOrCheck": "Future explicit task must review this implementation draft before any manifest draft or renderer step.",
+            "expectedResult": "No ComicVideoRenderHandoffManifest generation, no renderer/ffmpeg/TTS execution, and no media generation before review PASS.",
+            "requiresMediaGeneration": false,
+            "requiresManifestGeneration": false
+        },
+        {
+            "verificationId": "future-manifest-draft-plan-review-gate",
+            "sourceVerificationId": "phase12-boundary",
+            "commandOrCheck": "Future explicit task must review this manifest draft plan before any real manifest draft.",
+            "expectedResult": "No ComicVideoRenderHandoffManifest generation, no renderer/ffmpeg/TTS execution, and no media generation before review PASS.",
+            "requiresMediaGeneration": false,
+            "requiresManifestGeneration": false
+        }
+    ],
+    "boundarySummary": {
+        "draftLocalOnly": true,
+        "reviewLocalOnly": true,
+        "mediaGenerated": false,
+        "manifestGenerated": false,
+        "adapterImplementationExecuted": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "manifestGenerated": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_manifest_draft_plan_only_not_manifest_generation",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_draft_plan_review",
+    "findingCount": 0
+}

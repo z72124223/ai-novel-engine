@@ -1,0 +1,218 @@
+{
+    "status": "LOCAL_RENDER_PACKAGE_DRAFT",
+    "packageId": "local-story-input-rain-gate-v0-001-chain-local-render-package-v0",
+    "sourceStoryInputPackFile": "samples\\local_story_input\\rain_gate_story_input_pack_sample.json",
+    "sourceAssetPromptCardsFile": "samples\\local_story_input\\rain_gate_story_video_chain_outputs\\local_asset_prompt_cards_draft.json",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "sourceAssetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+    "sourceAssetPromptCardsDraftId": "local-story-input-rain-gate-v0-001-chain-asset-prompt-cards-v0",
+    "sourceTitle": "雨門本地故事輸入包",
+    "locale": "zh-TW",
+    "localOnlyConstraints": {
+        "localOnly": true,
+        "noExternalPaidProviderTools": true,
+        "fileProtocolJsonOnly": true,
+        "notes": [
+            "local-only story input for this repo CLI",
+            "no external paid/provider tools",
+            "file-protocol JSON only",
+            "local render package draft only",
+            "no media generation"
+        ]
+    },
+    "timelinePlan": [
+        {
+            "itemId": "local-render-timeline-beat-arrival",
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "startMillis": 0,
+            "endMillis": 4500,
+            "durationMillis": 4500,
+            "narrativeIntent": "建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+            "dialogueIntent": "守門人要求林把手腕留在燈光裡。",
+            "audioIntent": "雨聲鋪底，燈鏈短促晃動。"
+        },
+        {
+            "itemId": "local-render-timeline-beat-answer",
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "startMillis": 4500,
+            "endMillis": 9000,
+            "durationMillis": 4500,
+            "narrativeIntent": "林選擇坦白面對檢查，而不是遮掩印記。",
+            "dialogueIntent": "林說她會讓印記留在光裡。",
+            "audioIntent": "林的聲音穩定，雨聲略微壓低。"
+        }
+    ],
+    "scenePlan": [
+        {
+            "scenePlanId": "local-render-scene-scene-rain-gate",
+            "sourceSceneId": "scene-rain-gate",
+            "sceneCardId": "local-scene-card-scene-rain-gate",
+            "title": "雨門關口",
+            "location": "暴雨中的石門前",
+            "mood": "緊張、安靜、被注視",
+            "panelIds": [
+                "local-render-panel-beat-arrival",
+                "local-render-panel-beat-answer"
+            ],
+            "sceneBoundary": "local_scene_render_plan_only"
+        }
+    ],
+    "panelPlan": [
+        {
+            "panelId": "local-render-panel-beat-arrival",
+            "timelineItemId": "local-render-timeline-beat-arrival",
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "sceneTitle": "雨門關口",
+            "characterCardIds": [
+                "local-character-card-char-lin",
+                "local-character-card-char-gatekeeper"
+            ],
+            "visualPromptCardId": "local-visual-prompt-beat-arrival",
+            "audioCueCardId": "local-audio-cue-beat-arrival",
+            "durationMillis": 4500,
+            "visualIntent": "中景，燈光反射在手腕印記上，石門保持壓迫感。",
+            "audioIntent": "雨聲鋪底，燈鏈短促晃動。",
+            "panelBoundary": "local_panel_render_plan_only"
+        },
+        {
+            "panelId": "local-render-panel-beat-answer",
+            "timelineItemId": "local-render-timeline-beat-answer",
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "sceneTitle": "雨門關口",
+            "characterCardIds": [
+                "local-character-card-char-lin"
+            ],
+            "visualPromptCardId": "local-visual-prompt-beat-answer",
+            "audioCueCardId": "local-audio-cue-beat-answer",
+            "durationMillis": 4500,
+            "visualIntent": "近景，林把手腕抬到燈光下，雨水從袖口滴落。",
+            "audioIntent": "林的聲音穩定，雨聲略微壓低。",
+            "panelBoundary": "local_panel_render_plan_only"
+        }
+    ],
+    "assetPromptReferences": [
+        {
+            "sourceBeatId": "beat-arrival",
+            "sourceSceneId": "scene-rain-gate",
+            "characterCardIds": [
+                "local-character-card-char-lin",
+                "local-character-card-char-gatekeeper"
+            ],
+            "sceneCardId": "local-scene-card-scene-rain-gate",
+            "beatCardId": "local-beat-card-beat-arrival",
+            "visualPromptCardId": "local-visual-prompt-beat-arrival",
+            "audioCueCardId": "local-audio-cue-beat-arrival"
+        },
+        {
+            "sourceBeatId": "beat-answer",
+            "sourceSceneId": "scene-rain-gate",
+            "characterCardIds": [
+                "local-character-card-char-lin"
+            ],
+            "sceneCardId": "local-scene-card-scene-rain-gate",
+            "beatCardId": "local-beat-card-beat-answer",
+            "visualPromptCardId": "local-visual-prompt-beat-answer",
+            "audioCueCardId": "local-audio-cue-beat-answer"
+        }
+    ],
+    "qaChecklist": [
+        {
+            "checkId": "story-pack-match",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards sourceStoryInputPackId matches story input pack id.",
+            "evidence": [
+                "story=local-story-input-rain-gate-v0-001",
+                "cards=local-story-input-rain-gate-v0-001"
+            ]
+        },
+        {
+            "checkId": "card-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards status is LOCAL_ASSET_PROMPT_CARDS_DRAFT.",
+            "evidence": [
+                "LOCAL_ASSET_PROMPT_CARDS_DRAFT"
+            ]
+        },
+        {
+            "checkId": "duration-positive",
+            "status": "PASS",
+            "category": "timeline",
+            "message": "Timeline duration is positive and equals the story duration target.",
+            "evidence": [
+                "target=9000",
+                "timelineTotal=9000"
+            ]
+        },
+        {
+            "checkId": "local-only-constraints",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Story input and card draft preserve local-only/no-external/file-protocol constraints.",
+            "evidence": [
+                "story.localOnly=true",
+                "cards.localOnly=true",
+                "story.noExternal=true",
+                "cards.noExternal=true",
+                "story.fileProtocol=true",
+                "cards.fileProtocol=true"
+            ]
+        },
+        {
+            "checkId": "no-provider-api",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Visual prompt cards have no provider/API invocation.",
+            "evidence": [
+                "local-visual-prompt-beat-arrival:none",
+                "local-visual-prompt-beat-answer:none"
+            ]
+        },
+        {
+            "checkId": "no-media-generation",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Audio cue cards have no TTS/media generation invocation.",
+            "evidence": [
+                "local-audio-cue-beat-arrival:none",
+                "local-audio-cue-beat-answer:none"
+            ]
+        },
+        {
+            "checkId": "no-final-approval-release-production-lock",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Render package is draft-only: no final approval, no release, no canon/registry, no production lock.",
+            "evidence": [
+                "local_render_package_draft_only_not_media_generation",
+                "local_render_package_draft_only",
+                "no production lock"
+            ]
+        }
+    ],
+    "renderBoundary": "local_render_package_draft_only_not_media_generation",
+    "downstreamBoundary": "local_render_package_draft_only",
+    "nextAllowedDownstreamStep": "local_render_package_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "assetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+        "timelineItemCount": 2,
+        "scenePlanCount": 1,
+        "panelPlanCount": 2,
+        "assetPromptReferenceCount": 2,
+        "qaCheckCount": 7,
+        "qaPassCount": 7,
+        "qaFailCount": 0,
+        "targetDurationMillis": 9000,
+        "timelineTotalDurationMillis": 9000,
+        "localOnlyDeclared": true,
+        "noExternalPaidProviderToolsDeclared": true,
+        "fileProtocolJsonOnlyDeclared": true
+    }
+}

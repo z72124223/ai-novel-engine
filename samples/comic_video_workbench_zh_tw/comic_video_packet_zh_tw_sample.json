@@ -1,0 +1,107 @@
+{
+    "packetId": "comic-video-zh-tw-sample-packet-001",
+    "reviewableStoryboardPacketFile": "samples/comic_video_workbench_zh_tw/reviewable_storyboard_packet_zh_tw_sample.json",
+    "imageFacingDeliveryProofFile": "samples\\comic_video_workbench_zh_tw\\image_facing_delivery_proof_zh_tw_sample.json",
+    "sourceReviewableStoryboardPacketId": "reviewable-storyboard-packet-zh-tw-sample-001",
+    "sourceImageFacingDeliveryProofId": "image-facing-delivery-proof-zh-tw-sample-001",
+    "acceptedScriptPacketId": "accepted-script-packet-zh-tw-sample-001",
+    "scriptPacketDraftFile": "samples/comic_video_workbench_zh_tw/script_packet_draft_zh_tw_sample.json",
+    "scriptPacketDraftContentSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "sourceVerdicts": {
+        "reviewableStoryboardPacketVerdict": "PASS",
+        "imageFacingDeliveryProofVerdict": "PASS",
+        "imageFacingDeliveryProofNextAllowedDownstreamStep": "image_facing_delivery_proof_ready"
+    },
+    "panelTracks": [
+        {
+            "panelId": "panel-frame-rain-gate-arrival",
+            "sourceFrameId": "frame-rain-gate-arrival",
+            "sceneReference": "雨門",
+            "beatReference": "beat-001-遞信",
+            "visualIntent": "林披著雨衣抵達門樓，左手握著一封蠟印未破的信。",
+            "cameraIntent": "從屋簷下的中遠景看向雨幕，保留燈籠、守衛桌與信封。",
+            "displayDurationMillis": 3000,
+            "mustShow": [
+                "信封仍未拆封。",
+                "雨水打在石地上。",
+                "門樓燈籠亮著。"
+            ],
+            "doNotShow": [
+                "不要顯示信件內容。",
+                "不要顯示幕後主使。"
+            ],
+            "continuityAnchors": [
+                "蠟印保持完整。",
+                "林知道信不能被拆開。"
+            ],
+            "assetCandidateRefs": [
+                "asset-lin-rain-coat",
+                "asset-sealed-letter",
+                "asset-rain-gate"
+            ]
+        },
+        {
+            "panelId": "panel-frame-wax-mark-check",
+            "sourceFrameId": "frame-wax-mark-check",
+            "sceneReference": "雨門",
+            "beatReference": "beat-002-查蠟印",
+            "visualIntent": "守衛伸手檢查信封外側蠟印，沒有拆開信封。",
+            "cameraIntent": "中近景聚焦信封、手套與蠟印，背景保留雨門輪廓。",
+            "displayDurationMillis": 3000,
+            "mustShow": [
+                "守衛只看外側蠟印。",
+                "信封仍在林的視線內。"
+            ],
+            "doNotShow": [
+                "不要顯示檔案室內部。",
+                "不要顯示信件內文。"
+            ],
+            "continuityAnchors": [
+                "守衛沒有拆信。",
+                "蠟印仍未破。"
+            ],
+            "assetCandidateRefs": [
+                "asset-gate-guard",
+                "asset-sealed-letter"
+            ]
+        },
+        {
+            "panelId": "panel-frame-side-passage-choice",
+            "sourceFrameId": "frame-side-passage-choice",
+            "sceneReference": "雨門",
+            "beatReference": "beat-003-走側廊",
+            "visualIntent": "林轉向狹窄側廊，主門仍有人聲與雨聲交錯。",
+            "cameraIntent": "從林肩後看向側廊，讓信封與未破蠟印留在畫面邊緣。",
+            "displayDurationMillis": 3000,
+            "mustShow": [
+                "側廊昏暗但可通行。",
+                "林仍帶著封好的信。"
+            ],
+            "doNotShow": [
+                "不要顯示追逐場面。",
+                "不要顯示信件內容。"
+            ],
+            "continuityAnchors": [
+                "信仍保持封好。",
+                "雨門場景仍在同一晚。"
+            ],
+            "assetCandidateRefs": [
+                "asset-lin-rain-coat",
+                "asset-side-passage",
+                "asset-sealed-letter"
+            ]
+        }
+    ],
+    "timing": {
+        "totalDurationMillis": 9000
+    },
+    "boundaryChecklist": [
+        "metadata_only",
+        "source_image_facing_ready",
+        "author_voice_fill_required",
+        "candidate_timing_plan"
+    ],
+    "residualRisks": [
+        "Voice cast, audio cues, and subtitle cues require author fill before validation can pass."
+    ]
+}

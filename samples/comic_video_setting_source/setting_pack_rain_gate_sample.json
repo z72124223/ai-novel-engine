@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "comic-video-rain-gate-source",
+  "packVersion": 1,
+  "projectId": "comic-video-workbench",
+  "name": "Rain Gate Source Pack",
+  "description": "Public setting source for a local comic video draft.",
+  "mode": "ADD_ON",
+  "source": {
+    "author": "local-author",
+    "license": "CC0",
+    "notes": "Sample setting source for local JSON pipeline tests."
+  },
+  "dependencies": [],
+  "entities": {
+    "locations": [
+      {
+        "id": "loc-rain-gate",
+        "name": "Rain Gate Archive Entrance",
+        "description": "A covered gate faces the archive yard while rain marks the stone threshold.",
+        "visibility": "public"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-lin",
+        "name": "Lin",
+        "role": "courier",
+        "description": "A cautious courier carrying a sealed letter.",
+        "startingItems": [
+          "item-sealed-letter"
+        ],
+        "visibility": "public"
+      },
+      {
+        "id": "char-gate-keeper",
+        "name": "Gate Keeper",
+        "role": "archive guard",
+        "description": "A guard who watches the gate desk and checks arrivals.",
+        "visibility": "public"
+      }
+    ],
+    "worldRules": [
+      {
+        "id": "rule-letters-stay-sealed",
+        "title": "Sealed letters stay closed at the gate",
+        "content": "Couriers may carry sealed letters into the archive gate, but gate staff may only check the visible seal.",
+        "priority": 8,
+        "visibility": "public"
+      }
+    ],
+    "items": [
+      {
+        "id": "item-sealed-letter",
+        "name": "Sealed Letter",
+        "description": "A dry letter with an unbroken wax seal.",
+        "initialOwnerId": "char-lin",
+        "visibility": "public"
+      },
+      {
+        "id": "item-gate-lantern",
+        "name": "Gate Lantern",
+        "description": "A brass lantern on the guard desk.",
+        "initialLocationId": "loc-rain-gate",
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-rain-threshold",
+        "content": "Rain has not crossed the archive threshold yet.",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-seal-visible",
+        "content": "The letter seal is visible without opening the letter.",
+        "visibility": "public"
+      }
+    ],
+    "secrets": [
+      {
+        "id": "secret-letter-route",
+        "content": "The letter route changes after the second bell.",
+        "visibility": "author_only",
+        "revealed": false,
+        "revealCondition": "not for visible draft fields"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene-rain-gate",
+        "title": "Rain Gate Arrival",
+        "summary": "Lin reaches the archive gate before the rain crosses the threshold.",
+        "locationId": "loc-rain-gate",
+        "visibility": "public"
+      }
+    ],
+    "sceneContracts": [
+      {
+        "id": "contract-rain-gate",
+        "sceneId": "scene-rain-gate",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "letter route after the second bell"
+        ],
+        "visibility": "director_only"
+      }
+    ]
+  },
+  "relations": [
+    {
+      "id": "rel-scene-rain-gate-location",
+      "fromType": "scene",
+      "fromId": "scene-rain-gate",
+      "toType": "location",
+      "toId": "loc-rain-gate",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-lin-rain-gate",
+      "fromType": "character",
+      "fromId": "char-lin",
+      "toType": "location",
+      "toId": "loc-rain-gate",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-keeper-rain-gate",
+      "fromType": "character",
+      "fromId": "char-gate-keeper",
+      "toType": "location",
+      "toId": "loc-rain-gate",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-lin-letter",
+      "fromType": "character",
+      "fromId": "char-lin",
+      "toType": "item",
+      "toId": "item-sealed-letter",
+      "relation": "OWNS",
+      "visibility": "public"
+    }
+  ],
+  "assertions": [],
+  "metadata": {
+    "sample": true,
+    "comicVideoSource": true
+  }
+}

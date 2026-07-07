@@ -1,0 +1,109 @@
+{
+  "fillId": "voice-timeline-fill-rain-gate-setting-preview-001",
+  "sourceComicVideoPacketId": "comic-video-setting-rain-gate-preview-001",
+  "fillStatus": "comic_video_voice_timeline_fill_candidate",
+  "voiceCast": [
+    {
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "displayName": "Lin",
+      "voiceLabel": "local-lin-clear",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Local preview voice plan only."
+    },
+    {
+      "voiceId": "voice-gate-keeper",
+      "characterId": "char-gate-keeper",
+      "displayName": "Gate Keeper",
+      "voiceLabel": "local-gate-keeper-low",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Local preview voice plan only."
+    }
+  ],
+  "audioCues": [
+    {
+      "cueId": "audio-001",
+      "panelId": "panel-frame-scene-rain-gate-01",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "The archive gate is still ahead, and the sealed letter stays in my hand.",
+      "startMillis": 0,
+      "durationMillis": 2600,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-002",
+      "panelId": "panel-frame-scene-rain-gate-02",
+      "voiceId": "voice-gate-keeper",
+      "characterId": "char-gate-keeper",
+      "text": "Keep the letter visible while I check the boundary.",
+      "startMillis": 3000,
+      "durationMillis": 2400,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-003",
+      "panelId": "panel-frame-scene-rain-gate-03",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "Then I choose the cautious path and keep the seal untouched.",
+      "startMillis": 6000,
+      "durationMillis": 2500,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    }
+  ],
+  "subtitleCues": [
+    {
+      "cueId": "subtitle-001",
+      "panelId": "panel-frame-scene-rain-gate-01",
+      "audioCueId": "audio-001",
+      "text": "Lin: The archive gate is still ahead, and the sealed letter stays in my hand.",
+      "startMillis": 0,
+      "endMillis": 2600
+    },
+    {
+      "cueId": "subtitle-002",
+      "panelId": "panel-frame-scene-rain-gate-02",
+      "audioCueId": "audio-002",
+      "text": "Gate Keeper: Keep the letter visible while I check the boundary.",
+      "startMillis": 3000,
+      "endMillis": 5400
+    },
+    {
+      "cueId": "subtitle-003",
+      "panelId": "panel-frame-scene-rain-gate-03",
+      "audioCueId": "audio-003",
+      "text": "Lin: Then I choose the cautious path and keep the seal untouched.",
+      "startMillis": 6000,
+      "endMillis": 8500
+    }
+  ],
+  "timing": {
+    "timelineStatus": "metadata_only_timing_plan",
+    "totalDurationMillis": 9000,
+    "frameRate": "24",
+    "resolution": "1920x1080",
+    "backgroundPolicy": "panel_track_only",
+    "outputVideoPath": "",
+    "renderedVideoPath": ""
+  },
+  "boundaryChecklist": [
+    "metadata_only",
+    "manual_voice_plan",
+    "media_execution_absent",
+    "remote_payload_absent"
+  ],
+  "notes": [
+    "Local preview metadata only.",
+    "Sample text is editable before author review."
+  ]
+}

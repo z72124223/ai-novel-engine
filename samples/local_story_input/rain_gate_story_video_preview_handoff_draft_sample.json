@@ -1,0 +1,274 @@
+{
+    "status": "LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT",
+    "handoffId": "rain-gate-story-video-preview-handoff-v0-001",
+    "sourceStoryInputPackId": "local-story-input-rain-gate-v0-001",
+    "sourceChainReportFile": "samples\\local_story_input\\rain_gate_story_video_chain_report_sample.json",
+    "sourceRenderPackageFile": "samples\\local_story_input\\rain_gate_story_video_chain_outputs\\local_render_package_draft.json",
+    "sourceAssetPromptCardsFile": "samples\\local_story_input\\rain_gate_story_video_chain_outputs\\local_asset_prompt_cards_draft.json",
+    "sourceStoryInputFile": "samples\\local_story_input\\rain_gate_story_input_pack_sample.json",
+    "sourceChainStatus": "LOCAL_STORY_VIDEO_CHAIN_VERIFIED",
+    "sourceRenderPackageStatus": "LOCAL_RENDER_PACKAGE_DRAFT",
+    "sourceAssetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+    "readinessChecks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "All Phase 5 source files are explicit; the handoff does not guess paths.",
+            "evidence": [
+                "chainReportFile=samples\\local_story_input\\rain_gate_story_video_chain_report_sample.json",
+                "renderPackageFile=samples\\local_story_input\\rain_gate_story_video_chain_outputs\\local_render_package_draft.json",
+                "assetPromptCardsFile=samples\\local_story_input\\rain_gate_story_video_chain_outputs\\local_asset_prompt_cards_draft.json",
+                "storyInputFile=samples\\local_story_input\\rain_gate_story_input_pack_sample.json"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "chain-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Chain report status is LOCAL_STORY_VIDEO_CHAIN_VERIFIED.",
+            "evidence": [
+                "LOCAL_STORY_VIDEO_CHAIN_VERIFIED"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "render-package-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Render package status is LOCAL_RENDER_PACKAGE_DRAFT.",
+            "evidence": [
+                "LOCAL_RENDER_PACKAGE_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "asset-prompt-cards-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards status is LOCAL_ASSET_PROMPT_CARDS_DRAFT.",
+            "evidence": [
+                "LOCAL_ASSET_PROMPT_CARDS_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-story-pack-id-match",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Story/source ids match across story input, chain report, render package, and asset/prompt cards.",
+            "evidence": [
+                "story=local-story-input-rain-gate-v0-001",
+                "chain=local-story-input-rain-gate-v0-001",
+                "render=local-story-input-rain-gate-v0-001",
+                "cards=local-story-input-rain-gate-v0-001"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "asset-prompt-source-match",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Render package source asset/prompt card metadata matches the supplied cards draft.",
+            "evidence": [
+                "render.sourceAssetPromptCardsStatus=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "cards.status=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "render.sourceAssetPromptCardsDraftId=local-story-input-rain-gate-v0-001-chain-asset-prompt-cards-v0",
+                "cards.draftId=local-story-input-rain-gate-v0-001-chain-asset-prompt-cards-v0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "chain-stage-statuses",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Chain stage results show PASS story validation, draft asset/prompt cards, and draft render package.",
+            "evidence": [
+                "storyValidation=PASS",
+                "assetPromptCards=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "localRenderPackage=LOCAL_RENDER_PACKAGE_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "render-plan-present",
+            "status": "PASS",
+            "category": "preview_plan",
+            "message": "Render package includes timeline/panel plans and has zero QA failures.",
+            "evidence": [
+                "timeline=2",
+                "panels=2",
+                "qaFail=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "All sources preserve file-protocol/no-external/no-renderer/no-media-generation boundaries.",
+            "evidence": [
+                "chain.mediaGenerated=false",
+                "chain.rendererInvocation=none",
+                "chain.providerInvocation=none",
+                "chain.ttsInvocation=none",
+                "story.noExternal=true",
+                "cards.noExternal=true",
+                "render.noExternal=true"
+            ],
+            "requiredForDraft": true
+        }
+    ],
+    "previewPlan": {
+        "sceneOrdering": [
+            {
+                "scenePlanId": "local-render-scene-scene-rain-gate",
+                "sourceSceneId": "scene-rain-gate",
+                "title": "雨門關口",
+                "location": "暴雨中的石門前",
+                "mood": "緊張、安靜、被注視",
+                "panelIds": [
+                    "local-render-panel-beat-arrival",
+                    "local-render-panel-beat-answer"
+                ]
+            }
+        ],
+        "panelOrdering": [
+            {
+                "order": 1,
+                "panelId": "local-render-panel-beat-arrival",
+                "sourceBeatId": "beat-arrival",
+                "sourceSceneId": "scene-rain-gate",
+                "sceneTitle": "雨門關口",
+                "startMillis": 0,
+                "endMillis": 4500,
+                "durationMillis": 4500,
+                "captionCue": "建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。",
+                "dialogueCue": "守門人要求林把手腕留在燈光裡。",
+                "visualIntent": "中景，燈光反射在手腕印記上，石門保持壓迫感。",
+                "audioIntent": "雨聲鋪底，燈鏈短促晃動。",
+                "characterCardIds": [
+                    "local-character-card-char-lin",
+                    "local-character-card-char-gatekeeper"
+                ],
+                "visualPromptCardId": "local-visual-prompt-beat-arrival",
+                "visualPromptSeed": "Story: 雨門本地故事輸入包 | Scene: 雨門關口 at 暴雨中的石門前 | Mood: 緊張、安靜、被注視 | Beat: 建立雨中關口與銀色印記，讓觀眾知道目前唯一可被檢查的是可見印記。 | Visual intent: 中景，燈光反射在手腕印記上，石門保持壓迫感。 | Style: 短劇式緊張感，寫實、清楚、可讀。 | Palette: 冷藍雨色、琥珀燈光、深灰石門。 | Camera: 以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+                "audioCueCardId": "local-audio-cue-beat-arrival",
+                "audioCueSummary": "林: 低而穩的女聲，語氣克制但帶急迫感。 | 守門人: 乾冷、簡短、像在核對規則。 | 雨聲鋪底，燈鏈短促晃動。",
+                "assetPromptReference": {
+                    "sourceBeatId": "beat-arrival",
+                    "sourceSceneId": "scene-rain-gate",
+                    "beatCardId": "local-beat-card-beat-arrival",
+                    "sceneCardId": "local-scene-card-scene-rain-gate",
+                    "visualPromptCardId": "local-visual-prompt-beat-arrival",
+                    "audioCueCardId": "local-audio-cue-beat-arrival",
+                    "characterCardIds": [
+                        "local-character-card-char-lin",
+                        "local-character-card-char-gatekeeper"
+                    ]
+                }
+            },
+            {
+                "order": 2,
+                "panelId": "local-render-panel-beat-answer",
+                "sourceBeatId": "beat-answer",
+                "sourceSceneId": "scene-rain-gate",
+                "sceneTitle": "雨門關口",
+                "startMillis": 4500,
+                "endMillis": 9000,
+                "durationMillis": 4500,
+                "captionCue": "林選擇坦白面對檢查，而不是遮掩印記。",
+                "dialogueCue": "林說她會讓印記留在光裡。",
+                "visualIntent": "近景，林把手腕抬到燈光下，雨水從袖口滴落。",
+                "audioIntent": "林的聲音穩定，雨聲略微壓低。",
+                "characterCardIds": [
+                    "local-character-card-char-lin"
+                ],
+                "visualPromptCardId": "local-visual-prompt-beat-answer",
+                "visualPromptSeed": "Story: 雨門本地故事輸入包 | Scene: 雨門關口 at 暴雨中的石門前 | Mood: 緊張、安靜、被注視 | Beat: 林選擇坦白面對檢查，而不是遮掩印記。 | Visual intent: 近景，林把手腕抬到燈光下，雨水從袖口滴落。 | Style: 短劇式緊張感，寫實、清楚、可讀。 | Palette: 冷藍雨色、琥珀燈光、深灰石門。 | Camera: 以中景和近景為主，不做快速剪接，讓印記與臉部反應清楚。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+                "audioCueCardId": "local-audio-cue-beat-answer",
+                "audioCueSummary": "林: 低而穩的女聲，語氣克制但帶急迫感。 | 林的聲音穩定，雨聲略微壓低。",
+                "assetPromptReference": {
+                    "sourceBeatId": "beat-answer",
+                    "sourceSceneId": "scene-rain-gate",
+                    "beatCardId": "local-beat-card-beat-answer",
+                    "sceneCardId": "local-scene-card-scene-rain-gate",
+                    "visualPromptCardId": "local-visual-prompt-beat-answer",
+                    "audioCueCardId": "local-audio-cue-beat-answer",
+                    "characterCardIds": [
+                        "local-character-card-char-lin"
+                    ]
+                }
+            }
+        ],
+        "targetDurationMillis": 9000,
+        "qaSummary": {
+            "qaChecks": 7,
+            "qaPass": 7,
+            "qaFail": 0,
+            "sourceQaCheckIds": [
+                "story-pack-match",
+                "card-status",
+                "duration-positive",
+                "local-only-constraints",
+                "no-provider-api",
+                "no-media-generation",
+                "no-final-approval-release-production-lock"
+            ]
+        },
+        "planBoundary": "local_preview_handoff_plan_only"
+    },
+    "localRendererCompatibility": {
+        "ready": false,
+        "readyFields": [
+            "scene/panel ordering",
+            "target durations",
+            "caption/dialogue cues",
+            "visual prompt references",
+            "audio cue references",
+            "QA summary"
+        ],
+        "missingFields": [
+            "adapter to ComicVideoRenderHandoffManifest",
+            "reviewed ComicVideoRenderPanelTimelineItem sourceFrameId/mustShow/doNotShow/continuityAnchors",
+            "reviewed ComicVideoRenderVoiceTimelineItem spoken text and voice labels",
+            "reviewed ComicVideoRenderSubtitleTimelineItem subtitle text",
+            "local renderer dry-run PASS before actual MP4 generation"
+        ],
+        "requiredChecksBeforeMp4": [
+            "Review this preview handoff draft.",
+            "Create or choose a local adapter from LocalStoryVideoPreviewHandoffDraft to ComicVideoRenderHandoffManifest.",
+            "Run a dry-run renderer/preflight command before any media generation.",
+            "Keep provider/API, TTS, final approval, provider/media handoff, canon, registry, release, and production lock boundaries explicit."
+        ],
+        "compatibilityBoundary": "review_only_not_renderer_invocation"
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "finalMediaApproval": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false
+    },
+    "downstreamBoundary": "local_story_video_preview_handoff_draft_only_not_media_generation",
+    "nextAllowedDownstreamStep": "local_preview_handoff_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "readinessCheckCount": 9,
+        "readinessPassCount": 9,
+        "readinessFailCount": 0,
+        "sceneCount": 1,
+        "panelCount": 2,
+        "visualPromptReferenceCount": 2,
+        "audioCueReferenceCount": 2,
+        "targetDurationMillis": 9000
+    }
+}

@@ -8,6 +8,8 @@ This document defines the feature layer needed for the project to produce finish
 
 Current local JSON workbench workflow: `docs/COMIC_VIDEO_WORKBENCH_CLI_WORKFLOW.md`.
 
+Next-version production package prototype: `docs/CODEX_SKILL_SHORT_DRAMA_WORKFLOW_BLUEPRINT.md`.
+
 ## 1. Product Target
 
 The target product is not just a novel and not just static manga pages.

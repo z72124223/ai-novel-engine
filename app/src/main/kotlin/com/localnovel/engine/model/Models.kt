@@ -989,6 +989,127 @@ data class SettingPackValidationReport(
 }
 
 @Serializable
+data class SettingPackScriptPacketDraftBuildReport(
+    val verdict: String,
+    val buildId: String = "",
+    val settingPackFile: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketValidationFile: String = "",
+    val packId: String = "",
+    val packVersion: Int = 0,
+    val projectId: String = "",
+    val selectedSceneId: String = "",
+    val selectedLocationId: String = "",
+    val outputPacketId: String = "",
+    val validationVerdict: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<SettingPackScriptPacketDraftBuildFinding> = emptyList(),
+    val evidence: SettingPackScriptPacketDraftBuildEvidence = SettingPackScriptPacketDraftBuildEvidence(),
+)
+
+@Serializable
+data class SettingPackScriptPacketDraftBuildFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class SettingPackScriptPacketDraftBuildEvidence(
+    val publicSceneCount: Int = 0,
+    val publicLocationCount: Int = 0,
+    val publicCharacterCount: Int = 0,
+    val publicItemCount: Int = 0,
+    val publicFactCount: Int = 0,
+    val publicWorldRuleCount: Int = 0,
+    val selectedCharacterCount: Int = 0,
+    val selectedItemCount: Int = 0,
+    val sceneContractCount: Int = 0,
+    val excludedSecretCount: Int = 0,
+    val generatedSegmentCount: Int = 0,
+    val generatedBeatCount: Int = 0,
+    val generatedFrameCandidateCount: Int = 0,
+    val validationFindingCount: Int = 0,
+)
+
+@Serializable
+data class SettingImageFacingProofPreviewBuildReport(
+    val verdict: String,
+    val buildId: String = "",
+    val buildStatus: String = "FAIL",
+    val settingPackFile: String = "",
+    val outputDir: String = "",
+    val settingScriptPacketDraftBuildReportFile: String = "",
+    val scriptPacketDraftFile: String = "",
+    val scriptPacketValidationFile: String = "",
+    val storyboardPlanningBriefFile: String = "",
+    val storyboardPacketDraftFile: String = "",
+    val storyboardPacketDraftValidationFile: String = "",
+    val storyboardPacketReviewFile: String = "",
+    val storyboardHumanReviewPreflightFile: String = "",
+    val storyboardStoryMovementAuditFile: String = "",
+    val reviewableStoryboardPacketFile: String = "",
+    val imageFacingDeliveryProofFile: String = "",
+    val packId: String = "",
+    val projectId: String = "",
+    val selectedSceneId: String = "",
+    val scriptPacketDraftId: String = "",
+    val storyboardPlanningBriefId: String = "",
+    val storyboardPacketDraftId: String = "",
+    val storyboardPacketReviewId: String = "",
+    val storyboardHumanReviewPreflightId: String = "",
+    val storyboardStoryMovementAuditId: String = "",
+    val reviewableStoryboardPacketId: String = "",
+    val imageFacingDeliveryProofId: String = "",
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<SettingImageFacingProofPreviewBuildFinding> = emptyList(),
+    val evidence: SettingImageFacingProofPreviewBuildEvidence = SettingImageFacingProofPreviewBuildEvidence(),
+)
+
+@Serializable
+data class SettingImageFacingProofPreviewBuildFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class SettingImageFacingProofPreviewBuildEvidence(
+    val settingScriptDraftBuildVerdict: String = "",
+    val scriptPacketValidationVerdict: String = "",
+    val storyboardPlanningBriefVerdict: String = "",
+    val storyboardPacketDraftValidationVerdict: String = "",
+    val storyboardPacketReviewVerdict: String = "",
+    val storyboardHumanReviewPreflightVerdict: String = "",
+    val storyboardStoryMovementAuditVerdict: String = "",
+    val reviewableStoryboardPacketVerdict: String = "",
+    val imageFacingDeliveryProofVerdict: String = "",
+    val generatedScriptSegmentCount: Int = 0,
+    val generatedStoryboardFrameCount: Int = 0,
+    val generatedImageFrameCardCount: Int = 0,
+    val excludedSecretCount: Int = 0,
+    val findingCountAcrossStages: Int = 0,
+)
+
+@Serializable
 data class SettingPackDiffEntry(
     val action: String,
     val entityType: String,
@@ -2585,6 +2706,120 @@ data class ComicVideoRenderHandoffManifestEvidence(
     val subtitleTimelineItemCount: Int = 0,
     val totalDurationMillis: Int = 0,
     val mediaOutputFieldCount: Int = 0,
+)
+
+@Serializable
+data class ComicVideoLocalRenderReport(
+    val verdict: String,
+    val renderId: String = "",
+    val renderStatus: String = "FAIL",
+    val renderHandoffManifestFile: String = "",
+    val manifestId: String = "",
+    val packetId: String = "",
+    val outputVideoPath: String = "",
+    val workDir: String = "",
+    val voiceName: String = "",
+    val dryRun: Boolean = false,
+    val localRendererBoundary: String = "local_ffmpeg_windows_speech_preview_renderer_only",
+    val mediaGenerated: Boolean = false,
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ComicVideoLocalRenderFinding> = emptyList(),
+    val artifacts: List<ComicVideoLocalRenderArtifact> = emptyList(),
+    val evidence: ComicVideoLocalRenderEvidence = ComicVideoLocalRenderEvidence(),
+)
+
+@Serializable
+data class ComicVideoLocalRenderFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ComicVideoLocalRenderArtifact(
+    val artifactType: String = "",
+    val path: String = "",
+    val exists: Boolean = false,
+    val bytes: Long = 0,
+)
+
+@Serializable
+data class ComicVideoLocalRenderEvidence(
+    val manifestVerdict: String = "",
+    val manifestNextAllowedDownstreamStep: String = "",
+    val panelCount: Int = 0,
+    val voiceCueCount: Int = 0,
+    val subtitleCueCount: Int = 0,
+    val totalDurationMillis: Int = 0,
+    val resolution: String = "",
+    val frameRate: String = "",
+    val ffmpegCommandCount: Int = 0,
+    val speechCommandCount: Int = 0,
+)
+
+@Serializable
+data class ComicVideoLocalPreviewBuildReport(
+    val verdict: String,
+    val buildId: String = "",
+    val buildStatus: String = "FAIL",
+    val imageFacingDeliveryProofFile: String = "",
+    val voiceTimelineFillFile: String = "",
+    val outputDir: String = "",
+    val packetFile: String = "",
+    val voiceTimelineFillTemplateFile: String = "",
+    val filledPacketFile: String = "",
+    val packetValidationFile: String = "",
+    val renderHandoffManifestFile: String = "",
+    val localRenderReportFile: String = "",
+    val outputVideoPath: String = "",
+    val packetId: String = "",
+    val validationId: String = "",
+    val manifestId: String = "",
+    val renderId: String = "",
+    val dryRun: Boolean = false,
+    val mediaGenerated: Boolean = false,
+    val nextAllowedDownstreamStep: String = "",
+    val blockedReason: String = "",
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val findingCount: Int = 0,
+    val findings: List<ComicVideoLocalPreviewBuildFinding> = emptyList(),
+    val renderReport: ComicVideoLocalRenderReport? = null,
+    val evidence: ComicVideoLocalPreviewBuildEvidence = ComicVideoLocalPreviewBuildEvidence(),
+)
+
+@Serializable
+data class ComicVideoLocalPreviewBuildFinding(
+    @SerialName("rule_id")
+    val ruleId: String,
+    val category: String,
+    val severity: String,
+    val path: String,
+    val message: String,
+    val evidence: List<String> = emptyList(),
+    @SerialName("suggested_fix")
+    val suggestedFix: String = "",
+)
+
+@Serializable
+data class ComicVideoLocalPreviewBuildEvidence(
+    val proofVerdict: String = "",
+    val packetPanelCount: Int = 0,
+    val voiceCastCount: Int = 0,
+    val audioCueCount: Int = 0,
+    val subtitleCueCount: Int = 0,
+    val packetValidationVerdict: String = "",
+    val manifestVerdict: String = "",
+    val localRenderVerdict: String = "",
+    val totalDurationMillis: Int = 0,
 )
 
 @Serializable

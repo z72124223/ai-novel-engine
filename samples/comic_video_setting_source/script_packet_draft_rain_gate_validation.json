@@ -1,0 +1,7 @@
+{
+    "verdict": "PASS",
+    "packetFile": "samples\\comic_video_setting_source\\script_packet_draft_rain_gate_sample.json",
+    "packetId": "script-packet-draft-rain-gate-sample-001",
+    "segmentCount": 1,
+    "findingCount": 0
+}
