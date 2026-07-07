@@ -69,7 +69,7 @@
       "delete only unreferenced obsolete samples"
     ]
   },
-  "nextAllowedContentStep": "chenxing_09_foundation_card_pack_contract_sample",
+  "nextAllowedContentStep": "chenxing_scene_packet_planning_from_validated_samples",
   "boundaryFlags": {
     "canonApproved": false,
     "settingPackData": false,

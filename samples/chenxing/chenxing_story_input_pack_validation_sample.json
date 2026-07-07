@@ -1,0 +1,21 @@
+{
+    "verdict": "PASS",
+    "validationId": "chenxing-story-input-validation-v0",
+    "storyInputPackFile": "samples\\chenxing\\chenxing_story_input_pack_sample.json",
+    "packId": "local-story-input-chenxing-v0-001",
+    "title": "塵行第一話本地故事輸入包",
+    "locale": "zh-TW",
+    "nextAllowedDownstreamStep": "local_story_input_pack_validated_for_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "characterCount": 3,
+        "sceneCount": 1,
+        "beatCount": 3,
+        "linkedBeatCount": 3,
+        "durationTargetMillis": 9000,
+        "localOnlyDeclared": true,
+        "noExternalPaidProviderToolsDeclared": true,
+        "fileProtocolJsonOnlyDeclared": true
+    }
+}

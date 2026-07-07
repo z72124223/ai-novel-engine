@@ -1,5 +1,13 @@
 # Plan
 
+> **Startup rule (2026-07-07):** Read only `## Current Plan Window V0`
+> (`CURRENT_PLAN_WINDOW_V0`) first. All other `## ...` sections below are
+> historical evidence unless the current window explicitly references one.
+> Worktree baseline: commit `3249db2` on `codex/mvp6-checkpoint-branching-spec`.
+> Active creative world: `塵行` / 灰關. Rain Gate samples remain test/demo only.
+> Next content step: chenxing scene-packet planning from validated story-input and
+> 09 foundation card samples under `samples/chenxing/`.
+
 ## Current Slice - AI Task Queue SQL V0
 
 Marker: `AI_TASK_QUEUE_SQL_V0`
@@ -193,10 +201,11 @@ Assumptions:
 
 Drift notes:
 
-- The worktree remains dirty with unrelated modified/untracked files from prior
-  tasks. This slice must not revert or normalize them.
-- `docs/HANDOFF.md` is dirty and not needed for this decision package, so it
-  remains untouched.
+- Worktree was consolidated in commit `3249db2`; follow-up housekeeping commit
+  covers gradle heap, `Main.kt`/`Models.kt` modular split, and chenxing default
+  sample chain under `samples/chenxing/`.
+- Historical sections below may still mention a dirty worktree; treat those as
+  slice-time evidence, not current repo state.
 
 Implementation steps:
 

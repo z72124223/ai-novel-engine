@@ -3,12 +3,12 @@
   "status": "FOUNDATION_CARD_PACK_DRAFT_NON_CANON",
   "sampleId": "chenxing_09_foundation_card_pack_contract_sample",
   "packId": "09-foundation-pack-chenxing-v0-001",
-  "title": "Chenxing / 憛菔? 09 foundation card pack contract sample",
+  "title": "Chenxing / 塵行 09 foundation card pack contract sample",
   "locale": "zh-TW",
   "reviewOnlyMarker": "draft/review-only",
-  "canonStatus": "non-canon",
+  "canonStatus": "non_canon_candidate",
   "approvalStatus": "not_approved",
-  "settingPackReadiness": "not setting-pack-applied",
+  "settingPackReadiness": "not_ready",
   "runtimeStatus": "not runtime SQLite data",
   "assetApprovalStatus": "not approved assets",
   "registryStatus": "not registry",
@@ -16,7 +16,7 @@
   "productionLockStatus": "not production lock",
   "activeWorldLabel": {
     "series": "塵行",
-    "verificationMarker": "憛菔?",
+    "verificationMarker": "塵行",
     "providedSourceTitle": "穿越4000年",
     "titleRelationshipStatus": "unresolved_title_alias_or_working_title"
   },
@@ -95,7 +95,7 @@
   ],
   "retrievalTags": [
     "chenxing",
-    "憛菔?",
+    "塵行",
     "09-foundation",
     "contract-sample",
     "draft/review-only",

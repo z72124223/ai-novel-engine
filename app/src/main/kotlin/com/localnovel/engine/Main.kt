@@ -1,5 +1,13 @@
 package com.localnovel.engine
 
+import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
+import com.localnovel.engine.cli.cliRepository
+import com.localnovel.engine.cli.cliRunner
+import com.localnovel.engine.cli.parseCliOptions
+import com.localnovel.engine.cli.printSettingPackValidation
+import com.localnovel.engine.cli.readCliJson
+import com.localnovel.engine.cli.requiredCliOption
+import com.localnovel.engine.cli.writeCliJson
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.AcceptedScriptPacketHandoffPacket
 import com.localnovel.engine.model.AssetCandidateBrief
@@ -90,6 +98,7 @@ import com.localnovel.engine.model.StoryboardPacketReviewPacket
 import com.localnovel.engine.model.StoryboardStoryMovementAuditReport
 import com.localnovel.engine.model.StoryboardPlanningPreflightReport
 import com.localnovel.engine.model.StoryboardPlanningBrief
+import com.localnovel.engine.model.ReviewableStoryboardPacket
 import com.localnovel.engine.model.SettingPack
 import com.localnovel.engine.model.SettingPackEntities
 import com.localnovel.engine.model.SettingPackEntity
@@ -228,7 +237,7 @@ class Cli {
 
         return runCatching {
             val command = args.first()
-            val options = parseOptions(args.drop(1))
+            val options = parseCliOptions(args.drop(1))
             when (command) {
                 "init-db" -> initDb(options)
                 "seed-demo" -> seedDemo(options)
@@ -254,13 +263,13 @@ class Cli {
                 "validate-setting-pack" -> validateSettingPack(options)
                 "preview-setting-import" -> previewSettingImport(options)
                 "apply-setting-pack" -> applySettingPack(options)
-                "validate-world-source-archive" -> validateWorldSourceArchive(options)
-                "apply-world-source-archive" -> applyWorldSourceArchive(options)
-                "query-world-source" -> queryWorldSource(options)
-                "upsert-ai-task" -> upsertAiTask(options)
-                "claim-ai-task" -> claimAiTask(options)
-                "complete-ai-task" -> completeAiTask(options)
-                "list-ai-tasks" -> listAiTasks(options)
+                "validate-world-source-archive" -> WorldSourceAndTaskQueueCli.validateWorldSourceArchive(options)
+                "apply-world-source-archive" -> WorldSourceAndTaskQueueCli.applyWorldSourceArchive(options)
+                "query-world-source" -> WorldSourceAndTaskQueueCli.queryWorldSource(options)
+                "upsert-ai-task" -> WorldSourceAndTaskQueueCli.upsertAiTask(options)
+                "claim-ai-task" -> WorldSourceAndTaskQueueCli.claimAiTask(options)
+                "complete-ai-task" -> WorldSourceAndTaskQueueCli.completeAiTask(options)
+                "list-ai-tasks" -> WorldSourceAndTaskQueueCli.listAiTasks(options)
                 "export-setting-pack" -> exportSettingPack(options)
                 "diff-setting-pack" -> diffSettingPack(options)
                 "impact-report" -> impactReport(options)
@@ -382,28 +391,28 @@ class Cli {
     }
 
     private fun initDb(options: Map<String, String>): Int {
-        repository(options).initialize()
-        println("Initialized SQLite database: ${options.required("db")}")
+        cliRepository(options).initialize()
+        println("Initialized SQLite database: ${options.requiredCliOption("db")}")
         return 0
     }
 
     private fun seedDemo(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val seedPath = Path.of(options["seed"] ?: "samples/demo_project_seed.json")
         val seed = JsonSupport.json.decodeFromString<DemoProjectSeed>(Files.readString(seedPath))
         repository.seedDemo(seed)
-        println("Seeded demo project '${seed.project.id}' into ${options.required("db")}")
+        println("Seeded demo project '${seed.project.id}' into ${options.requiredCliOption("db")}")
         return 0
     }
 
     private fun compileContext(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         val context = ContextCompiler(repository).compile(
-            projectId = options.required("project"),
-            playerInput = options.required("player-input"),
+            projectId = options.requiredCliOption("project"),
+            playerInput = options.requiredCliOption("player-input"),
         )
-        val out = Path.of(options.required("out"))
+        val out = Path.of(options.requiredCliOption("out"))
         out.parent?.let { Files.createDirectories(it) }
         Files.writeString(out, JsonSupport.json.encodeToString(context))
         println("Wrote context packet: $out")
@@ -411,9 +420,9 @@ class Cli {
     }
 
     private fun validateResult(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val context = readJson<ContextPacket>(Path.of(options.required("context")))
-        val result = readJson<AiTurnResult>(Path.of(options.required("result")))
+        val repository = cliRepository(options)
+        val context = readCliJson<ContextPacket>(Path.of(options.requiredCliOption("context")))
+        val result = readCliJson<AiTurnResult>(Path.of(options.requiredCliOption("result")))
         val report = AiTurnResultValidator(repository).validate(context, result)
         return if (report.isValid) {
             println("Result is valid.")
@@ -425,10 +434,10 @@ class Cli {
     }
 
     private fun applyResult(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val runner = runner(repository)
-        val context = readJson<ContextPacket>(Path.of(options.required("context")))
-        val result = readJson<AiTurnResult>(Path.of(options.required("result")))
+        val repository = cliRepository(options)
+        val runner = cliRunner(repository)
+        val context = readCliJson<ContextPacket>(Path.of(options.requiredCliOption("context")))
+        val result = readCliJson<AiTurnResult>(Path.of(options.requiredCliOption("result")))
         val applyResult = runner.apply(context, result)
         println(applyResult.narrative)
         if (StallDetector(repository).hasStalled(context.project.id)) {
@@ -439,32 +448,32 @@ class Cli {
     }
 
     private fun runManualTurn(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val runner = runner(repository)
+        val repository = cliRepository(options)
+        val runner = cliRunner(repository)
         val context = runner.compile(
-            projectId = options.required("project"),
-            playerInput = options.required("player-input"),
+            projectId = options.requiredCliOption("project"),
+            playerInput = options.requiredCliOption("player-input"),
         )
-        val contextOut = Path.of(options.required("context-out"))
+        val contextOut = Path.of(options.requiredCliOption("context-out"))
         contextOut.parent?.let { Files.createDirectories(it) }
         Files.writeString(contextOut, JsonSupport.json.encodeToString(context))
 
-        val resultPath = Path.of(options.required("result"))
+        val resultPath = Path.of(options.requiredCliOption("result"))
         if (!Files.exists(resultPath)) {
             println("Wrote context packet: $contextOut")
             println("Create ai_turn_result JSON at: $resultPath")
             return 0
         }
 
-        val result = readJson<AiTurnResult>(resultPath)
+        val result = readCliJson<AiTurnResult>(resultPath)
         val applyResult = runner.apply(context, result)
         println(applyResult.narrative)
         return 0
     }
 
     private fun showState(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val projectId = options.required("project")
+        val repository = cliRepository(options)
+        val projectId = options.requiredCliOption("project")
         val project = repository.getProject(projectId) ?: error("Project not found: $projectId")
         println("${project.name} (${project.id}) turn=${project.currentTurn}")
         println(project.summary)
@@ -487,11 +496,11 @@ class Cli {
     }
 
     private fun startSession(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val session = MultiTurnRuntime(repository).startSession(
-            projectId = options.required("project"),
-            sceneId = options.required("scene"),
+            projectId = options.requiredCliOption("project"),
+            sceneId = options.requiredCliOption("scene"),
         )
         println("sessionId=${session.id}")
         println("branchId=${session.branchId ?: ""}")
@@ -502,12 +511,12 @@ class Cli {
     }
 
     private fun prepareTurn(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
         val playerInput = options["input"]
             ?: options["input-file"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
             ?: error("Missing required option --input or --input-file")
-        val out = Path.of(options.required("out"))
+        val out = Path.of(options.requiredCliOption("out"))
         val context = try {
             MultiTurnRuntime(repository).prepareTurn(
                 sessionId = sessionId,
@@ -516,7 +525,7 @@ class Cli {
         } catch (error: ContextBudgetUnsatisfiableException) {
             val report = error.report ?: MultiTurnRuntime(repository).explainContextBudget(sessionId, playerInput)
             val reportPath = options["budget-report"]?.let { Path.of(it) } ?: out.budgetFailurePath()
-            writeJson(reportPath, report)
+            writeCliJson(reportPath, report)
             println("budgetFailureReport=$reportPath")
             throw error
         }
@@ -531,9 +540,9 @@ class Cli {
     }
 
     private fun resolveTurn(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
-        val result = readJson<AiTurnResult>(Path.of(options.required("result")))
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
+        val result = readCliJson<AiTurnResult>(Path.of(options.requiredCliOption("result")))
         val applied = MultiTurnRuntime(repository).resolveTurn(sessionId, result)
         val session = repository.getSession(sessionId)
         println(applied.narrative)
@@ -545,8 +554,8 @@ class Cli {
     }
 
     private fun showSession(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
         val project = repository.getProject(session.projectId) ?: error("Project not found: ${session.projectId}")
         val scene = repository.getActiveScene(session.projectId)
@@ -571,8 +580,8 @@ class Cli {
     }
 
     private fun abortPendingTurn(options: Map<String, String>): Int {
-        val count = repository(options).abortPendingContext(
-            sessionId = options.required("session"),
+        val count = cliRepository(options).abortPendingContext(
+            sessionId = options.requiredCliOption("session"),
             contextId = options["context"],
         )
         println("aborted=$count")
@@ -580,8 +589,8 @@ class Cli {
     }
 
     private fun showScene(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val repository = cliRepository(options)
+        val session = repository.getSession(options.requiredCliOption("session")) ?: error("Session not found: ${options.requiredCliOption("session")}")
         val scene = repository.getActiveScene(session.projectId)
         val lifecycle = repository.getSceneLifecycle(session.id)
         println("sceneInstanceId=${lifecycle.sceneInstanceId}")
@@ -612,8 +621,8 @@ class Cli {
     }
 
     private fun showThreads(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val repository = cliRepository(options)
+        val session = repository.getSession(options.requiredCliOption("session")) ?: error("Session not found: ${options.requiredCliOption("session")}")
         repository.listActiveStoryThreadViews(session.id).forEach {
             println("${it.threadId} [${it.type}] status=${it.status} progress=${it.progress} urgency=${it.urgency}")
             println("  publicSummary=${it.publicSummary}")
@@ -623,9 +632,9 @@ class Cli {
     }
 
     private fun previewTransitions(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
-        val input = options.required("input")
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
+        val input = options.requiredCliOption("input")
         repository.listAvailableTransitions(sessionId, input).forEach {
             println("${it.transitionId} -> ${it.toSceneId}")
             println("  ok=${it.prerequisitesSatisfied}")
@@ -638,8 +647,8 @@ class Cli {
     }
 
     private fun showWorldEvents(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val repository = cliRepository(options)
+        val session = repository.getSession(options.requiredCliOption("session")) ?: error("Session not found: ${options.requiredCliOption("session")}")
         repository.tableRows("scheduled_world_events")
             .filter { it["project_id"] == session.projectId && (it["session_id"].isNullOrBlank() || it["session_id"] == session.id) }
             .sortedWith(compareBy<Map<String, String>> { it["due_turn_number"]?.toIntOrNull() ?: Int.MAX_VALUE }.thenBy { it["id"] })
@@ -650,8 +659,8 @@ class Cli {
     }
 
     private fun explainSceneState(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
+        val repository = cliRepository(options)
+        val session = repository.getSession(options.requiredCliOption("session")) ?: error("Session not found: ${options.requiredCliOption("session")}")
         val lifecycle = repository.getSceneLifecycle(session.id)
         println("sceneInstanceId=${lifecycle.sceneInstanceId}")
         println("status=${lifecycle.status}")
@@ -665,9 +674,9 @@ class Cli {
     }
 
     private fun showCharacterMind(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val session = repository.getSession(options.required("session")) ?: error("Session not found: ${options.required("session")}")
-        val characterId = options.required("character")
+        val repository = cliRepository(options)
+        val session = repository.getSession(options.requiredCliOption("session")) ?: error("Session not found: ${options.requiredCliOption("session")}")
+        val characterId = options.requiredCliOption("character")
         val state = repository.getCharacterState(session.projectId, characterId) ?: error("Character state not found: $characterId")
         val memories = repository.listAllCharacterMemories(session.projectId).filter { it.ownerCharacterId == characterId || it.characterId == characterId }
         val activeMemories = memories
@@ -693,10 +702,10 @@ class Cli {
     }
 
     private fun previewRecall(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
-        val characterId = options.required("character")
-        val input = options.required("input")
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
+        val characterId = options.requiredCliOption("character")
+        val input = options.requiredCliOption("input")
         val memories = MemoryRetriever(repository).preview(sessionId, characterId, input)
         println("candidateMemories:")
         memories.forEachIndexed { index, memory ->
@@ -708,7 +717,7 @@ class Cli {
     }
 
     private fun explainContext(options: Map<String, String>): Int {
-        val context = readJson<ContextPacket>(Path.of(options.required("file")))
+        val context = readCliJson<ContextPacket>(Path.of(options.requiredCliOption("file")))
         println("contextId=${context.contextId}")
         println("contextBytes=${context.contextBudget.actualBytes}/${context.contextBudget.maxBytes}")
         println("safetyFieldsComplete=${context.sceneContract?.forbiddenReveals != null && context.worldRules.isNotEmpty()}")
@@ -729,9 +738,9 @@ class Cli {
     }
 
     private fun auditContext(options: Map<String, String>): Int {
-        val file = Path.of(options.required("file"))
+        val file = Path.of(options.requiredCliOption("file"))
         val report = ContextAuditService().auditFile(file)
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("valid=${report.valid}")
         println("actualBytes=${report.actualBytes}/${report.maxBytes}")
         println("declaredActualBytes=${report.declaredActualBytes}")
@@ -741,13 +750,13 @@ class Cli {
     }
 
     private fun auditNarrativeQuality(options: Map<String, String>): Int {
-        val contextPath = Path.of(options.required("context"))
-        val resultPath = Path.of(options.required("result"))
+        val contextPath = Path.of(options.requiredCliOption("context"))
+        val resultPath = Path.of(options.requiredCliOption("result"))
         val evidencePath = options["evidence"]?.let { Path.of(it) }
         val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
         val report = NarrativeQualityAuditService().audit(
-            context = readJson(contextPath),
-            result = readJson(resultPath),
+            context = readCliJson<ContextPacket>(contextPath),
+            result = readCliJson<AiTurnResult>(resultPath),
             input = NarrativeQualityAuditInput(
                 contextFile = contextPath.toString(),
                 resultFile = resultPath.toString(),
@@ -755,7 +764,7 @@ class Cli {
                 evidenceText = evidenceText,
             ),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("score=${report.score}")
         println("severity=${report.severity}")
@@ -767,11 +776,11 @@ class Cli {
     }
 
     private fun createSettingScriptPacketDraft(options: Map<String, String>): Int {
-        val settingPackPath = Path.of(options.required("setting-pack"))
-        val draftPath = Path.of(options.required("out"))
+        val settingPackPath = Path.of(options.requiredCliOption("setting-pack"))
+        val draftPath = Path.of(options.requiredCliOption("out"))
         val validationPath = options["validation-out"]?.let { Path.of(it) } ?: derivedJsonPath(draftPath, "_validation")
         val reportPath = options["report-out"]?.let { Path.of(it) } ?: derivedJsonPath(draftPath, "_build_report")
-        val pack = readJson<SettingPack>(settingPackPath)
+        val pack = readCliJson<SettingPack>(settingPackPath)
         val result = SettingPackScriptPacketDraftService().create(
             settingPack = pack,
             settingPackFile = settingPackPath.toString(),
@@ -786,14 +795,14 @@ class Cli {
         val draft = result.draft
         if (draft != null) {
             outputPacketId = draft.packetId
-            writeJson(draftPath, draft)
+            writeCliJson(draftPath, draft)
             val validation = ScriptPacketDraftValidationService().validate(
                 packet = draft,
                 packetFile = draftPath.toString(),
             )
             validationVerdict = validation.verdict
             validationFindingCount = validation.findingCount
-            writeJson(validationPath, validation)
+            writeCliJson(validationPath, validation)
             if (validation.verdict == "FAIL") {
                 findings += settingScriptPacketDraftBuildFinding(
                     ruleId = "SCRIPT_PACKET_DRAFT_VALIDATION_FAILED",
@@ -838,7 +847,7 @@ class Cli {
             findings = findings,
             evidence = result.evidence.withValidationFindingCount(validationFindingCount),
         )
-        writeJson(reportPath, report)
+        writeCliJson(reportPath, report)
         printSettingScriptPacketDraftBuildReport(report)
         return if (report.verdict == "FAIL") 1 else 0
     }
@@ -888,8 +897,8 @@ class Cli {
     }
 
     private fun buildSettingImageFacingProofPreview(options: Map<String, String>): Int {
-        val settingPackPath = Path.of(options.required("setting-pack"))
-        val outputDir = Path.of(options.required("output-dir"))
+        val settingPackPath = Path.of(options.requiredCliOption("setting-pack"))
+        val outputDir = Path.of(options.requiredCliOption("output-dir"))
         Files.createDirectories(outputDir)
 
         val scriptDraftPath = outputDir.resolve("script_packet_draft.json")
@@ -908,7 +917,7 @@ class Cli {
 
         val buildId = (options["build"] ?: "").ifBlank { "setting-image-facing-proof-preview-build" }
         val findings = mutableListOf<SettingImageFacingProofPreviewBuildFinding>()
-        val pack = readJson<SettingPack>(settingPackPath)
+        val pack = readCliJson<SettingPack>(settingPackPath)
         val previewService = SettingImageFacingProofPreviewBuildService()
 
         var settingBuildReport: SettingPackScriptPacketDraftBuildReport? = null
@@ -944,7 +953,7 @@ class Cli {
                     findings = settingResult.findings,
                     evidence = settingResult.evidence,
                 )
-                writeJson(settingBuildReportPath, settingBuildReport)
+                writeCliJson(settingBuildReportPath, settingBuildReport)
                 findings += previewBuildFinding(
                     ruleId = "SETTING_SCRIPT_PACKET_DRAFT_BUILD_FAILED",
                     category = "setting_script_draft",
@@ -954,13 +963,13 @@ class Cli {
                     evidence = settingResult.findings.map { it.ruleId },
                 )
             } else {
-                writeJson(scriptDraftPath, scriptDraft)
+                writeCliJson(scriptDraftPath, scriptDraft)
                 val scriptText = Files.readString(scriptDraftPath).removePrefix("\uFEFF")
                 scriptValidation = ScriptPacketDraftValidationService().validate(
                     packet = scriptDraft,
                     packetFile = scriptDraftPath.toString(),
                 )
-                writeJson(scriptValidationPath, scriptValidation)
+                writeCliJson(scriptValidationPath, scriptValidation)
                 val settingBuildVerdict = when {
                     scriptValidation?.verdict == "FAIL" -> "FAIL"
                     settingResult.findings.any { it.severity == "CRITICAL" || it.severity == "MAJOR" } -> "FAIL"
@@ -993,7 +1002,7 @@ class Cli {
                     findings = settingResult.findings,
                     evidence = settingResult.evidence.withValidationFindingCount(scriptValidation?.findingCount ?: 0),
                 )
-                writeJson(settingBuildReportPath, settingBuildReport)
+                writeCliJson(settingBuildReportPath, settingBuildReport)
                 addStageFailure(
                     findings = findings,
                     verdict = settingBuildReport?.verdict.orEmpty(),
@@ -1013,7 +1022,7 @@ class Cli {
                     settingBuildReportFile = settingBuildReportPath.toString(),
                     briefId = options["storyboard-brief"] ?: "",
                 )
-                writeJson(planningBriefPath, planningBrief)
+                writeCliJson(planningBriefPath, planningBrief)
                 addStageFailure(
                     findings = findings,
                     verdict = planningBrief?.verdict.orEmpty(),
@@ -1030,7 +1039,7 @@ class Cli {
                     planningBriefFile = planningBriefPath.toString(),
                     draftId = options["storyboard-draft"] ?: "",
                 )
-                writeJson(storyboardDraftPath, storyboardDraft)
+                writeCliJson(storyboardDraftPath, storyboardDraft)
 
                 storyboardDraftValidation = StoryboardPacketDraftValidationService().validate(
                     storyboardPlanningBrief = planningBrief ?: error("Missing planning brief"),
@@ -1038,7 +1047,7 @@ class Cli {
                     storyboardPlanningBriefFile = planningBriefPath.toString(),
                     storyboardPacketDraftFile = storyboardDraftPath.toString(),
                 )
-                writeJson(storyboardDraftValidationPath, storyboardDraftValidation)
+                writeCliJson(storyboardDraftValidationPath, storyboardDraftValidation)
                 addStageFailure(
                     findings = findings,
                     verdict = storyboardDraftValidation?.verdict.orEmpty(),
@@ -1056,7 +1065,7 @@ class Cli {
                     storyboardPacketDraftFile = storyboardDraftPath.toString(),
                     storyboardPacketDraftReportFile = storyboardDraftValidationPath.toString(),
                 )
-                writeJson(storyboardReviewPath, storyboardReview)
+                writeCliJson(storyboardReviewPath, storyboardReview)
                 addStageFailure(
                     findings = findings,
                     verdict = storyboardReview?.verdict.orEmpty(),
@@ -1072,7 +1081,7 @@ class Cli {
                     preflightId = options["human-review-preflight"] ?: "",
                     storyboardPacketReviewFile = storyboardReviewPath.toString(),
                 )
-                writeJson(humanReviewPreflightPath, humanReviewPreflight)
+                writeCliJson(humanReviewPreflightPath, humanReviewPreflight)
                 addStageFailure(
                     findings = findings,
                     verdict = humanReviewPreflight?.verdict.orEmpty(),
@@ -1092,7 +1101,7 @@ class Cli {
                     storyboardHumanReviewPreflightFile = humanReviewPreflightPath.toString(),
                     auditId = options["story-movement-audit"] ?: "",
                 )
-                writeJson(storyMovementAuditPath, storyMovementAudit)
+                writeCliJson(storyMovementAuditPath, storyMovementAudit)
                 addStageFailure(
                     findings = findings,
                     verdict = storyMovementAudit?.verdict.orEmpty(),
@@ -1114,7 +1123,7 @@ class Cli {
                     storyboardStoryMovementAuditFile = storyMovementAuditPath.toString(),
                     packetId = options["reviewable-storyboard"] ?: "",
                 )
-                writeJson(reviewableStoryboardPath, reviewableStoryboard)
+                writeCliJson(reviewableStoryboardPath, reviewableStoryboard)
                 addStageFailure(
                     findings = findings,
                     verdict = reviewableStoryboard?.verdict.orEmpty(),
@@ -1130,7 +1139,7 @@ class Cli {
                     reviewableStoryboardPacketFile = reviewableStoryboardPath.toString(),
                     proofId = options["proof"] ?: "",
                 )
-                writeJson(proofPath, proof)
+                writeCliJson(proofPath, proof)
                 addStageFailure(
                     findings = findings,
                     verdict = proof?.verdict.orEmpty(),
@@ -1216,7 +1225,7 @@ class Cli {
                 ).sum(),
             ),
         )
-        writeJson(reportPath, report)
+        writeCliJson(reportPath, report)
         printSettingImageFacingProofPreviewBuildReport(report)
         return if (report.verdict == "FAIL") 1 else 0
     }
@@ -1277,13 +1286,13 @@ class Cli {
     }
 
     private fun validateScriptPacketDraft(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("packet"))
-        val packet = readJson<ScriptPacketDraft>(packetPath)
+        val packetPath = Path.of(options.requiredCliOption("packet"))
+        val packet = readCliJson<ScriptPacketDraft>(packetPath)
         val report = ScriptPacketDraftValidationService().validate(
             packet = packet,
             packetFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("segments=${report.segmentCount}")
@@ -1295,18 +1304,18 @@ class Cli {
     }
 
     private fun validateScriptPacketSourceBinding(options: Map<String, String>): Int {
-        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
-        val preflightPath = Path.of(options.required("script-packet-preflight"))
-        val acceptedPacketPath = Path.of(options.required("accepted-draft-packet"))
+        val scriptPacketPath = Path.of(options.requiredCliOption("script-packet-draft"))
+        val preflightPath = Path.of(options.requiredCliOption("script-packet-preflight"))
+        val acceptedPacketPath = Path.of(options.requiredCliOption("accepted-draft-packet"))
         val report = ScriptPacketDraftSourceBindingValidationService().validate(
-            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
-            scriptPacketPreflight = readJson<NovelizationScriptPacketPreflightReport>(preflightPath),
-            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
+            scriptPacketDraft = readCliJson<ScriptPacketDraft>(scriptPacketPath),
+            scriptPacketPreflight = readCliJson<NovelizationScriptPacketPreflightReport>(preflightPath),
+            acceptedDraftPacket = readCliJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
             scriptPacketDraftFile = scriptPacketPath.toString(),
             scriptPacketPreflightFile = preflightPath.toString(),
             acceptedDraftPacketFile = acceptedPacketPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("scriptPacketId=${report.scriptPacketId}")
         println("acceptedDraftPacketId=${report.acceptedDraftPacketId}")
@@ -1321,18 +1330,18 @@ class Cli {
     }
 
     private fun validateScriptPacketStructureBridge(options: Map<String, String>): Int {
-        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
-        val preflightPath = Path.of(options.required("script-packet-preflight"))
-        val acceptedPacketPath = Path.of(options.required("accepted-draft-packet"))
+        val scriptPacketPath = Path.of(options.requiredCliOption("script-packet-draft"))
+        val preflightPath = Path.of(options.requiredCliOption("script-packet-preflight"))
+        val acceptedPacketPath = Path.of(options.requiredCliOption("accepted-draft-packet"))
         val report = ScriptPacketDraftStructureBridgeService().validate(
-            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
-            scriptPacketPreflight = readJson<NovelizationScriptPacketPreflightReport>(preflightPath),
-            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
+            scriptPacketDraft = readCliJson<ScriptPacketDraft>(scriptPacketPath),
+            scriptPacketPreflight = readCliJson<NovelizationScriptPacketPreflightReport>(preflightPath),
+            acceptedDraftPacket = readCliJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
             scriptPacketDraftFile = scriptPacketPath.toString(),
             scriptPacketPreflightFile = preflightPath.toString(),
             acceptedDraftPacketFile = acceptedPacketPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("scriptPacketId=${report.scriptPacketId}")
         println("sourceBindingVerdict=${report.sourceBindingVerdict}")
@@ -1349,17 +1358,17 @@ class Cli {
     }
 
     private fun createAcceptedScriptPacketHandoffPacket(options: Map<String, String>): Int {
-        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
-        val bridgeReportPath = Path.of(options.required("structure-bridge-report"))
+        val scriptPacketPath = Path.of(options.requiredCliOption("script-packet-draft"))
+        val bridgeReportPath = Path.of(options.requiredCliOption("structure-bridge-report"))
         val scriptPacketText = Files.readString(scriptPacketPath).removePrefix("\uFEFF")
         val report = AcceptedScriptPacketHandoffPacketService().build(
             scriptPacketDraftText = scriptPacketText,
-            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
-            structureBridgeReport = readJson<ScriptPacketDraftStructureBridgeReport>(bridgeReportPath),
+            scriptPacketDraft = readCliJson<ScriptPacketDraft>(scriptPacketPath),
+            structureBridgeReport = readCliJson<ScriptPacketDraftStructureBridgeReport>(bridgeReportPath),
             scriptPacketDraftFile = scriptPacketPath.toString(),
             structureBridgeReportFile = bridgeReportPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
@@ -1376,13 +1385,13 @@ class Cli {
     }
 
     private fun validateStoryboardPlanningPreflight(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("accepted-script-packet"))
+        val packetPath = Path.of(options.requiredCliOption("accepted-script-packet"))
         val report = StoryboardPlanningPreflightService().validate(
-            acceptedScriptPacket = readJson<AcceptedScriptPacketHandoffPacket>(packetPath),
+            acceptedScriptPacket = readCliJson<AcceptedScriptPacketHandoffPacket>(packetPath),
             preflightId = options["preflight"] ?: "",
             acceptedScriptPacketFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
@@ -1401,16 +1410,16 @@ class Cli {
     }
 
     private fun createStoryboardPlanningBrief(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("accepted-script-packet"))
-        val preflightPath = Path.of(options.required("storyboard-planning-preflight"))
+        val packetPath = Path.of(options.requiredCliOption("accepted-script-packet"))
+        val preflightPath = Path.of(options.requiredCliOption("storyboard-planning-preflight"))
         val report = StoryboardPlanningBriefService().build(
-            acceptedScriptPacket = readJson<AcceptedScriptPacketHandoffPacket>(packetPath),
-            storyboardPlanningPreflight = readJson<StoryboardPlanningPreflightReport>(preflightPath),
+            acceptedScriptPacket = readCliJson<AcceptedScriptPacketHandoffPacket>(packetPath),
+            storyboardPlanningPreflight = readCliJson<StoryboardPlanningPreflightReport>(preflightPath),
             briefId = options["brief"] ?: "",
             acceptedScriptPacketFile = packetPath.toString(),
             storyboardPlanningPreflightFile = preflightPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("briefId=${report.briefId}")
         println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
@@ -1430,15 +1439,15 @@ class Cli {
     }
 
     private fun validateStoryboardPacketDraft(options: Map<String, String>): Int {
-        val briefPath = Path.of(options.required("storyboard-planning-brief"))
-        val draftPath = Path.of(options.required("storyboard-packet-draft"))
+        val briefPath = Path.of(options.requiredCliOption("storyboard-planning-brief"))
+        val draftPath = Path.of(options.requiredCliOption("storyboard-packet-draft"))
         val report = StoryboardPacketDraftValidationService().validate(
-            storyboardPlanningBrief = readJson<StoryboardPlanningBrief>(briefPath),
-            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
+            storyboardPlanningBrief = readCliJson<StoryboardPlanningBrief>(briefPath),
+            storyboardPacketDraft = readCliJson<StoryboardPacketDraft>(draftPath),
             storyboardPlanningBriefFile = briefPath.toString(),
             storyboardPacketDraftFile = draftPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("storyboardPlanningBriefId=${report.storyboardPlanningBriefId}")
         println("storyboardPacketDraftId=${report.storyboardPacketDraftId}")
@@ -1460,16 +1469,16 @@ class Cli {
     }
 
     private fun createStoryboardPacketReview(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("storyboard-packet-draft"))
-        val reportPath = Path.of(options.required("storyboard-packet-draft-report"))
+        val draftPath = Path.of(options.requiredCliOption("storyboard-packet-draft"))
+        val reportPath = Path.of(options.requiredCliOption("storyboard-packet-draft-report"))
         val review = StoryboardPacketReviewService().create(
-            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
-            storyboardPacketDraftReport = readJson<StoryboardPacketDraftValidationReport>(reportPath),
+            storyboardPacketDraft = readCliJson<StoryboardPacketDraft>(draftPath),
+            storyboardPacketDraftReport = readCliJson<StoryboardPacketDraftValidationReport>(reportPath),
             reviewId = options["review"] ?: "",
             storyboardPacketDraftFile = draftPath.toString(),
             storyboardPacketDraftReportFile = reportPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), review) }
+        options["out"]?.let { writeCliJson(Path.of(it), review) }
         println("verdict=${review.verdict}")
         println("reviewId=${review.reviewId}")
         println("reviewStatus=${review.reviewStatus}")
@@ -1493,13 +1502,13 @@ class Cli {
     }
 
     private fun validateStoryboardPacketHumanReviewPreflight(options: Map<String, String>): Int {
-        val reviewPath = Path.of(options.required("storyboard-packet-review"))
+        val reviewPath = Path.of(options.requiredCliOption("storyboard-packet-review"))
         val report = StoryboardPacketHumanReviewPreflightService().validate(
-            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
+            storyboardPacketReview = readCliJson<StoryboardPacketReviewPacket>(reviewPath),
             preflightId = options["preflight"] ?: "",
             storyboardPacketReviewFile = reviewPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
@@ -1520,19 +1529,19 @@ class Cli {
     }
 
     private fun auditStoryboardStoryMovement(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("storyboard-packet-draft"))
-        val reviewPath = Path.of(options.required("storyboard-packet-review"))
-        val preflightPath = Path.of(options.required("storyboard-human-review-preflight"))
+        val draftPath = Path.of(options.requiredCliOption("storyboard-packet-draft"))
+        val reviewPath = Path.of(options.requiredCliOption("storyboard-packet-review"))
+        val preflightPath = Path.of(options.requiredCliOption("storyboard-human-review-preflight"))
         val report = StoryboardStoryMovementAuditService().audit(
-            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
-            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
-            storyboardHumanReviewPreflight = readJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
+            storyboardPacketDraft = readCliJson<StoryboardPacketDraft>(draftPath),
+            storyboardPacketReview = readCliJson<StoryboardPacketReviewPacket>(reviewPath),
+            storyboardHumanReviewPreflight = readCliJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
             storyboardPacketDraftFile = draftPath.toString(),
             storyboardPacketReviewFile = reviewPath.toString(),
             storyboardHumanReviewPreflightFile = preflightPath.toString(),
             auditId = options["audit"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("auditId=${report.auditId}")
         println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
@@ -1558,22 +1567,22 @@ class Cli {
     }
 
     private fun createReviewableStoryboardPacket(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("storyboard-packet-draft"))
-        val reviewPath = Path.of(options.required("storyboard-packet-review"))
-        val preflightPath = Path.of(options.required("storyboard-human-review-preflight"))
-        val auditPath = Path.of(options.required("storyboard-story-movement-audit"))
+        val draftPath = Path.of(options.requiredCliOption("storyboard-packet-draft"))
+        val reviewPath = Path.of(options.requiredCliOption("storyboard-packet-review"))
+        val preflightPath = Path.of(options.requiredCliOption("storyboard-human-review-preflight"))
+        val auditPath = Path.of(options.requiredCliOption("storyboard-story-movement-audit"))
         val packet = ReviewableStoryboardPacketService().create(
-            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
-            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
-            storyboardHumanReviewPreflight = readJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
-            storyboardStoryMovementAudit = readJson<StoryboardStoryMovementAuditReport>(auditPath),
+            storyboardPacketDraft = readCliJson<StoryboardPacketDraft>(draftPath),
+            storyboardPacketReview = readCliJson<StoryboardPacketReviewPacket>(reviewPath),
+            storyboardHumanReviewPreflight = readCliJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
+            storyboardStoryMovementAudit = readCliJson<StoryboardStoryMovementAuditReport>(auditPath),
             storyboardPacketDraftFile = draftPath.toString(),
             storyboardPacketReviewFile = reviewPath.toString(),
             storyboardHumanReviewPreflightFile = preflightPath.toString(),
             storyboardStoryMovementAuditFile = auditPath.toString(),
             packetId = options["packet"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("verdict=${packet.verdict}")
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
@@ -1600,13 +1609,13 @@ class Cli {
     }
 
     private fun createImageFacingDeliveryProof(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("reviewable-storyboard-packet"))
+        val packetPath = Path.of(options.requiredCliOption("reviewable-storyboard-packet"))
         val proof = ImageFacingDeliveryProofService().create(
-            reviewableStoryboardPacket = readJson(packetPath),
+            reviewableStoryboardPacket = readCliJson<ReviewableStoryboardPacket>(packetPath),
             reviewableStoryboardPacketFile = packetPath.toString(),
             proofId = options["proof"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), proof) }
+        options["out"]?.let { writeCliJson(Path.of(it), proof) }
         println("verdict=${proof.verdict}")
         println("proofId=${proof.proofId}")
         println("proofStatus=${proof.proofStatus}")
@@ -1634,17 +1643,17 @@ class Cli {
     }
 
     private fun createComicVideoPacket(options: Map<String, String>): Int {
-        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
+        val proofPath = Path.of(options.requiredCliOption("image-facing-delivery-proof"))
         val panelDurationMillis = options["panel-duration-ms"]?.toIntOrNull()
             ?: options["panel-duration-ms"]?.let { error("--panel-duration-ms must be an integer.") }
             ?: 3000
         val packet = ComicVideoPacketService().create(
-            imageFacingDeliveryProof = readJson<ImageFacingDeliveryProof>(proofPath),
+            imageFacingDeliveryProof = readCliJson<ImageFacingDeliveryProof>(proofPath),
             imageFacingDeliveryProofFile = proofPath.toString(),
             packetId = options["packet"] ?: "",
             panelDurationMillis = panelDurationMillis,
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
         println("sourceImageFacingDeliveryProofId=${packet.sourceImageFacingDeliveryProofId}")
@@ -1664,7 +1673,7 @@ class Cli {
 
     private fun createComicVideoPacketTemplate(options: Map<String, String>): Int {
         val packetId = options["packet"] ?: "comic-video-packet-template"
-        val out = Path.of(options.required("out"))
+        val out = Path.of(options.requiredCliOption("out"))
         val template = ComicVideoPacket(
             packetId = packetId,
             reviewableStoryboardPacketFile = options["reviewable-storyboard-packet"] ?: "",
@@ -1729,7 +1738,7 @@ class Cli {
                 "Template requires source ids, PASS source verdicts, and author-filled timeline details before validation can pass.",
             ),
         )
-        writeJson(out, template)
+        writeCliJson(out, template)
         println("wrote=$out")
         println("packetId=${template.packetId}")
         println("packetStatus=${template.packetStatus}")
@@ -1743,13 +1752,13 @@ class Cli {
     }
 
     private fun fillComicVideoVoiceTimeline(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("comic-video-packet"))
-        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val packetPath = Path.of(options.requiredCliOption("comic-video-packet"))
+        val fillPath = Path.of(options.requiredCliOption("voice-timeline-fill"))
         val packet = ComicVideoVoiceTimelineFillService().fill(
-            packet = readJson<ComicVideoPacket>(packetPath),
-            fill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+            packet = readCliJson<ComicVideoPacket>(packetPath),
+            fill = readCliJson<ComicVideoVoiceTimelineFill>(fillPath),
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
         println("sourcePacketFile=$packetPath")
@@ -1766,17 +1775,17 @@ class Cli {
     }
 
     private fun createComicVideoVoiceTimelineFillTemplate(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("comic-video-packet"))
-        val out = Path.of(options.required("out"))
+        val packetPath = Path.of(options.requiredCliOption("comic-video-packet"))
+        val out = Path.of(options.requiredCliOption("out"))
         val fill = ComicVideoVoiceTimelineFillService().createTemplate(
-            packet = readJson<ComicVideoPacket>(packetPath),
+            packet = readCliJson<ComicVideoPacket>(packetPath),
             fillId = options["fill"] ?: "",
             voiceId = options["voice-id"] ?: "voice-manual-001",
             characterId = options["character-id"] ?: "char-manual-001",
             displayName = options["display-name"] ?: "Manual Voice",
             voiceLabel = options["voice-label"] ?: "local-manual-voice",
         )
-        writeJson(out, fill)
+        writeCliJson(out, fill)
         println("wrote=$out")
         println("fillId=${fill.fillId}")
         println("sourceComicVideoPacketId=${fill.sourceComicVideoPacketId}")
@@ -1791,13 +1800,13 @@ class Cli {
     }
 
     private fun validateComicVideoPacket(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("comic-video-packet"))
+        val packetPath = Path.of(options.requiredCliOption("comic-video-packet"))
         val report = ComicVideoPacketValidationService().validate(
-            packet = readJson<ComicVideoPacket>(packetPath),
+            packet = readCliJson<ComicVideoPacket>(packetPath),
             packetFile = packetPath.toString(),
             validationId = options["validation"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("validationId=${report.validationId}")
         println("packetId=${report.packetId}")
@@ -1826,13 +1835,13 @@ class Cli {
     }
 
     private fun createComicVideoRenderHandoffManifest(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("comic-video-packet-validation"))
+        val validationPath = Path.of(options.requiredCliOption("comic-video-packet-validation"))
         val manifest = ComicVideoRenderHandoffManifestService().create(
-            validationReport = readJson<ComicVideoPacketValidationReport>(validationPath),
+            validationReport = readCliJson<ComicVideoPacketValidationReport>(validationPath),
             validationReportFile = validationPath.toString(),
             manifestId = options["manifest"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), manifest) }
+        options["out"]?.let { writeCliJson(Path.of(it), manifest) }
         println("verdict=${manifest.verdict}")
         println("manifestId=${manifest.manifestId}")
         println("manifestStatus=${manifest.manifestStatus}")
@@ -1856,21 +1865,21 @@ class Cli {
     }
 
     private fun createComicVideoProductionPackageDraft(options: Map<String, String>): Int {
-        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
-        val fillPath = Path.of(options.required("voice-timeline-fill"))
+        val proofPath = Path.of(options.requiredCliOption("image-facing-delivery-proof"))
+        val fillPath = Path.of(options.requiredCliOption("voice-timeline-fill"))
         val panelDurationMillis = options["panel-duration-ms"]?.toIntOrNull()
             ?: options["panel-duration-ms"]?.let { error("--panel-duration-ms must be an integer.") }
             ?: 3000
         val draft = ComicVideoProductionPackageDraftService().create(
-            imageFacingDeliveryProof = readJson<ImageFacingDeliveryProof>(proofPath),
-            voiceTimelineFill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+            imageFacingDeliveryProof = readCliJson<ImageFacingDeliveryProof>(proofPath),
+            voiceTimelineFill = readCliJson<ComicVideoVoiceTimelineFill>(fillPath),
             imageFacingDeliveryProofFile = proofPath.toString(),
             voiceTimelineFillFile = fillPath.toString(),
             packageId = options["package"] ?: "",
             packetId = options["packet"] ?: "",
             panelDurationMillis = panelDurationMillis,
         )
-        options["out"]?.let { writeJson(Path.of(it), draft) }
+        options["out"]?.let { writeCliJson(Path.of(it), draft) }
         println("verdict=${draft.verdict}")
         println("packageId=${draft.packageId}")
         println("packageStatus=${draft.packageStatus}")
@@ -1894,13 +1903,13 @@ class Cli {
     }
 
     private fun validateComicVideoProductionPackage(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("production-package-draft"))
+        val draftPath = Path.of(options.requiredCliOption("production-package-draft"))
         val report = ComicVideoProductionPackageValidationService().validate(
-            draft = readJson<ComicVideoProductionPackageDraft>(draftPath),
+            draft = readCliJson<ComicVideoProductionPackageDraft>(draftPath),
             draftFile = draftPath.toString(),
             validationId = options["validation"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("validationId=${report.validationId}")
         println("packageId=${report.packageId}")
@@ -1929,13 +1938,13 @@ class Cli {
     }
 
     private fun validateLocalStoryInputPack(options: Map<String, String>): Int {
-        val inputPath = Path.of(options.required("input"))
+        val inputPath = Path.of(options.requiredCliOption("input"))
         val report = LocalStoryInputPackValidationService().validate(
-            pack = readJson<LocalStoryInputPack>(inputPath),
+            pack = readCliJson<LocalStoryInputPack>(inputPath),
             packFile = inputPath.toString(),
             validationId = options["validation"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("validationId=${report.validationId}")
         println("packId=${report.packId}")
@@ -1960,8 +1969,8 @@ class Cli {
     }
 
     private fun validate09FoundationCardPack(options: Map<String, String>): Int {
-        val inputPath = Path.of(options.required("input"))
-        val outPath = Path.of(options.required("out"))
+        val inputPath = Path.of(options.requiredCliOption("input"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = FoundationCardPackValidationService().validateFile(
             inputPath = inputPath,
             outPath = outPath,
@@ -2013,9 +2022,9 @@ class Cli {
     }
 
     private fun review09FoundationCardPack(options: Map<String, String>): Int {
-        val packPath = Path.of(options.required("pack"))
-        val validationPath = Path.of(options.required("validation"))
-        val outPath = Path.of(options.required("out"))
+        val packPath = Path.of(options.requiredCliOption("pack"))
+        val validationPath = Path.of(options.requiredCliOption("validation"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = FoundationCardPackReviewService().reviewFile(
             packPath = packPath,
             validationPath = validationPath,
@@ -2080,16 +2089,16 @@ class Cli {
     }
 
     private fun draftLocalAssetPromptCards(options: Map<String, String>): Int {
-        val storyInputPath = Path.of(options.required("story-input"))
-        val storyValidationPath = Path.of(options.required("story-validation"))
+        val storyInputPath = Path.of(options.requiredCliOption("story-input"))
+        val storyValidationPath = Path.of(options.requiredCliOption("story-validation"))
         val draft = LocalAssetPromptCardDraftService().create(
-            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
-            storyValidationReport = readJson<LocalStoryInputPackValidationReport>(storyValidationPath),
+            storyInputPack = readCliJson<LocalStoryInputPack>(storyInputPath),
+            storyValidationReport = readCliJson<LocalStoryInputPackValidationReport>(storyValidationPath),
             storyInputPackFile = storyInputPath.toString(),
             storyValidationReportFile = storyValidationPath.toString(),
             draftId = options["draft"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), draft) }
+        options["out"]?.let { writeCliJson(Path.of(it), draft) }
         println("status=${draft.status}")
         println("draftId=${draft.draftId}")
         println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
@@ -2114,16 +2123,16 @@ class Cli {
     }
 
     private fun draftLocalRenderPackage(options: Map<String, String>): Int {
-        val storyInputPath = Path.of(options.required("story-input"))
-        val assetPromptCardsPath = Path.of(options.required("asset-prompt-cards"))
+        val storyInputPath = Path.of(options.requiredCliOption("story-input"))
+        val assetPromptCardsPath = Path.of(options.requiredCliOption("asset-prompt-cards"))
         val draft = LocalRenderPackageDraftService().create(
-            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
-            assetPromptCards = readJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
+            storyInputPack = readCliJson<LocalStoryInputPack>(storyInputPath),
+            assetPromptCards = readCliJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
             storyInputPackFile = storyInputPath.toString(),
             assetPromptCardsFile = assetPromptCardsPath.toString(),
             packageId = options["package"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), draft) }
+        options["out"]?.let { writeCliJson(Path.of(it), draft) }
         println("status=${draft.status}")
         println("packageId=${draft.packageId}")
         println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
@@ -2152,24 +2161,24 @@ class Cli {
     }
 
     private fun verifyLocalStoryVideoChain(options: Map<String, String>): Int {
-        val storyInputPath = Path.of(options.required("story-input"))
-        val outputDir = Path.of(options.required("output-dir"))
-        val reportPath = Path.of(options.required("out"))
+        val storyInputPath = Path.of(options.requiredCliOption("story-input"))
+        val outputDir = Path.of(options.requiredCliOption("output-dir"))
+        val reportPath = Path.of(options.requiredCliOption("out"))
         val result = LocalStoryVideoChainVerificationService().verify(
-            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            storyInputPack = readCliJson<LocalStoryInputPack>(storyInputPath),
             storyInputPackFile = storyInputPath.toString(),
             outputDir = outputDir.toString(),
             chainReportFile = reportPath.toString(),
             chainId = options["chain"] ?: "",
         )
-        writeJson(Path.of(result.report.generatedFiles.storyValidationReportFile), result.storyValidationReport)
+        writeCliJson(Path.of(result.report.generatedFiles.storyValidationReportFile), result.storyValidationReport)
         result.assetPromptCardsDraft?.let {
-            writeJson(Path.of(result.report.generatedFiles.assetPromptCardsFile), it)
+            writeCliJson(Path.of(result.report.generatedFiles.assetPromptCardsFile), it)
         }
         result.localRenderPackageDraft?.let {
-            writeJson(Path.of(result.report.generatedFiles.localRenderPackageFile), it)
+            writeCliJson(Path.of(result.report.generatedFiles.localRenderPackageFile), it)
         }
-        writeJson(reportPath, result.report)
+        writeCliJson(reportPath, result.report)
         println("status=${result.report.status}")
         println("chainId=${result.report.chainId}")
         println("sourceStoryInputPackId=${result.report.sourceStoryInputPackId}")
@@ -2206,23 +2215,23 @@ class Cli {
     }
 
     private fun draftLocalStoryVideoPreviewHandoff(options: Map<String, String>): Int {
-        val chainReportPath = Path.of(options.required("chain-report"))
-        val renderPackagePath = Path.of(options.required("render-package"))
-        val assetPromptCardsPath = Path.of(options.required("asset-prompt-cards"))
-        val storyInputPath = Path.of(options.required("story-input"))
-        val outPath = Path.of(options.required("out"))
+        val chainReportPath = Path.of(options.requiredCliOption("chain-report"))
+        val renderPackagePath = Path.of(options.requiredCliOption("render-package"))
+        val assetPromptCardsPath = Path.of(options.requiredCliOption("asset-prompt-cards"))
+        val storyInputPath = Path.of(options.requiredCliOption("story-input"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val draft = LocalStoryVideoPreviewHandoffDraftService().create(
-            chainReport = readJson<LocalStoryVideoChainReport>(chainReportPath),
-            renderPackage = readJson<LocalRenderPackageDraft>(renderPackagePath),
-            assetPromptCards = readJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
-            storyInputPack = readJson<LocalStoryInputPack>(storyInputPath),
+            chainReport = readCliJson<LocalStoryVideoChainReport>(chainReportPath),
+            renderPackage = readCliJson<LocalRenderPackageDraft>(renderPackagePath),
+            assetPromptCards = readCliJson<LocalAssetPromptCardsDraft>(assetPromptCardsPath),
+            storyInputPack = readCliJson<LocalStoryInputPack>(storyInputPath),
             chainReportFile = chainReportPath.toString(),
             renderPackageFile = renderPackagePath.toString(),
             assetPromptCardsFile = assetPromptCardsPath.toString(),
             storyInputFile = storyInputPath.toString(),
             handoffId = options["handoff"] ?: "",
         )
-        writeJson(outPath, draft)
+        writeCliJson(outPath, draft)
         println("status=${draft.status}")
         println("handoffId=${draft.handoffId}")
         println("sourceStoryInputPackId=${draft.sourceStoryInputPackId}")
@@ -2254,14 +2263,14 @@ class Cli {
     }
 
     private fun reviewLocalStoryVideoPreviewHandoff(options: Map<String, String>): Int {
-        val handoffPath = Path.of(options.required("handoff"))
-        val outPath = Path.of(options.required("out"))
+        val handoffPath = Path.of(options.requiredCliOption("handoff"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalStoryVideoPreviewHandoffReviewService().review(
-            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            handoff = readCliJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
             handoffFile = handoffPath.toString(),
             reviewId = options["review"] ?: "",
         )
-        writeJson(outPath, report)
+        writeCliJson(outPath, report)
         val checksPass = report.checks.count { it.status == "PASS" }
         val checksFail = report.checks.count { it.status != "PASS" }
         println("verdict=${report.verdict}")
@@ -2295,17 +2304,17 @@ class Cli {
     }
 
     private fun dryRunLocalRendererAdapter(options: Map<String, String>): Int {
-        val handoffPath = Path.of(options.required("handoff"))
-        val reviewPath = Path.of(options.required("review"))
-        val outPath = Path.of(options.required("out"))
+        val handoffPath = Path.of(options.requiredCliOption("handoff"))
+        val reviewPath = Path.of(options.requiredCliOption("review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererAdapterDryRunService().dryRun(
-            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
-            review = readJson<LocalStoryVideoPreviewHandoffReviewReport>(reviewPath),
+            handoff = readCliJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            review = readCliJson<LocalStoryVideoPreviewHandoffReviewReport>(reviewPath),
             handoffFile = handoffPath.toString(),
             reviewFile = reviewPath.toString(),
             dryRunId = options["dry-run-id"] ?: "",
         )
-        writeJson(outPath, report)
+        writeCliJson(outPath, report)
         val checksPass = report.checks.count { it.status == "PASS" }
         val checksFail = report.checks.count { it.status != "PASS" }
         println("verdict=${report.verdict}")
@@ -2342,14 +2351,14 @@ class Cli {
     }
 
     private fun planLocalRendererAdapterImplementation(options: Map<String, String>): Int {
-        val dryRunReportPath = Path.of(options.required("dry-run-report"))
-        val outPath = Path.of(options.required("out"))
+        val dryRunReportPath = Path.of(options.requiredCliOption("dry-run-report"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val plan = LocalRendererAdapterImplementationPlanService().plan(
-            dryRunReport = readJson<LocalRendererAdapterDryRunReport>(dryRunReportPath),
+            dryRunReport = readCliJson<LocalRendererAdapterDryRunReport>(dryRunReportPath),
             dryRunReportFile = dryRunReportPath.toString(),
             planId = options["plan"] ?: "",
         )
-        writeJson(outPath, plan)
+        writeCliJson(outPath, plan)
         val checksPass = plan.sourceValidationChecks.count { it.status == "PASS" }
         val checksFail = plan.sourceValidationChecks.count { it.status != "PASS" }
         println("verdict=${plan.verdict}")
@@ -2385,14 +2394,14 @@ class Cli {
     }
 
     private fun reviewLocalRendererAdapterImplementationPlan(options: Map<String, String>): Int {
-        val planPath = Path.of(options.required("plan"))
-        val outPath = Path.of(options.required("out"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererAdapterImplementationPlanReviewService().review(
-            plan = readJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
+            plan = readCliJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
             planFile = planPath.toString(),
             reviewId = options["review"] ?: "",
         )
-        writeJson(outPath, report)
+        writeCliJson(outPath, report)
         val checksPass = report.checks.count { it.status == "PASS" }
         val checksFail = report.checks.count { it.status != "PASS" }
         println("verdict=${report.verdict}")
@@ -2432,20 +2441,20 @@ class Cli {
     }
 
     private fun draftLocalRendererAdapterImplementation(options: Map<String, String>): Int {
-        val handoffPath = Path.of(options.required("handoff"))
-        val planPath = Path.of(options.required("plan"))
-        val planReviewPath = Path.of(options.required("plan-review"))
-        val outPath = Path.of(options.required("out"))
+        val handoffPath = Path.of(options.requiredCliOption("handoff"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val planReviewPath = Path.of(options.requiredCliOption("plan-review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val draft = LocalRendererAdapterImplementationDraftService().draft(
-            handoff = readJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
-            plan = readJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
-            planReview = readJson<LocalRendererAdapterImplementationPlanReviewReport>(planReviewPath),
+            handoff = readCliJson<LocalStoryVideoPreviewHandoffDraft>(handoffPath),
+            plan = readCliJson<LocalRendererAdapterImplementationPlanDraft>(planPath),
+            planReview = readCliJson<LocalRendererAdapterImplementationPlanReviewReport>(planReviewPath),
             handoffFile = handoffPath.toString(),
             planFile = planPath.toString(),
             planReviewFile = planReviewPath.toString(),
             draftId = options["draft"] ?: "",
         )
-        writeJson(outPath, draft)
+        writeCliJson(outPath, draft)
         val checksPass = draft.checks.count { it.status == "PASS" }
         val checksFail = draft.checks.count { it.status != "PASS" }
         println("verdict=${draft.verdict}")
@@ -2487,8 +2496,8 @@ class Cli {
     }
 
     private fun reviewLocalRendererAdapterImplementationDraft(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val outPath = Path.of(options.required("out"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererAdapterImplementationDraftReviewService().reviewFile(
             draftPath = draftPath,
             outPath = outPath,
@@ -2518,9 +2527,9 @@ class Cli {
     }
 
     private fun planLocalRendererManifestDraft(options: Map<String, String>): Int {
-        val implementationDraftPath = Path.of(options.required("implementation-draft"))
-        val draftReviewPath = Path.of(options.required("draft-review"))
-        val outPath = Path.of(options.required("out"))
+        val implementationDraftPath = Path.of(options.requiredCliOption("implementation-draft"))
+        val draftReviewPath = Path.of(options.requiredCliOption("draft-review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val plan = LocalRendererManifestDraftPlanService().planFile(
             implementationDraftPath = implementationDraftPath,
             draftReviewPath = draftReviewPath,
@@ -2568,8 +2577,8 @@ class Cli {
     }
 
     private fun reviewLocalRendererManifestDraftPlan(options: Map<String, String>): Int {
-        val planPath = Path.of(options.required("plan"))
-        val outPath = Path.of(options.required("out"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererManifestDraftPlanReviewService().reviewFile(
             planPath = planPath,
             outPath = outPath,
@@ -2612,9 +2621,9 @@ class Cli {
     }
 
     private fun draftLocalRendererManifestJson(options: Map<String, String>): Int {
-        val planPath = Path.of(options.required("plan"))
-        val planReviewPath = Path.of(options.required("plan-review"))
-        val outPath = Path.of(options.required("out"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val planReviewPath = Path.of(options.requiredCliOption("plan-review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val draft = LocalRendererManifestDraftJsonDraftService().draftFile(
             planPath = planPath,
             planReviewPath = planReviewPath,
@@ -2660,8 +2669,8 @@ class Cli {
     }
 
     private fun reviewLocalRendererManifestDraftJson(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val outPath = Path.of(options.required("out"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererManifestDraftJsonReviewService().reviewFile(
             draftPath = draftPath,
             outPath = outPath,
@@ -2705,9 +2714,9 @@ class Cli {
     }
 
     private fun dryRunLocalRendererManifestDraftJsonAdapter(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val reviewPath = Path.of(options.required("review"))
-        val outPath = Path.of(options.required("out"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val reviewPath = Path.of(options.requiredCliOption("review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererManifestDraftJsonAdapterDryRunService().dryRunFile(
             draftPath = draftPath,
             reviewPath = reviewPath,
@@ -2758,8 +2767,8 @@ class Cli {
     }
 
     private fun planLocalRendererManifestAdapterContract(options: Map<String, String>): Int {
-        val dryRunReportPath = Path.of(options.required("dry-run-report"))
-        val outPath = Path.of(options.required("out"))
+        val dryRunReportPath = Path.of(options.requiredCliOption("dry-run-report"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val plan = LocalRendererManifestAdapterContractPlanService().planFile(
             dryRunReportPath = dryRunReportPath,
             outPath = outPath,
@@ -2810,8 +2819,8 @@ class Cli {
     }
 
     private fun reviewLocalRendererManifestAdapterContractPlan(options: Map<String, String>): Int {
-        val planPath = Path.of(options.required("plan"))
-        val outPath = Path.of(options.required("out"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val report = LocalRendererManifestAdapterContractPlanReviewService().reviewFile(
             planPath = planPath,
             outPath = outPath,
@@ -2861,9 +2870,9 @@ class Cli {
     }
 
     private fun draftLocalRendererManifestAdapterContract(options: Map<String, String>): Int {
-        val planPath = Path.of(options.required("plan"))
-        val planReviewPath = Path.of(options.required("plan-review"))
-        val outPath = Path.of(options.required("out"))
+        val planPath = Path.of(options.requiredCliOption("plan"))
+        val planReviewPath = Path.of(options.requiredCliOption("plan-review"))
+        val outPath = Path.of(options.requiredCliOption("out"))
         val draft = LocalRendererManifestAdapterContractDraftService().draftFile(
             planPath = planPath,
             planReviewPath = planReviewPath,
@@ -2917,8 +2926,8 @@ class Cli {
     }
 
     private fun renderComicVideoLocal(options: Map<String, String>): Int {
-        val manifestPath = Path.of(options.required("render-handoff-manifest"))
-        val outputVideoPath = Path.of(options.required("out-video"))
+        val manifestPath = Path.of(options.requiredCliOption("render-handoff-manifest"))
+        val outputVideoPath = Path.of(options.requiredCliOption("out-video"))
         val defaultWorkDir = outputVideoPath
             .toAbsolutePath()
             .normalize()
@@ -2926,7 +2935,7 @@ class Cli {
             ?.resolve(outputVideoPath.fileName.toString().removeSuffix(".mp4") + "_work")
             ?: Path.of("out", "comic_video_local_render_work")
         val report = ComicVideoLocalRendererService().render(
-            manifest = readJson<ComicVideoRenderHandoffManifest>(manifestPath),
+            manifest = readCliJson<ComicVideoRenderHandoffManifest>(manifestPath),
             manifestFile = manifestPath.toString(),
             outputVideoPath = outputVideoPath,
             workDir = Path.of(options["work-dir"] ?: defaultWorkDir.toString()),
@@ -2934,7 +2943,7 @@ class Cli {
             dryRun = options["dry-run"] == "true",
             renderId = options["render"] ?: "",
         )
-        options["report-out"]?.let { writeJson(Path.of(it), report) }
+        options["report-out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("renderId=${report.renderId}")
         println("renderStatus=${report.renderStatus}")
@@ -2955,9 +2964,9 @@ class Cli {
     }
 
     private fun buildComicVideoLocalPreview(options: Map<String, String>): Int {
-        val proofPath = Path.of(options.required("image-facing-delivery-proof"))
-        val fillPath = Path.of(options.required("voice-timeline-fill"))
-        val outputDir = Path.of(options.required("output-dir")).toAbsolutePath().normalize()
+        val proofPath = Path.of(options.requiredCliOption("image-facing-delivery-proof"))
+        val fillPath = Path.of(options.requiredCliOption("voice-timeline-fill"))
+        val outputDir = Path.of(options.requiredCliOption("output-dir")).toAbsolutePath().normalize()
         val buildId = options["build"] ?: "comic-video-local-preview-build"
         val packetId = options["packet"] ?: "$buildId-packet"
         val fillTemplateId = options["fill-template"] ?: "$buildId-voice-timeline-fill-template"
@@ -2995,7 +3004,7 @@ class Cli {
 
         val report = try {
             Files.createDirectories(outputDir)
-            val proof = readJson<ImageFacingDeliveryProof>(proofPath)
+            val proof = readCliJson<ImageFacingDeliveryProof>(proofPath)
             proofVerdict = proof.verdict
             val packet = ComicVideoPacketService().create(
                 imageFacingDeliveryProof = proof,
@@ -3004,7 +3013,7 @@ class Cli {
                 panelDurationMillis = panelDurationMillis,
             )
             packetPanelCount = packet.panelTracks.size
-            writeJson(packetPath, packet)
+            writeCliJson(packetPath, packet)
 
             val fillTemplate = ComicVideoVoiceTimelineFillService().createTemplate(
                 packet = packet,
@@ -3014,17 +3023,17 @@ class Cli {
                 displayName = options["display-name"] ?: "Manual Voice",
                 voiceLabel = options["voice-label"] ?: "local-manual-voice",
             )
-            writeJson(fillTemplatePath, fillTemplate)
+            writeCliJson(fillTemplatePath, fillTemplate)
 
             val filledPacket = ComicVideoVoiceTimelineFillService().fill(
                 packet = packet,
-                fill = readJson<ComicVideoVoiceTimelineFill>(fillPath),
+                fill = readCliJson<ComicVideoVoiceTimelineFill>(fillPath),
             )
             voiceCastCount = filledPacket.voiceCast.size
             audioCueCount = filledPacket.audioCues.size
             subtitleCueCount = filledPacket.subtitleCues.size
             totalDurationMillis = filledPacket.timing.totalDurationMillis
-            writeJson(filledPacketPath, filledPacket)
+            writeCliJson(filledPacketPath, filledPacket)
 
             val validation = ComicVideoPacketValidationService().validate(
                 packet = filledPacket,
@@ -3032,7 +3041,7 @@ class Cli {
                 validationId = validationId,
             )
             packetValidationVerdict = validation.verdict
-            writeJson(validationPath, validation)
+            writeCliJson(validationPath, validation)
             if (validation.verdict == "FAIL") {
                 findings += buildFinding(
                     ruleId = "COMIC_VIDEO_PACKET_VALIDATION_FAILED",
@@ -3050,7 +3059,7 @@ class Cli {
                 manifestId = manifestId,
             )
             manifestVerdict = manifest.verdict
-            writeJson(manifestPath, manifest)
+            writeCliJson(manifestPath, manifest)
             if (manifest.verdict == "FAIL") {
                 findings += buildFinding(
                     ruleId = "COMIC_VIDEO_RENDER_HANDOFF_FAILED",
@@ -3072,7 +3081,7 @@ class Cli {
                 renderId = renderId,
             )
             localRenderVerdict = renderReport?.verdict.orEmpty()
-            writeJson(renderReportPath, renderReport)
+            writeCliJson(renderReportPath, renderReport)
             if (renderReport?.verdict == "FAIL") {
                 findings += buildFinding(
                     ruleId = "COMIC_VIDEO_LOCAL_RENDER_FAILED",
@@ -3170,7 +3179,7 @@ class Cli {
             )
         }
 
-        writeJson(buildReportPath, report)
+        writeCliJson(buildReportPath, report)
         printComicVideoLocalPreviewBuildReport(report)
         return if (report.verdict == "FAIL") 1 else 0
     }
@@ -3285,14 +3294,14 @@ class Cli {
     }
 
     private fun buildSettingComicVideoLocalPreview(options: Map<String, String>): Int {
-        val settingPackPath = Path.of(options.required("setting-pack"))
-        val fillPath = Path.of(options.required("voice-timeline-fill"))
-        val outputDir = Path.of(options.required("output-dir")).toAbsolutePath().normalize()
+        val settingPackPath = Path.of(options.requiredCliOption("setting-pack"))
+        val fillPath = Path.of(options.requiredCliOption("voice-timeline-fill"))
+        val outputDir = Path.of(options.requiredCliOption("output-dir")).toAbsolutePath().normalize()
         val buildId = options["build"] ?: "setting-comic-video-local-preview-build"
         val settingOutputDir = outputDir.resolve("setting_image_facing_preview")
         val videoOutputDir = outputDir.resolve("comic_video_local_preview")
         val proofPath = settingOutputDir.resolve("image_facing_delivery_proof.json")
-        val fill = readJson<ComicVideoVoiceTimelineFill>(fillPath)
+        val fill = readCliJson<ComicVideoVoiceTimelineFill>(fillPath)
         val packetId = options["packet"]
             ?: fill.sourceComicVideoPacketId.ifBlank { "$buildId-packet" }
 
@@ -3352,15 +3361,15 @@ class Cli {
     }
 
     private fun validateStoryboardPacketHumanReviewDecision(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("human-review-preflight"))
-        val decisionPath = Path.of(options.required("human-review-decision"))
+        val preflightPath = Path.of(options.requiredCliOption("human-review-preflight"))
+        val decisionPath = Path.of(options.requiredCliOption("human-review-decision"))
         val report = StoryboardPacketHumanReviewDecisionIntakeService().validate(
-            humanReviewPreflight = readJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
-            humanReviewDecision = readJson<StoryboardPacketHumanReviewDecision>(decisionPath),
+            humanReviewPreflight = readCliJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
+            humanReviewDecision = readCliJson<StoryboardPacketHumanReviewDecision>(decisionPath),
             humanReviewPreflightFile = preflightPath.toString(),
             humanReviewDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("preflightId=${report.preflightId}")
@@ -3381,16 +3390,16 @@ class Cli {
     }
 
     private fun validateAssetCandidatePreflight(options: Map<String, String>): Int {
-        val intakePath = Path.of(options.required("human-review-decision-intake"))
-        val reviewPath = Path.of(options.required("storyboard-packet-review"))
+        val intakePath = Path.of(options.requiredCliOption("human-review-decision-intake"))
+        val reviewPath = Path.of(options.requiredCliOption("storyboard-packet-review"))
         val report = AssetCandidatePreflightService().validate(
-            humanReviewDecisionIntake = readJson<StoryboardPacketHumanReviewDecisionIntakeReport>(intakePath),
-            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
+            humanReviewDecisionIntake = readCliJson<StoryboardPacketHumanReviewDecisionIntakeReport>(intakePath),
+            storyboardPacketReview = readCliJson<StoryboardPacketReviewPacket>(reviewPath),
             preflightId = options["preflight"] ?: "",
             humanReviewDecisionIntakeFile = intakePath.toString(),
             storyboardPacketReviewFile = reviewPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("decisionId=${report.decisionId}")
@@ -3412,13 +3421,13 @@ class Cli {
     }
 
     private fun createAssetCandidateBrief(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("asset-candidate-preflight"))
+        val preflightPath = Path.of(options.requiredCliOption("asset-candidate-preflight"))
         val brief = AssetCandidateBriefService().create(
-            assetCandidatePreflight = readJson<AssetCandidatePreflightReport>(preflightPath),
+            assetCandidatePreflight = readCliJson<AssetCandidatePreflightReport>(preflightPath),
             briefId = options["brief"] ?: "",
             assetCandidatePreflightFile = preflightPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), brief) }
+        options["out"]?.let { writeCliJson(Path.of(it), brief) }
         println("verdict=${brief.verdict}")
         println("briefId=${brief.briefId}")
         println("assetCandidatePreflightId=${brief.assetCandidatePreflightId}")
@@ -3441,13 +3450,13 @@ class Cli {
     }
 
     private fun createAssetCandidateDraft(options: Map<String, String>): Int {
-        val briefPath = Path.of(options.required("asset-candidate-brief"))
+        val briefPath = Path.of(options.requiredCliOption("asset-candidate-brief"))
         val draft = AssetCandidateDraftService().create(
-            assetCandidateBrief = readJson<AssetCandidateBrief>(briefPath),
+            assetCandidateBrief = readCliJson<AssetCandidateBrief>(briefPath),
             draftId = options["draft"] ?: "",
             assetCandidateBriefFile = briefPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), draft) }
+        options["out"]?.let { writeCliJson(Path.of(it), draft) }
         println("verdict=${draft.verdict}")
         println("draftId=${draft.draftId}")
         println("assetCandidateBriefId=${draft.assetCandidateBriefId}")
@@ -3470,12 +3479,12 @@ class Cli {
     }
 
     private fun validateAssetCandidateDraft(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("asset-candidate-draft"))
+        val draftPath = Path.of(options.requiredCliOption("asset-candidate-draft"))
         val report = AssetCandidateDraftValidationService().validate(
-            assetCandidateDraft = readJson<AssetCandidateDraft>(draftPath),
+            assetCandidateDraft = readCliJson<AssetCandidateDraft>(draftPath),
             assetCandidateDraftFile = draftPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("assetCandidateDraftId=${report.assetCandidateDraftId}")
         println("assetCandidateBriefId=${report.assetCandidateBriefId}")
@@ -3498,13 +3507,13 @@ class Cli {
     }
 
     private fun validateAssetCandidateReviewPreflight(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("asset-candidate-draft-validation"))
+        val validationPath = Path.of(options.requiredCliOption("asset-candidate-draft-validation"))
         val report = AssetCandidateReviewPreflightService().validate(
-            assetCandidateDraftValidation = readJson<AssetCandidateDraftValidationReport>(validationPath),
+            assetCandidateDraftValidation = readCliJson<AssetCandidateDraftValidationReport>(validationPath),
             preflightId = options["preflight"] ?: "",
             assetCandidateDraftValidationReportFile = validationPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("assetCandidateDraftId=${report.assetCandidateDraftId}")
@@ -3528,15 +3537,15 @@ class Cli {
     }
 
     private fun validateAssetCandidateHumanReviewDecision(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("asset-candidate-review-preflight"))
-        val decisionPath = Path.of(options.required("asset-candidate-human-review-decision"))
+        val preflightPath = Path.of(options.requiredCliOption("asset-candidate-review-preflight"))
+        val decisionPath = Path.of(options.requiredCliOption("asset-candidate-human-review-decision"))
         val report = AssetCandidateHumanReviewDecisionIntakeService().validate(
-            assetCandidateReviewPreflight = readJson<AssetCandidateReviewPreflightReport>(preflightPath),
-            assetCandidateHumanReviewDecision = readJson<AssetCandidateHumanReviewDecision>(decisionPath),
+            assetCandidateReviewPreflight = readCliJson<AssetCandidateReviewPreflightReport>(preflightPath),
+            assetCandidateHumanReviewDecision = readCliJson<AssetCandidateHumanReviewDecision>(decisionPath),
             assetCandidateReviewPreflightFile = preflightPath.toString(),
             assetCandidateHumanReviewDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("preflightId=${report.preflightId}")
@@ -3563,13 +3572,13 @@ class Cli {
     }
 
     private fun validateImageCandidatePreflight(options: Map<String, String>): Int {
-        val intakePath = Path.of(options.required("asset-candidate-human-review-decision-intake"))
+        val intakePath = Path.of(options.requiredCliOption("asset-candidate-human-review-decision-intake"))
         val report = ImageCandidatePreflightService().validate(
-            decisionIntake = readJson<AssetCandidateHumanReviewDecisionIntakeReport>(intakePath),
+            decisionIntake = readCliJson<AssetCandidateHumanReviewDecisionIntakeReport>(intakePath),
             preflightId = options["preflight"] ?: "",
             decisionIntakeFile = intakePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("decisionId=${report.decisionId}")
@@ -3595,13 +3604,13 @@ class Cli {
     }
 
     private fun createImageCandidateBrief(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("image-candidate-preflight"))
+        val preflightPath = Path.of(options.requiredCliOption("image-candidate-preflight"))
         val brief = ImageCandidateBriefService().create(
-            imageCandidatePreflight = readJson<ImageCandidatePreflightReport>(preflightPath),
+            imageCandidatePreflight = readCliJson<ImageCandidatePreflightReport>(preflightPath),
             briefId = options["brief"] ?: "",
             imageCandidatePreflightFile = preflightPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), brief) }
+        options["out"]?.let { writeCliJson(Path.of(it), brief) }
         println("verdict=${brief.verdict}")
         println("briefId=${brief.briefId}")
         println("imageCandidatePreflightId=${brief.imageCandidatePreflightId}")
@@ -3629,13 +3638,13 @@ class Cli {
     }
 
     private fun createImageCandidatePromptPreparation(options: Map<String, String>): Int {
-        val briefPath = Path.of(options.required("image-candidate-brief"))
+        val briefPath = Path.of(options.requiredCliOption("image-candidate-brief"))
         val preparation = ImageCandidatePromptPreparationService().create(
-            imageCandidateBrief = readJson<ImageCandidateBrief>(briefPath),
+            imageCandidateBrief = readCliJson<ImageCandidateBrief>(briefPath),
             preparationId = options["preparation"] ?: "",
             imageCandidateBriefFile = briefPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), preparation) }
+        options["out"]?.let { writeCliJson(Path.of(it), preparation) }
         println("verdict=${preparation.verdict}")
         println("preparationId=${preparation.preparationId}")
         println("imageCandidateBriefId=${preparation.imageCandidateBriefId}")
@@ -3663,12 +3672,12 @@ class Cli {
     }
 
     private fun validateImageCandidatePromptPreparation(options: Map<String, String>): Int {
-        val preparationPath = Path.of(options.required("image-candidate-prompt-preparation"))
+        val preparationPath = Path.of(options.requiredCliOption("image-candidate-prompt-preparation"))
         val report = ImageCandidatePromptValidationService().validate(
-            promptPreparation = readJson<ImageCandidatePromptPreparation>(preparationPath),
+            promptPreparation = readCliJson<ImageCandidatePromptPreparation>(preparationPath),
             promptPreparationFile = preparationPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preparationId=${report.preparationId}")
         println("imageCandidateBriefId=${report.imageCandidateBriefId}")
@@ -3697,13 +3706,13 @@ class Cli {
     }
 
     private fun validateImageCandidateProviderHandoffPreflight(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("image-candidate-prompt-validation"))
+        val validationPath = Path.of(options.requiredCliOption("image-candidate-prompt-validation"))
         val report = ImageCandidateProviderHandoffPreflightService().validate(
-            promptValidationReport = readJson<ImageCandidatePromptValidationReport>(validationPath),
+            promptValidationReport = readCliJson<ImageCandidatePromptValidationReport>(validationPath),
             preflightId = options["preflight"] ?: "",
             promptValidationReportFile = validationPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("preparationId=${report.preparationId}")
@@ -3733,15 +3742,15 @@ class Cli {
     }
 
     private fun validateImageCandidateProviderHandoffDecision(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("provider-handoff-preflight"))
-        val decisionPath = Path.of(options.required("provider-handoff-decision"))
+        val preflightPath = Path.of(options.requiredCliOption("provider-handoff-preflight"))
+        val decisionPath = Path.of(options.requiredCliOption("provider-handoff-decision"))
         val report = ImageCandidateProviderHandoffDecisionIntakeService().validate(
-            providerHandoffPreflight = readJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
-            providerHandoffDecision = readJson<ImageCandidateProviderHandoffDecision>(decisionPath),
+            providerHandoffPreflight = readCliJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
+            providerHandoffDecision = readCliJson<ImageCandidateProviderHandoffDecision>(decisionPath),
             providerHandoffPreflightFile = preflightPath.toString(),
             providerHandoffDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("preflightId=${report.preflightId}")
@@ -3767,16 +3776,16 @@ class Cli {
     }
 
     private fun createImageCandidateProviderHandoffPacket(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("provider-handoff-preflight"))
-        val intakePath = Path.of(options.required("provider-handoff-decision-intake"))
+        val preflightPath = Path.of(options.requiredCliOption("provider-handoff-preflight"))
+        val intakePath = Path.of(options.requiredCliOption("provider-handoff-decision-intake"))
         val packet = ImageCandidateProviderHandoffPacketService().create(
-            providerHandoffPreflight = readJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
-            decisionIntake = readJson<ImageCandidateProviderHandoffDecisionIntakeReport>(intakePath),
+            providerHandoffPreflight = readCliJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
+            decisionIntake = readCliJson<ImageCandidateProviderHandoffDecisionIntakeReport>(intakePath),
             packetId = options["packet"] ?: "",
             providerHandoffPreflightFile = preflightPath.toString(),
             providerHandoffDecisionIntakeFile = intakePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("verdict=${packet.verdict}")
         println("packetId=${packet.packetId}")
         println("decisionId=${packet.decisionId}")
@@ -3800,12 +3809,12 @@ class Cli {
     }
 
     private fun validateImageCandidateProviderHandoffPacket(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("provider-handoff-packet"))
+        val packetPath = Path.of(options.requiredCliOption("provider-handoff-packet"))
         val report = ImageCandidateProviderHandoffPacketValidationService().validate(
-            providerHandoffPacket = readJson<ImageCandidateProviderHandoffPacket>(packetPath),
+            providerHandoffPacket = readCliJson<ImageCandidateProviderHandoffPacket>(packetPath),
             providerHandoffPacketFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("decisionId=${report.decisionId}")
@@ -3827,15 +3836,15 @@ class Cli {
     }
 
     private fun validateImageCandidateExternalResultIntake(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("provider-handoff-packet-validation"))
-        val externalResultPath = Path.of(options.required("external-result"))
+        val validationPath = Path.of(options.requiredCliOption("provider-handoff-packet-validation"))
+        val externalResultPath = Path.of(options.requiredCliOption("external-result"))
         val report = ImageCandidateExternalResultIntakeService().validate(
-            providerHandoffPacketValidation = readJson<ImageCandidateProviderHandoffPacketValidationReport>(validationPath),
-            externalResult = readJson<ImageCandidateExternalResult>(externalResultPath),
+            providerHandoffPacketValidation = readCliJson<ImageCandidateProviderHandoffPacketValidationReport>(validationPath),
+            externalResult = readCliJson<ImageCandidateExternalResult>(externalResultPath),
             providerHandoffPacketValidationReportFile = validationPath.toString(),
             externalResultFile = externalResultPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("resultId=${report.resultId}")
         println("packetId=${report.packetId}")
@@ -3860,13 +3869,13 @@ class Cli {
     }
 
     private fun validateImageCandidateResultReviewPreflight(options: Map<String, String>): Int {
-        val intakePath = Path.of(options.required("external-result-intake"))
+        val intakePath = Path.of(options.requiredCliOption("external-result-intake"))
         val report = ImageCandidateResultReviewPreflightService().validate(
-            externalResultIntake = readJson<ImageCandidateExternalResultIntakeReport>(intakePath),
+            externalResultIntake = readCliJson<ImageCandidateExternalResultIntakeReport>(intakePath),
             preflightId = options["preflight"] ?: "",
             externalResultIntakeFile = intakePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("resultId=${report.resultId}")
@@ -3891,15 +3900,15 @@ class Cli {
     }
 
     private fun validateImageCandidateResultHumanReviewDecision(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("result-review-preflight"))
-        val decisionPath = Path.of(options.required("result-review-decision"))
+        val preflightPath = Path.of(options.requiredCliOption("result-review-preflight"))
+        val decisionPath = Path.of(options.requiredCliOption("result-review-decision"))
         val report = ImageCandidateResultHumanReviewDecisionIntakeService().validate(
-            resultReviewPreflight = readJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
-            resultReviewDecision = readJson<ImageCandidateResultReviewDecision>(decisionPath),
+            resultReviewPreflight = readCliJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
+            resultReviewDecision = readCliJson<ImageCandidateResultReviewDecision>(decisionPath),
             resultReviewPreflightFile = preflightPath.toString(),
             resultReviewDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("resultReviewPreflightId=${report.resultReviewPreflightId}")
@@ -3927,16 +3936,16 @@ class Cli {
     }
 
     private fun createImageCandidateReferencePacket(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("result-review-preflight"))
-        val intakePath = Path.of(options.required("result-review-decision-intake"))
+        val preflightPath = Path.of(options.requiredCliOption("result-review-preflight"))
+        val intakePath = Path.of(options.requiredCliOption("result-review-decision-intake"))
         val packet = ImageCandidateReferencePacketService().create(
-            resultReviewPreflight = readJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
-            decisionIntake = readJson<ImageCandidateResultReviewDecisionIntakeReport>(intakePath),
+            resultReviewPreflight = readCliJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
+            decisionIntake = readCliJson<ImageCandidateResultReviewDecisionIntakeReport>(intakePath),
             packetId = options["packet"] ?: "",
             resultReviewPreflightFile = preflightPath.toString(),
             resultReviewDecisionIntakeFile = intakePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("verdict=${packet.verdict}")
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
@@ -3961,12 +3970,12 @@ class Cli {
     }
 
     private fun validateImageCandidateReferencePacket(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("candidate-reference-packet"))
+        val packetPath = Path.of(options.requiredCliOption("candidate-reference-packet"))
         val report = ImageCandidateReferencePacketValidationService().validate(
-            referencePacket = readJson<ImageCandidateReferencePacket>(packetPath),
+            referencePacket = readCliJson<ImageCandidateReferencePacket>(packetPath),
             referencePacketFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("packetStatus=${report.packetStatus}")
@@ -3991,15 +4000,15 @@ class Cli {
     }
 
     private fun validateCandidateReferenceHumanAcceptanceDecision(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("candidate-reference-packet-validation"))
-        val decisionPath = Path.of(options.required("human-acceptance-decision"))
+        val validationPath = Path.of(options.requiredCliOption("candidate-reference-packet-validation"))
+        val decisionPath = Path.of(options.requiredCliOption("human-acceptance-decision"))
         val report = CandidateReferenceHumanAcceptanceDecisionIntakeService().validate(
-            candidateReferencePacketValidation = readJson<ImageCandidateReferencePacketValidationReport>(validationPath),
-            humanAcceptanceDecision = readJson<CandidateReferenceHumanAcceptanceDecision>(decisionPath),
+            candidateReferencePacketValidation = readCliJson<ImageCandidateReferencePacketValidationReport>(validationPath),
+            humanAcceptanceDecision = readCliJson<CandidateReferenceHumanAcceptanceDecision>(decisionPath),
             candidateReferencePacketValidationReportFile = validationPath.toString(),
             humanAcceptanceDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("packetId=${report.packetId}")
@@ -4022,16 +4031,16 @@ class Cli {
     }
 
     private fun validateCandidateReferenceRegistryPreflight(options: Map<String, String>): Int {
-        val intakePath = Path.of(options.required("human-acceptance-decision-intake"))
-        val validationPath = Path.of(options.required("candidate-reference-packet-validation"))
+        val intakePath = Path.of(options.requiredCliOption("human-acceptance-decision-intake"))
+        val validationPath = Path.of(options.requiredCliOption("candidate-reference-packet-validation"))
         val report = CandidateReferenceRegistryPreflightService().validate(
-            humanAcceptanceDecisionIntake = readJson<CandidateReferenceHumanAcceptanceDecisionIntakeReport>(intakePath),
-            candidateReferencePacketValidation = readJson<ImageCandidateReferencePacketValidationReport>(validationPath),
+            humanAcceptanceDecisionIntake = readCliJson<CandidateReferenceHumanAcceptanceDecisionIntakeReport>(intakePath),
+            candidateReferencePacketValidation = readCliJson<ImageCandidateReferencePacketValidationReport>(validationPath),
             preflightId = options["preflight"] ?: "",
             humanAcceptanceDecisionIntakeFile = intakePath.toString(),
             candidateReferencePacketValidationReportFile = validationPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("decisionId=${report.decisionId}")
@@ -4051,13 +4060,13 @@ class Cli {
     }
 
     private fun createCandidateReferenceRegistryPacket(options: Map<String, String>): Int {
-        val preflightPath = Path.of(options.required("registry-preflight"))
+        val preflightPath = Path.of(options.requiredCliOption("registry-preflight"))
         val packet = CandidateReferenceRegistryPacketService().create(
-            registryPreflight = readJson<CandidateReferenceRegistryPreflightReport>(preflightPath),
+            registryPreflight = readCliJson<CandidateReferenceRegistryPreflightReport>(preflightPath),
             packetId = options["packet"] ?: "",
             registryPreflightFile = preflightPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("verdict=${packet.verdict}")
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
@@ -4079,12 +4088,12 @@ class Cli {
     }
 
     private fun validateCandidateReferenceRegistryPacket(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("candidate-reference-registry-packet"))
+        val packetPath = Path.of(options.requiredCliOption("candidate-reference-registry-packet"))
         val report = CandidateReferenceRegistryPacketValidationService().validate(
-            registryPacket = readJson<CandidateReferenceRegistryPacket>(packetPath),
+            registryPacket = readCliJson<CandidateReferenceRegistryPacket>(packetPath),
             registryPacketFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("packetStatus=${report.packetStatus}")
@@ -4109,15 +4118,15 @@ class Cli {
     }
 
     private fun validateCandidateReferenceRegistryHumanAcceptanceDecision(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("registry-packet-validation"))
-        val decisionPath = Path.of(options.required("human-acceptance-decision"))
+        val validationPath = Path.of(options.requiredCliOption("registry-packet-validation"))
+        val decisionPath = Path.of(options.requiredCliOption("human-acceptance-decision"))
         val report = CandidateReferenceRegistryHumanAcceptanceDecisionIntakeService().validate(
-            registryPacketValidation = readJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
-            humanAcceptanceDecision = readJson<CandidateReferenceRegistryHumanAcceptanceDecision>(decisionPath),
+            registryPacketValidation = readCliJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
+            humanAcceptanceDecision = readCliJson<CandidateReferenceRegistryHumanAcceptanceDecision>(decisionPath),
             registryPacketValidationReportFile = validationPath.toString(),
             humanAcceptanceDecisionFile = decisionPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("decisionId=${report.decisionId}")
         println("registryPacketId=${report.registryPacketId}")
@@ -4146,16 +4155,16 @@ class Cli {
     }
 
     private fun createCandidateReferenceAcceptancePacket(options: Map<String, String>): Int {
-        val validationPath = Path.of(options.required("registry-packet-validation"))
-        val intakePath = Path.of(options.required("human-acceptance-decision-intake"))
+        val validationPath = Path.of(options.requiredCliOption("registry-packet-validation"))
+        val intakePath = Path.of(options.requiredCliOption("human-acceptance-decision-intake"))
         val packet = CandidateReferenceAcceptancePacketService().create(
-            registryPacketValidation = readJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
-            decisionIntake = readJson<CandidateReferenceRegistryHumanAcceptanceDecisionIntakeReport>(intakePath),
+            registryPacketValidation = readCliJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
+            decisionIntake = readCliJson<CandidateReferenceRegistryHumanAcceptanceDecisionIntakeReport>(intakePath),
             packetId = options["packet"] ?: "",
             registryPacketValidationReportFile = validationPath.toString(),
             humanAcceptanceDecisionIntakeFile = intakePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), packet) }
+        options["out"]?.let { writeCliJson(Path.of(it), packet) }
         println("verdict=${packet.verdict}")
         println("packetId=${packet.packetId}")
         println("packetStatus=${packet.packetStatus}")
@@ -4181,13 +4190,13 @@ class Cli {
     }
 
     private fun validateCandidateReferenceAcceptancePacket(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("candidate-reference-acceptance-packet"))
+        val packetPath = Path.of(options.requiredCliOption("candidate-reference-acceptance-packet"))
         val report = CandidateReferenceAcceptancePacketValidationService().validate(
-            packet = readJson<CandidateReferenceAcceptancePacket>(packetPath),
+            packet = readCliJson<CandidateReferenceAcceptancePacket>(packetPath),
             acceptancePacketFile = packetPath.toString(),
             validationId = options["validation"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("validationId=${report.validationId}")
         println("packetId=${report.packetId}")
@@ -4217,7 +4226,7 @@ class Cli {
     private fun createCharacterNuwaCardTemplate(options: Map<String, String>): Int {
         val projectId = options["project"] ?: "project-id"
         val gateId = options["gate"] ?: "$projectId-character-nuwa-gate"
-        val out = Path.of(options.required("out"))
+        val out = Path.of(options.requiredCliOption("out"))
         val template = CharacterNuwaGateFile(
             gateId = gateId,
             projectId = projectId,
@@ -4309,7 +4318,7 @@ class Cli {
             ),
             reviewerNotes = "Fill this template before drafting accepted dialogue. No character card means no accepted dialogue.",
         )
-        writeJson(out, template)
+        writeCliJson(out, template)
         println("wrote=$out")
         println("gateId=${template.gateId}")
         println("cards=${template.characterCards.size}")
@@ -4320,12 +4329,12 @@ class Cli {
         val gatePath = options["file"]?.let { Path.of(it) }
             ?: options["character-dir"]?.let { Path.of(it).resolve("character_nuwa_gate.json") }
             ?: error("Missing required option --file or --character-dir")
-        val gate = readJson<CharacterNuwaGateFile>(gatePath)
+        val gate = readCliJson<CharacterNuwaGateFile>(gatePath)
         val report = CharacterNuwaGateValidationService().validate(
             gate = gate,
             gateFile = gatePath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("gateId=${report.gateId}")
         println("requiredSpeakingCharacters=${report.requiredSpeakingCharacterCount}")
@@ -4344,9 +4353,9 @@ class Cli {
             error("Provide exactly one of --character-nuwa-report or --character-nuwa-gate")
         }
         val characterNuwaReport = reportPath?.let {
-            readJson<CharacterNuwaGateValidationReport>(it)
+            readCliJson<CharacterNuwaGateValidationReport>(it)
         } ?: CharacterNuwaGateValidationService().validate(
-            gate = readJson<CharacterNuwaGateFile>(gatePath!!),
+            gate = readCliJson<CharacterNuwaGateFile>(gatePath!!),
             gateFile = gatePath.toString(),
         )
         val report = NovelizationPreflightValidationService().validate(
@@ -4355,7 +4364,7 @@ class Cli {
             characterNuwaGateFile = gatePath?.toString().orEmpty(),
             preflightId = options["preflight"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("characterNuwaGateId=${report.characterNuwaGateId}")
@@ -4369,7 +4378,7 @@ class Cli {
 
     private fun createNovelizationWriterBriefTemplate(options: Map<String, String>): Int {
         val projectId = options["project"] ?: "project-id"
-        val out = Path.of(options.required("out"))
+        val out = Path.of(options.requiredCliOption("out"))
         val template = NovelizationWriterBrief(
             briefId = options["brief"] ?: "$projectId-writer-brief",
             projectId = projectId,
@@ -4390,7 +4399,7 @@ class Cli {
             authorOnlyExcluded = true,
             reviewerNotes = "Draft planning only. This brief is not accepted canon and does not generate prose.",
         )
-        writeJson(out, template)
+        writeCliJson(out, template)
         println("wrote=$out")
         println("briefId=${template.briefId}")
         println("targetChapter=${template.targetChapter}")
@@ -4398,16 +4407,16 @@ class Cli {
     }
 
     private fun validateNovelizationWriterBrief(options: Map<String, String>): Int {
-        val briefPath = Path.of(options.required("brief"))
-        val brief = readJson<NovelizationWriterBrief>(briefPath)
+        val briefPath = Path.of(options.requiredCliOption("brief"))
+        val brief = readCliJson<NovelizationWriterBrief>(briefPath)
         val preflightReportPath = options["preflight-report"]?.let { Path.of(it) }
         val report = NovelizationWriterBriefValidationService().validate(
             brief = brief,
             briefFile = briefPath.toString(),
-            sourcePreflightReport = preflightReportPath?.let { readJson<NovelizationPreflightReport>(it) },
+            sourcePreflightReport = preflightReportPath?.let { readCliJson<NovelizationPreflightReport>(it) },
             sourcePreflightReportFile = preflightReportPath?.toString().orEmpty(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("briefId=${report.briefId}")
         println("findings=${report.findingCount}")
@@ -4418,17 +4427,17 @@ class Cli {
     }
 
     private fun validateNovelizationDraftIntake(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val writerBriefReportPath = Path.of(options.required("writer-brief-report"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val writerBriefReportPath = Path.of(options.requiredCliOption("writer-brief-report"))
         val report = NovelizationDraftIntakeValidationService().validate(
             draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
-            writerBriefReport = readJson<NovelizationWriterBriefValidationReport>(writerBriefReportPath),
+            writerBriefReport = readCliJson<NovelizationWriterBriefValidationReport>(writerBriefReportPath),
             draftFile = draftPath.toString(),
             writerBriefReportFile = writerBriefReportPath.toString(),
-            sourceType = options.required("source-type"),
+            sourceType = options.requiredCliOption("source-type"),
             sourceLabel = options["source-label"] ?: "",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("sourceType=${report.sourceType}")
         println("sourceLabel=${report.sourceLabel}")
@@ -4442,15 +4451,15 @@ class Cli {
     }
 
     private fun auditNovelizationProseQuality(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val draftIntakeReportPath = Path.of(options.required("draft-intake-report"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val draftIntakeReportPath = Path.of(options.requiredCliOption("draft-intake-report"))
         val report = NovelizationProseQualityAuditService().audit(
             draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
-            draftIntakeReport = readJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
+            draftIntakeReport = readCliJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
             draftFile = draftPath.toString(),
             draftIntakeReportFile = draftIntakeReportPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("draftIntakeVerdict=${report.evidence.draftIntakeVerdict}")
         println("draftCharacters=${report.evidence.draftCharacters}")
@@ -4463,23 +4472,23 @@ class Cli {
     }
 
     private fun createNovelizationRevisionBrief(options: Map<String, String>): Int {
-        val draftPath = Path.of(options.required("draft"))
-        val draftIntakeReportPath = Path.of(options.required("draft-intake-report"))
-        val proseQualityReportPath = Path.of(options.required("prose-quality-report"))
-        val continuityAnchorsPath = Path.of(options.required("continuity-anchors"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val draftIntakeReportPath = Path.of(options.requiredCliOption("draft-intake-report"))
+        val proseQualityReportPath = Path.of(options.requiredCliOption("prose-quality-report"))
+        val continuityAnchorsPath = Path.of(options.requiredCliOption("continuity-anchors"))
         val report = NovelizationRevisionBriefService().build(
             draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
-            draftIntakeReport = readJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
-            proseQualityReport = readJson<NovelizationProseQualityAuditReport>(proseQualityReportPath),
-            continuityAnchors = readJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
+            draftIntakeReport = readCliJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
+            proseQualityReport = readCliJson<NovelizationProseQualityAuditReport>(proseQualityReportPath),
+            continuityAnchors = readCliJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
             briefId = options["brief"] ?: "",
             draftFile = draftPath.toString(),
             draftIntakeReportFile = draftIntakeReportPath.toString(),
             proseQualityAuditReportFile = proseQualityReportPath.toString(),
             continuityAnchorsFile = continuityAnchorsPath.toString(),
         )
-        val out = Path.of(options.required("out"))
-        writeJson(out, report)
+        val out = Path.of(options.requiredCliOption("out"))
+        writeCliJson(out, report)
         println("verdict=${report.verdict}")
         println("briefId=${report.briefId}")
         println("revisionRequired=${report.revisionRequired}")
@@ -4493,22 +4502,22 @@ class Cli {
     }
 
     private fun validateNovelizationRevisedDraftIntake(options: Map<String, String>): Int {
-        val originalDraftPath = Path.of(options.required("original-draft"))
-        val revisedDraftPath = Path.of(options.required("revised-draft"))
-        val revisionBriefReportPath = Path.of(options.required("revision-brief-report"))
+        val originalDraftPath = Path.of(options.requiredCliOption("original-draft"))
+        val revisedDraftPath = Path.of(options.requiredCliOption("revised-draft"))
+        val revisionBriefReportPath = Path.of(options.requiredCliOption("revision-brief-report"))
         val declaredHandlingPath = options["declared-handling"]?.let { Path.of(it) }
         val report = NovelizationRevisedDraftIntakeValidationService().validate(
             originalDraftText = Files.readString(originalDraftPath).removePrefix("\uFEFF"),
             revisedDraftText = Files.readString(revisedDraftPath).removePrefix("\uFEFF"),
-            revisionBriefReport = readJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
-            declaredHandling = declaredHandlingPath?.let { readJson<NovelizationRevisionHandlingDeclaration>(it) }
+            revisionBriefReport = readCliJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
+            declaredHandling = declaredHandlingPath?.let { readCliJson<NovelizationRevisionHandlingDeclaration>(it) }
                 ?: NovelizationRevisionHandlingDeclaration(),
             originalDraftFile = originalDraftPath.toString(),
             revisedDraftFile = revisedDraftPath.toString(),
             revisionBriefReportFile = revisionBriefReportPath.toString(),
             declaredHandlingFile = declaredHandlingPath?.toString().orEmpty(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("revisionBriefId=${report.revisionBriefId}")
         println("revisionBriefVerdict=${report.evidence.revisionBriefVerdict}")
@@ -4526,23 +4535,23 @@ class Cli {
     }
 
     private fun createNovelizationAcceptedDraftPacket(options: Map<String, String>): Int {
-        val revisedDraftPath = Path.of(options.required("revised-draft"))
-        val revisedDraftIntakeReportPath = Path.of(options.required("revised-draft-intake-report"))
-        val revisionBriefReportPath = Path.of(options.required("revision-brief-report"))
-        val continuityAnchorsPath = Path.of(options.required("continuity-anchors"))
+        val revisedDraftPath = Path.of(options.requiredCliOption("revised-draft"))
+        val revisedDraftIntakeReportPath = Path.of(options.requiredCliOption("revised-draft-intake-report"))
+        val revisionBriefReportPath = Path.of(options.requiredCliOption("revision-brief-report"))
+        val continuityAnchorsPath = Path.of(options.requiredCliOption("continuity-anchors"))
         val report = NovelizationAcceptedDraftPacketService().build(
             revisedDraftText = Files.readString(revisedDraftPath).removePrefix("\uFEFF"),
-            revisedDraftIntakeReport = readJson<NovelizationRevisedDraftIntakeReport>(revisedDraftIntakeReportPath),
-            revisionBriefReport = readJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
-            continuityAnchors = readJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
+            revisedDraftIntakeReport = readCliJson<NovelizationRevisedDraftIntakeReport>(revisedDraftIntakeReportPath),
+            revisionBriefReport = readCliJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
+            continuityAnchors = readCliJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
             packetId = options["packet"] ?: "",
             revisedDraftFile = revisedDraftPath.toString(),
             revisedDraftIntakeReportFile = revisedDraftIntakeReportPath.toString(),
             revisionBriefReportFile = revisionBriefReportPath.toString(),
             continuityAnchorsFile = continuityAnchorsPath.toString(),
         )
-        val out = Path.of(options.required("out"))
-        writeJson(out, report)
+        val out = Path.of(options.requiredCliOption("out"))
+        writeCliJson(out, report)
         println("verdict=${report.verdict}")
         println("packetId=${report.packetId}")
         println("revisedDraftSha256=${report.revisedDraftContentSha256}")
@@ -4559,13 +4568,13 @@ class Cli {
     }
 
     private fun validateNovelizationScriptPacketPreflight(options: Map<String, String>): Int {
-        val packetPath = Path.of(options.required("accepted-draft-packet"))
+        val packetPath = Path.of(options.requiredCliOption("accepted-draft-packet"))
         val report = NovelizationScriptPacketPreflightService().validate(
-            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(packetPath),
+            acceptedDraftPacket = readCliJson<NovelizationAcceptedDraftPacket>(packetPath),
             preflightId = options["preflight"] ?: "",
             acceptedDraftPacketFile = packetPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("preflightId=${report.preflightId}")
         println("acceptedDraftPacketId=${report.acceptedDraftPacketId}")
@@ -4582,18 +4591,18 @@ class Cli {
     }
 
     private fun auditChapterContinuity(options: Map<String, String>): Int {
-        val previousPath = Path.of(options.required("previous"))
-        val draftPath = Path.of(options.required("draft"))
-        val anchorPath = Path.of(options.required("anchors"))
+        val previousPath = Path.of(options.requiredCliOption("previous"))
+        val draftPath = Path.of(options.requiredCliOption("draft"))
+        val anchorPath = Path.of(options.requiredCliOption("anchors"))
         val report = ChapterContinuityAuditService().audit(
             previousText = Files.readString(previousPath).removePrefix("\uFEFF"),
             draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
-            anchors = readJson<ChapterContinuityAnchorFile>(anchorPath),
+            anchors = readCliJson<ChapterContinuityAnchorFile>(anchorPath),
             previousFile = previousPath.toString(),
             draftFile = draftPath.toString(),
             anchorFile = anchorPath.toString(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("verdict=${report.verdict}")
         println("auditId=${report.auditId}")
         println("previous=${report.previousFile}")
@@ -4606,15 +4615,15 @@ class Cli {
     }
 
     private fun explainContextBudget(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         val input = options["input"]
             ?: options["input-file"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
             ?: error("Missing required option --input or --input-file")
         val report = MultiTurnRuntime(repository).explainContextBudget(
-            sessionId = options.required("session"),
+            sessionId = options.requiredCliOption("session"),
             playerInput = input,
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("canFit=${report.canFit}")
         println("candidateBytesBeforeTrimming=${report.candidateBytesBeforeTrimming}")
         println("candidateBytesAfterTrimming=${report.candidateBytesAfterTrimming}/${report.maxContextBytes}")
@@ -4627,18 +4636,18 @@ class Cli {
     }
 
     private fun explainCapability(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val sessionId = options.required("session")
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
         val report = CapabilityContractResolver(repository).explain(
             projectId = session.projectId,
             sessionId = sessionId,
-            entityType = options.required("entity-type"),
-            entityId = options.required("entity-id"),
+            entityType = options.requiredCliOption("entity-type"),
+            entityId = options.requiredCliOption("entity-id"),
             actorId = options["actor"],
             intendedUse = options["intended-use"].orEmpty(),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("status=${report.status}")
         println("entity=${report.entityType}:${report.entityId}")
         println("canonicalEntitySource=${report.canonicalEntitySource}")
@@ -4659,10 +4668,10 @@ class Cli {
     }
 
     private fun createCheckpoint(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val checkpoint = CheckpointService(repository).createCheckpoint(
-            sessionId = options.required("session"),
+            sessionId = options.requiredCliOption("session"),
             label = options["label"].orEmpty(),
             kind = options["kind"] ?: "MANUAL",
             reason = options["reason"].orEmpty(),
@@ -4677,18 +4686,18 @@ class Cli {
     }
 
     private fun listCheckpoints(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        CheckpointService(repository).listCheckpoints(options.required("session")).forEach {
+        CheckpointService(repository).listCheckpoints(options.requiredCliOption("session")).forEach {
             println("${it.id} branch=${it.branchId ?: ""} turn=${it.turnNumber} stateVersion=${it.stateVersion} kind=${it.kind} label=${it.label} createdAt=${it.createdAt}")
         }
         return 0
     }
 
     private fun showCheckpoint(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val checkpoint = CheckpointService(repository).showCheckpoint(options.required("checkpoint"))
+        val checkpoint = CheckpointService(repository).showCheckpoint(options.requiredCliOption("checkpoint"))
         println("checkpointId=${checkpoint.id}")
         println("projectId=${checkpoint.projectId}")
         println("sessionId=${checkpoint.sessionId}")
@@ -4703,10 +4712,10 @@ class Cli {
     }
 
     private fun forkSession(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val result = TimelineBranchService(repository).forkSession(
-            checkpointId = options.required("checkpoint"),
+            checkpointId = options.requiredCliOption("checkpoint"),
             label = options["label"] ?: "fork",
             reason = options["reason"].orEmpty(),
         )
@@ -4719,9 +4728,9 @@ class Cli {
     }
 
     private fun checkoutBranch(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val branch = TimelineBranchService(repository).checkoutBranch(options.required("branch"))
+        val branch = TimelineBranchService(repository).checkoutBranch(options.requiredCliOption("branch"))
         println("branchId=${branch.id}")
         println("status=${branch.status}")
         println("activeSessionId=${branch.activeSessionId ?: ""}")
@@ -4730,9 +4739,9 @@ class Cli {
     }
 
     private fun showTimeline(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val export = TimelineBranchService(repository).showTimeline(options.required("project"))
+        val export = TimelineBranchService(repository).showTimeline(options.requiredCliOption("project"))
         println("projectId=${export.projectId}")
         println("activeBranchId=${export.activeBranchId ?: ""}")
         println("branches:")
@@ -4747,13 +4756,13 @@ class Cli {
     }
 
     private fun verifyReplayChain(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val report = ReplayAuditService(repository).verify(
-            sessionId = options.required("session"),
+            sessionId = options.requiredCliOption("session"),
             record = options["record"] == "true",
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("status=${report.status}")
         println("checkedTurnCount=${report.checkedTurnCount}")
         report.issues.forEach { println("${it.code}: turn=${it.turnNumber ?: ""} ${it.message}") }
@@ -4761,11 +4770,11 @@ class Cli {
     }
 
     private fun exportTimeline(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val export = TimelineBranchService(repository).exportTimeline(options.required("project"))
-        writeJson(Path.of(options.required("out")), export)
-        println("wrote=${options.required("out")}")
+        val export = TimelineBranchService(repository).exportTimeline(options.requiredCliOption("project"))
+        writeCliJson(Path.of(options.requiredCliOption("out")), export)
+        println("wrote=${options.requiredCliOption("out")}")
         println("branches=${export.branches.size}")
         println("checkpoints=${export.checkpoints.size}")
         println("activeBranchId=${export.activeBranchId ?: ""}")
@@ -4773,10 +4782,10 @@ class Cli {
     }
 
     private fun exportSessionEvidence(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val export = SessionEvidenceExporter(repository).export(options.required("session"))
-        writeJson(Path.of(options.required("out")), export)
-        println("wrote=${options.required("out")}")
+        val repository = cliRepository(options)
+        val export = SessionEvidenceExporter(repository).export(options.requiredCliOption("session"))
+        writeCliJson(Path.of(options.requiredCliOption("out")), export)
+        println("wrote=${options.requiredCliOption("out")}")
         println("turnLogs=${export.turnLogs.size}")
         println("stateDeltas=${export.stateDeltas.size}")
         println("pendingContexts=${export.pendingContextCount}")
@@ -4784,12 +4793,12 @@ class Cli {
     }
 
     private fun pilotPreflight(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         val report = PilotPreflightService(repository).run(
-            projectId = options.required("project"),
-            sessionId = options.required("session"),
+            projectId = options.requiredCliOption("project"),
+            sessionId = options.requiredCliOption("session"),
         )
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         println("valid=${report.valid}")
         println("stateVersion=${report.stateVersion}")
         println("nextTurnNumber=${report.nextTurnNumber}")
@@ -4803,8 +4812,8 @@ class Cli {
     }
 
     private fun createSettingPackTemplate(options: Map<String, String>): Int {
-        val projectId = options.required("project")
-        val out = Path.of(options.required("out"))
+        val projectId = options.requiredCliOption("project")
+        val out = Path.of(options.requiredCliOption("out"))
         val pack = SettingPack(
             packId = options["pack"] ?: "$projectId-setting-pack",
             packVersion = options["version"]?.toIntOrNull() ?: 1,
@@ -4831,35 +4840,35 @@ class Cli {
     }
 
     private fun validateSettingPack(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val pack = SettingPackParser().parse(Path.of(options.requiredCliOption("file")))
         val preview = SettingPackImportService(repository).preview(pack)
-        printValidation(preview.validation)
-        options["out"]?.let { writeJson(Path.of(it), preview.validation) }
+        printSettingPackValidation(preview.validation)
+        options["out"]?.let { writeCliJson(Path.of(it), preview.validation) }
         return if (preview.validation.isValid) 0 else 1
     }
 
     private fun previewSettingImport(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val pack = SettingPackParser().parse(Path.of(options.requiredCliOption("file")))
         val preview = SettingPackImportService(repository).preview(pack)
-        printValidation(preview.validation)
+        printSettingPackValidation(preview.validation)
         println("canonicalHash=${preview.canonicalHash}")
         println("diffEntries=${preview.diff.entries.size}")
         preview.diff.entries.forEach { println("- ${it.action} ${it.entityType}:${it.entityId} v${it.previousVersion ?: "-"} -> ${it.newVersion}") }
         println("impactPaths=${preview.impact.paths.size}")
         println("impactedSessions=${preview.impact.impactedSessions.joinToString(",")}")
         preview.impact.blockers.forEach { println("blocker=$it") }
-        options["out"]?.let { writeJson(Path.of(it), preview) }
+        options["out"]?.let { writeCliJson(Path.of(it), preview) }
         return if (preview.validation.isValid) 0 else 1
     }
 
     private fun applySettingPack(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val file = Path.of(options.required("file"))
+        val file = Path.of(options.requiredCliOption("file"))
         val pack = SettingPackParser().parse(file)
         val result = SettingPackImportService(repository).apply(pack, file.toString())
         println("applied=${result.applied}")
@@ -4868,167 +4877,38 @@ class Cli {
         println("canonicalHash=${result.canonicalHash}")
         println("diffEntries=${result.diff.entries.size}")
         println("impactPaths=${result.impact.paths.size}")
-        options["out"]?.let { writeJson(Path.of(it), result) }
-        return 0
-    }
-
-    private fun validateWorldSourceArchive(options: Map<String, String>): Int {
-        val manifest = Path.of(options.required("manifest"))
-        val report = WorldSourceArchiveImportService().validateManifestFile(manifest)
-        options["out"]?.let { writeJson(Path.of(it), report) }
-        println("verdict=${report.verdict}")
-        println("status=${report.status}")
-        println("manifestId=${report.manifestId}")
-        println("sourceCount=${report.evidence.sourceCount}")
-        println("verifiedSourceCount=${report.evidence.verifiedSourceCount}")
-        println("hashMismatchCount=${report.evidence.hashMismatchCount}")
-        println("missingRawFileCount=${report.evidence.missingRawFileCount}")
-        println("unsafeBoundaryFlagCount=${report.evidence.unsafeBoundaryFlagCount}")
-        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
-        println("findings=${report.findingCount}")
-        return if (report.verdict == "PASS") 0 else 1
-    }
-
-    private fun applyWorldSourceArchive(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val manifest = Path.of(options.required("manifest"))
-        val databasePath = Path.of(options["db"] ?: "data/story.db")
-        val result = WorldSourceArchiveImportService(repository).applyManifestFile(
-            manifestPath = manifest,
-            databasePath = databasePath,
-        )
-        options["out"]?.let { writeJson(Path.of(it), result) }
-        println("verdict=${result.verdict}")
-        println("status=${result.status}")
-        println("archiveId=${result.archiveId}")
-        println("archiveRowsWritten=${result.archiveRowsWritten}")
-        println("documentRowsWritten=${result.documentRowsWritten}")
-        println("chunkRowsWritten=${result.chunkRowsWritten}")
-        println("sourceCount=${result.sourceCount}")
-        println("totalByteSize=${result.totalByteSize}")
-        println("downstreamBoundary=${result.downstreamBoundary}")
-        println("nextAllowedDownstreamStep=${result.nextAllowedDownstreamStep}")
-        println("findings=${result.findingCount}")
-        return if (result.verdict == "PASS") 0 else 1
-    }
-
-    private fun queryWorldSource(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val report = WorldSourceQueryService(repository).query(
-            text = options.required("q"),
-            classification = options["classification"].orEmpty(),
-            limit = options["limit"]?.toIntOrNull() ?: 10,
-        )
-        options["out"]?.let { writeJson(Path.of(it), report) }
-        println("verdict=${report.verdict}")
-        println("status=${report.status}")
-        println("query=${report.query}")
-        println("hitCount=${report.hitCount}")
-        report.hits.forEach {
-            println("- ${it.sourceId} ${it.title} [${it.heading}] ${it.snippet}")
-        }
-        return 0
-    }
-
-    private fun upsertAiTask(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val payloadJson = options["payload"]?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
-            ?: options["payload-json"]
-            ?: "{}"
-        val result = AiTaskQueueService(repository).upsertTask(
-            taskId = options.required("task"),
-            title = options.required("title"),
-            payloadJson = payloadJson,
-            taskType = options["type"] ?: "implementation",
-            ownerRole = options["owner"] ?: "B組01",
-            targetRole = options["target"] ?: "B組02",
-            priority = options["priority"]?.toIntOrNull() ?: 100,
-            status = options["status"] ?: "READY",
-            source = options["source"] ?: "user",
-            actor = options["actor"] ?: "user",
-        )
-        options["out"]?.let { writeJson(Path.of(it), result) }
-        println("status=${result.status}")
-        println("taskId=${result.task?.taskId.orEmpty()}")
-        println("taskStatus=${result.task?.status.orEmpty()}")
-        println("targetRole=${result.task?.targetRole.orEmpty()}")
-        println("priority=${result.task?.priority ?: 0}")
-        return 0
-    }
-
-    private fun claimAiTask(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val result = AiTaskQueueService(repository).claimNextTask(
-            worker = options.required("worker"),
-            targetRole = options["target"].orEmpty(),
-        )
-        options["out"]?.let { writeJson(Path.of(it), result) }
-        println("status=${result.status}")
-        println("taskId=${result.task?.taskId.orEmpty()}")
-        println("taskStatus=${result.task?.status.orEmpty()}")
-        println("title=${result.task?.title.orEmpty()}")
-        println("nextAllowedStep=${result.nextAllowedStep}")
-        return 0
-    }
-
-    private fun completeAiTask(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val result = AiTaskQueueService(repository).completeTask(
-            taskId = options.required("task"),
-            worker = options.required("worker"),
-            resultStatus = options.required("result"),
-            summary = options["summary"].orEmpty(),
-            reportPath = options["report"].orEmpty(),
-        )
-        options["out"]?.let { writeJson(Path.of(it), result) }
-        println("status=${result.status}")
-        println("taskId=${result.task?.taskId.orEmpty()}")
-        println("taskStatus=${result.task?.status.orEmpty()}")
-        println("result=${result.task?.resultStatus.orEmpty()}")
-        println("nextAllowedStep=${result.nextAllowedStep}")
-        return 0
-    }
-
-    private fun listAiTasks(options: Map<String, String>): Int {
-        val repository = repository(options)
-        val report = AiTaskQueueService(repository).listTasks(status = options["status"].orEmpty())
-        options["out"]?.let { writeJson(Path.of(it), report) }
-        println("status=${report.status}")
-        println("count=${report.count}")
-        report.tasks.forEach {
-            println("- ${it.taskId} ${it.status} priority=${it.priority} target=${it.targetRole} title=${it.title}")
-        }
+        options["out"]?.let { writeCliJson(Path.of(it), result) }
         return 0
     }
 
     private fun exportSettingPack(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         val pack = SettingPackImportService(repository).export(
-            projectId = options.required("project"),
-            packId = options.required("pack"),
-            packVersion = options.required("version").toInt(),
+            projectId = options.requiredCliOption("project"),
+            packId = options.requiredCliOption("pack"),
+            packVersion = options.requiredCliOption("version").toInt(),
         )
-        val out = Path.of(options.required("out"))
-        writeJson(out, pack)
+        val out = Path.of(options.requiredCliOption("out"))
+        writeCliJson(out, pack)
         println("wrote=$out")
         return 0
     }
 
     private fun diffSettingPack(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val pack = SettingPackParser().parse(Path.of(options.requiredCliOption("file")))
         val diff = SettingPackDiffService(repository).diff(pack, canonicalHash(pack))
         diff.entries.forEach { println("${it.action} ${it.entityType}:${it.entityId} v${it.previousVersion ?: "-"} -> ${it.newVersion}") }
-        options["out"]?.let { writeJson(Path.of(it), diff) }
+        options["out"]?.let { writeCliJson(Path.of(it), diff) }
         return 0
     }
 
     private fun impactReport(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val pack = SettingPackParser().parse(Path.of(options.required("file")))
+        val pack = SettingPackParser().parse(Path.of(options.requiredCliOption("file")))
         val diff = SettingPackDiffService(repository).diff(pack, canonicalHash(pack))
         val report = ImpactAnalyzer(repository).analyze(pack, diff)
         println("changedRoots=${report.changedRoots.joinToString(",")}")
@@ -5037,15 +4917,15 @@ class Cli {
         println("impactedScenes=${report.impactedScenes.joinToString(",")}")
         println("impactedThreads=${report.impactedThreads.joinToString(",")}")
         report.blockers.forEach { println("blocker=$it") }
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         return 0
     }
 
     private fun showDependencies(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
         DependencyGraphService(repository).show(
-            projectId = options.required("project"),
+            projectId = options.requiredCliOption("project"),
             entityType = options["entity-type"],
             entityId = options["entity-id"],
             depth = options["depth"]?.toIntOrNull() ?: 2,
@@ -5054,60 +4934,13 @@ class Cli {
     }
 
     private fun validateProjectCanon(options: Map<String, String>): Int {
-        val repository = repository(options)
+        val repository = cliRepository(options)
         repository.initialize()
-        val report = CanonConsistencyValidator(repository).validate(options.required("project"))
-        printValidation(report)
-        options["out"]?.let { writeJson(Path.of(it), report) }
+        val report = CanonConsistencyValidator(repository).validate(options.requiredCliOption("project"))
+        printSettingPackValidation(report)
+        options["out"]?.let { writeCliJson(Path.of(it), report) }
         return if (report.isValid) 0 else 1
     }
-
-    private fun printValidation(report: com.localnovel.engine.model.SettingPackValidationReport) {
-        println("valid=${report.isValid}")
-        println("issueCount=${report.issues.size}")
-        report.issues.forEach { println("${it.severity}:${it.code}:${it.path}:${it.message}") }
-    }
-
-    private inline fun <reified T> writeJson(path: Path, value: T) {
-        path.parent?.let { Files.createDirectories(it) }
-        Files.writeString(path, JsonSupport.json.encodeToString(value))
-    }
-
-    private fun repository(options: Map<String, String>): SqliteStoryRepository =
-        SqliteStoryRepository(Path.of(options["db"] ?: "data/story.db"))
-
-    private fun runner(repository: SqliteStoryRepository): TurnRunner =
-        TurnRunner(
-            contextCompiler = ContextCompiler(repository),
-            validator = AiTurnResultValidator(repository),
-            stateReducer = StateReducer(repository),
-        )
-
-    private inline fun <reified T> readJson(path: Path): T =
-        JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
-
-    private fun parseOptions(args: List<String>): Map<String, String> {
-        val options = mutableMapOf<String, String>()
-        var index = 0
-        while (index < args.size) {
-            val token = args[index]
-            require(token.startsWith("--")) { "Expected option starting with --, got '$token'." }
-            val key = token.removePrefix("--")
-            if (key == "record" || key == "dry-run") {
-                options[key] = "true"
-                index += 1
-                continue
-            }
-            val value = args.getOrNull(index + 1)
-            require(value != null && !value.startsWith("--")) { "Missing value for option --$key." }
-            options[key] = value
-            index += 2
-        }
-        return options
-    }
-
-    private fun Map<String, String>.required(key: String): String =
-        this[key] ?: error("Missing required option --$key")
 
     private fun printHelp() {
         println(
