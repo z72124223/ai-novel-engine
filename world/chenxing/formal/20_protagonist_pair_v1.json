@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "chenxing-protagonist-pair-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "updatedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "structure": {
+    "type": "dual_protagonist",
+    "primaryViewpoint": "陸塵行",
+    "coProtagonist": "愛醬",
+    "rule": "愛醬 is a second protagonist with her own growth line. She is not a pet mascot, clue machine, or combat item."
+  },
+  "nameCanon": {
+    "protagonist": "陸塵行",
+    "supersededNames": [
+      "陸知行",
+      "衛昭"
+    ],
+    "note": "陸塵行 is the only current-facing protagonist name."
+  },
+  "陸塵行": {
+    "role": "primary viewpoint protagonist",
+    "origin": {
+      "world": "2026 Earth",
+      "region": "台灣基隆八斗子一帶",
+      "displacement": "Crossing is tied to the 大坪海岸 typhoon-survival arc, not a generic mountain trail."
+    },
+    "preDisplacementBackground": {
+      "lifePattern": "No fixed single career. He lives by many practical skills rather than one identity.",
+      "skills": [
+        "pet training",
+        "basic grooming",
+        "cooking",
+        "AI application and troubleshooting",
+        "first aid",
+        "drone maintenance",
+        "car repair",
+        "tide and coastal observation"
+      ],
+      "skillCharacter": "Not expert-level in any one field, but genuinely competent in all of them. He learns by taking things apart.",
+      "socialPattern": "Cold but not timid. Polite enough in public, rarely interested in building relationships.",
+      "onlyUnconditionalBond": "愛醬"
+    },
+    "coreDrive": {
+      "primary": "curiosity",
+      "form": "craftsman curiosity",
+      "statement": "If he does not understand how something works, he cannot rest."
+    },
+    "personality": {
+      "strengths": [
+        "observation",
+        "hands-on reasoning",
+        "fast trial-and-error loops",
+        "emotional steadiness under survival pressure",
+        "cross-domain pattern linking"
+      ],
+      "flaws": [
+        "low social investment",
+        "impatience with foolish or cruel people",
+        "can overfocus on a mystery past safe timing"
+      ]
+    },
+    "aijiangProtectionPolicy": {
+      "correctFraming": "愛醬 is a dog 陸塵行 values extremely. He prioritizes her safety.",
+      "ifHarmHappens": "If harm has already occurred, he judges the current situation and decides whether and how to seek revenge for 愛醬.",
+      "supersededWrongFraming": {
+        "source": "older AI drafts altered for moderation",
+        "wrongText": "uncontrollable violence that continues after the opponent surrenders",
+        "rule": "Do not use the superseded framing in future drafts."
+      }
+    },
+    "storyPath": {
+      "volumeOne": "Linear Taiwan opening arc first. No cultivation lecture. No 灰關 market cold open.",
+      "longTerm": "Non-orthodox cultivation path remains possible later if he enters that system."
+    }
+  },
+  "愛醬": {
+    "role": "co-protagonist",
+    "species": "long-haired husky",
+    "sex": "female",
+    "reproductiveStatus": "spayed",
+    "origin": {
+      "world": "2026 Earth",
+      "history": "Raised by 陸塵行 from puppyhood. Professionally trained with high obedience and trust-based bond."
+    },
+    "appearance": {
+      "coat": "typical husky grey-white or black-white long coat",
+      "eyes": "pale blue; under certain light, faint gem-like facet patterns may appear",
+      "size": "standard husky build"
+    },
+    "personality": {
+      "traits": [
+        "highly trained obedience",
+        "extreme attention to 陸塵行's mood and intent",
+        "loves cleanliness",
+        "husky theatrics",
+        "drawn to pleasant scents"
+      ]
+    },
+    "routeRules": {
+      "not": [
+        "妖獸",
+        "靈寵"
+      ],
+      "learningCap": "none",
+      "futurePossibilities": "open-ended; may include becoming 陸塵行's mount, but only as one branch of her own story line",
+      "mustHave": "her own growth arc and her own story line"
+    },
+    "growthModel": {
+      "principle": "Learning never caps. Future possibilities are open.",
+      "not": "spirit-beast evolution or pet combat power creep",
+      "includes": [
+        "survival wisdom",
+        "route stamina",
+        "threat reading",
+        "coordination with 陸塵行",
+        "future branches such as mount partnership if earned by story"
+      ]
+    }
+  },
+  "relationship": {
+    "fromLuChenxing": "He treats 愛醬 as family he will protect first.",
+    "fromAijiang": "She treats 陸塵行 as home.",
+    "explorationPartnership": {
+      "陸塵行": "Interprets patterns, tests tools, deduces rules.",
+      "愛醬": "Senses danger, scent, emotion, and environmental wrongness."
+    },
+    "narrativeRules": [
+      "Harm to 愛醬 matters because she matters to him, not because he becomes a rage machine.",
+      "Revenge, if any, is a situational decision.",
+      "愛醬 keeps her own agency and growth line."
+    ]
+  },
+  "pairStoryBackground": {
+    "volumeOneOpening": "2026 Taiwan, 基隆八斗子大坪海岸, typhoon Bavi pressure arc.",
+    "formalPath": "world/chenxing/formal/21_volume_one_opening_arc_v1.json"
+  }
+}

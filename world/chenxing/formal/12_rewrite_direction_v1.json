@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "chenxing-rewrite-direction-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "readerAttractionModel": {
+    "primary": "curiosity_and_exploration",
+    "secondary": "visible_protagonist_progress",
+    "explicitlyNotPrimary": [
+      "abstract_pressure",
+      "melodramatic_oppression",
+      "status_conflict_for_its_own_sake"
+    ],
+    "authorStatement": "壓力並不是吸引讀者的特質。想要了解、想要探索才是。主角每一次理解世界多一點，或明顯進步一點，就是吸引力。"
+  },
+  "worldExperienceGoal": {
+    "readerFeeling": "Every scene should make the reader want to know one more true thing about this world, or see 陸塵行 understand or improve one more step.",
+    "protagonistFeeling": "陸塵行 explores because he cannot leave a mechanism unexplained. Progress is earned through observation, trial, failure, and recombination—not instant answers."
+  },
+  "lethalWorldRule": {
+    "summary": "This world is so dangerous that leaving a fortress is never a casual choice.",
+    "wildernessCombat": {
+      "ordinaryPerson": "May survive one or two encounters at most before exhaustion or death.",
+      "strongCultivator": "May survive five to ten encounters, but will still eventually exhaust resources and stamina.",
+      "noInfiniteFarming": true,
+      "rule": "Combat capacity is finite. Resources deplete. Retreat, rationing, and route choice matter."
+    },
+    "skyThreat": {
+      "rule": "The sky is not safe. Looking up can be fatal curiosity.",
+      "visibleExamples": [
+        "giant birds crossing overhead",
+        "unidentified one-eyed octopus-like sky entities",
+        "flying dragons at rare distance"
+      ],
+      "narrativeUse": "Sky phenomena are world-discovery moments, not boss-rush content in early volumes."
+    },
+    "explorationStakes": {
+      "not": "Will the protagonist suffer?",
+      "but": "What is out there, how does it work, and what can be learned before the world kills carelessness?"
+    }
+  },
+  "progressTypes": {
+    "knowledgeProgress": [
+      "language fragments understood",
+      "tool or material behavior recognized",
+      "monster pattern inferred",
+      "social rule decoded",
+      "technique principle guessed and tested"
+    ],
+    "capabilityProgress": [
+      "better survival routine",
+      "better repair or craft outcome",
+      "better route choice",
+      "better use of limited resources",
+      "later: cultivation or combat path uniquely his own"
+    ],
+    "relationshipProgress": [
+      "one person trusts him for a concrete reason",
+      "愛醬 and 陸塵行 coordination improves through lived experience"
+    ],
+    "rule": "Progress must be visible in scene evidence. No off-screen power jumps."
+  },
+  "openingStagePolicy": {
+    "currentDraftFortress": "灰關",
+    "status": "provisional_tool",
+    "use": "A temporary place to start exploration and learning, not the emotional center of the series.",
+    "replaceable": true
+  },
+  "firstVolumeExplorationHooks": [
+    "What kind of place is this if the sky itself hunts?",
+    "Why do people live this way inside fortresses?",
+    "What can a person without language and without cultivation learn first?",
+    "What is 愛醬 in a world where every animal has been changed by spiritual energy?",
+    "What do the grey wilderness, workshops, and archive terms like 墜客 actually mean?"
+  ],
+  "writingGuards": [
+    "Do not replace exploration with lecture.",
+    "Do not replace danger with repeated beatings; danger should raise the cost of curiosity.",
+    "Do not make 愛醬 solve mysteries.",
+    "Do not let 陸塵行 know what the reader has not been shown evidence for.",
+    "Every major discovery should create a new question, not close the book.",
+    "Do not use superseded AI moderation framing for 愛醬 harm: no unstoppable rage machine.",
+    "Volume one opens in 2026 Taiwan coastal linear story, not 灰關 exposition."
+  ],
+  "supersedes": {
+    "framing": "Older planning language that treated dual pressure or class oppression as the primary reader hook.",
+    "keeps": "Class injustice and profession dignity remain real world facts, but they serve exploration and progress rather than headline theme."
+  }
+}

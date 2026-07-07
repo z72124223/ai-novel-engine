@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "chenxing-volume-one-opening-prologue-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "placement": {
+    "order": "before_chapter_one",
+    "style": "ghost_story_opening",
+    "voice": "oral_narrator or in-world storyteller tone",
+    "rule": "This is atmosphere and public-history setup, not a full truth reveal."
+  },
+  "authorApprovedHook": {
+    "publicHistory": "日治時期，日本在台灣北部留下大量基礎建設，包括北部火力發電相關設施。二戰結束時日本人走得倉促，許多水泥、管道、廠房、坡道與半完成結構留了下來。",
+    "commonKnowledge": "後來的人只把這些當作廢墟、遺跡、危險地段，或地方歷史的一部分。",
+    "hiddenPremise": "幾乎沒有人知道，當時日本人還留下了一些別的東西。",
+    "tone": "像講鬼故事一樣的開場白：先講大家都以為知道的事，再留一個沒人知道的縫。"
+  },
+  "referencePrologueDraft": "你知道北部火力發電廠嗎？就是日本人來台灣時，在台灣北部留下的建設。當時二戰，日本人走得太急，留下很多基礎建設。但是所有人都不知道的是，當時日本人還留下了一些東西……",
+  "geographicAnchor": {
+    "region": "台灣北部",
+    "storyLocality": "基隆八斗子",
+    "realWorldEcho": "八斗子一帶留有日治時期電力與港口相關的舊址、坡岸與廢棄構造物，可作為敘事錨點。",
+    "fictionRule": "可借用真實地名質感，但不綁定現實考據細節；故事需要時可虛構具體構造名稱。"
+  },
+  "linkedSceneElements": {
+    "seaErosionFind": {
+      "role": "潮間帶或海蝕平台上被浪刷出來的異常痕跡，可與日治遺留工程的地下、護岸、或被封蓋的結構產生聯想。",
+      "readerExperience": "读者先以为是废墟或地质异常，不应在开场白直接说破。"
+    },
+    "hillsideAbandonedBuilding": {
+      "role": "山坡上的廢棄建築可接日治時期遺留的廠區附屬構造、值班室、倉庫或半廢棄通道。",
+      "storyUse": "巴威颱風逼近時，陸塵行與愛醬被迫躲入的現實避難點，也是秘密歷史的入口。"
+    }
+  },
+  "narrativeGuards": [
+    "Prologue may sound supernatural, but volume one still begins with realistic coastal danger.",
+    "Do not reveal in the prologue what the Japanese actually hid.",
+    "Do not turn the opening into a history lecture; keep oral-story rhythm.",
+    "The hidden Japanese deposit is author-only until later evidence scenes justify revelation."
+  ],
+  "links": {
+    "openingArc": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "authorOnlySecret": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json"
+  }
+}

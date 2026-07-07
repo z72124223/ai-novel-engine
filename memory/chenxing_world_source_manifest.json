@@ -127,7 +127,9 @@
       "rawTextUnmodified": true
     }
   ],
-  "nextAllowedContentStep": "chenxing_09_foundation_card_pack_contract_sample",
+  "formalCanonRoot": "world/chenxing/formal/",
+  "formalCanonIndex": "world/chenxing/formal/00_canon_index.json",
+  "nextAllowedContentStep": "chenxing_huiguan_domain_placement_block",
   "boundaryFlags": {
     "canonApproved": false,
     "settingPackData": false,

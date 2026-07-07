@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "chenxing-macro-world-skeleton-v1",
+  "status": "AUTHOR_ASSIGNED_SKELETON",
+  "assignedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "purpose": "Lightweight macro-world skeleton for 塵行 rewrite. This is the durable layer; opening fortress names are replaceable.",
+  "worldShape": {
+    "model": "fortress_islands_in_wilderness_ocean",
+    "rule": "Known civilization lives in linked fortresses; wilderness between them is lethal without corridors."
+  },
+  "fiveDomains": [
+    {
+      "id": "central",
+      "name": "中域",
+      "role": "Densest fortresses, highest civilization, sect politics center."
+    },
+    {
+      "id": "east",
+      "name": "東域",
+      "role": "Coast and island fortresses; sea beasts and offshore ruins."
+    },
+    {
+      "id": "west",
+      "name": "西域",
+      "role": "Desert mobility camps and ore economy."
+    },
+    {
+      "id": "south",
+      "name": "南域",
+      "role": "Jungle, miasma, and survival-first moral pressure."
+    },
+    {
+      "id": "north",
+      "name": "北域",
+      "role": "Frozen ruins, ancient relics, few but hardened fortresses."
+    }
+  ],
+  "majorPasses": [
+    "天衡關",
+    "落日關",
+    "青雲關"
+  ],
+  "threeForbiddenZones": [
+    "南荒大裂谷",
+    "北域·第零城",
+    "虛海"
+  ],
+  "corridorSystem": {
+    "classes": [
+      "甲級",
+      "乙級",
+      "丙級"
+    ],
+    "rule": "Trade, migration, and military movement depend on maintained corridors."
+  },
+  "displacedPersonLore": {
+    "publicTerm": "墜客",
+    "officialAttitude": "Archived, watched, rarely understood.",
+    "storyLink": "陸塵行 may be classified under this pattern without the world understanding why."
+  },
+  "openingStagePolicy": {
+    "currentDraftFortress": "灰關",
+    "status": "provisional",
+    "laterDistinctFortress": "蒼梧關",
+    "rule": "Opening location is rewriteable. Macro skeleton and cultivation system are not."
+  },
+  "rewritePriorities": [
+    "Keep 陸塵行, 愛醬, and 塵行 title.",
+    "Keep cultivation system v1 unless author explicitly revises.",
+    "Keep fortress-island world shape and five-domain map.",
+    "Replace or rename opening fortress freely.",
+    "Rebuild plot from living-world pressure, not from draft scene inventory."
+  ]
+}

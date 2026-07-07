@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "chenxing-exploration-progress-cadence-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "volumeOneDeliveryRule": {
+    "mode": "show_through_linear_story",
+    "not": "named_exploration_checklist_in_text",
+    "statement": "The three long-term learning themes exist as author background and reader experience, but volume one does not stop to explain them as topics."
+  },
+  "longTermLearningThemes": [
+    {
+      "order": 1,
+      "theme": "how language enters this world",
+      "volumeOneRule": "Do not lecture. If any language learning appears later, it must emerge from survival need and repeated contact."
+    },
+    {
+      "order": 2,
+      "theme": "rules of going outside and sky danger",
+      "volumeOneRule": "Do not explain fortress wilderness economics in volume one opening. Taiwan coastal danger comes first."
+    },
+    {
+      "order": 3,
+      "theme": "how 愛醬 is viewed in the new ecology",
+      "volumeOneRule": "Not discussed until the new world is actually reached."
+    }
+  ],
+  "volumeOneActualEntry": {
+    "formalPath": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "firstReaderExperience": "ordinary Taiwan coastal survival under typhoon pressure, then displacement"
+  }
+}

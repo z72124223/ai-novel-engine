@@ -4,14 +4,54 @@
   "updatedAt": "2026-07-07",
   "locale": "zh-TW",
   "canonicalWorkspace": "C:\\Users\\f7212\\Projects\\AI 劇本",
+  "authorCanonDecisions": {
+    "decidedAt": "2026-07-07",
+    "seriesTitle": "塵行",
+    "protagonistName": "陸塵行",
+    "supersededProtagonistNames": [
+      "陸知行",
+      "衛昭"
+    ],
+    "protagonistPairFormal": "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "companion": {
+      "name": "愛醬",
+      "species": "long-haired husky",
+      "sex": "female",
+      "reproductiveStatus": "spayed"
+    },
+    "locationOrder": {
+      "firstFortress": "灰關",
+      "laterDistinctFortress": "蒼梧關",
+      "rule": "灰關是陸塵行最先抵達的要塞；蒼梧關是另一座城，不可混用。"
+    },
+    "rawArchivePolicy": {
+      "formalCreativeBaseline": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+        "world/chenxing/raw/09_aijiang_detailed_setting.md"
+      ],
+      "nonFormalHistoricalOnly": [
+        "world/chenxing/raw/07_core_character_ensemble.md"
+      ],
+      "note": "raw/07 與其他舊稱呼、舊地名衝突內容僅作歷史素材，不作正式版依據。"
+    },
+    "cultivationSystem": {
+      "status": "author_locked",
+      "formalPath": "world/chenxing/formal/02_cultivation_system_v1.json"
+    },
+    "formalCanonRoot": "world/chenxing/formal/",
+    "formalCanonIndex": "world/chenxing/formal/00_canon_index.json",
+    "worldCompletionRegister": "world/chenxing/formal/03_world_completion_register.json",
+    "foundationCardPack": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json"
+  },
   "activeCreativeWorld": {
     "series": "塵行",
     "chapter": "第一話　塵",
-    "protagonist": "陸知行",
+    "protagonist": "陸塵行",
     "companion": "愛醬",
     "firstMajorLocation": "灰關",
     "providedSourceTitle": "穿越4000年",
-    "titleRelationshipStatus": "unresolved_title_alias_or_working_title",
+    "titleRelationshipStatus": "resolved_series_title_is_塵行",
     "memoryCapsule": "memory/quarterfull_world_memory_capsule.json",
     "rawSourceManifest": "memory/chenxing_world_source_manifest.json",
     "officialSqlImportResult": "memory/chenxing_world_source_sql_import_result.json",
@@ -22,6 +62,7 @@
       "world_source_chunks"
     ],
     "requiredQueryEntrypoint": "query-world-source --db data/story.db --q <text>",
+    "formalCanonRoot": "world/chenxing/formal",
     "rawArchiveRoot": "world/chenxing/raw",
     "alignmentDoc": "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
     "sourceRootHint": "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀\\quarterfull\\塵行\\"
@@ -54,7 +95,7 @@
       "delete obsolete rain_gate sample files"
     ]
   },
-  "nextAllowedContentStep": "chenxing_scene_packet_planning_from_validated_samples",
+  "nextAllowedContentStep": "chenxing_post_crossing_first_world_clue_block",
   "boundaryFlags": {
     "canonApproved": false,
     "settingPackData": false,

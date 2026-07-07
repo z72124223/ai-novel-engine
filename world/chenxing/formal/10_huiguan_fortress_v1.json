@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "chenxing-fortress-card-v1",
+  "status": "PROVISIONAL_AUTHOR_ASSIGNED",
+  "assignedAt": "2026-07-07",
+  "assignedBy": "codex_technical_placement",
+  "locale": "zh-TW",
+  "name": "灰關",
+  "importance": "provisional_opening_draft",
+  "authorNote": "灰關是隨筆開場草稿，不是故事核心。此卡只提供可接大世界的臨時錨點；正式重寫時可整體替換地名與舞台，但保留其社會質感：邊陲、流民、階級壓力、凡人職業尊嚴。",
+  "replaceability": {
+    "canBeRenamed": true,
+    "canBeRelocated": true,
+    "mustPreserveQualities": [
+      "frontier scarcity",
+      "weak outer-wall protection",
+      "mortal profession dignity pressure",
+      "cultivator class privilege visible in daily life",
+      "displaced-person suspicion"
+    ]
+  },
+  "macroPlacement": {
+    "domain": "中域",
+    "subregion": "東北邊陲·虛海外圍帶",
+    "fortressTier": "次級邊關",
+    "notOneOf": [
+      "天衡關",
+      "落日關",
+      "青雲關"
+    ],
+    "rationale": "中域東北存在灰白色靈氣異常帶虛海，邊陲會出現灰白荒野、墜客傳說與次級廊道終點。灰關作為虛海外圍的小型邊關，可解釋開場的灰白地貌、流民社會與來歷不明者檔案，但不需成為世界政治中心。"
+  },
+  "distances": {
+    "nearestMajorFortress": {
+      "name": "青雲關",
+      "domain": "中域",
+      "corridorClass": "乙級廊道",
+      "travelDays": {
+        "escortedCaravan": "18-24",
+        "militaryDispatch": "12-16",
+        "loneTravel": "not recommended"
+      }
+    },
+    "politicalCenter": {
+      "name": "天衡關",
+      "domain": "中域",
+      "corridorClass": "乙級轉甲級",
+      "travelDays": {
+        "escortedCaravan": "35-45"
+      }
+    },
+    "virtualSeaEdge": {
+      "name": "虛海邊緣觀測帶",
+      "direction": "東北",
+      "wildernessDays": "3-7",
+      "note": "再深入即進入靈氣異常區，非正式廊道。"
+    }
+  },
+  "governance": {
+    "nominalAuthority": "中域軍府遙制",
+    "actualControl": "城主與地方修仙家族共治的半自治邊關",
+    "majorSectPresence": "none_direct",
+    "note": "無大宗門主山駐紮；偶有外派弟子路過或徵用凡人。"
+  },
+  "scale": {
+    "totalPopulation": "约一万五千至两万",
+    "outerCity": "流民與凡人佔多數，防禦薄弱",
+    "innerCity": "有身份者、軍府與修士活動區",
+    "cultivatorEstimate": "引氣境為主，凝元境少數，通玄境僅傳聞級別靠山"
+  },
+  "economy": {
+    "pillars": [
+      "丙級廊道關稅與護送抽成",
+      "荒野獵物與低階靈材轉運",
+      "凡人工坊：修理、炊煮、鞣皮、基礎藥處理"
+    ],
+    "scarcity": [
+      "乾淨水源配給",
+      "可安全保存的糧食",
+      "能通過行會認可的正式身份"
+    ]
+  },
+  "threats": {
+    "routine": [
+      "低階異獸夜襲外城",
+      "丙級廊道陣法老化",
+      "靈氣稀薄帶造成的體力衰退"
+    ],
+    "occasional": [
+      "虛海外圍吐出的未知物或墜客",
+      "獸潮前兆"
+    ],
+    "distant": [
+      "龍種天際掠影",
+      "高階妖物不主動入關但影響荒野生態"
+    ]
+  },
+  "storyUse": {
+    "volumeOne": "臨時開場舞台；用來展示生存、語言隔閡、職業尊嚴與愛醬衝突，不作長期主舞台。",
+    "afterRewrite": "可替換為任何具備相同社會質感的邊陲要塞。"
+  }
+}

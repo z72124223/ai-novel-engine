@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "chenxing-ruin-interior-discoveries-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "visibility": "author_locked_scene_spec",
+  "series": "塵行",
+  "spatialModel": {
+    "formalPath": "world/chenxing/formal/34_spatial_pocket_two_doors_v1.json",
+    "summary": "進門與離門之間是一段獨立空間；所有實驗遺留、玻璃瓶、黃金都發生在這段空間內，穿越發生在離門之後。"
+  },
+  "eventOrder": {
+    "rule": "先發生廢墟內所有探索與發現，穿越發生在後面。",
+    "phaseA_taiwan2026_ruin_events": [
+      "enter ruin and atmospheric wrong details",
+      "experiment remnants",
+      "open-room dead with time and cause evidence",
+      "grey glass bottles with WWII-soaked corpses",
+      "gold discovery and partial take",
+      "continue deeper while still in Taiwan 2026"
+    ],
+    "phaseB_crossing_later": [
+      "only after Phase A is complete",
+      "displacement in later liminal zone",
+      "no return to ruin or remaining gold"
+    ],
+    "hardBoundary": "Bottles, gold, and experiment horror are fully experienced in Taiwan before any crossing. Do not mix fantasy world cues into bottle or gold scenes."
+  },
+  "placement": {
+    "afterBeats": [
+      "first_wrong_detail_no_public_record",
+      "second_wrong_detail_missing_sea_smell_and_stickiness"
+    ],
+    "before": "liminal_crossing_and_no_return",
+    "rule": "Discoveries unfold while 陸塵行 and 愛醬 continue deeper together. All ruin horror and gold events finish before displacement begins."
+  },
+  "explorationPacing": {
+    "principle": "鉅細靡遺，但分段呈現；不是一間房間讲完所有恐怖。",
+    "layers": [
+      "outer ruin shelter",
+      "service corridors and wartime signage",
+      "experiment preparation rooms",
+      "specimen storage",
+      "gold cache and command office",
+      "deeper sealed zone toward 逆行門 residual structure"
+    ],
+    "aijiangRole": "愛醬 stops at doorways, hacks low, refuses bottles, stays pressed to 陸塵行 when metal smell and dead air increase."
+  },
+  "experimentalRemnants": {
+    "visibleEvidence": [
+      "rusted gurneys bolted to sloped floors",
+      "ceramic sinks with old blood tide lines above normal drain height",
+      "wall-mounted measurement scales in both metric and wartime Japanese units",
+      "broken glass chart tubes and cracked recording dials frozen at unreadable numbers",
+      "leather restraint straps cut away in haste, some still buckled empty",
+      "chalk tally marks grouped in fives on concrete pillars",
+      "Chinese characters scratched low on walls, not official signage"
+    ],
+    "functionalMeaning": "These are not random war damage. They are calibration, restraint, measurement, and disposal traces of 逆行門計畫 human experiments."
+  },
+  "theDead": {
+    "authorRule": "Death presentation must follow time, cause, and location logic. No anonymous horror wallpaper.",
+    "timeLayers": [
+      {
+        "period": "1944-1945 early runs",
+        "state": "dessicated remains in side rooms where sealing failed or bodies were left for baseline comparison",
+        "deathWindow": "months to weeks before final activation"
+      },
+      {
+        "period": "1945 final month before surrender",
+        "state": "freshest pre-seal casualties and rushed disposal piles",
+        "deathWindow": "days to hours before facility abandonment"
+      },
+      {
+        "period": "1945-08 final activation night",
+        "state": "no intact bodies near the gate room; only drag marks and missing personnel records",
+        "deathWindow": "same night Japanese advance team entered and never returned"
+      }
+    ],
+    "causeCategories": [
+      {
+        "cause": "標定耗竭",
+        "description": "Repeated biological measurement under cold, dehydration, and stimulant injection until heart failure.",
+        "bodySigns": "needle kerf clusters on inner arms, cracked lips, rib-visible collapse, often labeled with numbers not names."
+      },
+      {
+        "cause": "窒息或廢氣",
+        "description": "Sealed chamber tests for atmospheric response; victims died from oxygen deprivation or chemical lung burn.",
+        "bodySigns": "darkened lips, broken fingernails from inside-door scratching, nostril bleeding dried to rust color."
+      },
+      {
+        "cause": "低溫與失溫實驗",
+        "description": "Used to test whether body response could serve as temporal anchor data.",
+        "bodySigns": "waxy pale skin, extremity discoloration, cloth stripped to increase measurement accuracy."
+      },
+      {
+        "cause": "處決與封口",
+        "description": "Subjects who survived long enough to see too much were killed before surrender and disposal.",
+        "bodySigns": "single precise wounds, hands bound in wire, tags removed to prevent identification."
+      }
+    ],
+    "ethicsGuard": "Write as war crime evidence and architectural horror, not spectacle torture porn. Focus on objects, numbers, room design, and 陸塵行's physical reaction."
+  },
+  "greyGlassBottles": {
+    "description": "Large grey-toned glass vessels, bigger than hospital reagent jars, lined on steel racks or sunk into concrete wells.",
+    "glass": "Thick wartime industrial glass with air bubbles, brown-grey fogging at the shoulders, metal clamp lids corroded shut.",
+    "fluid": "Originally clear preservation liquid; after eighty years it has turned murky grey-brown with floating particulate.",
+    "contents": "Whole corpses or major body sections preserved from WWII; not skeletons only.",
+    "preservationLogic": {
+      "whyStillVisible": "Facility used a wartime chemical preservation formula meant to keep tissue measurable for years.",
+      "whyGrey": "Long degradation of formaldehyde-family solution mixed with mineral sediment from coastal humidity seepage.",
+      "whyIntactEnough": "Only sealed bottles survived; unsealed specimens rotted elsewhere."
+    },
+    "discoveryBeat": {
+      "order": "after open-room remains, before gold cache",
+      "action": "陸塵行 approaches one bottle because the shape is wrong for reagent storage and the size is too large.",
+      "clarityMoment": "He moves his light closer and realizes the floating mass is a human body that has been soaking since the war.",
+      "aijiangReaction": "愛醬 recoils, may vomit dryly, will not approach the rack again.",
+      "luReaction": "Not heroic bravery. Nausea, anger without vocabulary, and the understanding that this place was never merely abandoned."
+    },
+    "deathTimeInBottles": "Most bottled subjects died between late 1944 and July 1945, then were immersed within hours to days after death.",
+    "deathCauseInBottles": "Primarily 標定耗竭 and 窒息或廢氣 subjects chosen because their bodies were considered 'complete datasets' worth preserving."
+  },
+  "goldDiscovery": {
+    "publicLegendEcho": "二戰末期传说：日本人走得急，留在台湾的黄金来不及运走。",
+    "authorTruth": "This facility held a separate operational gold cache for 逆行門計畫, not all of Taiwan's rumored buried gold.",
+    "location": "Command office or vault niche behind a false wall near records destruction point.",
+    "form": [
+      "military wooden crates with imperial-era shipping marks",
+      "cloth bundles of bars",
+      "some coins and uncut bar stock for local emergency payment"
+    ],
+    "whyStillHere": "Final personnel prioritized sealing the gate and destroying records over moving weight they believed would be captured anyway.",
+    "luChenxingAction": {
+      "behavior": "He understands weight immediately because he has real hands-on life experience.",
+      "takes": "Only what he can carry while still moving, protecting 愛醬, and keeping one hand free for light or balance.",
+      "doesNotTake": "Most of the cache remains because gold is too heavy and escape still matters.",
+      "emotion": "Not greed first. Practical shock: this much gold exists in a place history forgot."
+    }
+  },
+  "crossingAndNoReturn": {
+    "timing": "穿越 strictly happens after bottles, gold, and continued exploration. Not during them.",
+    "sequence": [
+      "Phase A complete: he has seen bottles, taken some gold, and kept exploring in the Taiwan ruin.",
+      "He may still think he can return for more gold later.",
+      "Only then, in a later segment, displacement begins in the liminal zone without a clean timestamp.",
+      "After displacement, returning to the Taiwan ruin and the remaining gold is impossible."
+    ],
+    "noReturnLogic": {
+      "characterKnowledge": "陸塵行 does not know when he crossed.",
+      "authorTruth": "The 2026 coastal node closes after passage; the Taiwan ruin remains on the other side of a fracture he cannot re-find.",
+      "goldConsequence": "The gold he left behind is lost with the unreachable ruin."
+    }
+  },
+  "sceneWritingRequirements": {
+    "mustDetail": [
+      "temperature drop room by room",
+      "floor slope and drainage design",
+      "what the flashlight catches first vs second",
+      "smell progression: rust -> old chemical -> sweet-decay -> preserved fluid",
+      "how 愛醬's leash-free distance changes",
+      "how 陸塵行 counts exits and keeps bearings",
+      "weight of gold in hands, pockets, belt wrap, or improvised cloth"
+    ],
+    "mustNot": [
+      "Dump all discoveries in one paragraph.",
+      "Let 陸塵行 instantly understand 逆行門計畫.",
+      "Let him calmly loot everything.",
+      "Let him return later to the same ruin after crossing."
+    ]
+  },
+  "links": {
+    "crossingExperience": "world/chenxing/formal/32_crossing_experience_v1.json",
+    "authorSecret": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json",
+    "openingArc": "world/chenxing/formal/21_volume_one_opening_arc_v1.json"
+  }
+}

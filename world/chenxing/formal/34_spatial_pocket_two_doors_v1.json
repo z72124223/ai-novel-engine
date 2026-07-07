@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "chenxing-spatial-pocket-two-doors-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "authorQuestion": "這個地方是一段空間，有兩個門；一個是進來的門，一個是離開的門；兩門之間是獨立空間，所以一直沒人找到遺跡。是否合理？",
+  "authorDecision": "合理，且應作為正式空間模型。",
+  "spatialModel": {
+    "summary": "八斗子山坡廢墟只是『進門』在台灣側的錨點；門與門之間是一段獨立空間片段，不屬於一般可搜尋的公開地理。",
+    "structure": {
+      "entranceDoor": {
+        "role": "進來的門",
+        "connectsTo": "2026 台灣・基隆八斗子・大坪海岸一帶的真實地理",
+        "howLuEnters": "颱風夜避難進入廢樓後，在特定氣象與潮汐條件下跨入這段空間，而非一般觀光路徑。"
+      },
+      "independentSegment": {
+        "role": "兩門之間的獨立空間",
+        "contains": [
+          "1945 逆行門實驗設施殘留",
+          "開放區亡者",
+          "灰色玻璃瓶區",
+          "來不及運走的黃金",
+          "更深處的門框與共振結構"
+        ],
+        "property": "在公開地圖、地方記憶、網路敘事與日常海岸動線中都不連續存在。"
+      },
+      "departureDoor": {
+        "role": "離開的門",
+        "connectsTo": "别界／另一端穩定世界",
+        "crossingRule": "穿越發生在通過離開的門之後，或經過離開的門時；不是進門當下。"
+      }
+    }
+  },
+  "whyNobodyFoundIt": {
+    "notBecause": [
+      "地方流傳鬼故事",
+      "只有沒有精確地名",
+      "單純檔案被銷毀而已"
+    ],
+    "because": [
+      "這段空間不是台灣日常地理的一部分，而是附著在海岸節點上的獨立片段。",
+      "沒有從進門進入，就不會走到兩門之間的內部。",
+      "1945 戰後封存與記錄銷毀，讓台灣側連進門錨點都逐漸被遺忘。",
+      "即使有人知道八斗子有舊電廠遺跡，也不知道門後還有一段完整空間。"
+    ],
+    "luChenxingFirstDoubt": "查不到、沒聽過，不只是因為歷史被藏，而是因為這裡本來就不在公開空間裡。"
+  },
+  "explainsEarlierDetails": {
+    "missingSeaSmell": "獨立空間已與台灣海岸的連續體感脫節，所以海風味與黏膩感不對。",
+    "bottlesAndGoldInTaiwanPhase": "在敘事時間上，這些都發生在兩門之間的獨立片段內；人物仍以為自己在台灣廢墟中，但身體已感到不對。",
+    "noReturn": "通過離開的門後，無法再從進門回到同一獨立片段；剩餘黃金與玻璃瓶留在門後空間。"
+  },
+  "eventOrderWithSpatialModel": {
+    "step1": "從台灣側進入『進來的門』。",
+    "step2": "在兩門之間的獨立空間內探索：實驗遺留、亡者、玻璃瓶、黃金。",
+    "step3": "仍以為只是台灣廢墟，計畫之後再回來拿更多黃金。",
+    "step4": "往更深處或往『離開的門』移動。",
+    "step5": "穿越發生在離開的門之後／之時；他們自己也不清楚確切一刻。",
+    "step6": "再也回不到這段空間與進門。"
+  },
+  "relationTo1945Experiment": {
+    "authorTruth": "1945 逆行門啟動時，這裡不是單純地下室，而是一段被撕出並卡在門框之間的獨立空間碎片。",
+    "japaneseFate": "先遣隊從台灣側進入，往離開的門而去，有進無出。",
+    "sealing": "戰後封堵的是台灣側進門與記憶，但整段空間並未回到正常地理。"
+  },
+  "writingGuards": [
+    "不要把兩個門寫成普通前後門；它們是空間接縫。",
+    "進門後到離門前，讀者應仍主要相信這是台灣二戰遺留恐怖。",
+    "離門後才逐步確認世界換了。",
+    "不要用旁白直接講『異空間』，先讓身體與環境不對。"
+  ],
+  "links": {
+    "ruinDiscoveries": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json",
+    "crossingExperience": "world/chenxing/formal/32_crossing_experience_v1.json",
+    "authorSecret": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json"
+  }
+}

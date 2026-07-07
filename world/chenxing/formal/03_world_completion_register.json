@@ -1,0 +1,333 @@
+{
+  "schemaVersion": "chenxing-world-completion-register-v1",
+  "status": "ACTIVE_PLANNING",
+  "updatedAt": "2026-07-07",
+  "strategyShift": "Story will be rewritten. 灰關 is provisional opening draft, not the core. Build durable macro skeleton first; do not over-invest in draft fortress politics or cast until rewrite direction is chosen.",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "diagnosis": "The project has thick raw inspiration and thin formal canon. Writing, engine context, and setting-pack conversion all fail when formal blocks are missing or conflict.",
+  "architectureLayers": [
+    {
+      "layer": 0,
+      "name": "raw_archive",
+      "path": "world/chenxing/raw/",
+      "role": "Frozen author source text and historical drafts.",
+      "rule": "Never rewrite. Never auto-promote to canon."
+    },
+    {
+      "layer": 1,
+      "name": "formal_canon",
+      "path": "world/chenxing/formal/",
+      "role": "Author-locked JSON decisions and system specs.",
+      "rule": "One block at a time. Conflicts resolve in favor of this layer."
+    },
+    {
+      "layer": 2,
+      "name": "foundation_cards",
+      "path": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json",
+      "role": "Scene-packet and query planning surfaces derived from formal canon.",
+      "rule": "No card without a formal source document."
+    },
+    {
+      "layer": 3,
+      "name": "setting_pack",
+      "path": "future: samples/chenxing/setting_pack_chenxing_v1.json",
+      "role": "Engine-loadable world dependency graph.",
+      "rule": "Only after fortress, cast, and first-volume systems are locked."
+    },
+    {
+      "layer": 4,
+      "name": "runtime_sqlite",
+      "path": "data/story.db session tables",
+      "role": "Playable session state.",
+      "rule": "Only through validate-setting-pack / apply-setting-pack and resolve-turn."
+    }
+  ],
+  "completionMethod": {
+    "name": "one_gate_per_session",
+    "rules": [
+      "Each session resolves exactly one world block.",
+      "Each block has one author question, one formal JSON output, one index update.",
+      "Do not start setting-pack apply until Phase C is complete.",
+      "Do not write scene prose before the block needed for that scene is locked."
+    ]
+  },
+  "phases": [
+    {
+      "phase": "A",
+      "name": "canon_anchors",
+      "status": "complete",
+      "outputs": [
+        "01_author_canon_decisions.json",
+        "02_cultivation_system_v1.json"
+      ]
+    },
+    {
+      "phase": "B",
+      "name": "macro_world_skeleton",
+      "status": "complete",
+      "goal": "Establish durable five-domain world shape independent of opening draft.",
+      "outputs": [
+        "11_macro_world_skeleton_v1.json"
+      ]
+    },
+    {
+      "phase": "B2",
+      "name": "provisional_opening_stage",
+      "status": "complete_minimal",
+      "goal": "Give 灰關 a temporary macro placement only; enough to connect, not enough to overbuild.",
+      "outputs": [
+        "10_huiguan_fortress_v1.json"
+      ],
+      "deferredUntilRewrite": [
+        "huiguan_governance_and_factions",
+        "draft_cast_profiles",
+        "first_47_days_truth"
+      ]
+    },
+    {
+      "phase": "C",
+      "name": "rewrite_direction",
+      "status": "complete",
+      "goal": "Choose what the rewritten first volume must make readers want to explore.",
+      "outputs": [
+        "12_rewrite_direction_v1.json"
+      ]
+    },
+    {
+      "phase": "D",
+      "name": "protagonist_pair",
+      "status": "complete",
+      "goal": "Lock dual protagonist backgrounds and relationship before volume one.",
+      "outputs": [
+        "20_protagonist_pair_v1.json"
+      ]
+    },
+    {
+      "phase": "C2",
+      "name": "volume_one_opening_arc",
+      "status": "complete",
+      "outputs": [
+        "21_volume_one_opening_arc_v1.json",
+        "13_exploration_progress_cadence_v1.json"
+      ]
+    },
+    {
+      "phase": "D2",
+      "name": "first_volume_supporting_cast",
+      "status": "blocked",
+      "goal": "Lock supporting cast only after protagonist pair and exploration cadence are set.",
+      "requiredBlocks": [
+        "su_qiao_formal_profile",
+        "tan_wu_formal_profile",
+        "xue_family_pressure_profile",
+        "zhen_lan_formal_profile"
+      ]
+    },
+    {
+      "phase": "E",
+      "name": "narrative_secrets_author_only",
+      "status": "blocked",
+      "goal": "Author knows what readers do not yet know.",
+      "requiredBlocks": [
+        "first_47_days_truth",
+        "displaced_person_archive_rules",
+        "lu_zhixing_modern_name_and_huiguan_alias"
+      ]
+    },
+    {
+      "phase": "F",
+      "name": "systems_curated_pack",
+      "status": "blocked",
+      "goal": "Promote only the systems needed for volumes one to three from raw 02-04 into formal JSON.",
+      "requiredBlocks": [
+        "weapon_tiers_visible_in_volume_one",
+        "profession_system_cook_apothecary_doctor",
+        "currency_and_scarcity",
+        "beast_threat_tiers_near_huiguan"
+      ]
+    },
+    {
+      "phase": "G",
+      "name": "engine_conversion",
+      "status": "not_started",
+      "goal": "Convert locked formal canon into setting pack and pilot session.",
+      "requiredBlocks": [
+        "setting_pack_v1",
+        "opening_character_runtime_templates",
+        "pilot_preflight_pass"
+      ]
+    }
+  ],
+  "worldBlocks": [
+    {
+      "blockId": "huiguan_domain_placement",
+      "phase": "B2",
+      "status": "complete_provisional",
+      "priority": 1,
+      "resolvedBy": "codex_technical_placement",
+      "outputFile": "world/chenxing/formal/10_huiguan_fortress_v1.json",
+      "resolution": "中域東北邊陲·虛海外圍帶次級邊關；距青雲關乙級廊道約12-24日。"
+    },
+    {
+      "blockId": "macro_world_skeleton",
+      "phase": "B",
+      "status": "complete",
+      "priority": 1,
+      "outputFile": "world/chenxing/formal/11_macro_world_skeleton_v1.json"
+    },
+    {
+      "blockId": "first_volume_core_pressure",
+      "phase": "C",
+      "status": "complete",
+      "priority": 2,
+      "resolvedAnswer": "Reader attraction is curiosity and exploration, plus visible protagonist progress. Lethal wilderness and unsafe sky raise the cost of learning, but do not replace learning as the hook.",
+      "outputFile": "world/chenxing/formal/12_rewrite_direction_v1.json",
+      "unlocks": [
+        "exploration scene design",
+        "progress cadence",
+        "danger economy rules"
+      ]
+    },
+    {
+      "blockId": "huiguan_governance_and_factions",
+      "phase": "B2",
+      "status": "deferred_until_rewrite",
+      "priority": 99,
+      "note": "Do not lock draft politics while opening fortress remains provisional."
+    },
+    {
+      "blockId": "huiguan_economy_and_professions",
+      "phase": "B2",
+      "status": "deferred_until_rewrite",
+      "priority": 99,
+      "note": "Minimal economy already placed in 10_huiguan_fortress_v1.json."
+    },
+    {
+      "blockId": "su_qiao_formal_profile",
+      "phase": "D",
+      "status": "gap",
+      "priority": 4,
+      "questionForAuthor": "蘇橋的正式版本：工匠線（08）還是情報販子線（07），或你要怎麼合併？",
+      "outputFile": "world/chenxing/formal/20_first_volume_cast_v1.json",
+      "unlocks": [
+        "担保人关系",
+        "trust arc",
+        "匠師行會線"
+      ]
+    },
+    {
+      "blockId": "exploration_progress_cadence",
+      "phase": "C",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
+      "resolution": "Three long-term themes stay author background; volume one delivers through linear story, not named topic exposition."
+    },
+    {
+      "blockId": "volume_one_opening_arc",
+      "phase": "C",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+      "resolution": "2026 Taiwan 基隆八斗子大坪海岸, typhoon Bavi pressure, tide trap, hillside abandoned building retreat."
+    },
+    {
+      "blockId": "volume_one_opening_prologue",
+      "phase": "C",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/22_volume_one_opening_prologue_v1.json",
+      "resolution": "Ghost-story hook: Japanese northern thermal power legacy, rushed WWII withdrawal, and an unknown hidden deposit."
+    },
+    {
+      "blockId": "japanese_hidden_deposit",
+      "phase": "E",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json",
+      "resolution": "逆行門計畫：封存實驗、企图回到过去却打开别界、日方先遣队有进无出、战后封存至今。"
+    },
+    {
+      "blockId": "crossing_experience_pacing",
+      "phase": "C2",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/32_crossing_experience_v1.json",
+      "resolution": "Slow interior progression with 愛醬; suspense layers; crossing time ambiguous to characters."
+    },
+    {
+      "blockId": "interior_first_wrong_detail",
+      "phase": "C2",
+      "status": "complete",
+      "resolution": "陸塵行 first doubt: why has no one mentioned this ruin, and why is there no useful online record?"
+    },
+    {
+      "blockId": "interior_second_wrong_detail",
+      "phase": "C2",
+      "status": "complete",
+      "resolution": "Sea-wind smell and sticky coastal skin-feel are wrong at the ruin though the sea is still nearby."
+    },
+    {
+      "blockId": "public_history_erasure_logic",
+      "phase": "E",
+      "status": "complete",
+      "resolution": "No local rumors; the facility never entered public history, so ordinary people could not know it."
+    },
+    {
+      "blockId": "ruin_interior_discoveries",
+      "phase": "C2",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json",
+      "resolution": "Experiment remnants, layered dead with time/cause logic, grey glass bottles with WWII-soaked corpses, partial gold take; crossing happens only after all of these, then no return."
+    },
+    {
+      "blockId": "protagonist_pair_corrections",
+      "phase": "D",
+      "status": "complete",
+      "outputFile": "world/chenxing/formal/20_protagonist_pair_v1.json",
+      "resolution": "Protection/revenge framing corrected; 愛醬 learning uncapped with own story line; not 妖獸/靈寵."
+    },
+    {
+      "blockId": "first_47_days_truth",
+      "phase": "E",
+      "status": "deferred_until_after_taiwan_arc",
+      "priority": 5,
+      "note": "Superseded as volume-one entry by Taiwan opening arc. Revisit only for post-crossing timeline."
+    },
+    {
+      "blockId": "cangwu_domain_placement",
+      "phase": "C",
+      "status": "gap",
+      "priority": 6,
+      "questionForAuthor": "蒼梧關在五大域的哪裡？陸塵行大約在什麼劇情階段才會到那裡？",
+      "outputFile": "world/chenxing/formal/11_cangwu_fortress_v1.json",
+      "unlocks": [
+        "later-volume geography",
+        "cast relocation logic"
+      ]
+    }
+  ],
+  "nextSession": {
+    "blockId": "post_crossing_first_world_clue",
+    "question": "穿越之後，陸塵行第一次確認『這裡已不是台灣』的具體證據是什麼？",
+    "whyFirst": "Ruin exploration, bottles, gold, and no-return are locked. The first post-crossing clue starts the new world line."
+  },
+  "definitionOfCompleteWorld": {
+    "minimumForVolumeOneWriting": [
+      "author canon locked",
+      "cultivation system locked",
+      "macro world skeleton locked",
+      "rewrite direction chosen",
+      "opening stage chosen or replaced",
+      "first-volume cast rebuilt from rewrite direction"
+    ],
+    "minimumForEnginePilot": [
+      "all of the above",
+      "curated systems pack",
+      "setting pack v1 validated and previewed",
+      "opening runtime templates"
+    ],
+    "minimumForLongSeries": [
+      "all of the above",
+      "five domains fully placed",
+      "major factions and fortress network",
+      "author-only cosmology truth document"
+    ]
+  }
+}
