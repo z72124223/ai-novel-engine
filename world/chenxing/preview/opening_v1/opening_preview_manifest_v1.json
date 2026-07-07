@@ -21,6 +21,20 @@
   "shotCount": 10,
   "shotRange": "shot-00-prologue through shot-09-hillside-retreat",
   "estimatedDurationSec": 82,
+  "previewFramesDirectory": "world/chenxing/preview/opening_v1/frames/",
+  "previewFrames": [
+    { "shotId": "shot-00-prologue", "path": "world/chenxing/preview/opening_v1/frames/shot_00_prologue.png" },
+    { "shotId": "shot-01-tide-check", "path": "world/chenxing/preview/opening_v1/frames/shot_01_tide_check.png" },
+    { "shotId": "shot-02-strange-find", "path": "world/chenxing/preview/opening_v1/frames/shot_02_strange_find.png" },
+    { "shotId": "shot-03-overfocus", "path": "world/chenxing/preview/opening_v1/frames/shot_03_overfocus.png" },
+    { "shotId": "shot-04-water-rises", "path": "world/chenxing/preview/opening_v1/frames/shot_04_water_rises.png" },
+    { "shotId": "shot-05-return-blocked", "path": "world/chenxing/preview/opening_v1/frames/shot_05_return_blocked.png" },
+    { "shotId": "shot-06-wind-worsens", "path": "world/chenxing/preview/opening_v1/frames/shot_06_wind_worsens.png" },
+    { "shotId": "shot-07-sky-darkens", "path": "world/chenxing/preview/opening_v1/frames/shot_07_sky_darkens.png" },
+    { "shotId": "shot-08-no-signal", "path": "world/chenxing/preview/opening_v1/frames/shot_08_no_signal.png" },
+    { "shotId": "shot-09-hillside-retreat", "path": "world/chenxing/preview/opening_v1/frames/shot_09_hillside_retreat.png" }
+  ],
+  "previewFrameNote": "AI draft frames for author visual review; not final approved production stills.",
   "sqlEvidence": {
     "scenesPack": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
     "database": "data/story.db",
