@@ -2,7 +2,7 @@
   "schemaVersion": "chenxing-character-visual-appearance-v1",
   "status": "AUTHOR_LOCKED",
   "lockedAt": "2026-07-08",
-  "updatedAt": "2026-07-08",
+  "updatedAt": "2026-07-08T02:00:00+08:00",
   "locale": "zh-TW",
   "series": "塵行",
   "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬.",
@@ -13,8 +13,13 @@
     "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
   },
   "turnaroundStatus": {
-    "陸塵行": "photo_set_123123_closest_match_v2_locked",
-    "愛醬": "author_reference_sheet_primary_likeness"
+    "陸塵行": "photo_set_123123_closest_body_v2_locked",
+    "愛醬": "author_production_turnaround_v1_locked"
+  },
+  "productionTurnaroundPair": {
+    "rule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
+    "luChenxing": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
   },
   "photoSet123123": {
     "path": "world/chenxing/assets/reference/photo_set_123123/",
@@ -27,9 +32,9 @@
   },
   "referenceImagePolicy": {
     "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so AI redraws are approximations only.",
-    "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-    "aijiangStyleMatchedAttempt": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png",
-    "rule": "愛醬的長相、毛色分布、體型比例以作者提供之三視圖概念稿為準；電影感重繪版僅作風格參考。"
+    "aijiangLikenessAuthority": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+    "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+    "rule": "愛醬以作者新生產之三視圖為正式基準；舊概念稿僅作歷史參考。"
   },
   "supersededAssets": {
     "note": "舊 2D 扁平漫畫三視圖保留作歷史試稿，不再作正式視覺基準。",
@@ -39,17 +44,9 @@
   "productionAssets": {
     "style": "cinematic_realistic_dark_fantasy",
     "turnaroundDirectory": "world/chenxing/assets/turnaround/",
-    "luChenxingCinematicTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+    "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
     "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
-    "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
-    "luChenxingOpeningStockyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
-    "luChenxingPhotoMatch174_80Turnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
-    "luChenxingPhotoMatchFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png",
-    "luChenxingPhotoClosest174_80Turnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
-    "luChenxingPhotoClosestFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_face_turnaround_v2.png",
-    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
-    "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-    "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
+    "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
   },
   "陸塵行": {
     "age": 36,
@@ -68,10 +65,9 @@
       "note": "作者指定開場身材數據。"
     },
     "photoClosestMatch": {
-      "label": "photo_set_123123_closest_match_v2",
-      "rule": "臉部極像 123123 照片組；v2 為目前最接近照片的三視圖基準。",
-      "bodyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
-      "faceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_face_turnaround_v2.png"
+      "label": "photo_set_123123_closest_body_v2",
+      "rule": "臉部極像 123123 照片組；正式基準僅保留全身三視圖一張。",
+      "productionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
     },
     "faceReference": {
       "primaryPhotoSet": "world/chenxing/assets/reference/photo_set_123123/",
@@ -142,13 +138,8 @@
         "side",
         "back"
       ],
-      "status": "photo_set_123123_closest_match_v2_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
-      "faceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_face_turnaround_v2.png",
-      "priorAttempts": {
-        "photoMatch174_80_v1": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
-        "photoMatchFace_v1": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png"
-      }
+      "status": "photo_set_123123_closest_body_v2_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
     }
   },
   "愛醬": {
@@ -157,8 +148,13 @@
     "sex": "female",
     "reproductiveStatus": "spayed",
     "authorReference": {
+      "path": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "sourcePath": "C:\\Users\\f7212\\Downloads\\mraxl1nh_1c4282a541b9a9af.jpg",
+      "type": "production_turnaround_sheet"
+    },
+    "priorConceptSheet": {
       "path": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-      "type": "character_concept_sheet"
+      "status": "superseded_historical_reference"
     },
     "lockedAppearanceFromReference": {
       "build": "athletic_well_balanced_husky",
@@ -179,9 +175,9 @@
         "side",
         "back"
       ],
-      "status": "author_reference_sheet_primary_likeness",
-      "likenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-      "styleMatchedAttempt": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
+      "status": "author_production_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "likenessAuthority": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
     }
   },
   "linkedDocuments": [

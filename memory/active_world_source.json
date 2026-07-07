@@ -49,19 +49,13 @@
       "formalCoverPath": "world/chenxing/formal/24_series_cover_v1.json",
       "formalCoverImage": "world/chenxing/assets/cover/chenxing_cover_v1.png",
       "visualStyle": "cinematic_realistic_dark_fantasy",
+      "productionTurnaroundPairRule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
       "luChenxingSummary": "36歲、平頭、174cm/80kg、沒有鬍渣、戴眼鏡",
       "luChenxingPhotoSet123123": "world/chenxing/assets/reference/photo_set_123123/",
-      "luChenxingPhotoMatchTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
-      "luChenxingPhotoMatchFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png",
-      "luChenxingPhotoClosestTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
-      "luChenxingPhotoClosestFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_face_turnaround_v2.png",
-      "luChenxingTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+      "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
       "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
-      "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
-      "luChenxingOpeningStockyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
-      "luChenxingBodyProgression": "lean_base_first_then_opening_stocky_same_skull",
-      "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
-      "aijiangStyleMatchedTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
+      "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg"
     }
   },
   "activeCreativeWorld": {
