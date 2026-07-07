@@ -48,8 +48,11 @@
       "formalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
       "aijiangReferenceImage": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
       "luChenxingSummary": "36歲、平頭、中度肥胖、沒有鬍渣、戴眼鏡",
-      "aijiangTurnaround": "author_reference_sheet_locked",
-      "luChenxingTurnaround": "text_locked_image_pending"
+      "aijiangTurnaround": "2d_turnaround_v1_locked",
+      "luChenxingTurnaround": "2d_turnaround_v1_locked",
+      "aijiang2dTurnaround": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png",
+      "luChenxing2dTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png",
+      "visualStyle": "2d_anime_comic_flat_cel"
     }
   },
   "activeCreativeWorld": {

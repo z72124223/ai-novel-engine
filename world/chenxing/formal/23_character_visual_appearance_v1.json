@@ -6,8 +6,14 @@
   "series": "塵行",
   "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬 before storyboard turnaround completion.",
   "turnaroundStatus": {
-    "陸塵行": "text_locked_three_view_not_drawn",
-    "愛醬": "author_reference_sheet_locked_three_view_available"
+    "陸塵行": "2d_turnaround_v1_locked",
+    "愛醬": "2d_turnaround_v1_locked"
+  },
+  "productionAssets": {
+    "style": "2d_anime_comic_flat_cel",
+    "turnaroundDirectory": "world/chenxing/assets/turnaround/",
+    "luChenxing2dTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png",
+    "aijiang2dTurnaround": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"
   },
   "陸塵行": {
     "age": 36,
@@ -35,7 +41,8 @@
         "side",
         "back"
       ],
-      "status": "spec_locked_image_pending"
+      "status": "2d_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png"
     }
   },
   "愛醬": {
@@ -89,7 +96,8 @@
         "side",
         "back"
       ],
-      "status": "reference_sheet_locked"
+      "status": "2d_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"
     }
   },
   "linkedDocuments": [
