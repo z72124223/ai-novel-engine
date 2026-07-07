@@ -1,4 +1,4 @@
-{
+﻿{
     "verdict": "PASS",
     "validationId": "comic-video-production-package-zh-tw-validation-001",
     "productionPackageDraftFile": "samples\\comic_video_workbench_zh_tw\\production_package_preview\\production_package_draft_zh_tw_sample.json",
@@ -17,8 +17,8 @@
     "storyboardProductionTable": [
         {
             "shotId": "shot-001",
-            "panelId": "panel-frame-rain-gate-arrival",
-            "sourceFrameId": "frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
+            "sourceFrameId": "frame-market-scene-arrival",
             "sceneReference": "雨門",
             "beatReference": "beat-001-遞信",
             "durationMillis": 3000,
@@ -27,7 +27,7 @@
             "onScreenAssetCardIds": [
                 "asset-card-asset-lin-rain-coat",
                 "asset-card-asset-sealed-letter",
-                "asset-card-asset-rain-gate"
+                "asset-card-asset-market-scene"
             ],
             "voiceId": "voice-lin",
             "characterId": "char-lin",
@@ -113,14 +113,14 @@
     "shotPrompts": [
         {
             "shotId": "shot-001",
-            "panelId": "panel-frame-rain-gate-arrival",
-            "sourceFrameId": "frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
+            "sourceFrameId": "frame-market-scene-arrival",
             "positivePromptDraft": "comic video shot. scene: 雨門. beat: beat-001-遞信. visual goal: 林披著雨衣抵達門樓，左手握著一封蠟印未破的信。. camera: 從屋簷下的中遠景看向雨幕，保留燈籠、守衛桌與信封。. must show: 信封仍未拆封。; 雨水打在石地上。; 門樓燈籠亮著。. continuity: 蠟印保持完整。; 林知道信不能被拆開。",
             "negativePromptDraft": "不要顯示信件內容。; 不要顯示幕後主使。; non-public source material; remote media references; generated-output claims; decision-state claims",
             "referenceAssetCardIds": [
                 "asset-card-asset-lin-rain-coat",
                 "asset-card-asset-sealed-letter",
-                "asset-card-asset-rain-gate"
+                "asset-card-asset-market-scene"
             ],
             "durationMillis": 3000,
             "mustPreserve": [
@@ -214,7 +214,7 @@
             "sourceAssetRef": "asset-lin-rain-coat",
             "assetType": "character_or_visual_asset",
             "sourcePanelIds": [
-                "panel-frame-rain-gate-arrival",
+                "panel-frame-market-scene-arrival",
                 "panel-frame-side-passage-choice"
             ],
             "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-lin-rain-coat.",
@@ -244,13 +244,13 @@
             ]
         },
         {
-            "assetCardId": "asset-card-asset-rain-gate",
-            "sourceAssetRef": "asset-rain-gate",
+            "assetCardId": "asset-card-asset-market-scene",
+            "sourceAssetRef": "asset-market-scene",
             "assetType": "scene",
             "sourcePanelIds": [
-                "panel-frame-rain-gate-arrival"
+                "panel-frame-market-scene-arrival"
             ],
-            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-rain-gate.",
+            "publicDescription": "Candidate visual asset referenced by validated comic video panels: asset-market-scene.",
             "mustRemainStable": [
                 "蠟印保持完整。",
                 "林知道信不能被拆開。",
@@ -276,7 +276,7 @@
             "sourceAssetRef": "asset-sealed-letter",
             "assetType": "prop",
             "sourcePanelIds": [
-                "panel-frame-rain-gate-arrival",
+                "panel-frame-market-scene-arrival",
                 "panel-frame-wax-mark-check",
                 "panel-frame-side-passage-choice"
             ],

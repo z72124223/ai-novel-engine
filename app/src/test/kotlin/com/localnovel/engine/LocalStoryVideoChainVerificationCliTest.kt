@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalAssetPromptCardsDraft
 import com.localnovel.engine.model.LocalRenderPackageDraft
@@ -18,9 +18,9 @@ class LocalStoryVideoChainVerificationCliTest {
     @Test
     fun cliWritesStoryVideoChainArtifactsAndReport() {
         val tempDir = Files.createTempDirectory("local-story-video-chain")
-        val storyInput = tempDir.resolve("rain_gate_story_input_pack_sample.json")
+        val storyInput = tempDir.resolve("chenxing_story_input_pack_sample.json")
         val outputDir = tempDir.resolve("chain_outputs")
-        val reportPath = tempDir.resolve("rain_gate_story_video_chain_report_sample.json")
+        val reportPath = tempDir.resolve("chenxing_story_video_chain_report_sample.json")
         writeJson(storyInput, LocalStoryInputPackValidationServiceTest.validPack())
 
         val exit = Cli().run(
@@ -31,7 +31,7 @@ class LocalStoryVideoChainVerificationCliTest {
                 "--output-dir",
                 outputDir.toString(),
                 "--chain",
-                "rain-gate-story-video-chain-v0",
+                "chenxing-story-video-chain-v0",
                 "--out",
                 reportPath.toString(),
             ),
@@ -41,16 +41,16 @@ class LocalStoryVideoChainVerificationCliTest {
         assertTrue(Files.exists(reportPath))
         val report = readJson<LocalStoryVideoChainReport>(reportPath)
         assertEquals("LOCAL_STORY_VIDEO_CHAIN_VERIFIED", report.status, report.findings.joinToString { it.ruleId })
-        assertEquals("rain-gate-story-video-chain-v0", report.chainId)
+        assertEquals("chenxing-story-video-chain-v0", report.chainId)
         assertEquals("PASS", report.stageResults.storyValidation.status)
         assertEquals("LOCAL_ASSET_PROMPT_CARDS_DRAFT", report.stageResults.assetPromptCards.status)
         assertEquals("LOCAL_RENDER_PACKAGE_DRAFT", report.stageResults.localRenderPackage.status)
         assertTrue(Files.exists(Path.of(report.generatedFiles.storyValidationReportFile)))
         assertTrue(Files.exists(Path.of(report.generatedFiles.assetPromptCardsFile)))
         assertTrue(Files.exists(Path.of(report.generatedFiles.localRenderPackageFile)))
-        assertEquals(2, report.counts.visualPromptCards)
-        assertEquals(2, report.counts.audioCueCards)
-        assertEquals(2, report.counts.panelPlans)
+        assertEquals(3, report.counts.visualPromptCards)
+        assertEquals(3, report.counts.audioCueCards)
+        assertEquals(3, report.counts.panelPlans)
         assertEquals(7, report.counts.qaChecks)
         assertEquals(7, report.counts.qaPass)
         assertEquals(0, report.counts.qaFail)

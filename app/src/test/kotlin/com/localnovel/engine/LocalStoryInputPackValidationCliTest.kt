@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalStoryInputPackValidationReport
 import com.localnovel.engine.support.JsonSupport
@@ -14,8 +14,8 @@ class LocalStoryInputPackValidationCliTest {
     @Test
     fun cliWritesLocalStoryInputPackValidationReport() {
         val tempDir = Files.createTempDirectory("local-story-input-pack-validation")
-        val input = tempDir.resolve("rain_gate_story_input_pack_sample.json")
-        val out = tempDir.resolve("rain_gate_story_input_pack_validation_sample.json")
+        val input = tempDir.resolve("chenxing_story_input_pack_sample.json")
+        val out = tempDir.resolve("chenxing_story_input_pack_validation_sample.json")
         writeJson(input, LocalStoryInputPackValidationServiceTest.validPack())
 
         val exit = Cli().run(
@@ -24,7 +24,7 @@ class LocalStoryInputPackValidationCliTest {
                 "--input",
                 input.toString(),
                 "--validation",
-                "local-story-input-rain-gate-validation-001",
+                "local-story-input-chenxing-validation-001",
                 "--out",
                 out.toString(),
             ),
@@ -34,11 +34,11 @@ class LocalStoryInputPackValidationCliTest {
         assertTrue(Files.exists(out))
         val report = readJson<LocalStoryInputPackValidationReport>(out)
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
-        assertEquals("local-story-input-rain-gate-validation-001", report.validationId)
+        assertEquals("local-story-input-chenxing-validation-001", report.validationId)
         assertEquals("local_story_input_pack_validated_for_review", report.nextAllowedDownstreamStep)
-        assertEquals(2, report.evidence.characterCount)
+        assertEquals(3, report.evidence.characterCount)
         assertEquals(1, report.evidence.sceneCount)
-        assertEquals(2, report.evidence.beatCount)
+        assertEquals(3, report.evidence.beatCount)
         assertTrue(report.evidence.localOnlyDeclared)
         assertTrue(report.evidence.noExternalPaidProviderToolsDeclared)
         assertTrue(report.evidence.fileProtocolJsonOnlyDeclared)

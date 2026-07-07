@@ -20,7 +20,7 @@
     "providedSourceTitle": "穿越4000年",
     "titleRelationshipStatus": "unresolved_title_alias_or_working_title"
   },
-  "rainGateReplacementNote": "Rain Gate remains test/demo-only / non-active-world sample data and is not deleted; this Chenxing sample becomes the default story-facing 09 foundation card contract sample direction.",
+  "activeWorldNote": "Chenxing / 塵行 is the default story-facing 09 foundation card contract sample for the active creative world.",
   "sourceNotes": [
     "Review-only sample derived from memory/active_world_source.json, memory/chenxing_world_source_manifest.json, memory/quarterfull_world_memory_capsule.json, docs/QUARTERFULL_WORLD_ALIGNMENT.md, and cited raw archive paths.",
     "Raw archive files under world/chenxing/raw/ are citation authority only and are not edited, rewritten, summarized, retitled, normalized, or copied as raw prose into this sample.",

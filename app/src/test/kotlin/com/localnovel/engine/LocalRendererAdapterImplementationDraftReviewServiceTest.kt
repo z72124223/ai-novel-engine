@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterImplementationDraft
 import com.localnovel.engine.service.LocalRendererAdapterImplementationDraftReviewService
@@ -19,12 +19,12 @@ class LocalRendererAdapterImplementationDraftReviewServiceTest {
         val report = LocalRendererAdapterImplementationDraftReviewService().review(
             draft = draft,
             draftFile = sampleDraftPath.toString(),
-            reviewId = "rain-gate-implementation-draft-review-001",
+            reviewId = "chenxing-implementation-draft-review-001",
         )
 
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS", report.status)
-        assertEquals("rain-gate-implementation-draft-review-001", report.reviewId)
+        assertEquals("chenxing-implementation-draft-review-001", report.reviewId)
         assertEquals(draft.draftId, report.sourceDraftId)
         assertEquals(draft.sourcePlanId, report.sourcePlanId)
         assertEquals(draft.sourcePlanReviewId, report.sourcePlanReviewId)
@@ -38,7 +38,7 @@ class LocalRendererAdapterImplementationDraftReviewServiceTest {
         assertEquals(10, report.draftSummary.sourceChecksPass)
         assertEquals(0, report.draftSummary.sourceChecksFail)
         assertEquals(5, report.draftSummary.implementationTasks)
-        assertEquals(2, report.draftSummary.mappingDraftPanels)
+        assertEquals(3, report.draftSummary.mappingDraftPanels)
         assertTrue(report.draftSummary.mappingDraftFields > 0)
         assertEquals(4, report.draftSummary.verificationSteps)
         assertEquals(0, report.draftSummary.findingCount)
@@ -167,8 +167,8 @@ class LocalRendererAdapterImplementationDraftReviewServiceTest {
         private fun locateSampleDraft(): Path {
             val relativePath = Path.of(
                 "samples",
-                "local_story_input",
-                "rain_gate_local_renderer_adapter_implementation_draft_sample.json",
+                "chenxing", "pipeline",
+                "chenxing_local_renderer_adapter_implementation_draft_sample.json",
             )
             return generateSequence(Path.of("").toAbsolutePath().normalize()) { it.parent }
                 .map { it.resolve(relativePath) }

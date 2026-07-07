@@ -1,4 +1,4 @@
-{
+﻿{
     "verdict": "PASS",
     "validationId": "comic-video-validation-sample-001",
     "comicVideoPacketFile": "samples\\comic_video_workbench\\comic_video_packet_filled_sample.json",
@@ -20,7 +20,7 @@
         {
             "panelId": "panel-frame-lantern-arrival",
             "sourceFrameId": "frame-lantern-arrival",
-            "sceneReference": "rain-gate",
+            "sceneReference": "market-scene",
             "beatReference": "beat-001-arrival",
             "visualIntent": "Show Lin entering the rain gate while holding a sealed letter.",
             "cameraIntent": "Wide shot from under the gate roof, keeping Lin and the lit lantern visible.",
@@ -40,13 +40,13 @@
             "assetCandidateRefs": [
                 "asset-lin-rain-coat",
                 "asset-sealed-letter",
-                "asset-rain-gate"
+                "asset-market-scene"
             ]
         },
         {
             "panelId": "panel-frame-mark-check",
             "sourceFrameId": "frame-mark-check",
-            "sceneReference": "rain-gate",
+            "sceneReference": "market-scene",
             "beatReference": "beat-002-mark-check",
             "visualIntent": "Show the gate guard checking the visible wax mark before letting Lin continue.",
             "cameraIntent": "Medium close shot on the letter and the guard's gloved hand.",
@@ -71,7 +71,7 @@
         {
             "panelId": "panel-frame-choice",
             "sourceFrameId": "frame-choice",
-            "sceneReference": "rain-gate",
+            "sceneReference": "market-scene",
             "beatReference": "beat-003-choice",
             "visualIntent": "Show Lin choosing the side passage while the main gate remains busy.",
             "cameraIntent": "Over-shoulder shot from behind Lin toward the narrow side passage.",

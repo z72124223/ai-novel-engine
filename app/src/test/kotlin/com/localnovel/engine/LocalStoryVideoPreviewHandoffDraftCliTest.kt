@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalStoryVideoPreviewHandoffDraft
 import com.localnovel.engine.service.LocalStoryVideoChainVerificationService
@@ -58,7 +58,7 @@ class LocalStoryVideoPreviewHandoffDraftCliTest {
         assertEquals("LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT", draft.status, draft.findings.joinToString { it.ruleId })
         assertEquals("preview-handoff-cli-001", draft.handoffId)
         assertEquals(pack.packId, draft.sourceStoryInputPackId)
-        assertEquals(2, draft.previewPlan.panelOrdering.size)
+        assertEquals(3, draft.previewPlan.panelOrdering.size)
         assertFalse(draft.localRendererCompatibility.ready)
         assertEquals("none", draft.boundaries.providerInvocation)
         assertEquals("none", draft.boundaries.ttsInvocation)

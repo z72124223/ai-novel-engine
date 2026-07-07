@@ -1,4 +1,4 @@
-{
+﻿{
     "fillId": "voice-timeline-fill-template-zh-tw-sample-001",
     "sourceComicVideoPacketId": "comic-video-zh-tw-sample-packet-001",
     "voiceCast": [
@@ -13,10 +13,10 @@
     "audioCues": [
         {
             "cueId": "audio-001",
-            "panelId": "panel-frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
             "voiceId": "voice-lin",
             "characterId": "char-lin",
-            "text": "Replace with spoken line for panel-frame-rain-gate-arrival.",
+            "text": "Replace with spoken line for panel-frame-market-scene-arrival.",
             "durationMillis": 3000
         },
         {
@@ -41,9 +41,9 @@
     "subtitleCues": [
         {
             "cueId": "subtitle-001",
-            "panelId": "panel-frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
             "audioCueId": "audio-001",
-            "text": "Replace with subtitle text for panel-frame-rain-gate-arrival.",
+            "text": "Replace with subtitle text for panel-frame-market-scene-arrival.",
             "endMillis": 3000
         },
         {

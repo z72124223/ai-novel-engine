@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.FoundationCardPackReviewReport
 import com.localnovel.engine.support.JsonSupport
@@ -13,7 +13,7 @@ class FoundationCardPackReviewCliTest {
     @Test
     fun cliWritesFoundationCardPackReviewReport() {
         val tempDir = Files.createTempDirectory("foundation-card-pack-review")
-        val outPath = tempDir.resolve("rain_gate_09_foundation_card_pack_review_report_sample.json")
+        val outPath = tempDir.resolve("chenxing_09_foundation_card_pack_review_report_sample.json")
 
         val exit = Cli().run(
             listOf(
@@ -23,7 +23,7 @@ class FoundationCardPackReviewCliTest {
                 "--validation",
                 FoundationCardPackReviewServiceTest.validationSamplePath.toString(),
                 "--review",
-                "rain-gate-09-foundation-card-pack-review-v0-cli",
+                "chenxing-09-foundation-card-pack-review-v0-cli",
                 "--out",
                 outPath.toString(),
             ),
@@ -33,8 +33,8 @@ class FoundationCardPackReviewCliTest {
         assertTrue(Files.exists(outPath))
         val report = readJson<FoundationCardPackReviewReport>(outPath)
         FoundationCardPackReviewServiceTest.assertPassReport(report)
-        assertEquals("rain-gate-09-foundation-card-pack-review-v0-cli", report.reviewId)
-        assertEquals("rain-gate-09-foundation-card-pack-validation-v0-001", report.sourceValidationId)
+        assertEquals("chenxing-09-foundation-card-pack-review-v0-cli", report.reviewId)
+        assertEquals("chenxing-09-foundation-card-pack-validation-v0", report.sourceValidationId)
     }
 
     private inline fun <reified T> readJson(path: Path): T =

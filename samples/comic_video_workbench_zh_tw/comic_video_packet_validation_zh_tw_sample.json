@@ -1,4 +1,4 @@
-{
+﻿{
     "verdict": "PASS",
     "validationId": "comic-video-validation-zh-tw-sample-001",
     "comicVideoPacketFile": "samples\\comic_video_workbench_zh_tw\\comic_video_packet_filled_zh_tw_sample.json",
@@ -18,8 +18,8 @@
     },
     "panelTracks": [
         {
-            "panelId": "panel-frame-rain-gate-arrival",
-            "sourceFrameId": "frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
+            "sourceFrameId": "frame-market-scene-arrival",
             "sceneReference": "雨門",
             "beatReference": "beat-001-遞信",
             "visualIntent": "林披著雨衣抵達門樓，左手握著一封蠟印未破的信。",
@@ -41,7 +41,7 @@
             "assetCandidateRefs": [
                 "asset-lin-rain-coat",
                 "asset-sealed-letter",
-                "asset-rain-gate"
+                "asset-market-scene"
             ]
         },
         {
@@ -115,7 +115,7 @@
     "audioCues": [
         {
             "cueId": "audio-001",
-            "panelId": "panel-frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
             "voiceId": "voice-lin",
             "characterId": "char-lin",
             "text": "我把封緘信帶到雨門了，雨還沒漫進檔案室。",
@@ -143,7 +143,7 @@
     "subtitleCues": [
         {
             "cueId": "subtitle-001",
-            "panelId": "panel-frame-rain-gate-arrival",
+            "panelId": "panel-frame-market-scene-arrival",
             "audioCueId": "audio-001",
             "text": "林：我把封緘信帶到雨門了，雨還沒漫進檔案室。",
             "endMillis": 2600

@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.service.LocalStoryVideoChainVerificationService
 import kotlin.test.Test
@@ -17,7 +17,7 @@ class LocalStoryVideoChainVerificationServiceTest {
 
         val result = LocalStoryVideoChainVerificationService().verify(
             storyInputPack = pack,
-            storyInputPackFile = "rain_gate_story_input_pack_sample.json",
+            storyInputPackFile = "chenxing_story_input_pack_sample.json",
             outputDir = outputDir.toString(),
             chainReportFile = chainReportFile.toString(),
         )
@@ -31,12 +31,12 @@ class LocalStoryVideoChainVerificationServiceTest {
         assertEquals(outputDir.resolve("local_asset_prompt_cards_draft.json").toString(), result.report.generatedFiles.assetPromptCardsFile)
         assertEquals(outputDir.resolve("local_render_package_draft.json").toString(), result.report.generatedFiles.localRenderPackageFile)
         assertEquals(chainReportFile.toString(), result.report.generatedFiles.chainReportFile)
-        assertEquals(2, result.report.counts.characters)
+        assertEquals(3, result.report.counts.characters)
         assertEquals(1, result.report.counts.scenes)
-        assertEquals(2, result.report.counts.beats)
-        assertEquals(2, result.report.counts.visualPromptCards)
-        assertEquals(2, result.report.counts.audioCueCards)
-        assertEquals(2, result.report.counts.panelPlans)
+        assertEquals(3, result.report.counts.beats)
+        assertEquals(3, result.report.counts.visualPromptCards)
+        assertEquals(3, result.report.counts.audioCueCards)
+        assertEquals(3, result.report.counts.panelPlans)
         assertEquals(7, result.report.counts.qaChecks)
         assertEquals(7, result.report.counts.qaPass)
         assertEquals(0, result.report.counts.qaFail)

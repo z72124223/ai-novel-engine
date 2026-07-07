@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestAdapterContractDraft
 import com.localnovel.engine.support.JsonSupport
@@ -37,18 +37,18 @@ class LocalRendererManifestAdapterContractDraftCliTest {
         assertEquals("LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT", draft.status)
         assertEquals("manifest-adapter-contract-draft-cli-001", draft.draftId)
         assertEquals(
-            "rain-gate-local-renderer-manifest-adapter-contract-plan-v0-001",
+            "chenxing-local-renderer-manifest-adapter-contract-plan-v0-001",
             draft.sourcePlanId,
         )
         assertEquals(
-            "rain-gate-local-renderer-manifest-adapter-contract-plan-review-v0-001",
+            "chenxing-local-renderer-manifest-adapter-contract-plan-review-v0-001",
             draft.sourcePlanReviewId,
         )
-        assertEquals("local-story-input-rain-gate-v0-001", draft.sourceStoryInputPackId)
+        assertEquals("local-story-input-chenxing-v0-001", draft.sourceStoryInputPackId)
         assertTrue(draft.checks.isNotEmpty())
         assertTrue(draft.checks.all { it.status == "PASS" })
         assertEquals(2, draft.requiredInputs.size)
-        assertEquals(2, draft.normalizedFieldMapping.size)
+        assertEquals(3, draft.normalizedFieldMapping.size)
         assertEquals(3, draft.adapterObligations.size)
         assertEquals(6, draft.failStopRules.size)
         assertEquals(3, draft.verificationRequirements.size)

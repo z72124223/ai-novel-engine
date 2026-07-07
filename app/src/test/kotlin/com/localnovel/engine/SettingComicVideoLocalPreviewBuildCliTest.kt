@@ -22,11 +22,11 @@ class SettingComicVideoLocalPreviewBuildCliTest {
             listOf(
                 "build-setting-comic-video-local-preview",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
-                "scene-rain-gate",
+                "scene-huiguan-market",
                 "--voice-timeline-fill",
-                samplePath("comic_video_setting_source/voice_timeline_fill_rain_gate_preview_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("voice_timeline_fill_chenxing_preview_sample.json").toString(),
                 "--output-dir",
                 tempDir.toString(),
                 "--out-video",
@@ -72,11 +72,11 @@ class SettingComicVideoLocalPreviewBuildCliTest {
             listOf(
                 "build-setting-comic-video-local-preview",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
                 "scene-missing",
                 "--voice-timeline-fill",
-                samplePath("comic_video_setting_source/voice_timeline_fill_rain_gate_preview_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("voice_timeline_fill_chenxing_preview_sample.json").toString(),
                 "--output-dir",
                 tempDir.toString(),
                 "--dry-run",
@@ -94,12 +94,4 @@ class SettingComicVideoLocalPreviewBuildCliTest {
 
     private inline fun <reified T> readJson(path: Path): T =
         JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
-
-    private fun samplePath(relative: String): Path {
-        val candidates = listOf(
-            Path.of("samples", relative),
-            Path.of("..", "samples", relative),
-        )
-        return candidates.firstOrNull { Files.exists(it) } ?: error("Cannot find sample file: $relative")
-    }
 }

@@ -1,0 +1,217 @@
+{
+    "packetId": "script-packet-draft-chenxing-preview-001",
+    "source": {
+        "inputType": "settingPack",
+        "sourceId": "comic-video-chenxing-source:scene-huiguan-market",
+        "sourceTitle": "Chenxing / 塵行 Source Pack / 灰關外城市集",
+        "excerptSummary": "Setting pack local preview source for 灰關外城市集. 陸知行在清晨市集修補農具，愛醬趴在攤位旁，老太太前來修鋤頭。 清晨市集攤位區，流民與攤販在修仙者弟子經過時低頭讓路。",
+        "transformationStatus": "converted_draft"
+    },
+    "segments": [
+        {
+            "segmentId": "segment-scene-huiguan-market",
+            "sceneReference": {
+                "type": "sceneCandidate",
+                "candidateId": "scene-huiguan-market",
+                "notes": "Derived from setting pack JSON for local preview draft review."
+            },
+            "scenePurpose": "Present the public scene state at 灰關外城市集 and the immediate pressure around 灰關外城市集.",
+            "playerObjective": "Observe the visible constraints before choosing a cautious next action.",
+            "locationZone": {
+                "zoneId": "zone-loc-huiguan-market",
+                "publicName": "灰關外城市集",
+                "constraints": "清晨市集攤位區，流民與攤販在修仙者弟子經過時低頭讓路。"
+            },
+            "visualSetup": {
+                "publicDescription": "陸知行在清晨市集修補農具，愛醬趴在攤位旁，老太太前來修鋤頭。 清晨市集攤位區，流民與攤販在修仙者弟子經過時低頭讓路。 陸知行 is visible in the frame. 修理工具 remains readable as a local prop.",
+                "cameraIntent": "Use readable comic framing that keeps the location, visible actor, and main constraint in one panel.",
+                "mustShow": [
+                    "灰關外城市集",
+                    "陸知行",
+                    "修理工具"
+                ],
+                "mustNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            "knowledgePass": {
+                "publicFacts": [
+                    "灰關外城清晨市集已經開張，攤販開始擺出農具與食物。",
+                    "修仙者弟子會穿過市集，攤販習慣低頭讓路。",
+                    "沒有正式身份的流民只能先在凡人底層用技能換取微薄收入。"
+                ],
+                "characterKnowledgeClaims": [
+                    "char-luozhixing can act only from visible public setting information in 灰關外城市集.",
+                    "char-aijiang can act only from visible public setting information in 灰關外城市集."
+                ]
+            },
+            "beatList": [
+                {
+                    "beatId": "beat-scene-huiguan-market-establish",
+                    "visibleAction": "The frame establishes 灰關外城市集 while 陸知行 remains within the visible scene boundary.",
+                    "causalLink": "The setting source names 灰關外城市集 as the public scene focus.",
+                    "characterIds": [
+                        "char-luozhixing",
+                        "char-aijiang",
+                        "char-old-woman"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The viewer can read the location, actor focus, and scene pressure before any choice is implied."
+                },
+                {
+                    "beatId": "beat-scene-huiguan-market-constraint",
+                    "visibleAction": "陸知行 stays near 修理工具, keeping the visible constraint readable.",
+                    "causalLink": "The generated draft carries only public facts and world rules from the setting pack.",
+                    "characterIds": [
+                        "char-luozhixing",
+                        "char-aijiang",
+                        "char-old-woman"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The scene pressure is concrete enough for storyboard framing."
+                },
+                {
+                    "beatId": "beat-scene-huiguan-market-choice",
+                    "visibleAction": "陸知行 pauses, leaving room for a cautious next action inside 灰關外城市集.",
+                    "causalLink": "A script packet draft must preserve player-facing agency instead of forcing an unearned answer.",
+                    "characterIds": [
+                        "char-luozhixing",
+                        "char-aijiang",
+                        "char-old-woman"
+                    ],
+                    "requiredKnowledgeClaimIds": [
+                        "public-setting-visible-state"
+                    ],
+                    "outcome": "The draft can proceed to review as a candidate scene packet."
+                }
+            ],
+            "actionLines": [
+                {
+                    "lineId": "action-1",
+                    "actorId": "char-luozhixing",
+                    "line": "The frame establishes 灰關外城市集 while 陸知行 remains within the visible scene boundary.",
+                    "blockingZone": "zone-loc-huiguan-market",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                },
+                {
+                    "lineId": "action-2",
+                    "actorId": "char-luozhixing",
+                    "line": "陸知行 stays near 修理工具, keeping the visible constraint readable.",
+                    "blockingZone": "zone-loc-huiguan-market",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                },
+                {
+                    "lineId": "action-3",
+                    "actorId": "char-luozhixing",
+                    "line": "陸知行 pauses, leaving room for a cautious next action inside 灰關外城市集.",
+                    "blockingZone": "zone-loc-huiguan-market",
+                    "visibleCost": "The action stays within public visible constraints from the setting pack."
+                }
+            ],
+            "dialogueLines": [
+                {
+                    "lineId": "dialogue-scene-huiguan-market-public",
+                    "speakerId": "char-luozhixing",
+                    "line": "We can only act on what is visible here.",
+                    "knowledgeBoundary": "The line is limited to public visible setting information.",
+                    "subtext": "Caution without exposing non-public source material."
+                }
+            ],
+            "interactionChoices": [
+                {
+                    "choiceId": "choice-observe-scene-huiguan-market",
+                    "label": "Observe the visible constraint.",
+                    "allowedBecause": "The visible location, actor focus, and public facts are already present in the scene.",
+                    "likelyStateEffect": "The next beat can preserve continuity while keeping non-public material outside the visible draft."
+                }
+            ]
+        }
+    ],
+    "assetNeeds": [
+        {
+            "assetType": "location",
+            "candidateName": "灰關外城市集",
+            "candidateReason": "Needed to frame the setting-derived scene location."
+        },
+        {
+            "assetType": "character",
+            "candidateName": "陸知行",
+            "candidateReason": "Needed as visible actor focus for the setting-derived scene."
+        },
+        {
+            "assetType": "character",
+            "candidateName": "愛醬",
+            "candidateReason": "Needed as visible actor focus for the setting-derived scene."
+        },
+        {
+            "assetType": "prop",
+            "candidateName": "修理工具",
+            "candidateReason": "Needed as visible prop or constraint from the setting pack."
+        },
+        {
+            "assetType": "prop",
+            "candidateName": "斷柄鋤頭",
+            "candidateReason": "Needed as visible prop or constraint from the setting pack."
+        }
+    ],
+    "storyboardNotes": {
+        "cameraLanguage": "Keep each frame readable for later comic-video panel planning.",
+        "continuityLocks": [
+            "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+            "Visible location stays 灰關外城市集.",
+            "Visible actor focus stays 陸知行.",
+            "Visible prop focus stays 修理工具."
+        ],
+        "frameCandidates": [
+            {
+                "frameId": "frame-scene-huiguan-market-01",
+                "beatId": "beat-scene-huiguan-market-establish",
+                "framePurpose": "The viewer can read the location, actor focus, and scene pressure before any choice is implied.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "灰關外城市集, 陸知行, 修理工具",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            {
+                "frameId": "frame-scene-huiguan-market-02",
+                "beatId": "beat-scene-huiguan-market-constraint",
+                "framePurpose": "The scene pressure is concrete enough for storyboard framing.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "灰關外城市集, 陸知行, 修理工具",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            },
+            {
+                "frameId": "frame-scene-huiguan-market-03",
+                "beatId": "beat-scene-huiguan-market-choice",
+                "framePurpose": "The draft can proceed to review as a candidate scene packet.",
+                "cameraPurpose": "Make the beat readable as a single comic panel.",
+                "visibleSubject": "灰關外城市集, 陸知行, 修理工具",
+                "doNotShow": [
+                    "non-public reveal material",
+                    "remote media references",
+                    "sealed source-only details"
+                ]
+            }
+        ]
+    },
+    "secrecyKnowledgeNotes": {
+        "authorOnlyExcluded": true,
+        "reviewOnlyNotes": "Non-public source material was excluded from visible fields."
+    },
+    "reviewSummary": {
+        "reviewerNotes": "Deterministic setting-pack draft for local review gates."
+    }
+}

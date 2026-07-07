@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.FoundationCardPack
 import com.localnovel.engine.model.FoundationCardPackReviewReport
@@ -20,13 +20,13 @@ class FoundationCardPackReviewServiceTest {
         val report = FoundationCardPackReviewService().reviewFile(
             packPath = FoundationCardPackValidationServiceTest.samplePackPath,
             validationPath = validationSamplePath,
-            reviewId = "rain-gate-09-foundation-card-pack-review-v0-001",
+            reviewId = "chenxing-09-foundation-card-pack-review-v0-001",
         )
 
         assertPassReport(report)
-        assertEquals("rain-gate-09-foundation-card-pack-review-v0-001", report.reviewId)
-        assertEquals("rain-gate-09-foundation-card-pack-validation-v0-001", report.sourceValidationId)
-        assertEquals("09-foundation-pack-rain-gate-v0-001", report.packId)
+        assertEquals("chenxing-09-foundation-card-pack-review-v0-001", report.reviewId)
+        assertEquals("chenxing-09-foundation-card-pack-validation-v0", report.sourceValidationId)
+        assertEquals("09-foundation-pack-chenxing-v0-001", report.packId)
     }
 
     @Test
@@ -114,13 +114,7 @@ class FoundationCardPackReviewServiceTest {
     }
 
     companion object {
-        private val validationSampleRelativePath: Path =
-            Path.of("samples/local_story_input/rain_gate_09_foundation_card_pack_validation_report_sample.json")
-        val validationSamplePath: Path =
-            generateSequence(Path.of("").toAbsolutePath()) { it.parent }
-                .map { it.resolve(validationSampleRelativePath) }
-                .firstOrNull { Files.exists(it) }
-                ?: validationSampleRelativePath
+        val validationSamplePath: Path = ChenxingStoryTestFixtures.chenxingFoundationValidationPath()
 
         fun validPack(): FoundationCardPack =
             JsonSupport.json.decodeFromString(
@@ -139,7 +133,7 @@ class FoundationCardPackReviewServiceTest {
                 validation = validation,
                 sourcePackFile = validation.sourcePackFile,
                 sourceValidationFile = validationSamplePath.toString(),
-                reviewId = "rain-gate-09-foundation-card-pack-review-v0-test",
+                reviewId = "chenxing-09-foundation-card-pack-review-v0-test",
             )
 
         fun assertPassReport(report: FoundationCardPackReviewReport) {
@@ -152,7 +146,7 @@ class FoundationCardPackReviewServiceTest {
             assertTrue(report.checks.all { it.status == "PASS" })
             assertEquals(0, report.findingCount)
             assertTrue(report.evidence.sourceAligned)
-            assertEquals(7, report.evidence.cardCount)
+            assertEquals(8, report.evidence.cardCount)
             assertEquals(7, report.evidence.presentRequiredFamilyCount)
             assertEquals(0, report.evidence.validationFailedCheckCount)
             assertEquals(0, report.evidence.validationFindingCount)

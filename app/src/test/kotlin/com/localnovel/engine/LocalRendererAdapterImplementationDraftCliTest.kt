@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterImplementationDraft
 import com.localnovel.engine.support.JsonSupport
@@ -52,7 +52,7 @@ class LocalRendererAdapterImplementationDraftCliTest {
         assertEquals(handoff.handoffId, draft.sourceHandoffId)
         assertEquals(plan.sourceReviewId, draft.sourceHandoffReviewId)
         assertEquals(handoff.sourceStoryInputPackId, draft.sourceStoryInputPackId)
-        assertEquals(2, draft.adapterMappingDraft.panelDrafts.size)
+        assertEquals(3, draft.adapterMappingDraft.panelDrafts.size)
         assertTrue(draft.implementationTasks.isNotEmpty())
         assertTrue(draft.verificationPlan.isNotEmpty())
         assertTrue(draft.sourceAlignmentSummary.storyInputPackIdAligned)

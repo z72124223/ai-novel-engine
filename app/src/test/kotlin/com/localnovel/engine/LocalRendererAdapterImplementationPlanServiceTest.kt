@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterDryRunReport
 import com.localnovel.engine.service.LocalRendererAdapterDryRunService
@@ -34,7 +34,7 @@ class LocalRendererAdapterImplementationPlanServiceTest {
         assertTrue(plan.verificationPlan.isNotEmpty())
         assertTrue(plan.targetManifestFieldMappingPlan.planningOnly)
         assertFalse(plan.targetManifestFieldMappingPlan.manifestGenerated)
-        assertEquals(2, plan.targetManifestFieldMappingPlan.perPanelMappingNotes.size)
+        assertEquals(3, plan.targetManifestFieldMappingPlan.perPanelMappingNotes.size)
         assertTrue(plan.targetManifestFieldMappingPlan.perPanelMappingNotes.all { !it.manifestGenerated })
         assertTrue(plan.boundaries.fileProtocolJsonOnly)
         assertTrue(plan.boundaries.noExternalPaidProviderTools)

@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.ComicVideoLocalPreviewBuildReport
 import com.localnovel.engine.model.ComicVideoPacketValidationReport
@@ -75,7 +75,7 @@ class ComicVideoLocalPreviewBuildCliTest {
 
     @Test
     fun dryRunBuildsSettingSourcePreviewProofAndVoiceFillWithoutMedia() {
-        val sampleDir = sampleDir("comic_video_setting_source")
+        val sampleDir = sampleDir("chenxing/comic_video_setting_source")
         val tempDir = Files.createTempDirectory("comic-video-setting-source-preview-build-dry-run")
         val reportPath = tempDir.resolve("build_report.json")
         val outputVideo = tempDir.resolve("preview.mp4")
@@ -86,21 +86,21 @@ class ComicVideoLocalPreviewBuildCliTest {
                 "--image-facing-delivery-proof",
                 sampleDir.resolve("image_facing_preview_build/image_facing_delivery_proof.json").toString(),
                 "--voice-timeline-fill",
-                sampleDir.resolve("voice_timeline_fill_rain_gate_preview_sample.json").toString(),
+                sampleDir.resolve("voice_timeline_fill_chenxing_preview_sample.json").toString(),
                 "--output-dir",
                 tempDir.toString(),
                 "--out-video",
                 outputVideo.toString(),
                 "--build",
-                "comic-video-setting-rain-gate-build-test",
+                "comic-video-setting-chenxing-build-test",
                 "--packet",
-                "comic-video-setting-rain-gate-preview-001",
+                "comic-video-setting-chenxing-preview-001",
                 "--validation",
-                "comic-video-validation-setting-rain-gate-preview-test",
+                "comic-video-validation-setting-chenxing-preview-test",
                 "--manifest",
-                "comic-video-render-handoff-setting-rain-gate-preview-test",
+                "comic-video-render-handoff-setting-chenxing-preview-test",
                 "--render",
-                "comic-video-setting-rain-gate-local-render-test",
+                "comic-video-setting-chenxing-local-render-test",
                 "--panel-duration-ms",
                 "3000",
                 "--report-out",

@@ -1,0 +1,20 @@
+{
+    "verdict": "PASS",
+    "storyboardPlanningBriefFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_planning_brief.json",
+    "storyboardPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_draft.json",
+    "storyboardPlanningBriefId": "storyboard-brief-chenxing-preview-001",
+    "storyboardPacketDraftId": "storyboard-draft-chenxing-preview-001",
+    "acceptedScriptPacketId": "setting-script-source-script-packet-draft-chenxing-preview-001",
+    "scriptPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketDraftContentSha256": "ffe9a05313dc94814c89fe9bd6309efb671b955df3cc69451f9eb99a5c173efa",
+    "nextAllowedDownstreamStep": "storyboard_packet_review",
+    "findingCount": 0,
+    "evidence": {
+        "planningBriefVerdict": "PASS",
+        "planningBriefNextAllowedDownstreamStep": "storyboard_packet_draft",
+        "sourceBindingFieldCount": 4,
+        "frameCount": 3,
+        "protectedContinuityAnchorCount": 4,
+        "protectedContinuityAnchorReferencedCount": 4
+    }
+}

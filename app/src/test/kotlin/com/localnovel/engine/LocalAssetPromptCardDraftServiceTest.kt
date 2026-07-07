@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.service.LocalAssetPromptCardDraftService
 import com.localnovel.engine.service.LocalStoryInputPackValidationService
@@ -12,28 +12,28 @@ class LocalAssetPromptCardDraftServiceTest {
         val pack = LocalStoryInputPackValidationServiceTest.validPack()
         val validation = LocalStoryInputPackValidationService().validate(
             pack = pack,
-            packFile = "rain_gate_story_input_pack_sample.json",
-            validationId = "rain-gate-story-input-validation-001",
+            packFile = "chenxing_story_input_pack_sample.json",
+            validationId = "chenxing-story-input-validation-001",
         )
 
         val draft = LocalAssetPromptCardDraftService().create(
             storyInputPack = pack,
             storyValidationReport = validation,
-            storyInputPackFile = "rain_gate_story_input_pack_sample.json",
-            storyValidationReportFile = "rain_gate_story_input_pack_validation_sample.json",
+            storyInputPackFile = "chenxing_story_input_pack_sample.json",
+            storyValidationReportFile = "chenxing_story_input_pack_validation_sample.json",
         )
 
         assertEquals("LOCAL_ASSET_PROMPT_CARDS_DRAFT", draft.status, draft.findings.joinToString { it.ruleId })
-        assertEquals("local-story-input-rain-gate-001", draft.sourceStoryInputPackId)
-        assertEquals("rain-gate-story-input-validation-001", draft.sourceStoryValidationId)
+        assertEquals("local-story-input-chenxing-v0-001", draft.sourceStoryInputPackId)
+        assertEquals("chenxing-story-input-validation-001", draft.sourceStoryValidationId)
         assertEquals("local_story_input_pack_validation_only", validation.downstreamBoundary)
         assertEquals("local_asset_prompt_cards_draft_only", draft.downstreamBoundary)
         assertEquals("local_asset_prompt_cards_review", draft.nextAllowedDownstreamStep)
-        assertEquals(2, draft.characterCards.size)
+        assertEquals(3, draft.characterCards.size)
         assertEquals(1, draft.sceneCards.size)
-        assertEquals(2, draft.beatCards.size)
-        assertEquals(2, draft.visualPromptCards.size)
-        assertEquals(2, draft.audioCueCards.size)
+        assertEquals(3, draft.beatCards.size)
+        assertEquals(3, draft.visualPromptCards.size)
+        assertEquals(3, draft.audioCueCards.size)
         assertEquals(9000, draft.renderIntent.targetDurationMillis)
         assertTrue(draft.localOnlyConstraints.localOnly)
         assertTrue(draft.localOnlyConstraints.noExternalPaidProviderTools)
@@ -41,14 +41,21 @@ class LocalAssetPromptCardDraftServiceTest {
         assertTrue(draft.boundaries.contains("no provider/API"))
         assertTrue(draft.boundaries.contains("no media generation"))
         assertTrue(draft.boundaries.contains("no production lock"))
-        assertTrue(draft.characterCards.first { it.sourceCharacterId == "char-lin" }.visualCue.contains("silver wrist mark"))
-        assertTrue(draft.characterCards.first { it.sourceCharacterId == "char-lin" }.voiceCue.contains("Calm low voice"))
-        assertEquals(listOf("local-character-card-char-lin", "local-character-card-char-gatekeeper"), draft.beatCards.first().characterCardIds)
+        assertTrue(draft.characterCards.first { it.sourceCharacterId == "char-luozhixing" }.visualCue.contains("修理"))
+        assertTrue(draft.characterCards.first { it.sourceCharacterId == "char-luozhixing" }.voiceCue.contains("低而穩"))
+        assertEquals(
+            listOf(
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang",
+                "local-character-card-char-old-woman",
+            ),
+            draft.beatCards.first().characterCardIds,
+        )
         assertTrue(draft.visualPromptCards.all { it.providerInvocation == "none" && it.submissionStatus == "not_submitted" })
         assertTrue(draft.audioCueCards.all { it.ttsInvocation == "none" })
         assertEquals(0, draft.findingCount)
-        assertEquals(2, draft.evidence.characterCardCount)
-        assertEquals(2, draft.evidence.visualPromptCardCount)
+        assertEquals(3, draft.evidence.characterCardCount)
+        assertEquals(3, draft.evidence.visualPromptCardCount)
         assertEquals("PASS", draft.evidence.storyValidationVerdict)
     }
 

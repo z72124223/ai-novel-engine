@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.service.LocalStoryVideoChainVerificationService
 import com.localnovel.engine.service.LocalStoryVideoPreviewHandoffDraftService
@@ -40,7 +40,7 @@ class LocalStoryVideoPreviewHandoffDraftServiceTest {
         assertEquals(9, draft.evidence.readinessPassCount)
         assertEquals(0, draft.evidence.readinessFailCount)
         assertEquals(1, draft.previewPlan.sceneOrdering.size)
-        assertEquals(2, draft.previewPlan.panelOrdering.size)
+        assertEquals(3, draft.previewPlan.panelOrdering.size)
         assertEquals(9000, draft.previewPlan.targetDurationMillis)
         assertEquals(7, draft.previewPlan.qaSummary.qaChecks)
         assertFalse(draft.localRendererCompatibility.ready)

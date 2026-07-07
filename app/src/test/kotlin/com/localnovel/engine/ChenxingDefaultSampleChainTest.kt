@@ -65,10 +65,7 @@ class ChenxingDefaultSampleChainTest {
         assertEquals(7, report.evidence.presentRequiredFamilyCount)
     }
 
-    private fun resolveRepoPath(relative: String): Path =
-        generateSequence(Path.of("").toAbsolutePath()) { it.parent }
-            .map { it.resolve(relative) }
-            .first { Files.exists(it) }
+    private fun resolveRepoPath(relative: String): Path = ChenxingStoryTestFixtures.resolveRepoPath(relative)
 
     private inline fun <reified T> readJson(path: Path): T =
         JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))

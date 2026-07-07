@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonReviewReport
 import com.localnovel.engine.support.JsonSupport
@@ -34,10 +34,10 @@ class LocalRendererManifestDraftJsonReviewCliTest {
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS", report.status)
         assertEquals("manifest-draft-json-review-cli-001", report.reviewId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-json-draft-v0-001", report.sourceDraftId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-plan-v0-001", report.sourceManifestDraftPlanId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-plan-review-v0-001", report.sourceManifestDraftPlanReviewId)
-        assertEquals("local-story-input-rain-gate-v0-001", report.sourceStoryInputPackId)
+        assertEquals("chenxing-local-renderer-manifest-draft-json-draft-v0-001", report.sourceDraftId)
+        assertEquals("chenxing-local-renderer-manifest-draft-plan-v0-001", report.sourceManifestDraftPlanId)
+        assertEquals("chenxing-local-renderer-manifest-draft-plan-review-v0-001", report.sourceManifestDraftPlanReviewId)
+        assertEquals("local-story-input-chenxing-v0-001", report.sourceStoryInputPackId)
         assertTrue(report.checks.isNotEmpty())
         assertTrue(report.checks.all { it.status == "PASS" })
         assertTrue(report.draftManifestReviewSummary.draftManifestGenerated)

@@ -1,0 +1,186 @@
+{
+    "packetId": "storyboard-draft-chenxing-preview-001",
+    "storyboardPlanningBriefId": "storyboard-brief-chenxing-preview-001",
+    "acceptedScriptPacketId": "setting-script-source-script-packet-draft-chenxing-preview-001",
+    "scriptPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketDraftContentSha256": "ffe9a05313dc94814c89fe9bd6309efb671b955df3cc69451f9eb99a5c173efa",
+    "sourceStoryboardPlanningBriefFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_planning_brief.json",
+    "protectedContinuityAnchors": [
+        "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+        "Visible location stays 灰關外城市集.",
+        "Visible actor focus stays 陸知行.",
+        "Visible prop focus stays 修理工具."
+    ],
+    "frames": [
+        {
+            "frameId": "frame-scene-huiguan-market-01",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-establish",
+            "visualIntent": "The viewer can read the location, actor focus, and scene pressure before any choice is implied. The frame establishes 灰關外城市集 while 陸知行 remains within the visible scene boundary. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ],
+            "reviewNotes": "Local preview storyboard frame derived from setting script packet draft."
+        },
+        {
+            "frameId": "frame-scene-huiguan-market-02",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-constraint",
+            "visualIntent": "The scene pressure is concrete enough for storyboard framing. 陸知行 stays near 修理工具, keeping the visible constraint readable. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ],
+            "reviewNotes": "Local preview storyboard frame derived from setting script packet draft."
+        },
+        {
+            "frameId": "frame-scene-huiguan-market-03",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-choice",
+            "visualIntent": "The draft can proceed to review as a candidate scene packet. 陸知行 pauses, leaving room for a cautious next action inside 灰關外城市集. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ],
+            "reviewNotes": "Local preview storyboard frame derived from setting script packet draft."
+        }
+    ],
+    "assetCandidates": [
+        {
+            "candidateId": "asset-setting",
+            "requirement": "location: 灰關外城市集: Needed to frame the setting-derived scene location.",
+            "sourceFrameIds": [
+                "frame-scene-huiguan-market-01",
+                "frame-scene-huiguan-market-02",
+                "frame-scene-huiguan-market-03"
+            ],
+            "reviewNotes": "Carried from setting script packet draft as a candidate requirement."
+        },
+        {
+            "candidateId": "asset-setting",
+            "requirement": "character: 陸知行: Needed as visible actor focus for the setting-derived scene.",
+            "sourceFrameIds": [
+                "frame-scene-huiguan-market-01",
+                "frame-scene-huiguan-market-02",
+                "frame-scene-huiguan-market-03"
+            ],
+            "reviewNotes": "Carried from setting script packet draft as a candidate requirement."
+        },
+        {
+            "candidateId": "asset-setting",
+            "requirement": "character: 愛醬: Needed as visible actor focus for the setting-derived scene.",
+            "sourceFrameIds": [
+                "frame-scene-huiguan-market-01",
+                "frame-scene-huiguan-market-02",
+                "frame-scene-huiguan-market-03"
+            ],
+            "reviewNotes": "Carried from setting script packet draft as a candidate requirement."
+        },
+        {
+            "candidateId": "asset-setting",
+            "requirement": "prop: 修理工具: Needed as visible prop or constraint from the setting pack.",
+            "sourceFrameIds": [
+                "frame-scene-huiguan-market-01",
+                "frame-scene-huiguan-market-02",
+                "frame-scene-huiguan-market-03"
+            ],
+            "reviewNotes": "Carried from setting script packet draft as a candidate requirement."
+        },
+        {
+            "candidateId": "asset-setting",
+            "requirement": "prop: 斷柄鋤頭: Needed as visible prop or constraint from the setting pack.",
+            "sourceFrameIds": [
+                "frame-scene-huiguan-market-01",
+                "frame-scene-huiguan-market-02",
+                "frame-scene-huiguan-market-03"
+            ],
+            "reviewNotes": "Carried from setting script packet draft as a candidate requirement."
+        }
+    ],
+    "reviewNotes": "Local preview storyboard draft; requires downstream review-ready gates before image-facing proof."
+}

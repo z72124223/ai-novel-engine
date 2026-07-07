@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.service.LocalAssetPromptCardDraftService
 import com.localnovel.engine.service.LocalRenderPackageDraftService
@@ -16,30 +16,30 @@ class LocalRenderPackageDraftServiceTest {
         val draft = LocalRenderPackageDraftService().create(
             storyInputPack = pack,
             assetPromptCards = cards,
-            storyInputPackFile = "rain_gate_story_input_pack_sample.json",
-            assetPromptCardsFile = "rain_gate_asset_prompt_cards_draft_sample.json",
+            storyInputPackFile = "chenxing_story_input_pack_sample.json",
+            assetPromptCardsFile = "chenxing_asset_prompt_cards_draft_sample.json",
         )
 
         assertEquals("LOCAL_RENDER_PACKAGE_DRAFT", draft.status, draft.findings.joinToString { it.ruleId })
-        assertEquals("local-story-input-rain-gate-001", draft.sourceStoryInputPackId)
+        assertEquals("local-story-input-chenxing-v0-001", draft.sourceStoryInputPackId)
         assertEquals("LOCAL_ASSET_PROMPT_CARDS_DRAFT", draft.sourceAssetPromptCardsStatus)
         assertEquals("local_render_package_draft_only_not_media_generation", draft.renderBoundary)
         assertEquals("local_render_package_draft_only", draft.downstreamBoundary)
         assertEquals("local_render_package_review", draft.nextAllowedDownstreamStep)
-        assertEquals(2, draft.timelinePlan.size)
+        assertEquals(3, draft.timelinePlan.size)
         assertEquals(1, draft.scenePlan.size)
-        assertEquals(2, draft.panelPlan.size)
-        assertEquals(2, draft.assetPromptReferences.size)
+        assertEquals(3, draft.panelPlan.size)
+        assertEquals(3, draft.assetPromptReferences.size)
         assertEquals(7, draft.qaChecklist.size)
         assertTrue(draft.qaChecklist.all { it.status == "PASS" })
         assertEquals(9000, draft.evidence.timelineTotalDurationMillis)
-        assertEquals(4500, draft.timelinePlan[0].durationMillis)
+        assertEquals(3000, draft.timelinePlan[0].durationMillis)
         assertEquals(0, draft.timelinePlan[0].startMillis)
-        assertEquals(4500, draft.timelinePlan[0].endMillis)
-        assertEquals(4500, draft.timelinePlan[1].startMillis)
-        assertEquals(9000, draft.timelinePlan[1].endMillis)
-        assertEquals("local-visual-prompt-beat-arrival", draft.panelPlan[0].visualPromptCardId)
-        assertEquals("local-audio-cue-beat-arrival", draft.panelPlan[0].audioCueCardId)
+        assertEquals(3000, draft.timelinePlan[0].endMillis)
+        assertEquals(3000, draft.timelinePlan[1].startMillis)
+        assertEquals(6000, draft.timelinePlan[1].endMillis)
+        assertEquals("local-visual-prompt-beat-market-opening", draft.panelPlan[0].visualPromptCardId)
+        assertEquals("local-audio-cue-beat-market-opening", draft.panelPlan[0].audioCueCardId)
         assertTrue(draft.localOnlyConstraints.localOnly)
         assertTrue(draft.localOnlyConstraints.noExternalPaidProviderTools)
         assertTrue(draft.localOnlyConstraints.fileProtocolJsonOnly)
@@ -85,10 +85,10 @@ class LocalRenderPackageDraftServiceTest {
                 storyInputPack = LocalStoryInputPackValidationServiceTest.validPack(),
                 storyValidationReport = LocalStoryInputPackValidationService().validate(
                     pack = LocalStoryInputPackValidationServiceTest.validPack(),
-                    validationId = "rain-gate-story-input-validation-001",
+                    validationId = "chenxing-story-input-validation-001",
                 ),
-                storyInputPackFile = "rain_gate_story_input_pack_sample.json",
-                storyValidationReportFile = "rain_gate_story_input_pack_validation_sample.json",
+                storyInputPackFile = "chenxing_story_input_pack_sample.json",
+                storyValidationReportFile = "chenxing_story_input_pack_validation_sample.json",
             )
     }
 }

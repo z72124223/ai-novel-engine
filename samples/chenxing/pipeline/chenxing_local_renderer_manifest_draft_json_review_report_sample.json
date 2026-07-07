@@ -1,0 +1,249 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS",
+    "reviewId": "chenxing-local-renderer-manifest-draft-json-review-v0-001",
+    "sourceDraftFile": "samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_json_draft_sample.json",
+    "sourceDraftId": "chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+    "sourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+    "sourceManifestDraftPlanReviewId": "chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+    "sourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+    "sourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourcePlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+    "sourcePlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "checks": [
+        {
+            "checkId": "source-draft-present",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft JSON review requires an explicit Phase 14 draft file and non-empty source ids.",
+            "evidence": [
+                "draftFile=samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_json_draft_sample.json",
+                "draftId=chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+                "sourceManifestDraftPlanId=chenxing-local-renderer-manifest-draft-plan-v0-001",
+                "sourceManifestDraftPlanReviewId=chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+                "sourceStoryInputPackId=local-story-input-chenxing-v0-001"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "draft-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft JSON review requires PASS Phase 14 draft state and draft-review downstream step.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT",
+                "downstreamBoundary=local_renderer_manifest_draft_json_draft_only_not_production_manifest",
+                "nextAllowedDownstreamStep=local_renderer_manifest_draft_json_review"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "source-ids-present-and-aligned",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Manifest draft JSON review requires non-empty source ids and PASS alignment evidence from Phase 14.",
+            "evidence": [
+                "draftIdPresent=true",
+                "manifestDraftPlanIdPresent=true",
+                "manifestDraftPlanReviewIdPresent=true",
+                "sourceImplementationDraftIdPresent=true",
+                "sourceImplementationDraftReviewIdPresent=true",
+                "sourceStoryInputPackIdPresent=true",
+                "sourceAlignmentFromDraftPass=true"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Manifest draft JSON review requires local-only no-media boundaries and no production approval claim.",
+            "evidence": [
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "draftManifestGenerated=true",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "draftManifestGenerated=true",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-production-approval",
+            "status": "PASS",
+            "category": "production_boundary",
+            "message": "Manifest draft JSON review is not production approval, not final media approval, and not provider/media handoff.",
+            "evidence": [
+                "productionApproved=false",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "finalMediaApproval=false",
+                "providerMediaHandoff=false",
+                "release=false",
+                "canonRegistryOrProductionLock=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "source-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft JSON review requires non-empty Phase 14 checks and all required checks PASS.",
+            "evidence": [
+                "checks=10",
+                "requiredFail=0",
+                "summaryChecksFail=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-findings",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft JSON review requires no Phase 14 findings.",
+            "evidence": [
+                "findingCount=0",
+                "findings=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "draft-content-present",
+            "status": "PASS",
+            "category": "draft_completeness",
+            "message": "Manifest draft JSON review requires draft panel entries and non-empty draft field coverage.",
+            "evidence": [
+                "draftPanelManifestEntries=3",
+                "summaryDraftPanelEntries=3",
+                "totalDraftFields=69",
+                "missingRequiredDraftFields=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "draft-only-not-production-manifest",
+            "status": "PASS",
+            "category": "manifest_boundary",
+            "message": "Manifest draft JSON review may approve review readiness only; it must not approve a real production ComicVideoRenderHandoffManifest.",
+            "evidence": [
+                "draftOnly=true",
+                "draftManifestGenerated=true",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "panelProductionReady=0",
+                "panelProductionManifestGenerated=0",
+                "draft-only=true",
+                "productionApproved=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "no-readiness-overclaim",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Manifest draft JSON review must preserve rendererReady=false and mp4ReadinessClaimed=false.",
+            "evidence": [
+                "boundaries.rendererReady=false",
+                "boundaries.mp4ReadinessClaimed=false",
+                "summary.rendererReady=false",
+                "summary.mp4ReadinessClaimed=false"
+            ],
+            "requiredForReview": true
+        }
+    ],
+    "sourceAlignmentSummary": {
+        "draftIdPresent": true,
+        "manifestDraftPlanIdPresent": true,
+        "manifestDraftPlanReviewIdPresent": true,
+        "sourceImplementationDraftIdPresent": true,
+        "sourceImplementationDraftReviewIdPresent": true,
+        "sourceStoryInputPackIdPresent": true,
+        "sourceAlignmentFromDraftPass": true,
+        "draftId": "chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+        "sourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+        "sourceManifestDraftPlanReviewId": "chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+        "sourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+        "sourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+        "sourcePlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+        "sourcePlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+        "sourceDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+        "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+        "sourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+        "sourceStoryInputPackId": "local-story-input-chenxing-v0-001"
+    },
+    "draftManifestReviewSummary": {
+        "sourceDraftChecks": 10,
+        "sourceDraftChecksPass": 10,
+        "sourceDraftChecksFail": 0,
+        "draftPanelEntries": 3,
+        "draftManifestFields": 69,
+        "targetDurationMillis": 9000,
+        "sourceFindingCount": 0,
+        "draftOnly": true,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "adapterImplementationExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "draftFieldCoverageReviewSummary": {
+        "panelEntries": 3,
+        "panelTimelineFields": 30,
+        "voiceTimelineFields": 21,
+        "subtitleTimelineFields": 18,
+        "totalDraftFields": 69,
+        "missingRequiredDraftFields": 0,
+        "draftOnly": true,
+        "productionManifestGenerated": false,
+        "productionReady": false
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_manifest_draft_json_review_only_not_production_approval",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_draft_json_adapter_dry_run",
+    "findingCount": 0
+}

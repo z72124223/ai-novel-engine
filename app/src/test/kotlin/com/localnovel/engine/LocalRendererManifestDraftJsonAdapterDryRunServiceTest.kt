@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonAdapterDryRunReport
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonDraft
@@ -25,24 +25,24 @@ class LocalRendererManifestDraftJsonAdapterDryRunServiceTest {
             review = review,
             draftFile = sampleDraftPath.toString(),
             reviewFile = sampleReviewPath.toString(),
-            dryRunId = "rain-gate-manifest-draft-json-adapter-dry-run-001",
+            dryRunId = "chenxing-manifest-draft-json-adapter-dry-run-001",
         )
 
         assertPassReport(report)
-        assertEquals("rain-gate-manifest-draft-json-adapter-dry-run-001", report.dryRunId)
+        assertEquals("chenxing-manifest-draft-json-adapter-dry-run-001", report.dryRunId)
         assertEquals(draft.draftId, report.sourceDraftId)
         assertEquals(review.reviewId, report.sourceReviewId)
         assertEquals(draft.sourceStoryInputPackId, report.sourceStoryInputPackId)
         assertTrue(report.sourceAlignmentSummary.draftIdAligned)
         assertTrue(report.sourceAlignmentSummary.sourceStoryInputPackIdAligned)
-        assertEquals(2, report.panelMappingSummary.draftPanelCount)
-        assertEquals(2, report.panelMappingSummary.adapterDryRunMappingEntries)
-        assertEquals(2, report.panelMappingSummary.mappedPanelCount)
+        assertEquals(3, report.panelMappingSummary.draftPanelCount)
+        assertEquals(3, report.panelMappingSummary.adapterDryRunMappingEntries)
+        assertEquals(3, report.panelMappingSummary.mappedPanelCount)
         assertEquals(0, report.panelMappingSummary.unmappedPanelCount)
-        assertEquals(46, report.draftFieldCoverageSummary.totalDraftFields)
-        assertEquals(46, report.draftFieldCoverageSummary.mappedDraftFields)
+        assertEquals(69, report.draftFieldCoverageSummary.totalDraftFields)
+        assertEquals(69, report.draftFieldCoverageSummary.mappedDraftFields)
         assertEquals(0, report.panelMappingSummary.missingRequiredFieldCount)
-        assertEquals(2, report.adapterDryRunMappingEntries.size)
+        assertEquals(3, report.adapterDryRunMappingEntries.size)
         assertTrue(report.adapterDryRunMappingEntries.all { it.canMapForFutureAdapter })
         assertTrue(report.adapterDryRunMappingEntries.all { !it.adapterExecuted })
     }
@@ -204,9 +204,9 @@ class LocalRendererManifestDraftJsonAdapterDryRunServiceTest {
 
     companion object {
         val sampleDraftPath: Path =
-            locateSample("rain_gate_local_renderer_manifest_draft_json_draft_sample.json")
+            locateSample("chenxing_local_renderer_manifest_draft_json_draft_sample.json")
         val sampleReviewPath: Path =
-            locateSample("rain_gate_local_renderer_manifest_draft_json_review_report_sample.json")
+            locateSample("chenxing_local_renderer_manifest_draft_json_review_report_sample.json")
 
         fun validDraft(): LocalRendererManifestDraftJsonDraft =
             readJson(sampleDraftPath)
@@ -244,7 +244,7 @@ class LocalRendererManifestDraftJsonAdapterDryRunServiceTest {
             JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 
         private fun locateSample(fileName: String): Path {
-            val relativePath = Path.of("samples", "local_story_input", fileName)
+            val relativePath = Path.of("samples", "chenxing", "pipeline", fileName)
             return generateSequence(Path.of("").toAbsolutePath().normalize()) { it.parent }
                 .map { it.resolve(relativePath) }
                 .firstOrNull { Files.exists(it) }

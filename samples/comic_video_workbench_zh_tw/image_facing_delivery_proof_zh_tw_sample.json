@@ -1,4 +1,4 @@
-{
+﻿{
   "verdict": "PASS",
   "proofId": "image-facing-delivery-proof-zh-tw-sample-001",
   "proofStatus": "image_facing_delivery_proof_candidate",
@@ -12,7 +12,7 @@
   "sourceNextAllowedDownstreamStep": "reviewable_storyboard_packet_ready",
   "frameDeliveryCards": [
     {
-      "frameId": "frame-rain-gate-arrival",
+      "frameId": "frame-market-scene-arrival",
       "sceneReference": "雨門",
       "beatReference": "beat-001-遞信",
       "visualIntent": "林披著雨衣抵達門樓，左手握著一封蠟印未破的信。",
@@ -33,7 +33,7 @@
       "assetCandidateRefs": [
         "asset-lin-rain-coat",
         "asset-sealed-letter",
-        "asset-rain-gate"
+        "asset-market-scene"
       ],
       "deliveryStatus": "image_facing_candidate_only"
     },

@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonDraft
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonDraftFinding
@@ -20,12 +20,12 @@ class LocalRendererManifestDraftJsonReviewServiceTest {
         val report = LocalRendererManifestDraftJsonReviewService().review(
             draft = draft,
             draftFile = sampleDraftPath.toString(),
-            reviewId = "rain-gate-manifest-draft-json-review-001",
+            reviewId = "chenxing-manifest-draft-json-review-001",
         )
 
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_MANIFEST_DRAFT_JSON_REVIEW_PASS", report.status)
-        assertEquals("rain-gate-manifest-draft-json-review-001", report.reviewId)
+        assertEquals("chenxing-manifest-draft-json-review-001", report.reviewId)
         assertEquals(draft.draftId, report.sourceDraftId)
         assertEquals(draft.sourceManifestDraftPlanId, report.sourceManifestDraftPlanId)
         assertEquals(draft.sourceManifestDraftPlanReviewId, report.sourceManifestDraftPlanReviewId)
@@ -34,7 +34,7 @@ class LocalRendererManifestDraftJsonReviewServiceTest {
         assertTrue(report.checks.all { it.status == "PASS" })
         assertTrue(report.sourceAlignmentSummary.draftIdPresent)
         assertTrue(report.sourceAlignmentSummary.sourceAlignmentFromDraftPass)
-        assertEquals(2, report.draftManifestReviewSummary.draftPanelEntries)
+        assertEquals(3, report.draftManifestReviewSummary.draftPanelEntries)
         assertTrue(report.draftManifestReviewSummary.draftManifestFields > 0)
         assertTrue(report.draftManifestReviewSummary.draftOnly)
         assertTrue(report.draftManifestReviewSummary.draftManifestGenerated)
@@ -224,7 +224,7 @@ class LocalRendererManifestDraftJsonReviewServiceTest {
 
     companion object {
         val sampleDraftPath: Path =
-            locateSample("rain_gate_local_renderer_manifest_draft_json_draft_sample.json")
+            locateSample("chenxing_local_renderer_manifest_draft_json_draft_sample.json")
 
         fun validDraft(): LocalRendererManifestDraftJsonDraft =
             readJson(sampleDraftPath)
@@ -233,7 +233,7 @@ class LocalRendererManifestDraftJsonReviewServiceTest {
             JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 
         private fun locateSample(fileName: String): Path {
-            val relativePath = Path.of("samples", "local_story_input", fileName)
+            val relativePath = Path.of("samples", "chenxing", "pipeline", fileName)
             return generateSequence(Path.of("").toAbsolutePath().normalize()) { it.parent }
                 .map { it.resolve(relativePath) }
                 .firstOrNull { Files.exists(it) }

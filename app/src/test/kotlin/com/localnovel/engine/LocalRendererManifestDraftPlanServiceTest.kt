@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterImplementationDraft
 import com.localnovel.engine.model.LocalRendererAdapterImplementationDraftReviewReport
@@ -23,12 +23,12 @@ class LocalRendererManifestDraftPlanServiceTest {
             review = review,
             implementationDraftFile = sampleDraftPath.toString(),
             draftReviewFile = sampleReviewPath.toString(),
-            planId = "rain-gate-manifest-draft-plan-001",
+            planId = "chenxing-manifest-draft-plan-001",
         )
 
         assertEquals("PASS", plan.verdict, plan.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_MANIFEST_DRAFT_PLAN", plan.status)
-        assertEquals("rain-gate-manifest-draft-plan-001", plan.planId)
+        assertEquals("chenxing-manifest-draft-plan-001", plan.planId)
         assertEquals(draft.draftId, plan.sourceDraftId)
         assertEquals(review.reviewId, plan.sourceDraftReviewId)
         assertEquals(draft.sourcePlanId, plan.sourcePlanId)
@@ -41,7 +41,7 @@ class LocalRendererManifestDraftPlanServiceTest {
         assertTrue(plan.checks.all { it.status == "PASS" })
         assertTrue(plan.sourceAlignmentSummary.draftIdAligned)
         assertTrue(plan.sourceAlignmentSummary.storyInputPackIdAligned)
-        assertEquals(2, plan.manifestFieldPlan.panelManifestPlans.size)
+        assertEquals(3, plan.manifestFieldPlan.panelManifestPlans.size)
         assertTrue(plan.manifestDraftPlanSummary.mappingDraftFields > 0)
         assertTrue(plan.requiredManifestDraftWorkItems.isNotEmpty())
         assertTrue(plan.verificationPlan.isNotEmpty())
@@ -180,9 +180,9 @@ class LocalRendererManifestDraftPlanServiceTest {
     }
 
     companion object {
-        val sampleDraftPath: Path = locateSample("rain_gate_local_renderer_adapter_implementation_draft_sample.json")
+        val sampleDraftPath: Path = locateSample("chenxing_local_renderer_adapter_implementation_draft_sample.json")
         val sampleReviewPath: Path =
-            locateSample("rain_gate_local_renderer_adapter_implementation_draft_review_report_sample.json")
+            locateSample("chenxing_local_renderer_adapter_implementation_draft_review_report_sample.json")
 
         fun validDraft(): LocalRendererAdapterImplementationDraft =
             JsonSupport.json.decodeFromString(Files.readString(sampleDraftPath).removePrefix("\uFEFF"))
@@ -191,7 +191,7 @@ class LocalRendererManifestDraftPlanServiceTest {
             JsonSupport.json.decodeFromString(Files.readString(sampleReviewPath).removePrefix("\uFEFF"))
 
         private fun locateSample(fileName: String): Path {
-            val relativePath = Path.of("samples", "local_story_input", fileName)
+            val relativePath = Path.of("samples", "chenxing", "pipeline", fileName)
             return generateSequence(Path.of("").toAbsolutePath().normalize()) { it.parent }
                 .map { it.resolve(relativePath) }
                 .firstOrNull { Files.exists(it) }

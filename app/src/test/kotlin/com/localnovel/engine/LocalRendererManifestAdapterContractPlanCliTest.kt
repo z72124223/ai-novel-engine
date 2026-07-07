@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestAdapterContractPlan
 import com.localnovel.engine.support.JsonSupport
@@ -35,19 +35,19 @@ class LocalRendererManifestAdapterContractPlanCliTest {
         assertEquals("LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN", plan.status)
         assertEquals("manifest-adapter-contract-plan-cli-001", plan.planId)
         assertEquals(
-            "rain-gate-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+            "chenxing-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
             plan.sourcePhase16DryRunId,
         )
-        assertEquals("rain-gate-local-renderer-manifest-draft-json-draft-v0-001", plan.sourceDraftId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-json-review-v0-001", plan.sourceReviewId)
-        assertEquals("local-story-input-rain-gate-v0-001", plan.sourceStoryInputPackId)
+        assertEquals("chenxing-local-renderer-manifest-draft-json-draft-v0-001", plan.sourceDraftId)
+        assertEquals("chenxing-local-renderer-manifest-draft-json-review-v0-001", plan.sourceReviewId)
+        assertEquals("local-story-input-chenxing-v0-001", plan.sourceStoryInputPackId)
         assertTrue(plan.checks.isNotEmpty())
         assertTrue(plan.checks.all { it.status == "PASS" })
         assertEquals(4, plan.adapterContractRequirements.size)
-        assertEquals(2, plan.adapterInputMappingPlan.entries.size)
-        assertEquals(2, plan.adapterContractPlanSummary.mappedPanelCount)
+        assertEquals(3, plan.adapterInputMappingPlan.entries.size)
+        assertEquals(3, plan.adapterContractPlanSummary.mappedPanelCount)
         assertEquals(0, plan.adapterContractPlanSummary.unmappedPanelCount)
-        assertEquals(46, plan.adapterContractPlanSummary.totalDraftFields)
+        assertEquals(69, plan.adapterContractPlanSummary.totalDraftFields)
         assertTrue(plan.boundaries.draftManifestGenerated)
         assertFalse(plan.boundaries.productionManifestGenerated)
         assertFalse(plan.boundaries.productionReady)

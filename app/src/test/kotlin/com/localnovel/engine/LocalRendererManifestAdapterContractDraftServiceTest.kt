@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestAdapterContractDraft
 import com.localnovel.engine.model.LocalRendererManifestAdapterContractPlan
@@ -25,17 +25,17 @@ class LocalRendererManifestAdapterContractDraftServiceTest {
             review = review,
             planFile = samplePlanPath.toString(),
             planReviewFile = sampleReviewPath.toString(),
-            draftId = "rain-gate-local-renderer-manifest-adapter-contract-draft-v0-001",
+            draftId = "chenxing-local-renderer-manifest-adapter-contract-draft-v0-001",
         )
 
         assertPassDraft(draft)
-        assertEquals("rain-gate-local-renderer-manifest-adapter-contract-draft-v0-001", draft.draftId)
+        assertEquals("chenxing-local-renderer-manifest-adapter-contract-draft-v0-001", draft.draftId)
         assertEquals(plan.planId, draft.sourcePlanId)
         assertEquals(review.reviewId, draft.sourcePlanReviewId)
         assertEquals(plan.sourcePhase16DryRunId, draft.sourcePhase16DryRunId)
         assertEquals(plan.sourceStoryInputPackId, draft.sourceStoryInputPackId)
         assertEquals(2, draft.requiredInputs.size)
-        assertEquals(2, draft.normalizedFieldMapping.size)
+        assertEquals(3, draft.normalizedFieldMapping.size)
         assertEquals(3, draft.adapterObligations.size)
         assertEquals(6, draft.failStopRules.size)
         assertEquals(3, draft.verificationRequirements.size)
@@ -210,9 +210,9 @@ class LocalRendererManifestAdapterContractDraftServiceTest {
 
     companion object {
         val samplePlanPath: Path =
-            locateSample("rain_gate_local_renderer_manifest_adapter_contract_plan_sample.json")
+            locateSample("chenxing_local_renderer_manifest_adapter_contract_plan_sample.json")
         val sampleReviewPath: Path =
-            locateSample("rain_gate_local_renderer_manifest_adapter_contract_plan_review_report_sample.json")
+            locateSample("chenxing_local_renderer_manifest_adapter_contract_plan_review_report_sample.json")
 
         fun validPlan(): LocalRendererManifestAdapterContractPlan =
             readJson(samplePlanPath)
@@ -225,10 +225,10 @@ class LocalRendererManifestAdapterContractDraftServiceTest {
             assertEquals("LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_DRAFT", draft.status)
             assertEquals(9, draft.checks.size)
             assertTrue(draft.checks.all { it.status == "PASS" })
-            assertEquals(2, draft.contractDraftSummary.mappedPanelCount)
+            assertEquals(3, draft.contractDraftSummary.mappedPanelCount)
             assertEquals(0, draft.contractDraftSummary.unmappedPanelCount)
             assertEquals(0, draft.contractDraftSummary.missingRequiredFieldCount)
-            assertEquals(46, draft.contractDraftSummary.totalDraftFields)
+            assertEquals(69, draft.contractDraftSummary.totalDraftFields)
             assertTrue(draft.boundaries.contractDraftGenerated)
             assertFalse(draft.boundaries.productionManifestGenerated)
             assertFalse(draft.boundaries.productionReady)
@@ -254,7 +254,7 @@ class LocalRendererManifestAdapterContractDraftServiceTest {
             JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 
         private fun locateSample(fileName: String): Path {
-            val relativePath = Path.of("samples", "local_story_input", fileName)
+            val relativePath = Path.of("samples", "chenxing", "pipeline", fileName)
             return generateSequence(Path.of("").toAbsolutePath().normalize()) { it.parent }
                 .map { it.resolve(relativePath) }
                 .firstOrNull { Files.exists(it) }

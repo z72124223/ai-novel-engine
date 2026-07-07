@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestAdapterContractPlanReviewReport
 import com.localnovel.engine.support.JsonSupport
@@ -35,18 +35,18 @@ class LocalRendererManifestAdapterContractPlanReviewCliTest {
         assertEquals("LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS", report.status)
         assertEquals("manifest-adapter-contract-plan-review-cli-001", report.reviewId)
         assertEquals(
-            "rain-gate-local-renderer-manifest-adapter-contract-plan-v0-001",
+            "chenxing-local-renderer-manifest-adapter-contract-plan-v0-001",
             report.sourcePlanId,
         )
         assertEquals(
-            "rain-gate-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+            "chenxing-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
             report.sourcePhase16DryRunId,
         )
-        assertEquals("local-story-input-rain-gate-v0-001", report.sourceStoryInputPackId)
+        assertEquals("local-story-input-chenxing-v0-001", report.sourceStoryInputPackId)
         assertTrue(report.checks.isNotEmpty())
         assertTrue(report.checks.all { it.status == "PASS" })
         assertEquals(4, report.reviewedContractRequirementsSummary.requirementCount)
-        assertEquals(2, report.reviewedInputMappingSummary.mappingEntries)
+        assertEquals(3, report.reviewedInputMappingSummary.mappingEntries)
         assertEquals(3, report.reviewedWorkItemsSummary.workItemCount)
         assertEquals(3, report.verificationReviewSummary.verificationStepCount)
         assertTrue(report.boundaries.draftManifestGenerated)

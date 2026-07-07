@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestDraftJsonAdapterDryRunReport
 import com.localnovel.engine.support.JsonSupport
@@ -36,16 +36,16 @@ class LocalRendererManifestDraftJsonAdapterDryRunCliTest {
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_MANIFEST_DRAFT_JSON_ADAPTER_DRY_RUN_PASS", report.status)
         assertEquals("manifest-draft-json-adapter-dry-run-cli-001", report.dryRunId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-json-draft-v0-001", report.sourceDraftId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-json-review-v0-001", report.sourceReviewId)
-        assertEquals("rain-gate-local-renderer-manifest-draft-plan-v0-001", report.sourceManifestDraftPlanId)
-        assertEquals("local-story-input-rain-gate-v0-001", report.sourceStoryInputPackId)
+        assertEquals("chenxing-local-renderer-manifest-draft-json-draft-v0-001", report.sourceDraftId)
+        assertEquals("chenxing-local-renderer-manifest-draft-json-review-v0-001", report.sourceReviewId)
+        assertEquals("chenxing-local-renderer-manifest-draft-plan-v0-001", report.sourceManifestDraftPlanId)
+        assertEquals("local-story-input-chenxing-v0-001", report.sourceStoryInputPackId)
         assertTrue(report.checks.isNotEmpty())
         assertTrue(report.checks.all { it.status == "PASS" })
-        assertEquals(2, report.panelMappingSummary.draftPanelCount)
-        assertEquals(2, report.panelMappingSummary.mappedPanelCount)
+        assertEquals(3, report.panelMappingSummary.draftPanelCount)
+        assertEquals(3, report.panelMappingSummary.mappedPanelCount)
         assertEquals(0, report.panelMappingSummary.unmappedPanelCount)
-        assertEquals(46, report.draftFieldCoverageSummary.totalDraftFields)
+        assertEquals(69, report.draftFieldCoverageSummary.totalDraftFields)
         assertTrue(report.boundaries.draftManifestGenerated)
         assertFalse(report.boundaries.productionManifestGenerated)
         assertFalse(report.boundaries.productionReady)

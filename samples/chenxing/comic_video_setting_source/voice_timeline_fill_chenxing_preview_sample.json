@@ -1,0 +1,109 @@
+{
+  "fillId": "voice-timeline-fill-chenxing-setting-preview-001",
+  "sourceComicVideoPacketId": "comic-video-setting-chenxing-preview-001",
+  "fillStatus": "comic_video_voice_timeline_fill_candidate",
+  "voiceCast": [
+    {
+      "voiceId": "voice-luozhixing",
+      "characterId": "char-luozhixing",
+      "displayName": "陸知行",
+      "voiceLabel": "local-luozhixing-low",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Local preview voice plan only."
+    },
+    {
+      "voiceId": "voice-old-woman",
+      "characterId": "char-old-woman",
+      "displayName": "市集老太太",
+      "voiceLabel": "local-old-woman-soft",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "Local preview voice plan only."
+    }
+  ],
+  "audioCues": [
+    {
+      "cueId": "audio-001",
+      "panelId": "panel-frame-scene-huiguan-market-01",
+      "voiceId": "voice-luozhixing",
+      "characterId": "char-luozhixing",
+      "text": "鋤頭柄斷在這裡，我先把裂口清乾淨再補。",
+      "startMillis": 0,
+      "durationMillis": 2600,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-002",
+      "panelId": "panel-frame-scene-huiguan-market-02",
+      "voiceId": "voice-old-woman",
+      "characterId": "char-old-woman",
+      "text": "工錢照你說的算，我今天還得把地翻完。",
+      "startMillis": 3000,
+      "durationMillis": 2400,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-003",
+      "panelId": "panel-frame-scene-huiguan-market-03",
+      "voiceId": "voice-luozhixing",
+      "characterId": "char-luozhixing",
+      "text": "愛醬，半塊餅放這裡，要吃你自己決定。",
+      "startMillis": 6000,
+      "durationMillis": 2500,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    }
+  ],
+  "subtitleCues": [
+    {
+      "cueId": "subtitle-001",
+      "panelId": "panel-frame-scene-huiguan-market-01",
+      "audioCueId": "audio-001",
+      "text": "陸知行：鋤頭柄斷在這裡，我先把裂口清乾淨再補。",
+      "startMillis": 0,
+      "endMillis": 2600
+    },
+    {
+      "cueId": "subtitle-002",
+      "panelId": "panel-frame-scene-huiguan-market-02",
+      "audioCueId": "audio-002",
+      "text": "老太太：工錢照你說的算，我今天還得把地翻完。",
+      "startMillis": 3000,
+      "endMillis": 5400
+    },
+    {
+      "cueId": "subtitle-003",
+      "panelId": "panel-frame-scene-huiguan-market-03",
+      "audioCueId": "audio-003",
+      "text": "陸知行：愛醬，半塊餅放這裡，要吃你自己決定。",
+      "startMillis": 6000,
+      "endMillis": 8500
+    }
+  ],
+  "timing": {
+    "timelineStatus": "metadata_only_timing_plan",
+    "totalDurationMillis": 9000,
+    "frameRate": "24",
+    "resolution": "1920x1080",
+    "backgroundPolicy": "panel_track_only",
+    "outputVideoPath": "",
+    "renderedVideoPath": ""
+  },
+  "boundaryChecklist": [
+    "metadata_only",
+    "manual_voice_plan",
+    "media_execution_absent",
+    "remote_payload_absent"
+  ],
+  "notes": [
+    "Local preview metadata only.",
+    "Sample text is editable before author review."
+  ]
+}

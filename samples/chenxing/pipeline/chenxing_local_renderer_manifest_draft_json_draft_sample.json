@@ -1,0 +1,1099 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_MANIFEST_DRAFT_JSON_DRAFT",
+    "draftId": "chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+    "sourcePlanFile": "samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_plan_sample.json",
+    "sourcePlanReviewFile": "samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_plan_review_report_sample.json",
+    "sourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+    "sourceManifestDraftPlanReviewId": "chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+    "sourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+    "sourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourcePlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+    "sourcePlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "checks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft JSON draft requires explicit Phase 12 plan and Phase 13 review files.",
+            "evidence": [
+                "planFile=samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_plan_sample.json",
+                "planReviewFile=samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_draft_plan_review_report_sample.json",
+                "planId=chenxing-local-renderer-manifest-draft-plan-v0-001",
+                "reviewId=chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+                "sourceStoryInputPackId=local-story-input-chenxing-v0-001"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "plan-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft JSON draft requires PASS Phase 12 manifest draft plan state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_DRAFT_PLAN",
+                "downstreamBoundary=local_renderer_manifest_draft_plan_only_not_manifest_generation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_draft_plan_review"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "plan-review-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Manifest draft JSON draft requires PASS Phase 13 manifest draft plan review state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_DRAFT_PLAN_REVIEW_PASS",
+                "downstreamBoundary=local_renderer_manifest_draft_plan_review_only_not_manifest_generation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_draft_json_draft"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-ids-align",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Manifest draft JSON draft requires Phase 12 and Phase 13 source ids to align.",
+            "evidence": [
+                "manifestDraftPlanIdAligned=true",
+                "sourceImplementationDraftIdAligned=true",
+                "sourceImplementationDraftReviewIdAligned=true",
+                "sourcePlanIdAligned=true",
+                "sourcePlanReviewIdAligned=true",
+                "sourceDryRunIdAligned=true",
+                "sourceHandoffIdAligned=true",
+                "sourceHandoffReviewIdAligned=true",
+                "sourceStoryInputPackIdAligned=true"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Manifest draft JSON draft requires local-only no-media and no-production-manifest boundaries.",
+            "evidence": [
+                "planLocalOnly=true",
+                "reviewLocalOnly=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "productionManifestGenerated=false",
+                "productionReady=false"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "no-findings-in-sources",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft JSON draft requires no findings in Phase 12 plan or Phase 13 review.",
+            "evidence": [
+                "planFindingCount=0",
+                "reviewFindingCount=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Manifest draft JSON draft requires non-empty Phase 12/13 checks with all required checks PASS.",
+            "evidence": [
+                "planChecks=10",
+                "planRequiredFail=0",
+                "reviewChecks=10",
+                "reviewRequiredFail=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "draft-content-present",
+            "status": "PASS",
+            "category": "draft_completeness",
+            "message": "Manifest draft JSON draft requires draft panels, draft fields, work items, verification plan, and positive duration.",
+            "evidence": [
+                "panelEntries=3",
+                "totalDraftFields=69",
+                "missingRequiredDraftFields=0",
+                "requiredManifestDraftWorkItems=5",
+                "verificationSteps=5",
+                "targetDurationMillis=9000"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "draft-only-not-production-manifest",
+            "status": "PASS",
+            "category": "manifest_boundary",
+            "message": "Manifest draft JSON draft may create draft-only JSON, not a real production ComicVideoRenderHandoffManifest.",
+            "evidence": [
+                "planningOnly=true",
+                "sourcePlanManifestGenerated=false",
+                "sourcePanelManifestGenerated=0",
+                "sourcePanelRendererReady=0",
+                "generatedNowFields=0",
+                "renderSettingsGeneratedNow=false",
+                "reviewRealManifestGenerated=false",
+                "draft-only=true",
+                "productionManifestGenerated=false",
+                "productionReady=false"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "no-readiness-overclaim",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Manifest draft JSON draft must preserve rendererReady=false and mp4ReadinessClaimed=false.",
+            "evidence": [
+                "plan.rendererReady=false",
+                "plan.mp4ReadinessClaimed=false",
+                "review.rendererReady=false",
+                "review.mp4ReadinessClaimed=false",
+                "reviewReadiness.rendererReady=false",
+                "reviewReadiness.mp4ReadinessClaimed=false"
+            ],
+            "requiredForDraft": true
+        }
+    ],
+    "sourceAlignmentSummary": {
+        "manifestDraftPlanIdAligned": true,
+        "sourceImplementationDraftIdAligned": true,
+        "sourceImplementationDraftReviewIdAligned": true,
+        "sourcePlanIdAligned": true,
+        "sourcePlanReviewIdAligned": true,
+        "sourceDryRunIdAligned": true,
+        "sourceHandoffIdAligned": true,
+        "sourceHandoffReviewIdAligned": true,
+        "sourceStoryInputPackIdAligned": true,
+        "manifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+        "reviewSourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+        "planSourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+        "reviewSourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+        "planSourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+        "reviewSourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+        "planSourcePlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+        "reviewSourcePlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+        "planSourcePlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+        "reviewSourcePlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+        "planSourceDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+        "reviewSourceDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+        "planSourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+        "reviewSourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+        "planSourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+        "reviewSourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+        "planSourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+        "reviewSourceStoryInputPackId": "local-story-input-chenxing-v0-001"
+    },
+    "draftManifestSummary": {
+        "sourcePlanChecks": 10,
+        "sourcePlanReviewChecks": 10,
+        "sourcePlanReviewChecksPass": 10,
+        "sourcePlanReviewChecksFail": 0,
+        "draftPanelEntries": 3,
+        "draftManifestFields": 69,
+        "requiredManifestDraftWorkItems": 5,
+        "verificationSteps": 5,
+        "targetDurationMillis": 9000,
+        "findingCount": 0,
+        "draftOnly": true,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "adapterImplementationExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "draftPanelManifestEntries": [
+        {
+            "order": 1,
+            "panelId": "local-render-panel-beat-market-opening",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-market-opening",
+            "startMillis": 0,
+            "endMillis": 3000,
+            "durationMillis": 3000,
+            "draftPanelTimelineFields": [
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-market-opening",
+                    "implementationNote": "Carry the stable panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sourceFrameId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=sourceFrameId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-visual-prompt-beat-market-opening",
+                    "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sceneReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=sceneReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "scene-huiguan-market",
+                    "implementationNote": "Carry local source scene id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "beatReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=beatReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "beat-market-opening",
+                    "implementationNote": "Carry local source beat id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "visualIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=visualIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "中景，攤位、農具、愛醬趴在腳邊，市集人流從背景掠過。",
+                    "implementationNote": "Map visual intent text only; do not call an image provider.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "cameraIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=cameraIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "灰關外城市集",
+                    "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "0",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "displayDurationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=displayDurationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "assetCandidateRefs",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetPanelTimelineDraft[targetField=assetCandidateRefs]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-character-card-char-luozhixing,local-character-card-char-aijiang,local-character-card-char-old-woman",
+                    "implementationNote": "Resolve local asset references only in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftVoiceTimelineFields": [
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-market-opening",
+                    "implementationNote": "Carry local audio cue card id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-market-opening",
+                    "implementationNote": "Link voice cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "voiceLabel",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=voiceLabel]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 市集老太太: 蒼老而客氣的短句。 | 清晨市集底噪、金屬摩擦聲、遠處腳步。",
+                    "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "老太太請他修鋤頭，陸知行只確認損壞位置與工錢。 / 建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。",
+                    "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "0",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "durationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetVoiceTimelineDraft[targetField=durationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftSubtitleTimelineFields": [
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-market-opening",
+                    "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-market-opening",
+                    "implementationNote": "Link subtitle cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "audioCueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=audioCueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-market-opening",
+                    "implementationNote": "Carry local audio cue id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "老太太請他修鋤頭，陸知行只確認損壞位置與工錢。 / 建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。",
+                    "implementationNote": "Carry caption/dialogue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "0",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-market-opening].targetSubtitleTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftOnly": true,
+            "draftManifestGenerated": true,
+            "productionManifestGenerated": false,
+            "productionReady": false,
+            "rendererReady": false,
+            "note": "Draft-only local JSON panel entry; not a production ComicVideoRenderHandoffManifest entry."
+        },
+        {
+            "order": 2,
+            "panelId": "local-render-panel-beat-share-bread",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-share-bread",
+            "startMillis": 3000,
+            "endMillis": 6000,
+            "durationMillis": 3000,
+            "draftPanelTimelineFields": [
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-share-bread",
+                    "implementationNote": "Carry the stable panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sourceFrameId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=sourceFrameId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-visual-prompt-beat-share-bread",
+                    "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sceneReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=sceneReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "scene-huiguan-market",
+                    "implementationNote": "Carry local source scene id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "beatReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=beatReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "beat-share-bread",
+                    "implementationNote": "Carry local source beat id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "visualIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=visualIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "近景，愛醬嗅了嗅，決定吃或拒絕，陸知行繼續整理工具。",
+                    "implementationNote": "Map visual intent text only; do not call an image provider.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "cameraIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=cameraIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "灰關外城市集",
+                    "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "displayDurationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=displayDurationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "assetCandidateRefs",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetPanelTimelineDraft[targetField=assetCandidateRefs]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-character-card-char-luozhixing,local-character-card-char-aijiang",
+                    "implementationNote": "Resolve local asset references only in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftVoiceTimelineFields": [
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-share-bread",
+                    "implementationNote": "Carry local audio cue card id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-share-bread",
+                    "implementationNote": "Link voice cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "voiceLabel",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=voiceLabel]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 咀嚼與鼻息細節，市集聲音略退後。",
+                    "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "陸知行沒有多說話，只把半塊餅放到愛醬面前。 / 用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。",
+                    "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "durationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetVoiceTimelineDraft[targetField=durationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftSubtitleTimelineFields": [
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-share-bread",
+                    "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-share-bread",
+                    "implementationNote": "Link subtitle cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "audioCueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=audioCueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-share-bread",
+                    "implementationNote": "Carry local audio cue id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "陸知行沒有多說話，只把半塊餅放到愛醬面前。 / 用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。",
+                    "implementationNote": "Carry caption/dialogue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-share-bread].targetSubtitleTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftOnly": true,
+            "draftManifestGenerated": true,
+            "productionManifestGenerated": false,
+            "productionReady": false,
+            "rendererReady": false,
+            "note": "Draft-only local JSON panel entry; not a production ComicVideoRenderHandoffManifest entry."
+        },
+        {
+            "order": 3,
+            "panelId": "local-render-panel-beat-disciple-glance",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-disciple-glance",
+            "startMillis": 6000,
+            "endMillis": 9000,
+            "durationMillis": 3000,
+            "draftPanelTimelineFields": [
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-disciple-glance",
+                    "implementationNote": "Carry the stable panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sourceFrameId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=sourceFrameId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-visual-prompt-beat-disciple-glance",
+                    "implementationNote": "Resolve from local visual prompt card id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "sceneReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=sceneReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "scene-huiguan-market",
+                    "implementationNote": "Carry local source scene id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "beatReference",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=beatReference]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "beat-disciple-glance",
+                    "implementationNote": "Carry local source beat id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "visualIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=visualIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "過肩鏡頭，弟子視線落在愛醬與攤位上，陸知行抬眼但不挑釁。",
+                    "implementationNote": "Map visual intent text only; do not call an image provider.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "cameraIntent",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=cameraIntent]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "灰關外城市集",
+                    "implementationNote": "Choose local deterministic fallback camera intent in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "9000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "displayDurationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=displayDurationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "panelTimeline",
+                    "targetField": "assetCandidateRefs",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetPanelTimelineDraft[targetField=assetCandidateRefs]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-character-card-char-luozhixing,local-character-card-char-aijiang",
+                    "implementationNote": "Resolve local asset references only in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftVoiceTimelineFields": [
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-disciple-glance",
+                    "implementationNote": "Carry local audio cue card id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-disciple-glance",
+                    "implementationNote": "Link voice cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "voiceLabel",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=voiceLabel]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 腳步停頓一瞬，然後離去。",
+                    "implementationNote": "Choose deterministic local voice label policy in a future adapter; do not invoke TTS.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "弟子不說話，只用眼神掃過。 / 修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。",
+                    "implementationNote": "Carry dialogue/audio cue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "9000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "voiceTimeline",
+                    "targetField": "durationMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetVoiceTimelineDraft[targetField=durationMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "3000",
+                    "implementationNote": "Carry duration from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftSubtitleTimelineFields": [
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "cueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=cueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-disciple-glance",
+                    "implementationNote": "Create deterministic local subtitle cue id in a future adapter.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "panelId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=panelId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-render-panel-beat-disciple-glance",
+                    "implementationNote": "Link subtitle cue to panel id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "audioCueId",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=audioCueId]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "local-audio-cue-beat-disciple-glance",
+                    "implementationNote": "Carry local audio cue id.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "text",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=text]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "弟子不說話，只用眼神掃過。 / 修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。",
+                    "implementationNote": "Carry caption/dialogue text from local JSON.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "startMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=startMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "6000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                },
+                {
+                    "targetSection": "subtitleTimeline",
+                    "targetField": "endMillis",
+                    "sourcePlanPath": "$.adapterMappingDraft.panelDrafts[panelId=local-render-panel-beat-disciple-glance].targetSubtitleTimelineDraft[targetField=endMillis]",
+                    "sourcePlanReviewPath": "$.checks[checkId=manifest-remains-plan-only]",
+                    "draftValueHint": "9000",
+                    "implementationNote": "Carry timing from Phase 7 notes.",
+                    "required": true,
+                    "draftOnly": true,
+                    "productionReady": false
+                }
+            ],
+            "draftOnly": true,
+            "draftManifestGenerated": true,
+            "productionManifestGenerated": false,
+            "productionReady": false,
+            "rendererReady": false,
+            "note": "Draft-only local JSON panel entry; not a production ComicVideoRenderHandoffManifest entry."
+        }
+    ],
+    "draftFieldCoverageSummary": {
+        "panelEntries": 3,
+        "panelTimelineFields": 30,
+        "voiceTimelineFields": 21,
+        "subtitleTimelineFields": 18,
+        "totalDraftFields": 69,
+        "missingRequiredDraftFields": 0,
+        "draftOnly": true,
+        "productionManifestGenerated": false,
+        "productionReady": false
+    },
+    "boundarySummary": {
+        "planLocalOnly": true,
+        "reviewLocalOnly": true,
+        "mediaGenerated": false,
+        "adapterImplementationExecuted": false,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_manifest_draft_json_draft_only_not_production_manifest",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_draft_json_review",
+    "findingCount": 0
+}

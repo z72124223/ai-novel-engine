@@ -20,23 +20,25 @@ import kotlin.test.assertTrue
 class SettingPackScriptPacketDraftServiceTest {
     @Test
     fun publicSettingSceneBuildsValidScriptPacketDraftWithoutSecretLeak() {
-        val pack = readJson<SettingPack>(samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json"))
+        val pack = readJson<SettingPack>(
+            ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json"),
+        )
 
         val result = SettingPackScriptPacketDraftService().create(
             settingPack = pack,
-            settingPackFile = "setting_pack_rain_gate_sample.json",
-            requestedSceneId = "scene-rain-gate",
-            packetId = "script-packet-draft-rain-gate-sample-001",
+            settingPackFile = "setting_pack_chenxing_preview_sample.json",
+            requestedSceneId = "scene-huiguan-market",
+            packetId = "script-packet-draft-chenxing-sample-001",
         )
 
         val draft = assertNotNull(result.draft)
-        assertEquals("scene-rain-gate", result.selectedSceneId)
-        assertEquals("loc-rain-gate", result.selectedLocationId)
+        assertEquals("scene-huiguan-market", result.selectedSceneId)
+        assertEquals("loc-huiguan-market", result.selectedLocationId)
         assertEquals(1, result.evidence.excludedSecretCount)
         assertEquals(3, draft.storyboardNotes.frameCandidates.size)
         assertEquals("settingPack", draft.source.inputType)
         val encoded = JsonSupport.json.encodeToString(draft)
-        assertFalse(encoded.contains("second bell", ignoreCase = true))
+        assertFalse(encoded.contains("third watch bell", ignoreCase = true))
         assertFalse(encoded.contains("author_only", ignoreCase = true))
 
         val validation = ScriptPacketDraftValidationService().validate(draft)
@@ -55,13 +57,13 @@ class SettingPackScriptPacketDraftServiceTest {
             listOf(
                 "create-setting-script-packet-draft",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
-                "scene-rain-gate",
+                "scene-huiguan-market",
                 "--packet",
-                "script-packet-draft-rain-gate-sample-001",
+                "script-packet-draft-chenxing-sample-001",
                 "--build",
-                "setting-script-packet-rain-gate-sample-001",
+                "setting-script-packet-chenxing-sample-001",
                 "--out",
                 draftPath.toString(),
                 "--validation-out",
@@ -78,7 +80,7 @@ class SettingPackScriptPacketDraftServiceTest {
         val draft = readJson<ScriptPacketDraft>(draftPath)
         val validation = readJson<ScriptPacketDraftValidationReport>(validationPath)
         val report = readJson<SettingPackScriptPacketDraftBuildReport>(reportPath)
-        assertEquals("script-packet-draft-rain-gate-sample-001", draft.packetId)
+        assertEquals("script-packet-draft-chenxing-sample-001", draft.packetId)
         assertEquals("PASS", validation.verdict)
         assertEquals("PASS", report.verdict)
         assertEquals("script_packet_draft_review", report.nextAllowedDownstreamStep)
@@ -96,7 +98,7 @@ class SettingPackScriptPacketDraftServiceTest {
             listOf(
                 "create-setting-script-packet-draft",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
                 "scene-missing",
                 "--out",
@@ -115,12 +117,4 @@ class SettingPackScriptPacketDraftServiceTest {
 
     private inline fun <reified T> readJson(path: Path): T =
         JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
-
-    private fun samplePath(relative: String): Path {
-        val candidates = listOf(
-            Path.of("samples", relative),
-            Path.of("..", "samples", relative),
-        )
-        return candidates.firstOrNull { Files.exists(it) } ?: error("Cannot find sample file: $relative")
-    }
 }

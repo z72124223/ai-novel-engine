@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "comic-video-chenxing-source",
+  "packVersion": 1,
+  "projectId": "comic-video-workbench",
+  "name": "Chenxing / 塵行 Source Pack",
+  "description": "Public setting source for 灰關外城市集 local comic video draft.",
+  "mode": "ADD_ON",
+  "source": {
+    "author": "local-author",
+    "license": "CC0",
+    "notes": "Active creative world setting source for local JSON pipeline tests."
+  },
+  "dependencies": [],
+  "entities": {
+    "locations": [
+      {
+        "id": "loc-huiguan-market",
+        "name": "灰關外城市集",
+        "description": "清晨市集攤位區，流民與攤販在修仙者弟子經過時低頭讓路。",
+        "visibility": "public"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-luozhixing",
+        "name": "陸知行",
+        "role": "repair craftsman",
+        "description": "靠修理農具與磨刀維生的流民，神情冷靜、觀察多於情緒外露。",
+        "startingItems": [
+          "item-repair-tools"
+        ],
+        "visibility": "public"
+      },
+      {
+        "id": "char-aijiang",
+        "name": "愛醬",
+        "role": "companion beast",
+        "description": "巨大長毛犬獸，毛色與體型都不像已知妖犬。",
+        "visibility": "public"
+      },
+      {
+        "id": "char-old-woman",
+        "name": "市集老太太",
+        "role": "market customer",
+        "description": "提著斷柄鋤頭前來修補工具的凡人顧客。",
+        "visibility": "public"
+      }
+    ],
+    "worldRules": [
+      {
+        "id": "rule-market-survival",
+        "title": "灰關外城先求當日飯錢",
+        "content": "沒有正式身份的流民只能先在凡人底層用技能換取微薄收入。",
+        "priority": 8,
+        "visibility": "public"
+      }
+    ],
+    "items": [
+      {
+        "id": "item-repair-tools",
+        "name": "修理工具",
+        "description": "簡陋攤位上的磨刀石、鉗子與短刀。",
+        "initialOwnerId": "char-luozhixing",
+        "visibility": "public"
+      },
+      {
+        "id": "item-broken-hoe",
+        "name": "斷柄鋤頭",
+        "description": "老太太提來請人修補的農具。",
+        "initialOwnerId": "char-old-woman",
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-market-opening",
+        "content": "灰關外城清晨市集已經開張，攤販開始擺出農具與食物。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-disciple-passage",
+        "content": "修仙者弟子會穿過市集，攤販習慣低頭讓路。",
+        "visibility": "public"
+      }
+    ],
+    "secrets": [
+      {
+        "id": "secret-disciple-route",
+        "content": "弟子巡視路線會在第三聲更鼓後改道。",
+        "visibility": "author_only",
+        "revealed": false,
+        "revealCondition": "not for visible draft fields"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene-huiguan-market",
+        "title": "灰關外城市集",
+        "summary": "陸知行在清晨市集修補農具，愛醬趴在攤位旁，老太太前來修鋤頭。",
+        "locationId": "loc-huiguan-market",
+        "visibility": "public"
+      }
+    ],
+    "sceneContracts": [
+      {
+        "id": "contract-huiguan-market",
+        "sceneId": "scene-huiguan-market",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "disciple route after the third watch bell"
+        ],
+        "visibility": "director_only"
+      }
+    ]
+  },
+  "relations": [
+    {
+      "id": "rel-scene-huiguan-market-location",
+      "fromType": "scene",
+      "fromId": "scene-huiguan-market",
+      "toType": "location",
+      "toId": "loc-huiguan-market",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-luozhixing-huiguan-market",
+      "fromType": "character",
+      "fromId": "char-luozhixing",
+      "toType": "location",
+      "toId": "loc-huiguan-market",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-aijiang-huiguan-market",
+      "fromType": "character",
+      "fromId": "char-aijiang",
+      "toType": "location",
+      "toId": "loc-huiguan-market",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-old-woman-huiguan-market",
+      "fromType": "character",
+      "fromId": "char-old-woman",
+      "toType": "location",
+      "toId": "loc-huiguan-market",
+      "relation": "LOCATED_IN",
+      "visibility": "public"
+    },
+    {
+      "id": "rel-luozhixing-tools",
+      "fromType": "character",
+      "fromId": "char-luozhixing",
+      "toType": "item",
+      "toId": "item-repair-tools",
+      "relation": "OWNS",
+      "visibility": "public"
+    }
+  ],
+  "assertions": [],
+  "metadata": {
+    "sample": true,
+    "comicVideoSource": true,
+    "activeCreativeWorld": "塵行"
+  }
+}

@@ -21,29 +21,29 @@ class SettingImageFacingProofPreviewBuildCliTest {
             listOf(
                 "build-setting-image-facing-proof-preview",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
-                "scene-rain-gate",
+                "scene-huiguan-market",
                 "--output-dir",
                 tempDir.toString(),
                 "--build",
                 "setting-image-facing-preview-test-001",
                 "--script-packet",
-                "script-packet-draft-rain-gate-preview-test-001",
+                "script-packet-draft-chenxing-preview-test-001",
                 "--storyboard-brief",
-                "storyboard-brief-rain-gate-preview-test-001",
+                "storyboard-brief-chenxing-preview-test-001",
                 "--storyboard-draft",
-                "storyboard-draft-rain-gate-preview-test-001",
+                "storyboard-draft-chenxing-preview-test-001",
                 "--storyboard-review",
-                "storyboard-review-rain-gate-preview-test-001",
+                "storyboard-review-chenxing-preview-test-001",
                 "--human-review-preflight",
-                "storyboard-human-review-preflight-rain-gate-preview-test-001",
+                "storyboard-human-review-preflight-chenxing-preview-test-001",
                 "--story-movement-audit",
-                "storyboard-story-movement-audit-rain-gate-preview-test-001",
+                "storyboard-story-movement-audit-chenxing-preview-test-001",
                 "--reviewable-storyboard",
-                "reviewable-storyboard-rain-gate-preview-test-001",
+                "reviewable-storyboard-chenxing-preview-test-001",
                 "--proof",
-                "image-facing-delivery-proof-rain-gate-preview-test-001",
+                "image-facing-delivery-proof-chenxing-preview-test-001",
                 "--report-out",
                 reportPath.toString(),
             ),
@@ -87,7 +87,7 @@ class SettingImageFacingProofPreviewBuildCliTest {
             tempDir.resolve("image_facing_delivery_proof.json"),
             reportPath,
         ).joinToString("\n") { Files.readString(it) }
-        assertFalse(publicArtifacts.contains("second bell", ignoreCase = true))
+        assertFalse(publicArtifacts.contains("third watch bell", ignoreCase = true))
         assertFalse(publicArtifacts.contains("author_only", ignoreCase = true))
         assertFalse(publicArtifacts.contains("provider job", ignoreCase = true))
         assertFalse(publicArtifacts.contains("production lock", ignoreCase = true))
@@ -103,7 +103,7 @@ class SettingImageFacingProofPreviewBuildCliTest {
             listOf(
                 "build-setting-image-facing-proof-preview",
                 "--setting-pack",
-                samplePath("comic_video_setting_source/setting_pack_rain_gate_sample.json").toString(),
+                ChenxingStoryTestFixtures.chenxingSettingSourceSample("setting_pack_chenxing_preview_sample.json").toString(),
                 "--scene",
                 "scene-missing",
                 "--output-dir",
@@ -126,12 +126,4 @@ class SettingImageFacingProofPreviewBuildCliTest {
 
     private inline fun <reified T> readJson(path: Path): T =
         JsonSupport.json.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
-
-    private fun samplePath(relative: String): Path {
-        val candidates = listOf(
-            Path.of("samples", relative),
-            Path.of("..", "samples", relative),
-        )
-        return candidates.firstOrNull { Files.exists(it) } ?: error("Cannot find sample file: $relative")
-    }
 }

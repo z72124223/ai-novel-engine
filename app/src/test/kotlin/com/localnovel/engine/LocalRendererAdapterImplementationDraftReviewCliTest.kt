@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterImplementationDraftReviewReport
 import com.localnovel.engine.support.JsonSupport
@@ -35,8 +35,8 @@ class LocalRendererAdapterImplementationDraftReviewCliTest {
         assertEquals("PASS", report.verdict, report.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_ADAPTER_IMPLEMENTATION_DRAFT_REVIEW_PASS", report.status)
         assertEquals("adapter-implementation-draft-review-cli-001", report.reviewId)
-        assertEquals("rain-gate-local-renderer-adapter-implementation-draft-v0-001", report.sourceDraftId)
-        assertEquals("local-story-input-rain-gate-v0-001", report.sourceStoryInputPackId)
+        assertEquals("chenxing-local-renderer-adapter-implementation-draft-v0-001", report.sourceDraftId)
+        assertEquals("local-story-input-chenxing-v0-001", report.sourceStoryInputPackId)
         assertTrue(report.checks.isNotEmpty())
         assertTrue(report.checks.all { it.status == "PASS" })
         assertTrue(report.draftSummary.implementationTasks > 0)

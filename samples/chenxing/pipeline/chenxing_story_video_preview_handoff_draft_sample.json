@@ -1,0 +1,313 @@
+{
+    "status": "LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT",
+    "handoffId": "chenxing-story-video-preview-handoff-v0-001",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "sourceChainReportFile": "samples\\chenxing\\pipeline\\chenxing_story_video_chain_report_sample.json",
+    "sourceRenderPackageFile": "samples\\chenxing\\pipeline\\chain_outputs\\local_render_package_draft.json",
+    "sourceAssetPromptCardsFile": "samples\\chenxing\\pipeline\\chain_outputs\\local_asset_prompt_cards_draft.json",
+    "sourceStoryInputFile": "samples\\chenxing\\chenxing_story_input_pack_sample.json",
+    "sourceChainStatus": "LOCAL_STORY_VIDEO_CHAIN_VERIFIED",
+    "sourceRenderPackageStatus": "LOCAL_RENDER_PACKAGE_DRAFT",
+    "sourceAssetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+    "readinessChecks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "All Phase 5 source files are explicit; the handoff does not guess paths.",
+            "evidence": [
+                "chainReportFile=samples\\chenxing\\pipeline\\chenxing_story_video_chain_report_sample.json",
+                "renderPackageFile=samples\\chenxing\\pipeline\\chain_outputs\\local_render_package_draft.json",
+                "assetPromptCardsFile=samples\\chenxing\\pipeline\\chain_outputs\\local_asset_prompt_cards_draft.json",
+                "storyInputFile=samples\\chenxing\\chenxing_story_input_pack_sample.json"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "chain-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Chain report status is LOCAL_STORY_VIDEO_CHAIN_VERIFIED.",
+            "evidence": [
+                "LOCAL_STORY_VIDEO_CHAIN_VERIFIED"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "render-package-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Render package status is LOCAL_RENDER_PACKAGE_DRAFT.",
+            "evidence": [
+                "LOCAL_RENDER_PACKAGE_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "asset-prompt-cards-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards status is LOCAL_ASSET_PROMPT_CARDS_DRAFT.",
+            "evidence": [
+                "LOCAL_ASSET_PROMPT_CARDS_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "source-story-pack-id-match",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Story/source ids match across story input, chain report, render package, and asset/prompt cards.",
+            "evidence": [
+                "story=local-story-input-chenxing-v0-001",
+                "chain=local-story-input-chenxing-v0-001",
+                "render=local-story-input-chenxing-v0-001",
+                "cards=local-story-input-chenxing-v0-001"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "asset-prompt-source-match",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Render package source asset/prompt card metadata matches the supplied cards draft.",
+            "evidence": [
+                "render.sourceAssetPromptCardsStatus=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "cards.status=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "render.sourceAssetPromptCardsDraftId=local-story-input-chenxing-v0-001-chain-asset-prompt-cards-v0",
+                "cards.draftId=local-story-input-chenxing-v0-001-chain-asset-prompt-cards-v0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "chain-stage-statuses",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Chain stage results show PASS story validation, draft asset/prompt cards, and draft render package.",
+            "evidence": [
+                "storyValidation=PASS",
+                "assetPromptCards=LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+                "localRenderPackage=LOCAL_RENDER_PACKAGE_DRAFT"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "render-plan-present",
+            "status": "PASS",
+            "category": "preview_plan",
+            "message": "Render package includes timeline/panel plans and has zero QA failures.",
+            "evidence": [
+                "timeline=3",
+                "panels=3",
+                "qaFail=0"
+            ],
+            "requiredForDraft": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "All sources preserve file-protocol/no-external/no-renderer/no-media-generation boundaries.",
+            "evidence": [
+                "chain.mediaGenerated=false",
+                "chain.rendererInvocation=none",
+                "chain.providerInvocation=none",
+                "chain.ttsInvocation=none",
+                "story.noExternal=true",
+                "cards.noExternal=true",
+                "render.noExternal=true"
+            ],
+            "requiredForDraft": true
+        }
+    ],
+    "previewPlan": {
+        "sceneOrdering": [
+            {
+                "scenePlanId": "local-render-scene-scene-huiguan-market",
+                "sourceSceneId": "scene-huiguan-market",
+                "title": "灰關外城市集",
+                "location": "灰關外城清晨市集攤位",
+                "mood": "生計壓力、底層秩序、淡淡戒備",
+                "panelIds": [
+                    "local-render-panel-beat-market-opening",
+                    "local-render-panel-beat-share-bread",
+                    "local-render-panel-beat-disciple-glance"
+                ]
+            }
+        ],
+        "panelOrdering": [
+            {
+                "order": 1,
+                "panelId": "local-render-panel-beat-market-opening",
+                "sourceBeatId": "beat-market-opening",
+                "sourceSceneId": "scene-huiguan-market",
+                "sceneTitle": "灰關外城市集",
+                "startMillis": 0,
+                "endMillis": 3000,
+                "durationMillis": 3000,
+                "captionCue": "建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。",
+                "dialogueCue": "老太太請他修鋤頭，陸知行只確認損壞位置與工錢。",
+                "visualIntent": "中景，攤位、農具、愛醬趴在腳邊，市集人流從背景掠過。",
+                "audioIntent": "清晨市集底噪、金屬摩擦聲、遠處腳步。",
+                "characterCardIds": [
+                    "local-character-card-char-luozhixing",
+                    "local-character-card-char-aijiang",
+                    "local-character-card-char-old-woman"
+                ],
+                "visualPromptCardId": "local-visual-prompt-beat-market-opening",
+                "visualPromptSeed": "Story: 塵行第一話本地故事輸入包 | Scene: 灰關外城市集 at 灰關外城清晨市集攤位 | Mood: 生計壓力、底層秩序、淡淡戒備 | Beat: 建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。 | Visual intent: 中景，攤位、農具、愛醬趴在腳邊，市集人流從背景掠過。 | Style: 寫實、壓抑、生活感，不做英雄式開場。 | Palette: 灰褐市集、晨光淡金、粗布與鐵器冷色。 | Camera: 以中景與近景為主，讓手藝、食物、眼神清楚可讀。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+                "audioCueCardId": "local-audio-cue-beat-market-opening",
+                "audioCueSummary": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 市集老太太: 蒼老而客氣的短句。 | 清晨市集底噪、金屬摩擦聲、遠處腳步。",
+                "assetPromptReference": {
+                    "sourceBeatId": "beat-market-opening",
+                    "sourceSceneId": "scene-huiguan-market",
+                    "beatCardId": "local-beat-card-beat-market-opening",
+                    "sceneCardId": "local-scene-card-scene-huiguan-market",
+                    "visualPromptCardId": "local-visual-prompt-beat-market-opening",
+                    "audioCueCardId": "local-audio-cue-beat-market-opening",
+                    "characterCardIds": [
+                        "local-character-card-char-luozhixing",
+                        "local-character-card-char-aijiang",
+                        "local-character-card-char-old-woman"
+                    ]
+                }
+            },
+            {
+                "order": 2,
+                "panelId": "local-render-panel-beat-share-bread",
+                "sourceBeatId": "beat-share-bread",
+                "sourceSceneId": "scene-huiguan-market",
+                "sceneTitle": "灰關外城市集",
+                "startMillis": 3000,
+                "endMillis": 6000,
+                "durationMillis": 3000,
+                "captionCue": "用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。",
+                "dialogueCue": "陸知行沒有多說話，只把半塊餅放到愛醬面前。",
+                "visualIntent": "近景，愛醬嗅了嗅，決定吃或拒絕，陸知行繼續整理工具。",
+                "audioIntent": "咀嚼與鼻息細節，市集聲音略退後。",
+                "characterCardIds": [
+                    "local-character-card-char-luozhixing",
+                    "local-character-card-char-aijiang"
+                ],
+                "visualPromptCardId": "local-visual-prompt-beat-share-bread",
+                "visualPromptSeed": "Story: 塵行第一話本地故事輸入包 | Scene: 灰關外城市集 at 灰關外城清晨市集攤位 | Mood: 生計壓力、底層秩序、淡淡戒備 | Beat: 用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。 | Visual intent: 近景，愛醬嗅了嗅，決定吃或拒絕，陸知行繼續整理工具。 | Style: 寫實、壓抑、生活感，不做英雄式開場。 | Palette: 灰褐市集、晨光淡金、粗布與鐵器冷色。 | Camera: 以中景與近景為主，讓手藝、食物、眼神清楚可讀。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+                "audioCueCardId": "local-audio-cue-beat-share-bread",
+                "audioCueSummary": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 咀嚼與鼻息細節，市集聲音略退後。",
+                "assetPromptReference": {
+                    "sourceBeatId": "beat-share-bread",
+                    "sourceSceneId": "scene-huiguan-market",
+                    "beatCardId": "local-beat-card-beat-share-bread",
+                    "sceneCardId": "local-scene-card-scene-huiguan-market",
+                    "visualPromptCardId": "local-visual-prompt-beat-share-bread",
+                    "audioCueCardId": "local-audio-cue-beat-share-bread",
+                    "characterCardIds": [
+                        "local-character-card-char-luozhixing",
+                        "local-character-card-char-aijiang"
+                    ]
+                }
+            },
+            {
+                "order": 3,
+                "panelId": "local-render-panel-beat-disciple-glance",
+                "sourceBeatId": "beat-disciple-glance",
+                "sourceSceneId": "scene-huiguan-market",
+                "sceneTitle": "灰關外城市集",
+                "startMillis": 6000,
+                "endMillis": 9000,
+                "durationMillis": 3000,
+                "captionCue": "修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。",
+                "dialogueCue": "弟子不說話，只用眼神掃過。",
+                "visualIntent": "過肩鏡頭，弟子視線落在愛醬與攤位上，陸知行抬眼但不挑釁。",
+                "audioIntent": "腳步停頓一瞬，然後離去。",
+                "characterCardIds": [
+                    "local-character-card-char-luozhixing",
+                    "local-character-card-char-aijiang"
+                ],
+                "visualPromptCardId": "local-visual-prompt-beat-disciple-glance",
+                "visualPromptSeed": "Story: 塵行第一話本地故事輸入包 | Scene: 灰關外城市集 at 灰關外城清晨市集攤位 | Mood: 生計壓力、底層秩序、淡淡戒備 | Beat: 修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。 | Visual intent: 過肩鏡頭，弟子視線落在愛醬與攤位上，陸知行抬眼但不挑釁。 | Style: 寫實、壓抑、生活感，不做英雄式開場。 | Palette: 灰褐市集、晨光淡金、粗布與鐵器冷色。 | Camera: 以中景與近景為主，讓手藝、食物、眼神清楚可讀。 | Subtitles: 繁體中文字幕，高對比，盡量單行。",
+                "audioCueCardId": "local-audio-cue-beat-disciple-glance",
+                "audioCueSummary": "陸知行: 低而穩的男聲，語句短，像在邊做事邊思考。 | 愛醬: 非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。 | 腳步停頓一瞬，然後離去。",
+                "assetPromptReference": {
+                    "sourceBeatId": "beat-disciple-glance",
+                    "sourceSceneId": "scene-huiguan-market",
+                    "beatCardId": "local-beat-card-beat-disciple-glance",
+                    "sceneCardId": "local-scene-card-scene-huiguan-market",
+                    "visualPromptCardId": "local-visual-prompt-beat-disciple-glance",
+                    "audioCueCardId": "local-audio-cue-beat-disciple-glance",
+                    "characterCardIds": [
+                        "local-character-card-char-luozhixing",
+                        "local-character-card-char-aijiang"
+                    ]
+                }
+            }
+        ],
+        "targetDurationMillis": 9000,
+        "qaSummary": {
+            "qaChecks": 7,
+            "qaPass": 7,
+            "qaFail": 0,
+            "sourceQaCheckIds": [
+                "story-pack-match",
+                "card-status",
+                "duration-positive",
+                "local-only-constraints",
+                "no-provider-api",
+                "no-media-generation",
+                "no-final-approval-release-production-lock"
+            ]
+        },
+        "planBoundary": "local_preview_handoff_plan_only"
+    },
+    "localRendererCompatibility": {
+        "ready": false,
+        "readyFields": [
+            "scene/panel ordering",
+            "target durations",
+            "caption/dialogue cues",
+            "visual prompt references",
+            "audio cue references",
+            "QA summary"
+        ],
+        "missingFields": [
+            "adapter to ComicVideoRenderHandoffManifest",
+            "reviewed ComicVideoRenderPanelTimelineItem sourceFrameId/mustShow/doNotShow/continuityAnchors",
+            "reviewed ComicVideoRenderVoiceTimelineItem spoken text and voice labels",
+            "reviewed ComicVideoRenderSubtitleTimelineItem subtitle text",
+            "local renderer dry-run PASS before actual MP4 generation"
+        ],
+        "requiredChecksBeforeMp4": [
+            "Review this preview handoff draft.",
+            "Create or choose a local adapter from LocalStoryVideoPreviewHandoffDraft to ComicVideoRenderHandoffManifest.",
+            "Run a dry-run renderer/preflight command before any media generation.",
+            "Keep provider/API, TTS, final approval, provider/media handoff, canon, registry, release, and production lock boundaries explicit."
+        ],
+        "compatibilityBoundary": "review_only_not_renderer_invocation"
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "finalMediaApproval": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false
+    },
+    "downstreamBoundary": "local_story_video_preview_handoff_draft_only_not_media_generation",
+    "nextAllowedDownstreamStep": "local_preview_handoff_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "readinessCheckCount": 9,
+        "readinessPassCount": 9,
+        "readinessFailCount": 0,
+        "sceneCount": 1,
+        "panelCount": 3,
+        "visualPromptReferenceCount": 3,
+        "audioCueReferenceCount": 3,
+        "targetDurationMillis": 9000
+    }
+}

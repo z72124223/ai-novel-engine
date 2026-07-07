@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterDryRunReport
 import com.localnovel.engine.support.JsonSupport
@@ -45,10 +45,10 @@ class LocalRendererAdapterDryRunCliTest {
         assertEquals(handoff.handoffId, report.sourceHandoffId)
         assertEquals(review.reviewId, report.sourceReviewId)
         assertEquals(handoff.sourceStoryInputPackId, report.sourceStoryInputPackId)
-        assertEquals(2, report.adapterMappingSummary.panelCount)
-        assertEquals(2, report.adapterMappingSummary.mappedPanelCount)
+        assertEquals(3, report.adapterMappingSummary.panelCount)
+        assertEquals(3, report.adapterMappingSummary.mappedPanelCount)
         assertEquals(0, report.adapterMappingSummary.missingRequiredFieldCount)
-        assertEquals(2, report.dryRunMappingPlan.size)
+        assertEquals(3, report.dryRunMappingPlan.size)
         assertFalse(report.rendererCompatibilitySummary.ready)
         assertFalse(report.rendererCompatibilitySummary.manifestGenerated)
         assertFalse(report.boundaries.mediaGenerated)

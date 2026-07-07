@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.FoundationCardPack
 import com.localnovel.engine.model.FoundationCardPackValidationReport
@@ -17,13 +17,13 @@ class FoundationCardPackValidationServiceTest {
     fun validatesRoundOneContractSample() {
         val report = FoundationCardPackValidationService().validateFile(
             inputPath = samplePackPath,
-            validationId = "rain-gate-09-foundation-card-pack-validation-v0-001",
+            validationId = "chenxing-09-foundation-card-pack-validation-v0-001",
         )
 
         assertPassReport(report)
-        assertEquals("rain-gate-09-foundation-card-pack-validation-v0-001", report.validationId)
-        assertEquals("09-foundation-pack-rain-gate-v0-001", report.packId)
-        assertEquals(7, report.evidence.cardCount)
+        assertEquals("chenxing-09-foundation-card-pack-validation-v0-001", report.validationId)
+        assertEquals("09-foundation-pack-chenxing-v0-001", report.packId)
+        assertEquals(8, report.evidence.cardCount)
         assertEquals(7, report.evidence.presentRequiredFamilyCount)
         assertTrue(report.evidence.missingFamilies.isEmpty())
         assertEquals(0, report.evidence.duplicateCardIdCount)
@@ -128,13 +128,7 @@ class FoundationCardPackValidationServiceTest {
     }
 
     companion object {
-        private val samplePackRelativePath: Path =
-            Path.of("samples/local_story_input/rain_gate_09_foundation_card_pack_contract_sample.json")
-        val samplePackPath: Path =
-            generateSequence(Path.of("").toAbsolutePath()) { it.parent }
-                .map { it.resolve(samplePackRelativePath) }
-                .firstOrNull { Files.exists(it) }
-                ?: samplePackRelativePath
+        val samplePackPath: Path = ChenxingStoryTestFixtures.chenxingFoundationCardPackPath()
 
         fun validPack(): FoundationCardPack =
             JsonSupport.json.decodeFromString(Files.readString(samplePackPath).removePrefix("\uFEFF"))

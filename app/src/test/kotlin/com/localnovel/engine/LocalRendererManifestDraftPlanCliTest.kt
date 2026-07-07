@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererManifestDraftPlan
 import com.localnovel.engine.support.JsonSupport
@@ -36,9 +36,9 @@ class LocalRendererManifestDraftPlanCliTest {
         assertEquals("PASS", plan.verdict, plan.findings.joinToString { it.ruleId })
         assertEquals("LOCAL_RENDERER_MANIFEST_DRAFT_PLAN", plan.status)
         assertEquals("manifest-draft-plan-cli-001", plan.planId)
-        assertEquals("rain-gate-local-renderer-adapter-implementation-draft-v0-001", plan.sourceDraftId)
+        assertEquals("chenxing-local-renderer-adapter-implementation-draft-v0-001", plan.sourceDraftId)
         assertEquals(
-            "rain-gate-local-renderer-adapter-implementation-draft-review-v0-001",
+            "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
             plan.sourceDraftReviewId,
         )
         assertTrue(plan.checks.isNotEmpty())

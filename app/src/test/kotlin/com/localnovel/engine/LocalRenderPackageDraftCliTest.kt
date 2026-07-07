@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRenderPackageDraft
 import com.localnovel.engine.support.JsonSupport
@@ -14,9 +14,9 @@ class LocalRenderPackageDraftCliTest {
     @Test
     fun cliWritesLocalRenderPackageDraft() {
         val tempDir = Files.createTempDirectory("local-render-package-draft")
-        val storyInput = tempDir.resolve("rain_gate_story_input_pack_sample.json")
-        val assetPromptCards = tempDir.resolve("rain_gate_asset_prompt_cards_draft_sample.json")
-        val out = tempDir.resolve("rain_gate_local_render_package_draft_sample.json")
+        val storyInput = tempDir.resolve("chenxing_story_input_pack_sample.json")
+        val assetPromptCards = tempDir.resolve("chenxing_asset_prompt_cards_draft_sample.json")
+        val out = tempDir.resolve("chenxing_local_render_package_draft_sample.json")
         val pack = LocalStoryInputPackValidationServiceTest.validPack()
         val cards = LocalRenderPackageDraftServiceTest.validCards()
         writeJson(storyInput, pack)
@@ -30,7 +30,7 @@ class LocalRenderPackageDraftCliTest {
                 "--asset-prompt-cards",
                 assetPromptCards.toString(),
                 "--package",
-                "rain-gate-local-render-package-v0",
+                "chenxing-local-render-package-v0",
                 "--out",
                 out.toString(),
             ),
@@ -40,13 +40,13 @@ class LocalRenderPackageDraftCliTest {
         assertTrue(Files.exists(out))
         val draft = readJson<LocalRenderPackageDraft>(out)
         assertEquals("LOCAL_RENDER_PACKAGE_DRAFT", draft.status, draft.findings.joinToString { it.ruleId })
-        assertEquals("rain-gate-local-render-package-v0", draft.packageId)
+        assertEquals("chenxing-local-render-package-v0", draft.packageId)
         assertEquals(pack.packId, draft.sourceStoryInputPackId)
         assertEquals("LOCAL_ASSET_PROMPT_CARDS_DRAFT", draft.sourceAssetPromptCardsStatus)
-        assertEquals(2, draft.timelinePlan.size)
+        assertEquals(3, draft.timelinePlan.size)
         assertEquals(1, draft.scenePlan.size)
-        assertEquals(2, draft.panelPlan.size)
-        assertEquals(2, draft.assetPromptReferences.size)
+        assertEquals(3, draft.panelPlan.size)
+        assertEquals(3, draft.assetPromptReferences.size)
         assertTrue(draft.qaChecklist.all { it.status == "PASS" })
         assertEquals(9000, draft.evidence.timelineTotalDurationMillis)
         assertEquals("local_render_package_draft_only", draft.downstreamBoundary)

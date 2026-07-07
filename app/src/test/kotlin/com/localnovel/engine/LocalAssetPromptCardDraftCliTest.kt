@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalAssetPromptCardsDraft
 import com.localnovel.engine.support.JsonSupport
@@ -14,14 +14,14 @@ class LocalAssetPromptCardDraftCliTest {
     @Test
     fun cliWritesLocalAssetPromptCardsDraft() {
         val tempDir = Files.createTempDirectory("local-asset-prompt-cards")
-        val storyInput = tempDir.resolve("rain_gate_story_input_pack_sample.json")
-        val storyValidation = tempDir.resolve("rain_gate_story_input_pack_validation_sample.json")
-        val out = tempDir.resolve("rain_gate_asset_prompt_cards_draft_sample.json")
+        val storyInput = tempDir.resolve("chenxing_story_input_pack_sample.json")
+        val storyValidation = tempDir.resolve("chenxing_story_input_pack_validation_sample.json")
+        val out = tempDir.resolve("chenxing_asset_prompt_cards_draft_sample.json")
         val pack = LocalStoryInputPackValidationServiceTest.validPack()
         val validation = com.localnovel.engine.service.LocalStoryInputPackValidationService().validate(
             pack = pack,
             packFile = storyInput.toString(),
-            validationId = "local-story-input-rain-gate-validation-001",
+            validationId = "local-story-input-chenxing-validation-001",
         )
         writeJson(storyInput, pack)
         writeJson(storyValidation, validation)
@@ -34,7 +34,7 @@ class LocalAssetPromptCardDraftCliTest {
                 "--story-validation",
                 storyValidation.toString(),
                 "--draft",
-                "rain-gate-asset-prompt-cards-v0",
+                "chenxing-asset-prompt-cards-v0",
                 "--out",
                 out.toString(),
             ),
@@ -44,14 +44,14 @@ class LocalAssetPromptCardDraftCliTest {
         assertTrue(Files.exists(out))
         val draft = readJson<LocalAssetPromptCardsDraft>(out)
         assertEquals("LOCAL_ASSET_PROMPT_CARDS_DRAFT", draft.status, draft.findings.joinToString { it.ruleId })
-        assertEquals("rain-gate-asset-prompt-cards-v0", draft.draftId)
+        assertEquals("chenxing-asset-prompt-cards-v0", draft.draftId)
         assertEquals(pack.packId, draft.sourceStoryInputPackId)
         assertEquals(validation.validationId, draft.sourceStoryValidationId)
-        assertEquals(2, draft.characterCards.size)
+        assertEquals(3, draft.characterCards.size)
         assertEquals(1, draft.sceneCards.size)
-        assertEquals(2, draft.beatCards.size)
-        assertEquals(2, draft.visualPromptCards.size)
-        assertEquals(2, draft.audioCueCards.size)
+        assertEquals(3, draft.beatCards.size)
+        assertEquals(3, draft.visualPromptCards.size)
+        assertEquals(3, draft.audioCueCards.size)
         assertTrue(draft.visualPromptCards.all { it.providerInvocation == "none" })
         assertTrue(draft.audioCueCards.all { it.ttsInvocation == "none" })
         assertTrue(draft.boundaries.contains("no provider/API"))

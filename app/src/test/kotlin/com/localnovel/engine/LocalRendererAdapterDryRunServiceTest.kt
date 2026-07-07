@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalStoryVideoPreviewHandoffDraft
 import com.localnovel.engine.model.LocalStoryVideoPreviewHandoffReviewReport
@@ -31,16 +31,16 @@ class LocalRendererAdapterDryRunServiceTest {
         assertEquals(9, report.checks.size)
         assertTrue(report.checks.all { it.status == "PASS" })
         assertEquals(1, report.adapterMappingSummary.sceneCount)
-        assertEquals(2, report.adapterMappingSummary.panelCount)
+        assertEquals(3, report.adapterMappingSummary.panelCount)
         assertEquals(9000, report.adapterMappingSummary.targetDurationMillis)
-        assertEquals(2, report.adapterMappingSummary.mappedPanelCount)
+        assertEquals(3, report.adapterMappingSummary.mappedPanelCount)
         assertEquals(0, report.adapterMappingSummary.unmappedPanelCount)
         assertEquals(0, report.adapterMappingSummary.missingRequiredFieldCount)
-        assertEquals(2, report.adapterMappingSummary.visualPromptReferenceCount)
-        assertEquals(2, report.adapterMappingSummary.audioCueReferenceCount)
+        assertEquals(3, report.adapterMappingSummary.visualPromptReferenceCount)
+        assertEquals(3, report.adapterMappingSummary.audioCueReferenceCount)
         assertEquals(7, report.adapterMappingSummary.qaChecks)
         assertEquals(0, report.adapterMappingSummary.qaFail)
-        assertEquals(2, report.dryRunMappingPlan.size)
+        assertEquals(3, report.dryRunMappingPlan.size)
         assertTrue(report.dryRunMappingPlan.all { it.canMapForFutureAdapter })
         assertTrue(report.dryRunMappingPlan.all { !it.manifestGenerated })
         assertFalse(report.rendererCompatibilitySummary.ready)

@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.LocalRendererAdapterImplementationPlanDraft
 import com.localnovel.engine.model.LocalRendererAdapterImplementationPlanReviewReport
@@ -36,8 +36,8 @@ class LocalRendererAdapterImplementationDraftServiceTest {
         assertEquals(handoff.sourceStoryInputPackId, draft.sourceStoryInputPackId)
         assertEquals(10, draft.checks.size)
         assertTrue(draft.checks.all { it.status == "PASS" })
-        assertEquals(2, draft.implementationDraftSummary.previewPanelCount)
-        assertEquals(2, draft.implementationDraftSummary.mappingDraftPanelCount)
+        assertEquals(3, draft.implementationDraftSummary.previewPanelCount)
+        assertEquals(3, draft.implementationDraftSummary.mappingDraftPanelCount)
         assertTrue(draft.implementationDraftSummary.requiredAdapterWorkItems > 0)
         assertTrue(draft.implementationDraftSummary.implementationTaskCount > 0)
         assertTrue(draft.implementationDraftSummary.verificationStepCount > 0)
@@ -54,7 +54,7 @@ class LocalRendererAdapterImplementationDraftServiceTest {
         assertTrue(draft.adapterMappingDraft.draftOnly)
         assertFalse(draft.adapterMappingDraft.manifestGenerated)
         assertEquals("ComicVideoRenderHandoffManifest", draft.adapterMappingDraft.targetManifestType)
-        assertEquals(2, draft.adapterMappingDraft.panelDrafts.size)
+        assertEquals(3, draft.adapterMappingDraft.panelDrafts.size)
         assertTrue(draft.adapterMappingDraft.panelDrafts.all { !it.manifestGenerated && !it.rendererReady })
         assertTrue(draft.implementationTasks.isNotEmpty())
         assertTrue(draft.verificationPlan.isNotEmpty())

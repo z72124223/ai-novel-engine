@@ -1,4 +1,4 @@
-package com.localnovel.engine
+﻿package com.localnovel.engine
 
 import com.localnovel.engine.model.FoundationCardPackValidationReport
 import com.localnovel.engine.support.JsonSupport
@@ -13,7 +13,7 @@ class FoundationCardPackValidationCliTest {
     @Test
     fun cliWritesFoundationCardPackValidationReport() {
         val tempDir = Files.createTempDirectory("foundation-card-pack-validation")
-        val outPath = tempDir.resolve("rain_gate_09_foundation_card_pack_validation_report_sample.json")
+        val outPath = tempDir.resolve("chenxing_09_foundation_card_pack_validation_report_sample.json")
 
         val exit = Cli().run(
             listOf(
@@ -21,7 +21,7 @@ class FoundationCardPackValidationCliTest {
                 "--input",
                 FoundationCardPackValidationServiceTest.samplePackPath.toString(),
                 "--validation",
-                "rain-gate-09-foundation-card-pack-validation-v0-cli",
+                "chenxing-09-foundation-card-pack-validation-v0-cli",
                 "--out",
                 outPath.toString(),
             ),
@@ -31,8 +31,8 @@ class FoundationCardPackValidationCliTest {
         assertTrue(Files.exists(outPath))
         val report = readJson<FoundationCardPackValidationReport>(outPath)
         FoundationCardPackValidationServiceTest.assertPassReport(report)
-        assertEquals("rain-gate-09-foundation-card-pack-validation-v0-cli", report.validationId)
-        assertEquals(7, report.evidence.cardCount)
+        assertEquals("chenxing-09-foundation-card-pack-validation-v0-cli", report.validationId)
+        assertEquals(8, report.evidence.cardCount)
         assertEquals(7, report.evidence.presentRequiredFamilyCount)
         assertEquals(0, report.evidence.failedCheckCount)
     }
