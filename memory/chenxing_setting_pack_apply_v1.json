@@ -1,0 +1,170 @@
+{
+    "applied": true,
+    "importId": "setting-import-c474e6d1-bc11-4f71-81e6-4b4188c63c80",
+    "packId": "chenxing-formal-v1",
+    "packVersion": 1,
+    "canonicalHash": "4fddb2f27f23e590955dae03db1761ed2635f974e6ea8f4380d3817976f8aa2e",
+    "diff": {
+        "packId": "chenxing-formal-v1",
+        "packVersion": 1,
+        "entries": [
+            {
+                "action": "ADD",
+                "entityType": "project",
+                "entityId": "chenxing",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "character",
+                "entityId": "char-lu-chenxing",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "character",
+                "entityId": "char-aijiang",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-curiosity-exploration",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-tidal-coastal-danger",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-volume-one-no-cultivation-lecture",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-cultivation-entry-gate",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-fortress-wilderness-later",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-daping-coast",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-hillside-ruin",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "item",
+                "entityId": "item-phone",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "item",
+                "entityId": "item-tide-notes",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-opening-year-place",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-bavi-approaching",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-no-public-ruin-record",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "secret",
+                "entityId": "secret-nixingmen-plan",
+                "newVersion": 1,
+                "sensitive": true
+            },
+            {
+                "action": "ADD",
+                "entityType": "secret",
+                "entityId": "secret-two-door-pocket",
+                "newVersion": 1,
+                "sensitive": true
+            },
+            {
+                "action": "ADD",
+                "entityType": "secret",
+                "entityId": "secret-japanese-advance-team-lost",
+                "newVersion": 1,
+                "sensitive": true
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-daping-coast-opening",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-daping-coast-opening",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "story_thread",
+                "entityId": "thread-opening-survival-curiosity",
+                "newVersion": 1
+            }
+        ],
+        "canonicalHash": "4fddb2f27f23e590955dae03db1761ed2635f974e6ea8f4380d3817976f8aa2e"
+    },
+    "impact": {
+        "packId": "chenxing-formal-v1",
+        "packVersion": 1,
+        "changedRoots": [
+            "character:char-aijiang",
+            "character:char-lu-chenxing",
+            "fact:fact-bavi-approaching",
+            "fact:fact-no-public-ruin-record",
+            "fact:fact-opening-year-place",
+            "item:item-phone",
+            "item:item-tide-notes",
+            "location:loc-daping-coast",
+            "location:loc-hillside-ruin",
+            "project:chenxing",
+            "scene:scene-daping-coast-opening",
+            "scene_contract:contract-daping-coast-opening",
+            "secret:secret-japanese-advance-team-lost",
+            "secret:secret-nixingmen-plan",
+            "secret:secret-two-door-pocket",
+            "story_thread:thread-opening-survival-curiosity",
+            "world_rule:rule-cultivation-entry-gate",
+            "world_rule:rule-curiosity-exploration",
+            "world_rule:rule-fortress-wilderness-later",
+            "world_rule:rule-tidal-coastal-danger",
+            "world_rule:rule-volume-one-no-cultivation-lecture"
+        ]
+    }
+}
