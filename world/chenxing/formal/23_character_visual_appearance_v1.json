@@ -13,8 +13,17 @@
     "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
   },
   "turnaroundStatus": {
-    "陸塵行": "lean_base_plus_opening_stocky_locked",
+    "陸塵行": "photo_set_123123_match_174_80_locked",
     "愛醬": "author_reference_sheet_primary_likeness"
+  },
+  "photoSet123123": {
+    "path": "world/chenxing/assets/reference/photo_set_123123/",
+    "photoCount": 6,
+    "rule": "同一真人參考組；臉部極像優先以此組照片為準。",
+    "metrics": {
+      "heightCm": 174,
+      "weightKg": 80
+    }
   },
   "referenceImagePolicy": {
     "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so AI redraws are approximations only.",
@@ -34,7 +43,9 @@
     "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
     "luChenxingLeanBaseTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
     "luChenxingOpeningStockyTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
-    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
+    "luChenxingPhotoMatch174_80Turnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
+    "luChenxingPhotoMatchFaceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png",
+    "luChenxingBodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
     "aijiangLikenessAuthority": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
     "aijiangCinematicTurnaround": "world/chenxing/assets/turnaround/aijiang_cinematic_turnaround_v2.png"
   },
@@ -49,7 +60,13 @@
       "clothingRule": "服裝另做分層素材，不與身材基準綁死。",
       "generationNote": "若自動出圖被審核擋下，改以泳褲/緊身短褲身材參考圖或人工補圖。"
     },
+    "metrics": {
+      "heightCm": 174,
+      "weightKg": 80,
+      "note": "作者指定開場身材數據。"
+    },
     "faceReference": {
+      "primaryPhotoSet": "world/chenxing/assets/reference/photo_set_123123/",
       "path": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
       "sourcePath": "C:\\Users\\f7212\\OneDrive\\桌面\\482052296_9222150221199888_7678538151390743485_n.jpg",
       "lockedTraits": [
@@ -117,8 +134,9 @@
         "side",
         "back"
       ],
-      "status": "cinematic_turnaround_v2_locked",
-      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png"
+      "status": "photo_set_123123_match_174_80_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_174_80_turnaround_v1.png",
+      "faceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_match_face_turnaround_v1.png"
     }
   },
   "愛醬": {
