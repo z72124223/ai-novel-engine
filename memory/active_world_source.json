@@ -55,7 +55,8 @@
       "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
       "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
       "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
-      "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg"
+      "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "visualTurnaroundSqlImportResult": "memory/chenxing_visual_turnaround_sql_import_result.json"
     }
   },
   "activeCreativeWorld": {
@@ -112,9 +113,9 @@
   "nextAllowedContentStep": "chenxing_post_crossing_first_world_clue_block",
   "boundaryFlags": {
     "canonApproved": false,
-    "settingPackData": false,
-    "runtimeSqliteData": false,
-    "approvedAssetData": false,
+    "settingPackData": true,
+    "runtimeSqliteData": true,
+    "approvedAssetData": true,
     "providerApiCalls": false,
     "rendererInvocation": "none",
     "ffmpegInvocation": "none",

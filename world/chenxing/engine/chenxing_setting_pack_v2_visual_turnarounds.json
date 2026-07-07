@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "chenxing-formal-v2-visual-turnarounds",
+  "packVersion": 1,
+  "projectId": "chenxing",
+  "name": "塵行正式製作三視圖基準 v2",
+  "description": "將作者鎖定的雙主角正式三視圖寫入引擎 canon：陸塵行全身照、愛醬生產三視圖。",
+  "mode": "PATCH_CANON",
+  "source": {
+    "author": "author-formal-canon",
+    "license": "author",
+    "notes": "Derived from world/chenxing/formal/23_character_visual_appearance_v1.json and world/chenxing/assets/turnaround/."
+  },
+  "dependencies": [
+    {
+      "packId": "chenxing-formal-v1",
+      "packVersion": 1
+    }
+  ],
+  "entities": {
+    "projects": [
+      {
+        "id": "chenxing",
+        "entityVersion": 2,
+        "name": "塵行",
+        "summary": "2026 台灣海岸生存開場；主角陸塵行與愛醬在颱風與漲潮壓力下探索異常遺跡。",
+        "metadata": {
+          "activeSceneId": "scene-daping-coast-opening",
+          "seriesTitle": "塵行",
+          "formalCanonRoot": "world/chenxing/formal/",
+          "characterVisualAppearanceFormalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+          "productionTurnaroundPairRule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
+          "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+          "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+        },
+        "visibility": "public"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-lu-chenxing",
+        "entityVersion": 2,
+        "name": "陸塵行",
+        "role": "player",
+        "description": "2026 台灣基隆八斗子一帶生活的實作型青年，靠多種實用技能維生，對看不懂的機制無法罷休。",
+        "startingItems": [
+          "item-phone",
+          "item-tide-notes"
+        ],
+        "metadata": {
+          "isPlayer": "true",
+          "productionTurnaroundPath": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+          "productionTurnaroundType": "full_body_turnaround",
+          "visualAppearanceFormalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+          "heightCm": "174",
+          "weightKg": "80",
+          "photoReferenceSet": "world/chenxing/assets/reference/photo_set_123123/"
+        },
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "確認潮汐時間，並弄清海蝕平台上那些不該出現的結構接縫。",
+          "dominantEmotion": "專注",
+          "emotionState": {
+            "專注": 65,
+            "警覺": 35
+          },
+          "availableActions": [
+            "查看潮汐紀錄",
+            "觀察海蝕平台",
+            "安撫愛醬",
+            "檢查手機訊號"
+          ],
+          "relationshipDefaults": {
+            "char-aijiang": "家人"
+          },
+          "initiativeLevel": 55
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-aijiang",
+        "entityVersion": 2,
+        "name": "愛醬",
+        "role": "co-protagonist",
+        "description": "長毛哈士奇，已絕育的雌性犬。不是妖獸或靈寵，有自己的故事線與學習上限。",
+        "metadata": {
+          "productionTurnaroundPath": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+          "productionTurnaroundType": "full_body_turnaround",
+          "visualAppearanceFormalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+          "species": "Siberian husky",
+          "sex": "female",
+          "reproductiveStatus": "spayed"
+        },
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "跟在陸塵行身邊，避開危險的潮水和不穩定的岩石。",
+          "dominantEmotion": "警覺",
+          "emotionState": {
+            "警覺": 60,
+            "依戀": 70
+          },
+          "availableActions": [
+            "跟隨",
+            "警戒四周",
+            "停在安全處"
+          ],
+          "relationshipDefaults": {
+            "char-lu-chenxing": "家人"
+          },
+          "initiativeLevel": 45
+        },
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-prod-turnaround-lu-chenxing",
+        "entityVersion": 1,
+        "content": "陸塵行正式製作三視圖基準：world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png（174cm/80kg 全身；臉部以 photo_set_123123 為準）。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-prod-turnaround-aijiang",
+        "entityVersion": 1,
+        "content": "愛醬正式製作三視圖基準：world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg（作者生產稿）。",
+        "visibility": "public"
+      }
+    ]
+  },
+  "relations": [],
+  "assertions": [],
+  "metadata": {
+    "formalCanonSource": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+    "appliedAt": "2026-07-08",
+    "conversionNote": "Author-locked dual production turnaround pair imported to SQLite canon."
+  }
+}

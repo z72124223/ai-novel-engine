@@ -1,0 +1,56 @@
+{
+  "verdict": "PASS",
+  "status": "CHENXING_VISUAL_TURNAROUND_SQL_IMPORT_PASS",
+  "updatedAt": "2026-07-08",
+  "databasePath": "data/story.db",
+  "projectId": "chenxing",
+  "packId": "chenxing-formal-v2-visual-turnarounds",
+  "packVersion": 1,
+  "importId": "setting-import-225f1c30-d47f-4efe-afe9-5928eee5b461",
+  "settingPackPath": "world/chenxing/engine/chenxing_setting_pack_v2_visual_turnarounds.json",
+  "formalVisualCanonPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+  "productionTurnaroundPair": {
+    "rule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
+    "luChenxing": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+  },
+  "sqlWrites": {
+    "projectsUpdated": [
+      {
+        "id": "chenxing",
+        "entityVersion": 2,
+        "metadataKeysAdded": [
+          "characterVisualAppearanceFormalPath",
+          "productionTurnaroundPairRule",
+          "luChenxingProductionTurnaround",
+          "aijiangProductionTurnaround"
+        ]
+      }
+    ],
+    "charactersUpdated": [
+      {
+        "id": "char-lu-chenxing",
+        "entityVersion": 2,
+        "profileField": "productionTurnaroundPath",
+        "value": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
+      },
+      {
+        "id": "char-aijiang",
+        "entityVersion": 2,
+        "profileField": "productionTurnaroundPath",
+        "value": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+      }
+    ],
+    "factsAdded": [
+      "fact-prod-turnaround-lu-chenxing",
+      "fact-prod-turnaround-aijiang"
+    ]
+  },
+  "pipeline": {
+    "validate": "PASS",
+    "preview": "PASS",
+    "apply": "PASS",
+    "validateProjectCanon": "PASS"
+  },
+  "directSqlUsed": false
+}
