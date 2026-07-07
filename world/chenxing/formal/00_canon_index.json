@@ -1,7 +1,7 @@
 {
   "schemaVersion": "chenxing-formal-canon-index-v1",
   "status": "CHENXING_FORMAL_CANON_INDEX_ACTIVE",
-  "updatedAt": "2026-07-07",
+  "updatedAt": "2026-07-08",
   "locale": "zh-TW",
   "series": "塵行",
   "purpose": "Author-approved formal world canon for 塵行. This layer sits above frozen raw archive and below foundation cards / setting pack / runtime SQLite.",
@@ -60,6 +60,12 @@
       "path": "world/chenxing/formal/20_protagonist_pair_v1.json",
       "status": "author_locked",
       "topic": "陸塵行 and 愛醬 dual protagonist backgrounds and relationship"
+    },
+    {
+      "id": "chenxing-formal-23-visual-appearance",
+      "path": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "status": "author_locked",
+      "topic": "陸塵行 and 愛醬 production visual baseline; 愛醬 reference turnaround sheet"
     },
     {
       "id": "chenxing-formal-13-exploration-cadence",

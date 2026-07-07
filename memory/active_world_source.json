@@ -1,7 +1,7 @@
 {
   "sourceLockId": "active-world-source-lock-v0",
   "status": "ACTIVE_WORLD_SOURCE_LOCK",
-  "updatedAt": "2026-07-07",
+  "updatedAt": "2026-07-08",
   "locale": "zh-TW",
   "canonicalWorkspace": "C:\\Users\\f7212\\Projects\\AI 劇本",
   "authorCanonDecisions": {
@@ -42,7 +42,15 @@
     "formalCanonRoot": "world/chenxing/formal/",
     "formalCanonIndex": "world/chenxing/formal/00_canon_index.json",
     "worldCompletionRegister": "world/chenxing/formal/03_world_completion_register.json",
-    "foundationCardPack": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json"
+    "foundationCardPack": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json",
+    "characterVisualAppearance": {
+      "status": "author_locked",
+      "formalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "aijiangReferenceImage": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "luChenxingSummary": "36歲、平頭、中度肥胖、沒有鬍渣、戴眼鏡",
+      "aijiangTurnaround": "author_reference_sheet_locked",
+      "luChenxingTurnaround": "text_locked_image_pending"
+    }
   },
   "activeCreativeWorld": {
     "series": "塵行",

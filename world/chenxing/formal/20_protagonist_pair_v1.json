@@ -21,6 +21,15 @@
   },
   "陸塵行": {
     "role": "primary viewpoint protagonist",
+    "appearance": {
+      "formalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "age": 36,
+      "hair": "buzz_cut",
+      "bodyType": "moderately_obese",
+      "facialHair": "none",
+      "eyewear": "glasses",
+      "summary": "36歲、平頭、中度肥胖、沒有鬍渣、戴眼鏡。"
+    },
     "origin": {
       "world": "2026 Earth",
       "region": "台灣基隆八斗子一帶",
@@ -85,9 +94,13 @@
       "history": "Raised by 陸塵行 from puppyhood. Professionally trained with high obedience and trust-based bond."
     },
     "appearance": {
-      "coat": "typical husky grey-white or black-white long coat",
-      "eyes": "pale blue; under certain light, faint gem-like facet patterns may appear",
-      "size": "standard husky build"
+      "formalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "referenceImage": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "coat": "black, dark gray, silver gray, and white husky markings",
+      "eyes": "ice blue",
+      "build": "athletic well-balanced husky",
+      "turnaroundStatus": "author_reference_sheet_locked",
+      "summary": "西伯利亞哈士奇外型；作者提供之三視圖概念稿為正式視覺基準。"
     },
     "personality": {
       "traits": [

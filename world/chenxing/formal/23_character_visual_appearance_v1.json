@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "chenxing-character-visual-appearance-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬 before storyboard turnaround completion.",
+  "turnaroundStatus": {
+    "陸塵行": "text_locked_three_view_not_drawn",
+    "愛醬": "author_reference_sheet_locked_three_view_available"
+  },
+  "陸塵行": {
+    "age": 36,
+    "sex": "male",
+    "bodyType": "moderately_obese",
+    "hair": {
+      "style": "buzz_cut",
+      "label": "平頭"
+    },
+    "facialHair": "none",
+    "facialHairRule": "沒有鬍渣",
+    "eyewear": {
+      "wearsGlasses": true,
+      "label": "戴眼鏡",
+      "storyUse": "日常眼鏡；颱風與海水環境下可能起霧、沾水或被摘下。"
+    },
+    "productionNotes": [
+      "體型是明顯偏胖，但不是誇張喜劇造型；仍是能行動、能觀察、能搬工具的實作型青年。",
+      "平頭、無鬍渣、眼鏡，這三點必須在正面、側面、背面三視圖中一致。",
+      "第一卷開場服裝可先走戶外實用風：防風外套、長褲、防滑鞋，不先做修仙世界服裝。"
+    ],
+    "turnaroundRequirement": {
+      "views": [
+        "front",
+        "side",
+        "back"
+      ],
+      "status": "spec_locked_image_pending"
+    }
+  },
+  "愛醬": {
+    "role": "co-protagonist",
+    "species": "Siberian husky",
+    "sex": "female",
+    "reproductiveStatus": "spayed",
+    "authorReference": {
+      "path": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "sourcePath": "C:\\Users\\f7212\\OneDrive\\桌面\\LINE_ALBUM_2026613_260624_1.jpg",
+      "type": "character_concept_sheet",
+      "includesTurnaround": true,
+      "note": "作者提供之哈士奇角色概念稿，含正面、側面、背面與毛色參考。"
+    },
+    "lockedAppearanceFromReference": {
+      "build": "athletic_well_balanced_husky",
+      "coatPattern": "black_dark_gray_silver_gray_and_white",
+      "markings": "symmetrical_facial_mask_white_cheeks_dark_cap_and_saddle",
+      "eyes": "ice_blue",
+      "ears": "upright_triangular",
+      "tail": "fluffy_plume",
+      "fur": "dense_double_coat"
+    },
+    "colorPalette": [
+      "black",
+      "dark_gray",
+      "silver_gray",
+      "white",
+      "ice_blue"
+    ],
+    "accessoriesPolicy": {
+      "defaultStoryUse": "no_fantasy_gear_in_volume_one_opening",
+      "referenceSheetShows": [
+        "collar",
+        "bandana",
+        "harness",
+        "winter_coat",
+        "tug_toy",
+        "rubber_ball"
+      ],
+      "rule": "概念稿中的項圈、三角巾、挽具、冬衣與玩具僅作參考，不默認第一卷開場就穿戴或出現，除非之後場景需要。"
+    },
+    "canonCorrection": {
+      "referenceSheetSexLabel": "male",
+      "authorLockedSex": "female",
+      "rule": "視覺參考採用哈士奇體型、毛色、五官與三視圖；性別仍以作者定稿為雌性、已絕育。"
+    },
+    "turnaroundRequirement": {
+      "views": [
+        "front",
+        "side",
+        "back"
+      ],
+      "status": "reference_sheet_locked"
+    }
+  },
+  "linkedDocuments": [
+    "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "world/chenxing/formal/21_volume_one_opening_arc_v1.json"
+  ]
+}
