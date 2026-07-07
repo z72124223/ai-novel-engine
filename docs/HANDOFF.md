@@ -37,8 +37,8 @@ Housekeeping baseline for non-engineer handoff:
   sections are now labeled `## Historical` and are archive evidence only.
 - CLI code is being split out of the oversized `Main.kt` into
   `app/src/main/kotlin/com/localnovel/engine/cli/` modules.
-- Default active story samples live in `samples/chenxing/`; Rain Gate remains
-  test/demo only.
+- Default active story samples live in `samples/chenxing/` only; Rain Gate
+  sample files were physically removed in commit `6322d0b`.
 - Full Gradle test suite must pass before each cleanup commit.
 
 ## Active Creative World Source Lock
@@ -222,7 +222,7 @@ Additional docs-only product-control baseline as of 2026-06-23:
 - Model-selection policy for governed `01` / worker task turns is in `docs/CODEX_CHAT_WINDOW_HANDOFF_PROTOCOL.md`.
 - First PASS evidence for the governed `01 -> 02 -> 01` loop: `docs/CODEX_CHAT_WINDOW_HANDOFF_SMOKE_TEST.md`.
 - Accepted local comic-video demo package evidence: `docs/CODEX_COMIC_VIDEO_LOCAL_DEMO_PACKAGE.md`; package path `out/codex_local_demo_package/`; review-bundle manifest `docs/CODEX_LOCAL_DEMO_REVIEW_BUNDLE_MANIFEST.md`; no-external-tools local automation roadmap `docs/CODEX_NO_EXTERNAL_TOOLS_LOCAL_VIDEO_AUTOMATION_ROADMAP.md`. This has 02 local package PASS and 03 read-only PASS, plus full Gradle regression PASS from the prior slice. It is no staging approval, no commit approval, no release, no production lock, and no external provider/media line.
-- Chenxing default sample chain: `samples/chenxing/README.md`; active story input `samples/chenxing/chenxing_story_input_pack_sample.json`; 09 foundation contract `samples/local_story_input/chenxing_09_foundation_card_pack_contract_sample.json`. Rain Gate story-input samples remain test/demo only.
+- Chenxing default sample chain: `samples/chenxing/README.md`; active story input `samples/chenxing/chenxing_story_input_pack_sample.json`; 09 foundation contract `samples/local_story_input/chenxing_09_foundation_card_pack_contract_sample.json`; full pipeline artifacts under `samples/chenxing/pipeline/`.
 - Local story input pack v0 entry point: `docs/CODEX_LOCAL_STORY_INPUT_PACK_V0.md`; default active sample `samples/chenxing/chenxing_story_input_pack_sample.json`;  validation command `validate-local-story-input-pack --input <json> --out <report.json>`. This is file-protocol JSON validation only and does not generate custom video, write SQLite, call provider/API, approve canon/registry/release, or create production lock.
 - Local asset/prompt cards v0 entry point: `docs/CODEX_LOCAL_ASSET_PROMPT_CARDS_V0.md`; sample output `samples/chenxing/pipeline/chenxing_asset_prompt_cards_draft_sample.json`; draft command `draft-local-asset-prompt-cards --story-input <json> --story-validation <report.json> --out <cards.json>`. This converts a PASS local story input validation report into reviewable local cards only and does not call provider/API, generate media, approve assets, approve canon/registry/release, or create production lock.
 - Local render package / QA draft v0 entry point: `docs/CODEX_LOCAL_RENDER_PACKAGE_V0.md`; sample output `samples/chenxing/pipeline/chenxing_local_render_package_draft_sample.json`; draft command `draft-local-render-package --story-input <json> --asset-prompt-cards <cards.json> --out <render-package.json>`. This converts a local story input pack plus `LOCAL_ASSET_PROMPT_CARDS_DRAFT` into reviewable timeline/panel/QA planning JSON only and does not call provider/API, generate media, produce final video, approve assets, approve canon/registry/release, or create production lock.
