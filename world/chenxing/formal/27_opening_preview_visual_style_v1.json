@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "chenxing-opening-preview-visual-style-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "purpose": "開場試看畫面風格鎖；與角色長相鎖分離。",
+  "authorStyleReferences": {
+    "sourcePaths": [
+      "C:\\Users\\f7212\\.codex\\generated_images\\019ee90a-671e-76a0-b264-66cf5b713b4d\\ig_062ffbee04f364c6016a38e8fb8c988191bfa4e11c6b684469.png",
+      "C:\\Users\\f7212\\.codex\\generated_images\\019ee90a-671e-76a0-b264-66cf5b713b4d\\ig_0145ecd9e1933d48016a38c710f70c819181751ef99ed971ec.png"
+    ],
+    "projectPaths": {
+      "cinematicMistyGrid": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png",
+      "bwStoryboardGrid": "world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png"
+    }
+  },
+  "styleLayers": {
+    "likenessLayer": {
+      "rule": "臉、身材、服裝、愛醬花紋：只准用鎖定三視圖與開場現代服裝圖。",
+      "luChenxing": [
+        "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+        "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png"
+      ],
+      "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+    },
+    "renderStyleLayer": {
+      "rule": "光影、霧、構圖、分鏡質感：以作者提供之兩張風格參考為準。",
+      "primaryMode": "bw_storyboard_graphic_novel",
+      "secondaryMode": "cinematic_misty_color",
+      "lockedTraits": [
+        "heavy_fog_and_atmospheric_perspective",
+        "wet_muddy_ground_texture",
+        "cinematic_depth_and_mood",
+        "multi_panel_storyboard_layout_when_needed",
+        "high_contrast_bw_ink_for_storyboard_pass",
+        "muted_desaturated_color_for_cinematic_pass"
+      ]
+    }
+  },
+  "styleNotesFromAuthorSamples": {
+    "bwStoryboard": "黑白分鏡漫畫感；濃霧、雨、山徑、鐵軌、遠處燈光；人狗同行構圖穩定。",
+    "cinematicMisty": "彩色電影感；晨霧、泥路、廢墟聚落燈火、背包旅人與哈士奇；氛圍壓抑寫實。"
+  },
+  "explicitWarnings": {
+    "authorSamplesAreStyleNotLikeness": "兩張參考內男主為連帽外套年輕造型，不是 2026 開場現代服裝定稿；只能借風格，不能借長相。",
+    "cursorGenerateImageLimit": "Cursor 內純文字出圖無法附參考圖，不能單靠此環境穩定還原此風格。",
+    "recommendedProductionPath": "用作者 Codex/外部可吃參考圖的工具：風格參考 + 鎖定三視圖一起餵。"
+  },
+  "openingPreviewTarget": {
+    "setting": "2026 基隆八斗子大坪海岸至山坡廢墟；可帶日治遺留廢棄感，但開場仍是現代地球。",
+    "costume": "陸塵行必須是開場現代裝，不是參考圖中的連帽奇幻旅人外套。",
+    "linkedStoryboard": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json"
+  },
+  "linkedDocuments": [
+    "world/chenxing/formal/23_character_visual_appearance_v1.json",
+    "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+    "world/chenxing/preview/opening_v1/DRIFT_NOTICE.json"
+  ]
+}

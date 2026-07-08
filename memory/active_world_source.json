@@ -61,7 +61,10 @@
       "visualTurnaroundSqlImportResult": "memory/chenxing_visual_turnaround_sql_import_result.json",
       "openingPreviewManifest": "world/chenxing/preview/opening_v1/opening_preview_manifest_v1.json",
       "openingStoryboardFormal": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
-      "openingPreviewSqlImportResult": "memory/chenxing_opening_preview_sql_import_result.json"
+      "openingPreviewSqlImportResult": "memory/chenxing_opening_preview_sql_import_result.json",
+      "openingPreviewVisualStyle": "world/chenxing/formal/27_opening_preview_visual_style_v1.json",
+      "openingStyleRefBwStoryboard": "world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png",
+      "openingStyleRefCinematicMisty": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png"
     }
   },
   "activeCreativeWorld": {

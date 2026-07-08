@@ -86,6 +86,12 @@
       "topic": "第一卷開場 9 拍分鏡試看：大坪海岸至山坡廢墟"
     },
     {
+      "id": "chenxing-formal-27-opening-preview-style",
+      "path": "world/chenxing/formal/27_opening_preview_visual_style_v1.json",
+      "status": "author_locked",
+      "topic": "開場試看畫面風格鎖：霧氣電影感 + 黑白分鏡漫畫感（與角色長相鎖分離）"
+    },
+    {
       "id": "chenxing-formal-13-exploration-cadence",
       "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
       "status": "author_locked",
