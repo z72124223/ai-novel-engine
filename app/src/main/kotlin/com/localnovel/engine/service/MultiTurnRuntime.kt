@@ -26,10 +26,10 @@ import java.security.MessageDigest
 import java.time.Instant
 
 class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
-    fun startSession(projectId: String, sceneId: String): StorySession {
+    fun startSession(projectId: String, sceneId: String, readerMode: Boolean = false): StorySession {
         require(repository.getProject(projectId) != null) { "Project not found: $projectId" }
         require(repository.targetExists(projectId, "scene", sceneId)) { "Scene not found: $sceneId" }
-        return repository.startSession(projectId, sceneId)
+        return repository.startSession(projectId, sceneId, readerMode)
     }
 
     fun prepareTurn(sessionId: String, playerInput: String): ContextPacket {
@@ -61,8 +61,70 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
 
     private fun buildTurnContext(sessionId: String, playerInput: String): ContextPacket {
         val prepared = prepareContextForFinalization(sessionId, playerInput)
-        return ContextPacketFinalizer().finalize(prepared.budgetedContext, ::hashContext)
+        val context = ContextPacketFinalizer().finalize(
+            ProvisionalLayerService(repository).enrichContext(prepared.budgetedContext),
+            ::hashContext,
+        )
+        enforceSceneContextFloorAtPrepare(context)
+        return context
     }
+
+    private fun enforceSceneContextFloorAtPrepare(context: ContextPacket) {
+        if (!projectHasAppliedSettingPack(context.project.id)) {
+            return
+        }
+        if (context.turnNumber < 4) {
+            return
+        }
+        if (context.activeStoryThreads.isEmpty() && context.pendingWorldEvents.isEmpty()) {
+            return
+        }
+        val gateResult = NarrativeQualityGateService().evaluate(
+            context = context,
+            result = prepareTurnGateStubResult(context),
+            options = NarrativeQualityGateOptions(enforceSceneContextFloor = true),
+            input = NarrativeQualityAuditInput(
+                contextFile = "pending://${context.contextId}",
+                resultFile = "prepare-turn-context-gate",
+            ),
+        )
+        val thinSetting = gateResult.blockingFindings.any { it.ruleId == "CONTEXT_SETTING_TOO_THIN" }
+        if (thinSetting) {
+            error(
+                "narrative_quality_gate: CONTEXT_SETTING_TOO_THIN (WARNING): " +
+                    "場景設定資訊不足，這一回合尚未具備足夠寫作材料。請先補齊設定上下文後再開始寫稿。",
+            )
+        }
+    }
+
+    private fun prepareTurnGateStubResult(context: ContextPacket): AiTurnResult =
+        AiTurnResult(
+            protocolVersion = SUPPORTED_PROTOCOL_VERSION,
+            projectId = context.project.id,
+            turnId = context.turnId,
+            resultId = "prepare-turn-context-gate",
+            contextId = context.contextId,
+            sessionId = context.sessionId,
+            turnNumber = context.turnNumber,
+            baseStateVersion = context.baseStateVersion,
+            contextHash = context.contextHash,
+            narrative = "待寫入。",
+            turnSummary = "待寫入。",
+        )
+
+    private fun projectHasAppliedSettingPack(projectId: String): Boolean =
+        repository.settingPackRows(projectId).isNotEmpty()
+
+    private fun narrativeQualityGateOptions(
+        context: ContextPacket,
+        options: ResolveTurnOptions,
+    ): NarrativeQualityGateOptions =
+        NarrativeQualityGateOptions(
+            strictMode = options.strictNarrativeQuality,
+            enforceSceneContextFloor = projectHasAppliedSettingPack(context.project.id),
+            sampleLabel = options.narrativeQualitySampleLabel,
+            evidenceText = options.narrativeQualityEvidenceText,
+        )
 
     private fun prepareContextForFinalization(sessionId: String, playerInput: String): PreparedContextForBudget {
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
@@ -149,12 +211,36 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         return PreparedContextForBudget(enrichedContext, contextWithoutHash)
     }
 
-    fun resolveTurn(sessionId: String, result: AiTurnResult): ApplyResult {
+    fun resolveTurn(
+        sessionId: String,
+        result: AiTurnResult,
+        options: ResolveTurnOptions = ResolveTurnOptions(),
+    ): ApplyResult {
         val context = repository.getPendingContext(sessionId, result.contextId)
             ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
         val report = validate(context, result)
         if (!report.isValid) {
             error(report.errors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        val gateResult = NarrativeQualityGateService().evaluate(
+            context = context,
+            result = result,
+            options = narrativeQualityGateOptions(context, options),
+            input = NarrativeQualityAuditInput(
+                contextFile = "pending://${context.contextId}",
+                resultFile = result.resultId,
+            ),
+        )
+        val gateErrors = NarrativeQualityGateService().toValidationErrors(
+            gateResult = gateResult,
+            advisoryRequiresAcknowledge = options.requireNarrativeQualityAcknowledgement &&
+                !options.acknowledgeNarrativeQualityWarnings,
+        )
+        if (gateErrors.isNotEmpty()) {
+            error(gateErrors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        gateResult.advisoryFindings.forEach { finding ->
+            println("narrative_quality_advisory:${finding.ruleId}:${finding.severity}:${finding.message}")
         }
         val hasStateChange = result.allDeltaOperations().any { it.type != com.localnovel.engine.model.DeltaOperationType.NOOP } ||
             result.revealedFacts.isNotEmpty() ||
@@ -164,7 +250,9 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.transitionProposal != null ||
             result.worldEventAcknowledgements.isNotEmpty() ||
             result.timeAdvanceProposal != null ||
-            result.capabilityUseChecks.isNotEmpty()
+            result.capabilityUseChecks.isNotEmpty() ||
+            result.entityProposals.isNotEmpty() ||
+            result.promotionRecommendations.isNotEmpty()
         return repository.resolvePendingTurn(context, result, hasStateChange)
     }
 
@@ -218,6 +306,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         errors += KnowledgeBoundaryValidator(repository).validate(context, result)
         errors += MemoryLifecycleService(repository).validate(context, result)
         errors += EmotionReducer().validate(context, result)
+        errors += ProvisionalLayerValidator(repository).validate(context, result)
         if (result.characterActions.isEmpty()) {
             errors += ValidationError("missing_character_actions", "At least one characterAction is required.")
         }

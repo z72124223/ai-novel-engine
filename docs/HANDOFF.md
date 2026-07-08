@@ -27,6 +27,19 @@ current.
 All other route/control docs below are on-demand evidence, not default startup
 reading.
 
+## 目前定案 — MVP-8 試用層 / 讀者優先（2026-07-09）
+
+作者定案：**MVP-8 = 試用層 + 讀者優先**，為引擎主線。
+
+- **讀者優先**：不必先寫完世界；輸入意圖、讀故事即可。
+- **留白區**：標記「還沒寫完」的地方，AI 可補有靈魂的臨時內容，不能補工具人。
+- **延後升格**：試用只屬本場遊玩；滿意再走升格成正式設定。
+- **劇本交付仍有效**，不擋讀者試玩。
+- 中文規格：`docs/MVP8_PROVISIONAL_LAYER_SPEC.md`
+- 決策摘要：`docs/MVP8_PROJECT_DECISION.md`
+- 塵行章程：`world/chenxing/formal/35_provisional_layer_charter_v1.json`
+- 實作步驟 8.1–8.5 已批准；MVP-8 **不是**手機 App。
+
 ## Current User Override - Script-First Product Pivot (2026-07-08)
 
 The user approved a **script-first** product charter. This supersedes
@@ -389,8 +402,8 @@ For Pilot or context-budget work, also read:
 
 Do not start or add any of these unless the user explicitly approves a new milestone:
 
-- Candidate B or any pre-resolve narrative-quality gate.
-- Candidate A.3 or MVP-8.
+- Candidate B extensions beyond the already-shipped MVP-7 Candidate B gate unless a new milestone says otherwise.
+- Candidate A.3 unless explicitly approved.
 - Web server, HTTP API, port listener, Web UI, Android UI.
 - Docker, Rust, embedding, vector DB, or multi-agent runtime.
 - Automation / scheduler advancement for 04 / 05 / 06 / 07 / 08 handoff.

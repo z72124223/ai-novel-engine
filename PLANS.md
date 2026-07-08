@@ -12,52 +12,57 @@
 
 ## Current Plan Window V0
 
+標記：`CHENXING_READER_PROVISIONAL_LAYER_V0`
+
+狀態：**作者已定案**
+
+日期：2026-07-09
+
+### 目標
+
+- **MVP-8 試用層**：讀者優先、邊讀邊長、延後定稿。
+- 世界不必先寫完；**留白區**授權 AI 補上有靈魂的臨時內容。
+- 試用只活在「這一場遊玩」；有靈感再**升格**成正式設定。
+- 劇本 / 分鏡交付**保留**，與讀者試玩並行。
+
+### 目前只做
+
+- `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`（中文規格，已定案）
+- `world/chenxing/formal/35_provisional_layer_charter_v1.json`（塵行章程）
+- 實作步驟 8.1 → 8.5（見規格第 9 節）
+- 塵行讀者試玩：開局 → 至少三回合
+- 劇本仍可並行打磨：`26` / `28` 分鏡 JSON
+
+### 暫停（作者重開前不做）
+
+- 畫風候選選型（`candidates_v2/`）
+- 開場試看圖、漫畫影片渲染鏈
+- 資產登錄、Seedance API
+- 04–08 產線
+- 穿越 beats 19–22（除非作者在劇本打磨時指定）
+
+### 不做
+
+- MVP-8 **不是**手機 App（舊說法廢止）
+- 不接雲端 AI API、不跳過正式設定流程
+- 試用不得改已鎖定設定、不得洩漏作者限定秘密
+- 工具人型角色必須擋下
+
+### 章程
+
+- 試用層：`world/chenxing/formal/35_provisional_layer_charter_v1.json`
+- 劇本交付：`world/chenxing/formal/29_project_script_first_charter_v1.json`
+
+### 驗收
+
+- 作者 2026-07-09 定案試用層
+- 決策摘要：`docs/MVP8_PROJECT_DECISION.md`
+
+## Historical - Current Plan Window V0 (Script-First Pivot)
+
 Marker: `CHENXING_SCRIPT_FIRST_PRODUCT_PIVOT_V0`
 
-Status: `AUTHOR_APPROVED_ACTIVE`
-
-Date: 2026-07-08
-
-### Goal
-
-- Primary deliverable is **interactive script / shot text** for `塵行`, not
-  voiced comic MP4 or in-repo video generation.
-- Downstream video uses external **Seedance 2.0** products (Volcengine, DEEVID,
-  AI-CanvasPro, etc.) only after script packets are ready.
-- Next work is **polishing script content** (dialogue, narration, beats, shot
-  text) in existing formal storyboard JSON.
-
-### Active Work Only
-
-- `world/chenxing/formal/26_volume_one_opening_storyboard_v1.json` (shots 0–9)
-- `world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json`
-  (shots 10–18)
-- Grok story input + Codex handoff CLI for script packaging when useful
-- Engine setting packs only when script work needs new scene/location facts
-
-### Paused Until Author Reopens
-
-- Art style candidate selection (`candidates_v2/`)
-- Opening preview frame generation and drift retries
-- Comic-video / local renderer / ffmpeg / TTS production chain
-- Asset registry implementation, MVP-8+, new schema, Seedance API integration
-- Crossing beats 19–22 unless author asks during script polish
-
-### Non-Goals
-
-- No voiced-comic-as-terminal-product scope change without author approval.
-- No provider/API automation, renderer execution, or final media approval in
-  this repo.
-- No treating exploratory style samples as canon frames.
-
-### Charter
-
-- `world/chenxing/formal/29_project_script_first_charter_v1.json`
-
-### Verification
-
-- Author explicitly approved script-first pivot on 2026-07-08.
-- Existing engine boundary unchanged: Kotlin CLI + SQLite + JSON protocol.
+Status: superseded for engine mainline by `CHENXING_READER_PROVISIONAL_LAYER_V0` on 2026-07-09. Script/shot deliverable rules remain valid.
 
 ## Historical - Current Plan Window V0 (Living World Decision)
 

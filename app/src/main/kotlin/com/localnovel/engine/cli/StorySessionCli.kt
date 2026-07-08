@@ -13,6 +13,9 @@ import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.NarrativeQualityAuditInput
 import com.localnovel.engine.service.NarrativeQualityAuditService
+import com.localnovel.engine.service.NarrativeQualityGateOptions
+import com.localnovel.engine.service.NarrativeQualityGateService
+import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.SessionEvidenceExporter
 import com.localnovel.engine.service.StallDetector
@@ -54,16 +57,52 @@ internal object StorySessionCli {
 
     fun validateResult(options: Map<String, String>): Int {
         val repository = cliRepository(options)
-        val context = readCliJson<ContextPacket>(Path.of(options.requiredCliOption("context")))
-        val result = readCliJson<AiTurnResult>(Path.of(options.requiredCliOption("result")))
+        val contextPath = Path.of(options.requiredCliOption("context"))
+        val resultPath = Path.of(options.requiredCliOption("result"))
+        val context = readCliJson<ContextPacket>(contextPath)
+        val result = readCliJson<AiTurnResult>(resultPath)
         val report = AiTurnResultValidator(repository).validate(context, result)
-        return if (report.isValid) {
-            println("Result is valid.")
-            0
-        } else {
+        if (!report.isValid) {
             report.errors.forEach { System.err.println("${it.code}: ${it.message}") }
-            1
+            return 1
         }
+
+        val evidencePath = options["evidence"]?.let { Path.of(it) }
+        val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
+        val gateResult = NarrativeQualityGateService().evaluate(
+            context = context,
+            result = result,
+            options = NarrativeQualityGateOptions(
+                strictMode = options.containsKey("strict-narrative-quality"),
+                enforceSceneContextFloor = repository.settingPackRows(context.project.id).isNotEmpty(),
+                sampleLabel = options["sample-label"].orEmpty(),
+                evidenceText = evidenceText,
+            ),
+            input = NarrativeQualityAuditInput(
+                contextFile = contextPath.toString(),
+                resultFile = resultPath.toString(),
+                evidenceFile = evidencePath?.toString().orEmpty(),
+                evidenceText = evidenceText,
+            ),
+        )
+        options["narrative-quality-out"]?.let { writeCliJson(Path.of(it), gateResult.auditReport) }
+        val gateErrors = NarrativeQualityGateService().toValidationErrors(
+            gateResult = gateResult,
+            advisoryRequiresAcknowledge = false,
+        )
+        if (gateErrors.isNotEmpty()) {
+            gateErrors.forEach { System.err.println("${it.code}: ${it.message}") }
+            return 1
+        }
+        if (gateResult.hasAdvisoryFindings) {
+            println("Result is valid with narrative quality advisories.")
+            gateResult.advisoryFindings.forEach {
+                println("narrative_quality_advisory:${it.ruleId}:${it.severity}:${it.message}")
+            }
+        } else {
+            println("Result is valid.")
+        }
+        return 0
     }
 
     fun applyResult(options: Map<String, String>): Int {
@@ -131,11 +170,14 @@ internal object StorySessionCli {
     fun startSession(options: Map<String, String>): Int {
         val repository = cliRepository(options)
         repository.initialize()
+        val readerMode = options.containsKey("reader-mode")
         val session = MultiTurnRuntime(repository).startSession(
             projectId = options.requiredCliOption("project"),
             sceneId = options.requiredCliOption("scene"),
+            readerMode = readerMode,
         )
         println("sessionId=${session.id}")
+        println("readerMode=$readerMode")
         println("branchId=${session.branchId ?: ""}")
         println("currentSceneId=${session.currentSceneId}")
         println("nextTurnNumber=${session.nextTurnNumber}")
@@ -175,8 +217,39 @@ internal object StorySessionCli {
     fun resolveTurn(options: Map<String, String>): Int {
         val repository = cliRepository(options)
         val sessionId = options.requiredCliOption("session")
-        val result = readCliJson<AiTurnResult>(Path.of(options.requiredCliOption("result")))
-        val applied = MultiTurnRuntime(repository).resolveTurn(sessionId, result)
+        val resultPath = Path.of(options.requiredCliOption("result"))
+        val result = readCliJson<AiTurnResult>(resultPath)
+        val evidencePath = options["evidence"]?.let { Path.of(it) }
+        val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
+        val resolveOptions = ResolveTurnOptions(
+            acknowledgeNarrativeQualityWarnings = options.containsKey("acknowledge-narrative-quality-warnings"),
+            requireNarrativeQualityAcknowledgement = options.containsKey("require-narrative-quality-acknowledgement"),
+            strictNarrativeQuality = options.containsKey("strict-narrative-quality"),
+            narrativeQualityEvidenceText = evidenceText,
+            narrativeQualitySampleLabel = options["sample-label"].orEmpty(),
+        )
+        options["narrative-quality-out"]?.let { outPath ->
+            val context = repository.getPendingContext(sessionId, result.contextId)
+                ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+            val gateResult = NarrativeQualityGateService().evaluate(
+                context = context,
+                result = result,
+                options = NarrativeQualityGateOptions(
+                    strictMode = resolveOptions.strictNarrativeQuality,
+                    enforceSceneContextFloor = repository.settingPackRows(context.project.id).isNotEmpty(),
+                    sampleLabel = resolveOptions.narrativeQualitySampleLabel,
+                    evidenceText = resolveOptions.narrativeQualityEvidenceText,
+                ),
+                input = NarrativeQualityAuditInput(
+                    contextFile = "pending://${context.contextId}",
+                    resultFile = resultPath.toString(),
+                    evidenceFile = evidencePath?.toString().orEmpty(),
+                    evidenceText = evidenceText,
+                ),
+            )
+            writeCliJson(Path.of(outPath), gateResult.auditReport)
+        }
+        val applied = MultiTurnRuntime(repository).resolveTurn(sessionId, result, resolveOptions)
         val session = repository.getSession(sessionId)
         println(applied.narrative)
         println()
@@ -395,6 +468,7 @@ internal object StorySessionCli {
                 resultFile = resultPath.toString(),
                 evidenceFile = evidencePath?.toString().orEmpty(),
                 evidenceText = evidenceText,
+                sampleLabel = options["sample-label"].orEmpty(),
             ),
         )
         options["out"]?.let { writeCliJson(Path.of(it), report) }

@@ -104,6 +104,12 @@
       "topic": "專案立項：產出劇本與 shot 文字；Seedance 2.0 影片為下游，有聲漫畫非終點"
     },
     {
+      "id": "chenxing-formal-35-provisional-layer",
+      "path": "world/chenxing/formal/35_provisional_layer_charter_v1.json",
+      "status": "author_locked",
+      "topic": "MVP-8 試用層章程：讀者優先、留白區、試用提案、延後 promote"
+    },
+    {
       "id": "chenxing-formal-13-exploration-cadence",
       "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
       "status": "author_locked",
@@ -148,13 +154,11 @@
   ],
   "notYetFormal": [
     "蒼梧關要塞卡",
-    "蒼梧關要塞卡",
     "蘇橋正式人設",
     "前四十七天空白定稿",
-    "第一卷配角網（譚霧、薛家、甄嵐等）",
-    "setting pack",
-    "runtime SQLite session state"
+    "第一卷配角網（譚霧、薛家、甄嵐等）"
   ],
+  "provisionalLayerNote": "配角網等缺口已列入 MVP-8 INTENTIONALLY_THIN 留白區；可先試用後 promote，不必事前 formal 定稿。",
   "nextSessionRule": "Ask exactly one completion-register question, resolve exactly one block, then update formal JSON.",
   "rewritePolicy": "Opening fortress drafts are replaceable. Macro skeleton, protagonist, companion, and cultivation system are the durable foundation."
 }

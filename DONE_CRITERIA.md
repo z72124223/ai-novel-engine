@@ -75,6 +75,7 @@ This exception does not relax tests for implementation, bugfix, schema/runtime, 
 | MVP-5 setting pack | `validate-setting-pack`, `preview-setting-import`, `apply-setting-pack`, `diff-setting-pack`, `impact-report`, `export-setting-pack` |
 | Pilot stabilization | `explain-context-budget`, `audit-context`, `pilot-preflight`, `export-session-evidence` |
 | MVP-6 timeline | `create-checkpoint`, `fork-session`, `checkout-branch`, `show-timeline`, `verify-replay-chain`, `export-timeline` |
+| MVP-8 provisional layer | `import-canon-thin-zones`, `start-session --reader-mode`, `prepare-turn`, `validate-result`, `resolve-turn` with `entityProposals`, `list-provisional-entities`, `export-provisional-backlog`, `promote-provisional-entity` (patch draft only until apply) |
 
 ## Required Documentation Updates
 

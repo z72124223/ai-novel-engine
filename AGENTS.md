@@ -55,3 +55,15 @@
 - Do not reuse old Pilot sessions as formal rerun evidence.
 - Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
 - See `docs/PILOT1_STABILIZATION_SPEC.md`, `docs/PILOT1_STABILIZATION.md`, and `docs/CONTEXT_RELEVANCE_FLOOR.md`.
+
+## MVP-8 試用層
+
+- MVP-8 = **試用層**（不是 Android）。規格：`docs/MVP8_PROVISIONAL_LAYER_SPEC.md`（中文正文）。
+- 世界四層：鎖定層、留白層、試用層、定稿層。試用不得覆寫鎖定層。
+- AI 可提案試用人物/傳聞等；僅在 `resolve-turn` 驗證通過後寫入，禁止直接改資料庫。
+- 升格雙向：作者可升格；AI 可提交升格建議（須滿資格四選三）。正式寫入仍須作者確認。
+- 升格須走：試用清單 → 設定包補丁草稿 → 驗證 → 預覽 → 正式匯入。
+- 擋工具人：無慾望、無代價、無盲點、只送情報的試用角色。
+- 作者限定秘密不得進試用提案或角色認知。
+- 塵行預設**讀者模式**；升格可無限期延後。留白區見 `35_provisional_layer_charter_v1.json`。
+- 資料庫只新增 `009_provisional_layer.sql`，不改 001–008。

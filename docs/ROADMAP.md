@@ -100,7 +100,21 @@ MVP-7 has not become a runtime gate. The approved work so far is a read-only aud
 - Audit JSON verification hardening in `VERIFY.md`; PowerShell 5.1 must read reports with explicit UTF-8.
 - Diverse non-Pilot audit sample rerun: `docs/MVP7_DIVERSE_AUDIT_SAMPLE_RERUN_REPORT.md`.
 
-Candidate B, any pre-resolve gate, and any write-path integration remain unapproved.
+MVP-7 Candidate B gate is shipped for `validate-result` / `resolve-turn`.
+
+## MVP-8 Provisional Layer (Approved 2026-07-09)
+
+Status: `SPEC_LOCKED_IMPLEMENTATION_PENDING`
+
+MVP-8 is the **provisional layer** (試用層), not Android UI.
+
+- Spec: `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`
+- Decision: `docs/MVP8_PROJECT_DECISION.md`
+- Charter: `world/chenxing/formal/35_provisional_layer_charter_v1.json`
+- Canon tiers: `LOCKED`, `INTENTIONALLY_THIN`, `PROVISIONAL`, `PROMOTED`
+- Reader-first Route A is the engine mainline for 塵行 play
+- Implementation slices: MVP-8.1 (schema) through MVP-8.5 (chenxing reader E2E)
+- Additive migration only: `009_provisional_layer.sql`
 
 ## Later
 

@@ -581,6 +581,10 @@ data class ContextPacket(
     val activeCapabilityContracts: List<CapabilityContract> = emptyList(),
     val settingContextBudget: SettingContextBudget = SettingContextBudget(),
     val canonRevisionSummary: CanonRevisionSummary = CanonRevisionSummary(),
+    val canonThinZones: List<com.localnovel.engine.model.CanonThinZoneView> = emptyList(),
+    val provisionalEntities: List<com.localnovel.engine.model.ProvisionalEntityView> = emptyList(),
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val readerMode: Boolean = false,
 )
 
 @Serializable
@@ -611,6 +615,9 @@ data class AiTurnResult(
     val worldEventAcknowledgements: List<WorldEventAcknowledgement> = emptyList(),
     val timeAdvanceProposal: TimeAdvanceProposal? = null,
     val capabilityUseChecks: List<CapabilityUseCheck> = emptyList(),
+    val entityProposals: List<com.localnovel.engine.model.ProvisionalEntityProposal> = emptyList(),
+    val promotionRecommendations: List<com.localnovel.engine.model.ProvisionalPromotionRecommendation> = emptyList(),
+    val creativeGapNotes: List<com.localnovel.engine.model.CreativeGapNote> = emptyList(),
     val validationNotes: List<String> = emptyList(),
     val notes: String = "",
 )
@@ -653,6 +660,7 @@ data class StorySession(
     val currentSceneInstanceId: String? = null,
     val worldTime: String = "",
     val elapsedMinutes: Int = 0,
+    val readerMode: Boolean = false,
 )
 
 @Serializable
@@ -1463,6 +1471,8 @@ data class NarrativeQualityAuditReport(
     val score: Int,
     val severity: String,
     val findings: List<NarrativeQualityFinding> = emptyList(),
+    @SerialName("finding_summary_by_category")
+    val findingSummaryByCategory: Map<String, Int> = emptyMap(),
     val evidence: NarrativeQualityAuditEvidence = NarrativeQualityAuditEvidence(),
 )
 
@@ -1485,6 +1495,8 @@ data class NarrativeQualityAuditEvidence(
     val contextFile: String = "",
     val resultFile: String = "",
     val evidenceFile: String = "",
+    @SerialName("sample_label")
+    val sampleLabel: String = "",
     val projectId: String = "",
     val turnId: String = "",
     val contextId: String = "",

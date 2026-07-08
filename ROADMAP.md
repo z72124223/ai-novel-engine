@@ -72,11 +72,21 @@ This roadmap controls stable project completion. It is intentionally conservativ
 | Simulation-First Knowledge / Truth Rules | Completed and pushed | Add product-layer guardrails so world truth is treated as causality and distributed actor knowledge, not forced reveal, forced concealment, or plot objective. | `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `PLANS.md`. | Treating guardrails as runtime enforcement, canon world content, setting-pack patch, queryer implementation, or approval to start 09/04/05/06/07/08. |
 | Blueprint Data Layer And Planning Register | Completed and pushed | Register the current non-canon candidate blueprint pool, data-layer fields, derived-alias rule, setting-pack conversion rule, archive policy, and manual handoff rules. | `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, `ROADMAP.md`, `docs/HANDOFF.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `PLANS.md`. | Treating blueprint candidates as canon, setting-pack content, runtime data, approved assets, automation, or approval to start 09/04/05/06/07/08. |
 
+## MVP-8 Provisional Layer
+
+| Item | Status | Goal | Required Evidence | Risks |
+| --- | --- | --- | --- | --- |
+| MVP-8.0 Spec And Project Decision | Completed | Lock reader-first provisional layer as project decision; retire Android MVP-8 alias. | `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`, `docs/MVP8_PROJECT_DECISION.md`, `world/chenxing/formal/35_provisional_layer_charter_v1.json`, `PLANS.md`, `HANDOFF.md`. | Mistaking spec approval for full runtime implementation. |
+| MVP-8.1 Thin Zone Schema | Pending | Add migration 009 and thin-zone import/list CLI. | `009_provisional_layer.sql`, tests, chenxing thin zones imported. | Editing old migrations; direct SQL bypass. |
+| MVP-8.2 Entity Proposals | Pending | Protocol + validator + resolve writes for provisional entities. | Unit tests: soulful proposal passes, plot courier rejected. | Provisional entities overriding locked canon. |
+| MVP-8.3 Context Surface | Pending | `prepare-turn` exposes thin zones and scene-relevant provisional entities within budget. | Context budget tests; semantic floor preserved. | Context bloat; author_only leakage. |
+| MVP-8.4 Promotion Backlog | Pending | export/discard/promote-to-patch CLI without auto-apply. | Patch JSON draft + promotion audit records. | Skipping setting-pack apply; silent canon drift. |
+| MVP-8.5 Chenxing Reader E2E | Pending | Reader-mode session for 塵行 opening through 3 turns with one provisional character. | `VERIFY.md` E2E section. | Confusing pilot2 Qingli sample with chenxing mainline. |
+
 ## Temporarily Not Doing
 
-- MVP-7 implementation beyond explicitly approved read-only Candidate A/A.1/A.2 work.
+- MVP-7 implementation beyond shipped Candidate B gate unless a new milestone says otherwise.
 - Candidate A.3 unless explicitly approved as a separate milestone.
-- Candidate B or any pre-resolve narrative quality gate.
 - Web server, Web UI, HTTP API, port listener.
 - Android UI.
 - OpenAI API integration or external AI calls.
@@ -120,4 +130,6 @@ Recommended candidates after the storyboard-first alignment:
 9. `Candidate A.3 read-only audit brief`: define a focused read-only target only after separate explicit approval; do not implement by default.
 10. `remote restore smoke on demand`: rerun clone/test verification when needed.
 
-Do not automatically enter Candidate B, MVP-8, runtime enforcement, queryer implementation, blueprint-to-setting-pack conversion, production asset registry schema / migrations, Oiioii / Seedance integration, high-quality video generation, formal Pilot turn execution, or 04/05/06/07/08 generation / review / display / storyboard pickup from these candidates.
+MVP-8 implementation may proceed slice-by-slice per `docs/MVP8_PROVISIONAL_LAYER_SPEC.md` §13.
+
+Do not automatically enter queryer implementation, blueprint-to-setting-pack bulk conversion, production asset registry schema / migrations, Oiioii / Seedance integration, high-quality video generation, or 04/05/06/07/08 generation / review / display / storyboard pickup without explicit approval.

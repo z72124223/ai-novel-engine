@@ -67,6 +67,9 @@ object ContextPacketTopLevelAllowlist {
         "activeCapabilityContracts",
         "settingContextBudget",
         "canonRevisionSummary",
+        "canonThinZones",
+        "provisionalEntities",
+        "readerMode",
     )
 
     val diagnosticKeys: Set<String> = setOf(
