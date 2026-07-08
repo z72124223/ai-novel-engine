@@ -1,0 +1,54 @@
+{
+  "verdict": "PASS",
+  "status": "CHENXING_RUIN_INTERIOR_SQL_IMPORT_PASS",
+  "updatedAt": "2026-07-08",
+  "databasePath": "data/story.db",
+  "projectId": "chenxing",
+  "packId": "chenxing-formal-v5-ruin-interior",
+  "packVersion": 1,
+  "settingPackPath": "world/chenxing/engine/chenxing_setting_pack_v5_ruin_interior.json",
+  "storyboardFormalPath": "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json",
+  "addedToSql": {
+    "locations": [
+      "loc-ruin-threshold",
+      "loc-ruin-first-shelter",
+      "loc-ruin-service-corridor",
+      "loc-ruin-dead-room",
+      "loc-ruin-specimen-storage",
+      "loc-ruin-gold-vault"
+    ],
+    "scenes": [
+      "scene-ruin-threshold-entry",
+      "scene-ruin-first-shelter",
+      "scene-ruin-service-corridor",
+      "scene-ruin-dead-room",
+      "scene-ruin-grey-bottles",
+      "scene-ruin-gold-cache"
+    ],
+    "sceneContracts": [
+      "contract-ruin-threshold-entry",
+      "contract-ruin-first-shelter",
+      "contract-ruin-service-corridor",
+      "contract-ruin-dead-room",
+      "contract-ruin-grey-bottles",
+      "contract-ruin-gold-cache"
+    ],
+    "facts": [
+      "fact-ruin-interior-missing-sea-smell",
+      "fact-ruin-interior-experiment-traces",
+      "fact-ruin-grey-glass-bottles",
+      "fact-ruin-japanese-gold-cache"
+    ],
+    "locationConnections": 8,
+    "sceneTransitions": 7
+  },
+  "pipeline": {
+    "validate": "PASS",
+    "preview": "PASS",
+    "apply": "PASS",
+    "validateProjectCanon": "PASS"
+  },
+  "canonicalHash": "eee933424c25e65de637b25e6d80d7be6f9543125242ac3c4d7f4091315b880a",
+  "diffEntries": 37,
+  "directSqlUsed": false
+}

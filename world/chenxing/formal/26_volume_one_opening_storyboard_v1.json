@@ -205,5 +205,5 @@
     "voiceTimelineFill": "world/chenxing/preview/opening_v1/voice_timeline_fill_v1.json",
     "manifest": "world/chenxing/preview/opening_v1/opening_preview_manifest_v1.json"
   },
-  "nextStepAfterPreview": "山坡廢墟內部慢推進（beats 10-18，見 32_crossing_experience_v1.json）"
+  "nextStepAfterPreview": "山坡廢墟內部慢推進（beats 10-18，見 28_volume_one_ruin_interior_storyboard_v1.json）"
 }

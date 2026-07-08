@@ -92,6 +92,12 @@
       "topic": "試看畫面風格鎖：黑白分鏡、霧氣電影感、暗雨青綠插畫（與角色長相鎖分離）"
     },
     {
+      "id": "chenxing-formal-28-ruin-interior-storyboard",
+      "path": "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json",
+      "status": "author_locked",
+      "topic": "第一卷廢墟內部慢推進分鏡：beats 10-18，門檻、玻璃瓶、黃金，穿越尚未發生"
+    },
+    {
       "id": "chenxing-formal-13-exploration-cadence",
       "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
       "status": "author_locked",
