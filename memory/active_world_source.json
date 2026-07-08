@@ -121,7 +121,19 @@
       "delete obsolete rain_gate sample files"
     ]
   },
-  "nextAllowedContentStep": "chenxing_post_crossing_first_world_clue_block",
+  "nextAllowedContentStep": "chenxing_script_content_polish_opening_and_ruin_interior",
+  "projectCharter": {
+    "status": "author_locked",
+    "formalPath": "world/chenxing/formal/29_project_script_first_charter_v1.json",
+    "primaryDeliverable": "interactive_script_and_shot_packets",
+    "downstreamVideo": "seedance_2_external_products_only",
+    "pausedLanes": [
+      "art_style_candidate_selection",
+      "opening_preview_image_generation",
+      "comic_video_local_renderer",
+      "asset_registry_implementation"
+    ]
+  },
   "boundaryFlags": {
     "canonApproved": false,
     "settingPackData": true,

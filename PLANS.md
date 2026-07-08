@@ -4,9 +4,272 @@
 > (`CURRENT_PLAN_WINDOW_V0`) first. All `## Historical ...` sections are archived
 > evidence only. Do not treat them as current work.
 > Worktree baseline: commits `3249db2` + `fa13693` on
-> `codex/mvp6-checkpoint-branching-spec`. Active creative world: `塵行` / 灰關.
+> `codex/mvp6-checkpoint-branching-spec`. Active creative world: `塵行`.
 > Rain Gate samples remain test/demo only. Default story samples:
 > `samples/chenxing/`.
+> **Product charter (2026-07-08):** script-first; video is downstream only.
+> Read `## Current Plan Window V0` before any other slice.
+
+## Current Plan Window V0
+
+Marker: `CHENXING_SCRIPT_FIRST_PRODUCT_PIVOT_V0`
+
+Status: `AUTHOR_APPROVED_ACTIVE`
+
+Date: 2026-07-08
+
+### Goal
+
+- Primary deliverable is **interactive script / shot text** for `塵行`, not
+  voiced comic MP4 or in-repo video generation.
+- Downstream video uses external **Seedance 2.0** products (Volcengine, DEEVID,
+  AI-CanvasPro, etc.) only after script packets are ready.
+- Next work is **polishing script content** (dialogue, narration, beats, shot
+  text) in existing formal storyboard JSON.
+
+### Active Work Only
+
+- `world/chenxing/formal/26_volume_one_opening_storyboard_v1.json` (shots 0–9)
+- `world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json`
+  (shots 10–18)
+- Grok story input + Codex handoff CLI for script packaging when useful
+- Engine setting packs only when script work needs new scene/location facts
+
+### Paused Until Author Reopens
+
+- Art style candidate selection (`candidates_v2/`)
+- Opening preview frame generation and drift retries
+- Comic-video / local renderer / ffmpeg / TTS production chain
+- Asset registry implementation, MVP-8+, new schema, Seedance API integration
+- Crossing beats 19–22 unless author asks during script polish
+
+### Non-Goals
+
+- No voiced-comic-as-terminal-product scope change without author approval.
+- No provider/API automation, renderer execution, or final media approval in
+  this repo.
+- No treating exploratory style samples as canon frames.
+
+### Charter
+
+- `world/chenxing/formal/29_project_script_first_charter_v1.json`
+
+### Verification
+
+- Author explicitly approved script-first pivot on 2026-07-08.
+- Existing engine boundary unchanged: Kotlin CLI + SQLite + JSON protocol.
+
+## Historical - Current Plan Window V0 (Living World Decision)
+
+Marker: `CURRENT_PLAN_WINDOW_V0_LIVING_WORLD_DECISION_SUPERSEDED`
+
+Status: superseded by `CHENXING_SCRIPT_FIRST_PRODUCT_PIVOT_V0` on 2026-07-08.
+
+## Current Slice - Grok Build / Codex Production Handoff V0
+
+Marker: `GROK_CODEX_PRODUCTION_HANDOFF_V0`
+
+Status: complete.
+
+## Goal
+
+- Let Grok Build own story production and any story text Codex cannot process.
+- Let Codex own the safe production support work: scene organization, shot
+  breakdown, image prompt preparation, reference tracking, file hygiene,
+  validation, and integration.
+- Add a simple `RETURN_TO_GROK` handoff（交接）rule so blocked story material is
+  sent back instead of being rewritten by Codex.
+
+## Global Strategy
+
+- Keep this as a production coordination patch（生產協作修補）, not a rewrite of
+  the engine.
+- Use existing local JSON and image candidate（圖片候選）gates where possible.
+- Allow Codex to prepare and manage image work only through explicit user
+  direction, reference-first requirements, and candidate/review language.
+- Do not let generated images become canon（正典）, approved assets（已批准素材）,
+  production lock（生產鎖定）, release（正式釋出）, or final media approval
+  without a later explicit human decision.
+
+## Non-Goals
+
+- No Grok story rewriting by Codex.
+- No bypassing content review or safety boundaries.
+- No direct SQLite mutation, no schema migration, no web server, no background
+  daemon, no provider/API automation, no renderer/ffmpeg/TTS execution.
+- No formal approval of current rejected preview frames.
+
+## Scope
+
+- `PLANS.md`
+- `docs/CODEX_GROK_BUILD_HANDOFF_AND_IMAGE_PRODUCTION_LANE_V0.md`
+- `docs/HANDOFF.md`
+
+## Confirmed Facts
+
+- The user explicitly assigned Grok Build to produce story and content Codex
+  cannot process.
+- The user explicitly assigned Codex to handle the remaining production support
+  work, including image-related work.
+- Existing opening preview frames are marked
+  `OPENING_PREVIEW_TEXT_READY_FRAMES_REJECTED_DRIFT` and
+  `REJECTED_NOT_CANON`.
+- Existing project rules require reference-first frame generation for formal
+  Chenxing images.
+- Existing tests pass before this slice.
+
+## Assumptions
+
+- The first useful change is a simple human-readable workflow, not new Kotlin
+  code.
+- Grok output will be provided as files or pasted text by the user until a later
+  task queue adapter is approved.
+- Image work should start as prompts, candidates, and review packets before any
+  final asset claim.
+
+## Open Questions
+
+- Exact Grok output folder and file format are not yet fixed.
+- Whether future image generation happens inside Codex image tooling or an
+  external user-operated tool remains a per-task user decision.
+
+## Implementation Steps
+
+- [x] Step 1: Open this plan slice and record the user-approved role split.
+- [x] Step 2: Add a short handoff document for Grok/Codex responsibilities,
+  `RETURN_TO_GROK`, and image-production boundaries.
+- [x] Step 3: Add the handoff document to the first-read handoff index.
+- [x] Step 4: Verify docs formatting, links, and git status.
+
+## Verification
+
+- Use `git diff --check`.
+- Use targeted text search for `GROK_CODEX_PRODUCTION_HANDOFF_V0`,
+  `RETURN_TO_GROK`, and the new handoff file.
+- Use `git status --short --branch`.
+
+## Verification Results
+
+- `git diff --check` passed with expected Windows line-ending warnings on
+  touched Markdown files.
+- Targeted marker search found `GROK_CODEX_PRODUCTION_HANDOFF_V0`,
+  `RETURN_TO_GROK`, and the new handoff document.
+- Trailing whitespace search returned no matches.
+- `git status --short --branch` shows only this slice's tracked doc edits plus
+  one pre-existing untracked storyboard JSON outside this slice.
+
+## Risks
+
+- The old route docs still contain many no-media-generation boundaries; this
+  slice narrows the practical user-approved production lane but does not remove
+  those historical safeguards.
+- If Grok output includes blocked story content, Codex must label and return it
+  without rewriting or expanding it.
+
+## Drift Log
+
+- 2026-07-08: User redirected the project from planning-heavy local JSON only
+  toward a two-agent production lane: Grok Build for story, Codex for safe
+  production support and image workflow.
+
+## Current Slice - Grok/Codex Handoff CLI V0
+
+Marker: `GROK_CODEX_HANDOFF_CLI_V0`
+
+Status: complete.
+
+## Goal
+
+- Implement the handoff workflow as local CLI commands and JSON files.
+- Give Grok Build a fixed story handoff template.
+- Let Codex validate the handoff and produce a production support package with
+  scene summaries, shot candidates, image prompt drafts, reference checks, and
+  `RETURN_TO_GROK` blocks.
+
+## Global Strategy
+
+- Keep this file-protocol JSON only.
+- Add a small isolated model/service/CLI set rather than changing the runtime
+  story engine.
+- Treat image output as candidate-only planning material, not generated media or
+  approval.
+
+## Non-Goals
+
+- No story generation or Grok story rewriting.
+- No image generation inside this slice.
+- No provider/API calls, web/server, renderer/ffmpeg/TTS, SQLite writes,
+  schema migration, canon approval, asset approval, release, or production lock.
+
+## Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/cli/GrokCodexHandoffCli.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/GrokCodexHandoffModels.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/GrokCodexHandoffServices.kt`
+- focused tests under `app/src/test/kotlin/com/localnovel/engine/`
+- `docs/CODEX_GROK_BUILD_HANDOFF_AND_IMAGE_PRODUCTION_LANE_V0.md`
+
+## Confirmed Facts
+
+- Existing CLI commands are dispatched from `Main.kt`.
+- Existing local workflow commands use Kotlin/JVM CLI, local JSON, and service
+  classes.
+- `JsonSupport` already ignores unknown keys and writes pretty JSON.
+- The previous handoff docs slice exists and records `RETURN_TO_GROK`.
+
+## Assumptions
+
+- A structured Grok JSON handoff is the smallest useful implementation.
+- The user benefits more from template/validate/draft commands than from another
+  long control document.
+
+## Open Questions
+
+- Exact future folder for real Grok outputs can be decided after the first real
+  Grok file arrives.
+
+## Implementation Steps
+
+- [x] Step 1: Add Grok/Codex handoff models and deterministic services.
+- [x] Step 2: Add CLI wiring and help text.
+- [x] Step 3: Add focused service and CLI tests.
+- [x] Step 4: Update the handoff document with the new commands.
+- [x] Step 5: Run focused Gradle tests and diff checks.
+
+## Verification
+
+- `./gradlew.bat test --tests "*GrokCodexHandoff*" --no-daemon`
+- `git diff --check`
+- targeted CLI smoke command under `out/`
+- `git status --short --branch`
+
+## Verification Results
+
+- Focused tests passed:
+  `./gradlew.bat test --tests "*GrokCodexHandoff*" --no-daemon`.
+- CLI smoke passed for:
+  `create-grok-story-handoff-template`,
+  `validate-grok-story-handoff`, and
+  `draft-codex-production-handoff`.
+- Full Gradle test passed:
+  `./gradlew.bat test --no-daemon`.
+- `git diff --check` passed with expected Windows line-ending warnings on
+  touched files.
+
+## Risks
+
+- If the Grok handoff includes sensitive or blocked story sections, Codex must
+  carry them only as `RETURN_TO_GROK` metadata and not rewrite them.
+- Existing old docs still say no media generation; this slice stays before
+  actual image generation.
+
+## Drift Log
+
+- 2026-07-08: User asked to implement the previously proposed handoff workflow,
+  so the plan moves from docs-only coordination into executable local CLI
+  support.
 
 ## Current Slice - AI Task Queue SQL V0
 
@@ -127,14 +390,13 @@ Verification:
 - CLI query for `愛醬` and a core worldbuilding term.
 - `rg`/whitespace/diff checks for touched files.
 
-## Current Plan Window V0
+## Historical - Chenxing First Volume Living World Direction Decision V0
 
-Marker: `CURRENT_PLAN_WINDOW_V0`
+Marker: `CURRENT_PLAN_WINDOW_V0_LIVING_WORLD_DECISION_ARCHIVE`
 
-Status: Chenxing first-volume living-world direction decision complete; previous
-Chenxing living-world mainline synthesis discussion packet is B03 PASS.
+Status: archived; superseded by `CHENXING_SCRIPT_FIRST_PRODUCT_PIVOT_V0`.
 
-### Active Slice - Chenxing First Volume Living World Direction Decision V0
+### Historical Slice - Chenxing First Volume Living World Direction Decision V0
 
 Task: `chenxing_first_volume_living_world_direction_decision_v0_docs_control`
 

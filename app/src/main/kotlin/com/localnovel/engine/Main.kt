@@ -3,6 +3,7 @@ package com.localnovel.engine
 import com.localnovel.engine.cli.AssetImageCandidateCli
 import com.localnovel.engine.cli.CheckpointCli
 import com.localnovel.engine.cli.ComicVideoCli
+import com.localnovel.engine.cli.GrokCodexHandoffCli
 import com.localnovel.engine.cli.LocalStoryVideoCli
 import com.localnovel.engine.cli.NovelizationCli
 import com.localnovel.engine.cli.SettingPackCli
@@ -58,6 +59,9 @@ class Cli {
                 "claim-ai-task" -> WorldSourceAndTaskQueueCli.claimAiTask(options)
                 "complete-ai-task" -> WorldSourceAndTaskQueueCli.completeAiTask(options)
                 "list-ai-tasks" -> WorldSourceAndTaskQueueCli.listAiTasks(options)
+                "create-grok-story-handoff-template" -> GrokCodexHandoffCli.createGrokStoryHandoffTemplate(options)
+                "validate-grok-story-handoff" -> GrokCodexHandoffCli.validateGrokStoryHandoff(options)
+                "draft-codex-production-handoff" -> GrokCodexHandoffCli.draftCodexProductionHandoff(options)
                 "export-setting-pack" -> SettingPackCli.exportSettingPack(options)
                 "diff-setting-pack" -> SettingPackCli.diffSettingPack(options)
                 "impact-report" -> SettingPackCli.impactReport(options)
@@ -214,6 +218,9 @@ class Cli {
               claim-ai-task [--db <path>] --worker <id> [--target <role>] [--out <path>]
               complete-ai-task [--db <path>] --task <id> --worker <id> --result <PASS|FAIL|NEEDS_REVISION|BLOCKED> [--summary <text>] [--report <path>] [--out <path>]
               list-ai-tasks [--db <path>] [--status <READY|IN_PROGRESS|DONE|FAIL|NEEDS_REVISION|BLOCKED>] [--out <path>]
+              create-grok-story-handoff-template --out <path> [--handoff <id>] [--project <id>] [--title <text>] [--locale <text>]
+              validate-grok-story-handoff --input <path> [--validation <id>] --out <path>
+              draft-codex-production-handoff --grok-handoff <path> --validation <path> [--draft <id>] --out <path>
               export-setting-pack [--db <path>] --project <id> --pack <id> --version <n> --out <path>
               diff-setting-pack [--db <path>] --file <path> [--out <path>]
               impact-report [--db <path>] --file <path> [--out <path>]

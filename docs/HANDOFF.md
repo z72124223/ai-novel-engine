@@ -27,6 +27,44 @@ current.
 All other route/control docs below are on-demand evidence, not default startup
 reading.
 
+## Current User Override - Script-First Product Pivot (2026-07-08)
+
+The user approved a **script-first** product charter. This supersedes
+voiced-comic / storyboard-image-as-terminal-product wording for active work.
+
+- **Primary deliverable:** interactive script and shot text for `塵行`.
+- **Not the repo goal:** voiced comic MP4, in-repo video generation, or art-style
+  lock as the mainline.
+- **Downstream only:** Seedance 2.0 and other external video tools after script
+  packets are ready.
+- **Active work:** polish script content in
+  `world/chenxing/formal/26_volume_one_opening_storyboard_v1.json` and
+  `world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json`.
+- **Paused:** style candidate selection, opening preview image generation,
+  comic-video renderer chain, asset registry implementation, Seedance API
+  integration, crossing beats 19–22 unless the author reopens them during
+  script polish.
+- Charter: `world/chenxing/formal/29_project_script_first_charter_v1.json`
+
+## Current User Override - Grok Build / Codex Production Lane
+
+The user approved a simple two-owner production workflow（生產工作流） on
+2026-07-08:
+
+- Grok Build owns story production, plot, dialogue, and story sections Codex
+  cannot process.
+- Codex owns safe production support: scene organization, shot planning, image
+  prompt preparation, reference tracking, candidate metadata, validation, and
+  integration.
+- When Codex cannot process Grok story material, Codex must return it as
+  `RETURN_TO_GROK` instead of rewriting or expanding it.
+- Chenxing image work must be reference-first（先餵參考圖） and candidate-only
+  until the user explicitly approves it.
+
+Read this short current workflow before older image/provider restrictions:
+
+- `docs/CODEX_GROK_BUILD_HANDOFF_AND_IMAGE_PRODUCTION_LANE_V0.md`
+
 ## Project Cleanup Baseline (2026-07-07)
 
 Housekeeping baseline for non-engineer handoff:
@@ -201,8 +239,11 @@ Verified on 2026-06-20 during the automatic stable-completion loop:
 Additional docs-only product-control baseline as of 2026-06-23:
 
 - Authoring quality guidelines, narrative review gate, scene lock / storyboard asset boundary, script-ready scene packet contracts, Qingli scene registry seed brief, Qingli script packet registry dry-run review, storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are completed and pushed.
-- User product decision: current final deliverable is reviewable storyboard images / storyboard packets. High-quality animation is not the current deliverable.
-- Seedance / Oiioii / video generation is optional future downstream work only. It is not implemented and not the current mainline.
+- User product decision (2026-07-08 pivot): current final deliverable is
+  **interactive script / shot packets** for `塵行`. High-quality animation,
+  voiced comic MP4, and in-repo video generation are **not** the repo goal.
+- Seedance / Oiioii / video generation remain **downstream only** after script
+  packets; not implemented in this repo and not the active mainline.
 - Qingli is historical sample / process evidence after `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`; do not use it as the new-world opening base or assetization starting point.
 - Storyboard / camera planning, production asset registry planning, and asset registry implementation blueprint are future-planning docs. They are not runtime, schema, image-generation, Seedance, or Oiioii implementations.
 - `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` is the current user / 00 input entry for rebuilding the non-Qingli world foundation. It is not canon, a setting pack, or a runtime artifact.
@@ -458,7 +499,9 @@ Current integration branch: codex/mvp6-checkpoint-branching-spec.
 Remote: https://github.com/z72124223/ai-novel-engine.git.
 mvp-6 tag must remain at be527031335efe8e2b0facae0145e1bbc084f8c6.
 Do not enter Candidate B, MVP-8, schema changes, Validator/stateVersion/contextHash changes, resolve-turn/StateReducer changes, server/API/UI/Docker/Rust/embedding/Oiioii/Seedance integration work, automation/scheduler handoff, or direct SQLite writes without explicit user approval.
-Current final deliverable is reviewable storyboard images / storyboard packets, not high-quality video. Seedance / Oiioii are optional future downstream only.
+Current final deliverable is interactive script / shot text for 塵行, not voiced comic MP4 or in-repo video. Seedance 2.0 products are downstream only after script packets.
+Paused: art-style candidates, opening preview images, comic-video renderer chain, asset registry implementation.
+Active: polish script content in formal storyboards 26 and 28.
 04/05/06/07/08 are paused. Resuming them requires manual handoff only: 01 explicit handoff -> 04 generation -> 05 review -> 06 display -> user explicit approval -> report to 01 -> 07 asset candidates -> 08 GPT storyboard pickup / verification -> user-reviewable storyboard delivery.
 When 02 finishes a milestone, notify 03 using a verifier-window prompt: "You are 03 驗收稽核窗口..." with commit, push, changed files, verification, scope, safety boundaries, and review focus.
 Start by running git status --short --branch, git log --oneline --decorate -10, git tag --list, and git remote -v, then choose the next smallest milestone from current evidence.
