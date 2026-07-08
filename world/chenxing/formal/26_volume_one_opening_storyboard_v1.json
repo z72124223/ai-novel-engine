@@ -87,8 +87,8 @@
       "location": "loc-daping-coast",
       "sceneId": "scene-daping-coast-opening",
       "camera": "眼鏡反光特寫；切愛醬回頭看海",
-      "visual": "陸塵行蹲著不動，指尖沿接縫比對。愛醬毛微炸，看向漸濕的礁石。",
-      "narration": "他看得太久。好奇心壓過了時間。",
+      "visual": "陸塵行蹲著不動，指尖沿接縫比對。愛醬毛微炸，前爪後挪半步，耳朵朝海不朝他。",
+      "narration": "他看得太久。好奇心壓過了時間，也壓過了狗的低聲警告。",
       "dialogue": [
         {
           "speaker": "愛醬",
@@ -126,7 +126,7 @@
       "sceneId": "scene-daping-coast-opening",
       "camera": "過肩鏡頭望向來時路；浪頭拍擊通道",
       "visual": "剛才還能走的岩徑已被海水覆蓋，白浪連續湧入。",
-      "narration": "",
+      "narration": "來時還乾的岩徑，現在只剩白浪拍擊。",
       "dialogue": [
         {
           "speaker": "陸塵行",
@@ -144,8 +144,8 @@
       "location": "loc-daping-coast",
       "sceneId": "scene-daping-coast-opening",
       "camera": "中景側風；外套與愛醬毛被吹亂",
-      "visual": "巴威外圍環流壓境，雨絲斜打，海面翻白。",
-      "narration": "巴威的外圍環流壓上來，浪勢一次比一次重。",
+      "visual": "巴威外圍環流壓境，雨絲斜打，海面翻白。愛醬貼近他小腿，毛被雨水壓成一縷一縷。",
+      "narration": "巴威的外圍環流壓上來，浪勢一次比一次重。鹹味灌進鼻腔，皮膚開始黏。",
       "dialogue": [],
       "durationHintSec": 7
     },
@@ -171,7 +171,7 @@
       "sceneId": "scene-daping-coast-opening",
       "camera": "手機螢幕特寫；拇指重試通話",
       "visual": "螢幕顯示無服務，雨水落在玻璃上。",
-      "narration": "",
+      "narration": "求救鍵按了兩次，螢幕只回無服務。",
       "dialogue": [
         {
           "speaker": "陸塵行",
@@ -189,7 +189,7 @@
       "location": "loc-hillside-ruin",
       "sceneId": "scene-hillside-ruin-retreat",
       "camera": "跟拍上坡；終點定在頹敗混凝土建築門洞",
-      "visual": "陸塵行與愛醬冒雨攀向山坡，廢棄構造物像日治遺留的廠區殘骸。",
+      "visual": "陸塵行與愛醬冒雨攀向山坡，廢棄構造物像日治遺留的廠區殘骸。愛醬在門洞前放慢腳步，耳朵竖起，沒有立刻跟上。",
       "narration": "唯一能躲的地方，在山坡上——日治時期留下的廢棄構造物。",
       "dialogue": [
         {

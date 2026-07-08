@@ -38,7 +38,7 @@
       "location": "loc-ruin-threshold",
       "sceneId": "scene-ruin-threshold-entry",
       "camera": "低角度門框；愛醬前爪停住，耳朵竖起",
-      "visual": "暴風雨夜，頹敗混凝土門洞。愛醬在門前停步，不回頭跑，但不進。陸塵行半濕，側背包貼身。",
+      "visual": "暴風雨夜，頹敗混凝土門洞。愛醬在門前停步，前爪僵住，耳朵竖起，不回頭跑，但不進。陸塵行半濕，側背包貼身，手電光在門框上顫。",
       "narration": "風在門外吼，門裡卻有一種不對的安靜。",
       "dialogue": [
         {
@@ -95,9 +95,15 @@
       "location": "loc-ruin-service-corridor",
       "sceneId": "scene-ruin-service-corridor",
       "camera": "手電柱狀光在走廊前移；跟拍",
-      "visual": "傾斜走廊、舊日製單位標記、生鏽推床螺栓、牆上低處中文刻痕。愛醬腳步放輕。",
-      "narration": "好奇心又壓過避難。他想知道這棟建築到底是什麼。",
-      "dialogue": [],
+      "visual": "傾斜走廊、舊日製單位標記、生鏽推床螺栓鎖在斜地板上、牆上低處中文刻痕、陶瓷水槽邊乾涸的血潮線。愛醬腳步放輕，貼在他腿側，距離比進門時更近。",
+      "narration": "鐵鏽味先來，接著是舊油和一種太乾淨的化學氣。好奇心又壓過避難——他想知道這棟建築到底是什麼。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……標記還在。有人量過這裡。",
+          "delivery": "自言，壓低"
+        }
+      ],
       "durationHintSec": 9
     },
     {
@@ -108,7 +114,7 @@
       "location": "loc-ruin-dead-room",
       "sceneId": "scene-ruin-dead-room",
       "camera": "慢推進側室；手電先掃到編號牌與空拘束帶",
-      "visual": "不是骷髏牆。房間設計像封存失敗的實驗側室：乾燥遺留、針孔叢集、編號標籤。陸塵行胃部一沉。",
+      "visual": "不是骷髏牆。房間設計像封存失敗的實驗側室：乾燥遺留、針孔叢集、編號標籤、空拘束帶仍扣在推床邊。溫度比走廊更低。愛醬低聲乾嘔，不肯靠近門檻。陸塵行胃部一沉。",
       "narration": "戰爭的痕跡，但不是炮彈炸過那種。是被人量過、放棄過的痕跡。",
       "dialogue": [
         {
@@ -127,8 +133,8 @@
       "location": "loc-ruin-specimen-storage",
       "sceneId": "scene-ruin-grey-bottles",
       "camera": "手電逼近單一瓶肩；反光裡浮出輪廓",
-      "visual": "高大灰玻璃瓶排架。他湊近一瓶——光線移過，裡面是二戰時期浸泡保存的人體。愛醬猛然後退，乾嘔。",
-      "narration": "",
+      "visual": "高大灰玻璃瓶排架，瓶肩泛褐灰霧。他湊近一瓶——手電光移過，液體裡浮著二戰時期浸泡保存的人體輪廓。愛醬猛然後退，乾嘔，再也不肯靠近排架。",
+      "narration": "不是試劑。太大了。光一近，他才明白那團輪廓一直在這裡泡了八十年。",
       "dialogue": [
         {
           "speaker": "陸塵行",
@@ -146,7 +152,7 @@
       "location": "loc-ruin-gold-vault",
       "sceneId": "scene-ruin-gold-cache",
       "camera": "假牆後空隙；木箱與布包反光",
-      "visual": "指揮室側的暗格。軍用木箱、布捆金條。陸塵行掂重量——真東西。",
+      "visual": "指揮室側的暗格。軍用木箱、布捆金條，箱面還留著舊日運輸標記。陸塵行掂重量——手腕立刻沉下去，真東西。",
       "narration": "傳說裡日本人來不及帶走的黃金，原來不只在傳說裡。",
       "dialogue": [
         {
@@ -184,9 +190,15 @@
       "location": "loc-ruin-service-corridor",
       "sceneId": "scene-ruin-service-corridor",
       "camera": "長走廊深處；手電光柱變弱，風聲又遠又近",
-      "visual": "他帶著部分黃金繼續往更深處。愛醬緊貼。時間感開始不對，但尚未穿越。",
+      "visual": "他帶著部分黃金繼續往更深處，腰側和包內沉甸甸地硌著。愛醬緊貼。走廊深處的風聲忽遠忽近，手電光柱像變短了。時間感開始不對，但尚未穿越。",
       "narration": "廢墟內該看見的，他都還沒看完。穿越，還在更後面。",
-      "dialogue": [],
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……再往前一點。",
+          "delivery": "對自己說，疲憊但停不下來"
+        }
+      ],
       "durationHintSec": 8
     }
   ],
