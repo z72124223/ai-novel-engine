@@ -9,6 +9,7 @@ import com.localnovel.engine.cli.NovelizationCli
 import com.localnovel.engine.cli.SettingPackCli
 import com.localnovel.engine.cli.StorySessionCli
 import com.localnovel.engine.cli.StoryboardPipelineCli
+import com.localnovel.engine.cli.ProvisionalLayerCli
 import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
 import com.localnovel.engine.cli.parseCliOptions
 import kotlin.system.exitProcess
@@ -170,6 +171,12 @@ class Cli {
                 "show-timeline" -> CheckpointCli.showTimeline(options)
                 "verify-replay-chain" -> CheckpointCli.verifyReplayChain(options)
                 "export-timeline" -> CheckpointCli.exportTimeline(options)
+                "import-canon-thin-zones" -> ProvisionalLayerCli.importCanonThinZones(options)
+                "list-canon-thin-zones" -> ProvisionalLayerCli.listCanonThinZones(options)
+                "list-provisional-entities" -> ProvisionalLayerCli.listProvisionalEntities(options)
+                "export-provisional-backlog" -> ProvisionalLayerCli.exportProvisionalBacklog(options)
+                "discard-provisional-entity" -> ProvisionalLayerCli.discardProvisionalEntity(options)
+                "promote-provisional-entity" -> ProvisionalLayerCli.promoteProvisionalEntity(options)
                 else -> {
                     System.err.println("Unknown command: $command")
                     printHelp()
@@ -190,13 +197,13 @@ class Cli {
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>
-              validate-result --db <path> --context <path> --result <path>
+              validate-result --db <path> --context <path> --result <path> [--evidence <path>] [--sample-label <text>] [--strict-narrative-quality] [--narrative-quality-out <path>]
               apply-result --db <path> --context <path> --result <path>
               run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>
               show-state --db <path> --project <id>
-              start-session [--db <path>] --project <id> --scene <id>
+              start-session [--db <path>] --project <id> --scene <id> [--reader-mode]
               prepare-turn [--db <path>] --session <id> (--input <text> | --input-file <path>) --out <path>
-              resolve-turn [--db <path>] --session <id> --result <path>
+              resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--sample-label <text>] [--acknowledge-narrative-quality-warnings] [--require-narrative-quality-acknowledgement] [--strict-narrative-quality] [--narrative-quality-out <path>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>
@@ -227,7 +234,7 @@ class Cli {
               show-dependencies [--db <path>] --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]
               validate-project-canon [--db <path>] --project <id> [--out <path>]
               audit-context --file <path> [--out <path>]
-              audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]
+              audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--sample-label <text>] [--out <path>]
               audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]
               create-setting-script-packet-draft --setting-pack <path> [--scene <id>] [--packet <id>] [--build <id>] --out <path> [--validation-out <path>] [--report-out <path>]
               build-setting-image-facing-proof-preview --setting-pack <path> --output-dir <path> [--scene <id>] [--build <id>] [--script-packet <id>] [--storyboard-brief <id>] [--storyboard-draft <id>] [--storyboard-review <id>] [--human-review-preflight <id>] [--story-movement-audit <id>] [--reviewable-storyboard <id>] [--proof <id>] [--report-out <path>]
@@ -325,6 +332,12 @@ class Cli {
               show-timeline [--db <path>] --project <id>
               verify-replay-chain [--db <path>] --session <id> [--out <path>] [--record]
               export-timeline [--db <path>] --project <id> --out <path>
+              import-canon-thin-zones [--db <path>] --project <id> --file <path> [--out <path>]
+              list-canon-thin-zones [--db <path>] --project <id> [--out <path>]
+              list-provisional-entities [--db <path>] --session <id> [--out <path>]
+              export-provisional-backlog [--db <path>] --session <id> --out <path>
+              discard-provisional-entity [--db <path>] --session <id> --entity <id> [--actor <text>] [--note <text>]
+              promote-provisional-entity [--db <path>] --session <id> --entity <id> --out <path>
             """.trimIndent(),
         )
     }

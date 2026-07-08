@@ -39,6 +39,11 @@ import com.localnovel.engine.model.Secret
 import com.localnovel.engine.model.SessionThreadState
 import com.localnovel.engine.model.StoryThread
 import com.localnovel.engine.model.StorySession
+import com.localnovel.engine.model.CanonThinZoneView
+import com.localnovel.engine.model.ProvisionalAgencyProfile
+import com.localnovel.engine.model.ProvisionalEntityProposal
+import com.localnovel.engine.model.ProvisionalEntityView
+import com.localnovel.engine.model.ProvisionalPromotionRecommendation
 import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
 import com.localnovel.engine.model.TimelineBranch
@@ -81,6 +86,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "006_checkpoint_branching_runtime.sql",
                     "007_world_source_archive.sql",
                     "008_ai_task_queue.sql",
+                    "009_provisional_layer.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -600,7 +606,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -609,6 +615,377 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.executeQuery().use { rows ->
                 if (rows.next()) rows.toStorySession() else null
             }
+        }
+    }
+
+    fun getSessionReaderMode(sessionId: String): Boolean =
+        getSession(sessionId)?.readerMode ?: false
+
+    fun upsertCanonThinZone(
+        projectId: String,
+        thinZoneId: String,
+        label: String,
+        reason: String,
+        allowedProposalTypes: List<String>,
+        status: String,
+        sourcePath: String,
+    ): Unit = connect { connection ->
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT INTO canon_thin_zones(
+                thin_zone_id, project_id, label, reason, allowed_proposal_types_json, status, source_path, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(project_id, thin_zone_id) DO UPDATE SET
+                label = excluded.label,
+                reason = excluded.reason,
+                allowed_proposal_types_json = excluded.allowed_proposal_types_json,
+                status = excluded.status,
+                source_path = excluded.source_path,
+                updated_at = excluded.updated_at
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, thinZoneId)
+            statement.setString(2, projectId)
+            statement.setString(3, label)
+            statement.setString(4, reason)
+            statement.setString(5, JsonSupport.json.encodeToString(allowedProposalTypes))
+            statement.setString(6, status)
+            statement.setString(7, sourcePath)
+            statement.setString(8, timestamp)
+            statement.setString(9, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    fun listCanonThinZones(projectId: String): List<CanonThinZoneView> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT thin_zone_id, label, reason, allowed_proposal_types_json, status
+            FROM canon_thin_zones
+            WHERE project_id = ?
+            ORDER BY thin_zone_id
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            CanonThinZoneView(
+                                thinZoneId = rows.getString("thin_zone_id"),
+                                label = rows.getString("label"),
+                                reason = rows.getString("reason"),
+                                allowedProposalTypes = decodeList(rows.getString("allowed_proposal_types_json")),
+                                status = rows.getString("status"),
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun applyProvisionalTurnWrites(context: ContextPacket, result: AiTurnResult): Unit = connect { connection ->
+        applyProvisionalTurnWritesOnConnection(connection, context, result)
+    }
+
+    private fun applyProvisionalTurnWritesOnConnection(
+        connection: Connection,
+        context: ContextPacket,
+        result: AiTurnResult,
+    ) {
+        val sceneId = context.activeScene?.id
+        result.entityProposals.forEach { proposal ->
+            insertProvisionalEntityOnConnection(
+                connection = connection,
+                projectId = context.project.id,
+                sessionId = context.sessionId,
+                turnId = context.turnId,
+                turnNumber = context.turnNumber,
+                sceneId = sceneId,
+                proposal = proposal,
+            )
+            if (proposal.lifespan == "PROMOTION_CANDIDATE") {
+                val entityId = findProvisionalEntityIdOnConnection(connection, context.sessionId, proposal.proposalId)
+                    ?: error("Provisional entity not found after insert: ${proposal.proposalId}")
+                enqueuePromotionOnConnection(
+                    connection = connection,
+                    projectId = context.project.id,
+                    sessionId = context.sessionId,
+                    entityId = entityId,
+                    source = "AI",
+                    turnNumber = context.turnNumber,
+                    recommendation = defaultProvisionalSelfRecommendation(proposal),
+                )
+            }
+        }
+        result.promotionRecommendations.forEach { recommendation ->
+            val entityId = recommendation.entityId
+                ?: recommendation.proposalId?.let { findProvisionalEntityIdOnConnection(connection, context.sessionId, it) }
+                ?: error("Promotion recommendation missing entity target.")
+            enqueuePromotionOnConnection(
+                connection = connection,
+                projectId = context.project.id,
+                sessionId = context.sessionId,
+                entityId = entityId,
+                source = "AI",
+                turnNumber = context.turnNumber,
+                recommendation = recommendation,
+            )
+        }
+    }
+
+    fun insertProvisionalEntity(
+        projectId: String,
+        sessionId: String,
+        turnId: String,
+        turnNumber: Int,
+        sceneId: String?,
+        proposal: ProvisionalEntityProposal,
+    ): String = connect { connection ->
+        insertProvisionalEntityOnConnection(connection, projectId, sessionId, turnId, turnNumber, sceneId, proposal)
+    }
+
+    private fun insertProvisionalEntityOnConnection(
+        connection: Connection,
+        projectId: String,
+        sessionId: String,
+        turnId: String,
+        turnNumber: Int,
+        sceneId: String?,
+        proposal: ProvisionalEntityProposal,
+    ): String {
+        val entityId = newId("prov-entity")
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_entities(
+                entity_id, project_id, session_id, proposal_id, entity_type, display_name, thin_zone_id,
+                lifespan, introduction_beat, agency_profile_json, narrative_role, evidence_hooks_json,
+                perceived_by_character_ids_json, visibility, status, current_scene_id, created_turn_number,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, entityId)
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, proposal.proposalId)
+            statement.setString(5, proposal.entityType)
+            statement.setString(6, proposal.displayName)
+            statement.setString(7, proposal.thinZoneId)
+            statement.setString(8, proposal.lifespan)
+            statement.setString(9, proposal.introductionBeat)
+            statement.setString(10, JsonSupport.json.encodeToString(proposal.agencyProfile))
+            statement.setString(11, proposal.narrativeRole)
+            statement.setString(12, JsonSupport.json.encodeToString(proposal.evidenceHooks))
+            statement.setString(13, JsonSupport.json.encodeToString(proposal.perceivedByCharacterIds))
+            statement.setString(14, "session_provisional")
+            statement.setString(15, "ACTIVE")
+            statement.setString(16, sceneId)
+            statement.setInt(17, turnNumber)
+            statement.setString(18, timestamp)
+            statement.setString(19, timestamp)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_entity_evidence(evidence_id, entity_id, turn_id, turn_number, evidence_type, evidence_ref, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-evidence"))
+            statement.setString(2, entityId)
+            statement.setString(3, turnId)
+            statement.setInt(4, turnNumber)
+            statement.setString(5, "turn_introduction")
+            statement.setString(6, proposal.proposalId)
+            statement.setString(7, timestamp)
+            statement.executeUpdate()
+        }
+        return entityId
+    }
+
+    fun findProvisionalEntityId(sessionId: String, proposalId: String): String? = connect { connection ->
+        findProvisionalEntityIdOnConnection(connection, sessionId, proposalId)
+    }
+
+    private fun findProvisionalEntityIdOnConnection(
+        connection: Connection,
+        sessionId: String,
+        proposalId: String,
+    ): String? =
+        connection.prepareStatement(
+            "SELECT entity_id FROM provisional_entities WHERE session_id = ? AND proposal_id = ?",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, proposalId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("entity_id") else null }
+        }
+
+    fun listProvisionalEntities(sessionId: String): List<ProvisionalEntityView> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT e.entity_id, e.proposal_id, e.entity_type, e.display_name, e.thin_zone_id, e.lifespan,
+                   e.introduction_beat, e.agency_profile_json, e.narrative_role, e.status, e.current_scene_id,
+                   q.status AS queue_status
+            FROM provisional_entities e
+            LEFT JOIN provisional_promotion_queue q
+              ON q.entity_id = e.entity_id AND q.status = 'PENDING'
+            WHERE e.session_id = ?
+            ORDER BY e.created_turn_number, e.display_name
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(rows.toProvisionalEntityView())
+                    }
+                }
+            }
+        }
+    }
+
+    fun enqueuePromotion(
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        source: String,
+        turnNumber: Int,
+        recommendation: ProvisionalPromotionRecommendation,
+    ): Unit = connect { connection ->
+        enqueuePromotionOnConnection(connection, projectId, sessionId, entityId, source, turnNumber, recommendation)
+    }
+
+    private fun enqueuePromotionOnConnection(
+        connection: Connection,
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        source: String,
+        turnNumber: Int,
+        recommendation: ProvisionalPromotionRecommendation,
+    ) {
+        val existing = connection.prepareStatement(
+            "SELECT queue_id FROM provisional_promotion_queue WHERE entity_id = ? AND status = 'PENDING'",
+        ).use { statement ->
+            statement.setString(1, entityId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("queue_id") else null }
+        }
+        val timestamp = now()
+        val payload = recommendation.copy(entityId = entityId)
+        if (existing != null) {
+            connection.prepareStatement(
+                """
+                UPDATE provisional_promotion_queue
+                SET source = ?, recommendation_json = ?, updated_at = ?, created_turn_number = ?
+                WHERE queue_id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, source)
+                statement.setString(2, JsonSupport.json.encodeToString(payload))
+                statement.setString(3, timestamp)
+                statement.setInt(4, turnNumber)
+                statement.setString(5, existing)
+                statement.executeUpdate()
+            }
+            return
+        }
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_promotion_queue(
+                queue_id, project_id, session_id, entity_id, source, status, recommendation_json,
+                created_turn_number, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-promo"))
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.setString(5, source)
+            statement.setString(6, JsonSupport.json.encodeToString(payload))
+            statement.setInt(7, turnNumber)
+            statement.setString(8, timestamp)
+            statement.setString(9, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun defaultProvisionalSelfRecommendation(proposal: ProvisionalEntityProposal): ProvisionalPromotionRecommendation =
+        ProvisionalPromotionRecommendation(
+            recommendationId = "self-${proposal.proposalId}",
+            proposalId = proposal.proposalId,
+            qualificationChecks = listOf("SOUL", "NARRATIVE_LANDED"),
+            reason = proposal.introductionBeat,
+            readerValue = proposal.introductionBeat,
+            irreplaceability = proposal.agencyProfile.desire,
+            formalIdentityDraft = "${proposal.displayName}｜${proposal.narrativeRole}",
+            exitIfNotPromoted = "降為傳聞或離場，不再以正式角色引用。",
+        )
+
+    fun listPendingPromotionRecommendations(sessionId: String): List<ProvisionalPromotionRecommendation> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT recommendation_json
+            FROM provisional_promotion_queue
+            WHERE session_id = ? AND status = 'PENDING'
+            ORDER BY created_turn_number
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(JsonSupport.json.decodeFromString(rows.getString("recommendation_json")))
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateProvisionalEntityStatus(sessionId: String, entityId: String, status: String): Unit = connect { connection ->
+        connection.prepareStatement(
+            "UPDATE provisional_entities SET status = ?, updated_at = ? WHERE session_id = ? AND entity_id = ?",
+        ).use { statement ->
+            statement.setString(1, status)
+            statement.setString(2, now())
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.executeUpdate()
+        }
+    }
+
+    fun recordPromotionAction(
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        queueId: String?,
+        action: String,
+        actor: String,
+        note: String,
+        patchPath: String? = null,
+    ): Unit = connect { connection ->
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_promotion_records(
+                record_id, project_id, session_id, entity_id, queue_id, action, actor, note, patch_path, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-promo-record"))
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.setString(5, queueId)
+            statement.setString(6, action)
+            statement.setString(7, actor)
+            statement.setString(8, note)
+            statement.setString(9, patchPath)
+            statement.setString(10, now())
+            statement.executeUpdate()
         }
     }
 
@@ -630,7 +1007,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
-    fun startSession(projectId: String, sceneId: String): StorySession = connect { connection ->
+    fun startSession(projectId: String, sceneId: String, readerMode: Boolean = false): StorySession = connect { connection ->
         connection.autoCommit = false
         try {
             val sessionId = newId("session")
@@ -677,9 +1054,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 """
                 INSERT INTO story_sessions(
                     id, project_id, current_scene_id, next_turn_number, state_version, status,
-                    current_scene_instance_id, world_time, elapsed_minutes, branch_id, created_at, updated_at
+                    current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode, created_at, updated_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """.trimIndent(),
             ).use { statement ->
                 statement.setString(1, session.id)
@@ -692,8 +1069,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.setString(8, session.worldTime)
                 statement.setInt(9, session.elapsedMinutes)
                 statement.setString(10, branchId)
-                statement.setString(11, timestamp)
+                statement.setInt(11, if (readerMode) 1 else 0)
                 statement.setString(12, timestamp)
+                statement.setString(13, timestamp)
                 statement.executeUpdate()
             }
             connection.prepareStatement("UPDATE timeline_branches SET active_session_id = ?, updated_at = ? WHERE id = ?").use { statement ->
@@ -1109,6 +1487,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             applySceneTransition(connection, context, result)
             applyWorldClock(connection, context, result)
             recordSuccessfulRecall(connection, context)
+            if (result.entityProposals.isNotEmpty() || result.promotionRecommendations.isNotEmpty()) {
+                applyProvisionalTurnWritesOnConnection(connection, context, result)
+            }
             connection.prepareStatement(
                 """
                 UPDATE turn_logs
@@ -2968,7 +3349,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -2976,6 +3357,26 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(1, sessionId)
             statement.executeQuery().use { rows -> if (rows.next()) rows.toStorySession() else null }
         }
+
+    private fun ResultSet.toProvisionalEntityView(): ProvisionalEntityView {
+        val agency = runCatching {
+            JsonSupport.json.decodeFromString<ProvisionalAgencyProfile>(getString("agency_profile_json"))
+        }.getOrDefault(ProvisionalAgencyProfile())
+        return ProvisionalEntityView(
+            entityId = getString("entity_id"),
+            proposalId = getString("proposal_id"),
+            entityType = getString("entity_type"),
+            displayName = getString("display_name"),
+            thinZoneId = getString("thin_zone_id"),
+            lifespan = getString("lifespan"),
+            introductionBeat = getString("introduction_beat"),
+            agencyProfile = agency,
+            narrativeRole = getString("narrative_role"),
+            status = getString("status"),
+            currentSceneId = getString("current_scene_id"),
+            promotionQueueStatus = runCatching { getString("queue_status") }.getOrNull(),
+        )
+    }
 
     private fun selectPendingTurnLogId(connection: Connection, sessionId: String, contextId: String): String? =
         connection.prepareStatement(
@@ -3338,6 +3739,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         currentSceneInstanceId = runCatching { getString("current_scene_instance_id") }.getOrNull(),
         worldTime = runCatching { getString("world_time") }.getOrNull().orEmpty(),
         elapsedMinutes = runCatching { getInt("elapsed_minutes") }.getOrDefault(0),
+        readerMode = runCatching { getInt("reader_mode") == 1 }.getOrDefault(false),
     )
 
     private fun decodeJsonObject(value: String?): JsonObject =
