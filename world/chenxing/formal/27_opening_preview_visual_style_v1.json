@@ -4,15 +4,17 @@
   "lockedAt": "2026-07-08",
   "locale": "zh-TW",
   "series": "塵行",
-  "purpose": "開場試看畫面風格鎖；與角色長相鎖分離。",
+  "purpose": "試看與製作畫面風格鎖；與角色長相鎖分離。",
   "authorStyleReferences": {
     "sourcePaths": [
       "C:\\Users\\f7212\\.codex\\generated_images\\019ee90a-671e-76a0-b264-66cf5b713b4d\\ig_062ffbee04f364c6016a38e8fb8c988191bfa4e11c6b684469.png",
-      "C:\\Users\\f7212\\.codex\\generated_images\\019ee90a-671e-76a0-b264-66cf5b713b4d\\ig_0145ecd9e1933d48016a38c710f70c819181751ef99ed971ec.png"
+      "C:\\Users\\f7212\\.codex\\generated_images\\019ee90a-671e-76a0-b264-66cf5b713b4d\\ig_0145ecd9e1933d48016a38c710f70c819181751ef99ed971ec.png",
+      "C:\\Users\\f7212\\.codex\\generated_images\\019f0dd1-1543-7f22-b646-5c12d07d168d\\ig_071a39095d56ce32016a4442c7ba808191b5344d27a7ce9275.png"
     ],
     "projectPaths": {
       "cinematicMistyGrid": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png",
-      "bwStoryboardGrid": "world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png"
+      "bwStoryboardGrid": "world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png",
+      "darkRainTealCinematic": "world/chenxing/assets/style_reference/chenxing_style_dark_rain_teal_cinematic_v1.png"
     }
   },
   "styleLayers": {
@@ -25,25 +27,41 @@
       "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
     },
     "renderStyleLayer": {
-      "rule": "光影、霧、構圖、分鏡質感：以作者提供之兩張風格參考為準。",
+      "rule": "光影、霧、構圖、分鏡質感：以作者提供之風格參考為準；依場景選模式。",
       "primaryMode": "bw_storyboard_graphic_novel",
       "secondaryMode": "cinematic_misty_color",
+      "tertiaryMode": "dark_rain_teal_cinematic_illustration",
       "lockedTraits": [
         "heavy_fog_and_atmospheric_perspective",
         "wet_muddy_ground_texture",
         "cinematic_depth_and_mood",
         "multi_panel_storyboard_layout_when_needed",
         "high_contrast_bw_ink_for_storyboard_pass",
-        "muted_desaturated_color_for_cinematic_pass"
+        "muted_desaturated_color_for_cinematic_pass",
+        "heavy_rain_and_wet_reflective_surfaces",
+        "teal_cyan_rim_light_and_lantern_glow",
+        "dark_anime_realistic_illustration_pass"
       ]
     }
   },
   "styleNotesFromAuthorSamples": {
     "bwStoryboard": "黑白分鏡漫畫感；濃霧、雨、山徑、鐵軌、遠處燈光；人狗同行構圖穩定。",
-    "cinematicMisty": "彩色電影感；晨霧、泥路、廢墟聚落燈火、背包旅人與哈士奇；氛圍壓抑寫實。"
+    "cinematicMisty": "彩色電影感；晨霧、泥路、廢墟聚落燈火、背包旅人與哈士奇；氛圍壓抑寫實。",
+    "darkRainTealCinematic": "暗色雨夜、青綠燈光、濕地反光、動畫寫實插畫感；古建門樓與科幻燈飾並存。"
+  },
+  "styleModeByStoryPhase": {
+    "volume_one_taiwan_opening": [
+      "bw_storyboard_graphic_novel",
+      "cinematic_misty_color"
+    ],
+    "post_crossing_fortress_and_fantasy": [
+      "dark_rain_teal_cinematic_illustration",
+      "cinematic_misty_color"
+    ],
+    "rule": "2026 大坪海岸開場優先黑白分鏡或霧氣電影感；暗雨青綠插畫風留給穿越後要塞/奇幻段。"
   },
   "explicitWarnings": {
-    "authorSamplesAreStyleNotLikeness": "兩張參考內男主為連帽外套年輕造型，不是 2026 開場現代服裝定稿；只能借風格，不能借長相。",
+    "authorSamplesAreStyleNotLikeness": "風格參考內人物造型（連帽外套、古裝女俠、燈籠等）不是開場定稿；只能借畫風，不能借長相或服裝。",
     "cursorGenerateImageLimit": "Cursor 內純文字出圖無法附參考圖，不能單靠此環境穩定還原此風格。",
     "recommendedProductionPath": "用作者 Codex/外部可吃參考圖的工具：風格參考 + 鎖定三視圖一起餵。"
   },
