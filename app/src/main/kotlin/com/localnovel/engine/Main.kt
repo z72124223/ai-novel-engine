@@ -160,6 +160,8 @@ class Cli {
                 "create-novelization-accepted-draft-packet" -> NovelizationCli.createNovelizationAcceptedDraftPacket(options)
                 "validate-novelization-script-packet-preflight" -> NovelizationCli.validateNovelizationScriptPacketPreflight(options)
                 "export-session-evidence" -> StorySessionCli.exportSessionEvidence(options)
+                "export-audio-novel-episode" -> StorySessionCli.exportAudioNovelEpisode(options)
+                "audit-audio-novel-publish" -> StorySessionCli.auditAudioNovelPublish(options)
                 "pilot-preflight" -> StorySessionCli.pilotPreflight(options)
                 "explain-context-budget" -> StorySessionCli.explainContextBudget(options)
                 "explain-capability" -> StorySessionCli.explainCapability(options)
@@ -197,13 +199,13 @@ class Cli {
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>
-              validate-result --db <path> --context <path> --result <path> [--evidence <path>] [--sample-label <text>] [--strict-narrative-quality] [--narrative-quality-out <path>]
+              validate-result --db <path> --context <path> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               apply-result --db <path> --context <path> --result <path>
               run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>
               show-state --db <path> --project <id>
               start-session [--db <path>] --project <id> --scene <id> [--reader-mode]
               prepare-turn [--db <path>] --session <id> (--input <text> | --input-file <path>) --out <path>
-              resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--sample-label <text>] [--acknowledge-narrative-quality-warnings] [--require-narrative-quality-acknowledgement] [--strict-narrative-quality] [--narrative-quality-out <path>]
+              resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--acknowledge-narrative-quality-warnings] [--require-narrative-quality-acknowledgement] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>
@@ -234,7 +236,7 @@ class Cli {
               show-dependencies [--db <path>] --project <id> [--entity-type <type> --entity-id <id>] [--depth <n>]
               validate-project-canon [--db <path>] --project <id> [--out <path>]
               audit-context --file <path> [--out <path>]
-              audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--sample-label <text>] [--out <path>]
+              audit-narrative-quality [--db <path>] --context <path> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]
               create-setting-script-packet-draft --setting-pack <path> [--scene <id>] [--packet <id>] [--build <id>] --out <path> [--validation-out <path>] [--report-out <path>]
               build-setting-image-facing-proof-preview --setting-pack <path> --output-dir <path> [--scene <id>] [--build <id>] [--script-packet <id>] [--storyboard-brief <id>] [--storyboard-draft <id>] [--storyboard-review <id>] [--human-review-preflight <id>] [--story-movement-audit <id>] [--reviewable-storyboard <id>] [--proof <id>] [--report-out <path>]
@@ -321,6 +323,8 @@ class Cli {
               create-novelization-accepted-draft-packet --revised-draft <path> --revised-draft-intake-report <path> --revision-brief-report <path> --continuity-anchors <path> [--packet <id>] --out <path>
               validate-novelization-script-packet-preflight --accepted-draft-packet <path> [--preflight <id>] [--out <path>]
               export-session-evidence [--db <path>] --session <id> --out <path>
+              export-audio-novel-episode [--db <path>] --session <id> --out-dir <path> [--episode-id <id>] [--title <text>] [--from-turn <n>] [--to-turn <n>] [--cover <path>] [--publish]
+              audit-audio-novel-publish --episode-dir <path> [--db <path>] --session <id> [--from-turn <n>] [--to-turn <n>] [--out <path>]
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
               explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
               explain-capability [--db <path>] --session <id> --entity-type <technique|item|weapon> --entity-id <id> [--actor <character-id>] [--intended-use <text>] [--out <path>]

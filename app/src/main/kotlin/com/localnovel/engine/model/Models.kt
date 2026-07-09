@@ -585,6 +585,18 @@ data class ContextPacket(
     val provisionalEntities: List<com.localnovel.engine.model.ProvisionalEntityView> = emptyList(),
     @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     val readerMode: Boolean = false,
+    val narrativeDelivery: NarrativeDeliveryExpectation = NarrativeDeliveryExpectation(),
+    val oralLineCandidates: List<OralLineCandidate> = emptyList(),
+)
+
+@Serializable
+data class OralLineCandidate(
+    val lineId: String = "",
+    val speaker: String = "",
+    val line: String = "",
+    val lineType: String = "dialogue",
+    val delivery: String = "",
+    val sourceBeatId: String = "",
 )
 
 @Serializable
@@ -678,6 +690,29 @@ data class DirectorPressure(
 )
 
 @Serializable
+enum class DeliveryMode {
+    @SerialName("DEFAULT")
+    DEFAULT,
+
+    @SerialName("PLAIN_ORAL")
+    PLAIN_ORAL,
+
+    @SerialName("SHOOTABLE")
+    SHOOTABLE,
+}
+
+@Serializable
+data class NarrativeDeliveryExpectation(
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val deliveryMode: DeliveryMode = DeliveryMode.DEFAULT,
+    val activeBeatId: String = "",
+    val activeBeatTitle: String = "",
+    val beatKeywords: List<String> = emptyList(),
+    val requiredExposition: List<String> = emptyList(),
+    val advisoryNote: String = "",
+)
+
+@Serializable
 data class OutputRequirements(
     @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     val mustIncludeTurnSummary: Boolean = true,
@@ -685,6 +720,8 @@ data class OutputRequirements(
     val mustIncludeCharacterActions: Boolean = true,
     @EncodeDefault(EncodeDefault.Mode.ALWAYS)
     val mustProduceMeaningfulStateChange: Boolean = false,
+    @EncodeDefault(EncodeDefault.Mode.ALWAYS)
+    val deliveryMode: DeliveryMode = DeliveryMode.DEFAULT,
 )
 
 @Serializable
@@ -1488,6 +1525,74 @@ data class NarrativeQualityFinding(
     val suggestedFix: String,
     @SerialName("affected_file_or_turn")
     val affectedFileOrTurn: String = "",
+)
+
+@Serializable
+data class LearnedNarrativeRule(
+    val ruleId: String,
+    val category: String,
+    val severity: String = "MAJOR",
+    val patternType: String = "narrative_contains",
+    val pattern: String,
+    val message: String,
+    val suggestedFix: String = "",
+    val sourceRuleId: String = "",
+    val sourceEvidence: String = "",
+    val promotedAt: String = "",
+    val hitCount: Int = 1,
+)
+
+@Serializable
+data class LearnedNarrativeRulePack(
+    val projectId: String,
+    val schemaVersion: String = "learned-narrative-rule-pack-v1",
+    val updatedAt: String = "",
+    val rules: List<LearnedNarrativeRule> = emptyList(),
+)
+
+@Serializable
+data class LogicAuditReport(
+    val schemaVersion: String = "logic-audit-v1",
+    val projectId: String = "",
+    val turnId: String = "",
+    val findings: List<NarrativeQualityFinding> = emptyList(),
+)
+
+@Serializable
+data class NarrativeRulePromotionReport(
+    val projectId: String,
+    val promotedCount: Int = 0,
+    val skippedCount: Int = 0,
+    val promotedRuleIds: List<String> = emptyList(),
+    val storePath: String = "",
+)
+
+@Serializable
+data class AudioNovelEpisodeSection(
+    val turnNumber: Int,
+    val turnId: String = "",
+    val beatId: String = "",
+    val beatTitle: String = "",
+    val playerInput: String = "",
+    val narrative: String = "",
+    val turnSummary: String = "",
+)
+
+@Serializable
+data class AudioNovelEpisodeExport(
+    val schemaVersion: String = "audio-novel-episode-v1",
+    val episodeId: String = "",
+    val title: String = "",
+    val projectId: String = "",
+    val sessionId: String = "",
+    val fromTurn: Int = 1,
+    val toTurn: Int = 1,
+    val turnCount: Int = 0,
+    val scriptMarkdown: String = "",
+    val sections: List<AudioNovelEpisodeSection> = emptyList(),
+    val voiceTimeline: ComicVideoVoiceTimelineFill = ComicVideoVoiceTimelineFill(),
+    val coverImagePath: String = "",
+    val notes: List<String> = emptyList(),
 )
 
 @Serializable

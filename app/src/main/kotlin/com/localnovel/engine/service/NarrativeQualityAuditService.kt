@@ -2,6 +2,7 @@ package com.localnovel.engine.service
 
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ContextPacket
+import com.localnovel.engine.model.DeliveryMode
 import com.localnovel.engine.model.NarrativeQualityAuditEvidence
 import com.localnovel.engine.model.NarrativeQualityAuditReport
 import com.localnovel.engine.model.NarrativeQualityFinding
@@ -14,6 +15,9 @@ data class NarrativeQualityAuditInput(
     val resultFile: String = "",
     val evidenceFile: String = "",
     val evidenceText: String = "",
+    val sampleLabel: String = "",
+    val dbPath: String = "",
+    val logicAuditFindings: List<com.localnovel.engine.model.NarrativeQualityFinding> = emptyList(),
 )
 
 class NarrativeQualityAuditService {
@@ -29,8 +33,11 @@ class NarrativeQualityAuditService {
             addAll(checkContextQuality(context, result, input))
             addAll(checkKnowledgeBoundaries(context, result, input))
             addAll(checkStyle(result, input))
+            addAll(checkNarrativeDelivery(context, result, input))
             addAll(checkConsequences(result, input))
             addAll(checkPilotEvidence(input))
+            addAll(checkLearnedRules(context, result, input))
+            addAll(input.logicAuditFindings)
         }.distinctBy { "${it.ruleId}:${it.affectedFileOrTurn}:${it.evidence.joinToString("|")}" }
             .sortedWith(compareBy<NarrativeQualityFinding> { severityRank(it.severity) }.thenBy { it.ruleId })
 
@@ -48,10 +55,12 @@ class NarrativeQualityAuditService {
             score = score,
             severity = severity,
             findings = findings,
+            findingSummaryByCategory = findings.groupingBy { it.category }.eachCount(),
             evidence = NarrativeQualityAuditEvidence(
                 contextFile = input.contextFile,
                 resultFile = input.resultFile,
                 evidenceFile = input.evidenceFile,
+                sampleLabel = input.sampleLabel,
                 projectId = context.project.id,
                 turnId = context.turnId,
                 contextId = context.contextId,
@@ -190,12 +199,13 @@ class NarrativeQualityAuditService {
         result: AiTurnResult,
         input: NarrativeQualityAuditInput,
     ): List<NarrativeQualityFinding> = buildList {
-        val hasSettingPressure = context.settingContextBudget.omittedSettingCount > 0 ||
-            context.contextBudget.omittedSettingCount > 0 ||
-            context.availableTransitions.isNotEmpty() ||
+        val hasSettingPressure = context.availableTransitions.isNotEmpty() ||
             context.pendingWorldEvents.isNotEmpty() ||
-            context.activeStoryThreads.isNotEmpty()
-        if (context.turnNumber > 0 && context.settingContextBudget.actualBytes <= 16 && hasSettingPressure) {
+            context.activeStoryThreads.isNotEmpty() ||
+            context.sceneRequirements.any { it.status != "COMPLETED" }
+        val needsSettingExcerpt = context.activeStoryThreads.isNotEmpty() ||
+            context.pendingWorldEvents.isNotEmpty()
+        if (context.turnNumber > 0 && context.settingContextBudget.includedSettingCount == 0 && needsSettingExcerpt) {
             add(
                 finding(
                     ruleId = "CONTEXT_SETTING_TOO_THIN",
@@ -344,6 +354,24 @@ class NarrativeQualityAuditService {
                     message = "Narrative names emotions without enough visible behavior.",
                     evidence = (explicitEmotionMatches + directEmotionMatches).distinct().take(8),
                     suggestedFix = "Show emotion through action, gesture, voice, posture, or concrete choice.",
+                    input = input,
+                ),
+            )
+        }
+
+        val causalChains = Regex("因為[^。！？；;]{1,40}，?所以")
+            .findAll(narrative)
+            .map { it.value }
+            .toList()
+        if (causalChains.size >= 2) {
+            add(
+                finding(
+                    ruleId = "AI_FEELING_CAUSAL_CHAIN_STACKING",
+                    category = "ai_feeling",
+                    severity = "WARNING",
+                    message = "Narrative stacks multiple because-so explanation chains instead of dramatizing action.",
+                    evidence = causalChains.take(5),
+                    suggestedFix = "Replace stacked causal explanation with visible choice, dialogue, or consequence.",
                     input = input,
                 ),
             )
@@ -525,6 +553,24 @@ class NarrativeQualityAuditService {
             )
         }
 
+        val notButReframes = Regex("(?:這)?不是[^。！？；;]{1,36}，?(?:而是|是|只是)")
+            .findAll(narrative)
+            .map { it.value }
+            .toList()
+        if (notButReframes.isNotEmpty()) {
+            add(
+                finding(
+                    ruleId = "STYLE_NOT_BUT_REFRAME",
+                    category = "style",
+                    severity = "WARNING",
+                    message = "Narrative uses AI-like 'not X but Y' reframing instead of concrete scene action.",
+                    evidence = notButReframes.take(5),
+                    suggestedFix = "State what visibly happens; avoid decorative contrast chains like 'this is not A, it is B'.",
+                    input = input,
+                ),
+            )
+        }
+
         val parallelSignals = Regex("不是[^。！？；;]{1,40}(而是|只是)|既[^。！？；;]{1,40}也|一邊[^。！？；;]{1,40}一邊")
             .findAll(narrative)
             .map { it.value }
@@ -558,6 +604,479 @@ class NarrativeQualityAuditService {
                 ),
             )
         }
+    }
+
+    private fun checkLearnedRules(
+        context: ContextPacket,
+        result: AiTurnResult,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> {
+        if (input.dbPath.isBlank()) return emptyList()
+        val pack = NarrativeRuleLearningStore.load(
+            projectId = context.project.id,
+            dbPath = java.nio.file.Path.of(input.dbPath),
+        )
+        return LearnedNarrativeRuleEvaluator.evaluate(result.narrative, pack.rules)
+    }
+
+    private fun checkNarrativeDelivery(
+        context: ContextPacket,
+        result: AiTurnResult,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> {
+        val delivery = context.narrativeDelivery
+        if (delivery.deliveryMode == DeliveryMode.DEFAULT) return emptyList()
+        return buildList {
+            addAll(checkSubstanceFloor(context, result, delivery.deliveryMode, input))
+            addAll(checkOralLineCandidates(context, result, input))
+            addAll(checkDialogueSpeakerAttribution(context, result, delivery.deliveryMode, input))
+            addAll(checkCompanionCommandDialogue(context, result, delivery.deliveryMode, input))
+            addAll(checkSimplifiedChineseInNarrative(result, input, context.turnNumber))
+            addAll(checkOralClarity(result, delivery.deliveryMode, input, context.turnNumber))
+            addAll(checkUnshootableFiller(result, delivery.deliveryMode, input))
+            addAll(checkBeatMismatch(result, delivery, input, context.turnNumber))
+        }
+    }
+
+    private fun checkSubstanceFloor(
+        context: ContextPacket,
+        result: AiTurnResult,
+        deliveryMode: DeliveryMode,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        val narrative = result.narrative
+        val characterNames = context.characters.map { it.name }.filter { it.isNotBlank() }
+        val locationSurface = buildString {
+            append(context.activeScene?.title.orEmpty())
+            append(' ')
+            append(context.activeScene?.summary.orEmpty())
+            append(' ')
+            append(context.playerInput)
+        }
+
+        if (context.turnNumber <= 1 && "WHO" in context.narrativeDelivery.requiredExposition) {
+            val whoMatched = characterNames.any { narrative.contains(it) } ||
+                listOf("他", "她", "主角", "玩家").any { narrative.contains(it) }
+            if (!whoMatched) {
+                add(
+                    finding(
+                        ruleId = "NARRATIVE_SUBSTANCE_FLOOR",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Opening narrative must name who is acting.",
+                        evidence = listOf("missing=WHO"),
+                        suggestedFix = "Name the acting character in plain language before atmosphere or abstraction.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+        }
+
+        if (context.turnNumber <= 1 && "WHERE" in context.narrativeDelivery.requiredExposition) {
+            val whereTerms = listOf("海岸", "海邊", "山坡", "廢墟", "碼頭", "祠堂", "廊", "殿", "門", "街", "房", "屋", "路", "山", "港", "灣", "平台", "潮間帶")
+            val whereMatched = whereTerms.any { locationSurface.contains(it) || narrative.contains(it) }
+            if (!whereMatched) {
+                add(
+                    finding(
+                        ruleId = "NARRATIVE_SUBSTANCE_FLOOR",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Opening narrative must establish where the scene happens.",
+                        evidence = listOf("missing=WHERE"),
+                        suggestedFix = "State the visible place in one plain sentence.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+        }
+
+        if (context.turnNumber <= 1 && "WHY" in context.narrativeDelivery.requiredExposition) {
+            val whyTerms = listOf("為了", "因為", "得", "要", "趕", "查", "估", "還有", "窗口", "目的", "任務", "調查", "確認", "等待")
+            val whyMatched = whyTerms.any { narrative.contains(it) || context.playerInput.contains(it) }
+            if (!whyMatched) {
+                add(
+                    finding(
+                        ruleId = "NARRATIVE_SUBSTANCE_FLOOR",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Opening narrative must explain why the character is here or what they are trying to do.",
+                        evidence = listOf("missing=WHY"),
+                        suggestedFix = "Add one concrete purpose, deadline, or immediate task.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+        }
+
+        val actionVerbs = listOf("走", "跑", "退", "蹲", "看", "說", "喊", "摸", "按", "舉", "轉", "拉", "推", "抓", "站", "坐", "抬", "低", "握", "攀", "躲", "查", "估", "記", "寫", "聽", "問", "答", "守", "擋", "讓", "跟")
+        val dialogueMarkers = listOf("「", "」", "：", "——")
+        val hasNarrativeAction = actionVerbs.any { narrative.contains(it) } ||
+            dialogueMarkers.any { narrative.contains(it) }
+        if (!hasNarrativeAction) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_SUBSTANCE_FLOOR",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Narrative lacks a concrete visible action.",
+                    evidence = listOf("missing=EVENT"),
+                    suggestedFix = "Show what someone does, says, or changes in the scene.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+
+        if (deliveryMode == DeliveryMode.SHOOTABLE && result.characterActions.none { it.visibleAction.length >= 6 }) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_SUBSTANCE_FLOOR",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Shootable delivery requires at least one explicit visible action line.",
+                    evidence = listOf("missing=visibleAction"),
+                    suggestedFix = "Add a characterActions visibleAction that a camera can capture.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+    }
+
+    private fun checkOralLineCandidates(
+        context: ContextPacket,
+        result: AiTurnResult,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        if (context.oralLineCandidates.isEmpty()) return@buildList
+        if (context.narrativeDelivery.deliveryMode == DeliveryMode.DEFAULT) return@buildList
+
+        val dialogueCandidates = context.oralLineCandidates
+            .filter { it.lineType == "dialogue" && it.line.isNotBlank() }
+            .map { it.line }
+        if (dialogueCandidates.isEmpty()) return@buildList
+
+        val quotedDialogue = OralLineMatcher.extractQuotedDialogue(result.narrative)
+        if (quotedDialogue.isEmpty()) {
+            add(
+                finding(
+                    ruleId = "DIALOGUE_MUST_USE_ORAL_CANDIDATES",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Oral delivery requires quoted dialogue from oralLineCandidates when dialogue slots exist.",
+                    evidence = dialogueCandidates.take(2),
+                    suggestedFix = "Use one of context.oralLineCandidates dialogue lines inside Chinese quotation marks.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+            return@buildList
+        }
+
+        val jargonTerms = listOf("退潮窗口", "時間窗口", "敘事窗口", "語義", "敘事節奏", "窗口期")
+        quotedDialogue.forEach { quote ->
+            val jargonMatches = jargonTerms.filter { quote.contains(it) }
+            if (jargonMatches.isNotEmpty()) {
+                add(
+                    finding(
+                        ruleId = "DIALOGUE_MUST_USE_ORAL_CANDIDATES",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Quoted dialogue contains technical or AI-like jargon instead of oral candidate lines.",
+                        evidence = jargonMatches,
+                        suggestedFix = "Replace jargon dialogue with a context.oralLineCandidates line.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+            if (dialogueCandidates.none { candidate -> OralLineMatcher.matchesSpokenLine(quote, candidate) }) {
+                add(
+                    finding(
+                        ruleId = "DIALOGUE_MUST_USE_ORAL_CANDIDATES",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Quoted dialogue does not match any oralLineCandidates dialogue slot.",
+                        evidence = listOf("quote=$quote") + dialogueCandidates.take(2),
+                        suggestedFix = "Pick a dialogue line from context.oralLineCandidates; minor wording edits only.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun checkDialogueSpeakerAttribution(
+        context: ContextPacket,
+        result: AiTurnResult,
+        deliveryMode: DeliveryMode,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        if (deliveryMode == DeliveryMode.DEFAULT) return@buildList
+        val quotedDialogue = OralLineMatcher.extractQuotedDialogue(result.narrative)
+        if (quotedDialogue.isEmpty()) return@buildList
+
+        val characterNames = context.characters.map { it.name }.filter { it.isNotBlank() }
+        val unattributed = NarrativeOralFormatter.findDialogueWithoutAttribution(
+            narrative = result.narrative,
+            characterNames = characterNames,
+        )
+        if (unattributed.isNotEmpty()) {
+            add(
+                finding(
+                    ruleId = "DIALOGUE_REQUIRES_SPEAKER_ATTRIBUTION",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Quoted dialogue must be introduced with a speaker attribution such as 某某說/道/問 before the quotation marks.",
+                    evidence = unattributed.take(2).map { "quote=$it" },
+                    suggestedFix = "Rewrite as `陸塵行低聲道：「...」` or `沈霜問：「...」`; do not place dialogue directly after narration without 說/道/問/答.",
+                    input = input,
+                    turn = context.turnNumber,
+                ),
+            )
+        }
+    }
+
+    private fun checkSimplifiedChineseInNarrative(
+        result: AiTurnResult,
+        input: NarrativeQualityAuditInput,
+        turnNumber: Int,
+    ): List<NarrativeQualityFinding> = buildList {
+        val hits = SIMPLIFIED_CHINESE_MARKERS.filter { (simplified, _) -> result.narrative.contains(simplified) }
+        if (hits.isEmpty()) return@buildList
+        add(
+            finding(
+                ruleId = "SIMPLIFIED_CHINESE_IN_NARRATIVE",
+                category = "narrative_delivery",
+                severity = "WARNING",
+                message = "Narrative contains simplified Chinese characters unsuitable for Traditional publish text.",
+                evidence = hits.map { (from, to) -> "$from->$to" },
+                suggestedFix = "Rewrite with Traditional characters, e.g. ${hits.first().second}.",
+                input = input,
+                turn = turnNumber,
+            ),
+        )
+    }
+
+    private fun checkCompanionCommandDialogue(
+        context: ContextPacket,
+        result: AiTurnResult,
+        deliveryMode: DeliveryMode,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        if (deliveryMode == DeliveryMode.DEFAULT) return@buildList
+        val companionNames = context.characters
+            .filter { character ->
+                character.role == "co-protagonist" || character.id == "char-aijiang"
+            }
+            .map { it.name }
+            .filter { it.isNotBlank() }
+        if (companionNames.isEmpty()) return@buildList
+
+        val commandTerms = listOf("跟我走", "跟我來", "過來", "快走", "跟上", "聽話", "乖")
+        OralLineMatcher.extractQuotedDialogue(result.narrative).forEach { quote ->
+            val addressedCompanion = companionNames.any { quote.contains(it) }
+            val hasCommand = commandTerms.any { quote.contains(it) }
+            if (addressedCompanion && hasCommand) {
+                add(
+                    finding(
+                        ruleId = "COMPANION_COMMAND_DIALOGUE_INCONGRUENT",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Quoted dialogue treats a默契家人同伴 like a pet to be commanded.",
+                        evidence = listOf("quote=$quote", "companions=${companionNames.joinToString(",")}"),
+                        suggestedFix = "Show默契跟隨 in narration, or let the protagonist mutter to himself (自言) without calling the companion.",
+                        input = input,
+                        turn = context.turnNumber,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun checkOralClarity(
+        result: AiTurnResult,
+        deliveryMode: DeliveryMode,
+        input: NarrativeQualityAuditInput,
+        turnNumber: Int,
+    ): List<NarrativeQualityFinding> = buildList {
+        val narrative = result.narrative
+        val danglingRumor = Regex("(?:聽說|傳聞|謠言|有人說)[^。！？；;]{0,24}……")
+            .findAll(narrative)
+            .map { it.value }
+            .toList()
+        if (danglingRumor.isNotEmpty()) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_ORAL_CLARITY",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Oral delivery cannot leave a rumor or hearsay half-finished.",
+                    evidence = danglingRumor.take(3),
+                    suggestedFix = "Finish the rumor in plain language or omit it until it can be stated fully.",
+                    input = input,
+                    turn = turnNumber,
+                ),
+            )
+        }
+
+        val unexplainedTerms = listOf("逆行門", "别界", "裂縫", "先遣隊", "契印", "靈脈", "法器")
+        val unexplainedMatches = unexplainedTerms.filter { narrative.contains(it) }
+        if (turnNumber <= 2 && unexplainedMatches.size >= 2) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_ORAL_CLARITY",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Early oral delivery stacks unexplained specialized terms.",
+                    evidence = unexplainedMatches,
+                    suggestedFix = "Replace jargon with what the listener can hear and understand in one pass.",
+                    input = input,
+                    turn = turnNumber,
+                ),
+            )
+        }
+
+        if (deliveryMode == DeliveryMode.PLAIN_ORAL) {
+            val denseStack = Regex("[^。！？；;]{48,}")
+                .findAll(narrative)
+                .count { it.value.count { ch -> ch == '，' || ch == '、' } >= 4 }
+            if (denseStack >= 1) {
+                add(
+                    finding(
+                        ruleId = "NARRATIVE_ORAL_CLARITY",
+                        category = "narrative_delivery",
+                        severity = "WARNING",
+                        message = "Oral delivery contains an overlong clause chain that is hard to follow when heard once.",
+                        evidence = listOf("denseClauseCount=$denseStack"),
+                        suggestedFix = "Split into shorter sentences with one fact or action each.",
+                        input = input,
+                        turn = turnNumber,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun checkUnshootableFiller(
+        result: AiTurnResult,
+        deliveryMode: DeliveryMode,
+        input: NarrativeQualityAuditInput,
+    ): List<NarrativeQualityFinding> = buildList {
+        val narrative = result.narrative
+        val sentences = narrative.split(Regex("[。！？!?]")).map { it.trim() }.filter { it.isNotBlank() }
+        if (sentences.isEmpty()) return@buildList
+
+        val atmosphereTerms = listOf("風裡", "天色", "彷彿", "無聲", "鹹澀", "鹹味", "沉了一分", "壓下來", "深處", "命運", "宿命", "天地", "萬物", "宣告", "回聲", "氛圍", "氣息", "寂靜", "朦朧")
+        val actionVerbs = listOf("走", "跑", "退", "蹲", "看", "說", "喊", "摸", "按", "舉", "轉", "拉", "推", "抓", "站", "坐", "抬", "握", "攀", "躲", "查", "聽", "問", "答", "守", "擋", "讓", "跟", "按", "打", "踢", "開", "關", "進", "出")
+        val dialogueMarkers = listOf("「", "」", "：", "——", "說", "問", "答", "喊", "叫")
+
+        val atmosphereOnlySentences = sentences.filter { sentence ->
+            atmosphereTerms.any { sentence.contains(it) } &&
+                actionVerbs.none { sentence.contains(it) } &&
+                dialogueMarkers.none { sentence.contains(it) }
+        }
+        if (atmosphereOnlySentences.size >= 2) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_UNSHOOTABLE_FILLER",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Narrative contains multiple atmosphere-only sentences without action, dialogue, or visible objects.",
+                    evidence = atmosphereOnlySentences.take(3),
+                    suggestedFix = "Replace decorative atmosphere with who does what, where, and what changes.",
+                    input = input,
+                ),
+            )
+        }
+
+        val consecutiveAtmosphere = countConsecutiveAtmosphereRuns(sentences, atmosphereTerms, actionVerbs, dialogueMarkers)
+        if (consecutiveAtmosphere >= 3) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_UNSHOOTABLE_FILLER",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Narrative stacks consecutive unshootable atmosphere sentences.",
+                    evidence = listOf("consecutiveAtmosphere=$consecutiveAtmosphere"),
+                    suggestedFix = "Break the run with visible action, dialogue, or a concrete object change.",
+                    input = input,
+                ),
+            )
+        }
+
+        if (deliveryMode == DeliveryMode.SHOOTABLE) {
+            val cameraTerms = listOf("鏡頭", "特寫", "中景", "遠景", "跟拍", "cut", "CUT")
+            if (cameraTerms.none { narrative.contains(it) } && result.characterActions.isEmpty()) {
+                add(
+                    finding(
+                        ruleId = "NARRATIVE_UNSHOOTABLE_FILLER",
+                        category = "narrative_delivery",
+                        severity = "MAJOR",
+                        message = "Shootable delivery needs visible action evidence, not prose-only atmosphere.",
+                        evidence = listOf("missing=shootable_surface"),
+                        suggestedFix = "Write per-shot visible action and dialogue instead of literary description.",
+                        input = input,
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun checkBeatMismatch(
+        result: AiTurnResult,
+        delivery: com.localnovel.engine.model.NarrativeDeliveryExpectation,
+        input: NarrativeQualityAuditInput,
+        turnNumber: Int,
+    ): List<NarrativeQualityFinding> = buildList {
+        if (delivery.activeBeatId.isBlank() || delivery.beatKeywords.isEmpty()) return@buildList
+        val surface = result.narrative + "\n" + result.characterActions.joinToString("\n") { "${it.intent} ${it.visibleAction}" }
+        val matched = delivery.beatKeywords.count { keyword -> surface.contains(keyword) }
+        val requiredMatches = if (delivery.beatKeywords.size <= 3) 1 else 2
+        if (matched < requiredMatches) {
+            add(
+                finding(
+                    ruleId = "NARRATIVE_BEAT_MISMATCH",
+                    category = "narrative_delivery",
+                    severity = "MAJOR",
+                    message = "Narrative does not land the active opening beat '${delivery.activeBeatTitle}'.",
+                    evidence = listOf(
+                        "beatId=${delivery.activeBeatId}",
+                        "matchedKeywords=$matched",
+                        "requiredMatches=$requiredMatches",
+                    ) + delivery.beatKeywords.take(4),
+                    suggestedFix = "Advance the active beat with concrete action and facts tied to ${delivery.activeBeatId}.",
+                    input = input,
+                    turn = turnNumber,
+                ),
+            )
+        }
+    }
+
+    private fun countConsecutiveAtmosphereRuns(
+        sentences: List<String>,
+        atmosphereTerms: List<String>,
+        actionVerbs: List<String>,
+        dialogueMarkers: List<String>,
+    ): Int {
+        var current = 0
+        var max = 0
+        sentences.forEach { sentence ->
+            val atmosphereOnly = atmosphereTerms.any { sentence.contains(it) } &&
+                actionVerbs.none { sentence.contains(it) } &&
+                dialogueMarkers.none { sentence.contains(it) }
+            if (atmosphereOnly) {
+                current += 1
+                max = maxOf(max, current)
+            } else {
+                current = 0
+            }
+        }
+        return max
     }
 
     private fun checkConsequences(result: AiTurnResult, input: NarrativeQualityAuditInput): List<NarrativeQualityFinding> = buildList {
@@ -716,6 +1235,13 @@ class NarrativeQualityAuditService {
     }
 
     private companion object {
+        val SIMPLIFIED_CHINESE_MARKERS = listOf(
+            "竖" to "豎",
+            "紧" to "緊",
+            "发" to "發",
+            "听" to "聽",
+            "复" to "複",
+        )
         val structuralComplianceTerms = listOf("允許", "放行", "照辦", "配合", "答應", "讓開", "交出", "帶路", "替你", "支走", "處理後續")
         val structuralBoundaryTerms = listOf(
             "不",

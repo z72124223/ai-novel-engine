@@ -54,7 +54,7 @@
       "dialogue": [
         {
           "speaker": "陸塵行",
-          "line": "還來得及。退潮窗口還在。",
+          "line": "還來得及，潮水還沒漲上來。",
           "delivery": "低聲自言"
         }
       ],
@@ -194,8 +194,8 @@
       "dialogue": [
         {
           "speaker": "陸塵行",
-          "line": "愛醬，跟我走。上面那棟……至少能擋風。",
-          "delivery": "對狗說話，喘而穩"
+          "line": "上面那棟……至少能擋風。",
+          "delivery": "喘而穩，自言"
         }
       ],
       "durationHintSec": 10

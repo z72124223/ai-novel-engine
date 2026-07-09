@@ -44,9 +44,9 @@
       "panelId": "shot-01-tide-check",
       "voiceId": "voice-lu-chenxing",
       "characterId": "char-lu-chenxing",
-      "text": "還來得及。退潮窗口還在。",
+      "text": "還來得及，潮水還沒漲上來。",
       "startMillis": 29000,
-      "durationMillis": 3000
+      "durationMillis": 3500
     },
     {
       "cueId": "audio-02a",
@@ -143,7 +143,7 @@
       "panelId": "shot-09-hillside-retreat",
       "voiceId": "voice-lu-chenxing",
       "characterId": "char-lu-chenxing",
-      "text": "愛醬，跟我走。上面那棟……至少能擋風。",
+      "text": "上面那棟……至少能擋風。",
       "startMillis": 76000,
       "durationMillis": 4500
     }
@@ -193,7 +193,7 @@
       "cueId": "subtitle-09",
       "panelId": "shot-09-hillside-retreat",
       "audioCueId": "audio-09b",
-      "text": "陸塵行：愛醬，跟我走。上面那棟……至少能擋風。",
+      "text": "陸塵行：上面那棟……至少能擋風。",
       "startMillis": 76000,
       "endMillis": 80500
     }

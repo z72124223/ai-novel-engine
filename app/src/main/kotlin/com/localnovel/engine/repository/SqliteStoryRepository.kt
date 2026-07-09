@@ -72,6 +72,8 @@ import java.time.Instant
 import java.util.UUID
 
 class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
+    fun databasePath(): Path = dbPath
+
     override fun initialize() {
         dbPath.parent?.let { Files.createDirectories(it) }
         connect { connection ->

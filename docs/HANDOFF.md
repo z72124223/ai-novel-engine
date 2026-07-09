@@ -27,6 +27,17 @@ current.
 All other route/control docs below are on-demand evidence, not default startup
 reading.
 
+## 目前定案 — 有聲小說試驗中止 / 只產劇本（2026-07-09）
+
+作者定案：**中止有聲小說（Audio Novel／YT 試聽出片）開發**；產品主線**退回只產生劇本**。
+
+- **放棄：** `export-audio-novel-episode`、Edge TTS 預覽 MP4、燒錄字幕出片鏈（凍結保留，不擴充）
+- **恢復主線：** 互動劇本 + 分鏡文字 + `story-turn` 回合協議 + MVP-8 讀者試玩
+- **完整交接：** `docs/AUDIO_NOVEL_PHASE_HANDOFF_AND_ABORT_V1.md`
+- **章程對齊：** `world/chenxing/formal/29_project_script_first_charter_v1.json`
+- **試驗證據（只讀）：** `out/chenxing/audio_novel/episode01_v4_full/`、`out/chenxing/reader_play_v4/`
+- **下一位窗口：** 勿把有聲出片當驗收；從分鏡 JSON 與 story-turn 繼續
+
 ## 目前定案 — MVP-8 試用層 / 讀者優先（2026-07-09）
 
 作者定案：**MVP-8 = 試用層 + 讀者優先**，為引擎主線。

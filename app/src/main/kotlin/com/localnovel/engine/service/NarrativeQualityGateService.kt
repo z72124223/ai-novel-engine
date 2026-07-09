@@ -11,6 +11,7 @@ data class NarrativeQualityGateOptions(
     val enforceSceneContextFloor: Boolean = false,
     val sampleLabel: String = "",
     val evidenceText: String = "",
+    val autoPromoteLearnedRules: Boolean = true,
 )
 
 data class ResolveTurnOptions(
@@ -19,6 +20,9 @@ data class ResolveTurnOptions(
     val strictNarrativeQuality: Boolean = false,
     val narrativeQualityEvidenceText: String = "",
     val narrativeQualitySampleLabel: String = "",
+    val autoPromoteLearnedRules: Boolean = true,
+    val logicAuditFile: String = "",
+    val dbPath: String = "",
 )
 
 data class NarrativeQualityGateResult(
@@ -43,6 +47,14 @@ object NarrativeQualityGatePolicy {
         "style",
     )
 
+    val hardBlockDeliveryRuleIds: Set<String> = setOf(
+        "NARRATIVE_SUBSTANCE_FLOOR",
+        "NARRATIVE_ORAL_CLARITY",
+        "NARRATIVE_UNSHOOTABLE_FILLER",
+        "NARRATIVE_BEAT_MISMATCH",
+        "DIALOGUE_MUST_USE_ORAL_CANDIDATES",
+    )
+
     val hardBlockContextQualityRuleIds: Set<String> = setOf(
         "CONTEXT_SETTING_TOO_THIN",
         "CONTEXT_TRANSITION_UNAVAILABLE",
@@ -57,15 +69,38 @@ class NarrativeQualityGateService(
         result: AiTurnResult,
         options: NarrativeQualityGateOptions = NarrativeQualityGateOptions(),
         input: NarrativeQualityAuditInput = NarrativeQualityAuditInput(),
-    ): NarrativeQualityGateResult {
-        val auditReport = auditService.audit(
+    ): NarrativeQualityGateResult =
+        evaluateRun(
             context = context,
             result = result,
-            input = input.copy(
-                sampleLabel = options.sampleLabel.ifBlank { input.sampleLabel },
-                evidenceText = options.evidenceText.ifBlank { input.evidenceText },
-            ),
+            options = options,
+            input = input,
+        ).gateResult ?: error("Narrative quality gate result missing.")
+
+    fun evaluateRun(
+        context: ContextPacket,
+        result: AiTurnResult,
+        options: NarrativeQualityGateOptions = NarrativeQualityGateOptions(),
+        input: NarrativeQualityAuditInput = NarrativeQualityAuditInput(),
+    ): NarrativeQualityAuditRunResult {
+        val mergedInput = input.copy(
+            sampleLabel = options.sampleLabel.ifBlank { input.sampleLabel },
+            evidenceText = options.evidenceText.ifBlank { input.evidenceText },
         )
+        val auditRun = NarrativeQualityAuditRunner.audit(
+            context = context,
+            result = result,
+            input = mergedInput,
+            autoPromoteLearnedRules = options.autoPromoteLearnedRules,
+        )
+        val gateResult = buildGateResult(auditRun.auditReport, options)
+        return auditRun.copy(gateResult = gateResult)
+    }
+
+    private fun buildGateResult(
+        auditReport: NarrativeQualityAuditReport,
+        options: NarrativeQualityGateOptions,
+    ): NarrativeQualityGateResult {
         val partitioned = auditReport.findings.partition {
             isBlocking(it, options.strictMode, options.enforceSceneContextFloor)
         }
@@ -81,7 +116,8 @@ class NarrativeQualityGateService(
         gateResult.blockingFindings.forEach { finding ->
             val regenerateHint = if (
                 finding.category in NarrativeQualityGatePolicy.hardBlockCategories ||
-                finding.ruleId in NarrativeQualityGatePolicy.hardBlockContextQualityRuleIds
+                finding.ruleId in NarrativeQualityGatePolicy.hardBlockContextQualityRuleIds ||
+                finding.ruleId in NarrativeQualityGatePolicy.hardBlockDeliveryRuleIds
             ) {
                 " 請依提示修正後重新生成，不可略過。"
             } else {
@@ -114,6 +150,15 @@ class NarrativeQualityGateService(
             finding.ruleId in NarrativeQualityGatePolicy.hardBlockContextQualityRuleIds &&
             (finding.ruleId != "CONTEXT_SETTING_TOO_THIN" || enforceSceneContextFloor)
         ) {
+            return true
+        }
+        if (
+            finding.ruleId in NarrativeQualityGatePolicy.hardBlockDeliveryRuleIds &&
+            finding.severity in setOf("MAJOR", "CRITICAL")
+        ) {
+            return true
+        }
+        if (finding.ruleId.startsWith("LEARNED-") && finding.severity in setOf("MAJOR", "CRITICAL")) {
             return true
         }
         if (finding.ruleId in NarrativeQualityGatePolicy.blockingRuleIds || finding.severity == "CRITICAL") {

@@ -4,6 +4,7 @@ import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CapabilityContractResolver
 import com.localnovel.engine.service.ContextAuditService
@@ -12,11 +13,18 @@ import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.NarrativeQualityAuditInput
+import com.localnovel.engine.service.NarrativeQualityAuditRunner
 import com.localnovel.engine.service.NarrativeQualityAuditService
 import com.localnovel.engine.service.NarrativeQualityGateOptions
 import com.localnovel.engine.service.NarrativeQualityGateService
 import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.service.PilotPreflightService
+import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
+import com.localnovel.engine.service.AudioNovelEpisodeExporter
+import com.localnovel.engine.service.AudioNovelPublishAuditReport
+import com.localnovel.engine.service.AudioNovelPublishAuditService
+import com.localnovel.engine.service.AudioNovelSubtitleAuditService
+import com.localnovel.engine.model.ComicVideoVoiceTimelineFill
 import com.localnovel.engine.service.SessionEvidenceExporter
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.support.JsonSupport
@@ -69,7 +77,7 @@ internal object StorySessionCli {
 
         val evidencePath = options["evidence"]?.let { Path.of(it) }
         val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
-        val gateResult = NarrativeQualityGateService().evaluate(
+        val auditRun = NarrativeQualityGateService().evaluateRun(
             context = context,
             result = result,
             options = NarrativeQualityGateOptions(
@@ -77,15 +85,29 @@ internal object StorySessionCli {
                 enforceSceneContextFloor = repository.settingPackRows(context.project.id).isNotEmpty(),
                 sampleLabel = options["sample-label"].orEmpty(),
                 evidenceText = evidenceText,
+                autoPromoteLearnedRules = cliAutoPromoteLearnedRules(options),
             ),
-            input = NarrativeQualityAuditInput(
+            input = narrativeQualityAuditInput(
+                options = options,
+                repository = repository,
                 contextFile = contextPath.toString(),
                 resultFile = resultPath.toString(),
                 evidenceFile = evidencePath?.toString().orEmpty(),
                 evidenceText = evidenceText,
             ),
         )
+        val gateResult = auditRun.gateResult ?: error("Narrative quality gate result missing.")
         options["narrative-quality-out"]?.let { writeCliJson(Path.of(it), gateResult.auditReport) }
+        options["promotion-out"]?.let { outPath ->
+            auditRun.promotionReport?.let { writeCliJson(Path.of(outPath), it) }
+        }
+        auditRun.promotionReport?.let { promotion ->
+            if (promotion.promotedCount > 0) {
+                println("learnedRulesPromoted=${promotion.promotedCount}")
+                promotion.promotedRuleIds.forEach { println("learned_rule_promoted=$it") }
+                println("learnedRulesStore=${promotion.storePath}")
+            }
+        }
         val gateErrors = NarrativeQualityGateService().toValidationErrors(
             gateResult = gateResult,
             advisoryRequiresAcknowledge = false,
@@ -227,11 +249,14 @@ internal object StorySessionCli {
             strictNarrativeQuality = options.containsKey("strict-narrative-quality"),
             narrativeQualityEvidenceText = evidenceText,
             narrativeQualitySampleLabel = options["sample-label"].orEmpty(),
+            autoPromoteLearnedRules = cliAutoPromoteLearnedRules(options),
+            logicAuditFile = options["logic-audit"].orEmpty(),
+            dbPath = repository.databasePath().toString(),
         )
         options["narrative-quality-out"]?.let { outPath ->
             val context = repository.getPendingContext(sessionId, result.contextId)
                 ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
-            val gateResult = NarrativeQualityGateService().evaluate(
+            val auditRun = NarrativeQualityGateService().evaluateRun(
                 context = context,
                 result = result,
                 options = NarrativeQualityGateOptions(
@@ -239,15 +264,29 @@ internal object StorySessionCli {
                     enforceSceneContextFloor = repository.settingPackRows(context.project.id).isNotEmpty(),
                     sampleLabel = resolveOptions.narrativeQualitySampleLabel,
                     evidenceText = resolveOptions.narrativeQualityEvidenceText,
+                    autoPromoteLearnedRules = resolveOptions.autoPromoteLearnedRules,
                 ),
-                input = NarrativeQualityAuditInput(
+                input = narrativeQualityAuditInput(
+                    options = options,
+                    repository = repository,
                     contextFile = "pending://${context.contextId}",
                     resultFile = resultPath.toString(),
                     evidenceFile = evidencePath?.toString().orEmpty(),
                     evidenceText = evidenceText,
                 ),
             )
+            val gateResult = auditRun.gateResult ?: error("Narrative quality gate result missing.")
             writeCliJson(Path.of(outPath), gateResult.auditReport)
+            options["promotion-out"]?.let { promotionOut ->
+                auditRun.promotionReport?.let { writeCliJson(Path.of(promotionOut), it) }
+            }
+            auditRun.promotionReport?.let { promotion ->
+                if (promotion.promotedCount > 0) {
+                    println("learnedRulesPromoted=${promotion.promotedCount}")
+                    promotion.promotedRuleIds.forEach { println("learned_rule_promoted=$it") }
+                    println("learnedRulesStore=${promotion.storePath}")
+                }
+            }
         }
         val applied = MultiTurnRuntime(repository).resolveTurn(sessionId, result, resolveOptions)
         val session = repository.getSession(sessionId)
@@ -456,22 +495,39 @@ internal object StorySessionCli {
     }
 
     fun auditNarrativeQuality(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
         val contextPath = Path.of(options.requiredCliOption("context"))
         val resultPath = Path.of(options.requiredCliOption("result"))
         val evidencePath = options["evidence"]?.let { Path.of(it) }
         val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
-        val report = NarrativeQualityAuditService().audit(
-            context = readCliJson<ContextPacket>(contextPath),
-            result = readCliJson<AiTurnResult>(resultPath),
-            input = NarrativeQualityAuditInput(
+        val context = readCliJson<ContextPacket>(contextPath)
+        val result = readCliJson<AiTurnResult>(resultPath)
+        val auditRun = NarrativeQualityAuditRunner.audit(
+            context = context,
+            result = result,
+            input = narrativeQualityAuditInput(
+                options = options,
+                repository = repository,
                 contextFile = contextPath.toString(),
                 resultFile = resultPath.toString(),
                 evidenceFile = evidencePath?.toString().orEmpty(),
                 evidenceText = evidenceText,
                 sampleLabel = options["sample-label"].orEmpty(),
             ),
+            autoPromoteLearnedRules = cliAutoPromoteLearnedRules(options),
         )
+        val report = auditRun.auditReport
         options["out"]?.let { writeCliJson(Path.of(it), report) }
+        options["promotion-out"]?.let { outPath ->
+            auditRun.promotionReport?.let { writeCliJson(Path.of(outPath), it) }
+        }
+        auditRun.promotionReport?.let { promotion ->
+            if (promotion.promotedCount > 0) {
+                println("learnedRulesPromoted=${promotion.promotedCount}")
+                promotion.promotedRuleIds.forEach { println("learned_rule_promoted=$it") }
+                println("learnedRulesStore=${promotion.storePath}")
+            }
+        }
         println("verdict=${report.verdict}")
         println("score=${report.score}")
         println("severity=${report.severity}")
@@ -481,6 +537,25 @@ internal object StorySessionCli {
         }
         return 0
     }
+
+    private fun narrativeQualityAuditInput(
+        options: Map<String, String>,
+        repository: SqliteStoryRepository,
+        contextFile: String,
+        resultFile: String,
+        evidenceFile: String = "",
+        evidenceText: String = "",
+        sampleLabel: String = "",
+    ): NarrativeQualityAuditInput =
+        NarrativeQualityAuditInput(
+            contextFile = contextFile,
+            resultFile = resultFile,
+            evidenceFile = evidenceFile,
+            evidenceText = evidenceText,
+            sampleLabel = sampleLabel,
+            dbPath = repository.databasePath().toString(),
+            logicAuditFindings = cliLogicAuditFindings(options),
+        )
 
     fun explainContextBudget(options: Map<String, String>): Int {
         val repository = cliRepository(options)
@@ -535,6 +610,75 @@ internal object StorySessionCli {
         return if (report.status == "OK") 0 else 1
     }
 
+    fun exportAudioNovelEpisode(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
+        val outDir = Path.of(options.requiredCliOption("out-dir"))
+        val fromTurn = options["from-turn"]?.toIntOrNull() ?: 1
+        val toTurn = options["to-turn"]?.toIntOrNull() ?: Int.MAX_VALUE
+        val publishMode = options.containsKey("publish")
+        if (publishMode) {
+            val preExportAudit = AudioNovelPublishAuditService().audit(
+                repository = repository,
+                sessionId = sessionId,
+                fromTurn = fromTurn,
+                toTurn = toTurn,
+            )
+            if (preExportAudit.verdict != "PASS") {
+                reportPublishBlockers(preExportAudit)
+                return 1
+            }
+        }
+        val export = AudioNovelEpisodeExporter(repository).export(
+            sessionId = sessionId,
+            options = AudioNovelEpisodeExportOptions(
+                episodeId = options["episode-id"].orEmpty(),
+                title = options["title"] ?: "第一回　塵",
+                fromTurn = fromTurn,
+                toTurn = toTurn,
+                coverImagePath = options["cover"].orEmpty(),
+            ),
+        )
+        Files.createDirectories(outDir)
+        val exportPath = outDir.resolve("episode_export.json")
+        val scriptPath = outDir.resolve("episode_script.md")
+        val timelinePath = outDir.resolve("voice_timeline.json")
+        writeCliJson(exportPath, export)
+        Files.writeString(scriptPath, export.scriptMarkdown)
+        writeCliJson(timelinePath, export.voiceTimeline)
+        if (publishMode) {
+            val publishAudit = AudioNovelPublishAuditService().audit(
+                repository = repository,
+                sessionId = sessionId,
+                fromTurn = fromTurn,
+                toTurn = toTurn,
+                episodeDir = outDir,
+                voiceTimeline = export.voiceTimeline,
+            )
+            val publishAuditPath = outDir.resolve("publish_audit.json")
+            writeCliJson(publishAuditPath, publishAudit)
+            println("publishAuditVerdict=${publishAudit.verdict}")
+            println("publishAuditMajorFindings=${publishAudit.majorFindingCount}")
+            println("publishAuditWarningFindings=${publishAudit.warningFindingCount}")
+            println("wrote=$publishAuditPath")
+            if (publishAudit.verdict != "PASS") {
+                reportPublishBlockers(publishAudit)
+                return 1
+            }
+        }
+        println("episodeId=${export.episodeId}")
+        println("turnCount=${export.turnCount}")
+        println("fromTurn=${export.fromTurn}")
+        println("toTurn=${export.toTurn}")
+        println("audioCueCount=${export.voiceTimeline.audioCues.size}")
+        println("totalDurationMillis=${export.voiceTimeline.timing.totalDurationMillis}")
+        println("coverImagePath=${export.coverImagePath}")
+        println("wrote=$exportPath")
+        println("wrote=$scriptPath")
+        println("wrote=$timelinePath")
+        return 0
+    }
+
     fun exportSessionEvidence(options: Map<String, String>): Int {
         val repository = cliRepository(options)
         val export = SessionEvidenceExporter(repository).export(options.requiredCliOption("session"))
@@ -563,5 +707,61 @@ internal object StorySessionCli {
             println("contextHashValid=${it.hashValid}")
         }
         return if (report.valid) 0 else 1
+    }
+
+    fun auditAudioNovelPublish(options: Map<String, String>): Int {
+        val episodeDir = Path.of(options.requiredCliOption("episode-dir"))
+        Files.createDirectories(episodeDir)
+        val voiceTimelinePath = episodeDir.resolve("voice_timeline.json")
+        val voiceTimeline = if (Files.exists(voiceTimelinePath)) {
+            JsonSupport.json.decodeFromString<ComicVideoVoiceTimelineFill>(Files.readString(voiceTimelinePath))
+        } else {
+            null
+        }
+        val publishAudit = if (options.containsKey("session")) {
+            AudioNovelPublishAuditService().audit(
+                repository = cliRepository(options),
+                sessionId = options.requiredCliOption("session"),
+                fromTurn = options["from-turn"]?.toIntOrNull() ?: 1,
+                toTurn = options["to-turn"]?.toIntOrNull() ?: Int.MAX_VALUE,
+                episodeDir = episodeDir,
+                voiceTimeline = voiceTimeline,
+            )
+        } else {
+            val subtitleFindings = buildList {
+                voiceTimeline?.let { timeline ->
+                    addAll(AudioNovelSubtitleAuditService().auditVoiceTimeline(timeline))
+                }
+                addAll(AudioNovelSubtitleAuditService().auditSrt(episodeDir.resolve("episode_subtitles.srt")))
+            }
+            val majorCount = subtitleFindings.count { it.severity == "MAJOR" }
+            AudioNovelPublishAuditReport(
+                subtitleFindings = subtitleFindings,
+                verdict = if (majorCount > 0) "FAIL" else "PASS",
+                majorFindingCount = majorCount,
+                warningFindingCount = subtitleFindings.count { it.severity == "WARNING" },
+            )
+        }
+        val outPath = options["out"]?.let { Path.of(it) } ?: episodeDir.resolve("publish_audit.json")
+        writeCliJson(outPath, publishAudit)
+        println("publishAuditVerdict=${publishAudit.verdict}")
+        println("publishAuditMajorFindings=${publishAudit.majorFindingCount}")
+        println("publishAuditWarningFindings=${publishAudit.warningFindingCount}")
+        println("wrote=$outPath")
+        if (publishAudit.verdict != "PASS") {
+            reportPublishBlockers(publishAudit)
+            return 1
+        }
+        return 0
+    }
+
+    private fun reportPublishBlockers(publishAudit: AudioNovelPublishAuditReport) {
+        publishAudit.turnReports
+            .flatMap { report -> report.findings.filter { it.severity == "MAJOR" } }
+            .plus(publishAudit.subtitleFindings.filter { it.severity == "MAJOR" })
+            .take(8)
+            .forEach { finding ->
+                println("publishBlocker=${finding.ruleId} ${finding.affectedFileOrTurn} ${finding.message}")
+            }
     }
 }

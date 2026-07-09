@@ -254,9 +254,12 @@ class ProvisionalLayerService(private val repository: SqliteStoryRepository) {
             .filter { it.status == "ACTIVE" }
             .filter { sceneId == null || it.currentSceneId == null || it.currentSceneId == sceneId }
         val readerMode = repository.getSessionReaderMode(context.sessionId)
-        return context.copy(
-            canonThinZones = thinZones,
-            provisionalEntities = provisionalEntities,
+        return NarrativeDeliveryResolver.resolve(
+            context.copy(
+                canonThinZones = thinZones,
+                provisionalEntities = provisionalEntities,
+                readerMode = readerMode,
+            ),
             readerMode = readerMode,
         )
     }

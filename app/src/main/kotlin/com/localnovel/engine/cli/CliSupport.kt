@@ -1,5 +1,7 @@
 package com.localnovel.engine.cli
 
+import com.localnovel.engine.model.LogicAuditReport
+import com.localnovel.engine.model.NarrativeQualityFinding
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.TurnRunner
 import com.localnovel.engine.service.ContextCompiler
@@ -18,7 +20,14 @@ internal fun parseCliOptions(args: List<String>): Map<String, String> {
         val token = args[index]
         require(token.startsWith("--")) { "Expected option starting with --, got '$token'." }
         val key = token.removePrefix("--")
-        if (key == "record" || key == "dry-run") {
+        if (
+            key == "record" ||
+            key == "dry-run" ||
+            key == "reader-mode" ||
+            key == "publish" ||
+            key == "auto-promote-learned-rules" ||
+            key == "no-auto-promote-learned-rules"
+        ) {
             options[key] = "true"
             index += 1
             continue
@@ -44,6 +53,15 @@ internal inline fun <reified T> readCliJson(path: Path): T =
 
 internal fun cliRepository(options: Map<String, String>): SqliteStoryRepository =
     SqliteStoryRepository(Path.of(options["db"] ?: "data/story.db"))
+
+internal fun cliAutoPromoteLearnedRules(options: Map<String, String>): Boolean =
+    !options.containsKey("no-auto-promote-learned-rules")
+
+internal fun cliLogicAuditFindings(options: Map<String, String>): List<NarrativeQualityFinding> {
+    val logicAuditPath = options["logic-audit"] ?: return emptyList()
+    val report = readCliJson<LogicAuditReport>(Path.of(logicAuditPath))
+    return report.findings
+}
 
 internal fun cliRunner(repository: SqliteStoryRepository): TurnRunner =
     TurnRunner(

@@ -70,6 +70,8 @@ object ContextPacketTopLevelAllowlist {
         "canonThinZones",
         "provisionalEntities",
         "readerMode",
+        "narrativeDelivery",
+        "oralLineCandidates",
     )
 
     val diagnosticKeys: Set<String> = setOf(

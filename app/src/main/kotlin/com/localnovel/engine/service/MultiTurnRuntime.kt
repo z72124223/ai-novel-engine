@@ -2,6 +2,7 @@ package com.localnovel.engine.service
 
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ApplyResult
+import com.localnovel.engine.model.LogicAuditReport
 import com.localnovel.engine.model.CharacterAction
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextBudgetForensicsReport
@@ -22,6 +23,8 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import java.nio.file.Files
+import java.nio.file.Path
 import java.security.MessageDigest
 import java.time.Instant
 
@@ -124,7 +127,32 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             enforceSceneContextFloor = projectHasAppliedSettingPack(context.project.id),
             sampleLabel = options.narrativeQualitySampleLabel,
             evidenceText = options.narrativeQualityEvidenceText,
+            autoPromoteLearnedRules = options.autoPromoteLearnedRules,
         )
+
+    private fun narrativeQualityAuditInput(
+        context: ContextPacket,
+        result: AiTurnResult,
+        options: ResolveTurnOptions,
+    ): NarrativeQualityAuditInput {
+        val logicAuditFindings = options.logicAuditFile
+            .takeIf { it.isNotBlank() }
+            ?.let { path ->
+                JsonSupport.json.decodeFromString<LogicAuditReport>(
+                    Files.readString(Path.of(path)).removePrefix("\uFEFF"),
+                ).findings
+            }
+            .orEmpty()
+        val dbPath = options.dbPath.ifBlank { repository.databasePath().toString() }
+        return NarrativeQualityAuditInput(
+            contextFile = "pending://${context.contextId}",
+            resultFile = result.resultId,
+            evidenceText = options.narrativeQualityEvidenceText,
+            sampleLabel = options.narrativeQualitySampleLabel,
+            dbPath = dbPath,
+            logicAuditFindings = logicAuditFindings,
+        )
+    }
 
     private fun prepareContextForFinalization(sessionId: String, playerInput: String): PreparedContextForBudget {
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
@@ -222,15 +250,20 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         if (!report.isValid) {
             error(report.errors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
         }
-        val gateResult = NarrativeQualityGateService().evaluate(
+        val auditRun = NarrativeQualityGateService().evaluateRun(
             context = context,
             result = result,
             options = narrativeQualityGateOptions(context, options),
-            input = NarrativeQualityAuditInput(
-                contextFile = "pending://${context.contextId}",
-                resultFile = result.resultId,
-            ),
+            input = narrativeQualityAuditInput(context, result, options),
         )
+        val gateResult = auditRun.gateResult ?: error("Narrative quality gate result missing.")
+        auditRun.promotionReport?.let { promotion ->
+            if (promotion.promotedCount > 0) {
+                println("learnedRulesPromoted=${promotion.promotedCount}")
+                promotion.promotedRuleIds.forEach { println("learned_rule_promoted=$it") }
+                println("learnedRulesStore=${promotion.storePath}")
+            }
+        }
         val gateErrors = NarrativeQualityGateService().toValidationErrors(
             gateResult = gateResult,
             advisoryRequiresAcknowledge = options.requireNarrativeQualityAcknowledgement &&
