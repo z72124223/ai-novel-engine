@@ -4,7 +4,7 @@ Report version: 2026-06-20
 
 Local directory register update: 2026-06-24
 
-Workspace: `C:\Users\f7212\Projects\AI 劇本`
+Workspace: `C:\Users\f7212\OneDrive\文件\AI 劇本`
 
 Purpose: This report gives a stable, repeatable overview of the local interactive fiction engine, its runtime layers, data model milestones, current branch state, and recommended next step.
 
