@@ -2,6 +2,26 @@
 
 Kotlin/JVM CLI + SQLite + JSON 檔案協議的本地單進程互動小說引擎。
 
+## Current Status
+
+目前穩定底層已完成 MVP-1 至 MVP-6、Pilot 穩定化與 MVP-7 敘事品質稽核；目前產品方向已進入 **MVP-8：試用層（provisional layer）+ 讀者優先（reader-first）**。
+
+目前主線不是 Android App，也不是影音自動產線：
+
+- 讀者可以先進入故事，不必先補完整個世界。
+- 世界留白可由 AI 在回合中提出臨時人物、生物、傳聞或事件。
+- 試用內容不等於正式 Canon，不能覆寫已鎖定設定。
+- AI 可以提出升格建議，但只有正式升格流程能寫入 Canon。
+- 劇本／分鏡文字交付保留；漫畫、影片與自動生成產線目前暫停。
+
+詳細決策與規格：
+
+- `docs/MVP8_PROJECT_DECISION.md`
+- `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`
+- `world/chenxing/formal/35_provisional_layer_charter_v1.json`
+
+> Repository 預設分支名稱仍保留歷史名稱 `codex/mvp6-checkpoint-branching-spec`；請以本節、`ROADMAP.md`、`PLANS.md` 與最新 Commit 為目前狀態依據，不要把分支名稱誤認為專案只做到 MVP-6。
+
 目標流程：
 
 ```text
@@ -187,6 +207,31 @@ MVP-7 Candidate A adds a read-only narrative quality audit for a context/result 
 
 The report includes `verdict`, `score`, `severity`, stable `findings`, evidence, suggested fixes, affected file or turn, and rule ids.
 
+## MVP-8 Reader-First Provisional Layer
+
+MVP-8 separates temporary story discoveries from formal Canon.
+
+The provisional layer is intended to support a reader-first loop:
+
+```text
+讀者進入故事
+→ AI 依照當前留白提出 provisional content
+→ 引擎檢查鎖定設定、工具人風險與回合合法性
+→ 試用內容只存在目前遊玩層
+→ 系統建立待升格候選
+→ 使用者確認後才進入正式 Canon 流程
+```
+
+Current MVP-8 implementation areas include:
+
+- additive migration `009_provisional_layer.sql`
+- provisional layer models, services and CLI wiring
+- reader-mode / narrative delivery support
+- promotion candidate and review-oriented workflow foundations
+- tests covering provisional layer and MVP-8 narrative delivery
+
+MVP-8 does not grant AI direct Canon write permission. Formal world changes must continue through the existing setting-pack validation, diff, impact preview and transaction apply boundary.
+
 ## Project Layout
 
 - `app/src/main/kotlin/com/localnovel/engine/model`：JSON protocol 與資料模型。
@@ -195,3 +240,4 @@ The report includes `verdict`, `score`, `severity`, stable `findings`, evidence,
 - `app/src/main/resources/migrations`：SQLite schema migrations。
 - `samples`：demo seed、context packet、AI result 範例。
 - `docs`：架構、資料模型、回合協議、驗證規則、roadmap。
+- `world`：特定世界內容、正式 Canon、劇本與作品素材；不等同於通用引擎核心。
