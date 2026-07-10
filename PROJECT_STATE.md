@@ -34,25 +34,39 @@ Codex 終端版跑引擎、世界資料與劇本流程
 ## Current Work Package
 
 - ID: `WP-003 Chenxing Visual Bible Inventory`
-- Status: `READY_FOR_CODEX`
+- Status: `WP-003_COMPLETED_AWAITING_CONTROLLER_REVIEW`
 - Work Package: `docs/work-packages/WP-003_CHENXING_VISUAL_BIBLE_INVENTORY.md`
 - Parent blueprint: `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1.md`
 - Execution plan: `docs/CODEX_GPT_IMAGE_PRODUCTION_EXECUTION_PLAN_V1.md`
 - Accepted foundation: `e02700ecf370e53f289f5a77364119639ac4bb5f`
 - Recommended Codex: strongest available Codex coding model, reasoning `HIGH`
-- Current action: Codex terminal creates a clean feature branch from the latest remote default branch and executes WP-003 completely.
+- Base SHA: `dfd3b0ec24c032ba67a75fdd5dd36127188d060d`
+- Working branch: `feature/wp003-chenxing-visual-bible-inventory`
+- Primary result: `WP003_SCHEMA_GAP_FOUND`
+- Current action: controller reviews the WP-003 inventory and decides how a pure Location Bible task is represented before WP-004.
 
 ## Active Work-Package Order
 
 1. `WP-002A` — **COMPLETED / ACCEPTED**: file protocol, JSON Schemas, examples, existing pipeline inventory.
-2. `WP-003` — **ACTIVE**: Chenxing visual Bible inventory for 陸塵行、愛醬、服裝、風格、大坪海岸、遺跡、Shot 01–03 readiness.
-3. `WP-004` — create and Commit the first real GPT handoff for opening Shot 01–03, only after WP-003 controller review.
+2. `WP-003` — **COMPLETED / AWAITING CONTROLLER REVIEW**: Chenxing visual Bible inventory found complete required character/costume/animal files, a blocking Daping Coast Location Bible gap, and a pure-location task schema gap.
+3. `WP-004` — **NOT STARTED / BLOCKED PENDING CONTROLLER DECISION**: create the first real GPT handoff only after the location-only preliminary handoff or bounded schema path is resolved and the required Location Bible exists.
 4. `WP-005` — GPT reads the specified Commit and generates image candidates.
 5. `WP-006` — Codex imports approved images and runs the existing hash/review/reference chain.
 6. `WP-002B` — conditional Kotlin compiler/validator only if the real Pilot proves it is necessary.
 7. `WP-007` — first 3–8 second image-to-video handoff Pilot.
 
 Do not start `WP-004` or `WP-002B` automatically. WP-003 must first determine actual visual-reference readiness and any bounded schema/location gap.
+
+## WP-003 Verified Result
+
+- Author-locked present files: Lu Chenxing production turnaround, opening modern costume turnaround, Aijiang production turnaround, face reference/photo set, and phase-scoped style references.
+- Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
+- Daping Coast and ruin geometry: textual authority only; no master panorama, top-down plan, directional views, spatial-anchor map, detail/scale views, or approved location images exist.
+- Shot 01–03 disposition: `SCHEMA_ADJUSTMENT_REQUIRED`; storyboard text alone is not enough.
+- Schema finding: `shot_queue_v1` requires at least one character per shot, so it cannot safely represent a pure `LOCATION_BIBLE_CANDIDATE` pre-shot task without a fake binding.
+- Future ChatGPT upload list: ten existing required files; every current conversation status remains `UPLOAD_REQUIRED`.
+- Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
+- No Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, approval, or Runtime change was made.
 
 ## Confirmed Repository Facts
 
@@ -105,11 +119,15 @@ Historical statements that images/video are permanently paused or that script is
 
 ## Next User Action
 
-The user only needs to tell Codex:
+The controller reviews:
 
 ```text
-讀取 PROJECT_STATE.md、.codex/project_controller.md 與目前 Work Package，使用目前可用最強 Codex coding model、HIGH reasoning，依規格完整執行、驗證、Commit、Push，完成後回報總控聊天窗口。
+docs/production/WP003_CHENXING_VISUAL_BIBLE_INVENTORY_REPORT.md
+world/chenxing/production/visual_bible/chenxing_location_bible_gap_inventory_v1.json
+world/chenxing/production/visual_bible/opening_shots_01_03_readiness_v1.json
 ```
+
+Controller decision required: use a bounded schema amendment or a separate preliminary Location Bible handoff. Do not start WP-004 until that decision and the blocking Daping Coast visual-reference gap are resolved.
 
 After Codex later pushes a real WP-004 image handoff, the user tells GPT:
 
