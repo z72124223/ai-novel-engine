@@ -24226,3 +24226,15 @@ Safety checks:
 - 2026-06-23: Started docs-only blueprint data layer and planning register milestone after user approved arranging current planning into the blueprint layer. Scope is non-canon planning registration only: no setting-pack patch, runtime, SQLite, approved assets, or 09/04/05/06/07/08 activation.
 - 2026-06-23: Added `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, including the required pool index, 01 supplemental retained character candidate `bp-character-lu-hesheng-v0.2`, setting-pack conversion limits, window archive policy, and manual handoff rules. Added only narrow control-doc and cross-reference updates.
 - 2026-06-23: `git diff --check` and staged `git diff --cached --check` passed. Full Gradle is intentionally skipped under the explicit docs-only exception because no code/runtime/schema/CLI files are touched.
+
+## WP-002A Codex / GPT Image Handoff Foundation
+
+Status: `COMPLETED`
+
+- [x] Read the active governance, blueprint, execution-plan, work-package, scene-packet, production-lane, and Chenxing visual-source evidence.
+- [x] Inventory the existing storyboard review, asset candidate, image candidate, provider handoff, external result, human review, candidate reference registry, and acceptance boundaries.
+- [x] Add the existing-pipeline inventory, six JSON Schemas, six non-production examples, and the Chenxing production handoff README.
+- [x] Validate JSON parsing, referenced paths, source hashes, candidate-only wording, Git scope, and whitespace; record `SCHEMA_META_VALIDATION_NOT_AVAILABLE` because no validator is preinstalled.
+- [x] Prepare an isolated WP-002A commit for `feature/wp002a-gpt-image-handoff-foundation`; push result is recorded in the task handoff.
+
+WP-002A preserves the current CLI chain and does not authorize Kotlin, test, migration, SQLite, Canon, image, video, provider API, or automated approval changes. Generated images remain candidates until explicit user review and the existing Candidate Reference validation chain completes.

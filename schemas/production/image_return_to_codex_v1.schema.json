@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/production/image_return_to_codex_v1.schema.json",
+  "title": "Image Return To Codex V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "handoffId",
+    "returnStatus",
+    "candidates",
+    "intakeBoundary"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "image-return-to-codex-v1"
+    },
+    "handoffId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "returnStatus": {
+      "enum": [
+        "DRAFT",
+        "CODEX_INTAKE_READY",
+        "INTAKE_VALIDATED",
+        "INTAKE_REJECTED"
+      ]
+    },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "handoffId",
+          "shotId",
+          "candidateId",
+          "localFilePath",
+          "expectedFileName",
+          "userDecision",
+          "userDecisionReason",
+          "sourceConversationNote",
+          "sourceFileSha256",
+          "intakeStatus",
+          "nextRequiredCliStages"
+        ],
+        "properties": {
+          "handoffId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "shotId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "candidateId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "localFilePath": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/repositoryPath"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expectedFileName": {
+            "type": "string",
+            "pattern": "^[^\\\\/:*?\"<>|]+\\.(png|jpg|jpeg|webp)$"
+          },
+          "userDecision": {
+            "enum": [
+              "PENDING_USER_REVIEW",
+              "APPROVE_CANDIDATE",
+              "REJECT_DRIFT",
+              "REQUEST_VARIATION",
+              "CHANGE_VISUAL_DIRECTION"
+            ]
+          },
+          "userDecisionReason": {
+            "type": "string"
+          },
+          "sourceConversationNote": {
+            "type": "string"
+          },
+          "sourceFileSha256": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/sha256"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "intakeStatus": {
+            "enum": [
+              "PENDING_FILE_TRANSFER",
+              "HASH_REQUIRED",
+              "READY_FOR_EXTERNAL_RESULT_INTAKE",
+              "VALIDATED",
+              "REJECTED"
+            ]
+          },
+          "nextRequiredCliStages": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "validate-image-candidate-external-result-intake",
+                "validate-image-candidate-result-review-preflight",
+                "validate-image-candidate-result-human-review-decision",
+                "create-image-candidate-reference-packet",
+                "validate-image-candidate-reference-packet",
+                "validate-candidate-reference-human-acceptance-decision",
+                "validate-candidate-reference-registry-preflight",
+                "create-candidate-reference-registry-packet",
+                "validate-candidate-reference-registry-packet",
+                "validate-candidate-reference-registry-human-acceptance-decision",
+                "create-candidate-reference-acceptance-packet",
+                "validate-candidate-reference-acceptance-packet"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intakeBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceFileSha256RequiredBeforeExternalResultIntake",
+        "sourceFileSha256RequiredBeforeCandidateReferenceAcceptance",
+        "userDecisionDoesNotWriteCanon",
+        "existingCliChainMustRun"
+      ],
+      "properties": {
+        "sourceFileSha256RequiredBeforeExternalResultIntake": {
+          "const": true
+        },
+        "sourceFileSha256RequiredBeforeCandidateReferenceAcceptance": {
+          "const": true
+        },
+        "userDecisionDoesNotWriteCanon": {
+          "const": true
+        },
+        "existingCliChainMustRun": {
+          "const": true
+        }
+      }
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/])(?!.*://).+"
+    }
+  }
+}

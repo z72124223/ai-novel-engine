@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "reference-upload-checklist-v1",
+  "handoffId": "handoff-example-wp002a",
+  "status": "REFERENCE_UPLOAD_REQUIRED",
+  "items": [
+    {
+      "referenceId": "ref-lu-chenxing-body-v2",
+      "repositoryPath": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "assetRole": "BODY_AND_LIKENESS",
+      "entityId": "char-lu-chenxing",
+      "version": "photo-set-123123-closest-body-v2",
+      "required": true,
+      "requirementCategory": "BODY",
+      "expectedSha256": "500dd5480a6c61c5b335ee446d178fec1766e42761e7447c6fca1de6a63d199f",
+      "whyNeeded": "Locks adult face, stocky opening body, buzz cut, glasses, and scale.",
+      "canProceedWithoutIt": false,
+      "degradedMode": "BLOCK_FORMAL_GENERATION",
+      "uploadStatus": "UPLOAD_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-lu-chenxing-opening-costume-v1",
+      "repositoryPath": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "assetRole": "OPENING_COSTUME",
+      "entityId": "char-lu-chenxing",
+      "version": "coastal-practical-modern-v1",
+      "required": true,
+      "requirementCategory": "COSTUME",
+      "expectedSha256": "e11757d2bfb5589ae4f7e78f982618110c9a908d4c8cfee9bce1ba3d26cd72f3",
+      "whyNeeded": "Prevents the 2026 Taiwan opening outfit from drifting into fantasy clothing.",
+      "canProceedWithoutIt": false,
+      "degradedMode": "BLOCK_FORMAL_GENERATION",
+      "uploadStatus": "UPLOAD_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-aijiang-appearance-v1",
+      "repositoryPath": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "assetRole": "ANIMAL_APPEARANCE",
+      "entityId": "char-aijiang",
+      "version": "author-production-turnaround-v1",
+      "required": true,
+      "requirementCategory": "ANIMAL_APPEARANCE",
+      "expectedSha256": "1cac692b31cf469e06c3249c3fdd19dd9693129bc3698ec4d81255f697f1adcb",
+      "whyNeeded": "Locks the husky mask, coat markings, ice-blue eyes, build, and human-dog scale.",
+      "canProceedWithoutIt": false,
+      "degradedMode": "BLOCK_FORMAL_GENERATION",
+      "uploadStatus": "UPLOAD_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-location-geometry-placeholder",
+      "repositoryPath": "world/chenxing/production/PLACEHOLDER_LOCATION_GEOMETRY_NOT_YET_CREATED.png",
+      "assetRole": "LOCATION_GEOMETRY",
+      "entityId": "loc-example-not-authoritative",
+      "version": "placeholder-v0",
+      "required": true,
+      "requirementCategory": "LOCATION_GEOMETRY",
+      "expectedSha256": null,
+      "whyNeeded": "Explicit placeholder for a future master panorama, top-down plan, directional views, spatial anchors, and scale reference.",
+      "canProceedWithoutIt": false,
+      "degradedMode": "BLOCK_FORMAL_GENERATION",
+      "uploadStatus": "NOT_AVAILABLE_IN_CONVERSATION",
+      "placeholder": true,
+      "placeholderReason": "WP-003 inventories the Location Bible gap; WP-004 binds a real Pilot location reference."
+    },
+    {
+      "referenceId": "ref-style-cinematic-misty-v1",
+      "repositoryPath": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png",
+      "assetRole": "STYLE_ONLY",
+      "entityId": "style-chenxing-opening",
+      "version": "cinematic-misty-v1",
+      "required": false,
+      "requirementCategory": "STYLE_ONLY",
+      "expectedSha256": "a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a",
+      "whyNeeded": "Provides render mood only; it is never likeness or costume authority.",
+      "canProceedWithoutIt": true,
+      "degradedMode": "STYLE_EXPLORATION_ONLY",
+      "uploadStatus": "NOT_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    }
+  ],
+  "formalGenerationRule": {
+    "missingRequiredVisualReferenceStatus": "REFERENCE_UPLOAD_REQUIRED",
+    "textOnlyFormalGenerationAllowed": false,
+    "humanUploadConfirmationRequired": true
+  },
+  "exampleOnly": true
+}

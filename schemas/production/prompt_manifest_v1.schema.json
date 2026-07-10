@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/production/prompt_manifest_v1.schema.json",
+  "title": "Prompt Manifest V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "handoffId",
+    "manifestStatus",
+    "promptItems",
+    "secretAndApprovalGuard"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "prompt-manifest-v1"
+    },
+    "handoffId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "manifestStatus": {
+      "enum": [
+        "DRAFT",
+        "VALIDATED",
+        "READY_FOR_GPT"
+      ]
+    },
+    "promptItems": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "promptItemId",
+          "shotId",
+          "factualSceneContent",
+          "visualStyle",
+          "referenceBindings",
+          "cameraAndComposition",
+          "allowedCreativeFreedom",
+          "negativeConstraints",
+          "authorOnlyExclusions",
+          "output",
+          "assembledPromptPreview",
+          "placeholder"
+        ],
+        "properties": {
+          "promptItemId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "shotId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "factualSceneContent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "visibleFacts",
+              "visibleCharacters",
+              "visibleAction",
+              "locationAndTime",
+              "visibleProps"
+            ],
+            "properties": {
+              "visibleFacts": {
+                "$ref": "#/$defs/nonEmptyStringList"
+              },
+              "visibleCharacters": {
+                "$ref": "#/$defs/nonEmptyStringList"
+              },
+              "visibleAction": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "locationAndTime": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "visibleProps": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/nonBlank"
+                }
+              }
+            }
+          },
+          "visualStyle": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "styleReferenceIds",
+              "renderingNotes"
+            ],
+            "properties": {
+              "mode": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "styleReferenceIds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/$defs/nonBlank"
+                }
+              },
+              "renderingNotes": {
+                "$ref": "#/$defs/nonEmptyStringList"
+              }
+            }
+          },
+          "referenceBindings": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "referenceId",
+                "entityId",
+                "version",
+                "usage"
+              ],
+              "properties": {
+                "referenceId": {
+                  "$ref": "#/$defs/nonBlank"
+                },
+                "entityId": {
+                  "$ref": "#/$defs/nonBlank"
+                },
+                "version": {
+                  "$ref": "#/$defs/nonBlank"
+                },
+                "usage": {
+                  "$ref": "#/$defs/nonBlank"
+                }
+              }
+            }
+          },
+          "cameraAndComposition": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "camera",
+              "composition",
+              "continuityIntent"
+            ],
+            "properties": {
+              "camera": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "composition": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "continuityIntent": {
+                "$ref": "#/$defs/nonBlank"
+              }
+            }
+          },
+          "allowedCreativeFreedom": {
+            "$ref": "#/$defs/nonEmptyStringList"
+          },
+          "negativeConstraints": {
+            "$ref": "#/$defs/nonEmptyStringList"
+          },
+          "authorOnlyExclusions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "description": "Boundary labels only; do not place the secret content itself here."
+          },
+          "output": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "aspectRatio",
+              "use",
+              "expectedFileName",
+              "candidateOnly"
+            ],
+            "properties": {
+              "aspectRatio": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]*:[1-9][0-9]*$"
+              },
+              "use": {
+                "enum": [
+                  "STORYBOARD_CANDIDATE",
+                  "KEYFRAME_CANDIDATE",
+                  "LOCATION_BIBLE_CANDIDATE",
+                  "REFERENCE_VARIATION_CANDIDATE"
+                ]
+              },
+              "expectedFileName": {
+                "type": "string",
+                "pattern": "^[^\\\\/:*?\"<>|]+\\.(png|jpg|jpeg|webp)$"
+              },
+              "candidateOnly": {
+                "const": true
+              }
+            }
+          },
+          "assembledPromptPreview": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "secretAndApprovalGuard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorOnlySecretContentIncluded",
+        "laterPlotAnswersIncluded",
+        "unapprovedAppearanceIncluded",
+        "approvalOrCanonClaimsIncluded",
+        "providerCredentialOrRemoteJobDataIncluded"
+      ],
+      "properties": {
+        "authorOnlySecretContentIncluded": {
+          "const": false
+        },
+        "laterPlotAnswersIncluded": {
+          "const": false
+        },
+        "unapprovedAppearanceIncluded": {
+          "const": false
+        },
+        "approvalOrCanonClaimsIncluded": {
+          "const": false
+        },
+        "providerCredentialOrRemoteJobDataIncluded": {
+          "const": false
+        }
+      }
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "nonEmptyStringList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/nonBlank"
+      }
+    }
+  }
+}

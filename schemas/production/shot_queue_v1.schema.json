@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/production/shot_queue_v1.schema.json",
+  "title": "Shot Queue V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "handoffId",
+    "queueStatus",
+    "sourceCommitSha",
+    "shots"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "shot-queue-v1"
+    },
+    "handoffId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "queueStatus": {
+      "enum": [
+        "DRAFT",
+        "VALIDATED",
+        "READY_FOR_GPT"
+      ]
+    },
+    "sourceCommitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/shot"
+      }
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/])(?!.*://).+"
+    },
+    "nullableReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonBlank"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "shot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shotId",
+        "sequenceNumber",
+        "sourceArtifact",
+        "sceneId",
+        "locationId",
+        "locationZone",
+        "characters",
+        "props",
+        "camera",
+        "composition",
+        "action",
+        "emotion",
+        "weatherAndLighting",
+        "continuityFrom",
+        "continuityTo",
+        "firstFrameRef",
+        "lastFrameRef",
+        "requiredReferences",
+        "forbiddenElements",
+        "outputFileName",
+        "reviewStatus",
+        "placeholder"
+      ],
+      "properties": {
+        "shotId": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "sequenceNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceArtifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repositoryPath",
+            "sourceShotId"
+          ],
+          "properties": {
+            "repositoryPath": {
+              "$ref": "#/$defs/repositoryPath"
+            },
+            "sourceShotId": {
+              "$ref": "#/$defs/nonBlank"
+            }
+          }
+        },
+        "sceneId": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "locationId": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "locationZone": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "characters": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "characterId",
+              "appearanceVersion",
+              "costumeVersion",
+              "position",
+              "scale",
+              "pose",
+              "emotion",
+              "visibleProps"
+            ],
+            "properties": {
+              "characterId": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "appearanceVersion": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "costumeVersion": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "position": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "scale": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "pose": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "emotion": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "visibleProps": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/$defs/nonBlank"
+                }
+              }
+            }
+          }
+        },
+        "props": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "propId",
+              "version",
+              "position",
+              "visible"
+            ],
+            "properties": {
+              "propId": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "version": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "position": {
+                "$ref": "#/$defs/nonBlank"
+              },
+              "visible": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "camera": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "shotSize",
+            "angle",
+            "movement",
+            "lensIntent"
+          ],
+          "properties": {
+            "shotSize": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "angle": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "movement": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "lensIntent": {
+              "$ref": "#/$defs/nonBlank"
+            }
+          }
+        },
+        "composition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "foreground",
+            "midground",
+            "background",
+            "spatialAnchors"
+          ],
+          "properties": {
+            "foreground": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "midground": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "background": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "spatialAnchors": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/nonBlank"
+              }
+            }
+          }
+        },
+        "action": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "emotion": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "weatherAndLighting": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "weather",
+            "timeOfDay",
+            "keyLight",
+            "continuityState"
+          ],
+          "properties": {
+            "weather": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "timeOfDay": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "keyLight": {
+              "$ref": "#/$defs/nonBlank"
+            },
+            "continuityState": {
+              "$ref": "#/$defs/nonBlank"
+            }
+          }
+        },
+        "continuityFrom": {
+          "$ref": "#/$defs/nullableReference"
+        },
+        "continuityTo": {
+          "$ref": "#/$defs/nullableReference"
+        },
+        "firstFrameRef": {
+          "$ref": "#/$defs/nullableReference"
+        },
+        "lastFrameRef": {
+          "$ref": "#/$defs/nullableReference"
+        },
+        "requiredReferences": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        },
+        "forbiddenElements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        },
+        "outputFileName": {
+          "type": "string",
+          "pattern": "^[^\\\\/:*?\"<>|]+\\.(png|jpg|jpeg|webp)$"
+        },
+        "reviewStatus": {
+          "enum": [
+            "PENDING_USER_REVIEW",
+            "APPROVE_CANDIDATE",
+            "REJECT_DRIFT",
+            "REQUEST_VARIATION",
+            "CHANGE_VISUAL_DIRECTION"
+          ]
+        },
+        "placeholder": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
