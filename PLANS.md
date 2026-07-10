@@ -1,12 +1,3461 @@
 # Plan
 
-## Goal
+## WP-001 Project Governance Reset
 
-Create and maintain docs-only authoring quality, scene-production boundary, script-ready packet, Qingli scene registry seed, scene packet dry-run review, storyboard / camera planning, production asset registry planning, world-bible rebuild decision notes, storyboard-first final deliverable alignment, new-world foundation questionnaire, demand-driven query layer blueprint, simulation-first knowledge / truth rules, and project-control notes that preserve playtest learning about narrative prose, NPC consistency, review workflow, narrative review gates, anti-AI-writing guidance, micro-prose review, sensory attribution, epoch / material culture consistency, protagonist reaction logic, initial survival orientation / goal transition, scene lock / animation asset planning, 04/05/06/07/08 handoff contracts, scene-registry / dry-run completion status, and manual 01/02/03 engineering-loop rules while clearly separating engine layer rules from content / setting pack specifics.
+### Goal
+
+建立專案治理的最小正式入口，讓後續 Codex 工作先讀取專案狀態、既有規範與交接資訊，再以單一 Work Package（工作包）逐步實作。
+
+### Global Strategy
+
+- 只新增治理文件，不修改 Kotlin、測試、SQLite migration 或 runtime 行為。
+- 以目前本地 Repository 與既有 `AGENTS.md`、`docs/HANDOFF.md`、`PLANS.md` 為事實基礎。
+- 保留現有未提交修改；本 Work Package 不整理、不回復、不覆蓋那些變更。
+
+### Non-Goals
+
+- 不開始新的產品功能或架構重構。
+- 不修改資料庫、Validator、StateReducer、CLI 行為或正式 Canon。
+- 不假設目前 GitHub 狀態已同步；本包先處理本地治理入口。
+
+### Scope
+
+- `PROJECT_STATE.md`
+- `.codex/project_controller.md`
+- 本文件的本 Work Package 紀錄
+
+### Confirmed Facts
+
+- 使用者要求先依 ChatGPT 總控室討論結果開始實作。
+- 總控室指定第一個 Work Package 為 `WP-001 Project Governance Reset`。
+- 現有 `AGENTS.md` 已定義 Kotlin/JVM CLI、SQLite、JSON 協議與多項 runtime 邊界。
+- 現有 `docs/HANDOFF.md` 定義 `01 -> 02 -> 03 -> 01` 的工作交接循環。
+- 工作樹目前有大量既有未提交變更，不能視為本 Work Package 產物。
+
+### Assumptions
+
+- `PROJECT_STATE.md` 可作為目前本地狀態摘要，但不取代 `AGENTS.md` 或 `docs/HANDOFF.md`。
+- `.codex/project_controller.md` 應作為 Codex 開始新任務時的流程提醒，不應授予超出使用者授權的外部操作權限。
+
+### Open Questions
+
+- 是否要在後續 Work Package 將治理文件同步到 GitHub，需在檢查目前 diff 與分支後另行決定。
+- ChatGPT 總控室所稱 GitHub 連線狀態尚未在本地工具中驗證。
+
+### Implementation Steps
+
+- [x] Step 1: 完成證據盤點並記錄現有未提交修改。
+- [x] Step 2: 建立 `PROJECT_STATE.md`。
+- [x] Step 3: 建立 `.codex/project_controller.md`。
+- [x] Step 4: 執行文件格式與邊界檢查，更新本計畫。
+
+### Verification
+
+- `git diff --check`。
+- 確認新增文件不包含直接修改 SQLite、繞過 Validator 或未授權外部操作的指示。
+- 確認本 Work Package 的 diff 只包含治理文件與本計畫區段。
+
+### Risks
+
+- 現有工作樹的未提交變更可能讓整體 diff 難以歸屬；驗證時使用新增檔案與精確區段比對。
+- `PROJECT_STATE.md` 若寫入未驗證的遠端資訊，可能造成後續漂移；未驗證內容明確標記為未知。
+
+### Drift Log
+
+- 2026-07-10: 從瀏覽器中的總控室對話取得 WP-001 指示；證據盤點確認本地工作樹非乾淨，因此本包採加法式治理文件變更。
+- 2026-07-10: 新增兩份治理文件；`git diff --check` 通過，未觸碰既有 Kotlin、測試或 SQLite 變更。
+
+## Active Pipeline Lifecycle Map And Progress Rubric Repair Plan
+
+### Goal
+
+Repair the control documents before more gates are added: split gate hardening completion from product deliverable completion, fix the progress table arithmetic, and create one pipeline lifecycle map for accepted draft through reviewable storyboard packet boundaries.
+
+### Global Strategy
+
+- Keep this slice docs/control only.
+- Treat `Project completion progress` as product deliverable completion, not gate count.
+- Preserve the previous 79% as gate hardening completion evidence, but stop displaying it as product completion until the rubric supports it.
+- Create a lifecycle map that 01/02/03 can use to decide whether a step is candidate-only, reviewable, non-canon, non-production, and outside runtime/SQLite boundaries.
+- Establish the next order: finish this repair, then `candidate_reference_acceptance_packet_validation`, then an E2E happy-path fixture, then read-only story movement audit and release hygiene.
+
+### Non-Goals
+
+- No Kotlin source, tests, CLI behavior, SQLite schema, runtime, Validator, `StateReducer`, `resolve-turn`, `contextHash`, or `stateVersion` changes.
+- No formal registry write, asset approval, approved reference, registered reference, production lock, canon, image/video/audio generation, provider API/job, remote download, server/port, web UI, Docker, React/Next, FastAPI/Express/Ktor/Spring, Android UI, or Rust work.
+
+### Scope
+
+- `PLANS.md`
+- `docs/PROJECT_COMPLETION_PROGRESS.md`
+- `docs/PROJECT_PROGRESS_RUBRIC.md`
+- `docs/PIPELINE_LIFECYCLE_MAP.md`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the `Accelerated Candidate Reference Registry Validation and Acceptance Boundary Batch` REVISE P1 repair.
+- `docs/PROJECT_COMPLETION_PROGRESS.md` currently displays `Project completion progress: 79%`.
+- The current progress table has weights `20 + 20 + 15 + 20 + 15 + 3`, which sums to 93, not 79.
+- User instruction says current progress should be treated as `79% pending rubric repair` and should not be increased in this slice.
+- The expert review verdict is REVISE for over-gating and contradictory progress rubric risk, not a request to add production, registry, asset lock, or canon capability.
+- The canonical workspace is `C:\Users\f7212\Projects\AI 劇本`; docs must not hardcode the old OneDrive workspace path.
+
+### Assumptions
+
+- A conservative product deliverable progress can be lower than the prior 79% if the table and rubric explicitly support the lower number.
+- Gate hardening completion can remain a separate internal indicator because many local JSON gates are implemented, but it should not be used as the single product progress percentage.
+
+### Open Questions
+
+- Future `01` control policy may choose a different product target, but it must update the rubric before displaying a new percentage.
+
+### Implementation Steps
+
+- [x] Step 1: Evidence pass over current progress file, PLANS, and docs inventory.
+- [ ] Step 2: Update progress rubric and `docs/PROJECT_COMPLETION_PROGRESS.md`.
+- [ ] Step 3: Add pipeline lifecycle map doc.
+- [ ] Step 4: Update verification notes and run docs-only checks.
+- [ ] Step 5: Report docs/control repair to `01` with an expert-model review packet. Do not send directly to `03` in this slice.
+
+### Verification
+
+- Run `git diff --check -- PLANS.md docs/PROJECT_COMPLETION_PROGRESS.md docs/PROJECT_PROGRESS_RUBRIC.md docs/PIPELINE_LIFECYCLE_MAP.md`.
+- Confirm no Kotlin/source/test/schema/runtime files changed in this slice.
+- Confirm new docs do not contain the old OneDrive workspace path.
+- Skip Gradle because this is a docs/control-only slice with no Kotlin/test/CLI behavior changes.
+
+### Risks
+
+- Lowering product progress may look like regression unless the document clearly explains the split from gate hardening.
+- The lifecycle map could become too broad; keep it authoritative for boundaries, not production implementation.
+
+### Drift Log
+
+- 2026-06-27: Started docs/control-only repair after expert REVISE. Evidence confirmed the existing progress table sums to 93 while displaying 79, so the plan separates gate hardening from product deliverable progress before any new gate work.
+- 2026-06-27: `01` updated handoff order: after docs/control repair, report back to `01` with an expert-model review packet first; do not directly send to `03` until `01` reviews expert feedback.
+
+## Active Accelerated Candidate Reference Registry Validation And Acceptance Boundary Batch Plan
+
+### Goal
+
+Continue after `candidate_reference_registry_packet_validation` by validating the local candidate reference registry preparation packet, then creating a human acceptance boundary intake and a candidate-only acceptance packet. This remains local JSON boundary work only: no formal registry write, no SQLite/runtime write, no asset approval, no approved or registered reference, no production lock, no canon, and no image/video generation.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-candidate-reference-registry-packet`: read a candidate reference registry preparation packet, require PASS/candidate status/validation next step/source fields/SHA/image results, and block remote/provider/API/generated/approval/registered/canon/lock wording.
+- Step 1 PASS authorizes only `candidate_reference_registry_human_acceptance_ready`, meaning a human may decide whether to create the next local acceptance-boundary packet.
+- Step 2 adds `validate-candidate-reference-registry-human-acceptance-decision`: read Step 1 validation report plus an external human/controller decision JSON; verify human source, narrow status, checklist coverage, source binding, and item-level image result identity.
+- Step 2 PASS with `ALLOW_CANDIDATE_REFERENCE_ACCEPTANCE_PACKET` authorizes only `candidate_reference_acceptance_packet`; `REQUEST_CHANGES` and `REJECT` produce no downstream step.
+- Step 3 adds `create-candidate-reference-acceptance-packet`: create a local candidate-only acceptance-boundary packet that can later be validated, not a formal registry write or approval record.
+- Step 3 PASS authorizes only `candidate_reference_acceptance_packet_validation`.
+
+### Non-Goals
+
+- No SQLite write, schema migration, formal registry write, asset approval, approved reference, registered reference, production lock, canon application, runtime scene creation, provider API/job, remote download, image generation, video generation, script rewriting, or external AI call.
+- No server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceRegistryPacketValidationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceRegistryHumanAcceptanceDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceAcceptancePacketService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceRegistryPacketValidationTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceRegistryHumanAcceptanceDecisionIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceAcceptancePacketTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the prior candidate reference registry preparation package.
+- `Project completion progress` reported by `01` is currently `77%`.
+- `CandidateReferenceRegistryPacketService` emits `nextAllowedDownstreamStep=candidate_reference_registry_packet_validation` on PASS.
+- `CandidateReferenceRegistryPacket` currently carries source fields and candidate image result entries, but can carry additional lineage fields from the previous preflight with defaulted additive model fields.
+- User explicitly requires this batch to remain validation and acceptance-boundary JSON only, not formal registry write, asset approval, approved reference, registered reference, production lock, or canon.
+
+### Assumptions
+
+- `candidate_reference_acceptance_packet_validation` is a safe next step because it means later validation of a local boundary packet, not asset registry write or approval.
+
+### Open Questions
+
+- A future package must decide whether an acceptance-boundary packet can ever lead to a formal registry write, and if so what separate manual gate and validator rules are required.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated candidate reference registry validation and acceptance-boundary batch in `PLANS.md`.
+- [x] Step 2: Add `minimal candidate reference registry packet validation gate`.
+- [x] Step 3: Add `minimal candidate reference registry human acceptance decision intake gate`.
+- [x] Step 4: Add `minimal candidate reference acceptance packet gate`.
+- [x] Step 5: Run focused tests and diff checks for the package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS packet validates and emits `candidate_reference_registry_human_acceptance_ready`.
+- Step 2: Unit tests should prove upstream packet FAIL, wrong next step, missing source fields, invalid SHA, empty image results, remote/provider/API/generated/approval/registered/canon/lock wording fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS validation report plus `ALLOW_CANDIDATE_REFERENCE_ACCEPTANCE_PACKET` human decision passes and emits `candidate_reference_acceptance_packet`.
+- Step 3: Unit tests should prove auto/model/generated source, incomplete checklist coverage, request/reject no downstream, source mismatch, and item-level image result mismatch fail or do not release downstream.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS validation report plus PASS decision intake creates a candidate-only acceptance packet and emits `candidate_reference_acceptance_packet_validation`.
+- Step 4: Unit tests should prove forbidden registered/approved/locked/final/canon/generated/provider/API/remote wording fails.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+
+### Risks
+
+- Accidentally using acceptance wording that implies user approval, approved reference, registered reference, formal registry write, production lock, final state, or canon.
+- Allowing a forged human decision intake to truncate or rewrite the candidate image result source chain.
+- Allowing remote provider URLs, provider job ids, or API responses to become source of truth through metadata-only references.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the prior candidate reference registry preparation package; `01` asked `02` to continue accelerated medium package mode at 77% progress.
+- 2026-06-25: Evidence pass found the next package can safely include three read-only JSON gates because all outputs stop before formal registry write, approved/registered reference, production lock, canon, or SQLite/runtime changes.
+- 2026-06-25: Implemented the three validation/acceptance-boundary gates with CLI commands, additive source-lineage report fields, item-level image result binding, and focused CLI smoke tests. Verified with `.\gradlew.bat test --tests "*CandidateReferenceRegistryPacketValidationTest" --tests "*CandidateReferenceRegistryHumanAcceptanceDecisionIntakeTest" --tests "*CandidateReferenceAcceptancePacketTest" --no-daemon --console=plain`; `git diff --check` showed only Windows line-ending warnings.
+- 2026-06-25: Sent package-level read-only review handoff to `03`, asking it to report PASS / REVISE / FAIL back to `01`.
+- 2026-06-25: `03` returned REVISE P1 for Step 2 and Step 3: `imageResults[].assetType` must be included in item-level source binding and forbidden status / claim scan surfaces to prevent approved/registered/locked wording from crossing the acceptance boundary. Progress remains 77%.
+- 2026-06-25: Repaired REVISE P1 by comparing `assetType` during Step 2 and Step 3 item-level image result source binding, scanning `assetType` for forbidden status/claim wording, and adding forged `assetType` regression tests. Focused tests passed; diff check showed only Windows line-ending warnings.
+- 2026-06-26: `03` passed the REVISE P1 repair; `01` counted this validation/acceptance-boundary package and updated displayed project completion progress to 79%.
+
+## Active Accelerated Candidate Reference Registry Preparation Batch Plan
+
+### Goal
+
+Continue after `candidate_reference_human_acceptance_ready` by validating an external human/controller acceptance decision, preflighting candidate-reference registry preparation, and optionally creating a local candidate-only registry preparation packet. This remains local JSON preparation only: no SQLite write, no formal registry write, no asset approval, no approved reference, no production lock, no canon, no image/video generation, and no remote download.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-candidate-reference-human-acceptance-decision`: read a PASS candidate reference packet validation report and an external human decision JSON; verify source binding, human source, narrow status, checklist coverage, blocking issues, item-level image result identity, and forbidden claims.
+- Step 1 PASS with `ALLOW_CANDIDATE_REFERENCE_REGISTRY_PREFLIGHT` authorizes only `candidate_reference_registry_preflight`; `REQUEST_CHANGES` and `REJECT` produce no downstream step.
+- Step 2 adds `validate-candidate-reference-registry-preflight`: read the PASS decision intake plus the direct candidate reference packet validation report, prove both still match and are PASS-shaped, then authorize only `candidate_reference_registry_packet`.
+- Step 3 adds `create-candidate-reference-registry-packet`: read the PASS registry preflight and create a candidate-only local registry preparation packet, not a registry write or approval record.
+- Step 3 PASS authorizes only `candidate_reference_registry_packet_validation`.
+
+### Non-Goals
+
+- No SQLite write, schema migration, formal registry write, asset approval, approved reference, production lock, canon application, runtime scene creation, provider API/job, remote download, image generation, video generation, script rewriting, or external AI call.
+- No server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceHumanAcceptanceDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceRegistryPreflightService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CandidateReferenceRegistryPacketService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceHumanAcceptanceDecisionIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceRegistryPreflightTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CandidateReferenceRegistryPacketTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the prior package REVISE P1 item-level image result source-binding repair.
+- `Project completion progress` reported by `01` is currently `75%`.
+- `ImageCandidateReferencePacketValidationService` emits `nextAllowedDownstreamStep=candidate_reference_human_acceptance_ready` on PASS.
+- `ImageCandidateReferencePacketValidationReport` carries accepted script packet id, script packet draft file/SHA-256, provider/result/reference source fields, and candidate image result entries.
+- User explicitly requires this batch to remain registry preparation only, not formal registry write, asset approval, approved reference, production lock, or canon.
+
+### Assumptions
+
+- `candidate_reference_registry_packet_validation` is a safe next step because it means later validation of a preparation packet, not formal registry write.
+
+### Open Questions
+
+- A future package must define the boundary between candidate registry preparation and any formal registry/acceptance workflow before SQLite or runtime writes are considered.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated candidate reference registry preparation batch in `PLANS.md`.
+- [x] Step 2: Add `minimal candidate reference human acceptance decision intake gate`.
+- [x] Step 3: Add `minimal candidate reference registry preflight`.
+- [x] Step 4: Add `minimal candidate reference registry packet draft gate`.
+- [x] Step 5: Run focused tests and diff checks for the package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS validation report plus `ALLOW_CANDIDATE_REFERENCE_REGISTRY_PREFLIGHT` human decision passes and emits `candidate_reference_registry_preflight`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong next step, source mismatch, auto/model source, unknown status, incomplete checklist coverage, unresolved blocking issue, `REQUEST_CHANGES` / `REJECT` no downstream, item-level image result mismatch, approved/reference/locked/final/canon/generated/provider/remote/API wording fail or do not release downstream.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS decision intake plus direct PASS validation report passes and emits `candidate_reference_registry_packet`.
+- Step 3: Unit tests should prove forged intake/direct validation source mismatch, upstream non-PASS, wrong next step, and forbidden wording fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS preflight creates a candidate-only registry preparation packet and emits `candidate_reference_registry_packet_validation`.
+- Step 4: Unit tests should prove approved_reference / approved / locked / final / production-ready / canon / generated / provider job / remote URL / API response wording fails.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+
+### Risks
+
+- Letting registry preparation wording imply formal registry write, asset approval, approved reference, user approval, production lock, final state, or canon.
+- Allowing a forged decision intake to truncate or rewrite the candidate image result source chain.
+- Allowing remote provider URLs, provider job ids, or API responses to become source of truth through metadata-only references.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the prior image candidate result human review package after item-level image result source binding was added to Step 2; `01` asked `02` to continue accelerated medium package mode at 75% progress.
+- 2026-06-25: Evidence pass found the next package can safely include three read-only JSON gates because all outputs stop before formal registry write, approved reference, production lock, canon, or SQLite/runtime changes.
+- 2026-06-25: Implemented the three registry-preparation gates and focused tests with CLI smoke. Verified with `.\gradlew.bat test --tests "*CandidateReferenceHumanAcceptanceDecisionIntakeTest" --tests "*CandidateReferenceRegistryPreflightTest" --tests "*CandidateReferenceRegistryPacketTest" --no-daemon --console=plain`; diff checks found only Windows line-ending warnings.
+- 2026-06-25: Sent package-level read-only review request to `03`, noting the user-requested accelerated medium package and deterministic JSON boundary.
+- 2026-06-25: `03` passed the package-level review; `01` counted this registry-preparation package and updated displayed project completion progress to 77%.
+
+## Active Accelerated Image Candidate Result Human Review Batch Plan
+
+### Goal
+
+Continue after `image_candidate_result_human_review_ready` by validating an external human/controller decision for candidate image results, creating a local candidate reference packet, and validating that packet before any future asset-registry or approval work. This remains candidate-only JSON workflow: no SQLite write, no asset approval, no approved reference, no production lock, no canon, no image generation, and no remote download.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-image-candidate-result-human-review-decision`: read a PASS result review preflight and an external human decision JSON; verify source binding, human source, narrow status, checklist coverage, blocking issues, candidate result safety, and forbidden claims.
+- Step 1 PASS with `ALLOW_CANDIDATE_REFERENCE_PACKET` authorizes only `image_candidate_reference_packet`; `REQUEST_CHANGES` and `REJECT` produce no downstream step.
+- Step 2 adds `create-image-candidate-reference-packet`: read the PASS result review preflight and PASS decision intake report, then create a candidate-only local reference packet.
+- Step 2 PASS authorizes only `candidate_reference_packet_validation`.
+- Step 3 adds `validate-image-candidate-reference-packet`: read only the packet and ensure status remains candidate-only, local/metadata references remain remote-free, and the packet does not imply approved reference, production lock, final asset, canon, or registry write.
+- Step 3 PASS authorizes only `candidate_reference_human_acceptance_ready`, meaning a future human decision may decide whether to start a separate asset registry/acceptance workflow.
+
+### Non-Goals
+
+- No provider API call, provider job, remote image download, image generation, video generation, asset registry write, asset approval, approved reference, production lock, canon application, runtime scene creation, script rewriting, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateResultHumanReviewDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateReferencePacketService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateReferencePacketValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateResultHumanReviewDecisionIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateReferencePacketTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateReferencePacketValidationTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the external result intake package REVISE P1 second-layer repair.
+- `Project completion progress` reported by `01` is currently `73%`.
+- `ImageCandidateResultReviewPreflightService` emits `nextAllowedDownstreamStep=image_candidate_result_human_review_ready` on PASS.
+- `ImageCandidateResultReviewPreflightReport` carries preflight id, external result intake file/result id, provider handoff validation report file, packet id, preflight source id, decision id, accepted script packet id, script packet draft file/SHA-256, and candidate image results.
+- Existing adjacent decision intake gates use human source checks, narrow status vocabulary, required checklist coverage, blocking issue checks, and no downstream release for request/reject states.
+
+### Assumptions
+
+- `candidate_reference_human_acceptance_ready` is a safe stop point because it means waiting for a later human acceptance/registry decision, not approving a reference or writing an asset registry.
+
+### Open Questions
+
+- Future slices should define if and how a candidate reference packet can enter a formal asset registry or acceptance workflow.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated image candidate result human review batch in `PLANS.md`.
+- [x] Step 2: Add `minimal image candidate result human review decision intake gate`.
+- [x] Step 3: Add `minimal image candidate reference packet gate`.
+- [x] Step 4: Add `minimal image candidate reference packet validation gate`.
+- [x] Step 5: Run focused tests and diff checks for the package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+- [x] Step 7: REVISE P1 repair: add item-level image result source binding to `create-image-candidate-reference-packet`.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS preflight plus `ALLOW_CANDIDATE_REFERENCE_PACKET` human decision passes and emits `image_candidate_reference_packet`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong next step, source mismatch, auto/model source, unknown status, incomplete checklist coverage, unresolved blocking issue, `REQUEST_CHANGES` / `REJECT` no downstream, approved/reference/locked/final/canon wording, and remote metadata references fail or do not release downstream.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS preflight plus PASS decision intake creates a PASS candidate reference packet and emits `candidate_reference_packet_validation`.
+- Step 3: Unit tests should prove source mismatch, upstream non-PASS, intake not downstream-allowed, approved/reference/locked/final/canon packet status, remote URL / provider URI in metadata references, provider jobs, API responses, and approval/canon/runtime claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS packet validates and emits `candidate_reference_human_acceptance_ready`.
+- Step 4: Unit tests should prove non-PASS packet, wrong next step, missing source fields, approved_reference / production_locked status, remote URL / provider URI in metadata references, provider jobs, API responses, and approval/canon/runtime claims fail.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+
+### Risks
+
+- Letting candidate reference wording imply approved reference, formal asset registry, production lock, final state, or canon.
+- Allowing remote provider URLs, provider job ids, or API responses to become source of truth through metadata-only references.
+- Losing source lineage from accepted script packet, script packet draft, provider handoff validation, external result intake, result review preflight, and human decision.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the external result intake package REVISE P1 second-layer repair; `01` asked `02` to continue medium package mode without expanding safety boundaries.
+- 2026-06-25: Evidence pass found this package can safely include a read-only candidate reference packet validation gate because it still stops before any asset registry write, approved reference, production lock, or canon.
+- 2026-06-25: Implemented the three package gates, added focused tests with CLI smoke, and verified with `.\gradlew.bat test --tests "*ImageCandidateResultHumanReviewDecisionIntakeTest" --tests "*ImageCandidateReferencePacketTest" --tests "*ImageCandidateReferencePacketValidationTest" --no-daemon --console=plain`; `git diff --check` found only Windows line-ending warnings.
+- 2026-06-25: Sent package-level read-only review request to `03`, then sent a clean focused-test command correction to avoid a copied control character in the review prompt.
+- 2026-06-25: `03` returned REVISE P1 for Step 2: candidate reference packet creation must prove `decisionIntake.imageResults` are the same reviewed items carried by `resultReviewPreflight.imageResults`, not forged replacements with matching top-level source fields.
+- 2026-06-25: REVISE P1 repaired by adding item-level image result source binding to candidate reference packet creation and a forged-image-result regression test. Verified with `.\gradlew.bat test --tests "*ImageCandidateResultHumanReviewDecisionIntakeTest" --tests "*ImageCandidateReferencePacketTest" --tests "*ImageCandidateReferencePacketValidationTest" --no-daemon --console=plain`; diff checks found only Windows line-ending warnings.
+- 2026-06-25: `03` passed the REVISE P1 repair; `01` counted this package and updated displayed project completion progress to 75%.
+
+## Active Accelerated Image Candidate External Result Intake Batch Plan
+
+### Goal
+
+Continue after `image_candidate_manual_external_action_ready` by validating human-provided external image candidate result metadata and preparing it for human result review. This remains local intake and review preflight only: no provider API call, no provider job submission, no remote download, no SQLite write, no asset approval, no approved reference, no production lock, and no canon.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-image-candidate-external-result-intake`: read a PASS provider handoff packet validation report plus a human-provided external result JSON, validate source binding, human source, candidate-only status, local/metadata-only result references, prompt/candidate id linkage, and forbidden provider/API/approval claims.
+- Step 1 PASS authorizes only `image_candidate_result_review_preflight`.
+- Step 2 adds `validate-image-candidate-result-review-preflight`: read the PASS external result intake report and confirm the candidate image result package is ready for later human review, not approved or locked.
+- Step 2 PASS authorizes only `image_candidate_result_human_review_ready`.
+- Do not add the optional human review decision intake in this package; it is closer to candidate reference packet creation and should wait for a separate reviewed slice.
+- REVISE P1 repair: treat `metadataOnlyReference` as a source-bearing field and block remote URL / URI scheme / provider job / API response wording in both external result intake and result review preflight.
+- REVISE P1 second-layer repair: detect embedded URL / URI schemes anywhere inside `metadataOnlyReference`, not only when the field starts with a URL.
+
+### Non-Goals
+
+- No provider API call, provider job, remote image download, image generation, video generation, output registration into runtime data, asset approval, approved reference, production lock, canon application, runtime scene creation, script rewriting, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateExternalResultIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateResultReviewPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateExternalResultIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateResultReviewPreflightTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the manual provider handoff package REVISE P1 repair.
+- `Project completion progress` reported by `01` is currently `71%`.
+- `ImageCandidateProviderHandoffPacketValidationService` emits `nextAllowedDownstreamStep=image_candidate_manual_external_action_ready` on PASS.
+- `ImageCandidateProviderHandoffPacketValidationReport` now carries `acceptedScriptPacketId`, `scriptPacketDraftFile`, prompt items, provider handoff packet file, packet id, preflight id, decision id, preparation id, and source report fields.
+- Existing adjacent gates use local report models, source-binding nonblank checks, exact matches for carried ids/files/hashes, candidate-only status wording, forbidden claim scans, and CLI smoke tests.
+
+### Assumptions
+
+- A local relative image path can be accepted as a human-provided candidate file reference if it is not a URL, provider job reference, API response, or approval/lock signal.
+- `image_candidate_result_human_review_ready` is a safe stop point because it means waiting for human review, not asset approval or production use.
+
+### Open Questions
+
+- Future slices should decide whether accepted result candidates become candidate reference packets and what extra human decision categories are required before that step.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated external result intake package in `PLANS.md`.
+- [x] Step 2: Add `minimal image candidate external result intake gate`.
+- [x] Step 3: Add `minimal image candidate result review preflight`.
+- [x] Step 4: Run focused tests and diff checks for the package.
+- [x] Step 5: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+- [x] Step 6: Repair REVISE P1 remote/provider/API guard for `metadataOnlyReference`.
+- [x] Step 7: Add regression tests and rerun focused tests plus diff checks.
+- [x] Step 8: Notify `03` that the REVISE P1 repair is ready for read-only review.
+- [x] Step 9: Repair REVISE P1 second-layer embedded URL / URI scheme bypass in `metadataOnlyReference`.
+- [x] Step 10: Add embedded URL / URI regression tests and rerun focused tests plus diff checks.
+- [x] Step 11: Notify `03` that the second-layer REVISE P1 repair is ready for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS provider handoff packet validation plus human external result passes and emits `image_candidate_result_review_preflight`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong next step, source mismatch, auto/model/generated source, remote URL/provider job/API response, missing prompt/candidate linkage, missing result metadata/path, approved/reference/locked/final/generated/canon/runtime claims, and unsafe status fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS external result intake validates for human review readiness and emits `image_candidate_result_human_review_ready`.
+- Step 3: Unit tests should prove non-PASS intake, wrong next step, missing source fields, missing do-not-show checklist, missing drift review checklist, missing residual risks, remote/provider/API fields, and approval/canon/runtime claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run focused Gradle tests for the two new test classes and `git diff --check`.
+- Step 7: Regression tests should prove `metadataOnlyReference=https://...` fails in both external result intake and result review preflight, with no downstream step released.
+- Step 10: Regression tests should prove `metadataOnlyReference=manual metadata from https://...` and embedded URI schemes fail in both external result intake and result review preflight, with no downstream step released.
+
+### Risks
+
+- Treating external result intake as repo-side image generation instead of human-supplied metadata.
+- Allowing remote provider URLs, provider job ids, or API responses to become local source of truth.
+- Letting candidate result wording imply asset approval, approved reference, production lock, final state, or canon.
+- Losing prompt item / candidate id linkage between handoff packet validation and returned result metadata.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the manual provider handoff package REVISE P1 repair; `01` asked `02` to continue medium package mode without expanding safety boundaries.
+- 2026-06-25: Evidence pass found this package can stay local/read-only JSON by accepting only human-provided candidate result metadata/local controlled references and stopping at human result review readiness.
+- 2026-06-25: Added `validate-image-candidate-external-result-intake` models, service, CLI wiring, and focused tests. It accepts only human/user/control result sources, local or metadata-only candidate references, and rejects remote URLs, provider jobs, API responses, generated status, approval/lock/canon wording, and source mismatch.
+- 2026-06-25: Added `validate-image-candidate-result-review-preflight` models, service, CLI wiring, and focused tests. It stops at `image_candidate_result_human_review_ready` and does not create a review decision, candidate reference packet, asset approval, or output registration.
+- 2026-06-25: Initial parallel/sequential Gradle attempts hit Kotlin daemon memory pressure in this large workspace; rerunning with `-Pkotlin.daemon.jvmargs=-Xmx1536m` compiled successfully, then the clean focused test command passed without the extra property from cache. Diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent accelerated external result intake package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
+- 2026-06-25: `03` returned REVISE P1 because `metadataOnlyReference` can carry a remote provider URL while both intake and review preflight only blocked URL schemes in `localImagePath` and explicit remote/provider fields.
+- 2026-06-25: Repaired REVISE P1 by blocking URL / URI schemes and provider job / API response wording in `metadataOnlyReference` for both external result intake and result review preflight. Added regression tests proving remote metadata references fail with no downstream step; focused tests passed and diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
+- 2026-06-25: `03` returned REVISE P1 again because the URL detector was anchored to the start of the field, allowing embedded URLs such as `manual metadata from https://provider.example/image.png` inside `metadataOnlyReference`.
+- 2026-06-25: Repaired the second-layer P1 bypass by adding an unanchored embedded URL / URI scheme detector for `metadataOnlyReference` in both external result intake and result review preflight. Added regression tests for embedded `https://...` and `provider://...`; focused tests passed and diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent second-layer REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
+
+## Active Accelerated Image Candidate Manual Provider Handoff Batch Plan
+
+### Goal
+
+Continue after `image_candidate_manual_provider_handoff_ready` by validating an external human/controller decision to allow a local manual provider handoff packet, creating that packet, and validating the packet before any future manual external action. This remains local preparation only: no provider API call, no provider job, no image generation, no output registration, no asset approval, no production lock, and no canon.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-image-candidate-provider-handoff-decision`: read a PASS provider handoff preflight and an external human decision JSON; verify source binding, human source, narrow status, checklist coverage, blocking issues, prompt item safety, and forbidden claims.
+- Step 1 PASS with `ALLOW_MANUAL_PROVIDER_HANDOFF_PACKET` authorizes only `image_candidate_manual_provider_handoff_packet`; `REQUEST_CHANGES` and `REJECT` produce no downstream step.
+- Step 2 adds `create-image-candidate-provider-handoff-packet`: read the PASS preflight and PASS decision intake report, then create a local manual packet that a human may inspect/copy later.
+- Step 2 PASS authorizes only `image_candidate_provider_handoff_packet_validation`.
+- Step 3 adds `validate-image-candidate-provider-handoff-packet`: read only the packet and ensure it remains provider-neutral, unsubmitted, output-free, unapproved, unlocked, non-canon, and ready only for future manual external action.
+- Step 3 PASS authorizes only `image_candidate_manual_external_action_ready`.
+- REVISE P1 repair: require `acceptedScriptPacketId` and `scriptPacketDraftFile` to remain nonblank / preserved across decision intake, packet creation, and packet validation, and require packet creation to reject blank decision lineage.
+
+### Non-Goals
+
+- No provider API call, provider job, prompt submission, image generation, video generation, output registration, asset approval, approved reference, production asset, production lock, canon application, runtime scene creation, script rewriting, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateProviderHandoffDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateProviderHandoffPacketService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateProviderHandoffPacketValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateProviderHandoffDecisionIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateProviderHandoffPacketTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateProviderHandoffPacketValidationTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for the previous prompt preparation package REVISE P1 repair.
+- `Project completion progress` reported by `01` is currently `68%`.
+- `ImageCandidateProviderHandoffPreflightService` emits `nextAllowedDownstreamStep=image_candidate_manual_provider_handoff_ready` on PASS.
+- `ImageCandidateProviderHandoffPreflightReport` carries preflight id, prompt validation report file, prompt preparation file/id, image candidate brief/preflight fields, upstream asset/storyboard/script source fields, prompt items, and a local-only downstream boundary.
+- Existing human decision intake services use a narrow source/status/checklist/blocking-issue pattern and forbid auto/model/generated decisions.
+- `03` reported REVISE P1: this package guarded `scriptPacketDraftContentSha256` but did not consistently require `acceptedScriptPacketId` / `scriptPacketDraftFile`, and packet creation did not reject blank `decisionIntake.decisionId`.
+
+### Assumptions
+
+- `image_candidate_provider_handoff_packet_validation` is safer than moving directly from packet creation to manual external action because it gives `03` and future gates a concrete validation report step.
+- `image_candidate_manual_external_action_ready` is safe because it means waiting for a human outside this repo; it is not a provider submission, provider job, generated image, output registration, or asset approval.
+
+### Open Questions
+
+- Future slices can define how a human records the result of external manual provider work. This package deliberately does not register outputs or model provider responses.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated manual provider handoff batch in `PLANS.md`.
+- [x] Step 2: Add `minimal image candidate manual provider handoff decision intake gate`.
+- [x] Step 3: Add `minimal image candidate manual provider handoff packet gate`.
+- [x] Step 4: Add `minimal image candidate provider handoff packet validation gate`.
+- [x] Step 5: Run focused tests and diff checks for the whole package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+- [x] Step 7: Repair REVISE P1 source lineage guards for accepted script packet id, script packet draft file, and decision id.
+- [x] Step 8: Add regression tests and rerun focused tests plus diff checks.
+- [x] Step 9: Notify `03` that the REVISE P1 repair is ready for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS preflight plus `ALLOW_MANUAL_PROVIDER_HANDOFF_PACKET` human decision passes and emits `image_candidate_manual_provider_handoff_packet`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong next step, source mismatch, auto/model source, unknown status, incomplete checklist coverage, unresolved blocking issue, `REQUEST_CHANGES` / `REJECT` no downstream, provider/API/job/output fields, and approved/reference/locked/final/generated/canon/runtime claims fail or do not release downstream.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS preflight plus PASS decision intake creates a PASS packet and emits `image_candidate_provider_handoff_packet_validation`.
+- Step 3: Unit tests should prove source mismatch, upstream non-PASS, intake not downstream-allowed, provider/job/submitted/output/generated fields, and approval/canon/runtime claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS packet validates and emits `image_candidate_manual_external_action_ready`.
+- Step 4: Unit tests should prove non-PASS packet, wrong next step, missing source fields, providerJobId, submittedAt, outputPath `x.png`, generated status, and approval/canon/runtime claims fail.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+- Step 8: Regression tests should prove blank `acceptedScriptPacketId` / `scriptPacketDraftFile` fail in decision intake, packet creation, and packet validation; blank `decisionIntake.decisionId` fails in packet creation.
+
+### Risks
+
+- Letting manual handoff packet language sound like provider submission, generated output, output registration, or asset approval.
+- Carrying provider/job/submitted/output fields into a packet that should only be copied manually later.
+- Treating a human decision to create a packet as user approval, production lock, or canon.
+- Source-truncated reports that preserve only script hash but lose accepted script packet id or script packet draft file.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the previous package REVISE P1; `01` asked `02` to continue medium package mode without expanding safety boundaries.
+- 2026-06-25: Evidence pass found this package can stay local/read-only JSON by stopping at manual external action readiness and not defining provider response or output registration.
+- 2026-06-25: Added `validate-image-candidate-provider-handoff-decision` models, service, CLI wiring, and focused tests. Verification passed with `ImageCandidateProviderHandoffDecisionIntakeTest`.
+- 2026-06-25: Added `create-image-candidate-provider-handoff-packet` service, CLI wiring, and focused tests. Verification passed with `ImageCandidateProviderHandoffPacketTest`.
+- 2026-06-25: Added `validate-image-candidate-provider-handoff-packet` service, CLI wiring, and focused tests. Verification passed with `ImageCandidateProviderHandoffPacketValidationTest`.
+- 2026-06-25: Package verification passed with the three focused test classes in one Gradle run; diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent accelerated manual provider handoff package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
+- 2026-06-25: `03` returned REVISE P1 because manual provider handoff source lineage did not require accepted script packet id and script packet draft file across all three gates, and packet creation could accept a blank decision id from a forged PASS decision intake report.
+- 2026-06-25: Repaired REVISE P1 by requiring `acceptedScriptPacketId` and `scriptPacketDraftFile` through decision intake, packet creation, and packet validation; packet creation now rejects blank `decisionIntake.decisionId`, and packet validation reports carry both source fields forward. Added regression tests; focused package tests passed and diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
+
+## Active Accelerated Image Candidate Prompt Preparation Batch Plan
+
+### Goal
+
+Continue the accelerated image-candidate lane after `image_candidate_prompt_preparation` by creating prompt-safe local preparation JSON, validating it, and adding a provider handoff preflight that only marks the package ready for future manual handoff. This package remains preparation-only: no provider API call, no provider job, no image generation, no output path, no asset approval, no approved reference, no production lock, and no canon.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `create-image-candidate-prompt-preparation`: read a PASS image candidate brief and create local prompt-facing preparation items from candidate-only requirements.
+- Step 1 PASS authorizes only `image_candidate_prompt_validation`.
+- Step 2 adds `validate-image-candidate-prompt-preparation`: read only prompt preparation JSON, reject author-only / hidden-truth prompt text, provider/API/job/output fields, status upgrades, generated-media claims, runtime/canon claims, and incomplete prompt items.
+- Step 2 PASS authorizes only `image_candidate_provider_handoff_preflight`.
+- Step 3 adds `validate-image-candidate-provider-handoff-preflight`: read only prompt validation report and confirm the package can wait for manual provider handoff. It does not create a provider job or choose a provider.
+- Step 3 PASS authorizes only `image_candidate_manual_provider_handoff_ready`.
+- REVISE P1 repair: include `assetType` in the same forbidden status, forbidden claim, and author-only scans used by this package, without changing the package boundary or adding any new downstream capability.
+
+### Non-Goals
+
+- No provider API call, provider job, prompt submission, image generation, video generation, asset approval, approved reference, production asset, production lock, canon application, runtime scene creation, script rewriting, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidatePromptPreparationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidatePromptValidationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateProviderHandoffPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidatePromptPreparationTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidatePromptValidationTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateProviderHandoffPreflightTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for `Accelerated Asset Candidate Human Review Batch`.
+- `Project completion progress` reported by `01` is currently `65%`.
+- `ImageCandidateBriefService` emits `nextAllowedDownstreamStep=image_candidate_prompt_preparation` on PASS.
+- `ImageCandidateBrief` carries source ids/files/hash, candidate image requirements, do-not-show boundaries, prompt safety notes, and candidate-only downstream boundary.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` and prior image-candidate services treat prompt-facing material as local preparation and forbid author-only truth, provider/job/output, generated media, approval, lock, runtime, and canon claims.
+- `03` reported REVISE P1: `assetType` is structural but can carry status-upgrade or author-only wording, and the three prompt-preparation package services were not scanning it.
+
+### Assumptions
+
+- `image_candidate_provider_handoff_preflight` is safe in this package because it can be a read-only report over prompt validation output and still remains before any provider handoff or job submission.
+- `image_candidate_manual_provider_handoff_ready` is narrower than any image-generation step because it only means a later human/external tool may inspect the validated prompt package.
+
+### Open Questions
+
+- Future slices can decide provider-specific handoff schema, provider selection, job envelope shape, and storage policy. This package deliberately does not choose those.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated prompt preparation batch in `PLANS.md`.
+- [x] Step 2: Add `minimal image candidate prompt preparation gate`.
+- [x] Step 3: Add `minimal image candidate prompt validation gate`.
+- [x] Step 4: Add `minimal image candidate provider handoff preflight`.
+- [x] Step 5: Run focused tests and diff checks for the whole package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+- [x] Step 7: Repair REVISE P1 by scanning `assetType` in prompt preparation, prompt validation, and provider handoff preflight.
+- [x] Step 8: Add regression tests for status-upgrade / author-only `assetType` values and rerun focused tests plus diff checks.
+- [x] Step 9: Notify `03` that the REVISE P1 repair is ready for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove a PASS image candidate brief creates PASS prompt preparation and emits `image_candidate_prompt_validation`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong next step, missing source binding, missing image candidate requirements, provider/API/job/output fields, and forbidden approval/lock/canon/generated-media claims fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS prompt preparation validates and emits `image_candidate_provider_handoff_preflight`.
+- Step 3: Unit tests should prove non-PASS preparation, wrong next step, missing source binding, incomplete prompt items, author-only / hidden-truth prompt text, provider/API/job/output fields, and forbidden status/claim text fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS prompt validation report passes and emits `image_candidate_manual_provider_handoff_ready`.
+- Step 4: Unit tests should prove non-PASS validation, wrong next step, missing source binding, missing prompt items, author-only text, provider/API/job/output fields, and forbidden status/claim text fail.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+- Step 8: Regression tests should prove `assetType=approved_reference` or `assetType=production_locked` fails in all three gates, and `assetType=author_only` or `assetType=hidden truth` fails in prompt-facing validation / provider handoff.
+
+### Risks
+
+- Letting provider/API/job/output fields slip into prompt-facing local preparation.
+- Letting author-only, hidden-truth, secret-cause, or hidden-motive text leak into prompt items.
+- Letting manual provider handoff readiness sound like prompt submission, image generation, or asset approval.
+- Missing a structural text field that can carry forbidden wording even when free-text prompt fields are clean.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the previous accelerated package; `01` asked `02` to continue medium package mode without expanding safety boundaries.
+- 2026-06-25: Evidence pass found the three-step package can remain local JSON preparation and validation before any provider/API/job or generated image output.
+- 2026-06-25: Added `create-image-candidate-prompt-preparation` models, service, CLI wiring, and focused tests. Verification passed with `ImageCandidatePromptPreparationTest`.
+- 2026-06-25: Added `validate-image-candidate-prompt-preparation` service, CLI wiring, and focused tests. Verification passed with `ImageCandidatePromptValidationTest`.
+- 2026-06-25: Added `validate-image-candidate-provider-handoff-preflight` service, CLI wiring, and focused tests. Verification passed with `ImageCandidateProviderHandoffPreflightTest`.
+- 2026-06-25: Package verification passed with the three focused test classes in one Gradle run; diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent accelerated prompt preparation package read-only review handoff to `03`, including corrected clean focused test command for prompt preparation.
+- 2026-06-25: `03` returned REVISE P1 because `assetType` was not included in forbidden status / forbidden claim / author-only scans. Planned a narrow repair limited to adding `assetType` to existing scan surfaces and regression tests.
+- 2026-06-25: Repaired REVISE P1 by adding `assetType` to the prompt preparation, prompt validation, and provider handoff preflight scan surfaces. Added regression tests for `approved_reference`, `production_locked`, `author_only`, and `hidden truth` asset type values; focused package tests passed and diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent REVISE P1 repair handoff to `03`, asking for PASS / REVISE / FAIL back to `01`.
+
+## Active Accelerated Asset Candidate Human Review Batch Plan
+
+### Goal
+
+Continue the accelerated asset-candidate lane after `asset_candidate_human_review_ready` by validating an external human / controller decision, confirming whether image-candidate preparation may begin, and creating a local image-candidate brief. This package remains preparation-only: no asset approval, no approved reference, no production lock, no canon, no image generation, and no external generation API.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 adds `validate-asset-candidate-human-review-decision`: read a PASS asset candidate review preflight and an external human decision JSON, then verify source binding, human source, decision status, required checklist coverage, blocking issues, image-candidate requirements, and forbidden claims.
+- Step 1 PASS with `ALLOW_IMAGE_CANDIDATE_PREFLIGHT` authorizes only `image_candidate_preflight`; `REQUEST_CHANGES` and `REJECT` produce no downstream step.
+- Step 2 adds `validate-image-candidate-preflight`: read only the Step 1 intake report and confirm the package may proceed to local image-candidate brief preparation.
+- Step 2 PASS authorizes only `image_candidate_brief`.
+- Step 3 adds `create-image-candidate-brief`: read only the Step 2 preflight report and create a deterministic local JSON brief of candidate image requirements, reference requirements, do-not-show boundary, and prompt safety notes.
+- Step 3 PASS authorizes only `image_candidate_prompt_preparation`, meaning a later local prompt-preparation gate may begin. It does not authorize image generation, image output paths, providers, jobs, or approved references.
+
+### Non-Goals
+
+- No asset approval, asset lock, approved reference, production asset, production lock, canon application, storyboard image generation, asset image generation, video generation, voice generation, script rewriting, runtime scene creation, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateHumanReviewDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidatePreflightService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ImageCandidateBriefService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateHumanReviewDecisionIntakeTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidatePreflightTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ImageCandidateBriefTest.kt`
+
+### Confirmed Facts
+
+- `01` reported `03` PASS for `Accelerated Asset Candidate Batch`.
+- `Project completion progress` reported by `01` is currently `62%`.
+- `AssetCandidateReviewPreflightService` emits `nextAllowedDownstreamStep=asset_candidate_human_review_ready` on PASS.
+- `AssetCandidateReviewPreflightReport` carries preflight id, draft validation report file, asset candidate draft file/id, brief file/id, asset candidate preflight file/id, human review decision intake file/id, storyboard packet review file/id, accepted script packet id, script packet draft file/hash, and candidate item count.
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` says `candidate` and `review_ready` are not downstream-usable, while `approved_reference` and `production_locked` are later approval states.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` and `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` mention prompt-safe asset notes and warn that author-only or approval states must not leak into prompt-facing material.
+
+### Assumptions
+
+- `image_candidate_brief` is safe as a Step 2 next step because it is local JSON preparation and still before any provider/API/job/image output.
+- `image_candidate_prompt_preparation` is the safest Step 3 next step because it remains one gate before any prompt packet and far before image generation.
+
+### Open Questions
+
+- Future slices can decide whether prompt preparation should split by asset type, reference view, or downstream image tool, but this package does not choose a provider.
+
+### Implementation Steps
+
+- [x] Step 1: Record this accelerated human review batch in `PLANS.md`.
+- [x] Step 2: Add `minimal asset candidate human review decision intake gate`.
+- [x] Step 3: Add `minimal image candidate preflight gate`.
+- [x] Step 4: Add `minimal image candidate brief gate`.
+- [x] Step 5: Run focused tests and diff checks for the whole package.
+- [x] Step 6: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS preflight plus `ALLOW_IMAGE_CANDIDATE_PREFLIGHT` human decision passes and emits `image_candidate_preflight`.
+- Step 2: Unit tests should prove upstream non-PASS, wrong preflight next step, source mismatch, auto/model source, unknown status, incomplete checklist coverage, unresolved blocking issue, forbidden approval/lock/canon/generated-media claim, generation API/provider/job/output path, and approved/reference/locked wording fail.
+- Step 2: Unit tests should prove `REQUEST_CHANGES` / `REJECT` do not emit a next step.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS decision intake passes and emits `image_candidate_brief`; non-PASS, no downstream allowance, wrong decision status/next step, missing source fields, forbidden claims, output paths, generation API/provider/job, and approved/reference/locked wording fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Unit tests should prove PASS image candidate preflight creates a PASS brief and emits `image_candidate_prompt_preparation`; non-PASS, wrong next step, missing source fields, missing requirements, forbidden claims, output paths, generation API/provider/job, and approved/reference/locked wording fail.
+- Step 4: CLI smoke should write JSON without `--db`.
+- Step 5: Run focused Gradle tests for the three new test classes and `git diff --check`.
+
+### Risks
+
+- Letting `ALLOW_IMAGE_CANDIDATE_PREFLIGHT` sound like asset approval or image generation permission.
+- Carrying provider/API/job/output-path fields into prompt-facing preparation.
+- Letting approved/reference/locked wording sneak through an image-candidate requirement.
+
+### Drift Log
+
+- 2026-06-25: `03` passed the previous accelerated package; `01` asked `02` to continue in medium package mode without expanding safety boundaries.
+- 2026-06-25: Evidence pass found a 3-step package is safe because all steps can remain local JSON preparation and the next-step names stay before provider prompt packets or image generation.
+- 2026-06-25: Added `validate-asset-candidate-human-review-decision` models, service, CLI wiring, and focused tests. Verification passed with `AssetCandidateHumanReviewDecisionIntakeTest`.
+- 2026-06-25: Added `validate-image-candidate-preflight` models, service, CLI wiring, and focused tests. Verification passed with `ImageCandidatePreflightTest`.
+- 2026-06-25: Added `create-image-candidate-brief` models, service, CLI wiring, and focused tests. Verification passed with `ImageCandidateBriefTest`; a self-conflicting checklist phrase was revised after tests correctly caught forbidden production-lock wording.
+- 2026-06-25: Package verification passed with `AssetCandidateHumanReviewDecisionIntakeTest`, `ImageCandidatePreflightTest`, and `ImageCandidateBriefTest`; diff checks showed only Windows line-ending warnings.
+- 2026-06-25: Sent accelerated package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
+
+## Active Accelerated Asset Candidate Batch Plan
+
+### Goal
+
+Accelerate the asset-candidate lane by completing a medium package of adjacent local JSON gates: keep the already-built candidate-only asset candidate draft gate, add an explicit asset candidate draft validation report, and add a narrow asset candidate review preflight that only means the package may wait for human review preparation.
+
+### Global Strategy
+
+- Keep the whole package Kotlin/JVM CLI plus JSON file protocol only.
+- Step 1 remains `create-asset-candidate-draft`: read only `--asset-candidate-brief`, create candidate-only draft JSON, no approval, lock, image, or video.
+- Step 2 adds `validate-asset-candidate-draft`: read only `--asset-candidate-draft`, re-check source binding, candidate-only status, item completeness, forbidden claims, and emit an explicit validation report.
+- Step 3 adds `validate-asset-candidate-review-preflight`: read only the draft validation report and confirm the package may enter human review preparation.
+- PASS from Step 2 should authorize only `asset_candidate_review_preflight`.
+- PASS from Step 3 should authorize only `asset_candidate_human_review_ready`, which means waiting for human review and does not mean asset approval, asset lock, approved reference, production readiness, canon, image generation, or video generation.
+
+### Non-Goals
+
+- No asset approval, asset lock, approved reference, production asset, production lock, canon application, storyboard image generation, asset image generation, video generation, voice generation, script rewriting, runtime scene creation, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateDraftService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateDraftValidationService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateReviewPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateDraftTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateDraftValidationTest.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateReviewPreflightTest.kt`
+
+### Confirmed Facts
+
+- User asked to increase throughput because the project felt slow; `01` authorized a medium package while keeping one verified step at a time.
+- `Project completion progress` reported by `01` is currently `60%`.
+- `AssetCandidateDraftService` already emits `nextAllowedDownstreamStep=asset_candidate_review_preflight` on PASS.
+- `AssetCandidateDraft` already carries draft id, brief file/id, preflight file/id, human review decision intake file/id, storyboard packet review file/id, accepted script packet id, script packet draft file, script packet draft SHA-256, and candidate items.
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` marks `candidate` and `review_ready` as not downstream-usable; `approved_reference` and `production_locked` are later explicit approval states.
+
+### Assumptions
+
+- Adding an explicit validation report is safer for `03` review than treating draft creation as both creation and final validation.
+- `asset_candidate_human_review_ready` is narrower than any asset approval or generation step, because it only means the draft has passed local checks and can wait for human review.
+
+### Open Questions
+
+- Future slices can define the human review decision intake for asset candidates and decide how `review_ready` status is represented without implying approval.
+
+### Implementation Steps
+
+- [x] Step 1: Keep and verify `minimal asset candidate draft gate`.
+- [x] Step 2: Add `minimal asset candidate draft validation gate`.
+- [x] Step 3: Add `minimal asset candidate review preflight`.
+- [x] Step 4: Run focused tests and diff checks for the whole package.
+- [x] Step 5: Notify `03` that this is a user-requested accelerated medium package and ask for package-level read-only review.
+
+### Verification
+
+- Step 1: Run `.\gradlew.bat test --tests "*AssetCandidateDraftTest" --no-daemon`.
+- Step 2: Unit tests should prove PASS draft validates and emits `nextAllowedDownstreamStep=asset_candidate_review_preflight`.
+- Step 2: Unit tests should prove non-PASS draft, wrong next step, missing source binding, incomplete candidate item, forbidden status, and forbidden generated/approval/canon/runtime claims fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Unit tests should prove PASS validation report passes and emits `nextAllowedDownstreamStep=asset_candidate_human_review_ready`.
+- Step 3: Unit tests should prove non-PASS validation, wrong next step, missing source binding, missing candidate items, forbidden status, and forbidden generated/approval/canon/runtime claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run `.\gradlew.bat test --tests "*AssetCandidateDraftValidationTest" --no-daemon`.
+- Step 4: Run `.\gradlew.bat test --tests "*AssetCandidateReviewPreflightTest" --no-daemon`.
+- Step 4: Run `git diff --check` on tracked package files and `git diff --no-index --check` for new untracked service/test files.
+
+### Risks
+
+- Letting a validation report pass an edited draft whose top-level state or candidate wording no longer matches the original draft gate.
+- Accidentally using `review_ready` as if it were approved or downstream-usable.
+- Letting the review preflight sound like asset approval rather than human-review readiness.
+
+### Drift Log
+
+- 2026-06-25: User requested more throughput; `01` authorized moving this lane from one small slice to an `Accelerated Asset Candidate Batch`.
+- 2026-06-25: Evidence pass found Step 2 and Step 3 can remain read-only JSON checks over existing `AssetCandidateDraft` data, so the package can safely expand beyond the already implemented draft gate.
+- 2026-06-25: Added `AssetCandidateDraftValidationReport` and `AssetCandidateReviewPreflightReport` models, `validate-asset-candidate-draft` CLI, and `validate-asset-candidate-review-preflight` CLI. Step 2 emits only `asset_candidate_review_preflight`; Step 3 emits only `asset_candidate_human_review_ready`.
+- 2026-06-25: Verification passed with `AssetCandidateDraftValidationTest`, `AssetCandidateReviewPreflightTest`, and the existing `AssetCandidateDraftTest`.
+- 2026-06-25: Sent accelerated package read-only review handoff to `03`, asking for package-level PASS / REVISE / FAIL back to `01`.
+
+## Active Minimal Asset Candidate Draft Gate Plan
+
+### Goal
+
+Add a local JSON draft gate after a PASS asset candidate brief. It turns candidate-only brief requirements into a deterministic asset candidate draft that remains unapproved, unlocked, non-canon, and not usable for image/video generation.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--asset-candidate-brief`; evidence shows `AssetCandidateBrief` carries source ids/files/hash, requirements, checklist, and downstream boundary.
+- Require brief verdict `PASS` and `nextAllowedDownstreamStep=asset_candidate_draft`.
+- Require nonblank source provenance: brief id/file, preflight id/file, human review decision id/file, storyboard packet review id/file, accepted script packet id, script packet draft file, and SHA-256.
+- Convert each brief requirement into a draft item with candidate id, inferred asset type, source requirement id, candidate-only status, requirement, public description, and visual reference requirement.
+- Candidate status is allowed only as candidate / candidate_only / draft_candidate. `review_ready` is intentionally not allowed at this draft stage; the next step is a separate review preflight.
+- PASS should authorize only `asset_candidate_review_preflight`; FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No asset approval, asset lock, approved reference, production asset, production lock, canon application, storyboard image generation, asset image generation, video generation, voice generation, script rewriting, runtime scene creation, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateDraftService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateDraftTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this slice after `03` passed the asset candidate brief gate.
+- `Project completion progress` reported by `01` is currently `60%`.
+- `AssetCandidateBriefService` emits `nextAllowedDownstreamStep=asset_candidate_draft` on PASS.
+- `AssetCandidateBrief` carries brief id, preflight file/id, human review decision intake file/id, storyboard packet review file/id, accepted script packet id, script packet draft file, script packet draft SHA-256, candidate-only requirements, and preparation checklist.
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` lists `candidate` and `review_ready` as not downstream-usable, while `approved_reference` and `production_locked` are later approved statuses.
+- The assignment forbids DB writes, server/port, external AI API, image/video generation, asset approval, canon, and runtime path changes.
+
+### Assumptions
+
+- `asset_candidate_review_preflight` is safer than `asset_candidate_review` because it creates one more validation stop before any review-ready status.
+- Draft item asset type can be inferred deterministically from candidate id / requirement terms; unclear types should fail rather than default to a broad category.
+
+### Open Questions
+
+- Future review preflight can decide whether `draft_candidate` may become `review_ready`.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal asset candidate draft plan in `PLANS.md`.
+- [x] Step 2: Add asset candidate draft models.
+- [x] Step 3: Add pure draft service, CLI wiring, and focused tests.
+- [x] Step 4: Run focused tests and `git diff --check`.
+- [x] Step 5: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 3: Unit tests should prove PASS brief creates PASS draft and emits `nextAllowedDownstreamStep=asset_candidate_review_preflight`.
+- Step 3: Unit tests should prove non-PASS brief or wrong brief next step fails.
+- Step 3: Unit tests should prove source binding missing fails.
+- Step 3: Unit tests should prove missing candidate id / asset type / requirement / source requirement id fails.
+- Step 3: Unit tests should prove candidate status `approved`, `locked`, `final`, `review_ready`, `production_locked`, `核准`, `批准`, or `鎖定` fails.
+- Step 3: Unit tests should prove forbidden generated media / canon / runtime / approval claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run `.\gradlew.bat test --tests "*AssetCandidateDraftTest" --no-daemon`.
+- Step 4: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Inferring asset type too loosely and letting incomplete draft items pass.
+- Accidentally treating `review_ready` as acceptable in the draft gate.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of `minimal asset candidate draft gate` after `03` PASS for asset candidate brief; current project completion progress from `01` is `60%`.
+- 2026-06-25: Evidence pass found `AssetCandidateBrief` already carries source fields and candidate requirements, so this slice keeps the CLI to a single read-only brief input and chooses `asset_candidate_review_preflight` as the narrow next step.
+- 2026-06-25: Implemented `AssetCandidateDraft` models, `create-asset-candidate-draft` CLI, pure draft service, and focused tests. Type inference was tightened to use word-boundary matching after a test exposed that `asset` could falsely match the `set` scene term.
+- 2026-06-25: Verification passed with `AssetCandidateDraftTest` and adjacent `AssetCandidateBriefTest`.
+- 2026-06-25: Diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
+- 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
+
+## Active Minimal Asset Candidate Brief Gate Plan
+
+### Goal
+
+Add a local read-only JSON brief gate after a PASS asset candidate preflight. It turns preflight-approved candidate-only asset requirements into a deterministic asset candidate brief for later manual / draft preparation without approving assets, locking production, generating images/video, applying canon, or creating runtime scenes.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--asset-candidate-preflight`; evidence shows `AssetCandidatePreflightReport` already carries source ids/files/hash and `assetCandidateRequirements`.
+- Require preflight verdict `PASS` and `nextAllowedDownstreamStep=asset_candidate_brief`.
+- Require nonblank source provenance: preflight id, human review decision intake file/id, storyboard packet review file/id, accepted script packet id, script packet draft file, and SHA-256.
+- Carry asset requirements forward as candidate-only brief requirements; forbid approved, locked, final, production-ready, generated media, canon, runtime, and approval wording.
+- Add deterministic preparation checklist items that explicitly state the brief is not image/video generation, asset approval, production lock, or canon.
+- PASS should authorize only `asset_candidate_draft`; FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No asset approval, asset lock, production lock, canon application, storyboard image generation, asset image generation, video generation, voice generation, script rewriting, runtime scene creation, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidateBriefService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidateBriefTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this slice after `03` passed the asset candidate preflight REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `58%`.
+- `AssetCandidatePreflightService` emits `nextAllowedDownstreamStep=asset_candidate_brief` on PASS.
+- `AssetCandidatePreflightReport` carries preflight id, decision id, human review decision intake file, storyboard packet review file/id, accepted script packet id, script packet draft file, script packet draft SHA-256, downstream boundary, and asset candidate requirements.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` says 07 output remains candidate material and is not automatically an approved reference or production lock.
+- The assignment forbids DB writes, server/port, external AI API, image/video generation, asset approval, canon, and runtime path changes.
+
+### Assumptions
+
+- `asset_candidate_draft` is the safest next step after a deterministic brief because it still remains local JSON draft preparation, not asset approval or media generation.
+
+### Open Questions
+
+- Future asset candidate draft can decide whether to split candidates by character/prop/location or keep one packet.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal asset candidate brief plan in `PLANS.md`.
+- [x] Step 2: Add asset candidate brief models.
+- [x] Step 3: Add pure brief service, CLI wiring, and focused tests.
+- [x] Step 4: Run focused tests and `git diff --check`.
+- [x] Step 5: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 3: Unit tests should prove PASS preflight creates PASS brief and emits `nextAllowedDownstreamStep=asset_candidate_draft`.
+- Step 3: Unit tests should prove non-PASS preflight or wrong next step fails.
+- Step 3: Unit tests should prove source binding missing fails.
+- Step 3: Unit tests should prove missing asset candidate requirements fail.
+- Step 3: Unit tests should prove forbidden approved / locked / final / generated media / canon claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run `.\gradlew.bat test --tests "*AssetCandidateBriefTest" --no-daemon`.
+- Step 4: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Accidentally making a brief sound like approval or production readiness.
+- Carrying over unsafe candidate wording from preflight into the brief.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of `minimal asset candidate brief gate` after `03` PASS for asset candidate preflight REVISE P1; current project completion progress from `01` is `58%`.
+- 2026-06-25: Evidence pass found `AssetCandidatePreflightReport` already carries the candidate requirements and source fields, so this slice keeps the CLI to a single read-only preflight input.
+- 2026-06-25: Implemented `AssetCandidateBrief` models, `create-asset-candidate-brief` CLI, pure brief service, and focused tests; verification passed with `AssetCandidateBriefTest`.
+- 2026-06-25: Diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
+- 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
+
+## Active Minimal Asset Candidate Preflight Gate Plan
+
+### Goal
+
+Add a local read-only JSON preflight gate after a PASS human review decision intake report allows `asset_candidate_preflight`. This confirms the reviewed storyboard packet may enter asset candidate preparation without approving assets, locking production, generating images/video, applying canon, or creating runtime scenes.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read `--human-review-decision-intake` and, based on evidence, a read-only `--storyboard-packet-review` input because asset candidate requirements live on `StoryboardPacketReviewPacket`, not on the decision intake report.
+- Add optional source fields to `StoryboardPacketHumanReviewDecisionIntakeReport` so the asset preflight can compare review file/id, draft/report/id, accepted script packet id, script packet draft file, and SHA-256 deterministically.
+- Require intake verdict `PASS`, `decisionAllowedDownstream=true`, `decisionStatus=ALLOW_ASSET_CANDIDATE_PREFLIGHT`, and `nextAllowedDownstreamStep=asset_candidate_preflight`.
+- Require asset candidate requirements to remain candidate/requirement/reference-needed only; forbid approved, locked, final, production-ready, canon, generated media, and runtime completion claims.
+- PASS should authorize only `asset_candidate_brief`, the narrowest local next step before drafting any candidate packet or producing images. FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No asset approval, asset lock, production lock, canon application, storyboard image generation, asset image generation, video generation, voice generation, script rewriting, runtime scene creation, or external AI call.
+- No SQLite write, schema migration, server/port, browser control, QuarterFull work, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketHumanReviewDecisionIntakeService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AssetCandidatePreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AssetCandidatePreflightTest.kt`
+- Existing decision intake focused test may be rerun because the report model is being extended additively.
+
+### Confirmed Facts
+
+- `01` assigned this slice after `03` passed the human review decision intake REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `56%`.
+- `StoryboardPacketHumanReviewDecisionIntakeService` currently emits `nextAllowedDownstreamStep=asset_candidate_preflight` only for valid `ALLOW_ASSET_CANDIDATE_PREFLIGHT`.
+- `StoryboardPacketHumanReviewDecisionIntakeReport` currently lacks storyboard packet review file, accepted script packet id, script packet draft file, and script packet draft SHA-256 fields.
+- `StoryboardPacketReviewPacket` contains `assetCandidateRequirements`, source draft/report/id fields, accepted script packet id, script packet draft file, and script packet draft SHA-256.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` says after explicit approval 01 may assign 07 to prepare asset candidates needed for storyboard.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` says 07 output remains candidate material and is not automatically approved reference or production lock.
+- The assignment forbids DB writes, server/port, external AI API, image/video generation, asset approval, canon, and runtime path changes.
+
+### Assumptions
+
+- `asset_candidate_brief` is safer than `asset_candidate_draft` because it keeps this slice one step before drafting any candidate packet or image-facing material.
+- Adding optional source fields to the decision intake report is the smallest safe way to make the new preflight deterministic without re-reading the original human decision JSON.
+
+### Open Questions
+
+- Future asset candidate brief shape can decide how candidate requirements become a structured candidate planning packet.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal asset candidate preflight plan in `PLANS.md`.
+- [x] Step 2: Add additive decision intake source fields and new asset candidate preflight report models.
+- [x] Step 3: Add pure preflight service, CLI wiring, and focused tests.
+- [x] Step 4: Run focused tests and `git diff --check`.
+- [x] Step 5: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 6: REVISE P1: validate direct storyboard packet review state before asset candidate preflight can pass.
+
+### Verification
+
+- Step 3: Unit tests should prove PASS decision intake plus matching review packet passes and emits `nextAllowedDownstreamStep=asset_candidate_brief`.
+- Step 3: Unit tests should prove non-PASS intake, `decisionAllowedDownstream=false`, wrong decision status, or wrong next step fails.
+- Step 3: Unit tests should prove source binding missing or mismatch fails.
+- Step 3: Unit tests should prove missing asset candidate requirements fail.
+- Step 3: Unit tests should prove forbidden approval / lock / canon / generated media claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run `.\gradlew.bat test --tests "*AssetCandidatePreflightTest" --no-daemon`.
+- Step 4: Run `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewDecisionIntakeTest" --no-daemon`.
+- Step 4: Run `git diff --check` on changed files for this slice.
+- Step 6: Unit tests should prove matching source fields still fail when review verdict is `FAIL`, reviewStatus is not `REVIEW_READY`, or review next step is not `storyboard_packet_human_review`.
+- Step 6: Run `.\gradlew.bat test --tests "*AssetCandidatePreflightTest" --no-daemon`.
+- Step 6: Run `git diff --check` on changed files for this REVISE.
+
+### Risks
+
+- Accidentally treating asset candidate preflight as asset approval.
+- Under-binding the review packet and letting requirements from the wrong storyboard packet through.
+- Over-scanning candidate wording and blocking legitimate "candidate only" language.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of `minimal asset candidate preflight gate` after `03` PASS for human review decision intake REVISE P1; current project completion progress from `01` is `56%`.
+- 2026-06-25: Evidence pass found asset candidate requirements live on `StoryboardPacketReviewPacket`, so this slice will add a read-only `--storyboard-packet-review` input and additive source fields on the decision intake report for deterministic binding.
+- 2026-06-25: Implemented additive decision intake source fields, `AssetCandidatePreflightReport` models, `validate-asset-candidate-preflight` CLI, pure asset candidate preflight service, and focused tests.
+- 2026-06-25: Verification passed with `AssetCandidatePreflightTest`, `StoryboardPacketHumanReviewDecisionIntakeTest`, and diff checks showing only Windows line-ending warnings.
+- 2026-06-25: Tightened asset preflight source binding to compare storyboard draft file/report/id and planning brief id in addition to review id, accepted script packet id, script packet draft file, and SHA-256.
+- 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
+- 2026-06-25: `03` returned REVISE P1: direct `StoryboardPacketReviewPacket` input can match source fields while its own verdict/status/next-step state is invalid. Current repair scope is limited to adding review packet state guards and regression tests.
+- 2026-06-25: REVISE P1 fixed by requiring direct review packet `verdict=PASS`, `reviewStatus=REVIEW_READY`, and `nextAllowedDownstreamStep=storyboard_packet_human_review`; focused asset candidate preflight tests passed.
+
+## Active Minimal Storyboard Packet Human Review Decision Intake Gate Plan
+
+### Goal
+
+Add a local read-only JSON decision intake gate after a PASS storyboard packet human review preflight. It validates an externally supplied human / controller storyboard packet review decision JSON for format, source binding, checklist completion, unresolved blockers, and downstream safety without automatically approving assets, canon, production locks, images, or video.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--human-review-preflight` and `--human-review-decision`; write an optional JSON intake report via `--out`.
+- Require human review preflight verdict `PASS` and `nextAllowedDownstreamStep == "storyboard_packet_human_review_ready"`.
+- Additive source fields are needed on `StoryboardPacketHumanReviewPreflightReport` because current reports only carry review id/file plus counts; decision intake needs deterministic comparison for draft/report/hash fields.
+- Decision source must be explicitly human/controller/user sourced, not automatic/model/generated.
+- Decision status vocabulary is narrow: `ALLOW_ASSET_CANDIDATE_PREFLIGHT`, `REQUEST_CHANGES`, `REJECT`.
+- `ALLOW_ASSET_CANDIDATE_PREFLIGHT` means only "may enter asset candidate preflight"; it does not mean asset approval, production lock, canon, image generation, or video generation.
+- If allow-downstream is requested, all human checklist items must be positive and no unresolved blocking issue may remain.
+- PASS plus allow-downstream should authorize only `asset_candidate_preflight`; valid request-changes / reject decisions produce no downstream step.
+
+### Non-Goals
+
+- No automatic human decision, user approval, asset approval, production lock, canon application, storyboard image generation, video generation, voice generation, script rewriting, runtime scene creation, or setting-pack canon application.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketHumanReviewPreflightService.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketHumanReviewDecisionIntakeService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPacketHumanReviewDecisionIntakeTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the storyboard packet human review preflight REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `54%`.
+- Existing `StoryboardPacketHumanReviewPreflightService` emits `nextAllowedDownstreamStep = "storyboard_packet_human_review_ready"` on PASS.
+- Existing `StoryboardPacketHumanReviewPreflightReport` carries verdict, preflight id, review packet file/id/status, next step, findings, and evidence, but not the source draft/report/hash fields requested for deterministic decision binding.
+- Existing docs state the path after explicit review / approval can move toward asset candidates, while asset candidates remain candidate material and are not approved references.
+- The assignment requires decision intake only and explicitly forbids image/video production, script modification, SQLite writes, server/port, external AI API, QuarterFull/browser work, runtime write-path changes, and approval/canon/lock claims.
+
+### Assumptions
+
+- Adding optional source fields to the existing preflight report model is the smallest safe way to make the new decision intake gate deterministic.
+- `ALLOW_ASSET_CANDIDATE_PREFLIGHT` is clearer than a generic `APPROVED` status because it names the narrow allowed next step and avoids asset/canon/production approval wording.
+- A syntactically valid `REQUEST_CHANGES` or `REJECT` decision should produce a PASS intake report with no downstream step, because the decision itself is valid but does not authorize progress.
+
+### Open Questions
+
+- Future asset candidate preflight can define its own packet shape and whether it needs the human decision intake report as input.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard packet human review decision intake gate plan in `PLANS.md`.
+- [x] Step 2: Add decision / intake report models and additive source fields to human review preflight report.
+- [x] Step 3: Add pure decision intake service, CLI wiring, and focused tests.
+- [x] Step 4: Run focused tests and `git diff --check`.
+- [x] Step 5: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 6: REVISE P1: require allow-downstream checklist coverage for scene lock, continuity, knowledge boundary, asset candidates/assets, and downstream boundary.
+
+### Verification
+
+- Step 3: Unit tests should prove PASS preflight plus `ALLOW_ASSET_CANDIDATE_PREFLIGHT` human decision passes and emits `nextAllowedDownstreamStep=asset_candidate_preflight`.
+- Step 3: Unit tests should prove non-PASS preflight or wrong preflight next step fails.
+- Step 3: Unit tests should prove `auto`, `model`, generated, or blank decision source fails.
+- Step 3: Unit tests should prove source binding missing or mismatch fails.
+- Step 3: Unit tests should prove unknown decision status fails.
+- Step 3: Unit tests should prove allow-downstream with failed checklist or unresolved blocking issue fails.
+- Step 3: Unit tests should prove `REQUEST_CHANGES` / `REJECT` are valid but do not emit a downstream step.
+- Step 3: Unit tests should prove forbidden approval / canon / generated media claims fail.
+- Step 3: CLI smoke should write JSON without `--db`.
+- Step 4: Run `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewDecisionIntakeTest" --no-daemon`.
+- Step 4: Run `git diff --check` on changed files for this slice.
+- Step 6: Unit tests should prove `ALLOW_ASSET_CANDIDATE_PREFLIGHT` with only `downstream_boundary=PASS` fails and does not emit `asset_candidate_preflight`.
+- Step 6: Run `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewDecisionIntakeTest" --no-daemon`.
+- Step 6: Run `git diff --check` on changed files for this REVISE.
+
+### Risks
+
+- Accidentally treating a human decision intake as automatic approval.
+- Under-specifying source fields and allowing a decision JSON to bind to the wrong review packet.
+- Letting "allow asset candidate preflight" wording drift into asset approval or production lock semantics.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of `minimal storyboard packet human review decision intake gate` after `03` PASS for human review preflight REVISE P1; current project completion progress from `01` is `54%`.
+- 2026-06-25: Evidence pass found existing preflight reports lacked the source draft/report/hash fields needed for deterministic decision binding, so this slice will add optional source fields to the preflight report model and populate them from the review packet.
+- 2026-06-25: Implemented additive preflight source fields, decision/intake report models, `validate-storyboard-packet-human-review-decision` CLI, deterministic human-source / source-binding / checklist / blocking-issue / forbidden-claim validation, and focused tests.
+- 2026-06-25: Verification passed with focused decision intake tests, existing human review preflight tests, and `git diff --check` showing only existing Windows line-ending warnings.
+- 2026-06-25: Sent read-only review handoff to `03` for PASS / REVISE / FAIL reporting back to `01`.
+- 2026-06-25: `03` returned REVISE P1: allow-downstream checklist completion could be bypassed by a short decision JSON containing only positive provided items. Current repair scope is limited to required checklist category coverage.
+- 2026-06-25: REVISE P1 fixed by requiring accepted checklist coverage for `scene_lock`, `continuity`, `knowledge_boundary`, `downstream_boundary`, and either `asset_candidates` or `assets`; focused decision intake tests passed.
+- 2026-06-25: REVISE P1 diff checks passed with only Windows line-ending warnings; untracked service/test files were additionally checked via `git diff --no-index --check`.
+
+## Active Minimal Storyboard Packet Human Review Preflight Plan
+
+### Goal
+
+Add a local read-only JSON preflight after a PASS storyboard packet review packet. It validates that a review-ready storyboard packet can be handed to human / controller review without claiming approval, asset approval, production lock, canon, image generation, video generation, or runtime completion.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--storyboard-packet-review`; write an optional JSON preflight report via `--out`.
+- Require review packet verdict `PASS`, reviewStatus `REVIEW_READY`, and `nextAllowedDownstreamStep == "storyboard_packet_human_review"`.
+- Require nonblank review id, source draft file, source validation report file, draft id, planning brief id, accepted script packet id, script packet draft file, script packet draft SHA-256, and validation source report links.
+- Require review checklist coverage for scene lock, continuity anchors, secrecy / knowledge boundary, asset candidates, and downstream boundary.
+- Require frame count > 0, nonblank unique frame ids, protected continuity anchors summary, and remaining residual risks.
+- Scan review packet text surfaces for forbidden approval / lock / canon / generated media / runtime claims.
+- PASS should authorize only `storyboard_packet_human_review_ready`; FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No human review decision, user approval, asset approval, production lock, canon application, storyboard image generation, video generation, voice generation, script rewriting, runtime scene creation, or setting-pack canon application.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketHumanReviewPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPacketHumanReviewPreflightTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the storyboard packet review gate REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `52%`.
+- Existing `StoryboardPacketReviewService` emits `nextAllowedDownstreamStep = "storyboard_packet_human_review"` on PASS.
+- Existing `StoryboardPacketReviewPacket` carries verdict, review id/status, source files, draft id, planning brief id, accepted script packet id, script packet draft file/hash, source report link, frame count/ids, protected continuity anchors, asset requirements, residual risks, review checklist, findings, and evidence.
+- Existing review checklist categories include scene lock, continuity, knowledge boundary, assets, and downstream boundary.
+- The assignment requires preflight/report only and explicitly forbids image/video production, script modification, SQLite writes, server/port, external AI API, QuarterFull/browser work, runtime write-path changes, and approval/canon/lock claims.
+
+### Assumptions
+
+- `storyboard_packet_human_review_ready` is the safest next step because it means waiting for human review rather than completing human review.
+- Review packet text surfaces are sufficient for this first preflight because the review packet intentionally does not expose image/video output path or generation API fields.
+
+### Open Questions
+
+- Future human review slice can define the explicit human decision JSON and decide whether a PASS human decision moves to asset candidate preflight.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard packet human review preflight plan in `PLANS.md`.
+- [x] Step 2: Add human review preflight report models, pure preflight service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 5: REVISE P1 fix: require source draft validation verdict PASS and source draft validation next step `storyboard_packet_review`.
+- [x] Step 6: Add regression tests for source validation FAIL/unknown verdict and blank/wrong source next step.
+- [x] Step 7: Rerun focused tests and `git diff --check`, then notify `03` for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove complete REVIEW_READY packet passes and emits `nextAllowedDownstreamStep=storyboard_packet_human_review_ready`.
+- Step 2: Unit tests should prove review packet FAIL / non-REVIEW_READY fails.
+- Step 2: Unit tests should prove wrong review packet next step fails.
+- Step 2: Unit tests should prove missing source binding / review id / source report path fails.
+- Step 2: Unit tests should prove missing checklist categories fail.
+- Step 2: Unit tests should prove blank or duplicate frame ids fail.
+- Step 2: Unit tests should prove forbidden approval / canon / generated media claims fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewPreflightTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+- Step 7: Rerun `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewPreflightTest" --no-daemon`.
+- Step 7: Rerun `git diff --check` on changed files for this REVISE fix.
+
+### Risks
+
+- Accidentally treating preflight as human review approval.
+- Under-scanning review packet text surfaces and allowing approval/canon/lock claims through.
+- Letting incomplete source links or duplicate frame ids pass into human review.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of `minimal storyboard packet human review preflight` after `03` PASS for storyboard packet review gate REVISE P1; current project completion progress from `01` is `52%`.
+- 2026-06-25: Evidence pass confirmed this slice only needs the review packet JSON and should choose conservative downstream `storyboard_packet_human_review_ready`.
+- 2026-06-25: Added human review preflight report models, pure preflight service, `validate-storyboard-packet-human-review-preflight` CLI wiring, and focused tests covering PASS, upstream FAIL/non-ready, wrong next step, missing source fields, checklist category gaps, blank/duplicate frame ids, forbidden claims, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewPreflightTest" --no-daemon`; `git diff --check` on this slice reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE P1: human review preflight must require source draft validation verdict PASS and source draft validation next step `storyboard_packet_review`.
+- 2026-06-25: REVISE fix added source draft validation verdict checks for missing, unknown, and non-PASS values, plus source draft validation next-step missing/mismatch checks.
+- 2026-06-25: REVISE tests added coverage for source validation verdict `FAIL`, unknown verdict, blank next step, and wrong next step.
+- 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketHumanReviewPreflightTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
+- 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Storyboard Packet Review Gate Plan
+
+### Goal
+
+Add a local read-only JSON review-ready gate after a PASS storyboard packet draft validation report. It packages a text-only storyboard packet draft and its validation report into a deterministic review packet for later human / controller review without approving assets, locking production, creating canon, generating images/video, or changing script content.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--storyboard-packet-draft` and `--storyboard-packet-draft-report`; write an optional JSON review packet via `--out`.
+- Require storyboard packet draft validation report verdict `PASS` and `nextAllowedDownstreamStep == "storyboard_packet_review"`.
+- Deterministically bind draft and report by draft file, draft id, planning brief id, accepted script packet id, script packet draft file, and script packet draft SHA-256.
+- Preserve review-ready evidence: frame count, frame ids, source report links, protected continuity anchor summary, asset candidate requirements, residual risks, and review checklist.
+- Review status must be only `REVIEW_READY` or `FAIL`; never user-approved, asset-approved, locked, final, production-ready, runtime, or canon.
+- Keep forbidden claim scanning and field-level guards for image/video output path, generation API, and asset approval status.
+- PASS should authorize only `storyboard_packet_human_review`; FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No storyboard image generation, video generation, voice generation, script rewriting, asset approval, user approval, production lock, runtime scene creation, setting-pack canon application, or automatic human review.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketReviewService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPacketReviewTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the storyboard packet draft gate REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `50%`.
+- Existing `StoryboardPacketDraftValidationService` emits `nextAllowedDownstreamStep = "storyboard_packet_review"` on PASS.
+- Existing `StoryboardPacketDraftValidationReport` carries draft/report file links, draft id, planning brief id, accepted script packet id, script packet draft file/hash, verdict, findings, and evidence counts.
+- Existing `StoryboardPacketDraft` carries frame entries, protected continuity anchors, asset candidates, review notes, image/video output path fields, generation API fields, and asset approval status fields.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` recommends text frames -> review scene lock / blocking / secrecy boundaries -> asset candidates -> image pickup.
+- The assignment requires validation/report packaging only and explicitly forbids image/video production, script modification, SQLite writes, server/port, external AI API, QuarterFull/browser work, runtime write-path changes, and approval/canon/lock claims.
+
+### Assumptions
+
+- `storyboard_packet_human_review` is safer than `asset_candidate_preflight` because this deterministic review packet is not a human approval.
+- A review packet can include deterministic residual risks such as "human review not complete" because the input draft/report do not carry a separate residual risk list.
+- Source report links for this slice are the draft file and the draft validation report file; deeper upstream reports remain represented through the draft/report source fields already present.
+
+### Open Questions
+
+- A future human review slice can decide whether PASS moves to `asset_candidate_preflight` or another stricter review handoff.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard packet review gate plan in `PLANS.md`.
+- [x] Step 2: Add storyboard packet review packet models, pure review service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 5: REVISE P1 fix: require validation report `storyboardPacketDraftFile` to be nonblank before source comparison.
+- [x] Step 6: Add regression tests for blank and mismatched validation report draft file.
+- [x] Step 7: Rerun focused tests and `git diff --check`, then notify `03` for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove complete PASS draft + PASS validation report produces `REVIEW_READY` review packet and does not claim approval / canon / lock.
+- Step 2: Unit tests should prove non-PASS validation report fails.
+- Step 2: Unit tests should prove wrong validation report next step fails.
+- Step 2: Unit tests should prove source binding missing or mismatch fails.
+- Step 2: Unit tests should prove forbidden downstream completion claims in draft/report text fail.
+- Step 2: Unit tests should prove image/video output path, generation API, and approved asset status short values fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*StoryboardPacketReviewTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+- Step 7: Rerun `.\gradlew.bat test --tests "*StoryboardPacketReviewTest" --no-daemon`.
+- Step 7: Rerun `git diff --check` on changed files for this REVISE fix.
+
+### Risks
+
+- Accidentally treating a deterministic review-ready packet as user approval, asset approval, production lock, final output, canon, or runtime evidence.
+- Under-scanning text surfaces from draft/report and allowing forbidden completion claims to pass.
+- Letting report/draft source mismatch pass and breaking handoff traceability.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal storyboard packet review gate` after `03` PASS for storyboard packet draft gate REVISE P1; current project completion progress from `01` is `50%`.
+- 2026-06-25: Evidence pass found existing `storyboard_packet_review` output from draft validation and docs recommending text frame review before asset candidates. This slice therefore chooses conservative downstream `storyboard_packet_human_review`.
+- 2026-06-25: Added storyboard packet review packet models, source binding and boundary review service, `create-storyboard-packet-review` CLI wiring, and focused tests covering PASS review-ready output, non-PASS report, wrong report next step, source binding missing/mismatch, forbidden downstream claims, short output/API/approval values, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPacketReviewTest" --no-daemon`; `git diff --check` on this slice reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE P1: validation report `storyboardPacketDraftFile` must fail when blank; mismatched report draft file must still fail.
+- 2026-06-25: REVISE fix added deterministic missing check `DRAFT_REPORT_DRAFT_FILE_MISSING` for validation report `storyboardPacketDraftFile`, while preserving mismatch detection for nonmatching draft files.
+- 2026-06-25: REVISE tests added blank report draft file and mismatched report draft file coverage.
+- 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketReviewTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
+- 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Storyboard Packet Draft Gate Plan
+
+### Goal
+
+Add a local read-only JSON validation gate for a `storyboard_packet_draft` after a PASS storyboard planning brief. It validates a text-only storyboard packet draft against the planning brief and emits a validation report without creating images, video, approved assets, canon, runtime scenes, or script changes.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--storyboard-planning-brief` and `--storyboard-packet-draft`; write an optional JSON validation report via `--out`.
+- Require storyboard planning brief verdict `PASS` and `nextAllowedDownstreamStep == "storyboard_packet_draft"`.
+- Require source binding from the draft back to the planning brief: brief id, accepted script packet id, script packet draft file, and script packet draft SHA-256 must be nonblank and match.
+- Require text-only frame entries with frame id, scene/beat reference, visual or camera intent, and must-show or do-not-show boundary.
+- Preserve protected continuity anchors with CJK-aware matching so Traditional Chinese anchors cannot false-pass when omitted.
+- Block downstream completion claims, image/video output paths, external generation API details, asset approval claims, canon claims, and runtime scene claims.
+- PASS should authorize only `storyboard_packet_review`; FAIL should leave no downstream step.
+
+### Non-Goals
+
+- No storyboard image generation, video generation, voice generation, script rewriting, asset approval, runtime scene creation, setting-pack canon application, or automatic storyboard packet creation.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPacketDraftValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPacketDraftValidationTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the storyboard planning brief REVISE P1 fix.
+- `Project completion progress` reported by `01` is currently `48%`.
+- Existing `StoryboardPlanningBrief` carries verdict, brief id, accepted script packet id, script packet draft file/hash, protected continuity anchors summary, must-show / must-not-show boundaries, asset carry-forward policy, review checklist, and `nextAllowedDownstreamStep`.
+- Existing `StoryboardPlanningBriefService` emits `nextAllowedDownstreamStep = "storyboard_packet_draft"` on PASS.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` says text storyboard frames come before review of scene lock, blocking, and secrecy boundaries, and before asset candidates / image pickup.
+- The assignment requires validation/report only and explicitly forbids image/video production, script modification, SQLite writes, server/port, external AI API, QuarterFull/browser work, and runtime write-path changes.
+
+### Assumptions
+
+- `storyboard_packet_review` is the safest next step because docs require text storyboard frame review before asset candidates and image pickup.
+- A minimal draft schema can be introduced locally for this gate because no implemented storyboard packet draft model exists yet.
+- External generation API details can be detected conservatively through obvious provider/API/key/endpoint fields or text patterns in this first slice.
+
+### Open Questions
+
+- Future slices can decide whether a reviewed storyboard packet should next enter `asset_candidate_preflight` or a stricter storyboard review handoff packet.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard packet draft gate plan in `PLANS.md`.
+- [x] Step 2: Add storyboard packet draft/report models, pure validation service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 5: REVISE P1 fix: add deterministic field-level guards for image/video output path, generation API, and asset approval status fields.
+- [x] Step 6: Add regression tests for short field values that bypass regex scanning.
+- [x] Step 7: Rerun focused tests and `git diff --check`, then notify `03` for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove complete PASS planning brief plus text-only storyboard packet draft produces PASS and `nextAllowedDownstreamStep=storyboard_packet_review`.
+- Step 2: Unit tests should prove non-PASS planning brief fails.
+- Step 2: Unit tests should prove wrong planning brief next step fails.
+- Step 2: Unit tests should prove source binding missing or mismatch fails.
+- Step 2: Unit tests should prove pure Traditional Chinese protected anchor omission fails and reasonable reference passes.
+- Step 2: Unit tests should prove forbidden downstream completion claims in frame / asset / review surfaces fail.
+- Step 2: Unit tests should prove image/video output paths and generated asset approval claims fail.
+- Step 2: CLI smoke should write JSON without `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*StoryboardPacketDraftValidationTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+- Step 7: Rerun `.\gradlew.bat test --tests "*StoryboardPacketDraftValidationTest" --no-daemon`.
+- Step 7: Rerun `git diff --check` on changed files for this REVISE fix.
+
+### Risks
+
+- Accidentally treating a text storyboard packet draft as approved storyboard, approved asset, final image, final video, canon, or runtime scene.
+- Under-scanning nested draft text fields and allowing forbidden completion claims to pass.
+- False-passing CJK protected continuity anchors if matching only uses Latin tokens.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal storyboard packet draft gate` after `03` PASS for the storyboard planning brief REVISE P1 fix; current project completion progress from `01` is `48%`.
+- 2026-06-25: Evidence pass found no existing storyboard packet draft implementation, and `docs/STORYBOARD_AND_CAMERA_PLANNING.md` recommends text frames -> review -> asset candidates -> image pickup. This slice therefore chooses conservative downstream `storyboard_packet_review`.
+- 2026-06-25: Added storyboard packet draft models, validation report models, `validate-storyboard-packet-draft` CLI wiring, and focused tests covering PASS, upstream FAIL/wrong step, source binding missing/mismatch, CJK protected anchor omission, forbidden completion claims, media output paths, external generation API hints, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPacketDraftValidationTest" --no-daemon`; `git diff --check` on this slice reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE P1: explicit fields `imageOutputPath`, `videoOutputPath`, `generationApi`, `assetApprovalStatus`, and `assetCandidates[].approvalStatus` need deterministic guards because short values can bypass regex scanning.
+- 2026-06-25: REVISE fix added field-level guards: nonblank image/video output paths fail, nonblank generation API fails, and asset approval status only allows blank or `candidate_only`.
+- 2026-06-25: REVISE tests added short-value coverage for asset candidate approval `approved`, frame asset approval `approved`, image output `frame-001`, video output `shot-001`, and generation API `manual-provider-job`.
+- 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPacketDraftValidationTest" --no-daemon`; `git diff --check` on this REVISE slice reported only the existing `PLANS.md` Windows line-ending warning.
+- 2026-06-25: Notified `03` for read-only review of the REVISE P1 fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Storyboard Planning Brief Gate Plan
+
+### Goal
+
+Add a local read-only JSON gate after storyboard planning preflight PASS. It creates / validates a deterministic storyboard planning brief from the accepted script packet handoff packet and storyboard planning preflight report without creating storyboard packets, images, videos, or modifying script content.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read only `--accepted-script-packet` and `--storyboard-planning-preflight`; write an optional JSON brief via `--out`.
+- Require accepted script packet verdict `PASS`, storyboard planning preflight verdict `PASS`, and preflight `nextAllowedDownstreamStep == "storyboard_planning_brief"`.
+- Preserve source report links, script packet draft path/hash, protected continuity anchors summary, and remaining residual risks from the accepted script packet.
+- Produce deterministic planning fields for the next step: scene/beat planning summary, frame planning constraints, must-show / must-not-show boundaries, asset needs carried forward, and review checklist.
+- Block any text carried into the brief if it claims storyboard/image/video/runtime/canon/asset approval completion.
+- PASS should authorize only `storyboard_packet_draft`; FAIL should leave no downstream step.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No storyboard packet drafting, storyboard frame creation, image generation, video generation, voice generation, script rewriting, asset approval, runtime scene creation, or setting-pack canon application.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPlanningBriefService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPlanningBriefTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the storyboard planning preflight slice.
+- `Project completion progress` reported by `01` is currently `46%`.
+- Existing `AcceptedScriptPacketHandoffPacket` carries verdict, packet id, script packet draft file/hash, source reports, protected continuity anchors summary, remaining residual risks, and downstream step.
+- Existing `StoryboardPlanningPreflightReport` carries verdict, accepted script packet id/file, evidence counts, blocked reason/findings, and `nextAllowedDownstreamStep`.
+- The assignment requires this slice to read only accepted script packet handoff packet JSON and storyboard planning preflight report JSON.
+- The assignment explicitly forbids storyboard packet creation, image/video generation, script modification, SQLite writes, server/port, external AI API, and runtime write-path changes.
+
+### Assumptions
+
+- Because this slice cannot read the script packet draft JSON, scene/beat planning summary should be a deterministic handoff summary based on the script packet draft path/hash and preflight/packet metadata.
+- Asset needs carried forward can be represented as a source pointer and review policy rather than extracted asset rows, because extracting real asset needs would require reading the script packet draft.
+- Forbidden completion claim scanning should cover accepted packet strings and preflight strings before they are carried into the brief.
+
+### Open Questions
+
+- Future storyboard packet draft schema can decide whether to read the script packet draft JSON and expand real beat/frame rows.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard planning brief gate plan in `PLANS.md`.
+- [x] Step 2: Add storyboard planning brief models, pure brief service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- [x] Step 5: REVISE fix: require accepted script packet `packetId` and storyboard planning preflight `acceptedScriptPacketId` to both be nonblank and exact-match.
+- [x] Step 6: Add regression tests for missing accepted packet id, missing preflight accepted packet id, and mismatched ids.
+- [x] Step 7: Rerun focused tests and `git diff --check`, then notify `03` for read-only review.
+
+### Verification
+
+- Step 2: Unit tests should prove complete PASS preflight + accepted packet produces PASS brief and `nextAllowedDownstreamStep=storyboard_packet_draft`.
+- Step 2: Unit tests should prove non-PASS accepted packet fails.
+- Step 2: Unit tests should prove non-PASS preflight or wrong preflight downstream step fails.
+- Step 2: Unit tests should prove missing source links, hash, anchors, or residual risks fail.
+- Step 2: Unit tests should prove forbidden downstream completion claims carried by accepted packet / preflight text fail.
+- Step 2: CLI smoke should write a JSON brief without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*StoryboardPlanningBriefTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+- Step 7: Rerun `.\gradlew.bat test --tests "*StoryboardPlanningBriefTest" --no-daemon`.
+- Step 7: Rerun `git diff --check` on `PLANS.md`, `StoryboardPlanningBriefService.kt`, and `StoryboardPlanningBriefTest.kt`.
+
+### Risks
+
+- Accidentally implying storyboard frames exist when only a planning brief exists.
+- Under-specifying future asset needs because this slice intentionally does not read the script packet draft JSON.
+- Duplicating preflight validation instead of checking the preflight report as an upstream gate.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal storyboard planning brief gate` handoff from `01`; current project completion progress from `01` is `46%`.
+- 2026-06-25: Evidence pass confirmed this slice must not read script packet draft JSON, so planning summaries will be deterministic source/linkage summaries, not storyboard frames.
+- 2026-06-25: Added storyboard planning brief models, pure brief service, CLI command, help text, and focused tests covering PASS, accepted packet FAIL, preflight FAIL/wrong next step, missing source/hash/anchors/risks, forbidden downstream completion claims, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPlanningBriefTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE P1: the brief gate must fail when either accepted packet id or preflight target id is blank, and must require an exact id match before allowing `storyboard_packet_draft`.
+- 2026-06-25: REVISE fix added explicit missing/mismatch accepted script packet id checks and regression tests for missing preflight id, missing accepted packet id, and mismatched ids.
+- 2026-06-25: REVISE verification passed: `.\gradlew.bat test --tests "*StoryboardPlanningBriefTest" --no-daemon`; `git diff --check` on this slice reported only the existing Windows line-ending warning.
+- 2026-06-25: Notified `03` for read-only review of the REVISE fix with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Storyboard Planning Preflight Plan
+
+### Goal
+
+Add a local read-only JSON preflight after accepted script packet handoff packet PASS. It validates that the accepted script packet is ready to enter a conservative storyboard planning brief step without generating storyboards, images, video, or modifying script content.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read exactly one accepted script packet handoff packet JSON via `--accepted-script-packet <path>` and optionally write a preflight report via `--out`.
+- Require packet verdict `PASS`, `nextAllowedDownstreamStep == "storyboard_planning_preflight"`, a valid 64-character lowercase SHA-256 script packet draft hash, source bridge/source-binding/structure verdicts, protected continuity anchors summary, and listed residual risks.
+- Output a deterministic storyboard planning preflight report with verdict, accepted script packet id/file, evidence counts, blocked reason, findings, and next allowed downstream step.
+- Use the conservative next step `storyboard_planning_brief` because existing docs describe storyboard planning / text-frame preparation before any storyboard packet, image, or video generation.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No storyboard creation, image generation, video generation, voice generation, script rewriting, asset approval, runtime scene creation, or setting-pack canon application.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/StoryboardPlanningPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/StoryboardPlanningPreflightTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the accepted script packet handoff packet REVISE fix.
+- `Project completion progress` reported by `01` is currently `44%`.
+- Existing `AcceptedScriptPacketHandoffPacket` carries verdict, packet id, script packet draft file, SHA-256 content hash, source report verdicts/paths, protected continuity anchors summary, residual risks, and `nextAllowedDownstreamStep`.
+- Existing docs mention storyboard planning, text storyboard frames, storyboard pickup / verification, and reviewable storyboard delivery, but the evidence pass did not find an existing code/docs string for `storyboard_packet_draft`.
+- The assignment requires preflight / validation only and explicitly forbids storyboard/image/video production, script modification, and SQLite writes in this slice.
+
+### Assumptions
+
+- `storyboard_planning_brief` is the safest first downstream step after this preflight because it is narrower than drafting a full storyboard packet.
+- A first preflight can validate source report verdict presence from packet metadata without opening the source report files.
+- Requiring at least one residual risk is intentional because the accepted script packet handoff packet should preserve downstream caveats before storyboard planning.
+
+### Open Questions
+
+- Future slices can define the exact storyboard planning brief schema; this slice only authorizes moving to that brief stage.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal storyboard planning preflight plan in `PLANS.md`.
+- [x] Step 2: Add storyboard planning preflight report models, pure validation service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a complete PASS accepted script packet handoff packet passes preflight and emits `nextAllowedDownstreamStep=storyboard_planning_brief`.
+- Step 2: Unit tests should prove non-PASS packet verdict or wrong downstream step blocks preflight.
+- Step 2: Unit tests should prove missing script packet hash, source verdicts, protected continuity anchors, or residual risks fail preflight.
+- Step 2: CLI smoke should write a preflight report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*StoryboardPlanningPreflightTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Accidentally treating this preflight as storyboard packet creation or storyboard approval.
+- Choosing a downstream step that is too broad before the storyboard planning brief schema exists.
+- Under-validating source linkage because this slice intentionally reads only the accepted script packet JSON.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal storyboard planning preflight` handoff from `01`; current project completion progress from `01` is `44%`.
+- 2026-06-25: Evidence pass found existing storyboard docs but no established `storyboard_packet_draft` code/docs string, so this slice chooses conservative downstream `storyboard_planning_brief`.
+- 2026-06-25: Added storyboard planning preflight report models, pure validation service, CLI command, help text, and focused tests covering PASS, non-PASS/wrong downstream, missing hash/source/anchors/risks, structure failure, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*StoryboardPlanningPreflightTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active 01 Progress Display Rule Plan
+
+### Goal
+
+Add a control rule requiring `01` to display the current project completion percentage after every `03` PASS / REVISE / FAIL report.
+
+### Global Strategy
+
+- Treat the percentage as a transparent control estimate, not an objective product guarantee.
+- Keep the estimate in a docs-only progress register so future 01 messages can cite the same basis.
+- Update the 01/02/03 handoff rule so every 03 report response includes `Project completion progress: NN%`.
+- Do not change runtime, SQLite, CLI behavior, or task automation.
+
+### Non-Goals
+
+- No automated scheduler, background loop, or progress bot.
+- No pretending the percentage is exact.
+- No changing current 02 work or interrupting the active REVISE fix.
+- No code, schema, migration, SQLite, or runtime write-path changes.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_COMPLETION_PROGRESS.md`
+
+### Confirmed Facts
+
+- User requested: every time the control window receives a 03 report, show the current project completion percentage.
+- `docs/HANDOFF.md` already defines the chat-window loop: `01 -> 02 -> 03 -> 01`.
+- Current project completion still includes product decisions and downstream storyboard / comic video work, so an exact percentage would be misleading without a documented rubric.
+- Current active loop has multiple passed local gates from character / novelization / script packet flow, while storyboard planning, asset locking, comic/video production, and release packaging are not complete.
+
+### Assumptions
+
+- A weighted completion rubric is acceptable as a control estimate if it is clearly marked as such.
+- `03` REVISE or FAIL should not increase progress; it should display the last confirmed percentage plus the blocking status.
+- `03` PASS can update the percentage only when a slice is actually accepted.
+
+### Open Questions
+
+- The final product definition may still change; if it changes, `docs/PROJECT_COMPLETION_PROGRESS.md` must be revised before future percentages are trusted.
+
+### Implementation Steps
+
+- [x] Step 1: Add `docs/PROJECT_COMPLETION_PROGRESS.md` with the current percentage and calculation rule.
+- [x] Step 2: Update `docs/HANDOFF.md` so 01 must display progress after each 03 report.
+- [x] Step 3: Verify docs and report the current percentage.
+
+### Verification
+
+- Search for `Project completion progress` in `docs/HANDOFF.md` and the progress register.
+- Run `git diff --check -- PLANS.md docs\HANDOFF.md docs\PROJECT_COMPLETION_PROGRESS.md`.
+
+### Risks
+
+- A percentage can create false certainty if the basis is not shown.
+- The current dirty worktree means this docs-only update must avoid unrelated edits.
+
+### Drift Log
+
+- 2026-06-25: Started docs-only 01 progress display rule after the user requested a percentage after every 03 report.
+- 2026-06-25: Added `docs/PROJECT_COMPLETION_PROGRESS.md` with current control estimate `44%` and updated `docs/HANDOFF.md` so `01` must show progress after every `03` report.
+- 2026-06-25: Verified progress display docs with `rg` and `git diff --check -- PLANS.md docs\HANDOFF.md docs\PROJECT_COMPLETION_PROGRESS.md`; diff check exited 0 with only Windows line-ending warnings. First displayed estimate after the `03` PASS for accepted script packet handoff packet is `44%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard planning preflight`, updated the displayed control estimate to `46%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard planning brief gate` REVISE P1 fix, updated the displayed control estimate to `48%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard packet draft gate` REVISE P1 fix, updated the displayed control estimate to `50%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard packet review gate` REVISE P1 fix, updated the displayed control estimate to `52%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard packet human review preflight` REVISE P1 fix, updated the displayed control estimate to `54%`.
+- 2026-06-25: After `03` PASS for `minimal storyboard packet human review decision intake gate` REVISE P1 fix, updated the displayed control estimate to `56%`.
+- 2026-06-25: After `03` PASS for `minimal asset candidate preflight gate` REVISE P1 fix, updated the displayed control estimate to `58%`.
+- 2026-06-25: After `03` PASS for `minimal asset candidate brief gate`, updated the displayed control estimate to `60%`.
+- 2026-06-25: After `03` PASS for the `Accelerated Asset Candidate Batch` covering draft, draft validation, and review preflight gates, updated the displayed control estimate to `62%`.
+- 2026-06-25: After `03` PASS for the `Accelerated Asset Candidate Human Review Batch` covering asset candidate human review decision, image candidate preflight, and image candidate brief gates, updated the displayed control estimate to `65%`.
+- 2026-06-25: After `03` PASS for the `Accelerated Image Candidate Prompt Preparation Batch` REVISE P1 fix, updated the displayed control estimate to `68%`.
+- 2026-06-25: After `03` PASS for the `Accelerated Image Candidate Manual Provider Handoff Batch` REVISE P1 fix, updated the displayed control estimate to `71%`.
+- 2026-06-25: After `03` PASS for the `Accelerated Image Candidate External Result Intake Batch` REVISE P1 second fix, updated the displayed control estimate to `73%`.
+
+## Active Minimal Accepted Script Packet Handoff Packet Plan
+
+### Goal
+
+Add a local read-only JSON handoff packet gate after `validate-script-packet-structure-bridge` PASS. It packages a script packet draft and its structure bridge report into an accepted script packet handoff packet that can be handed to the future storyboard planning preflight.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read `--script-packet-draft` and `--structure-bridge-report`; write a deterministic JSON packet to optional `--out`.
+- Treat the bridge report as the upstream authority: it must have verdict `PASS` and `downstreamAllowed=true`.
+- Compute a UTF-8 SHA-256 hash from the script packet draft JSON file contents.
+- Carry source linkage from the bridge report: bridge report file/verdict, source-binding verdict, structure verdict, script packet preflight file, and accepted draft packet file.
+- Carry protected continuity anchor summary from the script packet draft surfaces that the source-binding gate already validated.
+- Block downstream if the bridge failed, downstream is not allowed, or the script packet draft claims storyboard/image/video/runtime/canon completion.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No storyboard planning, image generation, video generation, voice generation, script rewriting, asset approval, runtime scene creation, or setting-pack canon application.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/AcceptedScriptPacketHandoffPacketService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/AcceptedScriptPacketHandoffPacketTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the script packet draft structure bridge slice.
+- Existing `ScriptPacketDraftStructureBridgeReport` carries `verdict`, `downstreamAllowed`, `scriptPacketDraftFile`, `scriptPacketPreflightFile`, `acceptedDraftPacketFile`, `sourceBindingVerdict`, `structureVerdict`, findings, and evidence.
+- Existing `NovelizationAcceptedDraftPacketService` uses SHA-256 content hashing, source report metadata, protected continuity anchors, residual risks, and a `nextAllowedDownstreamStep` field for a downstream handoff packet.
+- Existing `ScriptPacketDraft` carries storyboard notes continuity locks, review summary, source binding metadata, segments, assets, and text fields that can be scanned for forbidden downstream claims.
+- The assignment requires packet creation / validation only and explicitly forbids storyboard/image/video production, script modification, and SQLite writes in this slice.
+
+### Assumptions
+
+- For this first handoff packet, protected continuity anchor summary can use `scriptPacketDraft.storyboardNotes.continuityLocks` because the source-binding gate already validated those protected anchors were referenced.
+- `PASS_WITH_WARNINGS` bridge reports should not create a PASS accepted script packet because the assignment requires bridge verdict `PASS`.
+- Remaining residual risks should include bridge source-binding/structure findings when any warnings remain, plus a standard note that storyboard planning has not yet run.
+
+### Open Questions
+
+- Future slices can load the accepted draft packet from `acceptedDraftPacketFile` and compare protected anchors exactly; this slice stays anchored on the bridge report plus script packet draft file.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal accepted script packet handoff packet plan in `PLANS.md`.
+- [x] Step 2: Add accepted script packet models, pure packet service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove bridge PASS plus downstreamAllowed true builds a PASS packet with script packet path/hash, source linkage, continuity summary, residual risks, and `nextAllowedDownstreamStep=storyboard_planning_preflight`.
+- Step 2: Unit tests should prove bridge FAIL or downstreamAllowed false creates a FAIL packet with empty next downstream step.
+- Step 2: Unit tests should prove forbidden claims about storyboard/image/video/runtime/canon completion block the packet.
+- Step 2: CLI smoke should write an accepted script packet handoff packet without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*AcceptedScriptPacketHandoffPacketTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Accidentally treating this packet as approved storyboard, asset, final video, runtime scene, or canon rather than a storyboard-planning handoff.
+- Under-validating source traceability if future bridge reports omit source file paths.
+- Duplicating source-binding or structure validation instead of relying on the reviewed bridge report.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal accepted script packet handoff packet` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed the new packet can mirror the accepted draft packet pattern while using `ScriptPacketDraftStructureBridgeReport` as the upstream gate.
+- 2026-06-25: Added accepted script packet handoff packet models, pure packet service, CLI command, help text, and focused tests covering PASS, bridge FAIL, downstreamAllowed=false, forbidden downstream completion claims, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*AcceptedScriptPacketHandoffPacketTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE. Required fix: expand forbidden downstream completion claim scanning to mirror script packet text surfaces covered by source-binding, include list string fields such as visual mustShow/mustNotShow, knowledge pass, interaction choices, frame doNotShow, and cover asset approval wording such as `asset approval complete` / `assets approved`.
+
+### Revision Steps
+
+- [x] Step 5: Expand accepted script packet handoff text-field collection to cover script packet text surfaces required by `03`.
+- [x] Step 6: Add regression tests for forbidden completion claims in previously missed fields and asset approval wording.
+- [x] Step 7: Run focused tests and `git diff --check`, then notify `03` again.
+
+- 2026-06-25: Completed REVISE fix. Expanded accepted script packet handoff text scanning to include source fields, scene reference fields, location zone fields, visual mustShow/mustNotShow, knowledge pass lists including authorOnlyExtracted, beat ids/list fields, action blocking zones, dialogue knowledge boundaries, interaction choices, storyboard frame ids/beat ids/doNotShow, asset ids/types, and review/secrecy fields. Added asset approval wording patterns for `assets approved` and `asset approval complete`.
+- 2026-06-25: Added regression tests for forbidden claims in previously missed fields and asset approval wording. Verification passed: `.\gradlew.bat test --tests "*AcceptedScriptPacketHandoffPacketTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+
+## Active Minimal Script Packet Draft Structure Bridge Plan
+
+### Goal
+
+Add a local read-only JSON bridge command that validates a script packet draft through both the existing source-binding gate and the existing script packet draft structure validator, then writes one combined report for downstream handoff decisions.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Reuse `ScriptPacketDraftSourceBindingValidationService` and `ScriptPacketDraftValidationService`; do not duplicate their rule sets.
+- Read `--script-packet-draft`, `--script-packet-preflight`, and `--accepted-draft-packet`; write an optional JSON combined report.
+- Require source-binding verdict `PASS`; allow structure verdict `PASS` or `PASS_WITH_WARNINGS`.
+- Expose source-binding findings, structure findings, downstream allowed state, and blocked reason in the combined report.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic script rewriting, prose-to-script conversion, storyboard generation, video generation, voice generation, or runtime scene creation.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ScriptPacketDraftStructureBridgeService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ScriptPacketDraftStructureBridgeTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the revised source-binding gate.
+- Existing `validate-script-packet-source-binding` reads script packet draft, script packet preflight report, and accepted draft packet, then emits a source-binding report.
+- Existing `validate-script-packet-draft` reads a script packet draft and emits a structure report with `PASS`, `PASS_WITH_WARNINGS`, or `FAIL`.
+- Existing `ScriptPacketDraftValidationService` already validates packet structure, source status, segment fields, beat/action/dialogue/choice fields, asset/storyboard readiness, review finality, and author-only leakage.
+- The assignment requires orchestration / combined validation only and explicitly forbids automatic script/storyboard/video production in this slice.
+
+### Assumptions
+
+- A bridge report can use `PASS_WITH_WARNINGS` only when source-binding is `PASS` and structure validation is `PASS_WITH_WARNINGS`.
+- A first combined report can embed both existing finding lists directly instead of translating every upstream finding into a new rule id.
+- Future slices can add stricter downstream routing; this slice only exposes whether the next handoff is allowed or blocked.
+
+### Open Questions
+
+- None blocking for the first local read-only bridge command.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal script packet draft structure bridge plan in `PLANS.md`.
+- [x] Step 2: Add combined report models, pure bridge service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove source-binding PASS plus structure PASS allows downstream.
+- Step 2: Unit tests should prove source-binding FAIL blocks the bridge even if structure passes.
+- Step 2: Unit tests should prove structure FAIL blocks the bridge even if source-binding passes.
+- Step 2: Unit tests should prove structure `PASS_WITH_WARNINGS` is allowed but preserved in the combined report.
+- Step 2: CLI smoke should write a bridge report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*ScriptPacketDraftStructureBridgeTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Accidentally making the bridge a third validator instead of a small orchestrator over the two existing validators.
+- Treating structure warnings as full approval instead of an allowed downstream handoff with warnings preserved.
+- Expanding scope into script generation or storyboard generation before this gate is reviewed.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal script packet draft structure bridge` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed the bridge can reuse existing source-binding and structure validation services without touching runtime state.
+- 2026-06-25: Added combined report models, bridge validation service, CLI command, help text, and focused tests covering PASS, source-binding FAIL, structure FAIL, structure PASS_WITH_WARNINGS, and CLI output.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*ScriptPacketDraftStructureBridgeTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Script Packet Draft Source-Binding Gate Plan
+
+### Goal
+
+Add a local read-only JSON source-binding gate for a manually/Codex-authored script packet draft after accepted-draft-to-script preflight PASS. It validates that the script packet draft is bound to the accepted draft packet and preflight report, preserves or explicitly references protected continuity anchors, and does not claim downstream approval status.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Complement the existing `validate-script-packet-draft` structural validator; do not duplicate full segment, beat, asset, storyboard, or author-only leakage validation.
+- Read `--script-packet-draft`, `--script-packet-preflight`, and `--accepted-draft-packet`; write an optional JSON report.
+- Validate upstream PASS status, source binding evidence, protected continuity anchor references, and downstream boundary claims.
+- Add explicit optional source-binding fields to `ScriptPacketSource` while still accepting existing `sourceId` / source text as binding evidence.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic prose-to-script conversion, storyboard generation, video generation, voice generation, prose rewriting, or runtime scene creation.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ScriptPacketDraftSourceBindingValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ScriptPacketDraftSourceBindingValidationTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the accepted draft to script packet preflight slice.
+- Existing `ScriptPacketDraftValidationService` validates draft structure, beat/action/dialogue fields, asset/storyboard readiness, review finality, and author-only leakage.
+- Existing `ScriptPacketDraft.source` currently carries `inputType`, `sourceId`, `sourceTitle`, `excerptSummary`, and `transformationStatus`.
+- `NovelizationScriptPacketPreflightReport` carries the accepted draft packet id and preflight verdict.
+- `NovelizationAcceptedDraftPacket` carries packet id, revised draft content hash, revised draft file, protected continuity anchors, source report verdicts, and next downstream step.
+- The assignment requires validation only and explicitly forbids automatic script/storyboard/video production in this slice.
+
+### Assumptions
+
+- Adding optional default source-binding fields to `ScriptPacketSource` is backward-compatible for existing script packet samples.
+- A first deterministic continuity reference check can use exact or significant-term matching against script packet text surfaces.
+- Boundary claim detection should catch explicit positive claims such as canon / runtime scene / approved storyboard / final video, while avoiding existing neutral notes like "not canon".
+
+### Open Questions
+
+- Future slices can require exact field-level binding only; this first gate accepts either explicit binding fields or existing source text evidence.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal script packet draft source-binding gate plan in `PLANS.md`.
+- [x] Step 2: Add source-binding model fields/report models, pure service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a script packet draft bound by accepted packet id/hash/path passes with upstream PASS reports.
+- Step 2: Unit tests should prove failed preflight or accepted draft packet blocks the gate.
+- Step 2: Unit tests should prove missing source binding fails.
+- Step 2: Unit tests should prove missing protected continuity anchor references fail.
+- Step 2: Unit tests should prove canon/runtime/approved storyboard/final video claims fail.
+- Step 2: CLI smoke should write a source-binding report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*ScriptPacketDraftSourceBindingValidationTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- False positives/negatives from deterministic anchor text matching.
+- Confusing this source-binding gate with full `validate-script-packet-draft` structural validation.
+- Allowing source text evidence as a fallback may be looser than future exact metadata requirements.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal script packet draft source-binding gate` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed existing `validate-script-packet-draft` already handles structure, so this slice will focus only on source binding and downstream boundary.
+- 2026-06-25: Added optional source-binding fields on `ScriptPacketSource`, source-binding report models, pure validation service, CLI command, help text, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*ScriptPacketDraftSourceBindingValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE. Required fix: make protected continuity anchor matching CJK-aware so pure Traditional Chinese anchors do not false-pass when absent.
+- 2026-06-25: Completed REVISE code and tests. Added CJK 2-character window matching, made nonblank anchors without exact or term evidence fail, and added Chinese missing-anchor FAIL / referenced-anchor PASS regression tests. Verification passed: `.\gradlew.bat test --tests "*ScriptPacketDraftSourceBindingValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` read-only review thread again for the REVISE fix pass and requested PASS / REVISE / FAIL back to `01`.
+
+### Revision Steps
+
+- [x] Step 5: Add CJK-aware protected continuity anchor matching and make nonblank anchors without exact match or usable terms fail.
+- [x] Step 6: Add focused Chinese missing-anchor FAIL and Chinese referenced-anchor PASS regression tests.
+- [x] Step 7: Run focused tests and `git diff --check`, then notify `03` again.
+
+## Active Minimal Accepted Draft To Script Packet Preflight Plan
+
+### Goal
+
+Add a local read-only JSON preflight after accepted draft packet PASS. It reads an accepted draft packet and validates that the packet is ready to enter the `script_packet_draft` stage without converting prose, creating storyboards, producing video, or modifying content.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Validate the accepted draft packet itself; do not reopen or transform the revised draft content.
+- Require packet verdict `PASS`, `nextAllowedDownstreamStep == "script_packet_draft"`, a 64-character SHA-256 revised draft content hash, source report file paths and verdicts, and at least one protected continuity anchor.
+- Output a deterministic preflight report with findings and evidence counts.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No script conversion, storyboard generation, video generation, voice generation, prose rewriting, or downstream packet drafting.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationScriptPacketPreflightService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationScriptPacketPreflightTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the accepted draft packet slice.
+- `NovelizationAcceptedDraftPacket` already carries verdict, packet id, revised draft file, SHA-256 content hash, source reports, required fixes handled summary, protected continuity anchors, residual risks, and next allowed downstream step.
+- The assignment requires a preflight / validation report only and explicitly forbids automatic script/storyboard/video production in this slice.
+- Current repo rules allow Kotlin/JVM CLI and JSON file protocols, while forbidding server/port/external AI API/direct SQLite bypasses.
+
+### Assumptions
+
+- A valid first preflight can treat `script_packet_draft` as the only accepted downstream step string.
+- Source report verdict presence can be checked from packet metadata without rereading source report files.
+- A 64-character lowercase hex SHA-256 string is sufficient evidence that the accepted packet carries a revised draft content hash.
+
+### Open Questions
+
+- Future slices can verify source report files still exist and match packet metadata; this slice stays read-only on the packet JSON only.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal accepted draft to script packet preflight plan in `PLANS.md`.
+- [x] Step 2: Add preflight report models, pure service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a structurally complete PASS accepted draft packet passes preflight.
+- Step 2: Unit tests should prove non-PASS packet verdict blocks preflight.
+- Step 2: Unit tests should prove missing hash, wrong downstream step, or missing protected anchors fails preflight.
+- Step 2: CLI smoke should write a preflight report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationScriptPacketPreflightTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Treating preflight PASS as actual script packet creation.
+- Under-validating source report freshness because this slice only reads the accepted packet.
+- Over-coupling to one downstream step string if future flows add alternatives.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal accepted draft to script packet preflight` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed the preflight can read only `NovelizationAcceptedDraftPacket` and follow existing JSON report patterns.
+- 2026-06-25: Added script packet preflight report models, pure validation service, CLI command, help text, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationScriptPacketPreflightTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Accepted Draft Handoff Packet Plan
+
+### Goal
+
+Add a local read-only accepted draft handoff packet gate after revised draft intake PASS. It reads the revised draft, revised draft intake report, revision brief report, and continuity anchors, then writes a structured JSON packet for later script, storyboard, and video flow handoff without transforming the prose.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Create a deterministic packet report, not a script, storyboard, video plan, or rewrite.
+- Require `NovelizationRevisedDraftIntakeReport.verdict == "PASS"` for a PASS packet.
+- Include revised draft path, SHA-256 content hash, source report file paths and verdicts, handled required fix summary, protected continuity anchors, remaining residual risks, and the next allowed downstream step.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic script conversion, storyboard generation, video generation, voice generation, prose rewriting, or quality re-audit.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationAcceptedDraftPacketService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationAcceptedDraftPacketTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the revised draft intake REVISE fixes.
+- Existing gates use Kotlin/JVM CLI commands and JSON reports.
+- `NovelizationRevisedDraftIntakeReport` carries the revised draft intake verdict and evidence counts.
+- `NovelizationRevisionBriefReport` carries required fixes, protected anchors, `doNotChange`, and revision brief source state.
+- `NovelizationRevisionContinuityAnchors` carries the anchor file id, anchors, and do-not-change hints.
+- The assignment requires packet creation / validation only and explicitly forbids script/storyboard/video production in this slice.
+
+### Assumptions
+
+- SHA-256 over the exact revised draft text bytes is sufficient for the first content hash field.
+- A first packet can summarize handled fixes from the revision brief and intake evidence counts, even though the separate declared handling JSON is not an input to this slice.
+- `nextAllowedDownstreamStep` can be a deterministic string, `script_packet_draft`, because script conversion is the next documented downstream format but is not executed here.
+
+### Open Questions
+
+- Future slices can add packet signatures or canonical JSON hashes; this slice only hashes revised draft content.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal accepted draft handoff packet plan in `PLANS.md`.
+- [x] Step 2: Add accepted draft packet models, pure service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a PASS revised draft intake builds a PASS packet with a draft SHA-256 hash, source reports, handled fix summary, protected anchors, residual risks, and next allowed downstream step.
+- Step 2: Unit tests should prove non-PASS revised draft intake blocks a PASS packet.
+- Step 2: CLI smoke should write an accepted draft packet without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationAcceptedDraftPacketTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Treating the accepted draft packet as permission to bypass future script/storyboard/video gates.
+- Under-reporting residual risks if upstream reports contain warnings not yet mapped.
+- Overstating hash stability if later slices normalize content before hashing.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal accepted draft handoff packet` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed the packet can follow existing revision brief and revised draft intake JSON report patterns.
+- 2026-06-25: Added accepted draft packet models, pure packet service, CLI command, help text, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationAcceptedDraftPacketTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Minimal Revised Draft Intake Gate Plan
+
+### Goal
+
+Add a local read-only revised draft intake gate after the revision brief. It reads the original draft, revised draft, revision brief report, and an optional declared handling JSON file, then outputs a structured JSON validation report without rewriting prose.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Add a deterministic gate that validates revised draft readiness, not prose quality or final literary quality.
+- Check the revised draft is non-empty and not the unchanged original draft.
+- Require declared handling for revision brief mandatory checklist items and required fixes when the revision brief asks for them.
+- Check banned calibration phrases are not still present in the revised draft.
+- Check continuity anchors from the revision brief are still represented by simple deterministic preservation heuristics.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic rewriting, style rewriting, chapter generation, prose quality re-audit, continuity deep audit, script conversion, storyboard generation, video generation, or voice generation.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationRevisedDraftIntakeValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationRevisedDraftIntakeValidationTest.kt`
+- `samples/novelization_revision_handling_declaration_sample.json`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the minimal prose revision brief gate.
+- Existing gates use Kotlin/JVM CLI commands and JSON reports.
+- `NovelizationRevisionBriefReport` already carries `mandatoryChecklist`, `requiredFixes`, `continuityAnchors`, `doNotChange`, and upstream evidence.
+- The assignment requires a read-only gate that confirms revised draft non-empty, not identical to original, required items have declared handling, banned phrases are not residual, and continuity anchors are not removed or obviously damaged.
+- Current repo rules allow Kotlin/JVM CLI and JSON file protocols, while forbidding server/port/external AI API/direct SQLite bypasses.
+
+### Assumptions
+
+- Because the original/revised draft and revision brief report do not themselves contain post-revision handling declarations, a small optional declared handling JSON file is the cleanest local JSON protocol. If required declarations are missing, the gate will fail.
+- A first deterministic continuity check can use exact/term-preservation heuristics rather than a semantic model.
+
+### Open Questions
+
+- Future slices can replace deterministic anchor preservation with deeper continuity audit evidence, but this slice will stay local and heuristic-only.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal revised draft intake gate plan in `PLANS.md`.
+- [x] Step 2: Add revised draft intake models, pure service, CLI wiring, sample declared handling JSON, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a handled revision passes when it changes the draft, declares required handling, removes banned phrases, and preserves anchors.
+- Step 2: Unit tests should prove unchanged revised draft fails.
+- Step 2: Unit tests should prove missing declared handling fails when the revision brief requires fixes.
+- Step 2: Unit tests should prove removed/damaged continuity anchors fail.
+- Step 2: CLI smoke should write a revised draft intake report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationRevisedDraftIntakeValidationTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Treating this gate as proof of literary quality rather than revision readiness.
+- False positives from deterministic continuity heuristics.
+- Accepting a declared handling file as truthful; this slice only checks declaration presence and basic structure, not full semantic compliance.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal revised draft intake gate` handoff from `01`.
+- 2026-06-25: Evidence pass confirmed the slice can follow existing draft intake, prose quality audit, and revision brief JSON report patterns.
+- 2026-06-25: Added revised draft intake report and declared handling models, pure validation service, CLI command, sample handling declaration, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationRevisedDraftIntakeValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+- 2026-06-25: `03` returned REVISE. Required fixes: add deterministic continuity damage guard for polarity / negation reversal, use `doNotChange` hints, and fix `not only ... but ...` banned residual detection.
+- 2026-06-25: Completed REVISE code and test fixes. Added paid/unpaid/reset continuity damage guard, corrected `not only ... but ...` residual regex, and added focused regression tests. Verification passed: `.\gradlew.bat test --tests "*NovelizationRevisedDraftIntakeValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` read-only review thread again for the REVISE fix pass and requested PASS / REVISE / FAIL back to `01`.
+
+### Revision Steps
+
+- [x] Step 5: Add deterministic continuity damage guard for obvious paid / unpaid and reset polarity reversals, using both anchors and `doNotChange` hints.
+- [x] Step 6: Fix `CALIBRATION_EN_NOT_ONLY` to catch `not only ... but ...` and `not only ... but also ...`.
+- [x] Step 7: Add focused FAIL tests for anchor damage and `not only` banned residual.
+- [x] Step 8: Run focused tests and `git diff --check`, then notify `03` again.
+
+## Active Minimal Prose Revision Brief Gate Plan
+
+### Goal
+
+Add the first local read-only prose revision brief gate after draft intake and prose quality audit. It reads the draft, draft intake report, prose quality audit report, and continuity anchors, then outputs a structured JSON revision brief for human/Codex revision without rewriting the novel.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Generate a deterministic revision brief report, not revised prose.
+- Convert prose quality findings into concrete revision items while always carrying the mandatory revision checklist: AI taste, dialogue, character voice, scene pressure, banned phrase removal, and continuity anchor protection.
+- Require explicit continuity anchors so a revision brief cannot silently permit continuity drift.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic rewrite, chapter generation, style cloning, continuity audit, script conversion, storyboard generation, video generation, or voice generation.
+- No external AI API, model install, web server, port, browser control, SQLite write, schema migration, or runtime write-path change.
+- No `resolve-turn`, `StateReducer`, `contextHash`, or `stateVersion` changes.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationRevisionBriefService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationRevisionBriefTest.kt`
+- `samples/novelization_revision_continuity_anchors_sample.json`
+
+### Confirmed Facts
+
+- `01` assigned this exact next slice to `02` after `03` passed the revised draft prose quality audit.
+- Existing gates now include draft intake and prose quality audit as read-only JSON reports.
+- The assignment requires a revision brief or validation report that lists AI taste fixes, dialogue fixes, character voice fixes, scene pressure reinforcement, banned phrase removal, and continuity anchors that must not change.
+- Current repo rules allow Kotlin/JVM CLI and JSON file protocols, while forbidding server/port/external AI API/direct SQLite bypasses.
+
+### Assumptions
+
+- The smallest useful revision brief can map prose quality findings to revision items and carry a mandatory checklist for categories not yet detected directly.
+- A continuity anchor JSON file is acceptable as the explicit anchor source for this first gate.
+
+### Open Questions
+
+- Future slices can make revision items character-card-aware, but this slice will not compare against full Character Nuwa cards.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal prose revision brief gate plan in `PLANS.md`.
+- [x] Step 2: Add revision brief models, pure service, CLI wiring, sample continuity anchors, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove prose quality findings become required revision items.
+- Step 2: Unit tests should prove missing continuity anchors blocks the revision brief.
+- Step 2: CLI smoke should write a revision brief report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationRevisionBriefTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- Treating the revision brief as revised prose or final approval.
+- Overfitting the first mapping from prose audit categories to revision instructions.
+- Losing continuity anchors in later revision steps if anchors are optional.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `minimal prose revision brief gate` handoff from `01`.
+- 2026-06-25: Added revision brief report models, continuity anchor JSON model, pure service, CLI command, sample anchors, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationRevisionBriefTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` for read-only review with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active Draft Prose Quality Audit Plan
+
+### Goal
+
+Add the first local read-only draft prose quality audit for novelization drafts, focused on AI-like prose, generic phrasing, banned calibration structures, dialogue drift, weak character voice, missing scene pressure, missing subtext, and mechanical rhythm.
+
+### Global Strategy
+
+- Keep this slice Kotlin/JVM CLI plus JSON file protocol only.
+- Read draft text plus a `NovelizationDraftIntakeReport`; write a JSON prose quality audit report.
+- Treat this as a review aid after draft intake, not as canon acceptance and not as runtime validation.
+- Use deterministic local heuristics only; no external AI API, model install, web server, port, browser control, SQLite write, or runtime write-path change.
+- Notify `03` for read-only review after implementation and verification, with PASS / REVISE / FAIL requested back to `01`.
+
+### Non-Goals
+
+- No automatic rewriting, chapter generation, style cloning, fact extraction, continuity audit, script conversion, storyboard generation, video generation, or voice generation.
+- No SQLite migration, direct database write, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` change.
+- No unattended infinite automation; this is one bounded `02 -> 03 -> 01` slice.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationProseQualityAuditService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationProseQualityAuditTest.kt`
+
+### Confirmed Facts
+
+- `01` assigned this exact slice to `02` and required `03` read-only review after completion.
+- Existing novelization gates now include Character Nuwa Gate, novelization preflight, writer brief validation, and draft intake validation.
+- `NovelizationDraftIntakeValidationService` produces a read-only JSON report and blocks drafts whose writer brief failed.
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` requires an anti-AI prose and dialogue audit after draft intake.
+- Current repo rules allow Kotlin/JVM CLI and JSON file protocols, while forbidding server/port/external AI API/direct SQLite bypasses.
+
+### Assumptions
+
+- The smallest useful first prose audit should detect deterministic visible failure modes, not attempt subjective literary scoring.
+- A passing draft intake report is the right upstream dependency for this first prose audit.
+- Later slices can add character-card-aware voice comparison and calibrated real-project examples.
+
+### Open Questions
+
+- The exact threshold for "AI-like" prose will need calibration on real accepted/rejected drafts later.
+- This first slice will not prove final story quality; it only catches obvious review blockers.
+
+### Implementation Steps
+
+- [x] Step 1: Record this draft prose quality audit plan in `PLANS.md`.
+- [x] Step 2: Add prose quality report models, pure audit service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify `03` thread with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+### Verification
+
+- Step 2: Unit tests should prove a clean sample draft passes and a failed draft intake report blocks prose audit.
+- Step 2: Unit tests should prove banned calibration and exposition-dump dialogue are caught.
+- Step 2: CLI smoke should write an audit report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationProseQualityAuditTest" --no-daemon`.
+- Step 3: Run `git diff --check` on changed files for this slice.
+
+### Risks
+
+- False positives from deterministic heuristics before enough real samples exist.
+- Treating this audit as final prose approval instead of a review aid.
+- Duplicating continuity audit or writer brief validation logic inside prose quality audit.
+
+### Drift Log
+
+- 2026-06-25: Started `02` implementation of the `draft prose quality audit` handoff from `01`.
+- 2026-06-25: Added prose quality audit report models, pure local audit service, CLI command, help text, and focused tests.
+- 2026-06-25: Verification passed: `.\gradlew.bat test --tests "*NovelizationProseQualityAuditTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` read-only review thread and requested PASS / REVISE / FAIL back to `01`.
+- 2026-06-25: `03` returned REVISE. Required fixes: Traditional Chinese marker coverage, Chinese punctuation-aware sentence segmentation, and Chinese PASS/FAIL tests.
+- 2026-06-25: Completed REVISE fixes. Added Traditional Chinese marker coverage, Chinese-aware sentence segmentation, and Chinese PASS/FAIL tests. Verification passed: `.\gradlew.bat test --tests "*NovelizationProseQualityAuditTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified `03` read-only review thread again for the REVISE fix pass and requested PASS / REVISE / FAIL back to `01`.
+
+### Revision Steps
+
+- [x] Step 5: Add Traditional Chinese marker sets and Chinese punctuation-aware sentence segmentation to the prose quality audit.
+- [x] Step 6: Add Chinese PASS/FAIL tests for pressure scenes and AI-style exposition scenes.
+- [x] Step 7: Run focused tests and `git diff --check`.
+- [x] Step 8: Notify `03` thread again with changed files, verification, scope, safety boundaries, and PASS / REVISE / FAIL request back to `01`.
+
+## Active 01/02/03 Task Handoff Mode Check
+
+### Goal
+
+Open a safe chat-window task handoff mode where `01` assigns one project-completion slice to `02`, `02` completes and sends the result to `03` for read-only review, `03` reports back to `01`, and `01` decides the next slice.
+
+### Global Strategy
+
+- Use Codex chat-window thread messages for handoff, not scheduler or unattended background automation.
+- Keep each cycle bounded to one smallest verifiable project slice.
+- Preserve the existing repo boundaries: update `PLANS.md` before implementation, verify each step, and stop at blockers or human-decision points.
+- Treat "infinite loop" as repeatable manual chat-window cycling, not an autonomous scheduler.
+
+### Non-Goals
+
+- No automation / scheduler wakeups.
+- No unbounded background execution without a current chat-window handoff.
+- No bypass of 03 read-only review before 01 chooses the next assignment.
+- No SQLite, setting-pack, runtime, schema, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` change from this control-mode check.
+
+### Scope
+
+- `PLANS.md`
+- `docs/HANDOFF.md`
+- Codex thread messages to `02`
+
+### Confirmed Facts
+
+- User requested this mode on 2026-06-25: `01 -> 02 -> 03 -> 01 -> next work` until project work is complete.
+- `docs/HANDOFF.md` already says manual handoff only and forbids automation / scheduler wakeups for the 04 / 05 / 06 / 07 / 08 flow.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` says `02` executes repo docs / CLI / engineering milestones only after 01 explicit handoff, and `03` performs read-only verification after 02 directly notifies it.
+- Thread tooling found `01 主控窗口` (`019ef802-e81d-7ea3-a35d-b675248c5402`), `02` (`019ef6ed-b458-7641-8b3f-e3083edf510f`), and `03` (`019ef82d-b434-7660-be6d-0c84990375e0`).
+- `02` is currently idle and its latest answer says the project is not complete; it identifies draft prose quality audit as the next smallest slice.
+- `03` exists but is currently `notLoaded`.
+
+### Assumptions
+
+- A safe first handoff can assign `02` the next smallest slice: draft prose quality audit.
+- `02` can notify `03` through thread tooling after completing its slice.
+- `03` can report back to this `01` thread through thread tooling after review.
+
+### Open Questions
+
+- A truly autonomous infinite loop is not approved because current docs prohibit scheduler/automation advancement and project completion still has human-decision points.
+- Whether later cycles should create commits / pushes remains a per-slice decision, not part of this control-mode check.
+
+### Implementation Steps
+
+- [x] Step 1: Read current handoff evidence and locate `01`, `02`, and `03` threads.
+- [x] Step 2: Document the safe task handoff loop and its non-automation boundary.
+- [x] Step 3: Send the first `01 -> 02` assignment for the next smallest project-completion slice.
+- [x] Step 4: Verify dispatch and report whether infinite cycling is possible.
+
+### Verification
+
+- Step 2: Search `PLANS.md` and `docs/HANDOFF.md` for the new handoff loop wording.
+- Step 3: Confirm `send_message_to_thread` accepts the assignment to `02`.
+- Step 4: Run `git diff --check` for docs touched in this control-mode check.
+
+### Risks
+
+- Accidentally starting unattended automation.
+- Letting `02` continue without `03` review.
+- Treating project completion as objectively decidable without 01/user product decisions.
+- Adding more dirty work on top of the existing uncommitted worktree.
+
+### Drift Log
+
+- 2026-06-25: Started safe task handoff mode check. Evidence supports a manual 01/02/03 chat-window loop, but not an unattended infinite automation loop.
+- 2026-06-25: Dispatched the first task-handoff assignment from `01` to `02`: implement the next smallest `draft prose quality audit` slice, then notify `03` for read-only review instead of returning directly to `01`.
+- 2026-06-25: Verified first dispatch. `02` is active and acknowledged the `draft prose quality audit` task. `git diff --check -- PLANS.md docs\HANDOFF.md` exited 0 with only Windows line-ending warnings. The loop can repeat through chat-window handoffs, but it must not run as unattended infinite automation.
+
+## Active Minimal Draft Intake Gate Plan
+
+### Goal
+
+Add the first local draft intake gate so prose from Codex, GPT, QuarterFull, manual writing, or mixed sources cannot enter review without a passing writer brief report and basic text integrity checks.
+
+### Global Strategy
+
+- Keep this slice file-output/read-only only: draft text in, writer brief validation report in, JSON intake report out.
+- Treat all draft sources equally at intake; none are trusted just because they are fluent.
+- Validate only intake readiness: source type, non-empty draft text, text integrity, and upstream writer brief verdict.
+- Do not perform continuity audit, prose quality audit, or revision generation in this slice.
+- Notify project `02` after completion, then continue to the next smallest slice unless stopped.
+
+### Non-Goals
+
+- No automatic chapter generation, rewriting, story extraction, prose conversion, or acceptance of canon.
+- No web server, open port, OpenAI API, browser automation, QuarterFull control, or model installation.
+- No SQLite migration, direct database write, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` change.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationDraftIntakeValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationDraftIntakeValidationTest.kt`
+- `samples/novelization_draft_intake_sample.md`
+
+### Confirmed Facts
+
+- The novelization plan says drafts may come from Codex, another GPT chat, QuarterFull, manual writing, or mixed notes, and none are trusted until audited.
+- Writer brief validation now produces a report and can be blocked by failed preflight.
+- Existing CLI patterns support read-only validation commands and JSON reports without requiring SQLite.
+
+### Assumptions
+
+- The next smallest useful gate after writer brief is draft intake validation.
+- Later work can feed a passed intake report into continuity audit, anti-AI prose audit, and minimal revision brief generation.
+
+### Open Questions
+
+- Exact production source taxonomy can be refined later after real drafts are processed.
+
+### Implementation Steps
+
+- [x] Step 1: Add draft intake report models, pure validation service, CLI command, sample draft, and focused tests.
+- [x] Step 2: Run focused tests and `git diff --check`.
+- [x] Step 3: Notify project `02` window with the completion report and next-work prompt.
+
+### Verification
+
+- Step 1: Unit tests should prove a valid draft with a passing writer brief report passes and a failed writer brief report blocks intake.
+- Step 1: CLI smoke should read a draft file and writer brief report without requiring `--db`.
+- Step 2: Run `.\gradlew.bat test --tests "*NovelizationDraftIntakeValidationTest" --no-daemon`.
+- Step 2: Run `git diff --check` on the changed files for this slice.
+
+### Risks
+
+- Making draft intake look like content approval; this slice only approves entry into review.
+- Duplicating continuity or prose quality audits in the intake gate.
+- Accidentally coupling draft intake to runtime state or SQLite.
+
+### Drift Log
+
+- 2026-06-25: Started the minimal draft intake gate slice after linking writer brief validation to upstream preflight.
+- 2026-06-25: Added draft intake JSON report models, pure validation service, CLI command, sample draft, and focused tests.
+- 2026-06-25: Verification passed for the draft intake slice: `.\gradlew.bat test --tests "*NovelizationDraftIntakeValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+
+## Active Minimal Writer Brief Gate Plan
+
+### Goal
+
+Add the first local JSON writer brief gate so next-chapter drafting has a structured brief before prose is written.
+
+### Global Strategy
+
+- Keep this slice file-output/read-only only: JSON template and JSON validation report.
+- Build a minimal writer brief around the novelization plan fields: previous facts, character states, open threads, must advance, must not repeat, allowed scenes, known unknowns, tone/pacing, style contract, Character Nuwa references, anti-AI constraints, and author-only exclusion.
+- Follow existing CLI patterns for template creation and validation.
+- Do not generate prose; only create and validate the brief shape.
+- Notify project `02` after completion, then continue to the next smallest slice unless stopped.
+
+### Non-Goals
+
+- No automatic chapter generation, rewriting, story extraction, or prose conversion.
+- No web server, open port, OpenAI API, browser automation, QuarterFull control, or model installation.
+- No SQLite migration, direct database write, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` change.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationWriterBriefValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationWriterBriefValidationTest.kt`
+- `samples/novelization_writer_brief_sample.json`
+
+### Confirmed Facts
+
+- The novelization plan places the writer brief after Character Nuwa Gate and before draft intake.
+- Existing repo patterns support JSON template commands and validation report commands without requiring SQLite.
+- The user wants the project to keep moving in repeated minimal completed work items.
+
+### Assumptions
+
+- A minimal writer brief validator is the next smallest useful step after preflight.
+- Later work can connect this writer brief to continuity anchors, accepted chapter extraction, and revision briefs.
+
+### Open Questions
+
+- Exact author-facing wording of real project briefs remains human-controlled.
+
+### Implementation Steps
+
+- [x] Step 1: Add writer brief models, validation service, CLI template/validation commands, sample JSON, and focused tests.
+- [x] Step 2: Run focused tests and `git diff --check`.
+- [x] Step 3: Notify project `02` window with the completion report and next-work prompt.
+
+### Verification
+
+- Step 1: Unit tests should prove a complete writer brief passes and a missing `mustNotRepeat` list fails.
+- Step 1: CLI smoke should create a template and validate the sample without requiring `--db`.
+- Step 2: Run `.\gradlew.bat test --tests "*NovelizationWriterBriefValidationTest" --no-daemon`.
+- Step 2: Run `git diff --check` on the changed files for this slice.
+
+### Risks
+
+- Making the brief look like accepted canon; this slice validates draft planning data only.
+- Over-validating the brief before real author examples exist.
+- Accidentally coupling the brief to runtime state or SQLite.
+
+### Drift Log
+
+- 2026-06-25: Started the minimal writer brief gate slice after completing direct Character Nuwa Gate preflight input support.
+- 2026-06-25: Added writer brief JSON models, pure validation service, CLI template/validation commands, sample JSON, and focused tests.
+- 2026-06-25: Verification passed for the writer brief slice: `.\gradlew.bat test --tests "*NovelizationWriterBriefValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Linked writer brief validation to optional Novelization Preflight report input so a failed preflight blocks the brief.
+- 2026-06-25: Verification passed for the writer brief / preflight link: `.\gradlew.bat test --tests "*NovelizationWriterBriefValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+
+### Continuation Steps
+
+- [x] Step 4: Allow writer brief validation to optionally read a Novelization Preflight report and fail when the upstream preflight failed.
+- [x] Step 5: Run focused tests and `git diff --check` for the writer-brief/preflight link.
+- [x] Step 6: Notify project `02` window with the completion report and next-work prompt.
+
+## Active Minimal Novelization Preflight Plan
+
+### Goal
+
+Complete the smallest useful project work after the Character Nuwa Gate: add a local Kotlin/JVM CLI preflight that reads Character Nuwa Gate evidence and tells the writer workflow whether the next-chapter drafting stage may start.
+
+### Global Strategy
+
+- Keep this slice file-output/read-only only: JSON report in, JSON report out.
+- Reuse the existing Character Nuwa Gate report when present.
+- Also allow direct raw Character Nuwa Gate JSON input so the preflight can run as a one-step command for authors.
+- Make the preflight a clear upstream gate for novel drafting, not a generation system.
+- Return exit code 1 on FAIL and 0 on PASS or PASS_WITH_WARNINGS, matching existing report validators.
+- After completion, notify project `02` with the requested delegation prompt.
+
+### Non-Goals
+
+- No chapter generation, rewriting, writer brief generation, or prose conversion.
+- No web server, open port, OpenAI API, browser automation, QuarterFull control, or model installation.
+- No SQLite migration, direct database write, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` change.
+- No indefinite background automation loop.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/NovelizationPreflightValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/NovelizationPreflightValidationTest.kt`
+
+### Confirmed Facts
+
+- The user asked to complete the project's smallest work, then report to the project `02` window.
+- Existing CLI commands already validate Character Nuwa Gate JSON and write a `CharacterNuwaGateValidationReport`.
+- The novelization plan says Character Nuwa Gate comes before the next-chapter writer brief and draft intake.
+- Current repository rules allow Kotlin/JVM CLI and JSON file protocols, while forbidding web servers, ports, external AI APIs, and direct SQLite bypasses.
+
+### Assumptions
+
+- The smallest useful next step is a pre-draft readiness gate over the existing Character Nuwa report.
+- Later milestones can extend this preflight with continuity ledger, style source pack, writer brief, and draft-intake checks.
+
+### Open Questions
+
+- The exact long-running loop policy should remain human-controlled; this slice records no scheduler or background automation.
+
+### Implementation Steps
+
+- [x] Step 1: Record this minimal preflight plan in `PLANS.md`.
+- [x] Step 2: Add preflight report models, pure validation service, CLI wiring, and focused tests.
+- [x] Step 3: Run focused tests and `git diff --check`.
+- [x] Step 4: Notify project `02` window with the requested next-work prompt.
+
+### Verification
+
+- Step 2: Unit tests should prove PASS from a passing Character Nuwa report and FAIL from a failing Character Nuwa report.
+- Step 2: CLI smoke should read a Character Nuwa report and write a preflight report without requiring `--db`.
+- Step 3: Run `.\gradlew.bat test --tests "*NovelizationPreflightValidationTest" --no-daemon`.
+- Step 3: Run `git diff --check` on the changed files for this slice.
+- Step 5: CLI smoke should read a raw Character Nuwa Gate JSON and write a preflight report without requiring an intermediate report file.
+
+### Risks
+
+- Making the preflight look like it approves prose quality; this slice only approves readiness to start drafting.
+- Duplicating Character Nuwa finding details instead of referencing the upstream report.
+- Confusing raw gate input with report input in the preflight output.
+- Accidentally adding runtime or SQLite coupling.
+
+### Drift Log
+
+- 2026-06-25: Started the minimal project work slice after the user requested a smallest completed work item plus notification to project `02`.
+- 2026-06-25: Completed implementation for the local novelization preflight slice: report models, pure validation service, CLI wiring, help text, and focused tests.
+- 2026-06-25: Verification passed for the minimal preflight slice: `.\gradlew.bat test --tests "*NovelizationPreflightValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified project `02` window with the completion report and next-work prompt.
+- 2026-06-25: Continued the minimal preflight work after user asked why the project did not keep moving. Added direct raw Character Nuwa Gate JSON input support while preserving report input support.
+
+### Continuation Steps
+
+- [x] Step 5: Allow `validate-novelization-preflight` to accept either `--character-nuwa-report` or raw `--character-nuwa-gate`.
+- [x] Step 6: Run focused tests and `git diff --check` for the direct-gate input slice.
+- [x] Step 7: Notify project `02` window with the next completion report and next-work prompt.
+
+## Active Character Nuwa Gate Implementation Plan
+
+### Goal
+
+Implement the first local Kotlin/JVM CLI slice for the Character Nuwa Gate: create an editable character-card template and validate character cards before any speaking character can be accepted for drafting.
+
+### Global Strategy
+
+- Keep the implementation file-output/read-only only: JSON templates and JSON validation reports.
+- Follow existing CLI patterns used by `audit-chapter-continuity` and `validate-script-packet-draft`.
+- Add serializable models, a pure validation service, CLI wiring, sample JSON, and focused tests.
+- Treat missing character cards, missing required full cards, missing light-card essentials, knowledge-boundary gaps, absent accepted/rejected sample lines, and hard-banned calibration slogans as report findings.
+- Do not integrate this into runtime state, SQLite, setting packs, `resolve-turn`, or any generation system in this slice.
+
+### Non-Goals
+
+- No automatic chapter generation or rewriting.
+- No real Nuwa research-agent workflow, web search, browser automation, QuarterFull control, or external AI API.
+- No SQLite migration, database read/write, Validator, StateReducer, `stateVersion`, `contextHash`, or `resolve-turn` changes.
+- No author-style cloning or model installation.
+
+### Scope
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/CharacterNuwaGateValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/CharacterNuwaGateValidationTest.kt`
+- `samples/character_nuwa_gate_sample.json`
+
+### Confirmed Facts
+
+- User approved the Character Nuwa Gate and requested completion.
+- User asked to report in the project `02` window and send `請指派新工作 完成藍圖` after completion.
+- Current repo rules allow Kotlin/JVM CLI, SQLite, and JSON file protocols, but forbid web server, ports, external AI APIs, and direct SQLite bypasses.
+- Existing `Main.kt` has read-only/file-output command patterns: `audit-chapter-continuity --previous --draft --anchors [--out]` and `validate-script-packet-draft --packet [--out]`.
+- Existing validation services return JSON reports with verdict, finding count, findings, severity, evidence, and suggested fixes.
+- `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md` defines hard rules: no character card means no accepted dialogue, important characters need full cards, one-off background speakers may use light cards, and `這不是XX，這是XXX` / `not X, but Y` structures are hard-banned.
+
+### Assumptions
+
+- The first card file can hold both required speaking character IDs and character cards.
+- A `requiredDepth` field is enough for the first implementation to distinguish full Nuwa cards from light voice cards.
+- The validator should return exit code 1 on FAIL and 0 on PASS or PASS_WITH_WARNINGS, matching existing draft validators.
+
+### Open Questions
+
+- Whether later milestones should generate character cards from accepted chapters remains open.
+- Whether later writer-brief generation should consume this exact report format remains open.
+
+### Implementation Steps
+
+- [x] Step 1: Record this implementation plan in `PLANS.md`.
+- [x] Step 2: Add serializable Character Nuwa card and validation report models.
+- [x] Step 3: Add a pure `CharacterNuwaGateValidationService`.
+- [x] Step 4: Wire CLI commands `create-character-nuwa-card-template` and `validate-character-nuwa-gate`.
+- [x] Step 5: Add sample JSON and focused tests for PASS / missing card FAIL / hard-ban FAIL / CLI report writing.
+- [x] Step 6: Run focused tests and `git diff --check`.
+- [x] Step 7: Notify project `02` window with `請指派新工作 完成藍圖` if the thread tooling is available.
+
+### Verification
+
+- Step 2: Compile-time coverage through focused tests after service and CLI wiring exist.
+- Step 3: Unit tests should prove valid cards pass and missing/insufficient cards fail.
+- Step 4: CLI smoke should create a template and validate a sample without requiring `--db`.
+- Step 5: Focused test command: `.\gradlew.bat test --tests "*CharacterNuwaGateValidationTest" --no-daemon`.
+- Step 6: `git diff --check -- PLANS.md app/src/main/kotlin/com/localnovel/engine/Main.kt app/src/main/kotlin/com/localnovel/engine/model/Models.kt app/src/main/kotlin/com/localnovel/engine/service/CharacterNuwaGateValidationService.kt app/src/test/kotlin/com/localnovel/engine/CharacterNuwaGateValidationTest.kt samples/character_nuwa_gate_sample.json`.
+
+### Risks
+
+- Over-validating creative fields too early and making cards tedious to draft.
+- Under-validating generic speech and allowing the gate to become decorative.
+- Introducing accidental runtime or SQLite coupling.
+- Missing the project `02` window if thread tooling cannot identify it.
+
+### Drift Log
+
+- 2026-06-25: Started implementation slice after user approved the next step and requested completion plus notification to project `02` window.
+- 2026-06-25: Completed Character Nuwa Gate implementation. Added models, pure validation service, CLI template/validation commands, sample gate JSON, and focused tests. Verification passed: `.\gradlew.bat test --tests "*CharacterNuwaGateValidationTest" --no-daemon`; `git diff --check` reported only Windows line-ending warnings.
+- 2026-06-25: Notified project `02` window with the requested completion message through Codex thread tooling.
+
+## Active Character Nuwa Gate And Hard Ban Plan
+
+### Goal
+
+Promote character-level Nuwa distillation from a suggested voice-card concept into a mandatory pre-writing gate, and hard-ban the AI calibration structure `這不是XX，這是XXX` / `這不是 X，這是 Y` / `not X, but Y` before any draft can be accepted.
+
+### Global Strategy
+
+- Keep this slice docs-only and upstream of generation.
+- Add a Character Nuwa Gate: every recurring or important speaking character must have a Nuwa-style character card before dialogue generation.
+- Add a lighter fallback for one-off NPCs, but still require identity, pressure, knowledge boundary, register, and forbidden speech patterns before they speak.
+- Treat `這不是XX，這是XXX`, `這不是 X，這是 Y`, and equivalent `not X, but Y` calibration as a hard fail pattern, not a stylistic warning.
+- Wire the gate into the novelization plan, humanlike prose plan, and authoring quality guideline.
+
+### Non-Goals
+
+- No actual character skill generation in this slice.
+- No story rewrite, chapter generation, browser automation, scraping, external AI API, or model installation.
+- No Kotlin source, schema, SQLite, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No enforcing a single author clone or copyrighted style imitation.
+
+### Scope
+
+Allowed files for this planning slice:
+
+- `PLANS.md`
+- `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md`
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`
+- `docs/AUTHORING_QUALITY_GUIDELINES.md`
+
+### Confirmed Facts
+
+- User approved adding the Character Nuwa Gate.
+- User explicitly required banning the pattern `這不是XX 這是XXX`.
+- `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md` already defines character dialogue voice cards and anti-AI prose audit.
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` already makes style source pack, expression DNA, and character voice cards part of the better-than-QuarterFull loop.
+- `docs/AUTHORING_QUALITY_GUIDELINES.md` already warns about AI calibration phrasing such as repeated "not X, only Y", but it is not yet phrased as a hard ban.
+
+### Assumptions
+
+- Full Nuwa-style cards should be required for main, recurring, POV, antagonist, and emotionally important characters.
+- Lightweight cards are enough for disposable background speakers as long as the text does not let them become generic exposition tools.
+
+### Open Questions
+
+- The exact storage format for future character Nuwa cards remains open: Markdown, JSON, or both.
+- Whether future checks should be manual first or CLI-audited first remains open.
+
+### Implementation Steps
+
+- [x] Step 1: Record this character Nuwa gate and hard-ban plan in `PLANS.md`.
+- [x] Step 2: Update the humanlike prose plan with mandatory Character Nuwa Gate rules and banned calibration forms.
+- [x] Step 3: Update the QuarterFull-superiority plan so the minimum loop and metrics require Character Nuwa cards.
+- [x] Step 4: Update authoring quality guidance so `這不是 X，這是 Y` / `not X, but Y` becomes a hard fail pattern.
+- [x] Step 5: Verify docs-only scope with `git diff --check` and targeted searches.
+
+### Verification
+
+- Step 2: Inspect the humanlike prose plan for full-card vs light-card rules and hard-fail banned phrases.
+- Step 3: Inspect the novelization plan for Character Nuwa Gate integration.
+- Step 4: Inspect authoring guidelines for the hard-ban language.
+- Step 5: Run `git diff --check -- PLANS.md docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md docs/AUTHORING_QUALITY_GUIDELINES.md`.
+
+### Risks
+
+- Making background NPC setup too heavy and slowing drafting.
+- Turning the ban into brittle phrase policing while missing deeper calibration habits.
+- Letting character cards become lore dumps instead of speech and pressure controls.
+
+### Drift Log
+
+- 2026-06-25: Started docs-only hardening slice after user approved Character Nuwa Gate and explicitly banned `這不是XX 這是XXX` phrasing.
+- 2026-06-25: Completed docs-only hardening. Added mandatory Character Nuwa Gate rules, full-vs-light character card policy, writer-brief gate status, novelization loop metrics, and hard bans for `這不是XX，這是XXX`, `這不是 X，這是 Y`, `不是XX，而是XXX`, `不是 X，而是 Y`, and `not X, but Y`. Verification passed with `git diff --check` reporting only Windows line-ending warnings.
+
+## Active Humanlike Prose And Dialogue Distillation Plan
+
+### Goal
+
+Add a docs-only plan for making dialogue, prose style, and text generation the primary quality system. The target is not "prettier AI prose"; the target is a source-backed style distillation workflow that produces text with character-specific speech, scene pressure, subtext, rhythm, and minimal AI fingerprints before any comic/video production handoff.
+
+### Global Strategy
+
+- Treat prose quality as upstream of script, storyboard, comic panels, audio, and video.
+- Adapt the Nuwa skill-distillation method into a project-specific prose style protocol: collect sources, extract expression DNA, define dialogue rules, define anti-patterns, generate a writer brief, draft, audit, and revise.
+- Keep this slice docs-only: no OpenAI API, no story generation command, no web automation, no SQLite write, no runtime schema change, and no automatic style model installation.
+- Make "unlike AI" auditable through concrete gates: character voice separation, dialogue pressure, subtext, rhythm variance, sensory grounding, low exposition, and banned AI-ish patterns.
+- Integrate this into the existing novelization superiority plan so future chapters are not accepted by continuity alone.
+
+### Non-Goals
+
+- No actual chapter rewrite in this slice.
+- No scraping, QuarterFull control, browser login, prompt submission, or private-account extraction.
+- No local LLM, image model, voice model, video model, ComfyUI, AnimateDiff, Seedance, Oiioii, React, web server, Docker, Android UI, or Rust work.
+- No SQLite migrations, setting-pack apply, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No blind imitation of a copyrighted author or living writer as a target style; the project should distill principles and user-approved reference traits, not clone a protected voice.
+
+### Scope
+
+Allowed files for this planning slice:
+
+- `PLANS.md`
+- `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md`
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`
+
+### Confirmed Facts
+
+- User stated the most important layer is dialogue, style, and text generation that should feel completely unlike AI.
+- User suggested using Nuwa skill distillation.
+- `docs/AUTHORING_QUALITY_GUIDELINES.md` already includes anti-AI-writing guidance, micro-prose review, NPC dialogue boundaries, sensory attribution, material culture consistency, and protagonist reaction beats.
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` already requires a writer brief, continuity audit, authoring quality audit, minimal revision brief, and downstream script/storyboard/video handoff.
+- The Nuwa skill workflow emphasizes source-backed distillation, expression DNA, anti-patterns, honest boundaries, and quality checks rather than vague roleplay.
+- Project constraints still forbid runtime generation APIs, web/server work, direct SQLite writes, and bypassing validation protocols.
+
+### Assumptions
+
+- A project-specific style skill should be treated as a theme/framework skill rather than a single-person perspective skill.
+- The first implementation after this planning slice should produce editable JSON/Markdown packets and audits before any automatic rewriting.
+- The project will need user-approved positive samples and negative samples to distill a durable house style.
+
+### Open Questions
+
+- Which reference texts should be approved as positive style sources remains open.
+- Whether the first source set should use the accepted first chapter, the rejected second chapter as a negative sample, and user-written taste notes remains open.
+- Whether future style checks should start as manual rubric, CLI text lint, or GPT-pasteable review packet remains open.
+
+### Implementation Steps
+
+- [x] Step 1: Record this humanlike prose and dialogue distillation plan in `PLANS.md`.
+- [x] Step 2: Add `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md`.
+- [x] Step 3: Update `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` so style distillation becomes a first-class layer/gate before draft acceptance.
+- [x] Step 4: Verify the docs-only slice with `git diff --check` and targeted searches for dialogue/style/anti-AI/Nuwa references.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md` to confirm scope, non-goals, confirmed facts, and steps are recorded.
+- Step 2: Inspect the new document for concrete source inputs, style DNA outputs, dialogue rules, anti-AI gates, and implementation order.
+- Step 3: Inspect the novelization plan to confirm prose style is upstream of production readiness.
+- Step 4: Run `git diff --check -- PLANS.md docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`.
+
+### Risks
+
+- Mistaking surface decoration for human writing quality.
+- Overfitting to one author or one sample and creating a brittle or legally risky imitation.
+- Adding too many abstract writing rules without a concrete draft/review packet.
+- Treating "anti-AI" as a classifier label instead of a set of visible prose failures.
+
+### Drift Log
+
+- 2026-06-25: Started docs-only planning slice after the user clarified that dialogue, style, and text generation quality are more important than downstream comic/video packaging, and suggested Nuwa-style distillation.
+- 2026-06-25: Added `docs/HUMANLIKE_PROSE_AND_DIALOGUE_DISTILLATION_PLAN.md`, integrated style distillation into the QuarterFull-superiority plan, and verified the docs-only slice with `git diff --check` plus targeted searches for Nuwa, expression DNA, dialogue, anti-AI, style source pack, character voice, and writer brief references.
+
+## Active Comic Video Production Feature Plan
+
+### Goal
+
+Plan the new features required to make Codex-assisted output become a finished comic video product: video, audio, independent character voices, comic panels, storyboard timing, same character across 30+ panels, automatic long-form comic layout, action continuity, and stable scenes, costumes, props, and object states.
+
+### Global Strategy
+
+- Treat "guarantee" as a production workflow guarantee, not a promise that a generative image model will never drift.
+- Extend the existing scene-lock, storyboard, asset-registry, and standalone `小說朗讀` narrated-video sidecar evidence with a dedicated comic-video production layer.
+- Keep this slice docs-only: define required feature modules, data contracts, gates, and implementation order before writing runtime code.
+- Preserve project boundaries: Kotlin/JVM CLI and JSON planning only; no web server, no external AI API, no image generation automation, no SQLite writes, no animation/video tool integration in this slice.
+- Make every future image or panel reference locked assets, locked variants, and frame-to-frame continuity checks before it can be accepted.
+
+### Non-Goals
+
+- No actual comic image generation in this slice.
+- No actual audio/video rendering, animation generation, Seedance, Oiioii, ComfyUI, AnimateDiff, or external model installation in this slice.
+- No OpenAI API, GPT browser automation, web server, React, Next.js, Docker, or UI implementation.
+- No SQLite migration or formal asset registry import.
+- No treating visual drafts as approved assets or final comic pages.
+
+### Scope
+
+Allowed files for this planning slice:
+
+- `PLANS.md`
+- `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`
+
+### Confirmed Facts
+
+- User explicitly identified four missing capabilities: same character consistency across 30 panels, automatic long-form comic layout, action-continuous animation, and no drift in scene, costume, or props per frame.
+- User clarified the final target: a finished product with video, audio, independent voice lines per character, comic visuals, and storyboard structure.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` already defines scene-locked, asset-aware storyboard planning and says image generation must not invent new rooms, costumes, props, weather, lighting, character designs, or author-only disclosures without approval.
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md` already defines production assets, reference sheets, variants, and required views for characters, animals, weapons, props, costumes, scenes, and zones.
+- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md` already proposes draft asset files first and a future SQLite formal registry only after an explicit milestone.
+- The standalone `小說朗讀` project is named `novel-reader-video` and already describes converting novel text into narrated videos with stable character voices and aligned subtitles.
+- The standalone `小說朗讀` config already has `speakerVoices`, `speakerProsody`, subtitle settings, and MP4 settings.
+- The standalone `小說朗讀` renderer currently combines narration audio and renders a subtitle video over a solid color background; it does not yet consume comic panels or storyboard frame images.
+- Current constraints still forbid web/API/model/server/video implementation inside this repo without later approval.
+
+### Assumptions
+
+- Codex can generate useful comic-style images, but cross-panel consistency needs locked visual references, prompt contracts, and review gates.
+- Absolute pixel-level identity across 30 panels is not realistic from text prompts alone; the project can instead guarantee acceptance only after drift checks pass.
+- The first implementation should likely be draft JSON templates and validators before image generation.
+
+### Open Questions
+
+- Whether future visual drift checks should be manual, image-model-assisted, or basic metadata-only at first remains open.
+- Whether generated image files should live inside repo, ignored output folders, or a separate asset workspace remains open.
+- Secondary layout targets such as webtoon vertical scroll, manga pages, and storyboard boards remain open after the first 16:9 comic-video target.
+
+### Implementation Steps
+
+- [x] Step 1: Record this visual consistency feature plan in `PLANS.md`.
+- [x] Step 2: Add `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`.
+- [x] Step 3: Verify the new document references existing scene/asset/storyboard evidence and does not imply forbidden implementation.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md` to confirm the scope, constraints, and current steps.
+- Step 2: Inspect the new feature plan for concrete modules, data contracts, gate criteria, and implementation order.
+- Step 3: Run `git diff --check -- PLANS.md docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md`.
+
+### Risks
+
+- Overstating model reliability instead of designing reviewable acceptance gates.
+- Accidentally moving from docs planning into image generation or external tool integration too early.
+- Creating asset locks too heavy for early comic exploration.
+- Confusing storyboard consistency with final animation continuity.
+
+### Drift Log
+
+- 2026-06-25: Started docs-only planning slice after the user identified the missing visual consistency features needed for comics and animation-ready storyboards.
+- 2026-06-25: User clarified the product target is a finished comic video: video + audio + independent character voices + comic panels + storyboard. Scope updated from visual consistency only to comic-video production planning.
+- 2026-06-25: Added `docs/COMIC_VIDEO_PRODUCTION_FEATURE_PLAN.md` and verified it stays docs-only while connecting video, audio, voice casting, comic panels, storyboard timing, asset locks, and continuity gates.
+
+## Active Novelization Superiority Plan
+
+### Goal
+
+Arrange a concrete method for the project to surpass QuarterFull when upgrading into a novel-production workflow. The plan should turn the project from "generate prose from prompt" into a local, auditable novel system with memory, continuity, revision, script-packet, storyboard, and optional narrated-video readiness.
+
+### Global Strategy
+
+- Define "surpass QuarterFull" as verifiable product capability: stronger long-form continuity, local memory, audit reports, revision gates, and downstream script/storyboard outputs.
+- Keep this milestone docs-only: no browser control, no external AI API, no web server, no SQLite writes, and no runtime state changes.
+- Use existing project evidence: novel-to-script blueprint, script-ready packet spec, storyboard planning, authoring quality checklist, and the new chapter-continuity audit gate.
+- Treat the standalone `小說朗讀` project as an optional downstream sidecar for narrated video / animatic output, not as part of the Kotlin/JVM engine core.
+- Produce one product blueprint that can drive later implementation milestones.
+
+### Non-Goals
+
+- No QuarterFull browser control, login, saves, prompt sending, scraping, or comparisons against live private account data.
+- No automatic story generation or rewriting in this milestone.
+- No OpenAI API, video model, image model, ComfyUI, AnimateDiff, Seedance, Oiioii, React, server, Docker, or web app work.
+- No direct SQLite writes, migrations, setting-pack apply, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No treating this blueprint as formal canon, approved asset data, or a finished product.
+
+### Scope
+
+Allowed files for this planning slice:
+
+- `PLANS.md`
+- `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`
+
+### Confirmed Facts
+
+- User requested a method for the project, when upgraded into novel production, to surpass QuarterFull.
+- User previously stopped QuarterFull control and asked Codex to upgrade its own process.
+- The project already has `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md`, which defines prose/chapter/turn narrative to script-ready scene packet transformation.
+- The project already has `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, which defines draft/review packet expectations and continuity checks.
+- The project already has `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, which defines scene-locked, asset-aware storyboard planning.
+- The project already has `docs/AUTHORING_QUALITY_GUIDELINES.md`, including a fixed review checklist.
+- The new local chapter-continuity audit gate caught the downloaded QuarterFull item 36 draft as FAIL with four findings.
+- The `小說朗讀` tool now exists as a standalone workspace at `C:\Users\f7212\OneDrive\文件\小說朗讀`, with chapter text under `quarterfull\塵行\`.
+
+### Assumptions
+
+- QuarterFull's strongest visible advantage is low-friction prose generation and a pleasant authoring flow.
+- The user's target is not merely prettier prose, but a workflow that preserves long-form story quality while enabling future script/storyboard/video work.
+- A local audit-first workflow can outperform a black-box writing tool for long-running serialized fiction if it reduces continuity regressions and makes revisions actionable.
+
+### Open Questions
+
+- Whether the first implementation should focus on chapter fact extraction, novel writer brief generation, or a full novel-quality audit command remains to be selected later.
+- Whether future prose generation will be done by Codex, another GPT chat, QuarterFull, or manual authoring remains open; the blueprint should support all sources.
+- Whether `小說朗讀` should receive an explicit bridge file format from script/storyboard packets is a later sidecar milestone.
+
+### Implementation Steps
+
+- [x] Step 1: Record this planning slice in `PLANS.md`.
+- [x] Step 2: Add `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`.
+- [x] Step 3: Verify the document references existing evidence and does not imply forbidden implementation.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md` to confirm scope, non-goals, confirmed facts, assumptions, and next steps are recorded.
+- Step 2: Inspect the new document for concrete phases, gates, deliverables, and success metrics.
+- Step 3: Run `git diff --check` and confirm only docs/plan files were touched by this planning slice.
+
+### Risks
+
+- Over-promising "better than QuarterFull" without measurable gates.
+- Accidentally designing a web app or API service that violates repo constraints.
+- Confusing narrated-video sidecar output with core engine runtime.
+- Treating generated prose quality as sufficient without continuity and authoring audits.
+
+### Drift Log
+
+- 2026-06-25: Started docs-only planning slice for surpassing QuarterFull in novel-production workflow. Strategy is product capability design, not implementation.
+- 2026-06-25: Completed docs-only plan. Added `docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md` with a six-layer novelization product spine, three key gates, phased implementation path, success metrics, and first recommended milestone. Verification passed with `git diff --check -- PLANS.md docs/NOVELIZATION_SUPERIOR_TO_QUARTERFULL_PLAN.md`, which reported only the existing Windows line-ending warning for `PLANS.md`.
+
+## Active Directory Hygiene Plan
+
+### Goal
+
+Move the intentional `小說朗讀` tool project out of the `AI 劇本` Kotlin/JVM engine repository and back to its standalone project location, so the main repository stays focused while the video/narration tool is preserved.
+
+### Global Strategy
+
+- Treat `小說朗讀` as a protected standalone tool, not cleanup waste.
+- Preserve the current in-repo `小說朗讀` contents by merging them into `C:\Users\f7212\OneDrive\文件\小說朗讀`.
+- Preserve the pre-existing external `C:\Users\f7212\OneDrive\文件\小說朗讀` by copying over newer/missing files only after a path comparison. The first rename-to-backup strategy was blocked by a Windows file lock.
+- Do not delete generated videos, narration audio, source text, package files, or nested Git metadata during relocation.
+- Update local documentation/memory after the move so future work uses the standalone path.
+
+### Non-Goals
+
+- No cleanup of `小說朗讀/output/` in this step.
+- No deletion of external-only files without explicit later approval.
+- No SQLite writes, setting-pack changes, runtime state changes, migrations, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No changes to the `小說朗讀` tool behavior.
+
+### Scope
+
+- `PLANS.md`
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`
+- `docs/CLEANUP_INVENTORY_REPORT.md`
+- `docs/HANDOFF.md`
+- `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md`
+- `docs/PROJECT_STRUCTURE_REPORT.md`
+- `memory/project_directory_memory.json`
+- Filesystem relocation from `C:\Users\f7212\OneDrive\文件\AI 劇本\小說朗讀` to `C:\Users\f7212\OneDrive\文件\小說朗讀`
+
+### Confirmed Facts
+
+- User clarified that `小說朗讀` was intentionally created and should not be treated as abandoned waste.
+- User requested putting it back in the `小說朗讀` project if the main project should stay clean.
+- The previous in-repo source path was `C:\Users\f7212\OneDrive\文件\AI 劇本\小說朗讀`.
+- The external destination path exists: `C:\Users\f7212\OneDrive\文件\小說朗讀`.
+- The in-repo copy was larger than the external copy before relocation because it included newer output artifacts.
+- The external path contains one `.git/refs/codex/...` file not present in the in-repo copy, so an overwrite/mirror would risk losing external-only metadata.
+- No active `node`, `ffmpeg`, or `ffprobe` process was observed during the pre-move check.
+- Windows refused to rename the existing external `小說朗讀` folder because it was in use by another process.
+- Merge-copy verification found 0 missing source files and 0 size mismatches before removing the in-repo copy.
+- The standalone path now contains 3790 files and 676,992,556 bytes.
+
+### Assumptions
+
+- The intended standalone project path is `C:\Users\f7212\OneDrive\文件\小說朗讀`.
+- A non-mirroring merge copy is safer than renaming while the external folder is locked.
+
+### Open Questions
+
+- Which standalone `output/` variants should be kept or cleaned later is a separate human decision.
+
+### Implementation Steps
+
+- [x] Step 1: Record this relocation plan in `PLANS.md`.
+- [x] Step 2: Merge-copy the in-repo `小說朗讀` folder into the existing standalone path without deleting external-only files; after verification, remove the in-repo copy.
+- [x] Step 3: Update memory/docs so the standalone path is canonical and the main repo no longer treats `小說朗讀` as an in-repo subproject.
+- [x] Step 4: Verify source removal, destination presence, file counts/sizes, nested Git status, and main repo cleanliness impact.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md`.
+- Step 2: Verify the standalone path contains all files formerly under the in-repo copy, preserves external-only files, and the in-repo copy has been removed.
+- Step 3: Inspect updated docs/memory references.
+- Step 4: Run path existence checks, size summaries, `git status --short --ignored`, and `git -C C:\Users\f7212\OneDrive\文件\小說朗讀 status --short --ignored`.
+
+### Risks
+
+- OneDrive or a running process may lock files during rename/move.
+- The external path already contains a project copy, so mirroring or overwrite cleanup would risk data loss. The revised plan avoids deletion of external-only files.
+- Moving a nested `.git` project changes local path assumptions in docs and memory.
+
+### Drift Log
+
+- 2026-06-25: Plan created after the user clarified `小說朗讀` is an intentional tool and should live in its own project location.
+- 2026-06-25: Rename-to-backup strategy failed because the external folder was locked. Revised Step 2 to a non-mirroring merge copy followed by verification-gated removal of the in-repo copy.
+- 2026-06-25: Merge-copy succeeded with 0 missing files and 0 size mismatches; removed the in-repo copy. Scope expanded to update stale cross-references in handoff, blueprint register, and project structure docs.
+- 2026-06-25: Final verification passed: in-repo `小說朗讀` path is absent; standalone path has 3790 files / 645.63 MB; `memory/project_directory_memory.json` parses; `git diff --check` reported only line-ending warnings.
+
+## Previous Active Self-Upgrade Plan
+
+### Goal
+
+Add a local, read-only chapter continuity gate so Codex cannot accept or hand off a generated next-chapter draft until it has checked the previous accepted chapter, explicit continuity anchors, regression phrases, and text-integrity risks. This upgrade addresses the QuarterFull handoff failure by making continuity verification a required local step before any future external or internal prose draft is treated as usable.
+
+### Global Strategy
+
+- Turn the failure into a deterministic local audit flow, not a memory promise.
+- Keep the first implementation narrow: a text-file continuity audit command that reads previous chapter text, draft chapter text, and a reviewer-supplied anchor JSON file.
+- Make the gate read-only: it may write a JSON report under `out/`, but it must not modify SQLite, setting packs, runtime state, accepted canon, or external websites.
+- Preserve engine boundaries: Kotlin/JVM CLI only, no web server, no API service, no OpenAI API, no QuarterFull browser control.
+- Use explicit author/reviewer anchors instead of guessing story truth from prose.
+
+### Non-Goals
+
+- No QuarterFull control, saves, deletes, uploads, prompt sending, or browser automation.
+- No automatic prose rewriting, story generation, or AI API calls.
+- No SQLite writes, migrations, setting-pack apply, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No treating audit PASS as human approval or formal canon.
+- No hardcoding `塵行`, `陸知行`, `愛醬`, `沈固`, or any project-specific story facts into engine rules.
+- No broad narrative-quality redesign beyond this continuity gate.
+
+### Scope
+
+Allowed files for this upgrade slice:
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ChapterContinuityAuditService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ChapterContinuityAuditTest.kt`
+- `samples/chapter_continuity_anchor_sample.json`
+- `out/quarterfull/chenxing_episode_02_continuity_anchors.json`
+
+### Confirmed Facts
+
+- User explicitly stopped QuarterFull control and told Codex to upgrade itself.
+- The in-app QuarterFull draft for item 36 was downloaded to `out/quarterfull/chenxing_episode_02_root_quarterfull_item36.md`.
+- The accepted first chapter exists locally at `小說朗讀/quarterfull/塵行/01-第一話-塵.txt`.
+- Manual comparison showed the downloaded second-chapter draft repeats or reopens first-chapter continuity beats instead of cleanly continuing them.
+- Existing CLI patterns include read-only commands such as `audit-narrative-quality` and `validate-script-packet-draft`.
+- `validate-script-packet-draft` returns exit code 1 on FAIL and writes optional JSON reports without opening SQLite.
+- `JsonSupport.json` is already used for tolerant JSON serialization / deserialization in CLI tests.
+- Current git status has unrelated dirty files; this slice must not revert or clean them.
+
+### Assumptions
+
+- A simple anchor JSON contract is enough for the first upgrade because the failure was caused by missing explicit continuity anchors, not by a lack of generative capability.
+- The first audit should rely on reviewer-provided `mustAppearInPrevious`, `mustAppearInDraft`, and `mustNotAppearInDraft` checks rather than attempting full semantic understanding.
+- A replacement-character check is useful because the downloaded QuarterFull draft contained one broken glyph.
+
+### Open Questions
+
+- Whether this continuity gate should later become part of a broader prose-to-script packet workflow is not decided in this slice.
+- Whether future anchors should be generated from accepted chapters automatically is a later milestone.
+- Whether the current QuarterFull second draft should be revised, discarded, or mined for parts remains a human authoring decision.
+
+### Implementation Steps
+
+- [x] Step 1: Record this self-upgrade plan in `PLANS.md`.
+- [x] Step 2: Add serializable chapter-continuity audit models and a pure read-only service.
+- [x] Step 3: Wire a CLI command `audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]`.
+- [x] Step 4: Add a neutral sample anchor JSON and focused tests for PASS / FAIL / broken-glyph cases.
+- [x] Step 5: Add a `塵行`-specific anchor file under `out/quarterfull/` and run the new audit against first chapter + downloaded second draft.
+- [x] Step 6: Run focused Gradle tests, CLI smoke, and diff hygiene checks, then update this plan with verification results.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md` to confirm the upgrade goal, scope, non-goals, and current steps are recorded before code edits.
+- Step 2: Compile-time coverage through tests once CLI wiring exists; model/service changes remain pure and SQLite-free.
+- Step 3: CLI smoke should print verdict, file paths, and finding count; FAIL should exit 1.
+- Step 4: Unit tests should prove a clean draft passes, a repeated previous beat fails, and a replacement character is caught.
+- Step 5: The real `塵行` audit should fail the downloaded second draft for continuity regression and broken text, proving the gate catches this exact class of mistake.
+- Step 6: Run `.\gradlew.bat test --tests "*ChapterContinuityAuditTest" --no-daemon`, one manual CLI smoke, and `git diff --check`.
+
+### Risks
+
+- A text-match audit can miss paraphrased continuity regressions.
+- Overly strict anchors can reject legitimate callbacks or memory references.
+- Story-specific anchors in `out/` must stay evidence/config, not engine rules.
+- Existing dirty work in `Main.kt`, `Models.kt`, and `PLANS.md` increases merge-drift risk.
+
+### Drift Log
+
+- 2026-06-24: Started self-upgrade after user rejected the QuarterFull handoff quality and stopped external-site control. Strategy is a local read-only continuity gate before any future generated chapter can be treated as usable.
+- 2026-06-24: Completed Step 2. Added generic chapter-continuity audit models and a pure read-only service; `.\gradlew.bat :app:compileKotlin --no-daemon` passed after fixing three Kotlin lambda trailing-comma syntax errors.
+- 2026-06-24: Completed Step 3. Added `audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]` CLI wiring and help text; `.\gradlew.bat :app:compileKotlin --no-daemon` passed.
+- 2026-06-24: Completed Step 4. Added neutral `samples/chapter_continuity_anchor_sample.json` and focused `ChapterContinuityAuditTest` coverage for PASS, forbidden regression FAIL, replacement-character FAIL, and CLI report writing. `.\gradlew.bat test --tests "*ChapterContinuityAuditTest" --no-daemon` passed.
+- 2026-06-24: Completed Step 5. Added `out/quarterfull/chenxing_episode_02_continuity_anchors.json` and ran `audit-chapter-continuity` against accepted first chapter plus downloaded QuarterFull item 36. The command intentionally returned FAIL and wrote `out/quarterfull/chenxing_episode_02_continuity_audit_report.json`, catching three forbidden continuity regressions plus one replacement-character text-integrity issue.
+- 2026-06-24: Completed Step 6. Final focused verification passed: `.\gradlew.bat test --tests "*ChapterContinuityAuditTest" --no-daemon`; `git diff --check` exited 0 with only existing Windows line-ending warnings; parsed real audit report shows verdict FAIL and findingCount 4. No QuarterFull browser control, SQLite writes, runtime state changes, setting-pack apply, or external API work occurred.
+
+## Superseded Delegated Registration Plan
+
+### Goal
+
+Historical 2026-06-24 plan that registered the moved `小說朗讀` subproject inside the `AI 劇本` project. This plan has been superseded by the 2026-06-25 Active Directory Hygiene Plan, which restores `小說朗讀` to the standalone canonical location `C:\Users\f7212\OneDrive\文件\小說朗讀`.
+
+### Global Strategy
+
+- Treat the user's delegation from `01 主控窗口` as the source of truth for relocation status, canonical path, original locked path, project summary, output paths, and `ffprobe` verification.
+- Add a dedicated docs-only directory/subproject register so the root project has a clear place to find nested local tooling without confusing it with runtime entities.
+- Cross-reference the registration from the existing planning register instead of silently inserting the tool into the blueprint candidate pool.
+- Add one local JSON memory file under `memory/` for future Codex windows to recall the canonical location and process-lock caveat.
+- Keep all changes additive and documentation/local-memory only; do not write SQLite, do not delete the original locked folder, and do not modify the Node.js subproject implementation.
+
+### Non-Goals
+
+- No direct SQLite writes, migrations, setting-pack apply, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No cleanup or deletion of standalone `C:\Users\f7212\OneDrive\文件\小說朗讀\output\` media in that historical registration slice.
+- No Node.js CLI, TTS, rendering, `ffmpeg`, or video output changes.
+- No web server, port, API, OpenAI API, React, Next.js, Docker, Android UI, Rust, Oiioii, Seedance, or automation work.
+- No treating completed MP4 outputs as approved production assets, storyboard deliverables, setting-pack content, or runtime evidence.
+
+### Scope
+
+Allowed files for this registration slice:
+
+- `PLANS.md`
+- `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md`
+- `docs/PROJECT_STRUCTURE_REPORT.md`
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`
+- `docs/HANDOFF.md`
+- `memory/project_directory_memory.json`
+
+### Confirmed Facts
+
+- User delegated from `01 主控窗口` and asked to register the moved `小說朗讀` subproject into directory, planning register, and memory.
+- At the time of this historical plan, the in-repo path was treated as canonical: `C:\Users\f7212\OneDrive\文件\AI 劇本\小說朗讀`.
+- The 2026-06-25 relocation supersedes that decision; the canonical path is now `C:\Users\f7212\OneDrive\文件\小說朗讀`.
+- `C:\Users\f7212\OneDrive\文件\小說朗讀\package.json` confirms the project name is `novel-reader-video`, a Node.js CLI with `novel-video` as its bin entry.
+- 2026-06-25 merge-copy verification recorded 3790 files and 676,992,556 bytes at the standalone path, with 0 missing source files and 0 size mismatches before the in-repo copy was removed.
+- Root `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` is a planning register, but it currently focuses on non-canon blueprint candidates and must not be confused with a local tool/subproject registry.
+- Root `docs/PROJECT_STRUCTURE_REPORT.md` contains the current directory overview.
+- Root `memory/` already exists as a local memory-file area, separate from runtime SQLite memory tables.
+- `git status --short --branch` showed existing unrelated dirty work in `PLANS.md`, Kotlin files, untracked docs, and `memory/`; this registration must not revert or clean those changes.
+
+### Assumptions
+
+- A new `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md` is the safest directory register because existing docs do not yet have a general local subproject register.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` should receive only a cross-reference and boundary note, not a blueprint candidate row for `小說朗讀`.
+- A compact JSON memory file is appropriate because the existing `memory/` directory already stores local repo memory outside SQLite.
+
+### Open Questions
+
+- Which standalone media outputs should be kept or cleaned later remains a separate cleanup decision.
+- Whether `小說朗讀` should become a Git submodule, ignored nested repo, or tracked subtree is not decided in this registration slice.
+- Whether completed MP4 files should ever enter an asset registry is not decided here and would require a separate 01/user-approved milestone.
+
+### Implementation Steps
+
+- [x] Step 1: Update this registration plan in `PLANS.md`.
+- [x] Step 2: Add the directory/subproject register and root directory cross-reference.
+- [x] Step 3: Add the planning-register cross-reference and local memory JSON.
+- [x] Step 4: Run docs/JSON verification and update `PLANS.md` with results.
+
+### Verification
+
+- Step 1: Inspect `PLANS.md` to confirm scope, facts, assumptions, and current step are recorded before registration edits.
+- Step 2: Inspect the new register and directory overview for canonical path, old path, process-lock caveat, and non-runtime boundary.
+- Step 3: Parse `memory/project_directory_memory.json` as JSON and confirm the planning register distinguishes local subproject registration from blueprint candidates.
+- Step 4: Run `git diff --check`, `git diff --stat`, and `git status --short --branch`; skip full Gradle because this slice is docs/local-memory only and touches no Kotlin/runtime/schema/CLI implementation.
+
+### Risks
+
+- Accidentally treating a local Node.js video tool as part of the Kotlin/JVM runtime.
+- Accidentally implying the old locked folder was removed or should be removed immediately.
+- Accidentally treating generated MP4 outputs as formal production assets or runtime evidence.
+- Accidentally mixing this local tool registration into the non-canon blueprint pool as if it were a world/system candidate.
+- Accidentally overwriting existing dirty work in `PLANS.md` or other in-progress files.
+
+### Drift Log
+
+- 2026-06-24: Started delegated `小說朗讀` registration from `01 主控窗口`. Scope is docs/local-memory only: no SQLite, setting-pack, Kotlin runtime, Node.js implementation, generated video edits, original-folder cleanup, or asset approval.
+- 2026-06-24: Completed delegated `小說朗讀` registration. Added `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md`, updated `docs/PROJECT_STRUCTURE_REPORT.md`, cross-referenced the local subproject from `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` and `docs/HANDOFF.md`, and added `memory/project_directory_memory.json`. Verification passed: JSON parsed, `rg` found canonical path and boundary references, new-file trailing-whitespace scan returned no matches, and `git diff --check` exited 0 with only Windows line-ending warnings. Full Gradle was intentionally skipped because this slice changed only docs/local-memory files and did not touch runtime/schema/CLI implementation.
+
+## Active Implementation Plan
+
+### Goal
+
+Replace the active creative world baseline with a local memory capsule aligned to the visible QuarterFull draft for `塵行 · 第 1 章 · 塵`. The local memory must contain only the QuarterFull-aligned world direction and must not carry legacy old-world exclusion lists into prompts. This milestone stores the aligned world facts in local repo memory files only; it does not modify SQLite, setting packs, runtime state, or QuarterFull content.
+
+### Strategy
+
+- Treat the QuarterFull visible draft as the current authoring source of truth for world direction.
+- Extract only worldbuilding facts, constraints, character memory, and continuity anchors, not a full prose copy.
+- Remove legacy old-world references from the active local memory capsule and QuarterFull support prompt.
+- Store the result in a local memory capsule that can be pasted into QuarterFull or used by future repo tooling.
+- Add a short alignment note documenting that the active local memory has been replaced by the QuarterFull-aligned baseline.
+
+### Non-Goals
+
+- No direct deletion of historical docs, setting packs, databases, or generated evidence unless separately requested as a repo-cleanup milestone.
+- No SQLite writes, setting-pack apply, schema migration, Validator, StateReducer, `resolve-turn`, `stateVersion`, or `contextHash` changes.
+- No QuarterFull edits, saves, clears, submissions, or uploads.
+- No AI API, GPT automation, storyboard generation, image generation, Oiioii, Seedance, or animation pipeline work.
+- No treating the memory capsule as formal setting-pack canon until a later approved import / validation flow exists.
+
+### Scope
+
+Allowed tracked files for this alignment slice:
+
+- `PLANS.md`
+- `docs/QUARTERFULL_WORLD_ALIGNMENT.md`
+- `memory/quarterfull_world_memory_capsule.json`
+
+### Current Evidence
+
+- User explicitly asked to delete the old worldview and align our worldview with QuarterFull's current data content.
+- User then clarified not to keep a legacy prohibition list; related old-world content should be removed from the active local memory and prompt.
+- QuarterFull page is logged in and visibly shows `塵行 · 第 1 章 · 塵` with protagonist `陸知行`, companion `愛醬`, the fortress `灰關`, survival pressure, language barrier, soldiers, cultivators, ordinary workers, and repair-craft / relic clues.
+- Existing control docs already moved the prior world baseline out of the active new-opening path.
+- No existing repo `memory/` directory convention was found, so this milestone creates a simple local JSON memory capsule.
+
+### Implementation Steps
+
+- [x] Step A: Inspect current world-bible / foundation docs and QuarterFull visible draft evidence.
+- [x] Step B: Add QuarterFull-aligned local memory capsule JSON.
+- [x] Step C: Add alignment note that removes old world material from active generation use.
+- [x] Step D: Verify JSON parsing and diff hygiene.
+- [x] Step E: Remove legacy old-world exclusion content from the local memory capsule and alignment note.
+- [x] Step F: Re-verify JSON parsing and diff hygiene after deletion.
+
+## Prior Implementation Plan
+
+### Goal
+
+Implement the first read-only prose-to-script packet implementation slice: a `validate-script-packet-draft` Kotlin/JVM CLI command that validates a draft script packet JSON for structure, visible causality, actor/knowledge boundaries, asset/storyboard readiness, and author-only leakage risk. This is a validation tool only, not an automatic prose converter and not a formal approval gate.
+
+### Strategy
+
+Mirror existing read-only audit commands:
+
+- define serializable draft packet and validation report models in the model layer;
+- add a pure service that validates packet drafts without opening SQLite or mutating runtime state;
+- expose the service through `Cli().run(...)` with `--packet <path>` and optional `--out <path>`;
+- add one neutral sample draft under `samples/`;
+- add focused Kotlin tests for the service and CLI;
+- verify with `git diff --check` and full Gradle tests because this milestone touches source code.
+
+### Non-Goals
+
+- No automatic novel-to-script conversion.
+- No AI API, OpenAI API, GPT prompt execution, Seedance, Oiioii, animation, image generation, or storyboard image generation.
+- No web server, API server, UI, React, Next.js, Docker, Android UI, FastAPI, Express, Ktor server, Spring server, or Rust.
+- No SQLite writes, migrations, setting-pack apply, formal scene creation, `resolve-turn` changes, Validator bypass, `StateReducer` changes, `contextHash` changes, or `stateVersion` changes.
+- No treating draft script packets as canon, setting-pack data, runtime scene definitions, AI result JSON, approved storyboard frames, or user-approved output.
+- No hardcoding project-specific characters, Qingli content, copyrighted source material, or author-only secrets as engine rules.
+
+### Scope
+
+Allowed tracked files for this implementation slice:
+
+- `PLANS.md`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/model/Models.kt`
+- `app/src/main/kotlin/com/localnovel/engine/service/ScriptPacketDraftValidationService.kt`
+- `app/src/test/kotlin/com/localnovel/engine/ScriptPacketDraftValidationTest.kt`
+- `samples/script_packet_draft_sample.json`
+
+### Current Evidence
+
+- `Main.kt` already has read-only CLI commands such as `audit-context`, `audit-narrative-quality`, and `explain-context-budget`.
+- `audit-narrative-quality` reads JSON files, calls a pure service, optionally writes a report, prints a compact summary, and returns success without touching SQLite.
+- `Models.kt` already contains `@Serializable` report models for read-only audit output.
+- `Mvp7NarrativeQualityAuditTest.kt` shows the project test pattern for service-level assertions and `Cli().run(...)` output-file checks.
+- `JsonSupport.json` uses kotlinx serialization with `ignoreUnknownKeys=true`, so draft packets can evolve while old validators remain tolerant.
+
+### Implementation Steps
+
+- [x] Step A: Inspect current CLI, model, service, sample, and test patterns.
+- [x] Step B: Update `PLANS.md` with the implementation slice, scope, and non-goals.
+- [x] Step C: Add script packet draft and validation report models.
+- [x] Step D: Add pure read-only validation service.
+- [x] Step E: Add `validate-script-packet-draft` CLI wiring and help text.
+- [x] Step F: Add neutral sample draft JSON.
+- [x] Step G: Add focused service and CLI tests.
+- [x] Step H: Run `git diff --check`, full Gradle tests, and one manual CLI smoke test.
+
+## Prior Docs Milestone Goal
+
+Create a docs-only novel-to-script packet blueprint that defines how prose, novel chapters, or turn narratives can be transformed into a script-ready scene packet and later storyboard frames without implementing runtime code, CLI commands, schema, queryers, asset registry, image generation, or animation tooling.
 
 ## Global Strategy
 
-Treat 04 playtest learning and user product-direction discussion as authoring evidence, not runtime approval. Keep focused docs that can guide future engine prompts, review checklists, scene packet preparation, storyboard planning, camera guidance, production asset locking, demand-driven world / asset / situation retrieval, blueprint planning, and setting-pack authoring without hardcoding Qingli content, Ai-chan details, or copyrighted external styles into engine core. For the current milestone, register the non-canon blueprint planning pool as docs-only planning data, while clearly marking it as not canon, not setting-pack content, not runtime, and not approved assets.
+Use current repo evidence to bridge the existing authoring/runtime side and the future storyboard production side:
+
+- input is prose or existing narrative output, not raw DB dumps;
+- output is a script-ready scene packet compatible with `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`;
+- later storyboard frames follow `docs/STORYBOARD_AND_CAMERA_PLANNING.md`;
+- the transformation must preserve simulation-first causality, actor knowledge boundaries, scene locks, and author-only boundaries;
+- the document should be concrete enough to guide a future template or CLI milestone, but must not approve implementation.
+
+The intended product pattern is low-friction author intake with high-discipline output: accept messy prose, extract scene beats, separate user-facing material from review-only and production-only notes, then prepare storyboard-safe structure. This is how the project can eventually offer QuarterFull-like ease while staying local, auditable, and storyboard-first.
 
 ## Non-Goals
 
@@ -28,30 +3477,18 @@ Treat 04 playtest learning and user product-direction discussion as authoring ev
 - No inserting candidate world content such as future Earth, great transformation, qi, or ley-line material into project docs.
 - No treating blueprint pool entries as canon, setting-pack content, runtime data, approved assets, or permission to start 09/04/05/06/07/08.
 - No archiving, waking, scheduling, or assigning external windows from this repo milestone; only document the window archive and handoff rules supplied by 01.
+- No bulk converting the blueprint pool into setting packs or runtime data.
+- No restoring mojibake / corrupted source names by guessing.
+- No changing `ROADMAP.md` or `docs/HANDOFF.md` unless the decision brief exposes a current control-doc contradiction.
+- No automatic prose rewriting, final script generation, storyboard image generation, GPT prompt execution, Seedance / Oiioii work, or AI API calls.
+- No treating a conversion template as canon, approved scene packet, approved storyboard frame, or user-approved output.
 
 ## Scope
 
 Tracked files allowed:
 
 - `PLANS.md`
-- `docs/AUTHORING_QUALITY_GUIDELINES.md`
-- `docs/SCENE_LOCK_AND_ANIMATION_ASSET_BOUNDARY.md`
-- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`
-- `ROADMAP.md`
-- `VERIFY.md`
-- `DONE_CRITERIA.md`
-- `docs/HANDOFF.md`
-- `docs/QINGLI_SCENE_REGISTRY_SEED_BRIEF.md`
-- `docs/QINGLI_SCRIPT_PACKET_DRY_RUN_REVIEW.md`
-- `docs/STORYBOARD_AND_CAMERA_PLANNING.md`
-- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`
-- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`
-- `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`
-- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
-- `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`
-- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`
-- `ROADMAP.md`
-- `docs/HANDOFF.md`
+- `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md`
 
 Docs to inspect:
 
@@ -60,10 +3497,41 @@ Docs to inspect:
 - `ROADMAP.md`
 - `VERIFY.md`
 - `DONE_CRITERIA.md`
-- relevant existing narrative-quality docs found by search, especially `docs/MVP7_NARRATIVE_QUALITY_SPEC.md` and Pilot-2 scenario/turn docs.
+- `docs/HANDOFF.md`
+- `docs/PROJECT_COMPLETION_AUDIT.md`
+- `docs/BLUEPRINT_ALIGNMENT.md`
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
+- `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`
+- `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md`
+- `docs/PRODUCTION_ASSET_REGISTRY_PLANNING.md`
+- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`
+- `docs/ARCHITECTURE.md`
+- `docs/DATA_MODEL.md`
+- `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md`
 
 ## Confirmed Facts
 
+- User approved proceeding with a docs-only `NOVEL_TO_SCRIPT_PACKET_BLUEPRINT` after the assistant proposed the `小說內容 -> 劇本場景包` milestone.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` defines a script-ready scene packet as structured production data for 05 review, 06 display/intake, 07 asset planning, and 08 GPT storyboard pickup/review.
+- `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md` says a script-ready scene packet is not final novel prose, not a formal setting-pack patch, not a runtime scene definition, not AI result JSON, and not a direct player-facing transcript.
+- `docs/STORYBOARD_AND_CAMERA_PLANNING.md` says storyboard frames are a future child layer under an approved or candidate scene packet and should preserve scene lock, asset awareness, camera purpose, blocking, and do-not-show boundaries.
+- `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md` defines the product spine as low-friction author input -> new-world foundation brief -> candidate triage -> 09 cards -> query templates -> script-ready scene packet -> reviewable storyboard packet -> optional future implementation only after approval.
+- Current working tree already contains prior docs-only changes to `PLANS.md` and untracked `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md`; this milestone must work with those changes and not revert them.
+- Current branch is `codex/mvp6-checkpoint-branching-spec` and is synchronized with `origin/codex/mvp6-checkpoint-branching-spec` at `68d6be9`.
+- The latest commit is `68d6be9 docs: register blueprint planning data layer`.
+- `docs/BLUEPRINT_ALIGNMENT.md` says the external blueprint is `KEEP_AS_DESIGN_INTENT_NOT_CURRENT_STATE`; stale operational notes must not drive current work.
+- `ROADMAP.md` states the current final deliverable target is reviewable storyboard images / storyboard packets, not high-quality animation.
+- `ROADMAP.md` states 04 / 05 / 06 / 07 / 08 are paused and may resume only through manual handoff.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` registers the current blueprint pool as `BLUEPRINT_PLANNING_REGISTERED` and marks all entries as non-canon candidates.
+- `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` says no blueprint pool entry is canon, setting-pack content, runtime data, approved asset data, SQLite data, or permission to start 09 / 04 / 05 / 06 / 07 / 08.
+- Several human-readable Chinese names in `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` appear mojibake/corrupted in the current file; ids, source windows, source versions, systems, and verdicts are still readable enough for planning, but names must not be restored by guessing.
+- `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md` is the current user / 00 input surface before a new-world foundation brief.
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines future product-layer queryers only; it does not implement runtime, schema, CLI, SQLite, external API, GPT automation, Seedance, or Oiioii work.
+- `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md` says bottom-layer truth is world causality, not a plot objective or reveal schedule.
+- `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md` says the formal SQLite asset registry is a future phase only and requires a separate validation / preview / apply flow.
+- `docs/ARCHITECTURE.md` confirms AI/Codex may produce result JSON only, and formal SQLite writes remain behind `resolve-turn`, validator checks, `stateVersion`, `contextHash`, and transaction boundaries.
 - Current branch is `codex/mvp6-checkpoint-branching-spec`.
 - Working tree was clean at milestone start.
 - `ROADMAP.md` records MVP-7 narrative-quality work as completed read-only audit/spec work and does not approve Candidate B.
@@ -126,11 +3594,24 @@ Docs to inspect:
 
 ## Assumptions
 
+- A dedicated `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md` is the right artifact because the existing scene packet spec defines the target packet but not the prose-to-packet conversion method.
+- The first version should be a transformation blueprint and template, not a sample converter or implementation plan.
+- A conservative example may be useful only if it is clearly marked as illustrative and not canon.
+- `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md` is the right artifact for this request because the user asked for blueprint planning and review, not implementation.
+- This milestone can stay docs-only because the requested work is strategic triage of existing blueprints.
+- The useful near-term product comparison to QuarterFull is funnel shape and blueprint ergonomics, not its web/mobile/cloud stack.
 - `docs/AUTHORING_QUALITY_GUIDELINES.md` is the right location because the requested content is cross-cutting authoring guidance, not a Pilot-only report.
 - Full Gradle test is not necessary for this docs-only milestone if `git diff --check` passes and no code/runtime files are touched.
 
 ## Open Questions
 
+- Whether the future converter should begin from novel chapters, runtime narrative outputs, author notes, or all three remains a later product decision.
+- Whether a future CLI should validate prose-to-packet drafts requires a later implementation decision.
+- Whether sample transformation should use invented neutral prose or project-specific material requires later user / 01 approval; this milestone should avoid creating canon story output.
+- Which user / 00 answers should fill the new-world foundation questionnaire remains open.
+- Whether 01 wants a later `NEW_WORLD_FOUNDATION_BRIEF`, 09 card organization brief, query template brief, or first-batch blueprint conversion brief remains open.
+- Whether mojibake/corrupted blueprint names can be restored from source windows 15 / 16 / 17 / 18 / 19 / 21 / 24 / 25 / 27 / 45 / 46 / 47 requires later source-window evidence; this milestone must not guess.
+- Whether any non-canon blueprint candidate should be cut permanently rather than deferred requires later 01/user review; this milestone can recommend cut/defer/redesign buckets.
 - Whether future milestones should turn parts of the guideline into prompt templates, setting-pack schema fields, or read-only audit checks. This milestone does not decide that.
 - Whether future milestones should turn the packet contract into runtime schema, Validator rules, UI forms, or Oiioii integration. This milestone does not decide that.
 - Whether 04/05/06 should resume after these contracts is a 01/user decision. This milestone does not resume them.
@@ -240,6 +3721,14 @@ Docs to inspect:
 - [x] Step 86: Add `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md` with schema, non-canon candidate pool, retained character candidate intake, derived alias rule, setting-pack conversion rule, archive rules, and manual handoff rules.
 - [x] Step 87: Add narrow `ROADMAP.md`, `docs/HANDOFF.md`, and relevant cross-references without implying canon, setting-pack, runtime, approved asset, or window activation.
 - [x] Step 88: Run `git diff --check`, inspect diff/stat/status/staged files, commit, push, and directly notify 03 for read-only verification.
+- [x] Step 89: Read current blueprint, roadmap, handoff, foundation, query, simulation, storyboard, asset, architecture, and data-model evidence for the blueprint redesign request.
+- [x] Step 90: Update `PLANS.md` for the docs-only blueprint redesign decision brief milestone.
+- [x] Step 91: Add `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md` with preserve / cut / redesign / postpone decisions.
+- [x] Step 92: Run `git diff --check`, inspect diff/stat/status, and report docs-only verification.
+- [x] Step 93: Read current scene packet, storyboard, and blueprint redesign evidence for the novel-to-script packet request.
+- [x] Step 94: Update `PLANS.md` for the docs-only novel-to-script packet blueprint milestone.
+- [x] Step 95: Add `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md` defining prose/chapter/turn narrative to script-ready scene packet transformation.
+- [x] Step 96: Run docs-only verification: `git diff --check`, status/stat inspection, and manual whitespace checks for new untracked docs.
 
 ## Verification
 
@@ -271,6 +3760,8 @@ Safety checks:
 - For demand-driven query layer blueprint, allow `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/ASSET_REGISTRY_IMPLEMENTATION_BLUEPRINT.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - For simulation-first knowledge / truth rules, allow `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SCRIPT_READY_SCENE_PACKET_SPEC.md`, `docs/STORYBOARD_AND_CAMERA_PLANNING.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `docs/WORLD_BIBLE_REBUILD_DECISION_BRIEF.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
 - For blueprint data layer and planning register, allow `docs/BLUEPRINT_DATA_LAYER_AND_PLANNING_REGISTER.md`, `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`, `docs/SIMULATION_FIRST_KNOWLEDGE_TRUTH_RULES.md`, `docs/NEW_WORLD_FOUNDATION_QUESTIONNAIRE.md`, `ROADMAP.md`, `docs/HANDOFF.md`, and `PLANS.md`.
+- For blueprint redesign decision brief, allow only `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md` and `PLANS.md` unless a control-doc contradiction is found.
+- For novel-to-script packet blueprint, allow only `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md` and `PLANS.md` unless a narrow cross-reference is explicitly needed.
 - Confirm no ignored `data/` or `out/` artifacts are staged.
 - Confirm `mvp-6` remains unchanged.
 
@@ -310,6 +3801,10 @@ Safety checks:
 
 ## Drift Log
 
+- 2026-06-24: Started docs-only blueprint redesign decision brief after the user requested blueprint planning and review of what to cut or redesign. Scope is strategic triage only: no code, schema, runtime, queryer, setting-pack conversion, asset registry implementation, 04/05/06/07/08 activation, Candidate B, MVP-8, or external platform work.
+- 2026-06-24: Added `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md` with preserve / cut / redesign / postpone decisions. `git diff --check` passed for tracked changes, and manual trailing-whitespace checks passed for both changed docs. Full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
+- 2026-06-24: Started docs-only novel-to-script packet blueprint after the user approved proceeding. Scope is transformation planning only: no converter, CLI, schema, runtime, setting pack, queryer implementation, image generation, animation tooling, or 04/05/06/07/08 activation.
+- 2026-06-24: Added `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md` defining prose/chapter/turn narrative -> script-ready scene packet transformation stages, field mapping, review checklist, draft template, and future CLI boundaries. `git diff --check` passed for tracked changes, and manual trailing-whitespace checks passed for `PLANS.md`, `docs/BLUEPRINT_REDESIGN_DECISION_BRIEF.md`, and `docs/NOVEL_TO_SCRIPT_PACKET_BLUEPRINT.md`. Full Gradle is intentionally skipped because this milestone changes only docs and `PLANS.md`.
 - 2026-06-21: Started docs-only authoring quality / style guide / review workflow milestone after 01 classified 04 playtest learning as docs-first evidence, not runtime approval.
 - 2026-06-21: Added `docs/AUTHORING_QUALITY_GUIDELINES.md` with engine/content layer separation, anti-AI-writing guidance, NPC consistency checks, review loop, and copyright/style safety. No runtime or schema files touched.
 - 2026-06-21: `git diff --check` passed with only Windows line-ending warnings. Full Gradle was intentionally skipped because this milestone changed only docs and `PLANS.md`.
