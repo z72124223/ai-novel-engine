@@ -45,37 +45,39 @@ Codex 終端版跑引擎、世界資料與劇本流程
 ## Current Work Package
 
 - ID: `WP-003 Chenxing Visual Bible Inventory`
-- Status: `READY_FOR_CODEX`
+- Status: `WP-003_REVALIDATION_IN_PROGRESS`
 - Work Package: `docs/work-packages/WP-003_CHENXING_VISUAL_BIBLE_INVENTORY.md`
 - Accepted foundation: `e02700ecf370e53f289f5a77364119639ac4bb5f`
 - Recommended Codex: strongest available Codex coding model, reasoning `HIGH`
-- Current action: Codex terminal starts a clean branch from the latest remote default branch and completes WP-003.
-
-WP-003 must inventory, not generate:
-
-- Lu Chenxing locked likeness/body/face references;
-- opening costume;
-- Aijiang authoritative and superseded references;
-- style references by story phase;
-- Daping Coast and ruin Location Bible readiness;
-- Shot 01–03 required references, props, continuity, and future ChatGPT upload list;
-- whether the WP-002A schemas can represent the real Pilot.
-
-Codex must stop after Push and controller report. It must not start WP-004 automatically.
+- Base SHA: `02c32925ed5c2dc5101f429fda2e6fa9184d732a`
+- Working branch: `feature/wp003-chenxing-visual-bible-inventory`
+- Existing remote result: `WP003_SCHEMA_GAP_FOUND` at `eef2e05be88155da47b8b552cd82c68c1f5f145c`.
+- Current action: Codex revalidates the existing inventory against the latest route gate, Repository files, hashes, dimensions, authority evidence, and Shot 01–03 readiness before final Push.
 
 ## Active Work-Package Order
 
-1. `WP-002A` — **COMPLETED / ACCEPTED**: file protocol, Schemas, examples, pipeline inventory.
-2. `WP-003` — **ACTIVE**: Chenxing visual Bible and Shot 01–03 readiness inventory.
-3. `WP-004` — create the first real GPT image handoff, only after WP-003 review.
-4. `WP-005` — GPT reads the exact Commit/path, checks reference uploads, and generates image candidates.
-5. `WP-006` — Codex imports selected images and runs Hash/review/Candidate Reference validation.
-6. `WP-002B` — conditional compiler/validator only if the real Pilot proves manual assembly unsafe.
+1. `WP-002A` — **COMPLETED / ACCEPTED**: file protocol, JSON Schemas, examples, existing pipeline inventory.
+2. `WP-003` — **ACTIVE / REVALIDATING**: Chenxing visual Bible and Shot 01–03 readiness inventory.
+3. `WP-004` — **NOT STARTED / BLOCKED PENDING CONTROLLER DECISION**: create the first real GPT handoff only after the location-only preliminary handoff or bounded schema path is resolved and the required Location Bible exists.
+4. `WP-005` — GPT reads the specified Commit and generates image candidates.
+5. `WP-006` — Codex imports approved images and runs the existing hash/review/reference chain.
+6. `WP-002B` — conditional Kotlin compiler/validator only if the real Pilot proves it is necessary.
 7. `WP-007A` — future provider-neutral VideoShotHandoff contract.
 8. `WP-007B` — future one-shot manual Grok video Pilot after explicit user authorization.
 9. `WP-007C` — future video intake, Hash, review, and continuity evidence.
 
 Do not start WP-002B or WP-007 before the real image Pilot and user-approved reference chain.
+
+## WP-003 Existing Result Under Revalidation
+
+- Author-locked present files: Lu Chenxing production turnaround, opening modern costume turnaround, Aijiang production turnaround, face reference/photo set, and phase-scoped style references.
+- Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
+- Daping Coast and ruin geometry: textual authority only; no master panorama, top-down plan, directional views, spatial-anchor map, detail/scale views, or approved location images exist.
+- Shot 01–03 disposition: `SCHEMA_ADJUSTMENT_REQUIRED`; storyboard text alone is not enough.
+- Schema finding: `shot_queue_v1` requires at least one character per shot, so it cannot safely represent a pure `LOCATION_BIBLE_CANDIDATE` pre-shot task without a fake binding.
+- Future ChatGPT upload list: ten existing required files; every current conversation status remains `UPLOAD_REQUIRED`.
+- Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
+- No Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, approval, or Runtime change was made.
 
 ## Confirmed Repository Facts
 
@@ -188,15 +190,13 @@ If the computer sleeps, the terminal closes, authentication expires, or a true s
 
 ## Next User Action
 
-To start the current package, tell Codex CLI:
+Codex completes the current WP-003 revalidation, pushes the bounded inventory branch, reports to the controller, and stops:
 
 ```text
-先 git fetch --prune origin。
-讀取 PROJECT_STATE.md、.codex/project_controller.md、docs/CURRENT_ROUTE_GATE_V1.md
-與 PROJECT_STATE 指定的目前 Work Package。
-使用目前可用最強 Codex coding model，Reasoning HIGH。
-從最新遠端預設分支建立乾淨分支，完整執行、驗證、Commit、Push，完成後回報總控聊天窗口。
-不得自行開始下一個 Work Package。
+WP-003 validation
+→ Commit and Push
+→ GPT controller review
+→ stop; do not start WP-004
 ```
 
 ## Update Rule
