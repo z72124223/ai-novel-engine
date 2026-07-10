@@ -33,6 +33,8 @@ Codex 終端版跑引擎、世界資料與劇本流程
 
 ## Accepted Foundation
 
+### WP-002A
+
 `WP-002A Codex/GPT Image Handoff Foundation` 已由總控審查通過，並納入預設分支。
 
 - Accepted commit: `e02700ecf370e53f289f5a77364119639ac4bb5f`
@@ -42,32 +44,62 @@ Codex 終端版跑引擎、世界資料與劇本流程
 - Known limitation: no preinstalled JSON Schema meta-validator was available; no dependency was added.
 - Boundary preserved: no Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, or automated approval change.
 
+### WP-003
+
+`WP-003 Chenxing Visual Bible Inventory` 已由總控審查通過，並以 fast-forward 納入預設分支。
+
+- Accepted commit: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
+- Result: `WP003_SCHEMA_GAP_FOUND`
+- Verified: 30 unique image files, 31 asset bindings, hashes, byte sizes, dimensions, authority classifications, rejected drift, location gaps, and Shot 01–03 readiness.
+- Confirmed: required Lu Chenxing, opening costume, Aijiang, and opening style references exist.
+- Blocking gap: Daping Coast has no master panorama, top-down plan, directional views, spatial anchors, scale reference, or accepted location geometry.
+- Schema gap: strict story `shot_queue_v1` cannot honestly represent a pure Location Bible task without a fake character.
+
 ## Current Work Package
 
-- ID: `WP-003 Chenxing Visual Bible Inventory`
-- Status: `WP-003_COMPLETED_AWAITING_CONTROLLER_REVIEW`
-- Work Package: `docs/work-packages/WP-003_CHENXING_VISUAL_BIBLE_INVENTORY.md`
-- Accepted foundation: `e02700ecf370e53f289f5a77364119639ac4bb5f`
+- ID: `WP-003A Daping Coast Location Bible Foundation Handoff`
+- Status: `READY_FOR_CODEX`
+- Work Package: `docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md`
+- Accepted WP-003 evidence: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
 - Recommended Codex: strongest available Codex coding model, reasoning `HIGH`
-- Base SHA: `02c32925ed5c2dc5101f429fda2e6fa9184d732a`
-- Working branch: `feature/wp003-chenxing-visual-bible-inventory`
-- Preserved earlier result: `eef2e05be88155da47b8b552cd82c68c1f5f145c`.
-- Primary result after latest-base revalidation: `WP003_SCHEMA_GAP_FOUND`.
-- Current action: controller reviews the verified WP-003 inventory and decides how a pure Location Bible task is represented before WP-004.
+- Required branch: `feature/wp003a-daping-location-bible-handoff`
+- Current action: Codex creates a clean branch from the latest remote default branch, adds the bounded Location Bible protocol and the real Daping Coast preliminary handoff, validates, Commits, Pushes, reports, and stops.
+
+## Controller Architecture Decision
+
+The selected route is:
+
+```text
+separate preliminary Location Bible handoff
+```
+
+Do not weaken `shot_queue_v1` and do not insert a fake character.
+
+The Location Bible is an upstream foundation artifact, not a story Shot. It may correctly contain zero visible characters. A separate preliminary handoff breaks the circular dependency:
+
+```text
+story Shots require locked location geometry
+but location-foundation generation cannot require that same geometry as input
+```
+
+WP-003A therefore adds a bounded provider-neutral Location Bible handoff and return contract. WP-004 will continue to use the strict story-shot schemas after location references are approved.
 
 ## Active Work-Package Order
 
-1. `WP-002A` — **COMPLETED / ACCEPTED**: file protocol, JSON Schemas, examples, existing pipeline inventory.
-2. `WP-003` — **COMPLETED / AWAITING CONTROLLER REVIEW**: Chenxing visual Bible inventory found complete required character/costume/animal files, a blocking Daping Coast Location Bible gap, and a pure-location task schema gap.
-3. `WP-004` — **NOT STARTED / BLOCKED PENDING CONTROLLER DECISION**: create the first real GPT handoff only after the location-only preliminary handoff or bounded schema path is resolved and the required Location Bible exists.
-4. `WP-005` — GPT reads the specified Commit and generates image candidates.
-5. `WP-006` — Codex imports approved images and runs the existing hash/review/reference chain.
-6. `WP-002B` — conditional Kotlin compiler/validator only if the real Pilot proves it is necessary.
-7. `WP-007A` — future provider-neutral VideoShotHandoff contract.
-8. `WP-007B` — future one-shot manual Grok video Pilot after explicit user authorization.
-9. `WP-007C` — future video intake, Hash, review, and continuity evidence.
+1. `WP-002A` — **COMPLETED / ACCEPTED**: generic GPT image handoff foundation.
+2. `WP-003` — **COMPLETED / ACCEPTED**: Chenxing visual asset and location-gap inventory.
+3. `WP-003A` — **ACTIVE / READY_FOR_CODEX**: add a separate Location Bible handoff protocol and Commit the real Daping Coast preliminary handoff.
+4. `WP-003B` — **NOT STARTED**: GPT reads the exact Location Bible handoff and generates one task at a time, beginning with the Daping Coast master panorama candidate.
+5. `WP-003C` — **NOT STARTED**: Codex imports user-kept Location Bible candidates, computes Hashes, and runs the existing review/reference chain.
+6. `WP-004` — **BLOCKED**: create the real opening Shot 01–03 handoff only after required Daping Coast Location Bible components are accepted.
+7. `WP-005` — GPT generates Shot 01–03 image candidates.
+8. `WP-006` — Codex imports approved Shot images and runs the existing hash/review/reference chain.
+9. `WP-002B` — conditional Kotlin compiler/validator only if real manual Pilots prove it necessary.
+10. `WP-007A` — future provider-neutral VideoShotHandoff contract.
+11. `WP-007B` — future one-shot manual Grok video Pilot after explicit user authorization.
+12. `WP-007C` — future video intake, Hash, review, and continuity evidence.
 
-Do not start WP-002B or WP-007 before the real image Pilot and user-approved reference chain.
+Do not start WP-003B, WP-004, WP-002B, or WP-007 automatically. Each needs a new controller pointer after the preceding package is reviewed.
 
 ## WP-003 Verified Result
 
@@ -75,10 +107,29 @@ Do not start WP-002B or WP-007 before the real image Pilot and user-approved ref
 - Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
 - Daping Coast and ruin geometry: textual authority only; no master panorama, top-down plan, directional views, spatial-anchor map, detail/scale views, or approved location images exist.
 - Shot 01–03 disposition: `SCHEMA_ADJUSTMENT_REQUIRED`; storyboard text alone is not enough.
-- Schema finding: `shot_queue_v1` requires at least one character per shot, so it cannot safely represent a pure `LOCATION_BIBLE_CANDIDATE` pre-shot task without a fake binding.
-- Future ChatGPT upload list: ten existing required files; every current conversation status remains `UPLOAD_REQUIRED`.
+- Future ChatGPT Shot upload list: ten existing required files; every current conversation status remains `UPLOAD_REQUIRED`.
 - Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
 - No Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, approval, or Runtime change was made.
+
+## WP-003A Scope Summary
+
+WP-003A must:
+
+- keep existing story Shot schemas strict and unchanged;
+- add `location_bible_handoff_v1` and `location_bible_return_to_codex_v1` schemas;
+- create example-only instances;
+- create the first real Daping Coast Location Bible handoff;
+- make exactly one initial task `READY_FOR_GPT`: `daping-lb-01-master-panorama`;
+- keep later plan/detail/scale/directional tasks dependency-blocked;
+- require only task-relevant reference uploads;
+- generate no image and make no approval claim;
+- Commit and Push only to its feature branch, then stop.
+
+The exact contract is in:
+
+```text
+docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md
+```
 
 ## Confirmed Repository Facts
 
@@ -154,11 +205,10 @@ A GitHub image path does not mean the image-generation tool has that image attac
 When GPT begins image work:
 
 - read the exact Handoff Commit and path;
-- inspect `referenceUploadChecklist`;
-- missing required likeness, costume, animal, or location geometry produces `REFERENCE_UPLOAD_REQUIRED`;
-- do not replace missing locked references with text-only guesses for formal frames.
-
-WP-003 prepares the exact future upload list; it must not claim anything is already attached.
+- inspect the handoff reference-upload requirements;
+- missing required task references produce `REFERENCE_UPLOAD_REQUIRED`;
+- do not replace missing locked references with text-only guesses for formal character or Shot frames;
+- a Location Bible foundation candidate may be generated from formal textual authority under the explicit WP-003A foundation rule, but it remains candidate-only until user review and Codex intake.
 
 ## Automatic Execution Reality
 
@@ -191,15 +241,20 @@ If the computer sleeps, the terminal closes, authentication expires, or a true s
 
 ## Next User Action
 
-The controller reviews:
+Tell Codex CLI:
 
 ```text
-docs/production/WP003_CHENXING_VISUAL_BIBLE_INVENTORY_REPORT.md
-world/chenxing/production/visual_bible/chenxing_location_bible_gap_inventory_v1.json
-world/chenxing/production/visual_bible/opening_shots_01_03_readiness_v1.json
-```
+先 git fetch --prune origin。
+讀取 PROJECT_STATE.md、.codex/project_controller.md、docs/CURRENT_ROUTE_GATE_V1.md
+與目前 Work Package：
+docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md
 
-Controller decision required: use a bounded schema amendment or a separate preliminary Location Bible handoff. Do not start WP-004 until that decision and the blocking Daping Coast visual-reference gap are resolved.
+使用目前可用最強 Codex coding model，Reasoning HIGH。
+從最新遠端預設分支建立乾淨分支，完整執行 WP-003A，
+驗證、Commit、Push，完成後回報總控聊天窗口。
+
+不得開始圖片生成或 WP-004。
+```
 
 ## Update Rule
 
