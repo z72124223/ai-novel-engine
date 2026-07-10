@@ -2,7 +2,7 @@
   "schemaVersion": "chenxing-opening-shots-01-03-readiness-v1",
   "inventoryId": "wp003-opening-shots-01-03-readiness-v1",
   "status": "SCHEMA_ADJUSTMENT_REQUIRED_BEFORE_WP004",
-  "sourceCommitSha": "dfd3b0ec24c032ba67a75fdd5dd36127188d060d",
+  "sourceCommitSha": "02c32925ed5c2dc5101f429fda2e6fa9184d732a",
   "shots": [
     {
       "shotId": "shot-01-tide-check", "sourceArtifact": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json", "sceneId": "scene-daping-coast-opening", "locationId": "loc-daping-coast",

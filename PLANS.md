@@ -14,7 +14,7 @@
 
 標記：`WP003_CHENXING_VISUAL_BIBLE_INVENTORY`
 
-狀態：**WP-003 完成，等待總控審查**
+狀態：**WP-003 完成並重新驗證，等待總控審查**
 
 日期：2026-07-11
 
@@ -46,7 +46,7 @@
 ### Confirmed Facts
 
 - 已依指示執行 `git fetch --prune origin`；遠端預設分支為 `origin/codex/mvp6-checkpoint-branching-spec`。
-- 工作分支從乾淨基準 `dfd3b0ec24c032ba67a75fdd5dd36127188d060d` 建立，名稱為 `feature/wp003-chenxing-visual-bible-inventory`。
+- 工作分支從最新乾淨基準 `02c32925ed5c2dc5101f429fda2e6fa9184d732a` 建立，並以普通 merge（合併）保留遠端較早 WP-003 提交 `eef2e05be88155da47b8b552cd82c68c1f5f145c`；未使用 force push。
 - 陸塵行 production turnaround、開場服裝 turnaround 與愛醬 production turnaround 均存在，已可讀取尺寸、位元組數與 SHA-256。
 - `photo_set_123123` 六張照片均存在；其中 `lu_chenxing_face_reference_v1.jpg` 與一張照片內容 SHA-256 相同。
 - 正式文件引用的 `lu_chenxing_lean_base_turnaround_v1.png`、`lu_chenxing_opening_stocky_turnaround_v1.png`、`lu_chenxing_cinematic_turnaround_v2.png` 不存在於 assets 目錄。
@@ -68,7 +68,7 @@
 - [x] Step 1: 建立視覺資產盤點與人類可讀報告。
 - [x] Step 2: 建立場景缺口盤點與 Shot 01–03 readiness（就緒度）資料。
 - [x] Step 3: 驗證 JSON、路徑、雜湊、禁用聲明與 Git 修改範圍。
-- [ ] Step 4（current）: 更新 WP-003 狀態，檢查 staged diff（已暫存差異），Commit 並 Push 指定分支。
+- [x] Step 4: 更新 WP-003 狀態，檢查 staged diff（已暫存差異），Commit 並 Push 指定分支。
 
 ### Verification
 
@@ -90,6 +90,7 @@
 - 2026-07-11：完成三份 inventory JSON 與人類可讀報告；主要判定暫定 `WP003_SCHEMA_GAP_FOUND`，等待集中驗證。
 - 2026-07-11：三份 JSON 解析通過；十個未來必要上傳檔的路徑與 SHA-256 全數通過；新增檔與新增 plan 行無私人絕對路徑；修改範圍符合 WP-003；`git diff --check` 通過，僅有 Windows 換行提示。
 - 2026-07-11：主要判定定案為 `WP003_SCHEMA_GAP_FOUND`；WP-004 未啟動，需總控先決定純 Location Bible 任務的 bounded schema 或 preliminary handoff 路徑。
+- 2026-07-11：將既有遠端 WP-003 提交安全合併到最新 route-gate 基線後重新驗證。修正 `candidates_v2` 由十四張為十五張，補齊逐檔路徑、SHA-256、byte size 與尺寸；三份 inventory `sourceCommitSha` 已更新為最新基線。核心結論不變。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 

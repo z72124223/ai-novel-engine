@@ -2,7 +2,7 @@
   "schemaVersion": "chenxing-location-bible-gap-inventory-v1",
   "inventoryId": "wp003-chenxing-location-gaps-v1",
   "status": "SCHEMA_ADJUSTMENT_REQUIRED_BEFORE_WP004",
-  "sourceCommitSha": "dfd3b0ec24c032ba67a75fdd5dd36127188d060d",
+  "sourceCommitSha": "02c32925ed5c2dc5101f429fda2e6fa9184d732a",
   "locations": [
     {
       "locationId": "loc-daping-coast",

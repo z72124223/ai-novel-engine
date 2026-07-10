@@ -1,5 +1,9 @@
 # WP-003 Chenxing Visual Bible Inventory Report
 
+Evidence base（證據基線）：`02c32925ed5c2dc5101f429fda2e6fa9184d732a`
+
+The earlier remote inventory commit `eef2e05be88155da47b8b552cd82c68c1f5f145c` was revalidated after the current route-gate commits were merged. The formal, asset, preview, and WP-002A schema evidence paths were unchanged between the earlier and current bases.
+
 ## 結論
 
 Primary result（主要結果）：`WP003_SCHEMA_GAP_FOUND`
@@ -21,7 +25,7 @@ Shot 01–03 尚不能進入真正的 WP-004 handoff（交接包）。大坪海�
 - 三個必要 production turnaround／costume 檔、六張 `photo_set_123123`、臉部檔及三張正式 style reference 都存在，已記錄 SHA-256、byte size（位元組數）與尺寸。
 - `23_character_visual_appearance_v1.json` 引用的 lean、opening-stocky、cinematic 三張陸塵行 turnaround 不存在。
 - 兩張已被正式文件標為歷史稿的 2D turnaround 路徑也不存在；這不影響 Shot 01–03，因現行 production turnaround 已存在。
-- `candidates_v2/` 共有十四張圖片，但沒有正式來源選定，僅能列為 `CANDIDATE_ONLY`。
+- `candidates_v2/` 共有十五張圖片，但沒有正式來源選定，僅能列為 `CANDIDATE_ONLY`；每張均已記錄 Repository 相對路徑、SHA-256、byte size 與尺寸。
 
 ## Shot 01–03 props（道具）與 continuity（連續性）
 
@@ -59,3 +63,15 @@ Finding（發現）：`SCHEMA_ADJUSTMENT_REQUIRED_BEFORE_WP004`。總控需決�
 ## 下一個控制決策
 
 在 WP-004 前，先決定並完成大坪海岸 Location Bible 的產出協議與 schema 承載方式。這份報告沒有啟動 WP-004，也沒有批准或生成任何圖片。
+
+## 驗證摘要
+
+- 三份 inventory JSON 均可解析，且 `sourceCommitSha` 已對齊最新證據基線。
+- 16 筆資產紀錄的必填欄位、權威狀態、完整性狀態與正式證據路徑均已核對。
+- 30 個不重複圖片檔、31 個紀錄綁定已重新驗證 SHA-256、byte size 與尺寸；重複綁定來自同一開場服裝檔同時服務 costume 與 continuity prop。
+- `candidates_v2` 的 15 張候選圖已逐檔列出並雜湊，但維持 `CANDIDATE_ONLY`，不列入正式 Pilot 上傳。
+- 十個未來必要 ChatGPT 上傳檔案皆存在且 Hash 相符，狀態全為 `UPLOAD_REQUIRED`。
+- 三個 Location Tier 與 Shot 01–03 均完成來源路徑及 disposition 交叉檢查。
+- 新增產物沒有私人絕對路徑、`UPLOADED_VERIFIED` 或未經證據的 final／Canon-image／production-lock 宣稱。
+
+Primary result（主要結果）：`WP003_SCHEMA_GAP_FOUND`。WP-004 維持未啟動。

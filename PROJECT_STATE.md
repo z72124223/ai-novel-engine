@@ -45,19 +45,20 @@ Codex 終端版跑引擎、世界資料與劇本流程
 ## Current Work Package
 
 - ID: `WP-003 Chenxing Visual Bible Inventory`
-- Status: `WP-003_REVALIDATION_IN_PROGRESS`
+- Status: `WP-003_COMPLETED_AWAITING_CONTROLLER_REVIEW`
 - Work Package: `docs/work-packages/WP-003_CHENXING_VISUAL_BIBLE_INVENTORY.md`
 - Accepted foundation: `e02700ecf370e53f289f5a77364119639ac4bb5f`
 - Recommended Codex: strongest available Codex coding model, reasoning `HIGH`
 - Base SHA: `02c32925ed5c2dc5101f429fda2e6fa9184d732a`
 - Working branch: `feature/wp003-chenxing-visual-bible-inventory`
-- Existing remote result: `WP003_SCHEMA_GAP_FOUND` at `eef2e05be88155da47b8b552cd82c68c1f5f145c`.
-- Current action: Codex revalidates the existing inventory against the latest route gate, Repository files, hashes, dimensions, authority evidence, and Shot 01–03 readiness before final Push.
+- Preserved earlier result: `eef2e05be88155da47b8b552cd82c68c1f5f145c`.
+- Primary result after latest-base revalidation: `WP003_SCHEMA_GAP_FOUND`.
+- Current action: controller reviews the verified WP-003 inventory and decides how a pure Location Bible task is represented before WP-004.
 
 ## Active Work-Package Order
 
 1. `WP-002A` — **COMPLETED / ACCEPTED**: file protocol, JSON Schemas, examples, existing pipeline inventory.
-2. `WP-003` — **ACTIVE / REVALIDATING**: Chenxing visual Bible and Shot 01–03 readiness inventory.
+2. `WP-003` — **COMPLETED / AWAITING CONTROLLER REVIEW**: Chenxing visual Bible inventory found complete required character/costume/animal files, a blocking Daping Coast Location Bible gap, and a pure-location task schema gap.
 3. `WP-004` — **NOT STARTED / BLOCKED PENDING CONTROLLER DECISION**: create the first real GPT handoff only after the location-only preliminary handoff or bounded schema path is resolved and the required Location Bible exists.
 4. `WP-005` — GPT reads the specified Commit and generates image candidates.
 5. `WP-006` — Codex imports approved images and runs the existing hash/review/reference chain.
@@ -68,7 +69,7 @@ Codex 終端版跑引擎、世界資料與劇本流程
 
 Do not start WP-002B or WP-007 before the real image Pilot and user-approved reference chain.
 
-## WP-003 Existing Result Under Revalidation
+## WP-003 Verified Result
 
 - Author-locked present files: Lu Chenxing production turnaround, opening modern costume turnaround, Aijiang production turnaround, face reference/photo set, and phase-scoped style references.
 - Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
@@ -190,14 +191,15 @@ If the computer sleeps, the terminal closes, authentication expires, or a true s
 
 ## Next User Action
 
-Codex completes the current WP-003 revalidation, pushes the bounded inventory branch, reports to the controller, and stops:
+The controller reviews:
 
 ```text
-WP-003 validation
-→ Commit and Push
-→ GPT controller review
-→ stop; do not start WP-004
+docs/production/WP003_CHENXING_VISUAL_BIBLE_INVENTORY_REPORT.md
+world/chenxing/production/visual_bible/chenxing_location_bible_gap_inventory_v1.json
+world/chenxing/production/visual_bible/opening_shots_01_03_readiness_v1.json
 ```
+
+Controller decision required: use a bounded schema amendment or a separate preliminary Location Bible handoff. Do not start WP-004 until that decision and the blocking Daping Coast visual-reference gap are resolved.
 
 ## Update Rule
 
