@@ -244,11 +244,45 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         result: AiTurnResult,
         options: ResolveTurnOptions = ResolveTurnOptions(),
     ): ApplyResult {
+        val startedAtNanos = System.nanoTime()
         val context = repository.getPendingContext(sessionId, result.contextId)
-            ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+        if (context == null) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = JsonSupport.json.encodeToString(result),
+                parsedResult = result,
+                options = options,
+                code = "pending_context_not_found",
+                message = "Pending context not found for session '$sessionId' and context '${result.contextId}'.",
+                startedAtNanos = startedAtNanos,
+            )
+            error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+        }
         val report = validate(context, result)
         if (!report.isValid) {
+            RebootRunEvidenceService(repository).persistAttempt(
+                context = context,
+                result = result,
+                options = options,
+                auditReport = null,
+                findings = RebootValidationClassifier.fromValidationErrors(report.errors),
+                status = "REJECTED",
+                startedAtNanos = startedAtNanos,
+            )
             error(report.errors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        val irreversibleFindings = IrreversibleChangeBoundaryValidator.validate(context, result, options)
+        if (irreversibleFindings.isNotEmpty()) {
+            RebootRunEvidenceService(repository).persistAttempt(
+                context = context,
+                result = result,
+                options = options,
+                auditReport = null,
+                findings = irreversibleFindings,
+                status = "REJECTED",
+                startedAtNanos = startedAtNanos,
+            )
+            error(irreversibleFindings.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
         }
         val auditRun = NarrativeQualityGateService().evaluateRun(
             context = context,
@@ -264,10 +298,17 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
                 println("learnedRulesStore=${promotion.storePath}")
             }
         }
-        val gateErrors = NarrativeQualityGateService().toValidationErrors(
-            gateResult = gateResult,
-            advisoryRequiresAcknowledge = options.requireNarrativeQualityAcknowledgement &&
-                !options.acknowledgeNarrativeQualityWarnings,
+        val gateErrors = NarrativeQualityGateService().toValidationErrors(gateResult)
+        val evidenceFindings = RebootValidationClassifier.fromNarrativeFindings(gateResult.auditReport.findings)
+        val evidenceService = RebootRunEvidenceService(repository)
+        val evidenceRunId = evidenceService.persistAttempt(
+            context = context,
+            result = result,
+            options = options,
+            auditReport = gateResult.auditReport,
+            findings = evidenceFindings,
+            status = if (gateErrors.isEmpty()) "EVALUATED" else "REJECTED",
+            startedAtNanos = startedAtNanos,
         )
         if (gateErrors.isNotEmpty()) {
             error(gateErrors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
@@ -286,7 +327,18 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.capabilityUseChecks.isNotEmpty() ||
             result.entityProposals.isNotEmpty() ||
             result.promotionRecommendations.isNotEmpty()
-        return repository.resolvePendingTurn(context, result, hasStateChange)
+        return try {
+            repository.resolvePendingTurn(
+                context = context,
+                result = result,
+                hasStateChange = hasStateChange,
+                rebootRunEvidenceId = evidenceRunId,
+                rebootRunElapsedTimeMs = evidenceService.elapsedMillis(startedAtNanos),
+            )
+        } catch (error: Throwable) {
+            evidenceService.markFailed(evidenceRunId, error, startedAtNanos)
+            throw error
+        }
     }
 
     fun validate(context: ContextPacket, result: AiTurnResult): ValidationReport {
@@ -294,6 +346,8 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         if (context.protocolVersion != SUPPORTED_PROTOCOL_VERSION || result.protocolVersion != SUPPORTED_PROTOCOL_VERSION) {
             errors += ValidationError("unsupported_protocol", "Only protocolVersion $SUPPORTED_PROTOCOL_VERSION is supported for multi-turn runtime.")
         }
+        if (result.projectId != context.project.id) errors += ValidationError("project_mismatch", "projectId does not match context project.")
+        if (result.turnId != context.turnId) errors += ValidationError("turn_id_mismatch", "turnId does not match context turn.")
         if (result.sessionId != context.sessionId) errors += ValidationError("session_mismatch", "sessionId does not match context.")
         if (result.contextId != context.contextId) errors += ValidationError("context_mismatch", "contextId does not match context.")
         if (result.turnNumber != context.turnNumber) errors += ValidationError("turn_mismatch", "turnNumber does not match context.")

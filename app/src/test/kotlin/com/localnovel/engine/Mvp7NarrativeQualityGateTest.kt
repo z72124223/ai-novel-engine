@@ -9,7 +9,6 @@ import com.localnovel.engine.model.StateDelta
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.NarrativeQualityGateService
-import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.JsonObject
@@ -23,7 +22,7 @@ import kotlin.test.assertTrue
 
 class Mvp7NarrativeQualityGateTest {
     @Test
-    fun gateTreatsContextQualityAsBlocking() {
+    fun gateTreatsContextQualityAsAdvisoryByDefault() {
         val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
         val result = readJson<AiTurnResult>(samplePath("sample_ai_turn_result.json"))
         val gateResult = NarrativeQualityGateService().evaluate(
@@ -34,7 +33,7 @@ class Mvp7NarrativeQualityGateTest {
         val contextFindings = gateResult.auditReport.findings.filter { it.ruleId == "CONTEXT_SETTING_TOO_THIN" }
 
         if (contextFindings.isNotEmpty()) {
-            assertTrue(gateResult.blockingFindings.any { it.ruleId == "CONTEXT_SETTING_TOO_THIN" })
+            assertTrue(gateResult.advisoryFindings.any { it.ruleId == "CONTEXT_SETTING_TOO_THIN" })
         }
     }
 
@@ -67,10 +66,7 @@ class Mvp7NarrativeQualityGateTest {
         val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
         val result = readJson<AiTurnResult>(samplePath("sample_ai_turn_result.json"))
         val gateResult = NarrativeQualityGateService().evaluate(context, result)
-        val errors = NarrativeQualityGateService().toValidationErrors(
-            gateResult = gateResult,
-            advisoryRequiresAcknowledge = false,
-        )
+        val errors = NarrativeQualityGateService().toValidationErrors(gateResult)
 
         assertTrue(errors.isEmpty() || gateResult.blockingFindings.isNotEmpty())
         if (gateResult.blockingFindings.isEmpty()) {
@@ -96,7 +92,7 @@ class Mvp7NarrativeQualityGateTest {
     }
 
     @Test
-    fun resolveTurnBlocksNotButReframePattern() {
+    fun resolveTurnAllowsNotButReframeAsQualityWarning() {
         val repository = seededRepository()
         val runtime = MultiTurnRuntime(repository)
         val session = runtime.startSession("demo", "scene-shrine-questioning")
@@ -105,14 +101,12 @@ class Mvp7NarrativeQualityGateTest {
             narrative = "這不是猶豫，而是警戒。沈霜仍擋在門前，沒有讓出半步。",
         )
 
-        assertFailsWith<IllegalStateException> {
-            runtime.resolveTurn(session.id, result)
-        }
-        assertEquals(0, repository.appliedTurnCount(session.id))
+        runtime.resolveTurn(session.id, result)
+        assertEquals(1, repository.appliedTurnCount(session.id))
     }
 
     @Test
-    fun resolveTurnBlocksAiFeelingEvenWithAcknowledgeFlag() {
+    fun resolveTurnAllowsAiFeelingAsQualityWarningByDefault() {
         val repository = seededRepository()
         val runtime = MultiTurnRuntime(repository)
         val session = runtime.startSession("demo", "scene-shrine-questioning")
@@ -131,17 +125,8 @@ class Mvp7NarrativeQualityGateTest {
             ),
         )
 
-        assertFailsWith<IllegalStateException> {
-            runtime.resolveTurn(session.id, result)
-        }
-        assertFailsWith<IllegalStateException> {
-            runtime.resolveTurn(
-                session.id,
-                result.copy(resultId = "result-gate-ai-feeling-ack"),
-                ResolveTurnOptions(acknowledgeNarrativeQualityWarnings = true),
-            )
-        }
-        assertEquals(0, repository.appliedTurnCount(session.id))
+        runtime.resolveTurn(session.id, result)
+        assertEquals(1, repository.appliedTurnCount(session.id))
     }
 
     private fun seededRepository(): SqliteStoryRepository {

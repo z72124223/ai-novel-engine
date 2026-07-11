@@ -77,6 +77,7 @@ REBOOT-01 執行期間，每個 Stage 都必須新增或更新實際運行日誌
 Current REBOOT-01 entries:
 
 - `reboot01/STAGE_0_EXECUTABLE_BASELINE.md` — executable Kotlin/CLI/SQLite baseline, real Chenxing turn, World Source integrity classification, and world/character reality audit.
+- `reboot01/STAGE_1_VALIDATION_AND_RUN_EVIDENCE.md` — explicit safety/quality classes, additive SQL run evidence, irreversible human approval boundary, transaction tests, and final high-reasoning review.
 
 ## Future Append Rule
 

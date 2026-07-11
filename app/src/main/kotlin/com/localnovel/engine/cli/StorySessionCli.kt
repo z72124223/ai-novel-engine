@@ -18,6 +18,7 @@ import com.localnovel.engine.service.NarrativeQualityAuditService
 import com.localnovel.engine.service.NarrativeQualityGateOptions
 import com.localnovel.engine.service.NarrativeQualityGateService
 import com.localnovel.engine.service.ResolveTurnOptions
+import com.localnovel.engine.service.RebootRunEvidenceService
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
 import com.localnovel.engine.service.AudioNovelEpisodeExporter
@@ -108,10 +109,7 @@ internal object StorySessionCli {
                 println("learnedRulesStore=${promotion.storePath}")
             }
         }
-        val gateErrors = NarrativeQualityGateService().toValidationErrors(
-            gateResult = gateResult,
-            advisoryRequiresAcknowledge = false,
-        )
+        val gateErrors = NarrativeQualityGateService().toValidationErrors(gateResult)
         if (gateErrors.isNotEmpty()) {
             gateErrors.forEach { System.err.println("${it.code}: ${it.message}") }
             return 1
@@ -237,25 +235,89 @@ internal object StorySessionCli {
     }
 
     fun resolveTurn(options: Map<String, String>): Int {
+        val startedAtNanos = System.nanoTime()
         val repository = cliRepository(options)
+        repository.initialize()
         val sessionId = options.requiredCliOption("session")
         val resultPath = Path.of(options.requiredCliOption("result"))
-        val result = readCliJson<AiTurnResult>(resultPath)
+        val rawResultText = Files.readString(resultPath).removePrefix("\uFEFF")
         val evidencePath = options["evidence"]?.let { Path.of(it) }
         val evidenceText = evidencePath?.let { Files.readString(it).removePrefix("\uFEFF") }.orEmpty()
-        val resolveOptions = ResolveTurnOptions(
-            acknowledgeNarrativeQualityWarnings = options.containsKey("acknowledge-narrative-quality-warnings"),
-            requireNarrativeQualityAcknowledgement = options.containsKey("require-narrative-quality-acknowledgement"),
+        val baseResolveOptions = ResolveTurnOptions(
             strictNarrativeQuality = options.containsKey("strict-narrative-quality"),
             narrativeQualityEvidenceText = evidenceText,
             narrativeQualitySampleLabel = options["sample-label"].orEmpty(),
             autoPromoteLearnedRules = cliAutoPromoteLearnedRules(options),
             logicAuditFile = options["logic-audit"].orEmpty(),
             dbPath = repository.databasePath().toString(),
+            scenarioSeed = options["scenario-seed"].orEmpty(),
+            revisionSuggestion = options["revision-suggestion"].orEmpty(),
+            revisedDraft = options["revised-draft-file"]
+                ?.let { Files.readString(Path.of(it)).removePrefix("\uFEFF") }
+                .orEmpty(),
+        )
+        val result = try {
+            JsonSupport.json.decodeFromString<AiTurnResult>(rawResultText)
+        } catch (error: Throwable) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = rawResultText,
+                parsedResult = null,
+                options = baseResolveOptions,
+                code = "malformed_result_json",
+                message = error.message.orEmpty(),
+                startedAtNanos = startedAtNanos,
+            )
+            throw error
+        }
+        val irreversibleContract = try {
+            options["irreversible-contract"]
+                ?.let { readCliJson<com.localnovel.engine.model.IrreversibleChangeContract>(Path.of(it)) }
+        } catch (error: Throwable) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = rawResultText,
+                parsedResult = result,
+                options = baseResolveOptions,
+                code = "malformed_irreversible_contract",
+                message = error.message.orEmpty(),
+                startedAtNanos = startedAtNanos,
+            )
+            throw error
+        }
+        val irreversibleApproval = try {
+            options["irreversible-approval"]
+                ?.let { readCliJson<com.localnovel.engine.model.IrreversibleApprovalArtifact>(Path.of(it)) }
+        } catch (error: Throwable) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = rawResultText,
+                parsedResult = result,
+                options = baseResolveOptions.copy(irreversibleChangeContract = irreversibleContract),
+                code = "malformed_irreversible_approval",
+                message = error.message.orEmpty(),
+                startedAtNanos = startedAtNanos,
+            )
+            throw error
+        }
+        val resolveOptions = baseResolveOptions.copy(
+            irreversibleChangeContract = irreversibleContract,
+            irreversibleApprovalArtifact = irreversibleApproval,
         )
         options["narrative-quality-out"]?.let { outPath ->
             val context = repository.getPendingContext(sessionId, result.contextId)
-                ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+            if (context == null) {
+                RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                    cliSessionId = sessionId,
+                    rawResultText = rawResultText,
+                    parsedResult = result,
+                    options = resolveOptions,
+                    code = "pending_context_not_found",
+                    message = "Pending context not found for session '$sessionId' and context '${result.contextId}'.",
+                    startedAtNanos = startedAtNanos,
+                )
+                error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+            }
             val auditRun = NarrativeQualityGateService().evaluateRun(
                 context = context,
                 result = result,

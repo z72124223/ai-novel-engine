@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 自主執行中；Stage 0 已通過，現在只執行 Stage 1 驗證分類與 Run Evidence**
+狀態：**REBOOT-01 自主執行中；Stage 0–1 已通過，現在只執行 Stage 2 NPC 自主閉環**
 
 日期：2026-07-11
 
@@ -71,8 +71,8 @@
 
 - [x] Step 0A：更新遠端、建立乾淨 worktree／分支、讀取完整控制文件與修正 Current Plan Window。
 - [x] Step 0B：建立可執行引擎基線、真實 CLI 回合、SQLite 證據、世界／角色現實稽核、Stage 0 報告與日誌；驗證後獨立 Commit。
-- [ ] Step 1（目前唯一進行中）：區分 protocol hard fail、world legality hard fail、irreversible approval 與 quality warning；必要時以 additive migration 保存 run evidence；驗證後獨立 Commit。
-- [ ] Step 2：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
+- [x] Step 1：區分 protocol hard fail、world legality hard fail、irreversible approval 與 quality warning；以 additive migration 保存 run evidence；驗證後獨立 Commit。
+- [ ] Step 2（目前唯一進行中）：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
 - [ ] Step 3：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
 - [ ] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
 - [ ] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
@@ -105,6 +105,10 @@
 - 2026-07-11：正式 World Source import 正確阻塞且零寫入；audit-local observed manifest 僅用於臨時 DB，成功匯入 1 archive／9 documents／255 chunks 並完成真實 `query-world-source`，未改 formal manifest 或 raw source。
 - 2026-07-11：Chenxing 真實 start／prepare／resolve／show 回合通過，State Version 0→1、Next Turn 1→2、世界時間 +3 分鐘、1 delta 與 1 event 交易寫入；第一次 resolve 也證明品質關鍵字目前可能誤成 hard blocker，交由 Stage 1 分類修正。
 - 2026-07-11：Stage 0 兩份報告、machine-readable reality inventory 與開發日誌完成；Runtime、Canon、圖片線與原 123 項髒工作樹未修改。
+- 2026-07-12：Stage 1 新增 additive migration `010_reboot_run_evidence.sql`，保存 context、raw/revised draft、quality、validation、delta、apply、model metadata 與不可逆批准證據；APPLIED outcome 與故事 state 同一 transaction 提交。
+- 2026-07-12：品質問題預設為 `QUALITY_WARNING`，只有 strict mode 才阻塞；protocol、world legality、hash/version/knowledge/transaction 邊界保持 hard fail。
+- 2026-07-12：不可逆變更由 engine-side detector 辨識受保護 health、inventory loss、relationship/faction/permanent flags 與 locked facts；獨立 contract/approval artifacts 必須完整綁定並由 human actor 明確批准。High safety review PASS。
+- 2026-07-12：Stage 1 targeted 101/101 PASS；full 826 tests 中 822 PASS，唯一 4 FAIL 仍是 Stage 0 已知 World Source #09 Hash／byte-size drift，無新增回歸。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 

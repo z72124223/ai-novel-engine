@@ -15,14 +15,18 @@ data class NarrativeQualityGateOptions(
 )
 
 data class ResolveTurnOptions(
-    val acknowledgeNarrativeQualityWarnings: Boolean = false,
-    val requireNarrativeQualityAcknowledgement: Boolean = false,
     val strictNarrativeQuality: Boolean = false,
     val narrativeQualityEvidenceText: String = "",
     val narrativeQualitySampleLabel: String = "",
     val autoPromoteLearnedRules: Boolean = true,
     val logicAuditFile: String = "",
     val dbPath: String = "",
+    val scenarioSeed: String = "",
+    val revisionSuggestion: String = "",
+    val revisedDraft: String = "",
+    val modelMetadata: kotlinx.serialization.json.JsonObject = defaultRebootModelMetadata(),
+    val irreversibleChangeContract: com.localnovel.engine.model.IrreversibleChangeContract? = null,
+    val irreversibleApprovalArtifact: com.localnovel.engine.model.IrreversibleApprovalArtifact? = null,
 )
 
 data class NarrativeQualityGateResult(
@@ -42,7 +46,7 @@ object NarrativeQualityGatePolicy {
         "KNOWLEDGE_MEMORY_NOT_RETRIEVED",
     )
 
-    val hardBlockCategories: Set<String> = setOf(
+    val strictOnlyCategories: Set<String> = setOf(
         "ai_feeling",
         "style",
     )
@@ -111,11 +115,11 @@ class NarrativeQualityGateService(
         )
     }
 
-    fun toValidationErrors(gateResult: NarrativeQualityGateResult, advisoryRequiresAcknowledge: Boolean): List<ValidationError> {
+    fun toValidationErrors(gateResult: NarrativeQualityGateResult): List<ValidationError> {
         val errors = mutableListOf<ValidationError>()
         gateResult.blockingFindings.forEach { finding ->
             val regenerateHint = if (
-                finding.category in NarrativeQualityGatePolicy.hardBlockCategories ||
+                finding.category in NarrativeQualityGatePolicy.strictOnlyCategories ||
                 finding.ruleId in NarrativeQualityGatePolicy.hardBlockContextQualityRuleIds ||
                 finding.ruleId in NarrativeQualityGatePolicy.hardBlockDeliveryRuleIds
             ) {
@@ -128,13 +132,6 @@ class NarrativeQualityGateService(
                 message = "${finding.ruleId} (${finding.severity}): ${finding.message}$regenerateHint",
             )
         }
-        if (advisoryRequiresAcknowledge && gateResult.hasAdvisoryFindings) {
-            val summary = gateResult.advisoryFindings.joinToString(separator = "; ") { it.ruleId }
-            errors += ValidationError(
-                code = "narrative_quality_gate",
-                message = "Advisory narrative quality findings require --acknowledge-narrative-quality-warnings before resolve: $summary",
-            )
-        }
         return errors
     }
 
@@ -143,9 +140,11 @@ class NarrativeQualityGateService(
         strictMode: Boolean,
         enforceSceneContextFloor: Boolean,
     ): Boolean {
-        if (finding.category in NarrativeQualityGatePolicy.hardBlockCategories) {
+        if (finding.ruleId in NarrativeQualityGatePolicy.blockingRuleIds) {
             return true
         }
+        if (!strictMode) return false
+        if (finding.category in NarrativeQualityGatePolicy.strictOnlyCategories) return true
         if (
             finding.ruleId in NarrativeQualityGatePolicy.hardBlockContextQualityRuleIds &&
             (finding.ruleId != "CONTEXT_SETTING_TOO_THIN" || enforceSceneContextFloor)
@@ -161,9 +160,6 @@ class NarrativeQualityGateService(
         if (finding.ruleId.startsWith("LEARNED-") && finding.severity in setOf("MAJOR", "CRITICAL")) {
             return true
         }
-        if (finding.ruleId in NarrativeQualityGatePolicy.blockingRuleIds || finding.severity == "CRITICAL") {
-            return true
-        }
-        return strictMode && finding.severity == "MAJOR"
+        return finding.severity in setOf("MAJOR", "CRITICAL")
     }
 }

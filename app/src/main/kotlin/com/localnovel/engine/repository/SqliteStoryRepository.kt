@@ -28,6 +28,7 @@ import com.localnovel.engine.model.SettingPackPreview
 import com.localnovel.engine.model.SettingPackRelation
 import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.RetrievedMemory
+import com.localnovel.engine.model.RebootRunEvidenceRecord
 import com.localnovel.engine.model.ScheduledWorldEventSeed
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
@@ -89,6 +90,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "007_world_source_archive.sql",
                     "008_ai_task_queue.sql",
                     "009_provisional_layer.sql",
+                    "010_reboot_run_evidence.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -1293,6 +1295,87 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    fun insertRebootRunEvidence(record: RebootRunEvidenceRecord) {
+        connect { connection ->
+            val timestamp = now()
+            connection.prepareStatement(
+                """
+                INSERT INTO reboot_run_evidence(
+                    run_id, project_id, session_id, turn_number, scenario_seed, context_id,
+                    context_hash, player_input, context_snapshot_json, result_id,
+                    raw_draft, raw_result_json, critic_scores_json, revision_suggestion, revised_draft,
+                    validation_findings_json, validation_classification, state_delta_json,
+                    irreversible_change_json, irreversible_approval_json,
+                    irreversible_approval_actor, irreversible_approval_granted,
+                    apply_result_json, model_metadata_json, elapsed_time_ms, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, record.runId)
+                statement.setString(2, record.projectId)
+                statement.setString(3, record.sessionId)
+                statement.setInt(4, record.turnNumber)
+                statement.setString(5, record.scenarioSeed)
+                statement.setString(6, record.contextId)
+                statement.setString(7, record.contextHash)
+                statement.setString(8, record.playerInput)
+                statement.setString(9, record.contextSnapshotJson)
+                statement.setString(10, record.resultId)
+                statement.setString(11, record.rawDraft)
+                statement.setString(12, record.rawResultJson)
+                statement.setString(13, record.criticScoresJson)
+                statement.setString(14, record.revisionSuggestion)
+                statement.setString(15, record.revisedDraft)
+                statement.setString(16, record.validationFindingsJson)
+                statement.setString(17, record.validationClassification.name)
+                statement.setString(18, record.stateDeltaJson)
+                statement.setString(19, record.irreversibleChangeJson)
+                statement.setString(20, record.irreversibleApprovalJson)
+                statement.setString(21, record.irreversibleApprovalActor)
+                statement.setInt(22, if (record.irreversibleApprovalGranted) 1 else 0)
+                statement.setString(23, record.applyResultJson)
+                statement.setString(24, JsonSupport.json.encodeToString(record.modelMetadata))
+                statement.setLong(25, record.elapsedTimeMs)
+                statement.setString(26, record.status)
+                statement.setString(27, timestamp)
+                statement.setString(28, timestamp)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    fun updateRebootRunEvidenceOutcome(
+        runId: String,
+        status: String,
+        applyResultJson: String,
+        elapsedTimeMs: Long,
+    ) {
+        connect { connection -> updateRebootRunEvidenceOutcome(connection, runId, status, applyResultJson, elapsedTimeMs) }
+    }
+
+    private fun updateRebootRunEvidenceOutcome(
+        connection: Connection,
+        runId: String,
+        status: String,
+        applyResultJson: String,
+        elapsedTimeMs: Long,
+    ) {
+        connection.prepareStatement(
+            """
+            UPDATE reboot_run_evidence
+            SET status = ?, apply_result_json = ?, elapsed_time_ms = ?, updated_at = ?
+            WHERE run_id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, status)
+            statement.setString(2, applyResultJson)
+            statement.setLong(3, elapsedTimeMs)
+            statement.setString(4, now())
+            statement.setString(5, runId)
+            check(statement.executeUpdate() == 1) { "Run evidence not found: $runId" }
+        }
+    }
+
     fun activeSessionIds(projectId: String): List<String> = connect { connection ->
         connection.prepareStatement(
             "SELECT id FROM story_sessions WHERE project_id = ? AND status = 'active' ORDER BY id ASC",
@@ -1459,7 +1542,13 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
-    fun resolvePendingTurn(context: ContextPacket, result: AiTurnResult, hasStateChange: Boolean): ApplyResult = connect { connection ->
+    fun resolvePendingTurn(
+        context: ContextPacket,
+        result: AiTurnResult,
+        hasStateChange: Boolean,
+        rebootRunEvidenceId: String? = null,
+        rebootRunElapsedTimeMs: Long = 0,
+    ): ApplyResult = connect { connection ->
         connection.autoCommit = false
         try {
             val session = selectSession(connection, context.sessionId)
@@ -1469,6 +1558,13 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             }
             require(session.stateVersion == context.baseStateVersion) { "Stale baseStateVersion: expected ${session.stateVersion}, got ${context.baseStateVersion}." }
             require(session.nextTurnNumber == context.turnNumber) { "Stale turnNumber: expected ${session.nextTurnNumber}, got ${context.turnNumber}." }
+            require(result.projectId == context.project.id) { "Result projectId does not match context project." }
+            require(result.turnId == context.turnId) { "Result turnId does not match context turn." }
+            require(result.sessionId == context.sessionId) { "Result sessionId does not match context session." }
+            require(result.contextId == context.contextId) { "Result contextId does not match context." }
+            require(result.turnNumber == context.turnNumber) { "Result turnNumber does not match context." }
+            require(result.baseStateVersion == context.baseStateVersion) { "Result baseStateVersion does not match context." }
+            require(result.contextHash == context.contextHash) { "Result contextHash does not match context." }
 
             val pendingId = selectPendingTurnLogId(connection, context.sessionId, context.contextId)
                 ?: error("Pending context not found: ${context.contextId}")
@@ -1520,6 +1616,24 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.executeUpdate()
             }
             updateProjectTurn(connection, context.project.id, context.turnNumber)
+            rebootRunEvidenceId?.let { runId ->
+                val applyResultJson = JsonSupport.json.encodeToString(
+                    JsonObject(
+                        mapOf(
+                            "status" to JsonPrimitive("APPLIED"),
+                            "turnLogId" to JsonPrimitive(pendingId),
+                            "hasStateChange" to JsonPrimitive(hasStateChange),
+                        ),
+                    ),
+                )
+                updateRebootRunEvidenceOutcome(
+                    connection = connection,
+                    runId = runId,
+                    status = "APPLIED",
+                    applyResultJson = applyResultJson,
+                    elapsedTimeMs = rebootRunElapsedTimeMs,
+                )
+            }
             connection.commit()
             ApplyResult(pendingId, result.narrative, hasStateChange)
         } catch (error: Throwable) {

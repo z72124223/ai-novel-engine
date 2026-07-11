@@ -61,7 +61,7 @@ class NarrativeRuleLearningTest {
     }
 
     @Test
-    fun learnedRuleBlocksSamePatternOnLaterAuditWithoutLogicSidecar() {
+    fun learnedRuleWarnsByDefaultAndBlocksInStrictMode() {
         val repository = tempRepository()
         val context = testContext()
         val result = testResult(
@@ -96,7 +96,14 @@ class NarrativeRuleLearningTest {
             result = result,
             input = NarrativeQualityAuditInput(dbPath = repository.databasePath().toString()),
         )
-        assertTrue(gateResult.blockingFindings.any { it.ruleId.startsWith("LEARNED-") })
+        val strictGateResult = NarrativeQualityGateService().evaluate(
+            context = context,
+            result = result,
+            options = com.localnovel.engine.service.NarrativeQualityGateOptions(strictMode = true),
+            input = NarrativeQualityAuditInput(dbPath = repository.databasePath().toString()),
+        )
+        assertTrue(gateResult.advisoryFindings.any { it.ruleId.startsWith("LEARNED-") })
+        assertTrue(strictGateResult.blockingFindings.any { it.ruleId.startsWith("LEARNED-") })
     }
 
     @Test

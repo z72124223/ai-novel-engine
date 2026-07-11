@@ -25,6 +25,7 @@ internal fun parseCliOptions(args: List<String>): Map<String, String> {
             key == "dry-run" ||
             key == "reader-mode" ||
             key == "publish" ||
+            key == "strict-narrative-quality" ||
             key == "auto-promote-learned-rules" ||
             key == "no-auto-promote-learned-rules"
         ) {

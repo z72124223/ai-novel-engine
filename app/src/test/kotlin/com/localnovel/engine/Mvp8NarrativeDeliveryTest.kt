@@ -125,7 +125,7 @@ class Mvp8NarrativeDeliveryTest {
     }
 
     @Test
-    fun gateBlocksMajorDeliveryFindings() {
+    fun gateTreatsMajorDeliveryFindingsAsAdvisoryUnlessStrict() {
         val base = chenxingOpeningContext(turnNumber = 1)
         val context = base.copy(
             narrativeDelivery = NarrativeDeliveryExpectation(
@@ -144,8 +144,14 @@ class Mvp8NarrativeDeliveryTest {
         )
 
         val gateResult = NarrativeQualityGateService().evaluate(context, result)
+        val strictGateResult = NarrativeQualityGateService().evaluate(
+            context,
+            result,
+            com.localnovel.engine.service.NarrativeQualityGateOptions(strictMode = true),
+        )
 
-        assertTrue(gateResult.blockingFindings.any { it.ruleId == "NARRATIVE_SUBSTANCE_FLOOR" })
+        assertTrue(gateResult.advisoryFindings.any { it.ruleId == "NARRATIVE_SUBSTANCE_FLOOR" })
+        assertTrue(strictGateResult.blockingFindings.any { it.ruleId == "NARRATIVE_SUBSTANCE_FLOOR" })
     }
 
     @Test
