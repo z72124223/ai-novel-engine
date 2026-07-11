@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "location-bible-return-to-codex-v1",
+  "handoffId": "chenxing-daping-location-bible-v1",
+  "returnStatus": "DRAFT",
+  "locationId": "loc-daping-coast",
+  "candidates": [
+    {
+      "taskId": "daping-lb-01-master-panorama",
+      "componentType": "MASTER_PANORAMA",
+      "candidateId": "daping-lb-01-candidate-pending",
+      "expectedFileName": "daping_lb_01_master_panorama_candidate_v1.png",
+      "localFilePath": null,
+      "userDecision": "PENDING_USER_REVIEW",
+      "userDecisionReason": "No image has been generated or reviewed in WP-003A.",
+      "driftFindings": [],
+      "sourceConversationNote": "After generation, record the exact task and candidate without private URLs, credentials, or approval inference.",
+      "sourceFileSha256": null,
+      "intakeStatus": "PENDING_FILE_TRANSFER",
+      "nextRequiredCliStages": [
+        "validate-image-candidate-external-result-intake",
+        "validate-image-candidate-result-review-preflight",
+        "validate-image-candidate-result-human-review-decision",
+        "create-image-candidate-reference-packet",
+        "validate-image-candidate-reference-packet",
+        "validate-candidate-reference-human-acceptance-decision",
+        "validate-candidate-reference-registry-preflight",
+        "create-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-human-acceptance-decision",
+        "create-candidate-reference-acceptance-packet",
+        "validate-candidate-reference-acceptance-packet"
+      ]
+    }
+  ],
+  "intakeBoundary": {
+    "approvalAppliesToExactCandidateOnly": true,
+    "sourceFileSha256RequiredAfterCodexReceivesFile": true,
+    "existingExternalResultHumanReviewAndCandidateReferenceStagesRequired": true,
+    "approvalDoesNotWriteCanonOrSqlite": true,
+    "locationReferenceAcceptanceDoesNotApproveStoryShotsOrFinalMedia": true
+  },
+  "exampleOnly": false
+}

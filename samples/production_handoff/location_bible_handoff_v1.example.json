@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "location-bible-handoff-v1",
+  "handoffId": "location-bible-example-not-for-production",
+  "status": "DRAFT",
+  "createdAt": "2026-07-11T00:00:00Z",
+  "projectId": "ai-novel-engine-example",
+  "worldId": "example-world",
+  "branch": "example/location-bible",
+  "sourceCommitSha": "0000000000000000000000000000000000000000",
+  "handoffCommitSha": null,
+  "handoffContentSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "locationId": "loc-example",
+  "sceneIds": ["scene-example"],
+  "storyPhase": "example-only",
+  "sourceArtifacts": [
+    {
+      "artifactId": "example-source",
+      "artifactType": "OTHER",
+      "repositoryPath": "samples/production_handoff/location_bible_handoff_v1.example.json",
+      "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "byteSize": 1,
+      "visibility": "USER_FACING"
+    }
+  ],
+  "foundationGenerationRule": {
+    "priorLocationReferenceRequired": false,
+    "outputIsFoundationCandidate": true,
+    "storyShotGenerationAllowed": false,
+    "userVisualApprovalRequired": true,
+    "codexHashAndReferenceIntakeRequired": true
+  },
+  "referenceUploadChecklistFile": "samples/production_handoff/reference_upload_checklist_v1.example.json",
+  "tasks": [
+    {
+      "taskId": "example-location-master-panorama",
+      "componentType": "MASTER_PANORAMA",
+      "phase": "example-foundation",
+      "status": "READY_FOR_GPT",
+      "dependsOn": [],
+      "locationId": "loc-example",
+      "sceneIds": ["scene-example"],
+      "sourceArtifacts": ["example-source"],
+      "textualAuthority": ["Example-only visible location fact."],
+      "requiredReferenceIds": [],
+      "optionalReferenceIds": [],
+      "projectionOrCamera": "wide establishing view",
+      "aspectRatio": "16:9",
+      "spatialAnchors": ["example-anchor"],
+      "fixedGeometryRules": ["Preserve the example anchor relationship."],
+      "scaleEntities": [],
+      "weatherAndLighting": ["neutral example daylight"],
+      "allowedCreativeFreedom": ["ordinary non-causal texture variation"],
+      "negativeConstraints": ["No story Shot or final-media claim."],
+      "authorOnlyExclusions": ["AUTHOR_ONLY_CAUSAL_EXPLANATIONS"],
+      "expectedFileName": "example_location_master_panorama_candidate.png",
+      "candidateOnly": true,
+      "reviewState": "PENDING_USER_REVIEW"
+    }
+  ],
+  "deferredOptionalWork": ["Optional 360 panorama cannot replace required geometry."],
+  "sharedSpatialRules": ["Foundation candidates do not establish approved geometry."],
+  "sharedNegativeConstraints": ["No fake character binding."],
+  "visibilityAndSecretBoundary": {
+    "authorOnlyExcluded": true,
+    "publicFactsOnly": true,
+    "excludedContentClasses": ["AUTHOR_ONLY_CAUSAL_EXPLANATIONS"]
+  },
+  "reviewContract": {
+    "humanReviewRequired": true,
+    "candidateOnly": true,
+    "technicalPassIsNotApproval": true,
+    "allowedReviewStates": ["PENDING_USER_REVIEW", "APPROVE_CANDIDATE", "REJECT_DRIFT", "REQUEST_VARIATION", "CHANGE_VISUAL_DIRECTION"]
+  },
+  "returnToCodexContract": {
+    "schemaPath": "schemas/production/location_bible_return_to_codex_v1.schema.json",
+    "templatePath": "samples/production_handoff/location_bible_return_to_codex_v1.example.json",
+    "sourceFileSha256Required": true,
+    "existingCliChainRequired": true,
+    "noCanonOrSqliteWrite": true
+  },
+  "validationSummary": {
+    "verdict": "NOT_RUN",
+    "schemaValidation": "NOT_RUN",
+    "pathValidation": "NOT_RUN",
+    "hashValidation": "NOT_RUN",
+    "dependencyValidation": "NOT_RUN",
+    "secretBoundaryValidation": "NOT_RUN",
+    "notes": ["Example-only data; no image exists."]
+  },
+  "exampleOnly": true
+}

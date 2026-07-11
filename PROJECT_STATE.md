@@ -58,12 +58,13 @@ Codex 終端版跑引擎、世界資料與劇本流程
 ## Current Work Package
 
 - ID: `WP-003A Daping Coast Location Bible Foundation Handoff`
-- Status: `READY_FOR_CODEX`
+- Status: `COMPLETED_AWAITING_CONTROLLER_REVIEW`
 - Work Package: `docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md`
 - Accepted WP-003 evidence: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
-- Recommended Codex: strongest available Codex coding model, reasoning `HIGH`
-- Required branch: `feature/wp003a-daping-location-bible-handoff`
-- Current action: Codex creates a clean branch from the latest remote default branch, adds the bounded Location Bible protocol and the real Daping Coast preliminary handoff, validates, Commits, Pushes, reports, and stops.
+- Execution base: `a6fbe48e0eb21e0e71f94b62c750448ba9dfb9d2`
+- Completion branch: `feature/wp003a-daping-location-bible-handoff`
+- Result: `WP003A_READY_FOR_GPT_LOCATION_TASK_01`
+- Current action: controller reviews the pushed WP-003A branch and decides whether to activate WP-003B for the single master-panorama task. No downstream package is activated by this status update.
 
 ## Controller Architecture Decision
 
@@ -88,7 +89,7 @@ WP-003A therefore adds a bounded provider-neutral Location Bible handoff and ret
 
 1. `WP-002A` — **COMPLETED / ACCEPTED**: generic GPT image handoff foundation.
 2. `WP-003` — **COMPLETED / ACCEPTED**: Chenxing visual asset and location-gap inventory.
-3. `WP-003A` — **ACTIVE / READY_FOR_CODEX**: add a separate Location Bible handoff protocol and Commit the real Daping Coast preliminary handoff.
+3. `WP-003A` — **COMPLETED / AWAITING CONTROLLER REVIEW**: separate Location Bible schemas and the real Daping Coast preliminary handoff are complete on the feature branch.
 4. `WP-003B` — **NOT STARTED**: GPT reads the exact Location Bible handoff and generates one task at a time, beginning with the Daping Coast master panorama candidate.
 5. `WP-003C` — **NOT STARTED**: Codex imports user-kept Location Bible candidates, computes Hashes, and runs the existing review/reference chain.
 6. `WP-004` — **BLOCKED**: create the real opening Shot 01–03 handoff only after required Daping Coast Location Bible components are accepted.
@@ -111,25 +112,19 @@ Do not start WP-003B, WP-004, WP-002B, or WP-007 automatically. Each needs a new
 - Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
 - No Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, approval, or Runtime change was made.
 
-## WP-003A Scope Summary
+## WP-003A Verified Result
 
-WP-003A must:
-
-- keep existing story Shot schemas strict and unchanged;
-- add `location_bible_handoff_v1` and `location_bible_return_to_codex_v1` schemas;
-- create example-only instances;
-- create the first real Daping Coast Location Bible handoff;
-- make exactly one initial task `READY_FOR_GPT`: `daping-lb-01-master-panorama`;
-- keep later plan/detail/scale/directional tasks dependency-blocked;
-- require only task-relevant reference uploads;
-- generate no image and make no approval claim;
-- Commit and Push only to its feature branch, then stop.
-
-The exact contract is in:
-
-```text
-docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md
-```
+- Added provider-neutral `location_bible_handoff_v1` and `location_bible_return_to_codex_v1` contracts without modifying `shot_queue_v1`.
+- Added example-only instances and the real Daping Coast handoff under `world/chenxing/production/location_bible_handoffs/daping_coast_v1/`.
+- Exactly one task is `READY_FOR_GPT`: `daping-lb-01-master-panorama`.
+- Tasks 02–07 remain `BLOCKED_BY_PRIOR_TASK_APPROVAL`; the dependency graph is acyclic.
+- The initial ChatGPT upload requirement is only `world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png`.
+- The handoff uses public textual anchors only; author-only causal explanations, crossing mechanics, later reveals, post-crossing content, and private source paths are excluded.
+- All new JSON parses; local refs and regexes pass; Repository paths, SHA-256, byte sizes, normalized handoff Hash, dependency graph, candidate boundary, and Git scope pass.
+- Full JSON Schema meta-validation remains `SCHEMA_META_VALIDATION_NOT_AVAILABLE`; no dependency was installed.
+- No Kotlin, Test, Migration, Canon, existing Schema, image, provider job, approval, SQLite, or Runtime change was made.
+- Completion report: `docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md`.
+- The completion Commit is caller-supplied after Push and is not embedded into the Commit that contains this status file.
 
 ## Confirmed Repository Facts
 
@@ -241,20 +236,16 @@ If the computer sleeps, the terminal closes, authentication expires, or a true s
 
 ## Next User Action
 
-Tell Codex CLI:
+GPT total-control reviews:
 
 ```text
-先 git fetch --prune origin。
-讀取 PROJECT_STATE.md、.codex/project_controller.md、docs/CURRENT_ROUTE_GATE_V1.md
-與目前 Work Package：
-docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md
-
-使用目前可用最強 Codex coding model，Reasoning HIGH。
-從最新遠端預設分支建立乾淨分支，完整執行 WP-003A，
-驗證、Commit、Push，完成後回報總控聊天窗口。
-
-不得開始圖片生成或 WP-004。
+Branch: feature/wp003a-daping-location-bible-handoff
+Report: docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md
+Handoff: world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json
 ```
+
+If accepted, a later explicit controller update may activate WP-003B for
+`daping-lb-01-master-panorama` only. WP-004 remains blocked.
 
 ## Update Rule
 

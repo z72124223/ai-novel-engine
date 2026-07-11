@@ -12,85 +12,92 @@
 
 ## Current Plan Window V0
 
-標記：`WP003_CHENXING_VISUAL_BIBLE_INVENTORY`
+標記：`WP003A_DAPING_LOCATION_BIBLE_HANDOFF`
 
-狀態：**WP-003 完成並重新驗證，等待總控審查**
+狀態：**WP-003A 執行中；Schema 與真實交接包待建立**
 
 日期：2026-07-11
 
 ### Goal
 
-完整執行 WP-003，以 Repository（程式庫）證據建立塵行首個 GPT 圖片 Pilot（試行）的視覺聖經盤點，判定 WP-004 是否可開始或被場景／schema（結構描述）缺口阻擋。
+建立獨立、供應商中立的 Location Bible（場景視覺聖經）檔案協議與大坪海岸真實前置交接包，只開放 `daping-lb-01-master-panorama` 給 GPT，其餘任務依前置批准保持阻塞。
 
 ### Global Strategy
 
-- 嚴格分離正式權威、檔案完整性、視覺批准與 ChatGPT 附件狀態。
-- 只建立 WP-003 指定的報告與三份 JSON inventory（盤點資料），不產圖、不建立真正交接包。
-- 逐一驗證 Repository 相對路徑、SHA-256、位元組數與可安全讀取的圖片尺寸。
-- 以最保守且有證據的分類記錄缺檔、歷史稿、拒絕飄移與純文字場景幾何。
+- 保持 `shot_queue_v1` 的角色約束不變，另外建立純 Location Bible 任務協議。
+- 以正式文字權威加鎖定風格／比例參考，建立候選生成交接；不把候選視為批准、Canon 或 production lock。
+- 使用非自我引用的正規化 SHA-256，並以 Repository 相對路徑綁定所有現有來源與參考檔。
+- 只允許一項初始 `READY_FOR_GPT`；依賴圖必須無循環，後續任務等待精確候選的使用者批准與 Codex intake。
 
 ### Non-Goals
 
-- 不重跑或修改 WP-002A；不修改六個 production schema。
-- 不開始 WP-004、WP-005、WP-006、WP-002B 或 WP-007。
-- 不修改 Kotlin、測試、migration（資料庫遷移）、Canon（正典）、正式 JSON 或任何圖片。
-- 不代表使用者批准視覺，也不聲稱 Repository 圖片已附加至 ChatGPT。
+- 不重跑 WP-002A 或 WP-003，不修改 `shot_queue_v1` 或其他既有 WP-002A Schema。
+- 不生成圖片，不開始 WP-003B、WP-003C、WP-004 或其他下游工作包。
+- 不修改 Kotlin、測試、migration（資料庫遷移）、Canon（正典）、正式來源或既有圖片。
+- 不暴露作者限定秘密，不聲稱圖片已生成、批准、鎖定或已附加至 ChatGPT。
 
 ### Scope
 
-- `docs/production/WP003_CHENXING_VISUAL_BIBLE_INVENTORY_REPORT.md`
-- `world/chenxing/production/visual_bible/**`
+- `schemas/production/location_bible_handoff_v1.schema.json`
+- `schemas/production/location_bible_return_to_codex_v1.schema.json`
+- `samples/production_handoff/location_bible_*_v1.example.json`
+- `world/chenxing/production/location_bible_handoffs/daping_coast_v1/**`
+- `docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md`
 - `PLANS.md`
 - `PROJECT_STATE.md`
 
 ### Confirmed Facts
 
-- 已依指示執行 `git fetch --prune origin`；遠端預設分支為 `origin/codex/mvp6-checkpoint-branching-spec`。
-- 工作分支從最新乾淨基準 `02c32925ed5c2dc5101f429fda2e6fa9184d732a` 建立，並以普通 merge（合併）保留遠端較早 WP-003 提交 `eef2e05be88155da47b8b552cd82c68c1f5f145c`；未使用 force push。
-- 陸塵行 production turnaround、開場服裝 turnaround 與愛醬 production turnaround 均存在，已可讀取尺寸、位元組數與 SHA-256。
-- `photo_set_123123` 六張照片均存在；其中 `lu_chenxing_face_reference_v1.jpg` 與一張照片內容 SHA-256 相同。
-- 正式文件引用的 `lu_chenxing_lean_base_turnaround_v1.png`、`lu_chenxing_opening_stocky_turnaround_v1.png`、`lu_chenxing_cinematic_turnaround_v2.png` 不存在於 assets 目錄。
-- Repository 內沒有大坪海岸或遺跡的正式 Location Bible 圖片；Shot 01–03 的海蝕平台、接縫、潮池與比例／方向關係只有文字權威。
-- `shot_queue_v1` 的每個 shot 要求 `characters` 至少一筆，因此純 `LOCATION_BIBLE_CANDIDATE` 前置任務不能安全地直接表達。
-- `DRIFT_NOTICE.json` 明確拒絕十張純文字開場預覽圖作為正式參考。
+- 已依指示更新遠端；最新預設分支與乾淨工作分支基線均為 `a6fbe48e0eb21e0e71f94b62c750448ba9dfb9d2`。
+- `PROJECT_STATE.md` 明確啟用 WP-003A，並選定獨立 preliminary Location Bible handoff（前置場景交接）。
+- WP-003 已確認大坪海岸只有文字權威，沒有已批准的場景幾何圖；`shot_queue_v1.characters.minItems = 1` 不適合純場景任務。
+- `cinematic_misty` 風格圖存在，SHA-256 為 `a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a`，可作 task 01 唯一必要上傳。
+- 陸塵行身體、開場服裝與愛醬三視圖存在且 Hash 可驗證，只在 task 04 成為必要參考。
+- 目前未安裝相容的 JSON Schema meta-validator（結構描述驗證器）；不得安裝依賴，必須如實記錄 `SCHEMA_META_VALIDATION_NOT_AVAILABLE`。
 
 ### Assumptions
 
-- WP-003 的主要結論會是 `WP003_BLOCKED_BY_LOCATION_BIBLE`；完成三份 JSON 交叉驗證後才定案。
-- 已存在的風格候選 v2 圖可盤點為 `CANDIDATE_ONLY`，但不應成為 Shot 01–03 的必要上傳來源。
+- `4:3` 作為 top-down zone plan（俯視區域圖）的固定比例，符合工作包允許值且有利生產標註。
+- task 04 同時依賴 task 01–03 的批准；因此初始狀態使用 `BLOCKED_BY_PRIOR_TASK_APPROVAL`，即使它未來還需要三張角色／服裝參考上傳。
 
 ### Open Questions
 
-- 純場景 Location Bible 是否由未來 bounded schema amendment（有限度結構描述修正）或獨立 preliminary handoff（前置交接）承載，需總控於 WP-003 後決定。
+- 無；工作包已解決架構選擇。視覺方向與候選批准保留給使用者，不在本包決定。
 
 ### Implementation Steps
 
-- [x] Step 1: 建立視覺資產盤點與人類可讀報告。
-- [x] Step 2: 建立場景缺口盤點與 Shot 01–03 readiness（就緒度）資料。
-- [x] Step 3: 驗證 JSON、路徑、雜湊、禁用聲明與 Git 修改範圍。
-- [x] Step 4: 更新 WP-003 狀態，檢查 staged diff（已暫存差異），Commit 並 Push 指定分支。
+- [x] Step 1: 更新遠端、建立乾淨分支並完成規格與證據閱讀。
+- [x] Step 2: 建立兩份 Location Bible Schema 與兩份 example-only（僅供範例）JSON。
+- [x] Step 3: 建立大坪海岸 README、真實 handoff、task-aware 上傳清單與 return template。
+- [x] Step 4: 建立完成報告並更新 `PROJECT_STATE.md` 的目前工作包狀態。
+- [x] Step 5: 驗證 JSON、Schema、本地 `$ref`、regex、路徑、Hash、正規化 handoff Hash、依賴 DAG、秘密邊界與 Git scope。
+- [x] Step 6: 明確 Stage、Commit、Push 指定分支，回報 GPT 總控後停止。
 
 ### Verification
 
-- 使用 PowerShell `ConvertFrom-Json` 解析全部新 JSON。
-- 以腳本驗證每個 Repository path 的存在／明確缺失標記，並重算全部 present image SHA-256 與 byte size。
-- 搜尋私人絕對路徑、未授權批准／Canon／上傳宣稱與拒絕稿誤用。
+- 使用 Node.js 解析全部新 JSON，檢查 Draft 2020-12 宣告、本地 `$ref` 與 regex。
+- 驗證 example 與真實 handoff 的必要欄位、enum、additionalProperties、依賴 DAG 與唯一 `READY_FOR_GPT`。
+- 重算所有現有來源／參考檔 SHA-256、byte size 與正規化 handoff SHA-256。
+- 搜尋私人絕對路徑、作者限定秘密、假角色、未授權批准／Canon／final media／production lock 宣稱。
 - 執行 `git diff --check` 與允許路徑白名單檢查；本包不執行 Gradle，因禁止修改程式碼。
 
 ### Risks
 
-- 正式 JSON 含作者限定路徑與後段秘密，新的 production 產物不得複製私人絕對路徑或洩漏不必要的作者秘密。
-- 檔案存在與 AUTHOR_LOCKED 文件權威不可混同為 Codex 的視覺判斷。
-- 缺少 Location Bible 時不可因 storyboard（分鏡腳本）文字完整而誤判 WP-004 就緒。
+- 正式來源含私人絕對來源路徑與 author-only（作者限定）因果；新交接只能傳遞公開可見錨點與秘密類別標籤。
+- task 01 使用文字權威建立 foundation candidate（基礎候選）是受限例外，不得擴張成 Shot 01–03 生成許可。
+- 正規化 Hash 規則若實作不一致會破壞可重現性；需在 README、Schema、真實 handoff 與驗證腳本採相同規則。
 
 ### Drift Log
 
-- 2026-07-11：依最新 `PROJECT_STATE.md` 將舊 MVP-8 current window 歸入歷史脈絡；目前只執行 WP-003。
-- 2026-07-11：證據盤點未改變工作包範圍；初步發現場景幾何缺口與 location-only schema 表達缺口。
-- 2026-07-11：完成三份 inventory JSON 與人類可讀報告；主要判定暫定 `WP003_SCHEMA_GAP_FOUND`，等待集中驗證。
-- 2026-07-11：三份 JSON 解析通過；十個未來必要上傳檔的路徑與 SHA-256 全數通過；新增檔與新增 plan 行無私人絕對路徑；修改範圍符合 WP-003；`git diff --check` 通過，僅有 Windows 換行提示。
-- 2026-07-11：主要判定定案為 `WP003_SCHEMA_GAP_FOUND`；WP-004 未啟動，需總控先決定純 Location Bible 任務的 bounded schema 或 preliminary handoff 路徑。
-- 2026-07-11：將既有遠端 WP-003 提交安全合併到最新 route-gate 基線後重新驗證。修正 `candidates_v2` 由十四張為十五張，補齊逐檔路徑、SHA-256、byte size 與尺寸；三份 inventory `sourceCommitSha` 已更新為最新基線。核心結論不變。
+- 2026-07-11：從最新遠端基線建立乾淨 WP-003A worktree；沒有重跑 WP-002A 或 WP-003。
+- 2026-07-11：完整閱讀工作包指定治理、藍圖、Schema、正式世界、視覺盤點與拒絕漂移證據；沒有來源衝突。
+- 2026-07-11：確認採獨立 Location Bible handoff，不修改 `shot_queue_v1`，且 task 01 為唯一初始 `READY_FOR_GPT`。
+- 2026-07-11：兩份新 Schema 與兩份 example-only JSON 已建立並通過 JSON parse、局部 `git diff --check`；既有 WP-002A Schema 未修改。
+- 2026-07-11：真實 handoff 建立 7 項無循環任務，只有 task 01 為 `READY_FOR_GPT`；task 02–07 均依賴前置批准。初始上傳清單只要求 cinematic-misty 風格圖。
+- 2026-07-11：完成報告與 `PROJECT_STATE.md` 已更新為等待總控審查；WP-003B、WP-003C 與 WP-004 均未啟動。
+- 2026-07-11：兩份 example、真實 handoff、return template 與 upload checklist 通過自有 contract check；10 個來源與 4 個參考檔的路徑／Hash／byte size、7 任務 DAG、唯一 ready task、正規化 handoff Hash、私人路徑、秘密與候選邊界皆通過。完整 meta-schema validator 未預裝，維持 `SCHEMA_META_VALIDATION_NOT_AVAILABLE`。
+- 2026-07-11：Git scope 為 11 個允許檔案；`shot_queue_v1`、Kotlin、測試、migration、Canon 與圖片皆未變；原 123 項髒工作樹未動。
+- 2026-07-11：11 個允許檔案已明確 Stage，cached diff check 通過並建立單一 WP-003A Commit；下一動作只允許普通 Push 與總控回報。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 
