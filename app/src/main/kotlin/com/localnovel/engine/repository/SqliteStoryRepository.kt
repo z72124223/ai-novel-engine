@@ -92,6 +92,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "009_provisional_layer.sql",
                     "010_reboot_run_evidence.sql",
                     "011_npc_autonomy_runtime.sql",
+                    "012_reboot_drama_evaluation.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -1679,6 +1680,43 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(5, candidate.patchId)
             statement.setString(6, timestamp)
             statement.setString(7, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    fun recordDramaEvaluation(
+        input: com.localnovel.engine.model.DramaEvaluationInput,
+        report: com.localnovel.engine.model.DramaEvaluationReport,
+    ) = connect { connection ->
+        require(report.revisionCount in 0..1) { "Narrative revision count must remain bounded to one." }
+        connection.prepareStatement(
+            """
+            INSERT INTO reboot_drama_evaluations(
+                evaluation_id, run_id, project_id, session_id, turn_number, scenario_seed,
+                raw_draft, raw_scores_json, revision_suggestion, revised_draft, revised_scores_json,
+                revision_count, selected_draft, scene_frame_json, expectation_ledger_json,
+                findings_json, stall_status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, input.evaluationId)
+            statement.setString(2, input.runId)
+            statement.setString(3, input.projectId)
+            statement.setString(4, input.sessionId)
+            statement.setInt(5, input.turnNumber)
+            statement.setString(6, input.scenarioSeed)
+            statement.setString(7, input.rawDraft)
+            statement.setString(8, JsonSupport.json.encodeToString(report.rawScores))
+            statement.setString(9, report.revisionSuggestion)
+            statement.setString(10, input.revisedDraftCandidate)
+            statement.setString(11, report.revisedScores?.let { JsonSupport.json.encodeToString(it) } ?: "{}")
+            statement.setInt(12, report.revisionCount)
+            statement.setString(13, report.selectedDraft)
+            statement.setString(14, JsonSupport.json.encodeToString(input.sceneFrame))
+            statement.setString(15, JsonSupport.json.encodeToString(input.expectationLedger))
+            statement.setString(16, JsonSupport.json.encodeToString(report.findings))
+            statement.setString(17, if (report.stallDetected) "STALL_DETECTED" else "MOVING")
+            statement.setString(18, now())
             statement.executeUpdate()
         }
     }

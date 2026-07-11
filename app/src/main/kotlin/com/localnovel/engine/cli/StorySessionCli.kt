@@ -4,6 +4,7 @@ import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.DramaEvaluationInput
 import com.localnovel.engine.model.NpcAutonomyProfile
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
@@ -21,6 +22,7 @@ import com.localnovel.engine.service.NarrativeQualityGateOptions
 import com.localnovel.engine.service.NarrativeQualityGateService
 import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.service.RebootRunEvidenceService
+import com.localnovel.engine.service.RebootDramaLoopService
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
 import com.localnovel.engine.service.AudioNovelEpisodeExporter
@@ -69,6 +71,20 @@ internal object StorySessionCli {
         }
         println(JsonSupport.json.encodeToString(result))
         return if (result.accepted) 0 else 3
+    }
+
+    fun evaluateRebootDrama(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
+        repository.initialize()
+        val input = readCliJson<DramaEvaluationInput>(Path.of(options.requiredCliOption("input")))
+        val report = RebootDramaLoopService(repository).evaluateAndPersist(input)
+        options["out"]?.let { outValue ->
+            val out = Path.of(outValue)
+            out.parent?.let { Files.createDirectories(it) }
+            Files.writeString(out, JsonSupport.json.encodeToString(report))
+        }
+        println(JsonSupport.json.encodeToString(report))
+        return 0
     }
 
     fun compileContext(options: Map<String, String>): Int {

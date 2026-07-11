@@ -1,0 +1,57 @@
+{
+  "evaluationId": "reboot01-drama-eval-sample-001",
+  "runId": "reboot01-sample-run",
+  "projectId": "demo",
+  "sessionId": "sandbox-session",
+  "turnNumber": 3,
+  "scenarioSeed": "reboot01-drama-seed",
+  "rawDraft": "He ignores the warning and enters because the plot needs it. A stranger suddenly saves him.",
+  "revisedDraftCandidate": "He sees the wire, jokes once, then stops. Shen Shuang cuts the obvious route, but the rival uses the delay to move the evidence.",
+  "rawSignals": {
+    "sarcasmPresent": false,
+    "banterPresent": false,
+    "genreDangerRecognized": false,
+    "omniscientKnowledgeUsed": false,
+    "riskTakingHasReason": false,
+    "cheapTwist": true,
+    "antagonistAdapts": false,
+    "secondOrderConsequence": false,
+    "warmBeat": false,
+    "seriousBeat": false,
+    "directorMetadataLeak": false
+  },
+  "revisedSignals": {
+    "sarcasmPresent": true,
+    "banterPresent": true,
+    "genreDangerRecognized": true,
+    "omniscientKnowledgeUsed": false,
+    "riskTakingHasReason": true,
+    "cheapTwist": false,
+    "antagonistAdapts": true,
+    "secondOrderConsequence": true,
+    "warmBeat": true,
+    "seriousBeat": true,
+    "directorMetadataLeak": false
+  },
+  "sceneFrame": {
+    "sceneGoal": "Recover evidence before the rival moves it",
+    "dramaticQuestion": {"question": "Will caution preserve both evidence and trust?", "status": "OPEN"},
+    "valueConflict": {"valueA": "safety", "valueB": "truth", "forcedChoice": true},
+    "sceneValue": {"dimension": "control", "valueBefore": 60, "valueAfter": 35},
+    "stakes": "The evidence and Shen Shuang's trust",
+    "cost": "The safe route consumes time",
+    "relationshipChange": "Mutual caution becomes conditional trust",
+    "reveal": "The rival anticipated the obvious countermeasure",
+    "emotionalBeat": "humor to pressure",
+    "promises": [{"promiseId": "wire-clue", "promise": "The wire matters", "plantedClue": "fresh tension on the wire", "payoffStatus": "PARTIAL"}]
+  },
+  "expectationLedger": {
+    "obviousDanger": "A visible trip wire blocks the direct route",
+    "characterRecognition": "The protagonist notices and questions it",
+    "firstLayerCountermeasure": "They avoid the direct route",
+    "worldOrAntagonistAdaptation": "The rival uses the delay to move evidence",
+    "secondOrderSurprise": "The safe choice preserves life but costs the evidence",
+    "retrospectiveClueValidity": "Fresh footprints already led away from the shrine"
+  },
+  "priorRevisionCount": 0
+}
