@@ -1,0 +1,11 @@
+{
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "appliedTurns": 6,
+    "stateVersion": 6,
+    "elapsedMinutes": 35,
+    "decisionTraceCount": 1,
+    "dramaEvaluationCount": 5,
+    "runEvidenceCount": 6,
+    "irreversibleApprovalCount": 1,
+    "outputDir": "samples\\reboot01\\vertical_slice_run"
+}

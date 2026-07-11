@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "reboot01-chenxing-sandbox-addon",
+  "packVersion": 1,
+  "projectId": "chenxing",
+  "name": "REBOOT-01 Chenxing non-Canon sandbox cast",
+  "description": "Resettable Stage 4 cast and pressure. Not Canon and not eligible for promotion.",
+  "mode": "ADD_ON",
+  "source": {"author": "reboot01-sandbox", "license": "test-only", "notes": "Non-Canon vertical slice only."},
+  "entities": {
+    "locations": [
+      {
+        "id": "loc-daping-coast",
+        "entityVersion": 2,
+        "name": "大坪海岸（Sandbox runtime reference）",
+        "description": "Stage 4 reuses the formal location id only inside a resettable database; this entry does not modify the tracked Canon source.",
+        "visibility": "public"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-lin-yao-sandbox",
+        "name": "林遙（Sandbox）",
+        "role": "coast observer",
+        "description": "A cautious local volunteer who values evidence over heroics and distrusts unexplained structures.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Preserve physical evidence before tide and scavengers erase it.",
+          "dominantEmotion": "戒備",
+          "availableActions": ["記錄足跡", "封存碎片", "拒絕無證據的要求"],
+          "relationshipDefaults": {"char-zhou-ke-sandbox": "互相欠人情"},
+          "initiativeLevel": 70
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-zhou-ke-sandbox",
+        "name": "周克（Sandbox）",
+        "role": "storm shelter keeper",
+        "description": "A practical caretaker who protects people first but hides his prior knowledge of the ruin.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Get everyone above the tide line without exposing his old mistake.",
+          "dominantEmotion": "焦躁",
+          "availableActions": ["關閉危險路線", "清點人員", "隱瞞舊鑰匙來源"],
+          "relationshipDefaults": {"char-lin-yao-sandbox": "欠一次救命情"},
+          "initiativeLevel": 65
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-tide-scavenger-sandbox",
+        "name": "拾潮者（Sandbox）",
+        "role": "antagonistic scavenger",
+        "description": "A rival evidence scavenger who believes survival entitles the first claimant to erase competitors' traces.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Move the marked evidence before the returning group can secure it.",
+          "dominantEmotion": "算計",
+          "availableActions": ["轉移碎片", "製造假足跡", "觀察退路"],
+          "relationshipDefaults": {},
+          "initiativeLevel": 80
+        },
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {"id": "fact-sandbox-fresh-footprints", "content": "Fresh boot prints lead away from the obvious seam before the tide turns.", "visibility": "public"},
+      {"id": "fact-sandbox-shelter-key", "content": "A corroded shelter key bears recent scrape marks.", "visibility": "public"}
+    ]
+  },
+  "metadata": {"nonCanon": true, "resettable": true, "promotionForbidden": true}
+}

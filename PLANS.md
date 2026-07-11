@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 自主執行中；Stage 0–3 已通過，現在只執行 Stage 4 Chenxing non-Canon 深度切片**
+狀態：**REBOOT-01 自主執行中；Stage 0–4 已通過，現在只執行 Stage 5 replay／benchmark／evolution**
 
 日期：2026-07-11
 
@@ -74,8 +74,8 @@
 - [x] Step 1：區分 protocol hard fail、world legality hard fail、irreversible approval 與 quality warning；以 additive migration 保存 run evidence；驗證後獨立 Commit。
 - [x] Step 2：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
 - [x] Step 3：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
-- [ ] Step 4（目前唯一進行中）：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
-- [ ] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
+- [x] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
+- [ ] Step 5（目前唯一進行中）：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
 - [ ] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
 - [ ] Step 7：完成全套驗證、端到端重播、Web smoke、SQL 稽核、秘密掃描、遊玩指南與最終報告；獨立 Commit 後普通 Push 一次。
 
@@ -115,6 +115,8 @@
 - 2026-07-12：Stage 3 新增 scene frame、dramatic question、value conflict、emotional wave、promise/payoff、Audience Expectation Ledger 與 11 維 deterministic critic scores；SQL 保存 raw／revised／selected draft、findings 與 stall 狀態。
 - 2026-07-12：Revision coordinator 只允許一次候選修訂；連續兩個無 state／value／cost／relationship／reveal 變化的 frame 只允許 ESCALATE／CHOOSE／REVEAL／PAY_COST／END_SCENE。
 - 2026-07-12：Stage 3 focused 47/47 PASS；涵蓋 `IDIOT_PLOT_RISK`、omniscience、cheap twist、director metadata leak、公平二階因果、情緒波形、CLI 與 revision limit。
+- 2026-07-12：Stage 4 以正式 Chenxing 基底加上 resettable／non-Canon sandbox add-on 實跑 6 回合；State Version 0→6、世界時間 +35 分鐘，保存 6 份 run evidence、5 份 drama evaluation、1 份 accepted DecisionTrace 與 1 份獨立人工批准的不可逆 sandbox 後果。
+- 2026-07-12：Stage 4 相關套件 28/28 PASS，24/24 份產生 JSON 可解析；正式 Canon、圖片線、外部 provider 與原 123 項髒工作樹未修改。真實執行出現 quality advisories，交由 Stage 5 以同 Seed benchmark 判斷，不直接採納 learned rule。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 

@@ -1,0 +1,477 @@
+{
+    "protocolVersion": "2",
+    "project": {
+        "id": "chenxing",
+        "name": "塵行",
+        "summary": "2026 台灣海岸生存開場；主角陸塵行與愛醬在颱風與漲潮壓力下探索異常遺跡。",
+        "activeSceneId": "scene-daping-coast-opening",
+        "currentTurn": 4
+    },
+    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-5",
+    "turnNumber": 5,
+    "playerInput": "潮溝崩落。拾潮者的手被永久壓傷；這是 Sandbox 後果，不升格 Canon。",
+    "activeScene": {
+        "id": "scene-daping-coast-opening",
+        "projectId": "chenxing",
+        "title": "大坪海岸開場",
+        "summary": "陸塵行帶愛醬在大坪海岸查潮汐，發現海蝕平台上的異常結構；颱風外圍逼近，回頭路開始被封。",
+        "locationId": "loc-daping-coast"
+    },
+    "sceneContract": {
+        "id": "contract-daping-coast-opening",
+        "projectId": "chenxing",
+        "sceneId": "scene-daping-coast-opening",
+        "forbiddenReveals": [
+            "逆行門計畫全貌",
+            "别界裂縫真相",
+            "兩道門獨立空間模型",
+            "先遣隊全滅細節",
+            "修煉體系完整講解"
+        ]
+    },
+    "characters": [
+        {
+            "id": "char-lu-chenxing",
+            "projectId": "chenxing",
+            "name": "陸塵行",
+            "role": "player",
+            "description": "2026 台灣基隆八斗子一帶生活的實作型青年，靠多種實用技能維生，對看不懂的機制無法罷休。",
+            "isPlayer": true,
+            "profile": {
+                "isPlayer": "true"
+            }
+        },
+        {
+            "id": "char-zhou-ke-sandbox",
+            "projectId": "chenxing",
+            "name": "周克（Sandbox）",
+            "role": "storm shelter keeper",
+            "description": "A practical caretaker who protects people first but hides his prior knowledge of the ruin."
+        },
+        {
+            "id": "char-aijiang",
+            "projectId": "chenxing",
+            "name": "愛醬",
+            "role": "co-protagonist",
+            "description": "長毛哈士奇，已絕育的雌性犬。不是妖獸或靈寵，有自己的故事線與學習上限。"
+        },
+        {
+            "id": "char-tide-scavenger-sandbox",
+            "projectId": "chenxing",
+            "name": "拾潮者（Sandbox）",
+            "role": "antagonistic scavenger",
+            "description": "A rival evidence scavenger who believes survival entitles the first claimant to erase competitors' traces."
+        },
+        {
+            "id": "char-lin-yao-sandbox",
+            "projectId": "chenxing",
+            "name": "林遙（Sandbox）",
+            "role": "coast observer",
+            "description": "A cautious local volunteer who values evidence over heroics and distrusts unexplained structures."
+        }
+    ],
+    "characterStates": [
+        {
+            "characterId": "char-aijiang",
+            "projectId": "chenxing",
+            "mood": "警覺",
+            "health": "normal",
+            "flags": {
+                "available_actions": "跟隨; 警戒四周; 停在安全處",
+                "current_goal": "跟在陸塵行身邊，避開危險的潮水和不穩定的岩石。",
+                "dominant_emotion": "警覺",
+                "emotion.依戀": "70",
+                "emotion.警覺": "60",
+                "initiative_level": "45"
+            }
+        },
+        {
+            "characterId": "char-lin-yao-sandbox",
+            "projectId": "chenxing",
+            "mood": "戒備",
+            "health": "normal",
+            "flags": {
+                "available_actions": "記錄足跡; 封存碎片; 拒絕無證據的要求",
+                "current_goal": "Preserve physical evidence before tide and scavengers erase it.",
+                "dominant_emotion": "戒備",
+                "initiative_level": "70"
+            }
+        },
+        {
+            "characterId": "char-lu-chenxing",
+            "projectId": "chenxing",
+            "mood": "專注",
+            "health": "normal",
+            "inventory": [
+                "item-phone",
+                "item-tide-notes"
+            ],
+            "flags": {
+                "available_actions": "查看潮汐紀錄; 觀察海蝕平台; 安撫愛醬; 檢查手機訊號",
+                "current_goal": "確認潮汐時間，並弄清海蝕平台上那些不該出現的結構接縫。",
+                "dominant_emotion": "專注",
+                "emotion.專注": "65",
+                "emotion.警覺": "35",
+                "initiative_level": "55"
+            }
+        },
+        {
+            "characterId": "char-tide-scavenger-sandbox",
+            "projectId": "chenxing",
+            "mood": "算計",
+            "health": "normal",
+            "flags": {
+                "available_actions": "轉移碎片; 製造假足跡; 觀察退路",
+                "current_goal": "Move the marked evidence before the returning group can secure it.",
+                "dominant_emotion": "算計",
+                "initiative_level": "80"
+            }
+        },
+        {
+            "characterId": "char-zhou-ke-sandbox",
+            "projectId": "chenxing",
+            "mood": "焦躁",
+            "health": "normal",
+            "flags": {
+                "available_actions": "關閉危險路線; 清點人員; 隱瞞舊鑰匙來源",
+                "current_goal": "Get everyone above the tide line without exposing his old mistake.",
+                "dominant_emotion": "焦躁",
+                "initiative_level": "65"
+            }
+        }
+    ],
+    "worldRules": [
+        {
+            "id": "rule-tidal-coastal-danger",
+            "projectId": "chenxing",
+            "title": "潮間帶是真實危險",
+            "content": "漲潮、長周期浪與颱風外圍可讓原本能走的路在短時間內變得無法通過。",
+            "priority": 10
+        },
+        {
+            "id": "rule-curiosity-exploration",
+            "projectId": "chenxing",
+            "title": "好奇與探索是讀者引擎",
+            "content": "吸引力來自想要了解、想要探索，以及主角明顯多理解世界一點；抽象壓力本身不是主引擎。",
+            "priority": 9
+        },
+        {
+            "id": "rule-volume-one-no-cultivation-lecture",
+            "projectId": "chenxing",
+            "title": "第一卷不講修煉課",
+            "content": "第一卷以 2026 台灣線性開場，不先講修煉體系，不開灰關市集冷開場。",
+            "priority": 9
+        },
+        {
+            "id": "rule-fortress-wilderness-later",
+            "projectId": "chenxing",
+            "title": "要塞與荒野（穿越後世界）",
+            "content": "已知文明住在要塞群島中，要塞間荒野極度致命；此規則在穿越後才成為主角日常壓力。",
+            "priority": 6
+        },
+        {
+            "id": "rule-cultivation-entry-gate",
+            "projectId": "chenxing",
+            "title": "感氣門檻",
+            "content": "約二十分之一的人能感氣，但尚不能引氣入體；此階段仍被視為凡人。",
+            "priority": 5
+        }
+    ],
+    "facts": [
+        {
+            "id": "fact-bavi-approaching",
+            "projectId": "chenxing",
+            "content": "颱風巴威接近台灣，北部面臨強風、豪雨與長周期浪的風險。",
+            "source": "setting_pack:chenxing-formal-v1"
+        },
+        {
+            "id": "fact-no-public-ruin-record",
+            "projectId": "chenxing",
+            "content": "大坪海岸這處遺跡在一般可查的公開紀錄、地圖與地方敘事中幾乎找不到名字。",
+            "source": "setting_pack:chenxing-formal-v1"
+        },
+        {
+            "id": "fact-opening-year-place",
+            "projectId": "chenxing",
+            "content": "故事第一卷開場在 2026 年台灣基隆八斗子大坪海岸。",
+            "source": "setting_pack:chenxing-formal-v1"
+        },
+        {
+            "id": "fact-sandbox-fresh-footprints",
+            "projectId": "chenxing",
+            "content": "Fresh boot prints lead away from the obvious seam before the tide turns.",
+            "source": "setting_pack:reboot01-chenxing-sandbox-addon"
+        },
+        {
+            "id": "fact-sandbox-shelter-key",
+            "projectId": "chenxing",
+            "content": "A corroded shelter key bears recent scrape marks.",
+            "source": "setting_pack:reboot01-chenxing-sandbox-addon"
+        }
+    ],
+    "items": [
+        {
+            "id": "item-phone",
+            "projectId": "chenxing",
+            "name": "手機",
+            "description": "一般智慧型手機；颱風外圍增強後可能失去訊號。",
+            "ownerCharacterId": "char-lu-chenxing"
+        },
+        {
+            "id": "item-tide-notes",
+            "projectId": "chenxing",
+            "name": "潮汐紀錄",
+            "description": "陸塵行事先查好的潮汐與天氣筆記。",
+            "ownerCharacterId": "char-lu-chenxing"
+        }
+    ],
+    "recentEvents": [
+        {
+            "id": "event-npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+            "projectId": "chenxing",
+            "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-2",
+            "summary": "Signs of a careful off-screen search remain at loc-daping-coast.",
+            "payload": {
+                "npcId": "char-lin-yao-sandbox",
+                "locationId": "loc-daping-coast",
+                "offscreen": true
+            }
+        },
+        {
+            "id": "return-observes-offscreen",
+            "projectId": "chenxing",
+            "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-3",
+            "summary": "林遙的記號證明有人在陸塵行離場時轉移過碎片。"
+        },
+        {
+            "id": "fair-second-order",
+            "projectId": "chenxing",
+            "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-4",
+            "summary": "主角避開明顯陷阱，但拾潮者利用延遲轉移了真正證據。"
+        }
+    ],
+    "contextId": "ctx-ef89c616-f295-440f-bbfa-7c0b7d636955",
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "branchId": "branch-05ce0f38-2816-4dc8-b506-f1779b80cb29",
+    "baseStateVersion": 4,
+    "contextHash": "cb55dec2abd90f9e6c34cb2d36436aae383f167494ea94d444b60d6208bf9178",
+    "generatedAt": "2026-07-11T20:43:50.033711500Z",
+    "recentTurnSummaries": [
+        {
+            "turnNumber": 2,
+            "resultId": "offscreen-result-f28739db-987e-4400-b37d-f1c86ac39d5c",
+            "summary": "char-lin-yao-sandbox completed a bounded off-screen action."
+        },
+        {
+            "turnNumber": 3,
+            "resultId": "turn-03-result",
+            "summary": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。"
+        },
+        {
+            "turnNumber": 4,
+            "resultId": "turn-04-result",
+            "summary": "陸塵行認出假足跡，繞開最明顯的追蹤線；拾潮者卻利用這段延遲，把真正證據推入另一條潮溝。"
+        }
+    ],
+    "outputRequirements": {
+        "mustIncludeTurnSummary": true,
+        "mustIncludeCharacterActions": true,
+        "mustProduceMeaningfulStateChange": false,
+        "deliveryMode": "PLAIN_ORAL"
+    },
+    "contextBudget": {
+        "maxBytes": 24576,
+        "actualBytes": 19059,
+        "includedMemoryCount": 0,
+        "omittedMemoryCount": 0,
+        "includedKnowledgeCount": 0,
+        "omittedKnowledgeCount": 0,
+        "includedSettingCount": 11,
+        "omittedSettingCount": 0,
+        "truncationApplied": false,
+        "truncationReasonCodes": []
+    },
+    "sceneLifecycle": {
+        "sceneInstanceId": "scene-instance-7e5add49-d236-4670-ab44-0231725cb390",
+        "sceneId": "scene-daping-coast-opening"
+    },
+    "activeStoryThreads": [
+        {
+            "threadId": "thread-opening-survival-curiosity",
+            "type": "plot",
+            "publicSummary": "在真實天氣與潮汐壓力下，主角必須一邊求生一邊弄清眼前不該存在的結構。",
+            "status": "OPEN",
+            "progress": 0,
+            "urgency": 0,
+            "directorGuidance": "Use evidence; do not override character goals."
+        }
+    ],
+    "worldClock": {
+        "worldTime": "T+25m",
+        "elapsedMinutes": 25,
+        "turnNumber": 5
+    },
+    "continuityConstraints": {
+        "currentSceneInstanceId": "scene-instance-7e5add49-d236-4670-ab44-0231725cb390",
+        "currentSceneLocationId": "loc-daping-coast",
+        "characterLocations": {
+            "char-aijiang": "loc-daping-coast",
+            "char-lin-yao-sandbox": "loc-daping-coast",
+            "char-lu-chenxing": "loc-daping-coast",
+            "char-tide-scavenger-sandbox": "loc-daping-coast",
+            "char-zhou-ke-sandbox": "loc-daping-coast"
+        },
+        "itemLocations": {
+            "item-phone": "char-lu-chenxing",
+            "item-tide-notes": "char-lu-chenxing"
+        }
+    },
+    "relevantSettings": [
+        {
+            "entityType": "character",
+            "entityId": "char-aijiang",
+            "name": "愛醬",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "character",
+            "entityId": "char-lin-yao-sandbox",
+            "name": "林遙（Sandbox）",
+            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "character",
+            "entityId": "char-lu-chenxing",
+            "name": "陸塵行",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "character",
+            "entityId": "char-tide-scavenger-sandbox",
+            "name": "拾潮者（Sandbox）",
+            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "character",
+            "entityId": "char-zhou-ke-sandbox",
+            "name": "周克（Sandbox）",
+            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "item",
+            "entityId": "item-phone",
+            "name": "手機",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1,
+            "relationPath": [
+                "character:char-lu-chenxing-OWNS->item:item-phone"
+            ],
+            "requiredRuntimeUse": true
+        },
+        {
+            "entityType": "item",
+            "entityId": "item-tide-notes",
+            "name": "潮汐紀錄",
+            "summary": "陸塵行事先查好的潮汐與天氣筆記。",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1,
+            "relationPath": [
+                "character:char-lu-chenxing-OWNS->item:item-tide-notes"
+            ],
+            "requiredRuntimeUse": true
+        },
+        {
+            "entityType": "location",
+            "entityId": "loc-daping-coast",
+            "name": "大坪海岸（Sandbox runtime reference）",
+            "summary": "Stage 4 reuses the formal location id only inside a r...",
+            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "project",
+            "entityId": "chenxing",
+            "name": "塵行",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1
+        },
+        {
+            "entityType": "scene",
+            "entityId": "scene-daping-coast-opening",
+            "name": "大坪海岸開場",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1,
+            "relationPath": [
+                "scene:scene-daping-coast-opening-LOCATED_IN->location:loc-daping-coast"
+            ],
+            "requiredRuntimeUse": true
+        },
+        {
+            "entityType": "story_thread",
+            "entityId": "thread-opening-survival-curiosity",
+            "name": "海岸生存與異常遺跡",
+            "summary": "在真實天氣與潮汐壓力下，主角必須一邊求生一邊弄清眼前不該存在的結構。",
+            "visibility": "director_only",
+            "sourcePackId": "chenxing-formal-v1",
+            "sourcePackVersion": 1,
+            "requiredRuntimeUse": true
+        }
+    ],
+    "settingContextBudget": {
+        "actualBytes": 3074,
+        "includedSettingCount": 11
+    },
+    "canonRevisionSummary": {
+        "importedPacks": [
+            "chenxing-formal-v1@1",
+            "reboot01-chenxing-sandbox-addon@1"
+        ],
+        "relevantRevisionIds": [
+            "entity-revision-0814adee-da2a-46fd-bb25-fe785b0a73cd",
+            "entity-revision-2bd3791d-47e8-4f1d-8310-f7edbc257d28",
+            "entity-revision-34931f42-58a1-4f46-8dc9-c8a9922ec25b",
+            "entity-revision-3f8bd54d-b298-4d31-bb7f-2057999002ec",
+            "entity-revision-4c333323-cb8e-45ce-932e-6151757f3d0f",
+            "entity-revision-8839ca12-ea3f-4ad1-9d64-d04c1a5ea4ab",
+            "entity-revision-8e562f88-2070-49f2-b874-269007c774d9",
+            "entity-revision-b26be6fb-e3ea-4af7-8d82-2632d085bab6"
+        ],
+        "latestImportId": "setting-import-8564949b-f676-4207-b29d-b05cd36f1c1a"
+    },
+    "readerMode": true,
+    "narrativeDelivery": {
+        "deliveryMode": "PLAIN_ORAL",
+        "activeBeatId": "shot-09-hillside-retreat",
+        "activeBeatTitle": "躲入山坡廢墟",
+        "beatKeywords": [
+            "山坡",
+            "廢墟",
+            "撤退",
+            "混凝土",
+            "避難",
+            "愛醬"
+        ],
+        "advisoryNote": "白話口述：旁白與台詞優先使用 oralLineCandidates；引號內對白不得自創術語句。每段對白前須標明說話者，如「陸塵行低聲道：「……」」；旁白與對白分句，勿把台詞黏在旁白後面不換氣。家人／默契同伴（如愛醬）勿寫成被呼喚的寵物，禁止「跟我走」「過來」式口令；改為旁白寫默契跟隨，或主角自言。"
+    },
+    "oralLineCandidates": [
+        {
+            "lineId": "narr-09",
+            "speaker": "旁白",
+            "line": "唯一能躲的地方，在山坡上——日治時期留下的廢棄構造物。",
+            "lineType": "narration",
+            "sourceBeatId": "shot-09-hillside-retreat"
+        },
+        {
+            "lineId": "dlg-09",
+            "speaker": "陸塵行",
+            "line": "上面那棟……至少能擋風。",
+            "delivery": "喘而穩，自言",
+            "sourceBeatId": "shot-09-hillside-retreat"
+        }
+    ]
+}

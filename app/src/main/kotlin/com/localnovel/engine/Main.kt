@@ -41,6 +41,7 @@ class Cli {
                 "resolve-turn" -> StorySessionCli.resolveTurn(options)
                 "run-offscreen-npc-tick" -> StorySessionCli.runOffscreenNpcTick(options)
                 "evaluate-reboot-drama" -> StorySessionCli.evaluateRebootDrama(options)
+                "run-reboot01-vertical-slice" -> StorySessionCli.runReboot01VerticalSlice(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
@@ -210,6 +211,7 @@ class Cli {
               resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--scenario-seed <seed>] [--revision-suggestion <text>] [--revised-draft-file <path>] [--irreversible-contract <path> --irreversible-approval <path>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               run-offscreen-npc-tick [--db <path>] --session <id> --profile <path> --scenario-seed <seed> [--out <path>]
               evaluate-reboot-drama [--db <path>] --input <path> [--out <path>]
+              run-reboot01-vertical-slice --db <path> --out-dir <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>

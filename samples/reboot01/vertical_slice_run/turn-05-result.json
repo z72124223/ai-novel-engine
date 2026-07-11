@@ -1,0 +1,40 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-5",
+    "narrative": "碎石落下時，陸塵行只來得及拉回愛醬。拾潮者護住證據的手被壓在石縫裡，從此再也無法像以前那樣用力。海浪沒有替任何人辯解。",
+    "resultId": "turn-05-result",
+    "contextId": "ctx-ef89c616-f295-440f-bbfa-7c0b7d636955",
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "turnNumber": 5,
+    "baseStateVersion": 4,
+    "contextHash": "cb55dec2abd90f9e6c34cb2d36436aae383f167494ea94d444b60d6208bf9178",
+    "turnSummary": "碎石落下時，陸塵行只來得及拉回愛醬。拾潮者護住證據的手被壓在石縫裡，從此再也無法像以前那樣用力。海浪沒有替任何人辯解。",
+    "characterActions": [
+        {
+            "characterId": "char-tide-scavenger-sandbox",
+            "intent": "抓住證據而拒絕撤手",
+            "visibleAction": "抓住證據而拒絕撤手",
+            "hiddenMotive": "不肯失去唯一籌碼",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-tide-scavenger-sandbox",
+            "payload": {
+                "health": "permanent_hand_injury"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "sandbox-irreversible-injury",
+            "payload": {
+                "summary": "拾潮者在潮溝崩落中留下永久手傷。"
+            }
+        }
+    ]
+}

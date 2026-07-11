@@ -1,0 +1,31 @@
+{
+    "evaluationId": "slice-drama-4-2a9b1905-896c-443e-877d-f3b945128567",
+    "rawScores": {
+        "sarcasmVoiceFit": 90,
+        "banterNaturalness": 85,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 35,
+        "fairSurprise": 90,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 90,
+        "antagonistAdaptation": 90,
+        "emotionalWaveCoverage": 70,
+        "readerAttachment": 55,
+        "overall": 82
+    },
+    "findings": [
+        {
+            "code": "SARCASM_UNDERCUTS_PRESSURE",
+            "critic": "CharacterDramaCritic",
+            "severity": "minor",
+            "message": "Sarcasm may undercut a serious beat.",
+            "suggestedFix": "Reduce jokes when pressure becomes real."
+        }
+    ],
+    "revisionSuggestion": "Reduce jokes when pressure becomes real.",
+    "revisionCount": 0,
+    "selectedDraft": "陸塵行認出假足跡，繞開最明顯的追蹤線；拾潮者卻利用這段延遲，把真正證據推入另一條潮溝。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

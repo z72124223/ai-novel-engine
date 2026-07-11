@@ -1,0 +1,23 @@
+{
+    "evaluationId": "slice-drama-3-cc7f5034-924c-424a-84b2-4dac0eca27a2",
+    "rawScores": {
+        "sarcasmVoiceFit": 65,
+        "banterNaturalness": 60,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 75,
+        "fairSurprise": 35,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 35,
+        "antagonistAdaptation": 35,
+        "emotionalWaveCoverage": 95,
+        "readerAttachment": 85,
+        "overall": 64
+    },
+    "findings": [],
+    "revisionSuggestion": "",
+    "revisionCount": 0,
+    "selectedDraft": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

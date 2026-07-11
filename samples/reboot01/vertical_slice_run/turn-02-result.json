@@ -1,0 +1,41 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-2",
+    "narrative": "Elsewhere, Inspects the immediate area and secures evidence before anyone returns. Signs of a careful off-screen search remain at loc-daping-coast.",
+    "resultId": "offscreen-result-f28739db-987e-4400-b37d-f1c86ac39d5c",
+    "contextId": "ctx-0ccfd2de-d71f-4299-bb3e-cbb17f2a6ef1",
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "turnNumber": 2,
+    "baseStateVersion": 1,
+    "contextHash": "95df25b71d5b97e4fe4acd784cc6f56524001a1ce582bb403c1470163fc69ebe",
+    "turnSummary": "char-lin-yao-sandbox completed a bounded off-screen action.",
+    "characterActions": [
+        {
+            "characterId": "char-lin-yao-sandbox",
+            "intent": "Preserve physical evidence before tide and scavengers erase it.",
+            "visibleAction": "Inspects the immediate area and secures evidence before anyone returns.",
+            "hiddenMotive": "Preserve evidence so powerful people cannot rewrite what happened; therefore Document fresh footprints while Lu Chenxing is away.",
+            "characterFitScore": 90,
+            "storyProgressScore": 70
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "event-npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+            "payload": {
+                "summary": "Signs of a careful off-screen search remain at loc-daping-coast.",
+                "npcId": "char-lin-yao-sandbox",
+                "locationId": "loc-daping-coast",
+                "offscreen": true
+            }
+        }
+    ],
+    "timeAdvanceProposal": {
+        "minutes": 10,
+        "sourceType": "offscreen_npc",
+        "sourceId": "npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+        "reason": "Bounded NPC autonomy tick."
+    }
+}

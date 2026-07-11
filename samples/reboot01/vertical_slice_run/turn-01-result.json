@@ -1,0 +1,47 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-1",
+    "narrative": "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
+    "resultId": "turn-01-result",
+    "contextId": "ctx-eb3f2fd6-eb03-4eba-a452-3a8e0dadd972",
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "turnNumber": 1,
+    "contextHash": "58b4e7b6b9809fa8cbfd6502f93faebbd4521d496e705e64ba4c8ad06d9b37f7",
+    "turnSummary": "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
+    "characterActions": [
+        {
+            "characterId": "char-lu-chenxing",
+            "intent": "帶愛醬撤往高處",
+            "visibleAction": "帶愛醬撤往高處",
+            "hiddenMotive": "確認明顯危險後撤離",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        },
+        {
+            "characterId": "char-aijiang",
+            "intent": "跟隨陸塵行並回頭警戒",
+            "visibleAction": "跟隨陸塵行並回頭警戒",
+            "hiddenMotive": "不離開家人",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-lu-chenxing",
+            "payload": {
+                "locationId": "loc-hillside-ruin"
+            }
+        },
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-aijiang",
+            "payload": {
+                "locationId": "loc-hillside-ruin"
+            }
+        }
+    ]
+}

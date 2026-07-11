@@ -1,0 +1,48 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-3",
+    "narrative": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。",
+    "resultId": "turn-03-result",
+    "contextId": "ctx-35ce1925-6b8e-4528-aae7-a14056186058",
+    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "turnNumber": 3,
+    "baseStateVersion": 2,
+    "contextHash": "e98d14c4355b7f6215a49fc29c08600f751b8f9c910e73ba684ab40e3ba2e4ca",
+    "turnSummary": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。",
+    "characterActions": [
+        {
+            "characterId": "char-zhou-ke-sandbox",
+            "intent": "發出安全折返信號",
+            "visibleAction": "發出安全折返信號",
+            "hiddenMotive": "先保人再說明真相",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-lu-chenxing",
+            "payload": {
+                "locationId": "loc-daping-coast"
+            }
+        },
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-aijiang",
+            "payload": {
+                "locationId": "loc-daping-coast"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "return-observes-offscreen",
+            "payload": {
+                "summary": "林遙的記號證明有人在陸塵行離場時轉移過碎片。"
+            }
+        }
+    ]
+}

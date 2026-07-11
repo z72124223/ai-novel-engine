@@ -1,0 +1,189 @@
+{
+    "applied": true,
+    "importId": "setting-import-8564949b-f676-4207-b29d-b05cd36f1c1a",
+    "packId": "reboot01-chenxing-sandbox-addon",
+    "packVersion": 1,
+    "canonicalHash": "025c54286adedd49a827baeef8d909f741a886758ce8d863988f4e70d2dec8c4",
+    "diff": {
+        "packId": "reboot01-chenxing-sandbox-addon",
+        "packVersion": 1,
+        "entries": [
+            {
+                "action": "ADD",
+                "entityType": "character",
+                "entityId": "char-lin-yao-sandbox",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "character",
+                "entityId": "char-zhou-ke-sandbox",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "character",
+                "entityId": "char-tide-scavenger-sandbox",
+                "newVersion": 1
+            },
+            {
+                "action": "UPDATE",
+                "entityType": "location",
+                "entityId": "loc-daping-coast",
+                "previousVersion": 1,
+                "newVersion": 2,
+                "fieldChanges": {
+                    "snapshot": "changed"
+                }
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-sandbox-fresh-footprints",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-sandbox-shelter-key",
+                "newVersion": 1
+            }
+        ],
+        "canonicalHash": "025c54286adedd49a827baeef8d909f741a886758ce8d863988f4e70d2dec8c4"
+    },
+    "impact": {
+        "packId": "reboot01-chenxing-sandbox-addon",
+        "packVersion": 1,
+        "changedRoots": [
+            "character:char-lin-yao-sandbox",
+            "character:char-tide-scavenger-sandbox",
+            "character:char-zhou-ke-sandbox",
+            "fact:fact-sandbox-fresh-footprints",
+            "fact:fact-sandbox-shelter-key",
+            "location:loc-daping-coast"
+        ],
+        "impactedCharacters": [
+            "char-aijiang",
+            "char-lu-chenxing"
+        ],
+        "impactedScenes": [
+            "scene-daping-coast-opening"
+        ],
+        "paths": [
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "character",
+                "impactedId": "char-aijiang",
+                "relationPath": [
+                    "LOCATED_IN:character:char-aijiang"
+                ],
+                "severity": "MEDIUM",
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "character",
+                "impactedId": "char-lu-chenxing",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing"
+                ],
+                "severity": "MEDIUM",
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "character",
+                "impactedId": "char-lu-chenxing",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing",
+                    "OWNS:item:item-phone",
+                    "OWNS:character:char-lu-chenxing"
+                ],
+                "severity": "MEDIUM",
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "character",
+                "impactedId": "char-lu-chenxing",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing",
+                    "OWNS:item:item-tide-notes",
+                    "OWNS:character:char-lu-chenxing"
+                ],
+                "severity": "MEDIUM",
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "item",
+                "impactedId": "item-phone",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing",
+                    "OWNS:item:item-phone"
+                ],
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "item",
+                "impactedId": "item-tide-notes",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing",
+                    "OWNS:item:item-tide-notes"
+                ],
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "location",
+                "impactedId": "loc-daping-coast",
+                "relationPath": [
+                    "LOCATED_IN:character:char-aijiang",
+                    "LOCATED_IN:location:loc-daping-coast"
+                ],
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "location",
+                "impactedId": "loc-daping-coast",
+                "relationPath": [
+                    "LOCATED_IN:character:char-lu-chenxing",
+                    "LOCATED_IN:location:loc-daping-coast"
+                ],
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "location",
+                "impactedId": "loc-daping-coast",
+                "relationPath": [
+                    "LOCATED_IN:scene:scene-daping-coast-opening",
+                    "LOCATED_IN:location:loc-daping-coast"
+                ],
+                "reason": "Dependency path from changed canon."
+            },
+            {
+                "rootType": "location",
+                "rootId": "loc-daping-coast",
+                "impactedType": "scene",
+                "impactedId": "scene-daping-coast-opening",
+                "relationPath": [
+                    "LOCATED_IN:scene:scene-daping-coast-opening"
+                ],
+                "severity": "MEDIUM",
+                "reason": "Dependency path from changed canon."
+            }
+        ]
+    }
+}

@@ -23,6 +23,7 @@ import com.localnovel.engine.service.NarrativeQualityGateService
 import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.service.RebootRunEvidenceService
 import com.localnovel.engine.service.RebootDramaLoopService
+import com.localnovel.engine.service.RebootVerticalSliceRunner
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
 import com.localnovel.engine.service.AudioNovelEpisodeExporter
@@ -84,6 +85,21 @@ internal object StorySessionCli {
             Files.writeString(out, JsonSupport.json.encodeToString(report))
         }
         println(JsonSupport.json.encodeToString(report))
+        return 0
+    }
+
+    fun runReboot01VerticalSlice(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
+        Files.deleteIfExists(repository.databasePath())
+        val summary = RebootVerticalSliceRunner(
+            repository = repository,
+            outputDir = Path.of(options.requiredCliOption("out-dir")),
+        ).run(
+            basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
+            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
+            npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
+        )
+        println(JsonSupport.json.encodeToString(summary))
         return 0
     }
 
