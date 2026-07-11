@@ -21,11 +21,12 @@ Every GPT, Codex CLI, Reviewer, Subagent or external collaborator must read in t
 4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
 5. `docs/work-packages/REBOOT-01_EXECUTION_ADDENDUM_V1.md`
 6. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-7. `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
-8. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
-9. `docs/development_journal/INDEX.md`
-10. `AGENTS.md`
-11. only the code, tests, world data and historical evidence needed by the active Stage
+7. `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
+8. `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
+9. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
+10. `docs/development_journal/INDEX.md`
+11. `AGENTS.md`
+12. only the code, tests, world data and historical evidence needed by the active Stage
 
 Do not start from old `HANDOFF`, image Work Packages, route cards, charters, README status or historical `PLANS.md` headings.
 
@@ -33,9 +34,11 @@ Do not start from old `HANDOFF`, image Work Packages, route cards, charters, REA
 
 ```text
 Stage 0: run and measure the real engine
+→ World／SQL／Runtime reality audit
+→ validated non-Canon world patch in a resettable Sandbox
 → Stage 1: simplify overblocking and persist run evidence
 → Stage 2: bounded offscreen NPC autonomy
-→ Stage 3: Drama Director, independent Critics, sarcasm voice and fair-surprise controls
+→ Stage 3: Drama Director, independent Critics, protagonist voice and fair-surprise controls
 → Stage 4: real Chenxing 5–10 turn non-canon playable slice
 → Stage 5: same-seed replay and measurable rule evolution
 → Stage 6: minimal local Web playable interface
@@ -70,29 +73,31 @@ Use:
 - `gpt-5.6-terra / medium` for runtime/test analysis;
 - `gpt-5.6-sol / medium` for narrative systems and normal implementation;
 - `gpt-5.6-luna / low` for low-risk repetitive cost/complexity audits;
-- `gpt-5.6-sol / high` only for Transaction, Migration, StateReducer, Knowledge, Version/Hash, core security, or final read-only integration review.
+- `gpt-5.6-sol / high` only for Transaction, Migration, StateReducer, Knowledge, Version/Hash, source-authority conflict, core security, or final read-only integration review.
 
-Follow `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md` and project `.codex/config.toml`.
+Follow `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`, project `.codex/config.toml` and `.codex/agents/*.toml`.
 
 ## 5. Subagent authority
 
 Codex should use up to four direct Subagents when work is genuinely parallel.
 
-Allowed read-heavy roles:
+Available read-heavy roles:
 
 - Repository Explorer;
-- Runtime Tester;
+- Runtime Evidence Tester;
 - Narrative Systems Critic;
 - Cost and Complexity Auditor;
 - High Risk Reviewer as an on-demand replacement.
 
 Only the root/main Agent writes core Kotlin, SQL, migrations and transaction code. `max_depth = 1` prevents recursive agent fan-out.
 
-## 6. Product and narrative target
+## 6. Product, world and narrative target
 
 The vertical slice must prove:
 
 - trustworthy persisted world state;
+- a Reality Audit distinguishing formal source, SQL load, Context retrieval, Runtime use and Scenario trigger;
+- a validated non-Canon World Patch Candidate applied only to a resettable Sandbox;
 - NPCs with independent goals and offscreen action;
 - a Game Master that resolves actions without giving Agents direct state authority;
 - a Drama Director that selects meaningful conflicts without controlling character will;
@@ -109,7 +114,7 @@ The vertical slice must prove:
 
 ## 7. Preserved hard boundaries
 
-- SQLite formal runtime state;
+- SQLite formal Runtime state;
 - atomic Transaction;
 - `stateVersion`, `contextHash`, idempotency;
 - character Knowledge Boundary;
@@ -135,11 +140,12 @@ The following no longer control current work:
 - image or script is permanently the only terminal product;
 - GPT-5.5-era assumptions remain current without revalidation;
 - characters must ignore obvious danger to preserve a planned scare;
-- random twists are acceptable substitutes for causal surprise.
+- random twists are acceptable substitutes for causal surprise;
+- a formal JSON file existing is proof the Runtime actually uses it.
 
 ## 9. Evidence policy
 
-Always save:
+Always save when available:
 
 - raw model result;
 - Critic scores and findings;
@@ -148,12 +154,14 @@ Always save:
 - protocol/world validation;
 - rejected State Delta;
 - accepted State Delta;
-- model/reasoning metadata when available;
+- model/reasoning metadata;
 - elapsed time;
 - replay seed;
 - DecisionTrace;
 - offscreen events;
-- reader narrative.
+- reader narrative;
+- world audit status;
+- Sandbox patch source and use evidence.
 
 Quality warnings do not erase evidence. World-illegal output does not apply state.
 
@@ -176,7 +184,7 @@ IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
 VIDEO_LANE_FUTURE_PROVIDER_BAKEOFF_NO_SPEND
 ```
 
-The panorama candidate is not yet a formal Location Reference because Codex Intake/Hash/Candidate Reference was not completed.
+The panorama candidate is not yet a formal Location Reference because Codex Intake／Hash／Candidate Reference was not completed.
 
 Future provider selection uses `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V2.md` and rechecks official docs, price and terms on activation day.
 
@@ -184,7 +192,7 @@ Future provider selection uses `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V2.md` and rech
 
 Stop and ask the user only for:
 
-- formal Canon or AUTHOR_LOCKED conflict;
+- formal Canon or unresolved AUTHOR_LOCKED conflict;
 - permanent character death/fate or romance decision;
 - formal visual approval;
 - provider purchase, API key or spend;
@@ -192,7 +200,7 @@ Stop and ask the user only for:
 - a requirement to weaken Transaction, Knowledge, Version, Hash or irreversible approval boundaries;
 - the same core blocker still unresolved after one evidenced Medium attempt and one evidenced High attempt.
 
-Do not stop for ordinary Bugs, tests, additive Migration, small architecture choices, Web technology selection, low Critic scores or failed first drafts.
+Do not stop for ordinary Bugs, tests, additive Migration, bounded architecture choices, Web technology selection, low Critic scores, failed first drafts or Sandbox candidate design.
 
 ## 13. Completion
 
@@ -203,6 +211,7 @@ The final response to the user must include:
 - final branch and Commit chain;
 - exact run/test commands;
 - test results and remaining failures;
+- world/character Reality Audit and Sandbox patch evidence;
 - 5–10 turn evidence paths;
 - SQL persistence evidence;
 - NPC autonomy evidence;
