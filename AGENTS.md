@@ -1,4 +1,4 @@
-# AGENTS.md — Playable Depth Reboot Rules V2
+# AGENTS.md — Autonomous Playable Depth Rules V3
 
 ## 1. Mandatory Current Entry
 
@@ -6,69 +6,60 @@ Every Agent must read in this order:
 
 1. `PROJECT_STATE.md`
 2. `.codex/project_controller.md`
-3. `docs/CURRENT_ROUTE_GATE_V2.md`
+3. `docs/CURRENT_ROUTE_GATE_V3.md`
 4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
-5. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-6. `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
-7. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
-8. this file
-9. only the evidence required by the current REBOOT Stage
+5. `docs/work-packages/REBOOT-01_EXECUTION_ADDENDUM_V1.md`
+6. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
+7. `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
+8. `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
+9. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
+10. `docs/development_journal/INDEX.md`
+11. this file
+12. only the evidence required by the active REBOOT Stage
 
-Historical HANDOFF, image Work Packages, route cards, charters, README status text and old `PLANS.md` sections are evidence only.
+Historical HANDOFF files, image Work Packages, Route Gates V1/V2, Model Policy V1, old route cards, charters, README status text and historical `PLANS.md` sections are evidence only.
 
 ## 2. Active Goal
 
-The active goal is a real playable depth slice:
+The active goal is runnable evidence:
 
 ```text
 engine reality baseline
-→ world／SQL／Runtime audit
-→ validation simplification
-→ SQL run-evidence persistence
-→ non-Canon world candidate patch in Sandbox
-→ bounded NPC autonomy
-→ drama／critics／predictability checks
-→ 5–10 turn Chenxing playable slice
-→ replay and rule evolution
-→ minimal local Web interface
+→ world/formal/SQL/runtime reality audit
+→ non-Canon Sandbox world patch
+→ validation simplification and SQL run-evidence persistence
+→ bounded offscreen NPC autonomy
+→ Game Master／Drama Director／independent Critics
+→ protagonist voice／anti-idiot-plot／fair-surprise controls
+→ real 5–10 turn Chenxing slice
+→ same-seed replay and measurable evolution
+→ minimal local Web playable interface
+→ honest final report and Push
 ```
 
-Images are paused after one user-approved candidate. Video is future provider-neutral bake-off work with no current spending authorization.
+Images are paused after one user-kept panorama candidate. Video is future provider-neutral bake-off work with no current spending authorization.
 
-## 3. Core Engine Rules That Remain Non-Negotiable
+## 3. Core Engine Rules
 
 - Kotlin/JVM remains the engine core.
 - SQLite remains formal Runtime state.
-- JSON remains controlled interchange/evidence.
-- Formal State changes go through existing Service／Repository／Validator／StateReducer and Transaction boundaries.
-- Preserve `contextHash`, `stateVersion`, duplicate-result protection and Session／Turn identity.
-- Character knowledge, memory, location, item reachability, capabilities and costs remain bounded.
-- Migrations are additive; historical migrations remain immutable.
-- AI／NPC／Drama agents may propose, score and revise; they do not directly write Canon or formal world State.
-- Formal Canon, formal visual assets, destructive changes, release and paid providers require explicit human approval.
-- API keys and credentials never enter Git or logs.
+- JSON remains a controlled interchange and evidence format.
+- Formal state changes go through existing Service／Repository／Validator／StateReducer and one atomic Transaction.
+- Preserve `contextHash`, `stateVersion`, Session／Turn identity and duplicate-result protection.
+- Preserve character Knowledge Boundary, memory, location, item reachability, capability authorization and costs.
+- Historical migrations are immutable; new migrations are additive only.
+- AI／NPC／Drama agents may propose, score and revise; they never directly write formal state or Canon.
+- Formal Canon, formal visual assets, destructive actions, release and paid providers require explicit human approval.
+- API keys and credentials never enter Git, logs, prompts or reports.
 
-## 4. Retired Rules
+## 4. Three Hard Gates Only
 
-The following old permanent modes are retired for REBOOT-01:
-
-- permanent prohibition on localhost Web Server, local port, Ktor, React or TypeScript;
-- every quality warning blocks persistence;
-- content must be near-perfect before Run Evidence is saved;
-- Codex always uses High／Max;
-- all work must remain single-agent;
-- every internal Stage must return to GPT;
-- full test coverage can replace real play evidence;
-- script-only or image-first is permanently the only mainline.
-
-## 5. Validation Simplification
-
-Only these are hard blockers:
+Hard blockers:
 
 ### A. Protocol Safety
 
 - parseable data;
-- required identity fields;
+- required IDs;
 - Session／Turn／Version／Hash match;
 - no duplicate apply.
 
@@ -76,21 +67,21 @@ Only these are hard blockers:
 
 - legal location;
 - reachable item;
-- available capability and cost;
+- available ability and valid cost;
 - character knowledge boundary;
 - valid State Delta;
 - atomic Transaction.
 
 ### C. Irreversible Approval
 
-- Canon promotion;
+- formal Canon promotion;
 - formal asset acceptance;
 - destructive delete／overwrite;
 - external release;
 - paid provider/API;
-- weakening security or State safety.
+- weakening a security or state-safety boundary.
 
-Quality issues are persisted as scores/warnings:
+The following are Scores/Warnings rather than persistence blockers:
 
 - prose quality;
 - pacing;
@@ -99,15 +90,15 @@ Quality issues are persisted as scores/warnings:
 - weak subtext;
 - information dumping;
 - emotional impact;
+- scene focus;
 - predictability;
-- reversal fairness;
-- character-intelligence risk.
+- stylistic preference.
 
-Poor drafts may be saved as Run Evidence. They must not be confused with applied State or approved content.
+A poor draft may be stored as Run Evidence. It must not be confused with applied state or approved content.
 
-## 6. SQL-First Evidence
+## 5. SQL-First Run Evidence
 
-For every generated or simulated turn, preserve when available:
+For each generated or simulated turn, preserve when available:
 
 ```text
 run id
@@ -120,62 +111,95 @@ critic scores
 revision suggestion
 revised draft
 AI result
-validation findings
-state delta
+protocol/world findings
+rejected State Delta
+accepted State Delta
 apply result
 DecisionTrace
-AudienceExpectation evidence
+offscreen events
 model/reasoning metadata
 elapsed time
+reader narrative
 ```
 
-World-illegal results do not apply State Delta, but their evidence remains useful.
+World-illegal results do not apply State, but their evidence remains queryable. Do not require near-perfect narrative scores before saving evidence.
 
-## 7. World Reality Rule
+## 6. World／Canon／SQL／Runtime Reality
 
-A formal file is not proof the engine uses its content.
+Do not treat a formal file, schema, planning document or passing fixture as proof that the engine uses the data.
 
-Verify separately:
+Prove separately:
 
 ```text
-formal source exists
-SQL contains it
-Runtime Context retrieves it
-Agent／Scene uses it
-Scenario can trigger it
+source authority exists
+→ controlled import/query reaches it
+→ SQL contains or indexes it
+→ Runtime Context retrieves it
+→ Agent／Scene uses it
+→ Scenario can trigger it
 ```
 
-REBOOT-01 must create:
+Classify vertical-slice data as:
 
 ```text
-docs/reboot/REBOOT01_WORLD_AND_CHARACTER_REALITY_AUDIT.md
-out/reboot01/world_audit/world_reality_inventory.json
+FORMAL_AND_RUNTIME_READY
+FORMAL_BUT_NOT_IN_SQL
+IN_SQL_BUT_NOT_RUNTIME_USABLE
+PROVISIONAL_RUNTIME_ONLY
+PLAN_ONLY_NOT_IMPLEMENTED
+HISTORICAL_OR_SUPERSEDED
+CONFLICTING_AUTHORITIES
+MISSING_FOR_VERTICAL_SLICE
 ```
 
-It must also create a non-Canon Chenxing World Patch Candidate, run parse／validate／diff／impact preview, and apply it only to a resettable Sandbox.
+Existing approved data may be technically repaired or imported through controlled paths. Missing creative details remain non-Canon Sandbox candidates. Do not silently invent AUTHOR_LOCKED facts.
 
-Do not modify AUTHOR_LOCKED Canon without a True Stop decision.
+REBOOT-01 must apply at least one validated non-Canon Chenxing World Patch Candidate to a resettable Sandbox and prove Runtime and NPC use.
 
-## 8. NPC Autonomy
+## 7. NPC Autonomy
 
-Important NPCs should support identity, values, goals, needs, fears, beliefs, knowledge boundary, relationships, memory stream, reflection, plan, schedule, location, resources and offscreen agenda.
+Important NPCs should support:
+
+```text
+identity
+values
+goals
+needs
+fears
+beliefs
+knowledge boundary
+relationships
+memory stream
+reflection
+plan
+schedule
+location
+resources
+offscreen agenda
+```
 
 Autonomy flow:
 
 ```text
-observation filtered by perception／knowledge
+observation filtered by perception/knowledge
 → memory candidate
 → importance
 → optional reflection
-→ goal／plan update
+→ goal/plan update
 → action proposal
 → Game Master legality resolution
 → transactional result or rejected-evidence record
 ```
 
-NPCs act from their own information and interests. They must not become tools solely because the player needs exposition. Offscreen actions require DecisionTrace and replay evidence.
+Rules:
 
-## 9. Drama, Voice And Predictability
+- the world may progress while the player is absent;
+- NPCs act from their own information and interests;
+- NPCs must not become exposition tools solely because the player needs information;
+- every offscreen action requires a replayable DecisionTrace;
+- no NPC bypasses formal state or Canon rules.
+
+## 8. Drama and Emotional Wave
 
 Each meaningful scene tracks:
 
@@ -194,11 +218,11 @@ emotionalBeat
 promiseAndPayoff
 ```
 
-Desired emotional wave:
+Desired wave:
 
 ```text
-humor／daily life
-→ warmth／attachment／romance potential
+humor／daily friction
+→ warmth／attachment／romance
 → unease
 → conflict
 → value dilemma
@@ -207,38 +231,55 @@ humor／daily life
 → partial hope or new unresolved pull
 ```
 
-For the REBOOT Sandbox, test a non-Canon protagonist Voice Profile with:
+The protagonist may grow toward major influence, but power must add responsibility, cost, enemies, political consequence and moral pressure. Important NPCs and opponents require independent growth.
+
+The long-running world uses local closure and global continuation. Arcs resolve meaningful promises and leave permanent state while the world continues.
+
+## 9. Protagonist Voice and Anti-Idiot-Plot
+
+For the resettable non-Canon Scenario, Lu Chenxing may use:
 
 ```text
-observational sarcasm
-self-deprecating humor
-risk-aware commentary
-social consequences
-serious-scene restraint
+DAILY_QUIP
+DANGER_OBSERVATION
+GRIEF_RESTRAINT
 ```
 
-Do not create a nonstop joke machine or omniscient author avatar. Humor must not erase grief or other characters' pain.
+He may use observational sarcasm, self-deprecation and risk-aware commentary. He must not become an omniscient author avatar or nonstop joke machine. Humor may create social consequences and should recede under genuine grief.
 
-Any character entering obvious danger must have a motive, knowledge gap, pressure, duty, constraint or calculated tradeoff. Otherwise mark `IDIOT_PLOT_RISK`.
+Any character entering obvious danger needs a traceable reason such as incomplete information, urgent duty, relationship pressure, time pressure, coercion, false belief, resource constraint, moral obligation or calculated risk. Otherwise record:
 
-Track `AudienceExpectationLedger` or equivalent. Prefer fair character-driven reversal or second-order consequences over random twists.
+```text
+IDIOT_PLOT_RISK
+```
 
-The protagonist may become increasingly powerful and influential, but power must increase responsibility, cost and moral pressure. Supporting characters and opponents require independent growth.
+## 10. Fair Surprise and Audience Expectation
 
-The long-running world uses local closure and global continuation. Arcs resolve meaningful questions and leave permanent State; the overall world continues.
+Track an `AudienceExpectationLedger` or equivalent.
 
-## 10. Critic And Revision Rules
+Prefer:
+
+```text
+obvious danger recognized
+→ intelligent first-layer countermeasure
+→ opponent/world adaptation
+→ fair second-order consequence
+```
+
+A surprise must have planted causality and retrospective fairness. Do not use collective stupidity, random betrayal, retroactive world rules, costless hidden powers or repeated fake deaths as substitutes for unpredictability.
+
+## 11. Critics and Revision
 
 Do not let one Agent generate, grade and declare itself perfect.
 
 Use independent roles where useful:
 
-- LogicCritic;
-- CharacterDramaCritic;
-- ProsePacingCritic;
-- audience expectation／predictability checks inside `NarrativeSystemsCritic` or equivalent.
+- Logic Critic;
+- Character／Drama Critic;
+- Prose／Pacing Critic;
+- Audience Expectation／Predictability evaluation.
 
-Automatic revision is limited to one pass:
+Critics produce scores and actionable findings. Automatic revision is limited to one pass:
 
 ```text
 raw draft
@@ -250,117 +291,111 @@ raw draft
 
 No infinite self-revision loop.
 
-## 11. Narrative Stall
+## 12. Narrative Stall and Evolution
 
-If two consecutive turns have no meaningful change in scene goal, scene value, Runtime State, relationship State, cost or reveal, mark `NARRATIVE_STALL`.
-
-The next step must escalate conflict, force a choice, reveal a fact, impose a cost or end／transition the scene. Do not generate longer equivalent dialogue.
-
-## 12. Replay And Evolution
-
-All rule changes are versioned.
-
-Use the same Scenario Seed to compare old and new rules on:
-
-- legal apply rate;
-- stall count;
-- character autonomy;
-- emotional-wave coverage;
-- irreversible changes;
-- repetition／AI-prose risk;
-- audience predictability;
-- twist fairness;
-- character intelligence;
-- world-data usage;
-- sarcasm character fit;
-- serious-scene restraint;
-- elapsed time;
-- retries;
-- model／reasoning.
-
-Adopt a new rule only when evidence improves.
-
-## 13. Multi-Agent And Model Policy
-
-REBOOT-01 allows up to four bounded Subagents:
-
-- RepositoryExplorer;
-- RuntimeTester;
-- NarrativeSystemsCritic;
-- CostAndComplexityAuditor.
-
-Subagents primarily perform read-only work. Only one Writer edits core Kotlin／SQL at a time.
-
-Default:
+If two consecutive turns have no meaningful change in scene goal, scene value, Runtime state, relationship state, cost or reveal, mark:
 
 ```text
-GPT-5.6 Codex coding model
-MEDIUM reasoning
+NARRATIVE_STALL
 ```
 
-Use High only for Migration／Transaction／Validator／StateReducer／Knowledge Boundary／World Source Authority conflict／difficult consistency or replay bugs／final integration.
+The next step must escalate conflict, force a choice, reveal a fact, impose a cost or end/transition the scene.
 
-Use faster modes or scripts for repetitive work, hashes, JSON, paths, diffs and statistics.
+Version rule changes and compare them with the same Scenario Seed. Adopt a new rule only when executable evidence improves legality, autonomy, emotional-wave coverage, stall rate, predictability, cost and reader pull.
 
-Max／highest-cost mode is prohibited unless the model policy conditions are met.
+## 13. Model and Subagents
+
+Default main model:
+
+```text
+gpt-5.6-sol / medium
+```
+
+Use:
+
+- `gpt-5.6-terra / low` for repository exploration;
+- `gpt-5.6-terra / medium` for runtime/test analysis;
+- `gpt-5.6-sol / medium` for normal implementation and narrative systems;
+- `gpt-5.6-luna / low` or scripts for repetitive cost/complexity checks;
+- temporary `gpt-5.6-sol / high` only for Transaction, Migration, StateReducer, Validator, Knowledge, Version/Hash, high-risk integration or final read-only review.
+
+XHigh／Max／Ultra are prohibited by default. Follow `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md` and `.codex/config.toml`.
+
+REBOOT-01 allows up to four direct Subagents with `max_depth = 1`. Only one Writer edits core Kotlin／SQL at a time. Do not parallel-edit `Models.kt`, `Main.kt`, migrations, repositories, transactions or core validators.
 
 ## 14. Local Web Rule
 
-The old permanent prohibition on Web Server, local ports, Ktor, React and TypeScript is retired.
+The old permanent prohibition on a local Web Server, local port, Ktor, React and TypeScript is retired.
 
-REBOOT-01 may create a local-only playable interface after the engine slice passes.
+REBOOT-01 Stage 6 may create a local-only playable interface after Stages 0–5 pass.
 
 Allowed:
 
-- localhost API and local port;
+- localhost API;
+- local port;
 - Kotlin HTTP layer;
-- React／TypeScript or smaller compatible UI;
-- story/input/state/save/load/debug views.
+- React／TypeScript or a smaller compatible UI;
+- story, input, state, save/load and developer evidence views.
 
-Not allowed:
+Not authorized:
 
 - public deployment;
-- cloud auth/payment;
-- exposing SQLite directly to browser code;
+- cloud authentication or payment;
+- exposing raw SQLite to browser code;
 - external paid model APIs;
 - rewriting the engine core in JavaScript.
 
-## 15. Historical Runtime Rules Still Applicable
+## 15. Image and Video Boundary
+
+```text
+IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
+VIDEO_LANE_FUTURE_PROVIDER_BAKEOFF_NO_SPEND
+```
+
+The Daping panorama remains a Candidate until Codex Intake／Hash／Candidate Reference completes. Do not continue image tasks during REBOOT-01.
+
+When image work resumes, select character rendering style before final scene style.
+
+Do not purchase, call or integrate OpenAI, Google, xAI, ByteDance, Jimeng, Runway or another paid media API during REBOOT-01. Future provider choice follows `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V2.md`.
+
+## 16. Engine Rules Still Applicable
 
 ### Scene／Thread Runtime
 
-- Keep scene, thread, world event, time and transition writes behind `resolve-turn` validation and one Transaction.
-- `story_threads.director_goal` must never become character knowledge or motive.
-- `READY_TO_CLOSE` allows transition; it does not force transition.
+- keep scene, thread, world event, time and transition writes behind `resolve-turn` validation and one transaction;
+- `story_threads.director_goal` never becomes character knowledge or motive;
+- `READY_TO_CLOSE` permits transition; it does not force it;
+- characters act only from their own goals, emotions, memories, knowledge, location, items and actions.
 
 ### Setting Pack
 
-- Setting Pack remains parse → validate → diff → impact → transactional apply.
-- Author-only secrets do not enter character-facing Context.
-- Active sessions block unsafe Canon patching.
+- historical migrations remain immutable;
+- Setting Pack remains parse → validate → diff → impact → transactional apply;
+- author-only secrets do not enter character-facing context;
+- active sessions block unsafe Canon patching.
 
-### Context Budget
+### Context and Capabilities
 
-- Keep the existing hard byte ceiling unless a separately approved measured change proves a new policy is necessary.
-- Do not put diagnostics into finalized AI-facing Context.
-- Do not substitute recent facts for real memories.
-- Referenced capabilities require authorization, prerequisites, limitations and costs.
+- keep the existing hard Context ceiling unless a separately approved measured change proves otherwise;
+- diagnostics stay out of finalized AI-facing Context;
+- do not substitute recent facts for real memories;
+- referenced capabilities require authorization, prerequisites, limitations and costs.
 
 ### MVP-8 Provisional Layer
 
-- Provisional content cannot overwrite locked Canon.
-- AI may propose; formal promotion still requires the established flow and human confirmation.
-- Avoid desireless, costless, blind-spot-free information-delivery NPCs.
-- Author-only secrets remain protected.
+- provisional content cannot overwrite locked Canon;
+- AI may propose; formal promotion still requires established flow and human confirmation;
+- avoid desireless, costless, blind-spot-free information-delivery NPCs;
+- author-only secrets remain protected.
 
-## 16. Git Discipline
+## 17. Git Discipline
 
-- Fetch latest remote State first.
+- Fetch latest remote first.
 - Use a clean `reboot/playable-depth-v1` worktree.
-- Preserve the unrelated old dirty worktree.
-- Use one Commit per internal Stage.
+- Preserve unrelated dirty worktrees.
+- Make focused Commit(s) per Stage.
 - Inspect exact Diff and run `git diff --check`.
-- Do not use broad stage, force or destructive commands.
+- Avoid unrelated refactors, formatting, renames, moves and duplicate implementations.
 
 Forbidden by default:
 
@@ -374,43 +409,41 @@ git reset --hard
 git clean -fd
 ```
 
-## 17. Image And Video Boundary
-
-Current image state:
-
-```text
-IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
-```
-
-The Daping Coast panorama remains a candidate until Codex Intake／Hash／Candidate Reference completes. Do not continue image tasks during REBOOT-01.
-
-When image work resumes, select character rendering style before final scene style.
-
-Current video state:
-
-```text
-FUTURE_PROVIDER_BAKEOFF_NO_SPEND
-```
-
-Do not purchase, call or integrate paid media APIs during REBOOT-01. Do not store API keys in Git.
-
 ## 18. Development Journal
 
-Use `docs/development_journal/INDEX.md` to understand origin and past failures.
+Every REBOOT Stage must add or update:
 
-Append major direction changes, world audit findings, real-playtest lessons, rule retirements, adopted public-project ideas, creative principles and model/provider policy changes.
+```text
+docs/development_journal/reboot01/
+```
 
-Do not include credentials, hidden prompts or invented history.
+Record failures, user criticism, model routing, rules retired/adopted, Runtime findings and replay results. Do not include credentials, hidden prompts or fabricated history.
 
 ## 19. True Stop Conditions
 
 Stop only for:
 
-- formal Canon／character fate／romance／visual taste decision;
+- formal Canon or unresolved AUTHOR_LOCKED conflict;
+- permanent character fate/death or final romance decision;
+- final visual/taste approval;
 - paid API／provider／API key;
 - unavoidable destructive Git operation;
-- unresolved AUTHOR_LOCKED conflict;
 - required weakening of Transaction／Knowledge／Version／Hash／approval boundaries;
-- one Medium and one High evidence-based attempt both failing to restore the core loop.
+- the same reproducible core blocker surviving one evidenced Medium attempt and one evidenced High attempt.
 
-Ordinary bugs, additive migrations, Sandbox candidate design, bounded refactors, local Web choices and Critic disagreement are not user stops.
+Ordinary Bugs, tests, additive Migration, bounded refactors, non-Canon Sandbox design, local Web choice, Critic disagreement and low narrative scores are not stop conditions.
+
+## 20. Autonomous REBOOT-01 Execution
+
+One explicitly started Codex CLI session may execute all REBOOT-01 Stages through final Push and report once directly to the user.
+
+Do not claim completion without:
+
+- a real engine baseline;
+- world/formal/SQL/runtime audit;
+- a real SQL-backed 5–10 turn slice;
+- offscreen NPC autonomy;
+- Critic and DecisionTrace evidence;
+- same-seed replay;
+- local playable interface or measured blocker;
+- final honest report.
