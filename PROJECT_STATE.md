@@ -1,313 +1,247 @@
 # AI Novel Engine 專案狀態
 
-> **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer 或外部協作者必須先讀本檔，再讀 `.codex/project_controller.md`、`docs/CURRENT_ROUTE_GATE_V1.md` 與本檔指定的 Work Package。舊 `HANDOFF`、舊 charter、舊 route card 或舊 `PLANS.md` 標示的「目前／Current／Active」不得跳過此入口。
+> **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer、Subagent 或外部協作者必須先讀本檔，再依本檔指定的 Route Gate、Work Package 與 Blueprint 執行。舊 HANDOFF、舊 charter、舊 route card、舊圖片 Work Package 或舊 `PLANS.md` 中的 `current`／`active`／`目前定案` 都是歷史標籤，不能跳過本檔。
 
-## Current Product Direction
+## 1. Current Product Direction
 
-目前正式產品路線為：
+目前正式產品方向是：
 
-```text
-Codex 終端版跑引擎、世界資料與劇本流程
-→ 劇本／分鏡／圖片交接包 Commit、Push 到 GitHub
-→ 使用者要求 GPT 讀指定 Commit 與交接包
-→ GPT 使用目前對話中已附加的鎖定參考圖生成圖片候選
-→ 使用者接受／退件／要求變體
-→ Codex 匯入保留圖片、計算 SHA-256、執行既有審查與 Candidate Reference 鏈
-→ 圖片鎖定後建立供應商中立的短鏡頭影片交接
-→ 未來可用 Grok 作為影片生成候選提供者
-```
+> 建立一個具有正式世界狀態、自主 NPC、主題驅動戲劇、可重播演化、本機可玩介面，以及未來視覺／影片輸出的長篇 AI 敘事世界。
 
-最終產品方向是由正式世界與劇本驅動、角色和場景盡量不飄移、可逐鏡重做的圖片／影片作品。
-
-劇本是正式上游，不再是唯一終點。圖片是目前主線輸出；影片是圖片 Pilot 成功後的下游，不是現在立即啟動的 API 或自動產線。
-
-## Mandatory Current Route Gate
-
-- Current gate: `docs/CURRENT_ROUTE_GATE_V1.md`
-- Active image blueprint: `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1.md`
-- Execution plan: `docs/CODEX_GPT_IMAGE_PRODUCTION_EXECUTION_PLAN_V1.md`
-- Future Grok video addendum: `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1_GROK_VIDEO_ADDENDUM.md`
-- Legacy handoff archive pointer: `docs/archive/HANDOFF_LEGACY_INDEX_V1.md`
-
-`docs/HANDOFF.md` 現在只是精簡 Gateway。舊的 500+ 行 handoff 內容已由 Git 歷史保存，不再作第一讀入口。
-
-## Accepted Foundation
-
-### WP-002A
-
-`WP-002A Codex/GPT Image Handoff Foundation` 已由總控審查通過，並納入預設分支。
-
-- Accepted commit: `e02700ecf370e53f289f5a77364119639ac4bb5f`
-- Result: `WP002A_PASS_WITH_SCHEMA_VALIDATOR_GAP`
-- Added: six production JSON Schemas, six example-only instances, existing image-pipeline inventory, and `world/chenxing/production/README.md`.
-- Verified: JSON parsing, internal refs/regex, Repository paths, source/reference hashes, candidate-only wording, and Git scope.
-- Known limitation: no preinstalled JSON Schema meta-validator was available; no dependency was added.
-- Boundary preserved: no Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, or automated approval change.
-
-### WP-003
-
-`WP-003 Chenxing Visual Bible Inventory` 已由總控審查通過，並納入預設分支。
-
-- Accepted commit: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
-- Result: `WP003_SCHEMA_GAP_FOUND`
-- Verified: 30 unique image files, 31 asset bindings, hashes, byte sizes, dimensions, authority classifications, rejected drift, location gaps, and Shot 01–03 readiness.
-- Confirmed: required Lu Chenxing, opening costume, Aijiang, and opening style references exist.
-- Blocking gap: Daping Coast had no master panorama, top-down plan, directional views, spatial anchors, scale reference, or accepted location geometry.
-- Schema gap: strict story `shot_queue_v1` cannot honestly represent a pure Location Bible task without a fake character.
-
-### WP-003A
-
-`WP-003A Daping Coast Location Bible Foundation Handoff` 已由總控審查通過，並以 fast-forward 納入預設分支。
-
-- Accepted commit: `4dea7f071b58f300c13c16e76fe2f89651b9cc40`
-- Result: `WP003A_READY_FOR_GPT_LOCATION_TASK_01`
-- Added: provider-neutral Location Bible handoff/return Schemas, example-only instances, and the real Daping Coast preliminary handoff.
-- Handoff: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json`
-- Handoff content SHA-256: `a3b6d6f421fb51983f2652c48ff9bf9a9138e1ee1d497dcc5bce8442255798da`
-- Exactly one task is initially open: `daping-lb-01-master-panorama`.
-- Tasks 02–07 remain dependency-blocked; the DAG is acyclic.
-- Boundary preserved: no Kotlin, Test, Migration, Canon, existing Shot Schema, image, provider job, approval, SQLite, or Runtime change.
-
-## Current Work Package
-
-- ID: `WP-003B Daping Coast Master Panorama GPT Session`
-- Status: `REFERENCE_UPLOAD_REQUIRED`
-- Work Package: `docs/work-packages/WP-003B_DAPING_MASTER_PANORAMA_GPT_SESSION.md`
-- Accepted handoff commit: `4dea7f071b58f300c13c16e76fe2f89651b9cc40`
-- Handoff path: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json`
-- Active task: `daping-lb-01-master-panorama`
-- Expected candidate filename: `daping_lb_01_master_panorama_candidate_v1.png`
-- Current action: user uploads the one required style image into this ChatGPT conversation; GPT then generates exactly one candidate and waits for explicit user review.
-
-Required upload:
+近期優先順序已由「繼續擴充圖片與審核文件」切換為：
 
 ```text
-world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
+真實引擎基線
+→ 簡化過度阻擋
+→ SQL 保存 Run Evidence
+→ NPC 離場自主性
+→ Drama Director／Critics／有限修訂
+→ 塵行 5–10 回合可玩垂直切片
+→ 同 Seed Replay／規則演化
+→ 本機 Web 可玩介面
 ```
 
-Expected SHA-256:
+圖片與影片仍是長期產品方向，但目前先暫停，以免媒體產線再次取代引擎真實運行。
+
+## 2. Mandatory Current Route
+
+- Current Route Gate: `docs/CURRENT_ROUTE_GATE_V2.md`
+- Active Blueprint: `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
+- Active Work Package: `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
+- Model/Budget Policy: `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
+- Future Video Provider Plan: `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V1.md`
+- Development Journal: `docs/development_journal/INDEX.md`
+
+Required startup order:
+
+1. `PROJECT_STATE.md`
+2. `.codex/project_controller.md`
+3. `docs/CURRENT_ROUTE_GATE_V2.md`
+4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
+5. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
+6. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
+7. `AGENTS.md`
+8. Only the code, tests, world sources and historical evidence needed by the current REBOOT stage
+
+## 3. Current Work Package
+
+- ID: `REBOOT-01 Playable Depth Slice`
+- Status: `READY_FOR_AUTONOMOUS_CODEX_EXECUTION`
+- Required branch: `reboot/playable-depth-v1`
+- Required base: latest remote default branch after `git fetch --prune origin`
+- Main Codex model: current GPT-5.6 Codex coding model
+- Default reasoning: `MEDIUM`
+- Targeted escalation: `HIGH` only for SQL Migration／Transaction／Validator／StateReducer／Knowledge Boundary／hard consistency bugs／final integration review
+- `MAX`／highest-cost mode: prohibited by default; use only under the evidence conditions in the model policy
+
+REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete its internal Stages 0–7, validate and Commit each stage, Push the final branch and report once. It does not need to return to GPT after every internal stage.
+
+## 4. REBOOT-01 Required Outcome
+
+Completion requires operating evidence, not only documents:
+
+- one resettable Chenxing non-Canon scenario;
+- 5–10 continuous turns;
+- protagonist, two meaningful NPCs and at least one opposing actor/force;
+- at least one offscreen NPC action while the player is absent;
+- at least one value dilemma;
+- at least one irreversible Runtime consequence;
+- at least three lasting world／relationship／character-state changes;
+- raw draft, Critic scores, one bounded revision, State Delta and SQL evidence preserved;
+- Narrative Stall detection and recovery;
+- same-seed replay comparison;
+- a minimal operable local Web slice after the engine loop passes;
+- an honest final report containing successes, failures, limitations, model use and next recommendations.
+
+## 5. Narrative And Emotional Direction
+
+The project must support a long-running ensemble world with **local closure and global continuation**.
+
+Desired emotional rhythm:
 
 ```text
-a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a
+lightness／humor／daily friction
+→ warmth／friendship／romance
+→ unease
+→ conflict escalation
+→ value dilemma
+→ anger／loss／reflection
+→ relationship change
+→ partial relief／new hope／new unresolved question
 ```
 
-The file is style authority only. Its depicted people, clothing, props, architecture, and geography are not location, likeness, costume, or Canon authority.
+The story should let readers laugh and become attached before heavier consequences land. Emotional turns must grow from prior causes, not arbitrary shock.
 
-## Controller Architecture Decision
+The protagonist may gradually gain enough power, knowledge, responsibility and influence to affect major conflicts, but growth must also increase cost, responsibility, moral pressure and the risk of loss. Supporting characters, rivals, romantic interests and ordinary people require their own goals and growth; they must not exist only to serve the protagonist.
 
-The selected route remains:
+There is no single terminal ending that permanently removes the world from the reader. Each arc must still pay off promises, alter relationships, leave lasting state and close a character phase. `No final ending` must not become endless repetition or unresolved setup.
+
+## 6. Architecture Direction
+
+Absorb design strengths rather than copying whole stacks:
+
+- Generative Agents: memory stream, importance, reflection, planning, schedule, offscreen simulation;
+- Concordia-like Game Master: agents propose actions; the environment resolves legal outcomes;
+- SOTOPIA-like social evaluation: trust, cooperation, deception, persuasion, relationships and cost;
+- TextWorld-like replay: reset, step, observation, score and deterministic comparison;
+- ink-like deterministic narrative structure: flags, conditions, choices, variables and local endings.
+
+Core roles:
 
 ```text
-separate preliminary Location Bible handoff
+NPC Agents
+→ Game Master
+→ Drama Director
+→ Writer
+→ independent Logic / Character-Drama / Prose-Pacing Critics
+→ at most one bounded revision
+→ legality re-check
+→ SQL evidence and Runtime result
 ```
 
-Do not weaken `shot_queue_v1` and do not insert a fake character.
+The Drama Director may choose what conflict is worth presenting, but may not force a character to violate identity or leak Director metadata into character knowledge.
 
-The Location Bible is an upstream foundation artifact, not a story Shot. It may correctly contain zero visible characters. A separate preliminary handoff breaks the circular dependency:
+## 7. Validation Simplification
+
+Only three categories remain hard blockers:
+
+1. protocol safety;
+2. world legality and transactional state safety;
+3. irreversible human approval such as Canon, formal assets, destructive changes, release or paid providers.
+
+Prose quality, pacing, repetition, AI-writing feel, weak subtext and emotional impact are `WARNING／SCORE`, not reasons to discard Run Evidence.
+
+New evidence policy:
 
 ```text
-story Shots require locked location geometry
-but location-foundation generation cannot require that same geometry as input
+raw model output → always persist as run evidence
+legal but unpolished result → persist as provisional/candidate
+world-legal State Delta → apply through existing Runtime transaction
+quality findings → persist scores and revision suggestions
 ```
 
-WP-004 will continue to use the strict story-shot schemas after location references are approved.
+## 8. Multi-Agent And Cost Policy
 
-## Active Work-Package Order
+Codex may use up to four task-shaped Subagents:
 
-1. `WP-002A` — **COMPLETED / ACCEPTED**: generic GPT image handoff foundation.
-2. `WP-003` — **COMPLETED / ACCEPTED**: Chenxing visual asset and location-gap inventory.
-3. `WP-003A` — **COMPLETED / ACCEPTED**: separate Location Bible schemas and the real Daping Coast preliminary handoff.
-4. `WP-003B` — **ACTIVE / REFERENCE_UPLOAD_REQUIRED**: GPT generates only `daping-lb-01-master-panorama` after the required style reference is attached.
-5. `WP-003C` — **NOT STARTED**: Codex imports a user-kept Location Bible candidate, computes Hashes, and runs the existing review/reference chain.
-6. `WP-004` — **BLOCKED**: create the real opening Shot 01–03 handoff only after required Daping Coast Location Bible components are accepted.
-7. `WP-005` — GPT generates Shot 01–03 image candidates.
-8. `WP-006` — Codex imports approved Shot images and runs the existing hash/review/reference chain.
-9. `WP-002B` — conditional Kotlin compiler/validator only if real manual Pilots prove it necessary.
-10. `WP-007A` — future provider-neutral VideoShotHandoff contract.
-11. `WP-007B` — future one-shot manual Grok video Pilot after explicit user authorization.
-12. `WP-007C` — future video intake, Hash, review, and continuity evidence.
+- RepositoryExplorer;
+- RuntimeTester;
+- NarrativeSystemsCritic;
+- CostAndComplexityAuditor.
 
-Do not start WP-003C, task 02, WP-004, WP-002B, or WP-007 automatically. Each needs a controller pointer after the preceding candidate and intake evidence are reviewed.
+Subagents primarily perform read-only exploration, criticism and test analysis. Only one Writer modifies core Kotlin／SQL at a time.
 
-## WP-003 Verified Result
+Do not use the strongest reasoning level for routine work. Hashes, JSON parsing, path checks, diffs and statistics should be handled by scripts or deterministic tools.
 
-- Author-locked present files: Lu Chenxing production turnaround, opening modern costume turnaround, Aijiang production turnaround, face reference/photo set, and phase-scoped style references.
-- Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
-- Daping Coast and ruin geometry initially had textual authority only; no accepted location geometry existed before WP-003B.
-- Future ChatGPT Shot upload list: ten existing required files; these remain separate from the current panorama task.
-- Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
-
-## WP-003A Verified Result
-
-- Added provider-neutral `location_bible_handoff_v1` and `location_bible_return_to_codex_v1` contracts without modifying `shot_queue_v1`.
-- Added example-only instances and the real Daping Coast handoff under `world/chenxing/production/location_bible_handoffs/daping_coast_v1/`.
-- Exactly one task is `READY_FOR_GPT`: `daping-lb-01-master-panorama`.
-- Tasks 02–07 remain `BLOCKED_BY_PRIOR_TASK_APPROVAL`; the dependency graph is acyclic.
-- The initial ChatGPT upload requirement is only `world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png`.
-- The handoff uses public textual anchors only; author-only causal explanations, crossing mechanics, later reveals, post-crossing content, and private source paths are excluded.
-- All new JSON parses; local refs and regexes pass; Repository paths, SHA-256, byte sizes, normalized handoff Hash, dependency graph, candidate boundary, and Git scope pass.
-- Full JSON Schema meta-validation remains `SCHEMA_META_VALIDATION_NOT_AVAILABLE`; no dependency was installed.
-
-## WP-003B Generation Boundary
-
-The active task creates one `16:9` ordinary-perspective master-panorama candidate with no visible characters.
-
-It must establish:
-
-- sea-facing direction;
-- intertidal rock platform;
-- tide pools;
-- localized unnatural-seam area;
-- spatially legible safe/return route;
-- enough stable geometry for a later top-down plan and directional views.
-
-It must not include:
-
-- characters;
-- fantasy architecture;
-- ancient or post-crossing imagery;
-- machinery or a glowing portal;
-- supernatural effects;
-- readable pseudo-text;
-- hidden causal explanations or later reveals;
-- approval, Canon, final-media, release, or production-lock marks.
-
-The generated file is always `CANDIDATE`. User choices are limited to:
+## 9. Image Lane Status
 
 ```text
-APPROVE_CANDIDATE
-REJECT_DRIFT
-REQUEST_VARIATION
-CHANGE_VISUAL_DIRECTION
+IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
 ```
 
-Even `APPROVE_CANDIDATE` does not unlock task 02 by itself. The candidate must return to Codex for file transfer, SHA-256, controlled intake, human-review evidence, and the existing Candidate Reference chain.
+The Daping Coast master-panorama candidate was generated in the GPT image session and the user replied that they agreed with it. It has **not** yet completed Codex file transfer, SHA-256, controlled intake or Candidate Reference acceptance.
 
-## Confirmed Repository Facts
-
-- Project remains a local single-process Kotlin/JVM CLI engine using SQLite and JSON file protocols.
-- Runtime state changes remain behind Validator, StateReducer, `resolve-turn`, `contextHash`, `stateVersion`, and transaction boundaries.
-- MVP-8 reader-first provisional content, knowledge boundaries, Canon promotion boundaries, and additive migration rules remain active.
-- Formal Chenxing character/costume/style references exist under `world/chenxing/formal/` and `world/chenxing/assets/`.
-- Opening Storyboard Shot 01–09 and ruin interior Shot 10–18 exist as author-locked source data.
-- The existing Image Candidate / Provider Handoff / External Result / Human Review / Candidate Reference chain must be reused.
-- `world/chenxing/preview/opening_v1/DRIFT_NOTICE.json` rejects the old text-only preview frames as formal references.
-- A Location Bible requires more than one panorama: master panorama, top-down/zone plan, directional views, spatial anchors, scale reference, and required details. A 360 panorama is optional supplement only.
-
-## Historical Status Reclassification
-
-Historical content remains evidence, but these route claims are superseded:
-
-- script is the only terminal product;
-- all image/video work is currently paused;
-- old `docs/HANDOFF.md` is the first current entry;
-- old route cards select the active package without this file.
-
-Still-valid historical boundaries include:
-
-- no automatic approval;
-- reference-first production;
-- candidate is not approved/reference/Canon/final media;
-- no silence-as-approval;
-- no direct SQLite or Canon bypass;
-- no provider spending without explicit user decision.
-
-Do not modify historical Canon or charter text merely to erase the old decision. Use `docs/CURRENT_ROUTE_GATE_V1.md` to classify it.
-
-## Archive And Deletion Boundary
-
-Current policy:
+Therefore it remains:
 
 ```text
-MARK STALE
-→ ARCHIVE OR INDEX
-→ DELETE ONLY AFTER DEPENDENCY EVIDENCE
+USER_APPROVED_CANDIDATE
+not Canon
+not APPROVED_REFERENCE
+not LOCATION_REFERENCE_ACCEPTED
+not PRODUCTION_LOCK
 ```
 
-No broad deletion is active now. Do not delete formal Canon, world sources, migrations, tests/fixtures still used, accepted or locked assets, provenance/Hash/review evidence, rejected-drift evidence that supports a decision, or files named by an active package.
+Do not continue Daping tasks 02–07 during REBOOT-01. Do not discard the candidate or the existing handoff evidence.
 
-## Grok Future Video Boundary
-
-Grok is a future video provider candidate, not the current director or source of truth.
-
-Planned default:
+When image work resumes, character art direction must be selected before background art direction:
 
 ```text
-approved clean single-shot keyframe
-+ motion/camera/continuity contract
-→ provider-neutral VideoShotHandoff
-→ manual Grok image-to-video Pilot
-→ user review
-→ Codex file identity / Hash / continuity intake
+character likeness
+→ character rendering style A/B/C
+→ Lu + Aijiang shared frame
+→ costume material/light
+→ scene style
+→ Location Bible
+→ shot keyframes
+→ video
 ```
 
-Reference-to-video, edit, extension, and text-to-video remain bounded provider modes. Provider capabilities and limits must be re-checked from official xAI documentation when the route activates.
-
-Do not send a final comic page with speech bubbles, subtitles, panel borders, or multiple panels as the formal video source frame. Use a clean keyframe and separate dialogue/subtitle/audio data.
-
-No xAI API integration, API key storage, provider spending, background video generation, or whole-episode generation is authorized now.
-
-## GPT Reference Boundary
-
-A GitHub image path does not mean the image-generation tool has that image attached in the active ChatGPT conversation.
-
-For WP-003B:
-
-- read the exact accepted handoff Commit and path;
-- inspect the task-aware upload checklist;
-- missing the required style reference produces `REFERENCE_UPLOAD_REQUIRED`;
-- do not substitute a text-only style guess;
-- the Location Bible foundation candidate remains candidate-only until user review and Codex intake.
-
-## Automatic Execution Reality
-
-The Repository can instruct an already-running Codex CLI. It cannot launch Codex by itself.
-
-Allowed unattended unit:
+## 10. Video Provider Status
 
 ```text
-one explicitly started Codex session
-→ one active Work Package
-→ validation
-→ Commit and Push
-→ report
-→ stop
+VIDEO_LANE_FUTURE_BAKEOFF_NO_SPEND
 ```
 
-Codex must not move to the next product package without a new pointer or explicit controller instruction. The local task queue is not a daemon.
+Future providers include Gemini Omni Flash, Veo, Grok Imagine Video, Seedance／Jimeng and Runway. The project must use one provider-neutral `VideoShotHandoff` and compare providers on the same approved clean keyframe and motion contract.
 
-## Source Of Truth Order
+No paid API call, provider account purchase, API key, background generation or whole-episode generation is authorized during REBOOT-01.
+
+## 11. Web Status
+
+The old permanent prohibition on a local Web Server／React／Ktor／Port is retired.
+
+REBOOT-01 Stage 6 may create a minimal local-only playable Web interface after Stages 0–5 pass. It may not be publicly deployed or connected to paid external model APIs during this package.
+
+## 12. True Stop Conditions
+
+Codex stops and asks the user only when:
+
+- a formal Canon, character-fate, romance or visual taste decision is required;
+- paid API／provider spending or an API key is required;
+- a destructive Git action is unavoidable and no safe alternative exists;
+- AUTHOR_LOCKED sources directly conflict and source authority cannot resolve them;
+- progress would require weakening Transaction, Knowledge Boundary, `stateVersion`, `contextHash` or irreversible approval safety;
+- one evidence-based Medium attempt and one evidence-based High attempt still cannot restore the core build/test loop.
+
+Ordinary architecture choices, additive migrations, test failures, bounded refactors, Critic disagreement and local Web implementation choices are not user stop conditions.
+
+## 13. Development Memory
+
+The detailed reconstructed record of the available project discussion is stored at:
+
+```text
+docs/development_journal/2026-07-11_PROJECT_DISCUSSION_ARCHIVE_V1.md
+```
+
+It records the available user-visible conversation and Git evidence in detail. It is not a raw export of unavailable older chat sessions and does not contain hidden system prompts, private reasoning or credentials.
+
+Future product-direction changes, important failures, user criticisms and rule retirements must be appended to the journal.
+
+## 14. User Command To Start
+
+The user can start the complete package with one instruction to Codex CLI:
+
+```text
+Fetch the latest remote default branch. Read PROJECT_STATE.md and execute the active REBOOT-01 umbrella Work Package end-to-end on a clean reboot/playable-depth-v1 worktree. Use GPT-5.6 Codex MEDIUM by default, escalate only according to the model policy, use bounded Subagents where useful, validate and Commit every internal stage, Push the final branch, and report once at completion. Do not return for ordinary implementation decisions. Stop only for the True Stop Conditions in the active Work Package.
+```
+
+## 15. Source Of Truth Order
 
 1. latest explicit user instruction;
-2. this `PROJECT_STATE.md`;
+2. `PROJECT_STATE.md`;
 3. `.codex/project_controller.md`;
-4. `docs/CURRENT_ROUTE_GATE_V1.md`;
-5. active Work Package and active blueprint;
-6. verified code, tests, CLI output, formal world files, and locked visual references;
-7. historical plans, handoffs, charters, and route cards.
-
-## Next User Action
-
-Upload this exact file into the active ChatGPT conversation:
-
-```text
-world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
-```
-
-Then say:
-
-```text
-參考圖已上傳，執行 daping-lb-01-master-panorama。
-```
-
-## Update Rule
-
-Every package completion must update:
-
-- current package status;
-- verified facts and failures;
-- exact Commit/branch evidence;
-- next package pointer;
-- whether user-only approval, provider cost decision, or reference upload is required.
-
-Do not record an assumption as a completed capability.
+4. `docs/CURRENT_ROUTE_GATE_V2.md`;
+5. active REBOOT-01 Work Package;
+6. Reboot Blueprint and Model Policy;
+7. verified code, tests, SQL output and formal world sources;
+8. development journal and historical route evidence.
