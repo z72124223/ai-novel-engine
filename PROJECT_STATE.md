@@ -46,29 +46,56 @@ Codex 終端版跑引擎、世界資料與劇本流程
 
 ### WP-003
 
-`WP-003 Chenxing Visual Bible Inventory` 已由總控審查通過，並以 fast-forward 納入預設分支。
+`WP-003 Chenxing Visual Bible Inventory` 已由總控審查通過，並納入預設分支。
 
 - Accepted commit: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
 - Result: `WP003_SCHEMA_GAP_FOUND`
 - Verified: 30 unique image files, 31 asset bindings, hashes, byte sizes, dimensions, authority classifications, rejected drift, location gaps, and Shot 01–03 readiness.
 - Confirmed: required Lu Chenxing, opening costume, Aijiang, and opening style references exist.
-- Blocking gap: Daping Coast has no master panorama, top-down plan, directional views, spatial anchors, scale reference, or accepted location geometry.
+- Blocking gap: Daping Coast had no master panorama, top-down plan, directional views, spatial anchors, scale reference, or accepted location geometry.
 - Schema gap: strict story `shot_queue_v1` cannot honestly represent a pure Location Bible task without a fake character.
+
+### WP-003A
+
+`WP-003A Daping Coast Location Bible Foundation Handoff` 已由總控審查通過，並以 fast-forward 納入預設分支。
+
+- Accepted commit: `4dea7f071b58f300c13c16e76fe2f89651b9cc40`
+- Result: `WP003A_READY_FOR_GPT_LOCATION_TASK_01`
+- Added: provider-neutral Location Bible handoff/return Schemas, example-only instances, and the real Daping Coast preliminary handoff.
+- Handoff: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json`
+- Handoff content SHA-256: `a3b6d6f421fb51983f2652c48ff9bf9a9138e1ee1d497dcc5bce8442255798da`
+- Exactly one task is initially open: `daping-lb-01-master-panorama`.
+- Tasks 02–07 remain dependency-blocked; the DAG is acyclic.
+- Boundary preserved: no Kotlin, Test, Migration, Canon, existing Shot Schema, image, provider job, approval, SQLite, or Runtime change.
 
 ## Current Work Package
 
-- ID: `WP-003A Daping Coast Location Bible Foundation Handoff`
-- Status: `COMPLETED_AWAITING_CONTROLLER_REVIEW`
-- Work Package: `docs/work-packages/WP-003A_DAPING_COAST_LOCATION_BIBLE_FOUNDATION_HANDOFF.md`
-- Accepted WP-003 evidence: `7cd3f82f49d05703c95c1b58e313a03d6967d6f4`
-- Execution base: `a6fbe48e0eb21e0e71f94b62c750448ba9dfb9d2`
-- Completion branch: `feature/wp003a-daping-location-bible-handoff`
-- Result: `WP003A_READY_FOR_GPT_LOCATION_TASK_01`
-- Current action: controller reviews the pushed WP-003A branch and decides whether to activate WP-003B for the single master-panorama task. No downstream package is activated by this status update.
+- ID: `WP-003B Daping Coast Master Panorama GPT Session`
+- Status: `REFERENCE_UPLOAD_REQUIRED`
+- Work Package: `docs/work-packages/WP-003B_DAPING_MASTER_PANORAMA_GPT_SESSION.md`
+- Accepted handoff commit: `4dea7f071b58f300c13c16e76fe2f89651b9cc40`
+- Handoff path: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json`
+- Active task: `daping-lb-01-master-panorama`
+- Expected candidate filename: `daping_lb_01_master_panorama_candidate_v1.png`
+- Current action: user uploads the one required style image into this ChatGPT conversation; GPT then generates exactly one candidate and waits for explicit user review.
+
+Required upload:
+
+```text
+world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
+```
+
+Expected SHA-256:
+
+```text
+a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a
+```
+
+The file is style authority only. Its depicted people, clothing, props, architecture, and geography are not location, likeness, costume, or Canon authority.
 
 ## Controller Architecture Decision
 
-The selected route is:
+The selected route remains:
 
 ```text
 separate preliminary Location Bible handoff
@@ -83,15 +110,15 @@ story Shots require locked location geometry
 but location-foundation generation cannot require that same geometry as input
 ```
 
-WP-003A therefore adds a bounded provider-neutral Location Bible handoff and return contract. WP-004 will continue to use the strict story-shot schemas after location references are approved.
+WP-004 will continue to use the strict story-shot schemas after location references are approved.
 
 ## Active Work-Package Order
 
 1. `WP-002A` — **COMPLETED / ACCEPTED**: generic GPT image handoff foundation.
 2. `WP-003` — **COMPLETED / ACCEPTED**: Chenxing visual asset and location-gap inventory.
-3. `WP-003A` — **COMPLETED / AWAITING CONTROLLER REVIEW**: separate Location Bible schemas and the real Daping Coast preliminary handoff are complete on the feature branch.
-4. `WP-003B` — **NOT STARTED**: GPT reads the exact Location Bible handoff and generates one task at a time, beginning with the Daping Coast master panorama candidate.
-5. `WP-003C` — **NOT STARTED**: Codex imports user-kept Location Bible candidates, computes Hashes, and runs the existing review/reference chain.
+3. `WP-003A` — **COMPLETED / ACCEPTED**: separate Location Bible schemas and the real Daping Coast preliminary handoff.
+4. `WP-003B` — **ACTIVE / REFERENCE_UPLOAD_REQUIRED**: GPT generates only `daping-lb-01-master-panorama` after the required style reference is attached.
+5. `WP-003C` — **NOT STARTED**: Codex imports a user-kept Location Bible candidate, computes Hashes, and runs the existing review/reference chain.
 6. `WP-004` — **BLOCKED**: create the real opening Shot 01–03 handoff only after required Daping Coast Location Bible components are accepted.
 7. `WP-005` — GPT generates Shot 01–03 image candidates.
 8. `WP-006` — Codex imports approved Shot images and runs the existing hash/review/reference chain.
@@ -100,17 +127,15 @@ WP-003A therefore adds a bounded provider-neutral Location Bible handoff and ret
 11. `WP-007B` — future one-shot manual Grok video Pilot after explicit user authorization.
 12. `WP-007C` — future video intake, Hash, review, and continuity evidence.
 
-Do not start WP-003B, WP-004, WP-002B, or WP-007 automatically. Each needs a new controller pointer after the preceding package is reviewed.
+Do not start WP-003C, task 02, WP-004, WP-002B, or WP-007 automatically. Each needs a controller pointer after the preceding candidate and intake evidence are reviewed.
 
 ## WP-003 Verified Result
 
 - Author-locked present files: Lu Chenxing production turnaround, opening modern costume turnaround, Aijiang production turnaround, face reference/photo set, and phase-scoped style references.
 - Missing referenced character files: lean-base, opening-stocky, cinematic, and two superseded 2D turnaround paths; these are not required bindings for Shot 01–03 because the current production references exist.
-- Daping Coast and ruin geometry: textual authority only; no master panorama, top-down plan, directional views, spatial-anchor map, detail/scale views, or approved location images exist.
-- Shot 01–03 disposition: `SCHEMA_ADJUSTMENT_REQUIRED`; storyboard text alone is not enough.
-- Future ChatGPT Shot upload list: ten existing required files; every current conversation status remains `UPLOAD_REQUIRED`.
+- Daping Coast and ruin geometry initially had textual authority only; no accepted location geometry existed before WP-003B.
+- Future ChatGPT Shot upload list: ten existing required files; these remain separate from the current panorama task.
 - Rejected drift: the ten old text-only preview frames remain rejected evidence and were not copied or promoted.
-- No Kotlin, Test, Migration, SQLite, Canon, image, video, provider API, approval, or Runtime change was made.
 
 ## WP-003A Verified Result
 
@@ -122,9 +147,41 @@ Do not start WP-003B, WP-004, WP-002B, or WP-007 automatically. Each needs a new
 - The handoff uses public textual anchors only; author-only causal explanations, crossing mechanics, later reveals, post-crossing content, and private source paths are excluded.
 - All new JSON parses; local refs and regexes pass; Repository paths, SHA-256, byte sizes, normalized handoff Hash, dependency graph, candidate boundary, and Git scope pass.
 - Full JSON Schema meta-validation remains `SCHEMA_META_VALIDATION_NOT_AVAILABLE`; no dependency was installed.
-- No Kotlin, Test, Migration, Canon, existing Schema, image, provider job, approval, SQLite, or Runtime change was made.
-- Completion report: `docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md`.
-- The completion Commit is caller-supplied after Push and is not embedded into the Commit that contains this status file.
+
+## WP-003B Generation Boundary
+
+The active task creates one `16:9` ordinary-perspective master-panorama candidate with no visible characters.
+
+It must establish:
+
+- sea-facing direction;
+- intertidal rock platform;
+- tide pools;
+- localized unnatural-seam area;
+- spatially legible safe/return route;
+- enough stable geometry for a later top-down plan and directional views.
+
+It must not include:
+
+- characters;
+- fantasy architecture;
+- ancient or post-crossing imagery;
+- machinery or a glowing portal;
+- supernatural effects;
+- readable pseudo-text;
+- hidden causal explanations or later reveals;
+- approval, Canon, final-media, release, or production-lock marks.
+
+The generated file is always `CANDIDATE`. User choices are limited to:
+
+```text
+APPROVE_CANDIDATE
+REJECT_DRIFT
+REQUEST_VARIATION
+CHANGE_VISUAL_DIRECTION
+```
+
+Even `APPROVE_CANDIDATE` does not unlock task 02 by itself. The candidate must return to Codex for file transfer, SHA-256, controlled intake, human-review evidence, and the existing Candidate Reference chain.
 
 ## Confirmed Repository Facts
 
@@ -134,7 +191,6 @@ Do not start WP-003B, WP-004, WP-002B, or WP-007 automatically. Each needs a new
 - Formal Chenxing character/costume/style references exist under `world/chenxing/formal/` and `world/chenxing/assets/`.
 - Opening Storyboard Shot 01–09 and ruin interior Shot 10–18 exist as author-locked source data.
 - The existing Image Candidate / Provider Handoff / External Result / Human Review / Candidate Reference chain must be reused.
-- WP-002A requires candidate-only output, explicit user review, reference-upload readiness, Git/source identity, and return through the existing CLI chain.
 - `world/chenxing/preview/opening_v1/DRIFT_NOTICE.json` rejects the old text-only preview frames as formal references.
 - A Location Bible requires more than one panorama: master panorama, top-down/zone plan, directional views, spatial anchors, scale reference, and required details. A 360 panorama is optional supplement only.
 
@@ -168,9 +224,7 @@ MARK STALE
 → DELETE ONLY AFTER DEPENDENCY EVIDENCE
 ```
 
-No broad deletion is active now. A future cleanup package must first inventory inbound links, code/test/sample dependencies, authoritative sources, duplicate hashes, and required historical evidence.
-
-Do not delete formal Canon, world sources, migrations, tests/fixtures still used, accepted or locked assets, provenance/Hash/review evidence, rejected-drift evidence that supports a decision, or files named by an active package.
+No broad deletion is active now. Do not delete formal Canon, world sources, migrations, tests/fixtures still used, accepted or locked assets, provenance/Hash/review evidence, rejected-drift evidence that supports a decision, or files named by an active package.
 
 ## Grok Future Video Boundary
 
@@ -197,13 +251,13 @@ No xAI API integration, API key storage, provider spending, background video gen
 
 A GitHub image path does not mean the image-generation tool has that image attached in the active ChatGPT conversation.
 
-When GPT begins image work:
+For WP-003B:
 
-- read the exact Handoff Commit and path;
-- inspect the handoff reference-upload requirements;
-- missing required task references produce `REFERENCE_UPLOAD_REQUIRED`;
-- do not replace missing locked references with text-only guesses for formal character or Shot frames;
-- a Location Bible foundation candidate may be generated from formal textual authority under the explicit WP-003A foundation rule, but it remains candidate-only until user review and Codex intake.
+- read the exact accepted handoff Commit and path;
+- inspect the task-aware upload checklist;
+- missing the required style reference produces `REFERENCE_UPLOAD_REQUIRED`;
+- do not substitute a text-only style guess;
+- the Location Bible foundation candidate remains candidate-only until user review and Codex intake.
 
 ## Automatic Execution Reality
 
@@ -222,8 +276,6 @@ one explicitly started Codex session
 
 Codex must not move to the next product package without a new pointer or explicit controller instruction. The local task queue is not a daemon.
 
-If the computer sleeps, the terminal closes, authentication expires, or a true stop condition occurs, no completion should be assumed.
-
 ## Source Of Truth Order
 
 1. latest explicit user instruction;
@@ -236,16 +288,17 @@ If the computer sleeps, the terminal closes, authentication expires, or a true s
 
 ## Next User Action
 
-GPT total-control reviews:
+Upload this exact file into the active ChatGPT conversation:
 
 ```text
-Branch: feature/wp003a-daping-location-bible-handoff
-Report: docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md
-Handoff: world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json
+world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
 ```
 
-If accepted, a later explicit controller update may activate WP-003B for
-`daping-lb-01-master-panorama` only. WP-004 remains blocked.
+Then say:
+
+```text
+參考圖已上傳，執行 daping-lb-01-master-panorama。
+```
 
 ## Update Rule
 
