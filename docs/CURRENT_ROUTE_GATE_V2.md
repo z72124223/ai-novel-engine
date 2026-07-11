@@ -13,9 +13,10 @@ Date: 2026-07-11
 3. `docs/CURRENT_ROUTE_GATE_V2.md`
 4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
 5. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-6. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
-7. `AGENTS.md`
-8. 只讀取目前 Stage 所需的程式、測試、世界資料與歷史證據
+6. `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
+7. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
+8. `AGENTS.md`
+9. 只讀取目前 Stage 所需的程式、測試、世界資料與歷史證據
 
 V1 route gate、圖片 Work Package、舊 HANDOFF、舊 charter、舊 route card 與舊 PLANS section 都是歷史證據，不再選擇目前工作。
 
@@ -32,6 +33,8 @@ V1 route gate、圖片 Work Package、舊 HANDOFF、舊 charter、舊 route card
 → 建立本機 Web 可玩介面
 → 完成誠實報告
 ```
+
+敘事測試必須遵守正式 addendum：歡快／溫暖／衝突／代價／反思的情緒波形、陸塵行的有界毒舌與類型敏感、反作死、`fair_surprise` 而非廉價反轉、群像成長與 `local_closure + persistent_world_continuation`。
 
 圖片線暫停；影片線只保留未來 Provider-neutral Bake-off 規劃。
 
@@ -97,7 +100,7 @@ VIDEO_LANE_FUTURE_BAKEOFF_NO_SPEND
 3. `.codex/project_controller.md`
 4. 本 Gate
 5. REBOOT-01 Work Package
-6. Reboot Blueprint／Model Policy
+6. Reboot Blueprint／Narrative Addendum／Model Policy
 7. 已驗證程式、測試、SQL、正式世界來源
 8. 歷史藍圖、Handoff、圖片工作包與舊路線
 
