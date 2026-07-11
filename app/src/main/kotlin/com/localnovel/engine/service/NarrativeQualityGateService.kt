@@ -27,6 +27,8 @@ data class ResolveTurnOptions(
     val modelMetadata: kotlinx.serialization.json.JsonObject = defaultRebootModelMetadata(),
     val irreversibleChangeContract: com.localnovel.engine.model.IrreversibleChangeContract? = null,
     val irreversibleApprovalArtifact: com.localnovel.engine.model.IrreversibleApprovalArtifact? = null,
+    val npcDecisionTrace: com.localnovel.engine.model.NpcDecisionTrace? = null,
+    val npcGameMasterResolution: com.localnovel.engine.model.GameMasterResolution? = null,
 )
 
 data class NarrativeQualityGateResult(

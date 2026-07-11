@@ -78,6 +78,7 @@ Current REBOOT-01 entries:
 
 - `reboot01/STAGE_0_EXECUTABLE_BASELINE.md` — executable Kotlin/CLI/SQLite baseline, real Chenxing turn, World Source integrity classification, and world/character reality audit.
 - `reboot01/STAGE_1_VALIDATION_AND_RUN_EVIDENCE.md` — explicit safety/quality classes, additive SQL run evidence, irreversible human approval boundary, transaction tests, and final high-reasoning review.
+- `reboot01/STAGE_2_NPC_AUTONOMY.md` — sandbox-only off-screen NPC proposal loop, Game Master legality checks, atomic DecisionTrace, rejected evidence, and return-observable consequences.
 
 ## Future Append Rule
 

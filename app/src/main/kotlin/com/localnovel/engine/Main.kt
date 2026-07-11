@@ -39,6 +39,7 @@ class Cli {
                 "start-session" -> StorySessionCli.startSession(options)
                 "prepare-turn" -> StorySessionCli.prepareTurn(options)
                 "resolve-turn" -> StorySessionCli.resolveTurn(options)
+                "run-offscreen-npc-tick" -> StorySessionCli.runOffscreenNpcTick(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
@@ -206,6 +207,7 @@ class Cli {
               start-session [--db <path>] --project <id> --scene <id> [--reader-mode]
               prepare-turn [--db <path>] --session <id> (--input <text> | --input-file <path>) --out <path>
               resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--scenario-seed <seed>] [--revision-suggestion <text>] [--revised-draft-file <path>] [--irreversible-contract <path> --irreversible-approval <path>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
+              run-offscreen-npc-tick [--db <path>] --session <id> --profile <path> --scenario-seed <seed> [--out <path>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>

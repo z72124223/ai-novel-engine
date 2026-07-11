@@ -4,6 +4,7 @@ import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.NpcAutonomyProfile
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
 import com.localnovel.engine.service.CapabilityContractResolver
@@ -12,6 +13,7 @@ import com.localnovel.engine.service.ContextBudgetUnsatisfiableException
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.MemoryRetriever
 import com.localnovel.engine.service.MultiTurnRuntime
+import com.localnovel.engine.service.OffscreenSimulationService
 import com.localnovel.engine.service.NarrativeQualityAuditInput
 import com.localnovel.engine.service.NarrativeQualityAuditRunner
 import com.localnovel.engine.service.NarrativeQualityAuditService
@@ -49,6 +51,24 @@ internal object StorySessionCli {
         repository.seedDemo(seed)
         println("Seeded demo project '${seed.project.id}' into ${options.requiredCliOption("db")}")
         return 0
+    }
+
+    fun runOffscreenNpcTick(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
+        repository.initialize()
+        val profile = readCliJson<NpcAutonomyProfile>(Path.of(options.requiredCliOption("profile")))
+        val result = OffscreenSimulationService(repository).run(
+            sessionId = options.requiredCliOption("session"),
+            profile = profile,
+            scenarioSeed = options.requiredCliOption("scenario-seed"),
+        )
+        options["out"]?.let { outValue ->
+            val out = Path.of(outValue)
+            out.parent?.let { Files.createDirectories(it) }
+            Files.writeString(out, JsonSupport.json.encodeToString(result))
+        }
+        println(JsonSupport.json.encodeToString(result))
+        return if (result.accepted) 0 else 3
     }
 
     fun compileContext(options: Map<String, String>): Int {

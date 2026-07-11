@@ -334,6 +334,8 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
                 hasStateChange = hasStateChange,
                 rebootRunEvidenceId = evidenceRunId,
                 rebootRunElapsedTimeMs = evidenceService.elapsedMillis(startedAtNanos),
+                npcDecisionTrace = options.npcDecisionTrace,
+                npcGameMasterResolution = options.npcGameMasterResolution,
             )
         } catch (error: Throwable) {
             evidenceService.markFailed(evidenceRunId, error, startedAtNanos)

@@ -91,6 +91,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "008_ai_task_queue.sql",
                     "009_provisional_layer.sql",
                     "010_reboot_run_evidence.sql",
+                    "011_npc_autonomy_runtime.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -1548,6 +1549,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         hasStateChange: Boolean,
         rebootRunEvidenceId: String? = null,
         rebootRunElapsedTimeMs: Long = 0,
+        npcDecisionTrace: com.localnovel.engine.model.NpcDecisionTrace? = null,
+        npcGameMasterResolution: com.localnovel.engine.model.GameMasterResolution? = null,
     ): ApplyResult = connect { connection ->
         connection.autoCommit = false
         try {
@@ -1634,6 +1637,10 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     elapsedTimeMs = rebootRunElapsedTimeMs,
                 )
             }
+            npcDecisionTrace?.let { trace ->
+                require(npcGameMasterResolution?.accepted == true) { "Applied NPC trace requires an accepted Game Master resolution." }
+                insertNpcDecisionTrace(connection, trace, npcGameMasterResolution, "APPLIED")
+            }
             connection.commit()
             ApplyResult(pendingId, result.narrative, hasStateChange)
         } catch (error: Throwable) {
@@ -1641,6 +1648,70 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             throw error
         } finally {
             connection.autoCommit = true
+        }
+    }
+
+    fun recordNpcDecisionTrace(
+        trace: com.localnovel.engine.model.NpcDecisionTrace,
+        resolution: com.localnovel.engine.model.GameMasterResolution,
+        status: String,
+    ) = connect { connection ->
+        insertNpcDecisionTrace(connection, trace, resolution, status)
+    }
+
+    fun recordSandboxWorldPatchCandidate(candidate: com.localnovel.engine.model.SandboxWorldPatchCandidate) = connect { connection ->
+        require(!candidate.canonMutationAllowed) { "Sandbox world patch cannot authorize Canon mutation." }
+        require(candidate.status == "SANDBOX_CANDIDATE") { "Only sandbox candidates may enter this boundary." }
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO sandbox_world_patch_candidates(
+                patch_id, project_id, scenario_seed, candidate_json, status,
+                canon_mutation_allowed, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, 'SANDBOX_APPLIED', 0,
+                COALESCE((SELECT created_at FROM sandbox_world_patch_candidates WHERE patch_id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, candidate.patchId)
+            statement.setString(2, candidate.projectId)
+            statement.setString(3, candidate.scenarioSeed)
+            statement.setString(4, JsonSupport.json.encodeToString(candidate))
+            statement.setString(5, candidate.patchId)
+            statement.setString(6, timestamp)
+            statement.setString(7, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertNpcDecisionTrace(
+        connection: Connection,
+        trace: com.localnovel.engine.model.NpcDecisionTrace,
+        resolution: com.localnovel.engine.model.GameMasterResolution,
+        status: String,
+    ) {
+        require(trace.projectId.isNotBlank() && trace.sessionId.isNotBlank() && trace.npcId.isNotBlank())
+        connection.prepareStatement(
+            """
+            INSERT INTO npc_decision_traces(
+                trace_id, project_id, session_id, turn_number, npc_id, scenario_seed,
+                decision_trace_json, proposal_json, resolution_json, status, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, trace.traceId)
+            statement.setString(2, trace.projectId)
+            statement.setString(3, trace.sessionId)
+            statement.setInt(4, trace.turnNumber)
+            statement.setString(5, trace.npcId)
+            statement.setString(6, trace.scenarioSeed)
+            statement.setString(7, JsonSupport.json.encodeToString(trace))
+            statement.setString(8, JsonSupport.json.encodeToString(trace.proposal))
+            statement.setString(9, JsonSupport.json.encodeToString(resolution))
+            statement.setString(10, status)
+            statement.setString(11, timestamp)
+            statement.setString(12, timestamp)
+            statement.executeUpdate()
         }
     }
 

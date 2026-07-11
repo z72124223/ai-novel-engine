@@ -1,0 +1,21 @@
+{
+  "patchId": "reboot01-chenxing-sandbox-patch-v1",
+  "projectId": "demo",
+  "scenarioSeed": "reboot01-stage2-seed",
+  "status": "SANDBOX_CANDIDATE",
+  "npcProfiles": [
+    {
+      "npcId": "char-shen-shuang",
+      "deepMotivation": "Protect the shrine and preserve her own bargaining power",
+      "falseBelief": "Anyone approaching the rear hall intends to expose her family",
+      "fear": "Losing control of the shrine secret and becoming expendable",
+      "relationshipDebts": ["Owes the shrine keepers silence"],
+      "offscreenAgenda": ["Inspect local pressure while the player is elsewhere"],
+      "resourceIds": [],
+      "sandboxCandidateOnly": true
+    }
+  ],
+  "worldPressure": "Evidence at the shrine degrades while rival interests continue moving",
+  "valueConflict": "Protect community secrecy or preserve evidence that may prevent later harm",
+  "canonMutationAllowed": false
+}

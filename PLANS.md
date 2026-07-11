@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 自主執行中；Stage 0–1 已通過，現在只執行 Stage 2 NPC 自主閉環**
+狀態：**REBOOT-01 自主執行中；Stage 0–2 已通過，現在只執行 Stage 3 Drama／Critic 閉環**
 
 日期：2026-07-11
 
@@ -72,8 +72,8 @@
 - [x] Step 0A：更新遠端、建立乾淨 worktree／分支、讀取完整控制文件與修正 Current Plan Window。
 - [x] Step 0B：建立可執行引擎基線、真實 CLI 回合、SQLite 證據、世界／角色現實稽核、Stage 0 報告與日誌；驗證後獨立 Commit。
 - [x] Step 1：區分 protocol hard fail、world legality hard fail、irreversible approval 與 quality warning；以 additive migration 保存 run evidence；驗證後獨立 Commit。
-- [ ] Step 2（目前唯一進行中）：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
-- [ ] Step 3：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
+- [x] Step 2：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
+- [ ] Step 3（目前唯一進行中）：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
 - [ ] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
 - [ ] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
 - [ ] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
@@ -109,6 +109,9 @@
 - 2026-07-12：品質問題預設為 `QUALITY_WARNING`，只有 strict mode 才阻塞；protocol、world legality、hash/version/knowledge/transaction 邊界保持 hard fail。
 - 2026-07-12：不可逆變更由 engine-side detector 辨識受保護 health、inventory loss、relationship/faction/permanent flags 與 locked facts；獨立 contract/approval artifacts 必須完整綁定並由 human actor 明確批准。High safety review PASS。
 - 2026-07-12：Stage 1 targeted 101/101 PASS；full 826 tests 中 822 PASS，唯一 4 FAIL 仍是 Stage 0 已知 World Source #09 Hash／byte-size drift，無新增回歸。
+- 2026-07-12：Stage 2 新增 deterministic NPC perception／memory importance／reflection／goal／schedule／proposal／Game Master／scheduler／offscreen simulation 閉環；NPC 只能引用自身知識、記憶與正式 location continuity。
+- 2026-07-12：Migration 011 保存 sandbox-only world patch candidate 與 `DecisionTrace`；accepted trace 與正式 state/event/time 在同一 transaction，非法 action 仍保存 REJECTED trace，trace 寫入失敗會回滾整個 Tick。
+- 2026-07-12：Stage 2 focused 86/86 PASS（NpcAutonomy 5、RebootRunEvidence 17、Engine 31、MVP4 33）；唯讀 explorer 因 subagent usage limit 未產生輸出，主代理依 Repository 證據完成盤點，未升級模型或擴大範圍。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 
