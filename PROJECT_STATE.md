@@ -1,6 +1,6 @@
 # AI Novel Engine 專案狀態
 
-> **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer、Subagent 或外部協作者必須先讀本檔，再依本檔指定的 Route Gate、Work Package 與 Blueprint 執行。舊 HANDOFF、舊 charter、舊 route card、舊圖片 Work Package 或舊 `PLANS.md` 中的 `current`／`active`／`目前定案` 都是歷史標籤，不能跳過本檔。
+> **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer、Subagent 或外部協作者必須先讀本檔，再依本檔指定的 Route Gate、Work Package、Blueprint、Addendum 與模型政策執行。舊 HANDOFF、舊 charter、舊 route card、圖片 Work Package 或舊 `PLANS.md` 中的 `current`／`active`／`目前定案` 都是歷史標籤，不能跳過本檔。
 
 ## 1. Current Product Direction
 
@@ -8,12 +8,14 @@
 
 > 建立一個具有正式世界狀態、自主 NPC、主題驅動戲劇、可重播演化、本機可玩介面，以及未來視覺／影片輸出的長篇 AI 敘事世界。
 
-近期優先順序已由「繼續擴充圖片與審核文件」切換為：
+近期唯一主線：
 
 ```text
 真實引擎基線
+→ 世界觀／SQL／Runtime Reality Audit
 → 簡化過度阻擋
 → SQL 保存 Run Evidence
+→ 非 Canon 世界候選修補包進 Sandbox
 → NPC 離場自主性
 → Drama Director／Critics／有限修訂
 → 塵行 5–10 回合可玩垂直切片
@@ -21,12 +23,13 @@
 → 本機 Web 可玩介面
 ```
 
-圖片與影片仍是長期產品方向，但目前先暫停，以免媒體產線再次取代引擎真實運行。
+圖片與影片仍是長期產品方向，但目前暫停，以免媒體產線再次取代引擎真實運行。
 
 ## 2. Mandatory Current Route
 
 - Current Route Gate: `docs/CURRENT_ROUTE_GATE_V2.md`
 - Active Blueprint: `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
+- Mandatory Creative/World Addendum: `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
 - Active Work Package: `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
 - Model/Budget Policy: `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
 - Future Video Provider Plan: `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V1.md`
@@ -39,9 +42,10 @@ Required startup order:
 3. `docs/CURRENT_ROUTE_GATE_V2.md`
 4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
 5. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-6. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
-7. `AGENTS.md`
-8. Only the code, tests, world sources and historical evidence needed by the current REBOOT stage
+6. `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
+7. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
+8. `AGENTS.md`
+9. Only the code, tests, world sources and historical evidence required by the current REBOOT stage
 
 ## 3. Current Work Package
 
@@ -51,16 +55,16 @@ Required startup order:
 - Required base: latest remote default branch after `git fetch --prune origin`
 - Main Codex model: current GPT-5.6 Codex coding model
 - Default reasoning: `MEDIUM`
-- Targeted escalation: `HIGH` only for SQL Migration／Transaction／Validator／StateReducer／Knowledge Boundary／hard consistency bugs／final integration review
+- Targeted escalation: `HIGH` only for SQL Migration／Transaction／Validator／StateReducer／Knowledge Boundary／World Source Authority conflict／hard replay or consistency bugs／final integration review
 - `MAX`／highest-cost mode: prohibited by default; use only under the evidence conditions in the model policy
 
-REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete its internal Stages 0–7, validate and Commit each stage, Push the final branch and report once. It does not need to return to GPT after every internal stage.
+REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete all internal Stages, validate and Commit each Stage, Push the final branch and report once. It does not need to return to GPT or the user after ordinary internal decisions.
 
-## 4. REBOOT-01 Required Outcome
+## 4. Required Operating Outcomes
 
 Completion requires operating evidence, not only documents:
 
-- one resettable Chenxing non-Canon scenario;
+- one resettable Chenxing non-Canon Scenario;
 - 5–10 continuous turns;
 - protagonist, two meaningful NPCs and at least one opposing actor/force;
 - at least one offscreen NPC action while the player is absent;
@@ -72,6 +76,18 @@ Completion requires operating evidence, not only documents:
 - same-seed replay comparison;
 - a minimal operable local Web slice after the engine loop passes;
 - an honest final report containing successes, failures, limitations, model use and next recommendations.
+
+Additional mandatory outcomes from the Creative/World Addendum:
+
+- `docs/reboot/REBOOT01_WORLD_AND_CHARACTER_REALITY_AUDIT.md`;
+- machine-readable world audit inventory;
+- one validated non-Canon Chenxing World Patch Candidate applied only to a resettable Sandbox;
+- evidence that the patch is actually retrieved and used by Runtime／NPC Agents;
+- protagonist voice candidate with sarcasm, observational quips, self-deprecation, risk awareness and serious-scene restraint;
+- `AudienceExpectationLedger` or equivalent;
+- `IDIOT_PLOT_RISK` detection;
+- predictability, reversal fairness and character-intelligence scoring;
+- at least one first-order expected result followed by a fair second-order consequence.
 
 ## 5. Narrative And Emotional Direction
 
@@ -90,11 +106,36 @@ lightness／humor／daily friction
 → partial relief／new hope／new unresolved question
 ```
 
-The story should let readers laugh and become attached before heavier consequences land. Emotional turns must grow from prior causes, not arbitrary shock.
+The reader should laugh and become attached before heavier consequences land. Emotional turns must grow from prior causes, not arbitrary shock.
 
-The protagonist may gradually gain enough power, knowledge, responsibility and influence to affect major conflicts, but growth must also increase cost, responsibility, moral pressure and the risk of loss. Supporting characters, rivals, romantic interests and ordinary people require their own goals and growth; they must not exist only to serve the protagonist.
+The protagonist may gradually gain enough power, knowledge, responsibility and influence to affect major conflicts, but growth must also increase cost, responsibility, moral pressure and the risk of loss. Supporting characters, rivals, romantic interests and ordinary people require their own goals and growth.
 
 There is no single terminal ending that permanently removes the world from the reader. Each arc must still pay off promises, alter relationships, leave lasting state and close a character phase. `No final ending` must not become endless repetition or unresolved setup.
+
+### Protagonist Voice Candidate
+
+For REBOOT-01 Sandbox testing, the protagonist may use:
+
+```text
+observational sarcasm
+self-deprecating humor
+risk-aware commentary
+socially costly quips
+serious-scene restraint
+```
+
+This is a non-Canon candidate until the user later approves formal promotion. The protagonist may recognize obvious danger or trope-like behavior, forcing the world and opponents to respond intelligently. He must not become omniscient or use jokes to erase grief.
+
+### Audience Predictability
+
+The system must distinguish:
+
+- fair setup from obvious repetition;
+- character intelligence from author-forced stupidity;
+- causal reversal from random twist;
+- expected first-order outcome from unexpected second-order consequence.
+
+Any character entering obvious danger needs a documented motive, knowledge gap, pressure, obligation, constraint or calculated tradeoff. Otherwise record `IDIOT_PLOT_RISK`.
 
 ## 6. Architecture Direction
 
@@ -106,7 +147,7 @@ Absorb design strengths rather than copying whole stacks:
 - TextWorld-like replay: reset, step, observation, score and deterministic comparison;
 - ink-like deterministic narrative structure: flags, conditions, choices, variables and local endings.
 
-Core roles:
+Core flow:
 
 ```text
 NPC Agents
@@ -114,12 +155,13 @@ NPC Agents
 → Drama Director
 → Writer
 → independent Logic / Character-Drama / Prose-Pacing Critics
+→ Audience Expectation / Predictability checks
 → at most one bounded revision
 → legality re-check
 → SQL evidence and Runtime result
 ```
 
-The Drama Director may choose what conflict is worth presenting, but may not force a character to violate identity or leak Director metadata into character knowledge.
+The Drama Director may choose what legal conflict is worth presenting, but may not force a character to violate identity or leak Director metadata into character knowledge.
 
 ## 7. Validation Simplification
 
@@ -129,9 +171,9 @@ Only three categories remain hard blockers:
 2. world legality and transactional state safety;
 3. irreversible human approval such as Canon, formal assets, destructive changes, release or paid providers.
 
-Prose quality, pacing, repetition, AI-writing feel, weak subtext and emotional impact are `WARNING／SCORE`, not reasons to discard Run Evidence.
+Prose quality, pacing, repetition, AI-writing feel, weak subtext, emotional impact and predictability are `WARNING／SCORE`, not reasons to discard Run Evidence.
 
-New evidence policy:
+Evidence policy:
 
 ```text
 raw model output → always persist as run evidence
@@ -151,7 +193,7 @@ Codex may use up to four task-shaped Subagents:
 
 Subagents primarily perform read-only exploration, criticism and test analysis. Only one Writer modifies core Kotlin／SQL at a time.
 
-Do not use the strongest reasoning level for routine work. Hashes, JSON parsing, path checks, diffs and statistics should be handled by scripts or deterministic tools.
+Default main model is GPT-5.6 Codex `MEDIUM`. Do not use High／Max for routine work. Hashes, JSON parsing, path checks, diffs and statistics should be handled by scripts or deterministic tools.
 
 ## 9. Image Lane Status
 
@@ -159,9 +201,9 @@ Do not use the strongest reasoning level for routine work. Hashes, JSON parsing,
 IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
 ```
 
-The Daping Coast master-panorama candidate was generated in the GPT image session and the user replied that they agreed with it. It has **not** yet completed Codex file transfer, SHA-256, controlled intake or Candidate Reference acceptance.
+The Daping Coast master-panorama candidate was generated and the user agreed with it. It has not completed Codex file transfer, SHA-256, controlled intake or Candidate Reference acceptance.
 
-Therefore it remains:
+It remains:
 
 ```text
 USER_APPROVED_CANDIDATE
@@ -171,7 +213,7 @@ not LOCATION_REFERENCE_ACCEPTED
 not PRODUCTION_LOCK
 ```
 
-Do not continue Daping tasks 02–07 during REBOOT-01. Do not discard the candidate or the existing handoff evidence.
+Do not continue Daping tasks 02–07 during REBOOT-01. Preserve the candidate and handoff evidence.
 
 When image work resumes, character art direction must be selected before background art direction:
 
@@ -192,7 +234,9 @@ character likeness
 VIDEO_LANE_FUTURE_BAKEOFF_NO_SPEND
 ```
 
-Future providers include Gemini Omni Flash, Veo, Grok Imagine Video, Seedance／Jimeng and Runway. The project must use one provider-neutral `VideoShotHandoff` and compare providers on the same approved clean keyframe and motion contract.
+Future providers may include Grok, Seedance／Jimeng, Veo／Gemini, Runway or other current candidates. The project must use a provider-neutral `VideoShotHandoff` and compare providers on the same approved clean keyframe and motion contract.
+
+The YouTube video supplied by the user is recorded in `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V1.md`. The available environment did not obtain a complete transcript, so unverified spoken details are not treated as API facts.
 
 No paid API call, provider account purchase, API key, background generation or whole-episode generation is authorized during REBOOT-01.
 
@@ -200,7 +244,7 @@ No paid API call, provider account purchase, API key, background generation or w
 
 The old permanent prohibition on a local Web Server／React／Ktor／Port is retired.
 
-REBOOT-01 Stage 6 may create a minimal local-only playable Web interface after Stages 0–5 pass. It may not be publicly deployed or connected to paid external model APIs during this package.
+REBOOT-01 may create a minimal local-only playable Web interface after the engine loop passes. It may not be publicly deployed or connected to paid external model APIs during this package.
 
 ## 12. True Stop Conditions
 
@@ -213,26 +257,24 @@ Codex stops and asks the user only when:
 - progress would require weakening Transaction, Knowledge Boundary, `stateVersion`, `contextHash` or irreversible approval safety;
 - one evidence-based Medium attempt and one evidence-based High attempt still cannot restore the core build/test loop.
 
-Ordinary architecture choices, additive migrations, test failures, bounded refactors, Critic disagreement and local Web implementation choices are not user stop conditions.
+Ordinary architecture choices, additive migrations, test failures, bounded refactors, Critic disagreement, Sandbox world candidate design and local Web implementation choices are not user stop conditions.
 
 ## 13. Development Memory
 
-The detailed reconstructed record of the available project discussion is stored at:
+The reconstructed project discussion is stored at:
 
 ```text
 docs/development_journal/2026-07-11_PROJECT_DISCUSSION_ARCHIVE_V1.md
 ```
 
-It records the available user-visible conversation and Git evidence in detail. It is not a raw export of unavailable older chat sessions and does not contain hidden system prompts, private reasoning or credentials.
+Latest creative/execution additions are stored in a separate Addendum Journal. These records preserve available user-visible discussion and Git evidence. They are not raw exports of unavailable older chat sessions and do not contain hidden system prompts, private reasoning or credentials.
 
 Future product-direction changes, important failures, user criticisms and rule retirements must be appended to the journal.
 
 ## 14. User Command To Start
 
-The user can start the complete package with one instruction to Codex CLI:
-
 ```text
-Fetch the latest remote default branch. Read PROJECT_STATE.md and execute the active REBOOT-01 umbrella Work Package end-to-end on a clean reboot/playable-depth-v1 worktree. Use GPT-5.6 Codex MEDIUM by default, escalate only according to the model policy, use bounded Subagents where useful, validate and Commit every internal stage, Push the final branch, and report once at completion. Do not return for ordinary implementation decisions. Stop only for the True Stop Conditions in the active Work Package.
+Fetch the latest remote default branch. Read PROJECT_STATE.md and execute the active REBOOT-01 umbrella Work Package end-to-end on a clean reboot/playable-depth-v1 worktree. Treat docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md as mandatory. Use GPT-5.6 Codex MEDIUM by default, escalate only according to the model policy, use bounded Subagents where useful, validate and Commit every internal Stage, Push the final branch, and report once at completion. Do not return for ordinary implementation decisions. Stop only for the True Stop Conditions in PROJECT_STATE.md and the active Work Package.
 ```
 
 ## 15. Source Of Truth Order
@@ -242,6 +284,7 @@ Fetch the latest remote default branch. Read PROJECT_STATE.md and execute the ac
 3. `.codex/project_controller.md`;
 4. `docs/CURRENT_ROUTE_GATE_V2.md`;
 5. active REBOOT-01 Work Package;
-6. Reboot Blueprint and Model Policy;
-7. verified code, tests, SQL output and formal world sources;
-8. development journal and historical route evidence.
+6. Reboot Blueprint and mandatory Creative/World Addendum;
+7. Model/Budget Policy;
+8. verified code, tests, SQL output and formal world sources;
+9. development journal and historical route evidence.
