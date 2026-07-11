@@ -44,6 +44,20 @@ Journal 是歷史、意圖與失敗證據，不直接覆蓋目前 Work Package�
 - 非 Canon World Patch Candidate 必須進可重置 Sandbox 並在真實回合中生效；
 - 本機 Web、未來影片 Provider Bake-off 與完整日誌保存要求。
 
+### `2026-07-11_CREATIVE_VOICE_AND_AUTONOMOUS_EXECUTION_UPDATE_V1.md`
+
+保存同一最新方向的快速執行版，特別強調：
+
+- 一次啟動 Codex 並做到 Stage 7；
+- Sol／Terra／Luna 分級成本策略；
+- 吐槽不是第四牆全知；
+- 角色作死防護與公平二階意外；
+- 人物風格先於背景風格；
+- YouTube 完整逐字稿無法驗證時不得冒充已看完；
+- 未來 Gemini／Veo／Grok／Seedance／Runway 使用同 Keyframe 進行公平 Bake-off。
+
+這份與上一份 Addendum 有部分重疊，但用途不同：上一份保存完整長誌，這份提供未來執行者快速恢復最新操作意圖。不得因此把任何一份當作 Current Route；Current Route 仍由 `PROJECT_STATE.md` 決定。
+
 ### `reboot01/`
 
 REBOOT-01 執行期間，每個 Stage 都必須新增或更新實際運行日誌，包括：
@@ -84,3 +98,4 @@ REBOOT-01 執行期間，每個 Stage 都必須新增或更新實際運行日誌
 - 對無法取得的舊聊天內容要標示缺口，不得假裝逐字完整。
 - 可以保存使用者可見對話、Codex 回報、決策摘要與具體 Commit 證據。
 - 若一個規劃沒有真正進入 SQL、Runtime、Scenario 或可執行產品，Journal 必須明確標記為未落地。
+- Journal 是記憶，不是另一組需要逐層 PASS 的官僚門檻。
