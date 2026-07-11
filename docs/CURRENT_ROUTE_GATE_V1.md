@@ -43,7 +43,7 @@ Codex CLI runs engine, world-source, script, and shot preparation
 
 The script remains a formal upstream source. It is no longer the only terminal product.
 
-Images are active mainline output. Video remains a planned downstream product after the image Pilot proves character and location consistency.
+The image route remains the documented resumable production route, but its current execution state is `WP-003B_PAUSED_AFTER_TASK_01`. One Task 01 candidate is archived; no later image task is active. Video remains a planned downstream product only after a future explicit resume and the required image-reference gates.
 
 The active image blueprint is:
 
@@ -55,6 +55,15 @@ The future Grok-capable video addendum is:
 - `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1_GROK_VIDEO_ADDENDUM.md`
 
 It is planning only until the image approval and Candidate Reference gates are complete.
+
+Current pause boundary:
+
+```text
+Task 01 candidate archived with APPROVE_CANDIDATE
+Task 02-07 remain BLOCKED_BY_PRIOR_TASK_APPROVAL
+no Canon / Production Lock / final scene / accepted Location Reference
+no automatic resume
+```
 
 ## 3. Supersession Rules
 

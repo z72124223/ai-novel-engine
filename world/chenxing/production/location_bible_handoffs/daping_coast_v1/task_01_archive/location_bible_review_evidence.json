@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "location-bible-task-review-evidence-v1",
+  "evidenceId": "daping-lb-01-review-20260711",
+  "handoffId": "chenxing-daping-location-bible-v1",
+  "handoffContentSha256": "a3b6d6f421fb51983f2652c48ff9bf9a9138e1ee1d497dcc5bce8442255798da",
+  "taskId": "daping-lb-01-master-panorama",
+  "componentType": "MASTER_PANORAMA",
+  "candidateId": "daping-lb-01-master-panorama-candidate-v1",
+  "candidatePath": "world/chenxing/assets/image_candidates/chenxing-daping-location-bible-v1/daping_lb_01_master_panorama_candidate_v1.png",
+  "candidateSha256": "5059253c18af6a5efabba53a011be62b466cffc79d977bda83cfdbbf03f24cc2",
+  "reviewedAt": "2026-07-11T21:06:23+08:00",
+  "reviewAuthority": "USER",
+  "decision": "APPROVE_CANDIDATE",
+  "decisionEvidence": {
+    "userMessage": "同意",
+    "normalizedMeaning": "Keep the exact generated Task 01 panorama as a candidate and return it to Codex for evidence capture.",
+    "laterInstruction": "Pause and archive the image lane after Task 01; do not unlock Tasks 02-07."
+  },
+  "driftFindings": [],
+  "scopeBoundary": {
+    "candidateApprovedForRetentionOnly": true,
+    "canonApproved": false,
+    "productionLockApproved": false,
+    "finalLocationApproved": false,
+    "candidateReferenceAccepted": false,
+    "storyShotApproved": false,
+    "task02Unlocked": false
+  },
+  "schemaBoundaryNote": "The story image_review_log_v1 schema requires a shotId. This is a pure Location Bible task, so no fake shotId was created. This task-specific evidence records the same human-decision boundary without claiming story-shot validation."
+}

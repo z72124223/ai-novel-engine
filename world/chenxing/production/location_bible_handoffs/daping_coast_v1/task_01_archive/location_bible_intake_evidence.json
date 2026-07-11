@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "location-bible-file-intake-evidence-v1",
+  "evidenceId": "daping-lb-01-file-intake-20260711",
+  "handoffId": "chenxing-daping-location-bible-v1",
+  "taskId": "daping-lb-01-master-panorama",
+  "candidateId": "daping-lb-01-master-panorama-candidate-v1",
+  "intakeStatus": "FILE_IDENTITY_VALIDATED_CANDIDATE_CHAIN_DEFERRED",
+  "intakeAt": "2026-07-11T21:06:23+08:00",
+  "file": {
+    "repositoryPath": "world/chenxing/assets/image_candidates/chenxing-daping-location-bible-v1/daping_lb_01_master_panorama_candidate_v1.png",
+    "expectedFileName": "daping_lb_01_master_panorama_candidate_v1.png",
+    "mediaType": "image/png",
+    "sha256": "5059253c18af6a5efabba53a011be62b466cffc79d977bda83cfdbbf03f24cc2",
+    "byteSize": 939441,
+    "width": 1672,
+    "height": 941,
+    "aspectRatioContract": "16:9 target; actual provider render dimensions 1672:941",
+    "pngSignatureValid": true
+  },
+  "checks": [
+    { "check": "REPOSITORY_RELATIVE_PATH", "result": "PASS" },
+    { "check": "EXPECTED_FILENAME", "result": "PASS" },
+    { "check": "SHA256_COMPUTED", "result": "PASS" },
+    { "check": "PNG_SIGNATURE", "result": "PASS" },
+    { "check": "NATURAL_RENDER_DIMENSIONS", "result": "PASS" },
+    { "check": "HANDOFF_TASK_BINDING", "result": "PASS" },
+    { "check": "EXPLICIT_USER_CANDIDATE_DECISION", "result": "PASS" },
+    { "check": "NO_CANON_OR_PRODUCTION_LOCK_PROMOTION", "result": "PASS" },
+    { "check": "TASK_02_TO_07_REMAIN_BLOCKED", "result": "PASS" }
+  ],
+  "provenance": {
+    "sourceKind": "CHATGPT_GENERATED_IMAGE_NATURAL_SIZE_RENDER_CAPTURE",
+    "sourceNaturalWidth": 1672,
+    "sourceNaturalHeight": 941,
+    "providerOriginalByteStreamAvailableToCodex": false,
+    "identityClaim": "The SHA-256 binds the exact PNG archived in this Repository. It does not claim byte identity with an inaccessible provider-internal source object."
+  },
+  "deferredStages": [
+    "validate-image-candidate-external-result-intake",
+    "validate-image-candidate-result-review-preflight",
+    "validate-image-candidate-result-human-review-decision",
+    "create-image-candidate-reference-packet",
+    "validate-image-candidate-reference-packet",
+    "validate-candidate-reference-human-acceptance-decision",
+    "validate-candidate-reference-registry-preflight",
+    "create-candidate-reference-registry-packet",
+    "validate-candidate-reference-registry-packet",
+    "validate-candidate-reference-registry-human-acceptance-decision",
+    "create-candidate-reference-acceptance-packet",
+    "validate-candidate-reference-acceptance-packet"
+  ],
+  "deferredReason": "The user paused the image lane after Task 01 and explicitly prohibited treating the candidate as Canon, Production Lock, or final location. Existing story-oriented CLI stages also require identifiers that must not be fabricated for a pure Location Bible task."
+}

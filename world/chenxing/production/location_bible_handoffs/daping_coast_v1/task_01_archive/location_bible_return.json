@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "location-bible-return-to-codex-v1",
+  "handoffId": "chenxing-daping-location-bible-v1",
+  "returnStatus": "CODEX_INTAKE_READY",
+  "locationId": "loc-daping-coast",
+  "candidates": [
+    {
+      "taskId": "daping-lb-01-master-panorama",
+      "componentType": "MASTER_PANORAMA",
+      "candidateId": "daping-lb-01-master-panorama-candidate-v1",
+      "expectedFileName": "daping_lb_01_master_panorama_candidate_v1.png",
+      "localFilePath": "world/chenxing/assets/image_candidates/chenxing-daping-location-bible-v1/daping_lb_01_master_panorama_candidate_v1.png",
+      "userDecision": "APPROVE_CANDIDATE",
+      "userDecisionReason": "The user explicitly replied '同意' to keep this exact Task 01 panorama candidate, then instructed Codex to archive it and pause the image lane after Task 01.",
+      "driftFindings": [],
+      "sourceConversationNote": "ChatGPT generated one candidate for daping-lb-01-master-panorama. This record contains no private media URL, provider credential, Canon promotion, production lock, or final-scene claim.",
+      "sourceFileSha256": "5059253c18af6a5efabba53a011be62b466cffc79d977bda83cfdbbf03f24cc2",
+      "intakeStatus": "READY_FOR_EXTERNAL_RESULT_INTAKE",
+      "nextRequiredCliStages": [
+        "validate-image-candidate-external-result-intake",
+        "validate-image-candidate-result-review-preflight",
+        "validate-image-candidate-result-human-review-decision",
+        "create-image-candidate-reference-packet",
+        "validate-image-candidate-reference-packet",
+        "validate-candidate-reference-human-acceptance-decision",
+        "validate-candidate-reference-registry-preflight",
+        "create-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-human-acceptance-decision",
+        "create-candidate-reference-acceptance-packet",
+        "validate-candidate-reference-acceptance-packet"
+      ]
+    }
+  ],
+  "intakeBoundary": {
+    "approvalAppliesToExactCandidateOnly": true,
+    "sourceFileSha256RequiredAfterCodexReceivesFile": true,
+    "existingExternalResultHumanReviewAndCandidateReferenceStagesRequired": true,
+    "approvalDoesNotWriteCanonOrSqlite": true,
+    "locationReferenceAcceptanceDoesNotApproveStoryShotsOrFinalMedia": true
+  },
+  "exampleOnly": false
+}

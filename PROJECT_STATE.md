@@ -71,27 +71,29 @@ Codex 終端版跑引擎、世界資料與劇本流程
 ## Current Work Package
 
 - ID: `WP-003B Daping Coast Master Panorama GPT Session`
-- Status: `REFERENCE_UPLOAD_REQUIRED`
+- Status: `WP-003B_PAUSED_AFTER_TASK_01`
 - Work Package: `docs/work-packages/WP-003B_DAPING_MASTER_PANORAMA_GPT_SESSION.md`
 - Accepted handoff commit: `4dea7f071b58f300c13c16e76fe2f89651b9cc40`
 - Handoff path: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/location_bible_handoff.json`
-- Active task: `daping-lb-01-master-panorama`
-- Expected candidate filename: `daping_lb_01_master_panorama_candidate_v1.png`
-- Current action: user uploads the one required style image into this ChatGPT conversation; GPT then generates exactly one candidate and waits for explicit user review.
+- Completed bounded task: `daping-lb-01-master-panorama`
+- Candidate path: `world/chenxing/assets/image_candidates/chenxing-daping-location-bible-v1/daping_lb_01_master_panorama_candidate_v1.png`
+- Candidate SHA-256: `5059253c18af6a5efabba53a011be62b466cffc79d977bda83cfdbbf03f24cc2`
+- Candidate dimensions: `1672 x 941`
+- User decision: `APPROVE_CANDIDATE`
+- Evidence directory: `world/chenxing/production/location_bible_handoffs/daping_coast_v1/task_01_archive/`
+- Current action: none. The image lane is paused and archived after Task 01.
 
-Required upload:
-
-```text
-world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
-```
-
-Expected SHA-256:
+The candidate remains candidate-only. It is not Canon, Production Lock, a final scene, or an accepted Location Reference. The existing Candidate Reference chain is deferred and must not be inferred as complete.
 
 ```text
-a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a
+WP-003B_PAUSED_AFTER_TASK_01
 ```
 
-The file is style authority only. Its depicted people, clothing, props, architecture, and geography are not location, likeness, costume, or Canon authority.
+Tasks `daping-lb-02` through `daping-lb-07` remain:
+
+```text
+BLOCKED_BY_PRIOR_TASK_APPROVAL
+```
 
 ## Controller Architecture Decision
 
@@ -117,8 +119,8 @@ WP-004 will continue to use the strict story-shot schemas after location referen
 1. `WP-002A` — **COMPLETED / ACCEPTED**: generic GPT image handoff foundation.
 2. `WP-003` — **COMPLETED / ACCEPTED**: Chenxing visual asset and location-gap inventory.
 3. `WP-003A` — **COMPLETED / ACCEPTED**: separate Location Bible schemas and the real Daping Coast preliminary handoff.
-4. `WP-003B` — **ACTIVE / REFERENCE_UPLOAD_REQUIRED**: GPT generates only `daping-lb-01-master-panorama` after the required style reference is attached.
-5. `WP-003C` — **NOT STARTED**: Codex imports a user-kept Location Bible candidate, computes Hashes, and runs the existing review/reference chain.
+4. `WP-003B` — **PAUSED / TASK 01 CANDIDATE ARCHIVED**: the exact panorama candidate and Return/Review/Intake evidence are preserved; no promotion is claimed.
+5. `WP-003C` — **NOT STARTED / DEFERRED**: the existing Candidate Reference acceptance chain is not executed while the image lane is paused.
 6. `WP-004` — **BLOCKED**: create the real opening Shot 01–03 handoff only after required Daping Coast Location Bible components are accepted.
 7. `WP-005` — GPT generates Shot 01–03 image candidates.
 8. `WP-006` — Codex imports approved Shot images and runs the existing hash/review/reference chain.
@@ -288,13 +290,13 @@ Codex must not move to the next product package without a new pointer or explici
 
 ## Next User Action
 
-Upload this exact file into the active ChatGPT conversation:
+No image-production action is pending. Keep the lane paused. The former upload path is retained below only as completed historical evidence:
 
 ```text
 world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png
 ```
 
-Then say:
+Do not execute the former generation command below. Only a new explicit user/controller instruction may resume Task 02, start WP-003C, promote a Candidate Reference, or begin WP-004:
 
 ```text
 參考圖已上傳，執行 daping-lb-01-master-panorama。
