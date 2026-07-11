@@ -74,6 +74,10 @@ REBOOT-01 執行期間，每個 Stage 都必須新增或更新實際運行日誌
 - Web 使用方式；
 - 未解問題。
 
+Current REBOOT-01 entries:
+
+- `reboot01/STAGE_0_EXECUTABLE_BASELINE.md` — executable Kotlin/CLI/SQLite baseline, real Chenxing turn, World Source integrity classification, and world/character reality audit.
+
 ## Future Append Rule
 
 每次出現下列事情，Codex 應追加 Journal，而不是只留在聊天：

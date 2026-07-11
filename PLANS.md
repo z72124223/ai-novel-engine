@@ -12,92 +12,99 @@
 
 ## Current Plan Window V0
 
-標記：`WP003A_DAPING_LOCATION_BIBLE_HANDOFF`
+標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**WP-003A 執行中；Schema 與真實交接包待建立**
+狀態：**REBOOT-01 自主執行中；Stage 0 已通過，現在只執行 Stage 1 驗證分類與 Run Evidence**
 
 日期：2026-07-11
 
 ### Goal
 
-建立獨立、供應商中立的 Location Bible（場景視覺聖經）檔案協議與大坪海岸真實前置交接包，只開放 `daping-lb-01-master-panorama` 給 GPT，其餘任務依前置批准保持阻塞。
+在不弱化 SQLite 正式狀態、Validator、交易、知識邊界、版本與 Hash 邊界的前提下，完成可重播、可驗證、可本機遊玩的 5–10 回合塵行深度切片，證明故事會留下可持續影響，而不是只產生一次性文字。
 
 ### Global Strategy
 
-- 保持 `shot_queue_v1` 的角色約束不變，另外建立純 Location Bible 任務協議。
-- 以正式文字權威加鎖定風格／比例參考，建立候選生成交接；不把候選視為批准、Canon 或 production lock。
-- 使用非自我引用的正規化 SHA-256，並以 Repository 相對路徑綁定所有現有來源與參考檔。
-- 只允許一項初始 `READY_FOR_GPT`；依賴圖必須無循環，後續任務等待精確候選的使用者批准與 Codex intake。
+- 依 `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md` 與執行 Addendum 的 Stage 0–7 順序推進；每一階段先取證、再最小實作、驗證、獨立 Commit，並更新開發日誌。
+- 先證明現有 CLI、Runtime、世界來源、SQLite 與真實回合可執行，再調整過度阻塞、加入可追蹤的 NPC 自主提案、戲劇評分與有限修訂。
+- 所有 NPC、Game Master 與 Drama Director 輸出都只是提案；只有既有驗證與交易流程可寫入正式 Runtime。
+- 預設使用 `gpt-5.6-sol / medium`；只在 Migration、交易、知識邊界、版本／Hash、硬重播或最終高風險審查時升級 High。子代理只做唯讀探索、測試、敘事批評與成本稽核，核心 Kotlin／SQL 只由主代理修改。
+- 圖片線維持暫停；不執行 Location Bible task 02–07，不呼叫圖片／影片供應商或外部付費 API。
 
 ### Non-Goals
 
-- 不重跑 WP-002A 或 WP-003，不修改 `shot_queue_v1` 或其他既有 WP-002A Schema。
-- 不生成圖片，不開始 WP-003B、WP-003C、WP-004 或其他下游工作包。
-- 不修改 Kotlin、測試、migration（資料庫遷移）、Canon（正典）、正式來源或既有圖片。
-- 不暴露作者限定秘密，不聲稱圖片已生成、批准、鎖定或已附加至 ChatGPT。
+- 不重跑 WP-002A、WP-003 或 WP-003A，也不繼續任何圖片任務。
+- 不修改正式 Canon（正典）、既有圖片、候選批准或作者鎖定的角色命運／戀愛／視覺決策。
+- 不接 OpenAI 或其他供應商 API、不要求 API key、不公開部署、不加入雲端資料庫或付費服務。
+- 不繞過 `AiTurnResultValidator`、`StateReducer`、`contextHash`、`stateVersion`、知識邊界或 SQLite transaction（交易）。
+- 不以一次大型重構取代分階段證據，不重寫既有 Kotlin/JVM 引擎為 JavaScript。
 
 ### Scope
 
-- `schemas/production/location_bible_handoff_v1.schema.json`
-- `schemas/production/location_bible_return_to_codex_v1.schema.json`
-- `samples/production_handoff/location_bible_*_v1.example.json`
-- `world/chenxing/production/location_bible_handoffs/daping_coast_v1/**`
-- `docs/production/WP003A_DAPING_LOCATION_BIBLE_HANDOFF_REPORT.md`
-- `PLANS.md`
-- `PROJECT_STATE.md`
+- Stage 0：`docs/reboot/REBOOT01_BASELINE_REPORT.md`、`docs/reboot/REBOOT01_WORLD_AND_CHARACTER_REALITY_AUDIT.md`、`out/reboot01/baseline/**`、`out/reboot01/world_audit/**`、`docs/development_journal/reboot01/**`。
+- Stage 1–5：必要的 Kotlin、直接測試、additive migration（加法式資料庫遷移）、`samples/reboot01/**`、重播／benchmark（基準測試）證據與報告。
+- Stage 6：通過引擎關卡後才新增最小本機 Web UI；不公開部署。
+- Stage 7：最終測試、端到端證據、重播、SQL 稽核、秘密掃描、遊玩指南與總結報告。
+- `PLANS.md` 只維護本 Current Plan Window；每階段日誌保存命令、測試、檔案、模型／推理強度與已知失敗。
 
 ### Confirmed Facts
 
-- 已依指示更新遠端；最新預設分支與乾淨工作分支基線均為 `a6fbe48e0eb21e0e71f94b62c750448ba9dfb9d2`。
-- `PROJECT_STATE.md` 明確啟用 WP-003A，並選定獨立 preliminary Location Bible handoff（前置場景交接）。
-- WP-003 已確認大坪海岸只有文字權威，沒有已批准的場景幾何圖；`shot_queue_v1.characters.minItems = 1` 不適合純場景任務。
-- `cinematic_misty` 風格圖存在，SHA-256 為 `a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a`，可作 task 01 唯一必要上傳。
-- 陸塵行身體、開場服裝與愛醬三視圖存在且 Hash 可驗證，只在 task 04 成為必要參考。
-- 目前未安裝相容的 JSON Schema meta-validator（結構描述驗證器）；不得安裝依賴，必須如實記錄 `SCHEMA_META_VALIDATION_NOT_AVAILABLE`。
+- 已執行 `git fetch --prune origin`；最新遠端預設分支基線為 `c0bebd316d4e429abcfa6b0d1b1ff5f08ea9c1ac`。
+- 已從該基線建立乾淨 worktree `C:\Users\f7212\OneDrive\文件\ai-novel-engine-reboot01` 與分支 `reboot/playable-depth-v1`；建立時 `git status --short` 為空。
+- 原髒工作樹仍停在 `89e522f18a946426232f5d56009fea0262329b47`，共有 123 項狀態；REBOOT worktree 不對它執行 pull、merge、rebase、reset、stash 或 clean。
+- 已按順序讀取最新治理、路線、工作包、執行 Addendum、敘事聲音、模型成本政策、開發日誌索引與 `AGENTS.md`。
+- Repository 是 Kotlin/JVM CLI + SQLite；已有 `start-session`、`prepare-turn`、`resolve-turn`、`show-session`、`query-world-source`、`AiTurnResultValidator`、`StateReducer` 與 migration 001–009。
+- 專案級 Codex 設定為 `gpt-5.6-sol / medium`，最多 4 個直接子代理、深度 1；已存在 explorer、runtime tester、narrative critic、cost auditor 與 high-risk reviewer 角色設定。
 
 ### Assumptions
 
-- `4:3` 作為 top-down zone plan（俯視區域圖）的固定比例，符合工作包允許值且有利生產標註。
-- task 04 同時依賴 task 01–03 的批准；因此初始狀態使用 `BLOCKED_BY_PRIOR_TASK_APPROVAL`，即使它未來還需要三張角色／服裝參考上傳。
+- Stage 0 先使用 Repository 既有 Chenxing sample、正式 CLI 與臨時資料庫建立可重播基線；若命令的精確參數需由現有測試或文件推導，以 Repository 實際證據為準。
+- `out/reboot01/**` 若受 `.gitignore` 排除，仍可作本機驗證證據；需要提交的長期證據以 `docs/reboot/**`、`samples/reboot01/**` 與開發日誌為準。
+- 已知 World Source hash／byte-size 失敗須先重現與分類；不能將它自動視為 REBOOT 程式缺陷或直接改正式來源。
 
 ### Open Questions
 
-- 無；工作包已解決架構選擇。視覺方向與候選批准保留給使用者，不在本包決定。
+- Stage 0 的完整測試是否仍只有既有 World Source hash／byte-size 失敗，需以本乾淨基線實跑確認。
+- 現有 Chenxing setting pack（設定包）是否可直接完成真實 start/prepare/resolve 回合，或需要使用既有 sample fixture，需由 CLI 與測試證據確認。
+- Stage 1 是否需要 additive migration，必須等 Stage 0 的 Runtime 證據與資料表盤點完成後決定。
 
 ### Implementation Steps
 
-- [x] Step 1: 更新遠端、建立乾淨分支並完成規格與證據閱讀。
-- [x] Step 2: 建立兩份 Location Bible Schema 與兩份 example-only（僅供範例）JSON。
-- [x] Step 3: 建立大坪海岸 README、真實 handoff、task-aware 上傳清單與 return template。
-- [x] Step 4: 建立完成報告並更新 `PROJECT_STATE.md` 的目前工作包狀態。
-- [x] Step 5: 驗證 JSON、Schema、本地 `$ref`、regex、路徑、Hash、正規化 handoff Hash、依賴 DAG、秘密邊界與 Git scope。
-- [x] Step 6: 明確 Stage、Commit、Push 指定分支，回報 GPT 總控後停止。
+- [x] Step 0A：更新遠端、建立乾淨 worktree／分支、讀取完整控制文件與修正 Current Plan Window。
+- [x] Step 0B：建立可執行引擎基線、真實 CLI 回合、SQLite 證據、世界／角色現實稽核、Stage 0 報告與日誌；驗證後獨立 Commit。
+- [ ] Step 1（目前唯一進行中）：區分 protocol hard fail、world legality hard fail、irreversible approval 與 quality warning；必要時以 additive migration 保存 run evidence；驗證後獨立 Commit。
+- [ ] Step 2：加入受限 offscreen NPC autonomy（離場 NPC 自主提案）、DecisionTrace、Game Master 與非 Canon sandbox world patch；驗證後獨立 Commit。
+- [ ] Step 3：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
+- [ ] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
+- [ ] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
+- [ ] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
+- [ ] Step 7：完成全套驗證、端到端重播、Web smoke、SQL 稽核、秘密掃描、遊玩指南與最終報告；獨立 Commit 後普通 Push 一次。
 
 ### Verification
 
-- 使用 Node.js 解析全部新 JSON，檢查 Draft 2020-12 宣告、本地 `$ref` 與 regex。
-- 驗證 example 與真實 handoff 的必要欄位、enum、additionalProperties、依賴 DAG 與唯一 `READY_FOR_GPT`。
-- 重算所有現有來源／參考檔 SHA-256、byte size 與正規化 handoff SHA-256。
-- 搜尋私人絕對路徑、作者限定秘密、假角色、未授權批准／Canon／final media／production lock 宣稱。
-- 執行 `git diff --check` 與允許路徑白名單檢查；本包不執行 Gradle，因禁止修改程式碼。
+- 每階段執行直接測試與 `git diff --check`；Stage 0、5、7 依工作包執行完整測試並分類既有／不相關失敗。
+- Stage 0 必須實跑 Compile、`query-world-source`、真實 start／prepare／resolve／show 回合並查詢 SQLite，不得只讀測試宣稱可用。
+- 任何 Runtime 寫入只能透過正式 CLI、Validator、StateReducer 與 transaction；不得用臨時 SQL 修改正式故事狀態。
+- Stage 2–5 必須保存 Seed、raw／revised narrative、critic scores、DecisionTrace、offscreen action、state delta、apply result 與 SQL 證據。
+- Stage 5 必須證明同 Seed 的重播行為與可解釋差異；Stage 6 必須做本機 Web smoke；Stage 7 必須做 secret scan 與最終 Git scope 審查。
+- 每個 Commit 只含該階段允許範圍，明確 Stage，不使用 `git add .`、`git add -A`、force push 或將原髒工作樹帶入。
 
 ### Risks
 
-- 正式來源含私人絕對來源路徑與 author-only（作者限定）因果；新交接只能傳遞公開可見錨點與秘密類別標籤。
-- task 01 使用文字權威建立 foundation candidate（基礎候選）是受限例外，不得擴張成 Shot 01–03 生成許可。
-- 正規化 Hash 規則若實作不一致會破壞可重現性；需在 README、Schema、真實 handoff 與驗證腳本採相同規則。
+- `Main.kt`、`Models.kt`、Repository、Migration、Validator 與 StateReducer 是高風險共享邊界；更動前需針對性搜尋與 High review（高強度審查）。
+- 現有 Repository 功能與文件很多，可能有「已有功能卻重做」風險；每階段先做路徑、符號與測試重疊查證。
+- 敘事品質若仍被 hard gate（硬阻塞）過度控制，可能造成可玩性低；但放寬品質警告不得弱化 protocol、world legality 或 irreversible approval。
+- 世界／角色資料可能含作者秘密；audit（稽核）輸出只記責任、缺口與安全摘要，不把 author-only 內容送到玩家或 Web UI。
+- Stage 6 會新增前端技術面，但不得改寫引擎或暴露 SQLite；任何框架選擇須以最小依賴和本機 smoke 可驗證為準。
 
 ### Drift Log
 
-- 2026-07-11：從最新遠端基線建立乾淨 WP-003A worktree；沒有重跑 WP-002A 或 WP-003。
-- 2026-07-11：完整閱讀工作包指定治理、藍圖、Schema、正式世界、視覺盤點與拒絕漂移證據；沒有來源衝突。
-- 2026-07-11：確認採獨立 Location Bible handoff，不修改 `shot_queue_v1`，且 task 01 為唯一初始 `READY_FOR_GPT`。
-- 2026-07-11：兩份新 Schema 與兩份 example-only JSON 已建立並通過 JSON parse、局部 `git diff --check`；既有 WP-002A Schema 未修改。
-- 2026-07-11：真實 handoff 建立 7 項無循環任務，只有 task 01 為 `READY_FOR_GPT`；task 02–07 均依賴前置批准。初始上傳清單只要求 cinematic-misty 風格圖。
-- 2026-07-11：完成報告與 `PROJECT_STATE.md` 已更新為等待總控審查；WP-003B、WP-003C 與 WP-004 均未啟動。
-- 2026-07-11：兩份 example、真實 handoff、return template 與 upload checklist 通過自有 contract check；10 個來源與 4 個參考檔的路徑／Hash／byte size、7 任務 DAG、唯一 ready task、正規化 handoff Hash、私人路徑、秘密與候選邊界皆通過。完整 meta-schema validator 未預裝，維持 `SCHEMA_META_VALIDATION_NOT_AVAILABLE`。
-- 2026-07-11：Git scope 為 11 個允許檔案；`shot_queue_v1`、Kotlin、測試、migration、Canon 與圖片皆未變；原 123 項髒工作樹未動。
-- 2026-07-11：11 個允許檔案已明確 Stage，cached diff check 通過並建立單一 WP-003A Commit；下一動作只允許普通 Push 與總控回報。
+- 2026-07-11：依最新遠端 `c0bebd3` 建立 `reboot/playable-depth-v1` 乾淨 worktree；原 123 項髒工作樹未變。
+- 2026-07-11：完整讀取 REBOOT-01 控制文件、Addendum、敘事聲音、模型／成本政策、日誌索引與專案規則；確認圖片線暫停。
+- 2026-07-11：發現 `PLANS.md` Current Plan Window 尚停在已完成的 WP-003A，先更正為 REBOOT-01；尚未修改 Kotlin、SQL、測試、Canon 或 Runtime。
+- 2026-07-11：獨立 Gradle 輸出下 Compile 通過；針對性測試 113 項中 109 通過，完整測試 809 項中 805 通過，4 項皆為既有 World Source #09 Hash／byte-size 漂移。
+- 2026-07-11：正式 World Source import 正確阻塞且零寫入；audit-local observed manifest 僅用於臨時 DB，成功匯入 1 archive／9 documents／255 chunks 並完成真實 `query-world-source`，未改 formal manifest 或 raw source。
+- 2026-07-11：Chenxing 真實 start／prepare／resolve／show 回合通過，State Version 0→1、Next Turn 1→2、世界時間 +3 分鐘、1 delta 與 1 event 交易寫入；第一次 resolve 也證明品質關鍵字目前可能誤成 hard blocker，交由 Stage 1 分類修正。
+- 2026-07-11：Stage 0 兩份報告、machine-readable reality inventory 與開發日誌完成；Runtime、Canon、圖片線與原 123 項髒工作樹未修改。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 
