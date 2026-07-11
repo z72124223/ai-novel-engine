@@ -1,272 +1,368 @@
-# Project Controller
+# Project Controller — Playable Depth Reboot
 
-## Role
+## 1. Role
 
 Codex CLI is the Lead Engineer for `AI Novel Engine`.
 
-The user owns final product direction, provider spending, visual approval, and final media approval. GPT total-control owns architecture, active Work Package selection, GitHub blueprint maintenance, handoff review, image-generation coordination, and future provider routing.
+The user owns final product direction, formal Canon, character fate, romance direction, visual taste, provider spending and final media approval.
 
-Codex is expected to execute bounded technical work end-to-end without returning ordinary implementation planning to the user.
+The active Repository files own ordinary implementation routing. For REBOOT-01, Codex must execute end-to-end rather than returning routine planning decisions to the user.
 
-## Mandatory Single Entry
+## 2. Mandatory Single Entry
 
-Every Codex session must start with:
+Every Codex session starts with:
 
 ```text
 PROJECT_STATE.md
 ```
 
-Then read, in order:
+Then read in order:
 
 1. `.codex/project_controller.md`
-2. `docs/CURRENT_ROUTE_GATE_V1.md`
-3. the exact active Work Package named by `PROJECT_STATE.md`
-4. the active blueprint and execution plan named by that package
-5. `AGENTS.md`
-6. only the route-specific evidence needed by the package
+2. `docs/CURRENT_ROUTE_GATE_V2.md`
+3. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
+4. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
+5. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
+6. `AGENTS.md`
+7. only the code, tests, world sources and historical evidence required by the current Stage
 
-`docs/HANDOFF.md` is a gateway and historical pointer, not the independent current-state authority.
+Do not treat these as current routing authority:
 
-Do not start from:
+- `docs/CURRENT_ROUTE_GATE_V1.md`;
+- old image Work Packages;
+- old `docs/HANDOFF.md` content;
+- old route cards;
+- old `PLANS.md` sections;
+- historical script-only or image-first charters;
+- README status sentences.
 
-- the pre-gate long handoff;
-- `world/chenxing/formal/29_project_script_first_charter_v1.json`;
-- an old route card;
-- an old `PLANS.md` section;
-- an old README status sentence;
+They remain evidence only.
 
-and treat its words `current`, `active`, `approved`, or `目前定案` as present-day routing authority.
-
-Historical files remain evidence. Their route labels are reclassified by `docs/CURRENT_ROUTE_GATE_V1.md`.
-
-## Start Protocol
-
-At the start of every Work Package:
-
-1. Fetch the latest remote state.
-2. Read the mandatory single entry sequence above.
-3. Record the default branch and exact base SHA.
-4. Confirm the active package has not changed since the task was issued.
-5. Use a clean branch/worktree when the current tree is dirty or the package requires isolation.
-6. Inspect existing code, tests, CLI, schemas, docs, world sources, and assets before adding a competing implementation.
-7. Update `PLANS.md` only when the Work Package requires it; never rewrite historical sections merely to make them look current.
-8. Execute exactly one Work Package.
-9. Validate, inspect exact diff, Commit, Push, and report.
-10. Stop after the completion report unless `PROJECT_STATE.md` already contains a deliberately activated next package.
-
-## Current Active Route
+## 3. Active Route
 
 ```text
-Codex engine / world-source / script / shot work
-→ GitHub Script / Shot / GPT Image Handoff
-→ GPT reads exact Commit and handoff path
-→ required locked references are attached
-→ GPT generates image candidates
-→ user approves, rejects, or requests variation
-→ Codex intake, SHA-256, human review, and Candidate Reference validation
-→ approved visual references
-→ future provider-neutral short-video handoff
-→ optional manual Grok video Pilot after explicit activation
+Reality baseline
+→ simplify overblocking
+→ persist SQL run evidence
+→ bounded offscreen NPC autonomy
+→ Drama Director and independent Critics
+→ 5–10 turn Chenxing playable slice
+→ same-seed replay and evolution
+→ minimal local Web playable slice
+→ final integration report
 ```
 
-The script is a formal upstream source, not the only terminal product.
+Images are paused after one user-approved panorama candidate. Video is a future provider bake-off with no spending authorization.
 
-Current required blueprint reads:
+## 4. Umbrella Execution Authorization
 
-- `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1.md`
-- `docs/CODEX_GPT_IMAGE_PRODUCTION_EXECUTION_PLAN_V1.md`
-- `docs/CODEX_GPT_IMAGE_PRODUCTION_BLUEPRINT_V1_GROK_VIDEO_ADDENDUM.md` only for future-video implications
+`REBOOT-01 Playable Depth Slice` is an explicitly approved Umbrella Work Package.
 
-Use the exact Work Package pointer in `PROJECT_STATE.md`. At the time of this controller update, that package is:
+One user-started Codex CLI session may:
 
 ```text
-WP-003 Chenxing Visual Bible Inventory
+create clean reboot branch/worktree
+→ complete Stage 0
+→ validate and Commit
+→ complete Stage 1
+→ validate and Commit
+→ continue through Stage 7
+→ Push final branch
+→ report once
 ```
 
-Do not resume historical renderer, audio, script-only, A/B-window, or reconciliation routes unless `PROJECT_STATE.md` explicitly reactivates one.
+Do not stop after each internal Stage. Do not request a new GPT total-control pointer for routine implementation choices.
 
-## Model Selection
+This exception applies only to REBOOT-01. It is not permission for unattended infinite product expansion.
 
-When GPT total-control specifies a model/reasoning level, follow it.
+## 5. Model Selection
 
-Default when no explicit selection is present:
-
-- docs/schema/file-protocol work: strongest available Codex coding model; use `HIGH` when cross-file, security, handoff, provenance, or visual-source authority is involved;
-- Kotlin/CLI/Model/Validator/migration/Git history/Canon boundary: strongest available Codex coding model, `HIGH`;
-- low-risk repetitive checks: a faster model is permitted only when validation requirements remain unchanged.
-
-Current WP-003 requires the strongest available Codex coding model with `HIGH` reasoning.
-
-## Decision Boundaries
-
-Codex must not independently decide:
-
-- final product direction;
-- character likeness, costume art direction, location art direction, image approval, or video approval;
-- Canon promotion;
-- weakening human approval, SHA-256, provenance, identity digest, Validator, StateReducer, `contextHash`, `stateVersion`, or transaction boundaries;
-- external provider/API spending or jobs;
-- Web Server, open ports, Android UI, Docker, React/Next, Rust, renderer, FFmpeg, TTS, xAI API, or background media activation;
-- whether a candidate image/video is final media or production-locked;
-- broad archive or deletion of historical files without a dedicated dependency manifest.
-
-Codex may decide ordinary implementation details such as file names, schema factoring, validation commands, test organization, and small technical fixes when they remain inside the active package.
-
-## Image Handoff Boundary
-
-Codex prepares and validates handoff files; it does not generate or approve formal images.
-
-A GitHub reference path does not prove that GPT's image tool has the file attached in the current conversation. Every formal handoff must include a `referenceUploadChecklist`.
-
-If GPT lacks a required likeness, costume, animal, or location image, the correct state is:
+Default main model:
 
 ```text
-REFERENCE_UPLOAD_REQUIRED
+current GPT-5.6 Codex coding model
+reasoning_effort = MEDIUM
 ```
 
-not text-only production generation.
+Use `HIGH` only for:
 
-Generated images remain `CANDIDATE`. User approval only releases them to Codex Intake. Codex then computes SHA-256 and runs the existing External Result / Human Review / Candidate Reference chain.
+- additive Migration design;
+- SQLite Transaction／Repository write boundaries;
+- Validator／StateReducer／Knowledge Boundary／contextHash／stateVersion;
+- hard consistency or replay bugs;
+- high-risk Git/data integration;
+- final integration review;
+- a core blocker that survived one evidence-based Medium attempt.
 
-A recurring location is not considered visually fixed by one panorama alone. The Location Bible must distinguish:
+Use Low／fast modes or deterministic scripts for:
+
+- search and file inventory;
+- test failure grouping;
+- repetitive documentation;
+- hashes, JSON, paths, diffs and statistics;
+- formatting and non-core templates.
+
+`MAX`／highest-cost mode is prohibited unless all conditions in `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md` are met.
+
+After a High-only problem is resolved, return to Medium.
+
+## 6. Multi-Agent Policy
+
+Codex may launch up to four bounded Subagents:
+
+- `RepositoryExplorer`;
+- `RuntimeTester`;
+- `NarrativeSystemsCritic`;
+- `CostAndComplexityAuditor`.
+
+Use Subagents primarily for read-only exploration, criticism, test analysis and benchmark comparison.
+
+Only one Writer may modify core Kotlin／SQL at a time. Do not let multiple agents simultaneously edit `Models.kt`, `Main.kt`, migrations, repositories, transactions or core validators.
+
+The main Codex process owns synthesis and final writes. A failed Subagent should be recorded and bypassed, not allowed to block the entire package when the main agent can continue.
+
+## 7. Validation Simplification
+
+Only three classes are hard blockers:
+
+1. protocol safety;
+2. world legality／transaction safety;
+3. irreversible human approval.
+
+Quality issues such as prose style, pacing, repetition, weak subtext, exposition and emotional impact are `WARNING／SCORE`, not reasons to discard Run Evidence.
+
+Codex must preserve:
 
 ```text
-master panorama
-+ top-down / zone plan
-+ directional views
-+ spatial anchors
-+ scale reference
-+ required detail views
+raw draft
+critic scores
+revision suggestion
+revised draft
+validation findings
+state delta
+apply result
+model/reasoning metadata when available
+elapsed time
 ```
 
-A 360 panorama is optional supplementary evidence only.
+A world-illegal result must not apply state, but its evidence should still be saved.
 
-## Future Grok Video Boundary
+## 8. Runtime And SQL Boundary
 
-Grok is a future provider candidate after image approval and Candidate Reference validation.
+Always preserve:
 
-The formal source is a clean single-shot keyframe plus a motion/camera/continuity contract, not a comic page with speech bubbles, subtitles, page borders, or multiple panels.
+- SQLite formal state;
+- transactionality;
+- `stateVersion`;
+- `contextHash`;
+- duplicate-result protection;
+- character knowledge boundaries;
+- location／item／capability legality;
+- additive migrations only;
+- existing Canon promotion boundaries.
 
-The provider-neutral route must remain separate from the provider profile.
+Do not directly patch formal runtime data with ad hoc SQL. Use Repository／Service／CLI paths.
+
+Raw and failed Run Evidence may use a dedicated additive evidence table or existing evidence structure, but must not masquerade as applied formal state.
+
+## 9. NPC Autonomy Boundary
+
+NPCs may perceive, remember, reflect, plan, schedule and act offscreen.
+
+They may only use their own:
+
+- location;
+- knowledge;
+- memories;
+- beliefs;
+- goals;
+- fears;
+- relationships;
+- resources;
+- reachable actions.
+
+NPC Agents propose actions. A Game Master／existing validation path resolves legal outcomes. NPCs do not directly write Canon or formal world state.
+
+Every autonomous action must leave a queryable DecisionTrace and be replayable.
+
+## 10. Drama And Critic Boundary
+
+The Drama Director chooses which legal conflict is worth presenting. It must not:
+
+- force characters to violate identity;
+- inject Director goals into character knowledge;
+- manufacture an impossible action;
+- change formal state through prose;
+- use tragedy as the only form of depth.
+
+Use independent Critics:
+
+- Logic;
+- Character／Drama;
+- Prose／Pacing.
+
+Automatic revision is limited to one pass. Re-run world legality after revision.
+
+## 11. Narrative Direction
+
+The playable slice must include emotional contrast:
+
+```text
+humor／daily friction
+→ warmth／attachment
+→ unease
+→ conflict
+→ value dilemma
+→ cost／anger／loss／reflection
+→ changed relationship
+→ partial hope or unresolved pull
+```
+
+The protagonist can grow toward major influence, but power growth must add responsibility, sacrifice and moral pressure.
+
+Important NPCs and opponents need independent growth and offscreen agendas.
+
+The long-running world uses local closure and global continuation: arcs resolve meaningful promises and leave permanent state, while the world continues.
+
+## 12. Web Boundary
+
+The old permanent no-Web rule is retired.
+
+After REBOOT-01 Stages 0–5 pass, Stage 6 may create a minimal local Web interface using a small Kotlin API plus React／TypeScript or a smaller compatible local UI.
+
+Allowed:
+
+- localhost;
+- local port;
+- story/input/state/debug views;
+- save/load;
+- Critic／DecisionTrace／State Delta developer view.
+
+Not allowed during REBOOT-01:
+
+- public deployment;
+- authentication;
+- payment;
+- cloud database;
+- exposing SQLite directly to the browser;
+- paid external model APIs;
+- rewriting the engine core in JavaScript.
+
+## 13. Image And Video Status
+
+Image lane:
+
+```text
+IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
+```
+
+The generated Daping panorama is not yet an accepted formal reference. Do not continue tasks 02–07 or silently mark it Canon／approved／production-locked.
+
+Video lane:
+
+```text
+FUTURE_PROVIDER_BAKEOFF_NO_SPEND
+```
 
 Do not:
 
-- store an xAI API key in Git;
-- start a provider job;
-- spend credits;
+- buy API access;
+- start provider jobs;
+- store API keys;
 - generate a whole episode;
-- add a Kotlin provider adapter;
-- claim a model limit without checking current official provider docs;
+- add provider adapters;
+- resume image/video work during REBOOT-01.
 
-unless a later Work Package explicitly authorizes it.
+Future provider research is documented in `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V1.md`.
 
-## Git Handoff Rule
+## 14. Git Discipline
 
-Every GPT handoff must be reproducible by:
+At package start:
 
-```text
-Repository + Branch + Handoff Commit SHA + Handoff Path
-```
+1. `git fetch --prune origin`;
+2. verify remote default branch and exact base SHA;
+3. create a clean worktree and `reboot/playable-depth-v1` branch;
+4. never copy the old 123-item dirty worktree wholesale;
+5. preserve unrelated work.
 
-The handoff records `sourceCommitSha` and `handoffContentSha256`. It must not require embedding the Commit SHA that contains itself.
-
-Do not tell GPT to read an unspecified “latest” handoff when a formal handoff exists.
-
-## Historical / Archive Rule
-
-Use:
+Do not use:
 
 ```text
-MARK STALE
-→ ARCHIVE OR INDEX
-→ DELETE ONLY AFTER DEPENDENCY EVIDENCE
+git add .
+git add -A
+git commit -a
+git push --force
+git push --force-with-lease
+git reset --hard
+git clean -fd
 ```
 
-The complete pre-gate handoff is preserved at:
+unless a separately approved recovery operation explicitly authorizes it.
+
+Each internal Stage gets an isolated, reviewable Commit.
+
+## 15. Development Journal
+
+Read `docs/development_journal/INDEX.md` when origin, intent or prior failures are unclear.
+
+Append a Journal entry when:
+
+- the user changes product direction;
+- a major architecture rule changes;
+- an old rule is retired;
+- a real playtest exposes an important problem;
+- a provider/model/cost policy changes;
+- a public project design is formally adopted;
+- Codex discovers that the project drifted from its original goal.
+
+Do not put API keys, credentials, hidden prompts or invented historical facts into the Journal.
+
+## 16. True Stop Conditions
+
+Stop and ask the user only when:
+
+- formal Canon, character fate, romance or visual taste requires a decision;
+- paid provider／API／API Key is required;
+- destructive Git action is unavoidable with no safe alternative;
+- AUTHOR_LOCKED sources directly conflict and authority rules cannot resolve them;
+- continuing requires weakening Transaction, Knowledge Boundary, `stateVersion`, `contextHash` or irreversible approval safety;
+- one evidence-based Medium attempt and one evidence-based High attempt still cannot restore the core build/test loop.
+
+The following are not user stops:
+
+- ordinary technical uncertainty;
+- test failures;
+- additive migrations;
+- small refactors;
+- local Web technology selection;
+- Critic disagreement;
+- need for new Services／Models／Tests;
+- unrelated baseline failures that can be investigated.
+
+## 17. Completion Contract
+
+At final completion, Push `reboot/playable-depth-v1` and report once with:
 
 ```text
-Commit: dfd3b0ec24c032ba67a75fdd5dd36127188d060d
-Path: docs/HANDOFF.md
-Index: docs/archive/HANDOFF_LEGACY_INDEX_V1.md
+REBOOT-01 classification
+model/reasoning by stage
+Subagents used
+base SHA
+branch and Commits
+turns completed
+NPC offscreen actions
+value dilemma and irreversible outcomes
+SQL/evidence persistence
+Critic/revision evidence
+replay comparison
+Web launch command
+compile/tests
+known failures
+files changed
+provider spend
+Canon changes
+image lane status
+recommended next step
 ```
 
-Do not edit formal historical charters to erase their past route. Do not physically delete files unless an active cleanup package supplies inbound-link, dependency, duplicate-hash, and retention evidence.
-
-## Change Discipline
-
-- Read before editing.
-- One Work Package at a time.
-- Preserve unrelated existing modifications.
-- No `git add .`, `git add -A`, force push, destructive reset, clean, or broad restore unless an explicit recovery package authorizes it.
-- Avoid unrelated refactors, formatting, renames, and file moves.
-- Do not create a second schema or lifecycle when the existing image candidate/reference chain can be reused.
-- Do not move locked turnaround, costume, style, Canon, or world-source assets.
-- Do not commit bulk failed images, large videos, caches, or temporary renders by default.
-- Planning, candidate files, technical PASS, and file existence do not equal approval.
-
-## Validation Contract
-
-At minimum:
-
-- inspect exact diff;
-- run `git diff --check`;
-- parse every new JSON file;
-- validate examples against schemas when an existing no-new-dependency validator is available;
-- run targeted compile/tests for any code change;
-- classify unrelated failures separately;
-- verify all referenced Repository paths at the recorded base/source Commit;
-- check no author-only or approval/Canon claims leaked into user-facing prompts/examples;
-- distinguish file existence/integrity from visual approval;
-- never claim a test, Schema, visual, provider, or approval PASS that was not actually run or granted.
-
-## Completion Contract
-
-Every Work Package completion report must include:
-
-- Work Package ID and final classification;
-- model/reasoning used;
-- base branch and base SHA;
-- working branch/worktree;
-- changed files;
-- why each file changed;
-- validation commands and results;
-- compile/test results when applicable;
-- unrelated failures;
-- Commit SHA and Push result;
-- drift/security/approval boundary check;
-- true blockers or user-only decisions;
-- recommended next Work Package.
-
-After Push, report to the current GPT total-control chat and stop. Do not start the next product package without a new pointer in `PROJECT_STATE.md` or an explicit total-control instruction.
-
-## Automatic Execution Reality
-
-The Repository cannot start Codex CLI. An already-running Codex process can execute the active package.
-
-Allowed unattended unit:
-
-```text
-one explicitly started Codex session
-→ one active Work Package
-→ validation
-→ Commit and Push
-→ report
-→ stop
-```
-
-The local AI task queue is not a daemon. No background scheduler or automatic next-package progression is authorized.
-
-If the computer sleeps, the process pauses or stops, the terminal closes, authentication expires, or a true stop condition occurs, do not report completion.
-
-## True Stop Conditions
-
-Stop and request a decision only when:
-
-- author-locked sources conflict and no source-of-truth rule resolves them;
-- the package requires changing Canon, Runtime write boundaries, migration scope, or external API/provider policy;
-- a final visual/taste/provider-spending decision is required;
-- a required locked reference is missing and no allowed degraded mode exists;
-- the requested work would weaken human approval, Hash/provenance, knowledge boundaries, or Candidate Reference safety;
-- Git state cannot be made safe without destructive action.
-
-Ordinary technical uncertainty is not a user stop. Investigate Repository evidence, choose the smallest compatible implementation, document it, and continue.
+Do not claim completion if the 5–10 turn loop was not actually run.
