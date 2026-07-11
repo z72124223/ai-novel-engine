@@ -1,20 +1,6 @@
 {
-    "evaluationId": "slice-drama-1-6b20f7c9-e0f6-4f2c-ac86-8b005c2e20b1",
+    "evaluationId": "slice-drama-1-1e3cfc58-1e15-49ac-93ed-c3dbb4afe07b",
     "rawScores": {
-        "sarcasmVoiceFit": 65,
-        "banterNaturalness": 60,
-        "genreAwarenessWithoutOmniscience": 50,
-        "stupidityDrivenPlotRisk": 95,
-        "audiencePredictionRisk": 75,
-        "fairSurprise": 35,
-        "cheapTwistRisk": 90,
-        "secondOrderConsequence": 35,
-        "antagonistAdaptation": 35,
-        "emotionalWaveCoverage": 30,
-        "readerAttachment": 55,
-        "overall": 36
-    },
-    "revisedScores": {
         "sarcasmVoiceFit": 90,
         "banterNaturalness": 85,
         "genreAwarenessWithoutOmniscience": 95,
@@ -30,37 +16,16 @@
     },
     "findings": [
         {
-            "code": "IDIOT_PLOT_RISK",
-            "critic": "LogicCritic",
-            "severity": "critical",
-            "message": "Risk-taking lacks a character or situation reason.",
-            "suggestedFix": "Add information, time, duty, relationship, false-belief, or cost pressure."
-        },
-        {
-            "code": "CHEAP_TWIST_RISK",
-            "critic": "LogicCritic",
-            "severity": "major",
-            "message": "The surprise lacks retrospective clue validity.",
-            "suggestedFix": "Plant a clue and derive the second layer from world or antagonist adaptation."
-        },
-        {
-            "code": "OBVIOUS_DANGER_UNRECOGNIZED",
+            "code": "SARCASM_UNDERCUTS_PRESSURE",
             "critic": "CharacterDramaCritic",
-            "severity": "major",
-            "message": "The character ignores an obvious genre danger.",
-            "suggestedFix": "Let the character recognize the danger without learning hidden facts."
-        },
-        {
-            "code": "EMOTIONAL_WAVE_FLAT",
-            "critic": "ProsePacingCritic",
-            "severity": "major",
-            "message": "No warm or serious emotional movement is marked.",
-            "suggestedFix": "Create a contrast beat before the next escalation."
+            "severity": "minor",
+            "message": "Sarcasm may undercut a serious beat.",
+            "suggestedFix": "Reduce jokes when pressure becomes real."
         }
     ],
-    "revisionSuggestion": "Add information, time, duty, relationship, false-belief, or cost pressure. Plant a clue and derive the second layer from world or antagonist adaptation. Let the character recognize the danger without learning hidden facts. Create a contrast beat before the next escalation.",
-    "revisionCount": 1,
+    "revisionSuggestion": "Reduce jokes when pressure becomes real.",
+    "revisionCount": 0,
     "selectedDraft": "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
-    "selectedVersion": "REVISED_ONCE",
+    "selectedVersion": "RAW",
     "stallDetected": false
 }

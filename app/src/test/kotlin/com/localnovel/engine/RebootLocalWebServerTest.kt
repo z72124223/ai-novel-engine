@@ -3,6 +3,7 @@ package com.localnovel.engine
 import com.localnovel.engine.service.RebootLocalWebServer
 import com.localnovel.engine.support.JsonSupport
 import java.net.URI
+import java.net.Socket
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
@@ -27,6 +28,17 @@ class RebootLocalWebServerTest {
             val health = json(get("$base/api/health"))
             assertEquals("ok", health["status"]?.jsonPrimitive?.content)
             assertEquals("6", health["turnCount"]?.jsonPrimitive?.content)
+            assertTrue(rawGet(server.port, "evil.example").startsWith("HTTP/1.1 403"))
+            assertTrue(rawGet(server.port, "localhost.:${server.port}").startsWith("HTTP/1.1 403"))
+            val foreignOrigin = client.send(
+                HttpRequest.newBuilder(URI("$base/api/start"))
+                    .header("Content-Type", "application/json")
+                    .header("Origin", "http://evil.example")
+                    .POST(HttpRequest.BodyPublishers.ofString("{}"))
+                    .build(),
+                HttpResponse.BodyHandlers.ofString(),
+            )
+            assertEquals(403, foreignOrigin.statusCode())
 
             var state = json(post("$base/api/start", "{}"))
             val sessionId = state["sessionId"]!!.jsonPrimitive.content
@@ -60,5 +72,10 @@ class RebootLocalWebServerTest {
         HttpResponse.BodyHandlers.ofString(),
     ).body()
     private fun json(value: String) = JsonSupport.json.parseToJsonElement(value).jsonObject
+    private fun rawGet(port: Int, host: String): String = Socket("127.0.0.1", port).use { socket ->
+        socket.getOutputStream().write("GET /api/health HTTP/1.1\r\nHost: $host\r\nConnection: close\r\n\r\n".toByteArray())
+        socket.getOutputStream().flush()
+        socket.getInputStream().bufferedReader().readText()
+    }
     private fun projectPath(relative: String): Path = listOf(Path.of(relative), Path.of("..", relative)).firstOrNull(Files::exists) ?: error("Cannot find $relative")
 }

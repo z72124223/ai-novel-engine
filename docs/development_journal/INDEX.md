@@ -80,6 +80,10 @@ Current REBOOT-01 entries:
 - `reboot01/STAGE_1_VALIDATION_AND_RUN_EVIDENCE.md` — explicit safety/quality classes, additive SQL run evidence, irreversible human approval boundary, transaction tests, and final high-reasoning review.
 - `reboot01/STAGE_2_NPC_AUTONOMY.md` — sandbox-only off-screen NPC proposal loop, Game Master legality checks, atomic DecisionTrace, rejected evidence, and return-observable consequences.
 - `reboot01/STAGE_3_DRAMA_AND_REVISION.md` — dramatic framing, expectation ledger, eleven critic dimensions, stall control, and one bounded narrative revision.
+- `reboot01/STAGE_4_CHENXING_VERTICAL_SLICE.md` — real six-turn resettable Chenxing slice, off-screen action, irreversible sandbox consequence, SQL evidence, and reader narratives.
+- `reboot01/STAGE_5_REPLAY_AND_EVOLUTION.md` — isolated same-seed benchmark, normalized state fingerprint, measured no-regression gate, and one adopted retry reduction.
+- `reboot01/STAGE_6_LOCAL_WEB.md` — loopback-only local UI, six submit steps, developer evidence, and save/load smoke.
+- `reboot01/STAGE_7_FINAL_INTEGRATION.md` — final targeted/full tests, end-to-end, replay, Web, SQL, secret, scope, and honest limitation evidence.
 
 ## Future Append Rule
 

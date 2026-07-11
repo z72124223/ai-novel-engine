@@ -44,6 +44,32 @@ data class RebootVerticalSliceRunSummary(
     val ruleProfile: String = RebootVerticalSliceRuleProfile.PREFLIGHT_RECOGNIZED_DANGER_DRAFT.name,
 )
 
+@Serializable
+data class RebootIrreversibleApprovalGrant(
+    val grantId: String,
+    val scenarioSeed: String,
+    val changeId: String,
+    val approvedChangeTypes: List<String>,
+    val affectedEntityIds: List<String>,
+    val humanActorId: String,
+    val decision: String,
+    val approvedAt: String,
+    val authoritySource: String,
+    val nonCanonOnly: Boolean,
+) {
+    fun requireAuthorizes(contract: IrreversibleChangeContract, expectedSeed: String) {
+        require(scenarioSeed == expectedSeed) { "APPROVAL_GRANT_SEED_MISMATCH" }
+        require(changeId == contract.changeId) { "APPROVAL_GRANT_CHANGE_MISMATCH" }
+        require(approvedChangeTypes.sorted() == contract.changeTypes.sorted()) { "APPROVAL_GRANT_TYPE_MISMATCH" }
+        require(affectedEntityIds.sorted() == contract.affectedEntityIds.sorted()) { "APPROVAL_GRANT_ENTITY_MISMATCH" }
+        require(decision == "APPROVE") { "APPROVAL_GRANT_NOT_APPROVED" }
+        require(nonCanonOnly) { "APPROVAL_GRANT_MUST_BE_NON_CANON" }
+        require(authoritySource.isNotBlank()) { "APPROVAL_GRANT_AUTHORITY_REQUIRED" }
+        require(humanActorId.startsWith("human:")) { "APPROVAL_GRANT_HUMAN_ACTOR_REQUIRED" }
+        Instant.parse(approvedAt)
+    }
+}
+
 enum class RebootVerticalSliceRuleProfile {
     CURRENT,
     PREFLIGHT_RECOGNIZED_DANGER_DRAFT,
@@ -57,7 +83,7 @@ class RebootVerticalSliceRunner(
     private val runtime = MultiTurnRuntime(repository)
     private val scenarioSeed = "reboot01-chenxing-depth-v1"
 
-    fun run(basePackPath: Path, addonPackPath: Path, npcProfilePath: Path): RebootVerticalSliceRunSummary {
+    fun run(basePackPath: Path, addonPackPath: Path, npcProfilePath: Path, approvalGrantPath: Path): RebootVerticalSliceRunSummary {
         Files.createDirectories(outputDir)
         repository.initialize()
         val basePack = SettingPackParser().parse(basePackPath)
@@ -66,6 +92,7 @@ class RebootVerticalSliceRunner(
         writeJson("setting-pack-addon-apply.json", SettingPackImportService(repository).apply(addonPack, addonPackPath.toString()))
         val session = runtime.startSession("chenxing", "scene-daping-coast-opening", readerMode = true)
         val profile = JsonSupport.json.decodeFromString<NpcAutonomyProfile>(Files.readString(npcProfilePath).removePrefix("\uFEFF"))
+        val approvalGrant = JsonSupport.json.decodeFromString<RebootIrreversibleApprovalGrant>(Files.readString(approvalGrantPath).removePrefix("\uFEFF"))
 
         val recognizedDangerDraft = "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。"
         val usePreflightDraft = ruleProfile == RebootVerticalSliceRuleProfile.PREFLIGHT_RECOGNIZED_DANGER_DRAFT
@@ -139,14 +166,16 @@ class RebootVerticalSliceRunner(
             affectedEntityIds = listOf("char-tide-scavenger-sandbox"),
             requiredStateDeltaTargetIds = listOf("char-tide-scavenger-sandbox"),
         )
+        approvalGrant.requireAuthorizes(contract, scenarioSeed)
+        writeJson("turn-05-approval-grant.json", approvalGrant)
         val approval = IrreversibleApprovalArtifact(
-            approvalId = "reboot01-work-package-approval-stage4",
+            approvalId = approvalGrant.grantId,
             changeId = contract.changeId,
             contextHash = contract.contextHash,
             resultId = contract.resultId,
-            humanActorId = "human:reboot01-product-owner",
-            decision = "APPROVE",
-            approvedAt = Instant.now().toString(),
+            humanActorId = approvalGrant.humanActorId,
+            decision = approvalGrant.decision,
+            approvedAt = approvalGrant.approvedAt,
         )
         val drama5 = evaluateDrama(5, session.id, irreversibleResult.narrative, "", goodSignals(serious = true), frame(5, "憐憫", "追索", 35, 20, cost = "拾潮者永久受傷", irreversible = "永久手傷", emotional = "憤怒後的沉默"))
         writeJson("turn-05-drama.json", drama5)

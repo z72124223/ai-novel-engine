@@ -100,6 +100,7 @@ internal object StorySessionCli {
             basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
             addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
             npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
+            approvalGrantPath = Path.of(options.requiredCliOption("approval-grant")),
         )
         println(JsonSupport.json.encodeToString(summary))
         return 0
@@ -110,6 +111,7 @@ internal object StorySessionCli {
             basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
             addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
             npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
+            approvalGrantPath = Path.of(options.requiredCliOption("approval-grant")),
         )
         println(JsonSupport.json.encodeToString(report))
         return if (report.decision == "ADOPT") 0 else 3

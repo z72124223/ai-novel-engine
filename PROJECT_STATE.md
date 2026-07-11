@@ -64,7 +64,7 @@ The following are superseded for current execution:
 ## 3. Current Work Package
 
 - ID: `REBOOT-01 Playable Depth Slice`
-- Status: `READY_FOR_AUTONOMOUS_CODEX_EXECUTION`
+- Status: `IMPLEMENTATION_COMPLETE_ON_REBOOT_BRANCH`
 - Required branch: `reboot/playable-depth-v1`
 - Required base: latest remote default branch after `git fetch --prune origin`
 - Main model: `gpt-5.6-sol`
@@ -80,6 +80,8 @@ The following are superseded for current execution:
 Project-scoped defaults are stored in `.codex/config.toml`. Dedicated agent profiles are stored under `.codex/agents/`.
 
 REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete all internal Stages, validate and Commit each Stage, Push the final branch and report once. It does not need to return to GPT or the user after ordinary internal decisions.
+
+REBOOT-01 operating evidence and honest limitations are recorded in `docs/reboot/REBOOT01_FINAL_REPORT.md` and `docs/reboot/REBOOT01_PLAY_GUIDE.md`. Do not start the recommended live-turn follow-up automatically; this branch must be reviewed and merged first.
 
 ## 4. Required Operating Outcomes
 

@@ -24,6 +24,8 @@ The benchmark normalizes generated UUIDs and timestamps before hashing story out
 | irreversible change count | 1 | 1 |
 | repetition / AI prose risk | 10.0 | 10.0 |
 | overall drama score | 70.4 | 70.4 |
+| fair surprise | 57.0 | 57.0 |
+| reader attachment | 73.0 | 73.0 |
 | elapsed world minutes | 35 | 35 |
 | retry count | 1 | 0 |
 | model | deterministic-local | deterministic-local |
@@ -32,7 +34,7 @@ The benchmark normalizes generated UUIDs and timestamps before hashing story out
 Both runs produced normalized replay fingerprint:
 
 ```text
-ebec2ad0514ae844b7132af96287c6ee56bbc3fffe62ad6d1cfdcbed66899d75
+33600a42f1ae18d033f4cc7131ebffc246652378431d5b3f2ddfd851c43a2447
 ```
 
 Local execution time was 3180 ms for the baseline and 1972 ms for the evolved run. Timing is recorded as observational evidence, not a stable performance guarantee.
@@ -41,7 +43,7 @@ Local execution time was 3180 ms for the baseline and 1972 ms for the evolved ru
 
 `ADOPT`
 
-The evolved rule preserves the normalized story outcome, legality, autonomy, emotional coverage, irreversible boundary, and selected drama quality while reducing revision retries from one to zero. The evolved profile is now the default for the vertical-slice runner; the benchmark still selects both profiles explicitly so future comparisons cannot silently collapse into the same run.
+The evolved rule preserves the normalized story outcome, session time/version, facts, knowledge/memory, scene/thread state, NPC proposal/resolution, external approval evidence, legality, autonomy, emotional coverage, fair surprise, reader attachment, irreversible boundary, and selected drama quality while reducing revision retries from one to zero. The evolved profile is now the default for the vertical-slice runner; the benchmark still selects both profiles explicitly so future comparisons cannot silently collapse into the same run.
 
 ## Verification
 

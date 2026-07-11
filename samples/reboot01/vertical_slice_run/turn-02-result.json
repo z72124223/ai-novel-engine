@@ -1,13 +1,13 @@
 {
     "projectId": "chenxing",
-    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-2",
+    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-2",
     "narrative": "Elsewhere, Inspects the immediate area and secures evidence before anyone returns. Signs of a careful off-screen search remain at loc-daping-coast.",
-    "resultId": "offscreen-result-f28739db-987e-4400-b37d-f1c86ac39d5c",
-    "contextId": "ctx-0ccfd2de-d71f-4299-bb3e-cbb17f2a6ef1",
-    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
+    "resultId": "offscreen-result-47fd339f-9c05-4aa8-8f99-279c3f505b44",
+    "contextId": "ctx-f8793ad9-c5ff-409a-8b33-44c87f02a60d",
+    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
     "turnNumber": 2,
     "baseStateVersion": 1,
-    "contextHash": "95df25b71d5b97e4fe4acd784cc6f56524001a1ce582bb403c1470163fc69ebe",
+    "contextHash": "26cbb8d1fdc6e2114dc58f521ac8019ea39bffef851330f0898acd4bfcb4fd3c",
     "turnSummary": "char-lin-yao-sandbox completed a bounded off-screen action.",
     "characterActions": [
         {
@@ -23,7 +23,7 @@
         {
             "type": "add_event",
             "targetType": "event",
-            "targetId": "event-npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+            "targetId": "event-npc-trace-d218593b-6929-443b-a76f-8adfb89ce6ab",
             "payload": {
                 "summary": "Signs of a careful off-screen search remain at loc-daping-coast.",
                 "npcId": "char-lin-yao-sandbox",
@@ -35,7 +35,7 @@
     "timeAdvanceProposal": {
         "minutes": 10,
         "sourceType": "offscreen_npc",
-        "sourceId": "npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+        "sourceId": "npc-trace-d218593b-6929-443b-a76f-8adfb89ce6ab",
         "reason": "Bounded NPC autonomy tick."
     }
 }

@@ -7,7 +7,7 @@
         "activeSceneId": "scene-daping-coast-opening",
         "currentTurn": 2
     },
-    "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-3",
+    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-3",
     "turnNumber": 3,
     "playerInput": "等水線穩住再回去，看誰趁我們不在動過現場。",
     "activeScene": {
@@ -227,9 +227,9 @@
     ],
     "recentEvents": [
         {
-            "id": "event-npc-trace-7f106585-53ad-4bd1-a467-efbead6a15d8",
+            "id": "event-npc-trace-d218593b-6929-443b-a76f-8adfb89ce6ab",
             "projectId": "chenxing",
-            "turnId": "session-caa2288d-77ac-49e0-820b-a528fec0df77-turn-2",
+            "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-2",
             "summary": "Signs of a careful off-screen search remain at loc-daping-coast.",
             "payload": {
                 "npcId": "char-lin-yao-sandbox",
@@ -238,12 +238,12 @@
             }
         }
     ],
-    "contextId": "ctx-35ce1925-6b8e-4528-aae7-a14056186058",
-    "sessionId": "session-caa2288d-77ac-49e0-820b-a528fec0df77",
-    "branchId": "branch-05ce0f38-2816-4dc8-b506-f1779b80cb29",
+    "contextId": "ctx-f2a7e436-4fe6-4ddb-a495-3aa97e7bcd8d",
+    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
+    "branchId": "branch-c77c793e-0ad3-409f-8b4e-eaad578533ad",
     "baseStateVersion": 2,
-    "contextHash": "e98d14c4355b7f6215a49fc29c08600f751b8f9c910e73ba684ab40e3ba2e4ca",
-    "generatedAt": "2026-07-11T20:43:49.668442100Z",
+    "contextHash": "5806ea636b14e7f45bc941813f71d2b62820538c37d5d1546b092e22c91faba3",
+    "generatedAt": "2026-07-11T21:38:10.304598100Z",
     "recentTurnSummaries": [
         {
             "turnNumber": 1,
@@ -252,7 +252,7 @@
         },
         {
             "turnNumber": 2,
-            "resultId": "offscreen-result-f28739db-987e-4400-b37d-f1c86ac39d5c",
+            "resultId": "offscreen-result-47fd339f-9c05-4aa8-8f99-279c3f505b44",
             "summary": "char-lin-yao-sandbox completed a bounded off-screen action."
         }
     ],
@@ -275,7 +275,7 @@
         "truncationReasonCodes": []
     },
     "sceneLifecycle": {
-        "sceneInstanceId": "scene-instance-7e5add49-d236-4670-ab44-0231725cb390",
+        "sceneInstanceId": "scene-instance-54fca68a-ef80-4d47-a873-a4cc72c5e38a",
         "sceneId": "scene-daping-coast-opening"
     },
     "activeStoryThreads": [
@@ -295,7 +295,7 @@
         "turnNumber": 3
     },
     "continuityConstraints": {
-        "currentSceneInstanceId": "scene-instance-7e5add49-d236-4670-ab44-0231725cb390",
+        "currentSceneInstanceId": "scene-instance-54fca68a-ef80-4d47-a873-a4cc72c5e38a",
         "currentSceneLocationId": "loc-daping-coast",
         "characterLocations": {
             "char-aijiang": "loc-hillside-ruin",
@@ -423,16 +423,16 @@
             "reboot01-chenxing-sandbox-addon@1"
         ],
         "relevantRevisionIds": [
-            "entity-revision-0814adee-da2a-46fd-bb25-fe785b0a73cd",
-            "entity-revision-2bd3791d-47e8-4f1d-8310-f7edbc257d28",
-            "entity-revision-34931f42-58a1-4f46-8dc9-c8a9922ec25b",
-            "entity-revision-3f8bd54d-b298-4d31-bb7f-2057999002ec",
-            "entity-revision-4c333323-cb8e-45ce-932e-6151757f3d0f",
-            "entity-revision-8839ca12-ea3f-4ad1-9d64-d04c1a5ea4ab",
-            "entity-revision-8e562f88-2070-49f2-b874-269007c774d9",
-            "entity-revision-b26be6fb-e3ea-4af7-8d82-2632d085bab6"
+            "entity-revision-13c1a10e-210b-409b-8cab-0eaf9ed23d29",
+            "entity-revision-1c5b261b-dec4-4366-970c-6e206e8ce87d",
+            "entity-revision-2e6ec231-a95f-48dc-94a5-de51754c3337",
+            "entity-revision-318ed978-48b4-4d3e-a644-4471c1ff493f",
+            "entity-revision-5af0d72d-180b-49ba-aa86-05557e29940f",
+            "entity-revision-637c1c6b-2ce3-4a1e-8dca-02d35c67dc78",
+            "entity-revision-b0c4ee07-981c-4e67-9a2f-671e12e6dee8",
+            "entity-revision-bf88fb74-3e58-49dd-8fd2-46f60aa267de"
         ],
-        "latestImportId": "setting-import-8564949b-f676-4207-b29d-b05cd36f1c1a"
+        "latestImportId": "setting-import-ec7d1e94-7510-4401-8189-6cf9d1681b09"
     },
     "readerMode": true,
     "narrativeDelivery": {

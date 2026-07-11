@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 自主執行中；Stage 0–6 已通過，現在只執行 Stage 7 最終整合與誠實報告**
+狀態：**REBOOT-01 Stage 0–7 已完成；High 安全複審 PASS，等待最終普通 Push 與分支審查，不自動開始 REBOOT-02**
 
 日期：2026-07-11
 
@@ -77,7 +77,7 @@
 - [x] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
 - [x] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
 - [x] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
-- [ ] Step 7（目前唯一進行中）：完成全套驗證、端到端重播、Web smoke、SQL 稽核、秘密掃描、遊玩指南與最終報告；獨立 Commit 後普通 Push 一次。
+- [x] Step 7：完成外部人工批准來源、完整 replay fingerprint／adoption gate、Web Host／Origin／DNS-rebinding 防護、全套驗證、報告與 High 複審；獨立 Commit 後普通 Push 一次。
 
 ### Verification
 
@@ -121,6 +121,10 @@
 - 2026-07-12：Stage 5 related 29/29 PASS；full 838 tests 中 834 PASS，唯一 4 FAIL 仍是既有 World Source #09 Hash／byte-size drift。Benchmark DB、learned-rule store 與輸出保存在彼此隔離的 ignored `out/reboot01/benchmark/**`。
 - 2026-07-12：Stage 6 新增無額外依賴、只綁定 loopback 的本機 HTTP/UI；支援故事、玩家輸入、六回合送出、世界時間、角色／關係摘要、存讀檔與開發模式 Context／Critic／DecisionTrace／State Delta。
 - 2026-07-12：Stage 6 Web smoke 與 Stage 4–6 整合選集 3/3 PASS。介面明示為 `LOCAL_VERIFIED_REPLAY`，不假裝自由生成、不暴露 SQLite、不接外部模型／API、不公開部署。
+- 2026-07-12：Stage 7 targeted 31/31 PASS；full 840 tests 中 836 PASS，唯一 4 FAIL 仍是既有 World Source #09 authority drift。Fresh 六回合、Replay ADOPT、Web smoke、SQL query、secret scan、Canon/image scope 與原髒工作樹保全皆通過。
+- 2026-07-12：REBOOT-01 最終分類為 `PASS_WITH_KNOWN_UNRELATED_FAILURES`。本機 Web 仍是固定 verified replay，不是 live model loop；下一個建議為另行批准的 provider-neutral `REBOOT-02 Live Turn Gateway`，不得自動開始。
+- 2026-07-12：Stage 7 High read-only review 暫時 BLOCK Push：Runner 不得自簽 human approval；Replay 必須涵蓋 session/time、facts、knowledge/memory、scene/thread、approval 與完整 NPC proposal/resolution；本機 Web 必須拒絕非 loopback Host／foreign Origin。先修正並重驗，不以文件宣稱覆蓋安全缺口。
+- 2026-07-12：三項安全缺口已修復：CLI 強制讀取獨立 user-authority approval grant；Replay 加入完整狀態／批准／NPC 語意與負向 adoption tests；Web 使用 literal loopback Host 白名單並拒絕 foreign Origin／DNS rebinding。High 複審最終 `PASS`。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 

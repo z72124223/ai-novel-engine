@@ -38,7 +38,7 @@ Long-term evidence is stored under `samples/reboot01/vertical_slice_run/`, inclu
 ## Verification
 
 - `RebootVerticalSliceRunnerTest` plus Stage 1–3 related suites: 28/28 PASS.
-- Generated JSON: 24/24 parsed successfully.
+- Generated JSON: 25/25 parsed successfully, including the separate user-authority approval grant copied into turn evidence.
 - `git diff --check`: PASS before staging.
 - Original dirty worktree: untouched.
 

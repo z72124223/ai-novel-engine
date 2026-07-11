@@ -5,11 +5,13 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpServer
 import java.net.InetAddress
 import java.net.InetSocketAddress
+import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -43,6 +45,7 @@ class RebootLocalWebServer(
     private val sessions = ConcurrentHashMap<String, UiSession>()
     private val turns = loadTurns()
     private var server: HttpServer? = null
+    private var executor: ExecutorService? = null
 
     val port: Int get() = server?.address?.port ?: error("Server has not started")
     val bindingAddress: InetAddress get() = server?.address?.address ?: error("Server has not started")
@@ -50,19 +53,27 @@ class RebootLocalWebServer(
     fun start(): RebootLocalWebServer {
         check(server == null) { "Server already started" }
         val created = HttpServer.create(InetSocketAddress(InetAddress.getLoopbackAddress(), requestedPort), 0)
-        created.executor = Executors.newFixedThreadPool(4)
+        val createdExecutor = Executors.newFixedThreadPool(4)
+        created.executor = createdExecutor
         created.createContext("/") { exchange -> route(exchange) }
         created.start()
         server = created
+        executor = createdExecutor
         return this
     }
 
     override fun close() {
         server?.stop(0)
+        executor?.shutdownNow()
         server = null
+        executor = null
     }
 
     private fun route(exchange: HttpExchange) {
+        if (!isTrustedBrowserRequest(exchange)) {
+            sendError(exchange, 403, "LOOPBACK_ORIGIN_REQUIRED")
+            return
+        }
         runCatching {
             when {
                 exchange.requestMethod == "GET" && exchange.requestURI.path == "/" -> sendResource(exchange)
@@ -81,6 +92,21 @@ class RebootLocalWebServer(
         }.onFailure { failure ->
             if (exchange.responseCode == -1) sendError(exchange, 400, failure.message ?: "INVALID_REQUEST")
         }
+    }
+
+    private fun isTrustedBrowserRequest(exchange: HttpExchange): Boolean {
+        val host = exchange.requestHeaders.getFirst("Host") ?: return false
+        if (!isLoopbackUri(runCatching { URI("http://$host") }.getOrNull())) return false
+        val origin = exchange.requestHeaders.getFirst("Origin") ?: return true
+        return isLoopbackUri(runCatching { URI(origin) }.getOrNull())
+    }
+
+    private fun isLoopbackUri(uri: URI?): Boolean {
+        if (uri == null || uri.scheme != "http" || uri.userInfo != null) return false
+        val literalHost = uri.host?.lowercase() ?: return false
+        if (literalHost !in setOf("localhost", "127.0.0.1", "::1", "[::1]")) return false
+        val effectivePort = if (uri.port == -1) 80 else uri.port
+        return effectivePort == port
     }
 
     private fun startSession(exchange: HttpExchange) {

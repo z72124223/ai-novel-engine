@@ -213,8 +213,8 @@ class Cli {
               resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--scenario-seed <seed>] [--revision-suggestion <text>] [--revised-draft-file <path>] [--irreversible-contract <path> --irreversible-approval <path>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               run-offscreen-npc-tick [--db <path>] --session <id> --profile <path> --scenario-seed <seed> [--out <path>]
               evaluate-reboot-drama [--db <path>] --input <path> [--out <path>]
-              run-reboot01-vertical-slice --db <path> --out-dir <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
-              benchmark-reboot01-evolution --out-dir <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
+              run-reboot01-vertical-slice --db <path> --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
+              benchmark-reboot01-evolution --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               serve-reboot01-web [--evidence-dir <path>] [--port <loopback-port>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]

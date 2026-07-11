@@ -1,0 +1,16 @@
+{
+    "grantId": "reboot01-stage4-user-authority-v1",
+    "scenarioSeed": "reboot01-chenxing-depth-v1",
+    "changeId": "sandbox-permanent-hand-injury",
+    "approvedChangeTypes": [
+        "permanent_injury"
+    ],
+    "affectedEntityIds": [
+        "char-tide-scavenger-sandbox"
+    ],
+    "humanActorId": "human:reboot01-product-owner",
+    "decision": "APPROVE",
+    "approvedAt": "2026-07-11T00:00:00Z",
+    "authoritySource": "docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md#stage-4-user-authorized-non-canon-irreversible-outcome",
+    "nonCanonOnly": true
+}
