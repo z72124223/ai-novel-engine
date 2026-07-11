@@ -43,6 +43,7 @@ class Cli {
                 "evaluate-reboot-drama" -> StorySessionCli.evaluateRebootDrama(options)
                 "run-reboot01-vertical-slice" -> StorySessionCli.runReboot01VerticalSlice(options)
                 "benchmark-reboot01-evolution" -> StorySessionCli.benchmarkReboot01Evolution(options)
+                "serve-reboot01-web" -> StorySessionCli.serveReboot01Web(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
@@ -214,6 +215,7 @@ class Cli {
               evaluate-reboot-drama [--db <path>] --input <path> [--out <path>]
               run-reboot01-vertical-slice --db <path> --out-dir <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               benchmark-reboot01-evolution --out-dir <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
+              serve-reboot01-web [--evidence-dir <path>] [--port <loopback-port>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>

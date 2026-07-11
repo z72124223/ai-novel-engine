@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>塵行｜本機深度切片</title>
+  <style>
+    :root { color-scheme: dark; font-family: "Noto Sans TC", system-ui, sans-serif; background:#0b1118; color:#e6edf3; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:radial-gradient(circle at top,#183047 0,#0b1118 48%); }
+    main { width:min(1050px,94vw); margin:0 auto; padding:28px 0 54px; }
+    header,.panel { border:1px solid #29445c; border-radius:16px; background:rgba(12,23,34,.92); box-shadow:0 20px 50px #0007; }
+    header { padding:22px 24px; display:flex; justify-content:space-between; gap:20px; align-items:center; }
+    h1 { margin:0 0 6px; font-size:clamp(1.35rem,3vw,2rem); }
+    .subtle { color:#91a8bb; font-size:.9rem; }
+    .grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(260px,1fr); gap:16px; margin-top:16px; }
+    .panel { padding:20px; }
+    #story { min-height:260px; white-space:pre-wrap; line-height:1.9; font-size:1.08rem; }
+    .meta { display:flex; gap:12px; flex-wrap:wrap; }
+    .chip { background:#16334a; border:1px solid #2c5d7c; border-radius:999px; padding:7px 12px; }
+    textarea { width:100%; min-height:90px; resize:vertical; border:1px solid #34556d; border-radius:10px; background:#09131d; color:#f3f7fa; padding:12px; font:inherit; }
+    button,.file-label { border:0; border-radius:9px; background:#2d7ea8; color:white; padding:10px 14px; font-weight:700; cursor:pointer; display:inline-block; }
+    button.secondary,.file-label { background:#243b4e; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    .actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:10px; }
+    ul { padding-left:20px; line-height:1.65; }
+    #debug { max-height:400px; overflow:auto; white-space:pre-wrap; background:#050a0f; padding:12px; border-radius:8px; font-size:.78rem; }
+    input[type=file] { display:none; }
+    @media(max-width:760px){ .grid{grid-template-columns:1fr} header{align-items:flex-start;flex-direction:column} }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>塵行：大坪海岸深度切片</h1><div class="subtle">本機、無登入、無外部模型；逐回合檢視已通過引擎驗證的六回合 Scenario（情境）。</div></div>
+    <div class="meta"><span class="chip" id="turn">回合 0 / 6</span><span class="chip" id="clock">T+0m</span></div>
+  </header>
+  <div class="grid">
+    <section class="panel">
+      <div id="story">按下「送出」開始。你的輸入會保存在本機 Session（工作階段）；本切片不呼叫外部模型，結果來自已驗證的固定情境。</div>
+      <textarea id="input" aria-label="玩家輸入"></textarea>
+      <div class="actions">
+        <button id="submit">送出</button>
+        <button class="secondary" id="suggest">填入建議行動</button>
+        <button class="secondary" id="save">存檔</button>
+        <label class="file-label" for="load">讀檔</label><input id="load" type="file" accept="application/json">
+      </div>
+    </section>
+    <aside class="panel">
+      <h2>角色</h2><ul id="characters"></ul>
+      <h2>關係摘要</h2><p id="relationship"></p>
+      <label><input id="dev" type="checkbox"> 開發模式</label>
+    </aside>
+  </div>
+  <section class="panel" style="margin-top:16px" id="debugPanel" hidden><h2>執行證據</h2><pre id="debug"></pre></section>
+</main>
+<script>
+let state;
+const $=id=>document.getElementById(id);
+async function api(path, options={}) { const r=await fetch(path,{headers:{'Content-Type':'application/json'},...options}); const j=await r.json(); if(!r.ok) throw new Error(j.error||'REQUEST_FAILED'); return j; }
+function render(s){ state=s; $('turn').textContent=`回合 ${s.turnNumber} / ${s.turnCount}`; $('clock').textContent=s.worldTime||'T+0m'; if(s.story)$('story').textContent=s.story; $('characters').innerHTML=s.characters.map(c=>`<li><strong>${c.name}</strong>｜${c.role}</li>`).join(''); $('relationship').textContent=s.relationshipSummary; $('input').value=s.suggestedInput||''; $('submit').disabled=s.completed; $('debugPanel').hidden=!$('dev').checked; $('debug').textContent=s.debug?JSON.stringify(s.debug,null,2):'下一次送出時載入開發證據。'; }
+async function start(){ render(await api('/api/start',{method:'POST',body:'{}'})); }
+$('submit').onclick=async()=>{ try{ render(await api('/api/turn',{method:'POST',body:JSON.stringify({sessionId:state.sessionId,playerInput:$('input').value,debug:$('dev').checked})})); }catch(e){alert(e.message)} };
+$('suggest').onclick=()=>{$('input').value=state.suggestedInput||''};
+$('dev').onchange=()=>{$('debugPanel').hidden=!$('dev').checked};
+$('save').onclick=async()=>{ const data=await api(`/api/save?sessionId=${encodeURIComponent(state.sessionId)}`); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download='reboot01-save.json'; a.click(); URL.revokeObjectURL(a.href); };
+$('load').onchange=async e=>{ try{const data=await e.target.files[0].text(); render(await api('/api/load',{method:'POST',body:data}));}catch(err){alert(err.message)} };
+start().catch(e=>$('story').textContent=`啟動失敗：${e.message}`);
+</script>
+</body>
+</html>

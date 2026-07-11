@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 自主執行中；Stage 0–5 已通過，現在只執行 Stage 6 最小本機 playable Web UI**
+狀態：**REBOOT-01 自主執行中；Stage 0–6 已通過，現在只執行 Stage 7 最終整合與誠實報告**
 
 日期：2026-07-11
 
@@ -76,8 +76,8 @@
 - [x] Step 3：加入 Drama Director、Critics、AudienceExpectationLedger、敘事聲音候選、公平二階驚喜與最多一次有限修訂；驗證後獨立 Commit。
 - [x] Step 4：建立可重設、非 Canon、5–10 回合 Chenxing 深度切片與 SQL-backed evidence（SQL 支撐證據）；驗證後獨立 Commit。
 - [x] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
-- [ ] Step 6（目前唯一進行中）：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
-- [ ] Step 7：完成全套驗證、端到端重播、Web smoke、SQL 稽核、秘密掃描、遊玩指南與最終報告；獨立 Commit 後普通 Push 一次。
+- [x] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
+- [ ] Step 7（目前唯一進行中）：完成全套驗證、端到端重播、Web smoke、SQL 稽核、秘密掃描、遊玩指南與最終報告；獨立 Commit 後普通 Push 一次。
 
 ### Verification
 
@@ -119,6 +119,8 @@
 - 2026-07-12：Stage 4 相關套件 28/28 PASS，24/24 份產生 JSON 可解析；正式 Canon、圖片線、外部 provider 與原 123 項髒工作樹未修改。真實執行出現 quality advisories，交由 Stage 5 以同 Seed benchmark 判斷，不直接採納 learned rule。
 - 2026-07-12：Stage 5 以相同 `reboot01-chenxing-depth-v1` Seed 隔離執行 baseline／evolved 六回合；正規化 UUID／時間後的故事狀態指紋相同，合法率 1.0、自主分數 100、情緒覆蓋 85、整體戲劇分數 70.4 均未退步，revision retry 1→0，因此只採用 `PREFLIGHT_RECOGNIZED_DANGER_DRAFT` 規則。
 - 2026-07-12：Stage 5 related 29/29 PASS；full 838 tests 中 834 PASS，唯一 4 FAIL 仍是既有 World Source #09 Hash／byte-size drift。Benchmark DB、learned-rule store 與輸出保存在彼此隔離的 ignored `out/reboot01/benchmark/**`。
+- 2026-07-12：Stage 6 新增無額外依賴、只綁定 loopback 的本機 HTTP/UI；支援故事、玩家輸入、六回合送出、世界時間、角色／關係摘要、存讀檔與開發模式 Context／Critic／DecisionTrace／State Delta。
+- 2026-07-12：Stage 6 Web smoke 與 Stage 4–6 整合選集 3/3 PASS。介面明示為 `LOCAL_VERIFIED_REPLAY`，不假裝自由生成、不暴露 SQLite、不接外部模型／API、不公開部署。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 
