@@ -40,11 +40,19 @@ data class RebootVerticalSliceRunSummary(
     val runEvidenceCount: Int,
     val irreversibleApprovalCount: Int,
     val outputDir: String,
+    val scenarioSeed: String = "reboot01-chenxing-depth-v1",
+    val ruleProfile: String = RebootVerticalSliceRuleProfile.PREFLIGHT_RECOGNIZED_DANGER_DRAFT.name,
 )
+
+enum class RebootVerticalSliceRuleProfile {
+    CURRENT,
+    PREFLIGHT_RECOGNIZED_DANGER_DRAFT,
+}
 
 class RebootVerticalSliceRunner(
     private val repository: SqliteStoryRepository,
     private val outputDir: Path,
+    private val ruleProfile: RebootVerticalSliceRuleProfile = RebootVerticalSliceRuleProfile.PREFLIGHT_RECOGNIZED_DANGER_DRAFT,
 ) {
     private val runtime = MultiTurnRuntime(repository)
     private val scenarioSeed = "reboot01-chenxing-depth-v1"
@@ -59,12 +67,14 @@ class RebootVerticalSliceRunner(
         val session = runtime.startSession("chenxing", "scene-daping-coast-opening", readerMode = true)
         val profile = JsonSupport.json.decodeFromString<NpcAutonomyProfile>(Files.readString(npcProfilePath).removePrefix("\uFEFF"))
 
+        val recognizedDangerDraft = "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。"
+        val usePreflightDraft = ruleProfile == RebootVerticalSliceRuleProfile.PREFLIGHT_RECOGNIZED_DANGER_DRAFT
         runTurn(
             index = 1,
             sessionId = session.id,
             playerInput = "先離開潮間帶，別讓看得見的危險替我們做決定。",
-            rawDraft = "陸塵行看著水線，嘴上嫌這地方連退場提示都省了，手上卻已把愛醬帶向高處。",
-            revisedDraft = "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
+            rawDraft = if (usePreflightDraft) recognizedDangerDraft else "陸塵行看著水線，嘴上嫌這地方連退場提示都省了，手上卻已把愛醬帶向高處。",
+            revisedDraft = if (usePreflightDraft) "" else recognizedDangerDraft,
             signals = goodSignals(sarcasm = true, warm = true, serious = true),
             actions = listOf(action("char-lu-chenxing", "帶愛醬撤往高處", "確認明顯危險後撤離"), action("char-aijiang", "跟隨陸塵行並回頭警戒", "不離開家人")),
             deltas = listOf(locationDelta("char-lu-chenxing", "loc-hillside-ruin"), locationDelta("char-aijiang", "loc-hillside-ruin")),
@@ -168,6 +178,8 @@ class RebootVerticalSliceRunner(
             runEvidenceCount = repository.tableCount("reboot_run_evidence"),
             irreversibleApprovalCount = repository.tableRows("reboot_run_evidence").count { it["irreversible_approval_granted"] == "1" },
             outputDir = outputDir.toString(),
+            scenarioSeed = scenarioSeed,
+            ruleProfile = ruleProfile.name,
         )
         writeJson("run-summary.json", summary)
         return summary

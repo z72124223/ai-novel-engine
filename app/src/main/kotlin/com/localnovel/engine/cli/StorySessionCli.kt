@@ -24,6 +24,7 @@ import com.localnovel.engine.service.ResolveTurnOptions
 import com.localnovel.engine.service.RebootRunEvidenceService
 import com.localnovel.engine.service.RebootDramaLoopService
 import com.localnovel.engine.service.RebootVerticalSliceRunner
+import com.localnovel.engine.service.RebootReplayBenchmarkRunner
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
 import com.localnovel.engine.service.AudioNovelEpisodeExporter
@@ -101,6 +102,16 @@ internal object StorySessionCli {
         )
         println(JsonSupport.json.encodeToString(summary))
         return 0
+    }
+
+    fun benchmarkReboot01Evolution(options: Map<String, String>): Int {
+        val report = RebootReplayBenchmarkRunner(Path.of(options.requiredCliOption("out-dir"))).run(
+            basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
+            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
+            npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
+        )
+        println(JsonSupport.json.encodeToString(report))
+        return if (report.decision == "ADOPT") 0 else 3
     }
 
     fun compileContext(options: Map<String, String>): Int {
