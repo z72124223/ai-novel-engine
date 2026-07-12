@@ -69,7 +69,7 @@
 - [x] Step 4：完成 additive Migration 015、正規化 Artifact／Review 行證據、既有 014 trigger 升級、Rule Set／Profile content Hash 綁定，以及 mandatory negative／positive／revision re-review／rollback／Hash／CLI tests。
 - [x] Step 5：重驗 DIALOGUE-01，提交 Rule Set、Profiles、三份 revised reviews、Findings、Decision 與報告。
 - [x] Step 6：focused／full／migration upgrade／scope／secret／Hash 驗證與 High 唯讀 review。
-- [ ] Step 7（CURRENT）：聚焦 Commit／Push，安全合併預設分支，更新 PROJECT_STATE 並停止。
+- [x] Step 7：聚焦 Commit／Push，安全合併預設分支，更新 PROJECT_STATE 並停止。
 
 ### Verification
 
@@ -95,6 +95,7 @@
 - 2026-07-13：第一輪修補 focused tests PASS；第二輪 High 複核確認六項原 finding 已解決，但指出直接修改 014 無法升級已安裝 DB，且 SQL trigger 尚不能證明逐句 coverage／exactQuote。新增 Step 4 範圍：Migration 015 正規化行證據、重建 trigger、保護 Rule/Profile authority rows，並加入舊 014→015 與 fake-review bypass 測試。
 - 2026-07-13：Migration 015 與 hash schema v2 focused/full tests PASS；最終 High 複核再發現 JSON path 缺失的 SQLite NULL 三值邏輯，以及 SELECTED 後可追加 evidence。Step 4 最後修補加入明確 `json_type=array` 檢查與狀態感知 INSERT guards，修補後重跑 focused/full。
 - 2026-07-13：所有 release blockers 已修復；最後 High verdict `PASS_WITH_RISKS`、release blockers `NONE`、`APPROVE_RELEASE`。Focused tests PASS；完整套件 872 tests、0 failures／errors／skipped；JSON、Hash、quote、coverage、scope、secret 與 `git diff --check` PASS。進入 Step 7 Git 發布。
+- 2026-07-13：Core `31f7072` 與 evidence/hardening `8064d37` 已普通 Push 到 `codex/engine-rules01-dialogue02`，並安全 fast-forward 到遠端預設分支；未使用 force。ENGINE-RULES-01 / DIALOGUE-02 完成，無自動後續工作包。
 
 ## Historical — Current Plan Window V3
 

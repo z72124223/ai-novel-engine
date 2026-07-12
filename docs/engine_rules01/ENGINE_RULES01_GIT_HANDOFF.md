@@ -6,7 +6,8 @@
 - Implementation branch: `codex/engine-rules01-dialogue02`
 - Base control commit: `179f8acb3d03d7bed40ef1c0f95bfa615df2ef0d`
 - Core implementation commit: `31f7072da143559c6a1280b3631ea2f70cad404d`
-- Final evidence/hardening commit: recorded by the Git commit containing the final handoff update
+- Final evidence/hardening commit: `8064d3746c1a8454bf1d0ba432537249a7ed124e`
+- Default branch integration: ordinary fast-forward through `8064d3746c1a8454bf1d0ba432537249a7ed124e`
 - Rule Set: `engine-production-rules@1.0.0`
 - Boundary: `NON_CANON_PILOT`
 

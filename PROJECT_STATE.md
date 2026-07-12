@@ -4,7 +4,7 @@
 
 ## Current Override — ENGINE-RULES-01 / DIALOGUE-02
 
-- Status: `ENGINE_RULES01_IMPLEMENTATION_COMPLETE_READY_TO_PUBLISH`
+- Status: `ENGINE_RULES01_COMPLETE_MERGED`
 - Current work: `ENGINE_RULES01_DIALOGUE02`
 - Collaboration: `GPT_PLANS_CODEX_IMPLEMENTS`
 - Implementation branch: `codex/engine-rules01-dialogue02`
@@ -20,6 +20,9 @@
 - Revised Artifact: `SELECTED`, SHA-256 `0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2`, blockers `0`, warnings `1`.
 - Verification: focused PASS; full suite `872/872` PASS; High review `PASS_WITH_RISKS`, release blockers `NONE`.
 - Completion classification: `ENGINE_RULES01_PASS_WITH_SEMANTIC_WARNINGS`.
+- Implementation commits: `31f7072da143559c6a1280b3631ea2f70cad404d`, `8064d3746c1a8454bf1d0ba432537249a7ed124e`.
+- Remote default branch contains the complete implementation and evidence through `8064d3746c1a8454bf1d0ba432537249a7ed124e`; the final governance-only commit is the Git commit containing this state update.
+- No next work package is active. Do not automatically start images, video, Provider, Canon, next chapter or interactive game.
 - GitHub remote is the highest team authority.
 - Do not start image, video, Provider, Canon, next chapter or interactive game.
 
