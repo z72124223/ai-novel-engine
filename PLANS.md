@@ -74,7 +74,7 @@
 
 - [x] Step 0：固定 Chenxing raw archive LF checkout，重跑 4 個 World Source tests 與完整匯入，證明正式 manifest／tracked source 一致且 SQL 寫入成功。
 - [x] Step 1：新增 chapter production／review additive migration 013、models、repository lifecycle 與 transaction tests。
-- [ ] Step 2：新增 SQL-backed chapter handoff／draft intake／review intake／single revision／pilot selection CLI 與契約測試。
+- [x] Step 2：新增 SQL-backed chapter handoff／draft intake／review intake／single revision／pilot selection CLI 與契約測試。
 - [ ] Step 3：實際建立 Chenxing STORY-01 SQL sandbox 與交接包；由 Codex 讀取交接包產生完整中文初稿並 intake 到 SQLite。
 - [ ] Step 4：由三個獨立全文評審輸出 Logic／Character／Reader 評語；整合一次最小修訂或標記 human decision；保存初稿、評語、修訂稿與 selected pilot。
 - [ ] Step 5：將本機 Web 擴充為 STORY-01 author workbench（作者工作台），呈現版本／評語／SQL 狀態並支援接受、退回、選定 pilot；保留 loopback／Origin／lifecycle 安全。
@@ -99,6 +99,7 @@
 
 - 2026-07-12：使用者在 GPT 完成 REBOOT-01 深度審查後明確要求「開始」；建立 STORY-01 獨立乾淨分支／worktree，未碰原 123 項髒工作樹。
 - 2026-07-12：Step 1 完成。Migration 013 建立章節生產與三角色獨立評審資料表；Repository 以 transaction 維護草稿、三評審、最多一次修訂與 non-Canon pilot 選定，直接測試通過並證明失敗 batch 完整 rollback。
+- 2026-07-12：Step 2 完成。CLI 可從 SQL 的 `world_source_chunks` 與 `reboot_run_evidence.context_snapshot_json` 組成 Hash-bound source packet，並依序 intake 初稿、三份評審、單次修訂與具名人工 pilot 選定；契約測試通過。
 - 2026-07-12：證實 World Source #09 的 32-byte 差異等於 32 行的 CRLF checkout 差異；Git blob 與 formal manifest byte size 都是 3019，策略改為固定 LF，不修改愛醬內容或偷偷重寫 manifest。
 - 2026-07-12：以 path-specific `.gitattributes` 固定 LF；focused World Source tests PASS。正式 manifest 直接匯入成功：1 archive／9 documents／255 chunks，愛醬 classified query 回傳 5 個 official-source hits。
 

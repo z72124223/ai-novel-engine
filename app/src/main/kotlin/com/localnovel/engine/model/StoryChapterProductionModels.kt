@@ -1,6 +1,7 @@
 package com.localnovel.engine.model
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 @Serializable
 enum class StoryChapterProductionStatus {
@@ -96,4 +97,78 @@ data class StoryChapterProductionView(
     val humanActorId: String,
     val canonStatus: String,
     val reviews: List<StoryChapterReviewRecord> = emptyList(),
+)
+
+@Serializable
+data class StoryChapterWorldQuery(
+    val text: String,
+    val classification: String = "",
+    val limit: Int = 8,
+)
+
+@Serializable
+data class StoryChapterHandoffRequest(
+    val productionId: String,
+    val projectId: String,
+    val sessionId: String,
+    val runId: String,
+    val scenarioSeed: String,
+    val sourceCommitSha: String,
+    val chapterTitle: String,
+    val premise: String,
+    val targetChineseCharactersMin: Int = 2500,
+    val targetChineseCharactersMax: Int = 4500,
+    val worldQueries: List<StoryChapterWorldQuery>,
+    val requiredBeats: List<String>,
+    val forbiddenOutcomes: List<String>,
+    val voiceRequirements: List<String>,
+)
+
+@Serializable
+data class StoryChapterSourcePacket(
+    val packetVersion: String = "story-chapter-source-v1",
+    val productionId: String,
+    val projectId: String,
+    val sessionId: String,
+    val scenarioSeed: String,
+    val sourceCommitSha: String,
+    val chapterTitle: String,
+    val premise: String,
+    val targetChineseCharactersMin: Int,
+    val targetChineseCharactersMax: Int,
+    val requiredBeats: List<String>,
+    val forbiddenOutcomes: List<String>,
+    val voiceRequirements: List<String>,
+    val runtimeContextId: String,
+    val runtimeContextHash: String,
+    val runtimeContextJson: String,
+    val worldSourceQueries: List<WorldSourceQueryReport>,
+    val boundary: String = "NON_CANON_PILOT_NO_DIRECT_SQL_WRITES",
+)
+
+@Serializable
+data class StoryChapterHandoffArtifact(
+    val packet: StoryChapterSourcePacket,
+    val sourcePacketSha256: String,
+)
+
+@Serializable
+data class StoryChapterReviewBatch(
+    val productionId: String,
+    val reviews: List<StoryChapterReviewRecord>,
+)
+
+@Serializable
+data class StoryChapterFullTextReview(
+    val reviewVersion: String = "story-chapter-review-v1",
+    val reviewerRole: StoryChapterReviewerRole,
+    val reviewerInstanceId: String,
+    val sourceDraftSha256: String,
+    val verdict: StoryChapterReviewVerdict,
+    val summary: String,
+    val quotedEvidence: List<String>,
+    val strengths: List<String>,
+    val findings: List<String>,
+    val requiredChanges: List<String> = emptyList(),
+    val scorecard: JsonObject = JsonObject(emptyMap()),
 )
