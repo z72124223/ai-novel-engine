@@ -1,0 +1,36 @@
+{
+  "reviewerRole": "TAIWAN_SPOKEN_DIALOGUE",
+  "reviewerInstanceId": "SCREEN-01-TAIWAN-SPOKEN-01",
+  "sourceScreenplaySha256": "376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4",
+  "sourceDialogueSha256": "01672b1be3ba2d3340977dc42dfc9d41a25bccfba095cdd6be34a58686a16c1b",
+  "verdict": "REVISE",
+  "summary": "整體短促、角色可辨，但少數句子偏書面或非台灣慣用口氣，並有輕微文案式 AI 味；建議局部修訂。",
+  "quotedEvidence": [
+    "你上次的十分鐘，有含稅嗎？",
+    "今天不要賭。",
+    "卡著。現在靠祈禱。",
+    "好。先碰你。",
+    "手，還是箱子？",
+    "固定。抬高。布給我。",
+    "行。先留著。"
+  ],
+  "strengths": [
+    "危急段落以短句和命令句為主。",
+    "陸塵行的幽默由現場觸發，不是獨立笑話。",
+    "周克的務實命令與拾潮者的防衛語氣可辨。"
+  ],
+  "findings": [
+    {"severity": "HIGH", "evidence": "行。先留著。", "required": "改成自然台灣華語並釐清留著的指涉。"},
+    {"severity": "MEDIUM", "evidence": "等你上去，再慢慢證明。", "required": "改成救援現場更自然的短句。"},
+    {"severity": "MEDIUM", "evidence": "好。今天多一項。", "required": "補足第一次聽就能理解的指涉。"},
+    {"severity": "LOW", "evidence": "卡著。現在靠祈禱。", "required": "降低文案式機智感。"},
+    {"severity": "LOW", "evidence": "是浪。下一批不知道什麼時候。", "required": "將下一批調整為海浪語境自然的下一波。"}
+  ],
+  "requiredChanges": [
+    "替換非台灣慣用的單獨『行』。",
+    "簡化上岸後再證明的句子。",
+    "改善前段吐槽指涉與下一波用語。",
+    "維持周克短促聲線，不把所有句子加工成金句。"
+  ],
+  "scorecard": {"naturalTaiwanMandarin": 72, "luChenxingBanter": 80, "crisisBrevity": 90, "characterVoiceDifferentiation": 82, "absenceOfAITaste": 70, "overall": 79}
+}
