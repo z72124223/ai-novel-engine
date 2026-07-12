@@ -77,7 +77,7 @@
 - [x] Step 2：新增 SQL-backed chapter handoff／draft intake／review intake／single revision／pilot selection CLI 與契約測試。
 - [x] Step 3：實際建立 Chenxing STORY-01 SQL sandbox 與交接包；由 Codex 讀取交接包產生完整中文初稿並 intake 到 SQLite。
 - [x] Step 4：由三個獨立全文評審輸出 Logic／Character／Reader 評語；整合一次最小修訂或標記 human decision；保存初稿、評語、修訂稿與 selected pilot。
-- [ ] Step 5：將本機 Web 擴充為 STORY-01 author workbench（作者工作台），呈現版本／評語／SQL 狀態並支援接受、退回、選定 pilot；保留 loopback／Origin／lifecycle 安全。
+- [x] Step 5：將本機 Web 擴充為 STORY-01 author workbench（作者工作台），呈現版本／評語／SQL 狀態並支援接受、退回、選定 pilot；保留 loopback／Origin／lifecycle 安全。
 - [ ] Step 6：執行 focused／full／E2E／SQL／JSON／secret／scope 驗證，完成 High review、文件、開發日誌、分段 Commit 與普通 Push。
 
 ### Verification
@@ -102,6 +102,7 @@
 - 2026-07-12：Step 2 完成。CLI 可從 SQL 的 `world_source_chunks` 與 `reboot_run_evidence.context_snapshot_json` 組成 Hash-bound source packet，並依序 intake 初稿、三份評審、單次修訂與具名人工 pilot 選定；契約測試通過。
 - 2026-07-12：Step 3 完成。實跑 REBOOT-01 隔離沙盒與正式 World Source import，建立 70,577-byte SQL-backed handoff；Codex 依交接包產生 2,941 字元完整初稿〈潮線之外〉，SHA-256 `05f0d589...1027e`，並由 file intake 寫入 SQLite 為 `DRAFT_INGESTED / NON_CANON_PILOT`。
 - 2026-07-12：Step 4 完成。三個隔離全文 reviewer 分別給出 LOGIC 76／REVISE、CHARACTER 96／PASS、READER 86／REVISE，均引用初稿原文。唯一一次修訂修正人數、無來源物件、Runtime 手傷因果、足跡證據、時間與醫療閉合；修訂稿 2,978 字元、SHA `ea0e6e14...5e91`，SQL 為 `SELECTED_PILOT_DRAFT`、revision 1、`NON_CANON_PILOT`。
+- 2026-07-12：Step 5 完成。新增 loopback-only STORY-01 作者工作台，呈現 SQL 初稿／修訂稿／三份評語／狀態並提供選定或退回；啟動時複製來源 DB 到暫存隔離 DB，Web 決策不改來源，foreign Host／Origin 拒絕且 close 後清理，直接測試通過。
 - 2026-07-12：證實 World Source #09 的 32-byte 差異等於 32 行的 CRLF checkout 差異；Git blob 與 formal manifest byte size 都是 3019，策略改為固定 LF，不修改愛醬內容或偷偷重寫 manifest。
 - 2026-07-12：以 path-specific `.gitattributes` 固定 LF；focused World Source tests PASS。正式 manifest 直接匯入成功：1 archive／9 documents／255 chunks，愛醬 classified query 回傳 5 個 official-source hits。
 

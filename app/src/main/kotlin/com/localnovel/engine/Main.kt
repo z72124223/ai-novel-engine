@@ -45,6 +45,7 @@ class Cli {
                 "run-reboot01-vertical-slice" -> StorySessionCli.runReboot01VerticalSlice(options)
                 "benchmark-reboot01-evolution" -> StorySessionCli.benchmarkReboot01Evolution(options)
                 "serve-reboot01-web" -> StorySessionCli.serveReboot01Web(options)
+                "serve-story01-author-workbench" -> StorySessionCli.serveStory01AuthorWorkbench(options)
                 "create-story-chapter-handoff" -> StoryChapterProductionCli.createHandoff(options)
                 "ingest-story-chapter-draft" -> StoryChapterProductionCli.ingestDraft(options)
                 "ingest-story-chapter-draft-file" -> StoryChapterProductionCli.ingestDraftFile(options)
@@ -226,6 +227,7 @@ class Cli {
               run-reboot01-vertical-slice --db <path> --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               benchmark-reboot01-evolution --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               serve-reboot01-web [--evidence-dir <path>] [--port <loopback-port>]
+              serve-story01-author-workbench --db <path> --production <id> [--port <loopback-port>]
               create-story-chapter-handoff [--db <path>] --input <path> --out <path>
               ingest-story-chapter-draft [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-draft-file [--db <path>] --input <path> [--out <path>]

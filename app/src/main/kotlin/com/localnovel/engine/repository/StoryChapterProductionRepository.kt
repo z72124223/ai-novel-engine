@@ -187,6 +187,37 @@ class StoryChapterProductionRepository(
         ) { "Chapter selection state changed concurrently." }
     }
 
+    fun rejectPilot(productionId: String, humanActorId: String) = repository.withTransaction { connection ->
+        require(humanActorId.isNotBlank()) { "A named human must reject the pilot." }
+        check(
+            repository.executeUpdate(
+                connection,
+                """
+                UPDATE story_chapter_productions
+                SET status = 'REJECTED', human_decision = 'REJECT_PILOT_DRAFT', human_actor_id = ?, updated_at = ?
+                WHERE production_id = ? AND status IN ('REVIEWS_COMPLETE', 'REVISION_INGESTED', 'HUMAN_DECISION_REQUIRED')
+                """.trimIndent(),
+                humanActorId,
+                now(),
+                productionId,
+            ) == 1,
+        ) { "Pilot cannot be rejected from its current state." }
+    }
+
+    fun requireHumanDecision(productionId: String) = repository.withTransaction { connection ->
+        check(
+            repository.executeUpdate(
+                connection,
+                """
+                UPDATE story_chapter_productions SET status = 'HUMAN_DECISION_REQUIRED', updated_at = ?
+                WHERE production_id = ? AND status IN ('REVIEWS_COMPLETE', 'REVISION_INGESTED')
+                """.trimIndent(),
+                now(),
+                productionId,
+            ) == 1,
+        ) { "Human-decision state cannot be entered from the current state." }
+    }
+
     fun get(productionId: String): StoryChapterProductionView = repository.withConnection { connection ->
         val row = productionRow(connection, productionId)
         val reviews = repository.queryRows(

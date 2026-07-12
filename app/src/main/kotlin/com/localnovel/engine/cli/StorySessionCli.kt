@@ -26,6 +26,7 @@ import com.localnovel.engine.service.RebootDramaLoopService
 import com.localnovel.engine.service.RebootVerticalSliceRunner
 import com.localnovel.engine.service.RebootReplayBenchmarkRunner
 import com.localnovel.engine.service.RebootLocalWebServer
+import com.localnovel.engine.service.StoryChapterAuthorWorkbenchServer
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.AudioNovelEpisodeExportOptions
 import com.localnovel.engine.service.AudioNovelEpisodeExporter
@@ -125,6 +126,19 @@ internal object StorySessionCli {
         Runtime.getRuntime().addShutdownHook(Thread { server.close() })
         println("REBOOT-01 local UI: http://127.0.0.1:${server.port}")
         println("Loopback only. Press Ctrl+C to stop.")
+        java.util.concurrent.CountDownLatch(1).await()
+        return 0
+    }
+
+    fun serveStory01AuthorWorkbench(options: Map<String, String>): Int {
+        val server = StoryChapterAuthorWorkbenchServer(
+            sourceDatabasePath = Path.of(options.requiredCliOption("db")),
+            productionId = options.requiredCliOption("production"),
+            requestedPort = options["port"]?.toIntOrNull() ?: 8766,
+        ).start()
+        Runtime.getRuntime().addShutdownHook(Thread { server.close() })
+        println("STORY-01 author workbench: http://127.0.0.1:${server.port}")
+        println("Loopback only; all decisions modify an isolated database copy. Press Ctrl+C to stop.")
         java.util.concurrent.CountDownLatch(1).await()
         return 0
     }

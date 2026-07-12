@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>STORY-01 作者工作台</title>
+  <style>
+    :root { color-scheme: dark; --paper:#141817; --ink:#f0eee7; --muted:#9ba49e; --line:#303a35; --accent:#d7a85b; --ok:#78b88a; }
+    * { box-sizing:border-box } body { margin:0; background:#0c0f0e; color:var(--ink); font:16px/1.75 system-ui,sans-serif }
+    header { padding:28px clamp(20px,5vw,72px); border-bottom:1px solid var(--line); background:linear-gradient(120deg,#171d1a,#111413) }
+    h1,h2 { margin:.2em 0; letter-spacing:.03em } .tag { color:var(--accent); font-size:.85rem; text-transform:uppercase; letter-spacing:.14em }
+    main { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(300px,.8fr); gap:24px; padding:24px clamp(20px,5vw,72px) 60px }
+    section,aside { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:22px }
+    .draft { white-space:pre-wrap; max-height:65vh; overflow:auto; font-family:ui-serif,serif }
+    .tabs button,.actions button { border:1px solid var(--line); background:#202622; color:var(--ink); padding:9px 13px; border-radius:8px; cursor:pointer; margin:4px }
+    .tabs button.active,.actions button.primary { border-color:var(--accent); color:var(--accent) }
+    .review { border-top:1px solid var(--line); padding:14px 0 } .meta { color:var(--muted); font-size:.9rem }
+    code { color:var(--ok) } input { width:100%; padding:10px; margin:8px 0; background:#0d100f; color:var(--ink); border:1px solid var(--line); border-radius:7px }
+    @media(max-width:850px){main{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="tag">Non-Canon Pilot · Isolated SQLite</div><h1>STORY-01 作者工作台</h1><div id="status" class="meta">讀取中…</div></header>
+  <main>
+    <section><div class="tabs"><button id="initialBtn">初稿</button><button id="revisedBtn" class="active">修訂稿</button></div><article id="draft" class="draft"></article></section>
+    <aside><h2>評審證據</h2><div id="reviews"></div><h2>決策</h2><input id="actor" value="human:local-author" aria-label="操作者"><div class="actions"><button data-decision="SELECT_REVISED" class="primary">選定修訂 Pilot</button><button data-decision="SELECT_INITIAL">選定初稿</button><button data-decision="REJECT">退回</button></div><p class="meta">只修改伺服器的隔離資料庫副本；不會升格 Canon、發布或觸發圖片。</p></aside>
+  </main>
+  <script>
+    let chapter;
+    const draft = document.querySelector('#draft');
+    async function load(){ chapter=await (await fetch('/api/chapter')).json(); render('revised'); }
+    function render(version){
+      document.querySelector('#status').textContent=`${chapter.status} · reviews ${chapter.reviews.length} · revision ${chapter.revisionCount} · ${chapter.canonStatus}`;
+      draft.textContent=version==='initial'?chapter.initialDraft:(chapter.revisedDraft||chapter.initialDraft);
+      document.querySelector('#initialBtn').classList.toggle('active',version==='initial'); document.querySelector('#revisedBtn').classList.toggle('active',version==='revised');
+      document.querySelector('#reviews').innerHTML=chapter.reviews.map(r=>{const x=JSON.parse(r.reviewJson);return `<div class="review"><strong>${r.reviewerRole} · ${r.verdict}</strong><div class="meta">${escapeHtml(x.summary)}</div></div>`}).join('');
+    }
+    function escapeHtml(v){const d=document.createElement('div');d.textContent=v;return d.innerHTML}
+    document.querySelector('#initialBtn').onclick=()=>render('initial'); document.querySelector('#revisedBtn').onclick=()=>render('revised');
+    document.querySelectorAll('[data-decision]').forEach(b=>b.onclick=async()=>{chapter=await(await fetch('/api/chapter/decision',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productionId:chapter.productionId,decision:b.dataset.decision,actorId:document.querySelector('#actor').value})})).json();render('revised')});
+    load();
+  </script>
+</body>
+</html>
