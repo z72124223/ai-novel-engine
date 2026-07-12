@@ -2,35 +2,21 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## 0. Current Override — DIALOGUE-01 V2
+## Current Override — ENGINE-RULES-01 / DIALOGUE-02
 
-- Status：`DIALOGUE01_COMPLETE_MERGED`
-- Product destination：`SERIALIZED_VIDEO_ANIMATION`
-- Current work：`DIALOGUE-01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`
-- Collaboration mode：`GPT_PLANS_CODEX_IMPLEMENTS`
-- GPT responsibility：`COMPLETE`
-- Independent WORK role：`CANCELLED`
-- Implementation branch：`codex/dialogue01-human-voice-finalization`
-- Source SCREEN-01 head：`513c9d9ac1b1e168ac7c1217ea3f6ba581181719`
-- Completion classification：`DIALOGUE01_PASS_WITH_REGIONAL_WARNINGS`
-- Final screenplay：`samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md`
-- Final dialogue：`samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json`
-- Final 82-second subtitle：`samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt`
-- Automatic next work：`PROHIBITED`
-- Delivery status：implementation branch and remote default branch synchronized after ordinary fast-forward push
+- Status: `GPT_BLUEPRINT_COMPLETE_CODEX_READY`
+- Current work: `ENGINE_RULES01_DIALOGUE02`
+- Collaboration: `GPT_PLANS_CODEX_IMPLEMENTS`
+- Implementation branch: `codex/engine-rules01-dialogue02`
+- Goal: `ENGINE_ENFORCED_PRODUCTION_RULES`
+- Key rule: bad drafts may exist, but any BLOCKER prevents final selection.
+- Mandatory negative fixture: `好。先碰你。`
+- Required gate: `docs/CURRENT_ROUTE_GATE_V7.md`
+- Required charter: `docs/ENGINE_ENFORCED_PRODUCTION_RULES_V1.md`
+- Required work package: `docs/work-packages/ENGINE-RULES-01_DIALOGUE-02.md`
+- DIALOGUE-01 is historical evidence and must be re-evaluated, not silently trusted.
 - GitHub remote is the highest team authority.
-- Local host, SQLite, terminal and `out/**` are replaceable execution environments.
-
-Required:
-
-- Gate：`docs/CURRENT_ROUTE_GATE_V6.md`
-- Collaboration：`docs/GPT_CODEX_COLLABORATION_V2.md`
-- Work Package：`docs/work-packages/DIALOGUE-01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2.md`
-- Codex Handoff：`docs/handoffs/DIALOGUE01_CODEX_ONLY_HANDOFF.md`
-- Merge Plan：`docs/handoffs/DIALOGUE01_MERGE_PLAN_V2.md`
-- Controller：`.codex/dialogue01_controller.md`
-
-舊 GPT／WORK／CODEX 三方模式與 Work 分支若存在，只保留歷史，不再使用。
+- Do not start image, video, Provider, Canon, next chapter or interactive game.
 
 ## 1. 最終產品
 
