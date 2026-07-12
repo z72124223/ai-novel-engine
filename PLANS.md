@@ -65,8 +65,8 @@
 - [x] Step 0：建立 Stage 0 Git／來源／邊界紀錄與 SCREEN-01 目錄骨架，驗證來源 Hash。
 - [x] Step 1：建立 Story Production Master、對白 Bible、初版完整影視劇本與初版對白軌。
 - [x] Step 2：三個隔離 reviewer 讀取完整初版劇本／對白並提交 Hash-bound 評審。
-- [ ] **Current Step 3：** 依評審完成最多一次劇本／對白修訂，固定選定版。
-- [ ] Step 4：建立場景表、鏡頭表、60–90 秒 Pilot、SRT 字幕、地區語言說明與媒體交接包。
+- [x] Step 3：依評審完成最多一次劇本／對白修訂，固定選定版。
+- [ ] **Current Step 4：** 建立場景表、鏡頭表、60–90 秒 Pilot、SRT 字幕、地區語言說明與媒體交接包。
 - [ ] Step 5：建立對白評審報告、Git handoff、開發日誌與最終報告。
 - [ ] Step 6：執行 JSON／reference／Hash／subtitle／scope／secret／focused／full suite 驗證與 High 只讀總審。
 - [ ] Step 7：完成聚焦 Commit chain、普通 Push 與一次最終回報；不自動開始視覺生產。
@@ -92,6 +92,7 @@
 - 2026-07-12：Stage 0 完成。Git／來源／NON_CANON／Provider 與媒體禁制均寫入追蹤日誌；來源 SHA-256 與控制文件一致。
 - 2026-07-12：Stage 1 完成。建立故事主檔、4 場完整初版影視劇本、4 角色對白 Bible 與 31 句初版對白軌；小說內心轉為可見動作／聲音，劇本與對白限定使用 High，工程維持 Medium。
 - 2026-07-12：Stage 2 完成。三位隔離 Medium reviewer 均綁定初版 screenplay／dialogue Hash 並輸出逐字引用；TAIWAN 79／REVISE、PAN-CHINESE 88／REVISE、SCREEN PERFORMANCE 74／REVISE，所有引用經程式驗證存在。
+- 2026-07-12：Stage 3 完成唯一一次修訂。選定劇本建立救援空間與可見鞋印、重算為約 8:30、修正口語／誤字／急救；選定 screenplay SHA `3a05221d...4224`，dialogue SHA `a0a87876...0949`，仍為 NON_CANON_PILOT。
 
 ## Historical — Current Plan Window V1
 
