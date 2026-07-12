@@ -5,9 +5,14 @@ import com.localnovel.engine.model.StoryChapterDraftFileIntake
 import com.localnovel.engine.model.StoryChapterHandoffRequest
 import com.localnovel.engine.model.StoryChapterPilotSelection
 import com.localnovel.engine.model.StoryChapterReviewBatch
+import com.localnovel.engine.model.StoryChapterReviewFileBatch
+import com.localnovel.engine.model.StoryChapterReviewRecord
+import com.localnovel.engine.model.StoryChapterFullTextReview
 import com.localnovel.engine.model.StoryChapterRevisionIntake
 import com.localnovel.engine.model.StoryChapterRevisionFileIntake
 import java.nio.file.Files
+import com.localnovel.engine.support.JsonSupport
+import kotlinx.serialization.encodeToString
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.service.StoryChapterProductionService
 import java.nio.file.Path
@@ -47,6 +52,26 @@ internal object StoryChapterProductionCli {
     fun ingestReviews(options: Map<String, String>): Int = mutate(options) { chapter ->
         val batch = readCliJson<StoryChapterReviewBatch>(Path.of(options.requiredCliOption("input")))
         chapter.recordReviewBatch(batch.productionId, batch.reviews)
+        batch.productionId
+    }
+
+    fun ingestReviewFiles(options: Map<String, String>): Int = mutate(options) { chapter ->
+        val batch = readCliJson<StoryChapterReviewFileBatch>(Path.of(options.requiredCliOption("input")))
+        val reviews = batch.reviewFiles.mapIndexed { index, path ->
+            val review = readCliJson<StoryChapterFullTextReview>(Path.of(path))
+            require(review.quotedEvidence.size >= 3) { "Review ${review.reviewerRole} must quote at least three passages." }
+            require(review.summary.isNotBlank() && review.strengths.isNotEmpty()) { "Review ${review.reviewerRole} lacks full-text evidence." }
+            StoryChapterReviewRecord(
+                reviewId = "${batch.productionId}-${review.reviewerRole.name.lowercase()}-${index + 1}",
+                productionId = batch.productionId,
+                reviewerRole = review.reviewerRole,
+                reviewerInstanceId = review.reviewerInstanceId,
+                sourceDraftSha256 = review.sourceDraftSha256,
+                verdict = review.verdict,
+                reviewJson = JsonSupport.json.encodeToString(review),
+            )
+        }
+        chapter.recordReviewBatch(batch.productionId, reviews)
         batch.productionId
     }
 

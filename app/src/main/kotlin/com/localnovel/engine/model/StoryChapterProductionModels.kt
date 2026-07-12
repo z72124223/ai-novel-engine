@@ -177,6 +177,12 @@ data class StoryChapterReviewBatch(
 )
 
 @Serializable
+data class StoryChapterReviewFileBatch(
+    val productionId: String,
+    val reviewFiles: List<String>,
+)
+
+@Serializable
 data class StoryChapterFullTextReview(
     val reviewVersion: String = "story-chapter-review-v1",
     val reviewerRole: StoryChapterReviewerRole,

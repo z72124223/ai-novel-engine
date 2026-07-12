@@ -49,6 +49,7 @@ class Cli {
                 "ingest-story-chapter-draft" -> StoryChapterProductionCli.ingestDraft(options)
                 "ingest-story-chapter-draft-file" -> StoryChapterProductionCli.ingestDraftFile(options)
                 "ingest-story-chapter-reviews" -> StoryChapterProductionCli.ingestReviews(options)
+                "ingest-story-chapter-review-files" -> StoryChapterProductionCli.ingestReviewFiles(options)
                 "ingest-story-chapter-revision" -> StoryChapterProductionCli.ingestRevision(options)
                 "ingest-story-chapter-revision-file" -> StoryChapterProductionCli.ingestRevisionFile(options)
                 "select-story-chapter-pilot" -> StoryChapterProductionCli.selectPilot(options)
@@ -229,6 +230,7 @@ class Cli {
               ingest-story-chapter-draft [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-draft-file [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-reviews [--db <path>] --input <path> [--out <path>]
+              ingest-story-chapter-review-files [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-revision [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-revision-file [--db <path>] --input <path> [--out <path>]
               select-story-chapter-pilot [--db <path>] --input <path> [--out <path>]

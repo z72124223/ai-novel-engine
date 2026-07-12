@@ -1,0 +1,8 @@
+{
+  "productionId": "story01-chenxing-daping-chapter-001",
+  "reviewFiles": [
+    "samples/story01/reviews/logic_review.json",
+    "samples/story01/reviews/character_review.json",
+    "samples/story01/reviews/reader_review.json"
+  ]
+}
