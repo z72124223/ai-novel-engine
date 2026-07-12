@@ -7,7 +7,7 @@
 | 產物 | SHA-256 |
 |---|---|
 | `samples/screen01/screen01_story_production_master.json` | `1216d5aa56919c1172cba1898aa112978330ba3e4fed119008f7119bcc987e45` |
-| `samples/screen01/screen01_screenplay_initial_zh-Hant-TW.md` | `dd481504e7302afd371261bbfa91f8a5101d98c72c12fa3f901e138299fa4492` |
+| `samples/screen01/screen01_screenplay_initial_zh-Hant-TW.md` | `376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4` |
 | `samples/screen01/screen01_dialogue_bible_zh-Hant-TW.json` | `023d5a1361bf8bb22afc847e02bb07823f7a3c7e5bb89a4772b125d9514f3cd2` |
 | `samples/screen01/screen01_dialogue_track_initial_zh-Hant-TW.json` | `4489c9a530d09c74c90af0f0c0a5a70d46b03b1d9b60f9398ef1733e72af62b9` |
 
