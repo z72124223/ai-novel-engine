@@ -5,9 +5,9 @@
 ## 選定產物
 
 - Screenplay：`samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md`
-- Screenplay SHA-256：`3a05221dc9d2c0aee578393bd653173e9310d06922dc5ce3f551385842404224`
+- Screenplay SHA-256：`4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c`
 - Dialogue：`samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json`
-- Dialogue SHA-256：`a0a878765878b2553e48a4e2ccffde874cb969a1345aba62cae10bcaf5d70949`
+- Dialogue SHA-256：`6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c`
 - Revision count：`1 / 1`
 
 ## 修訂回應
@@ -16,7 +16,7 @@
 - 泛華語：修正「墊後」為「殿後」；119 與地域詞保留到 Localization 處理。
 - 可拍性：先建立凹壁入口、浪向、愛醬高台、斜坡鬆石、撬點、傷者與箱子相對位置。
 - 視覺資訊：第二串鞋印在值守室門口被雨沖亮，手機只作交叉確認。
-- 時長：由不可靠 10:20 修正為讀排估計 8:30，並保留正式讀排／安全顧問複核條件。
+- 時長：由不可靠 10:20 修正為 Shot 節拍總和 7:20，並保留正式讀排／安全顧問複核條件。
 - 急救：明寫不拉直、不復位、不壓變形處。
 
 ## 模型路由

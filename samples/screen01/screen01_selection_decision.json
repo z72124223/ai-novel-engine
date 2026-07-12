@@ -3,9 +3,9 @@
   "productionId": "screen01-tideline-beyond",
   "decision": "SELECT_REVISED_FOR_SCREEN01_PREPRODUCTION",
   "selectedScreenplayPath": "samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md",
-  "selectedScreenplaySha256": "3a05221dc9d2c0aee578393bd653173e9310d06922dc5ce3f551385842404224",
+  "selectedScreenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
   "selectedDialoguePath": "samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json",
-  "selectedDialogueSha256": "a0a878765878b2553e48a4e2ccffde874cb969a1345aba62cae10bcaf5d70949",
+  "selectedDialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c",
   "revisionCount": 1,
   "revisionLimit": 1,
   "basis": [

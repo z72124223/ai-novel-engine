@@ -5,7 +5,7 @@
   "revisionCount": 1,
   "language": "zh-Hant-TW",
   "sourceScreenplayPath": "samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md",
-  "sourceScreenplaySha256": "3a05221dc9d2c0aee578393bd653173e9310d06922dc5ce3f551385842404224",
+  "sourceScreenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
   "dialogueBiblePath": "samples/screen01/screen01_dialogue_bible_zh-Hant-TW.json",
   "reviewPaths": [
     "samples/screen01/reviews/taiwan_spoken_dialogue_review.json",

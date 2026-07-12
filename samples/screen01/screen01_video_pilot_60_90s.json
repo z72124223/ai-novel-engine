@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "screen01-video-pilot-v1",
+  "pilotId": "screen01-pilot-rescue-choice-82s",
+  "productionId": "screen01-tideline-beyond",
+  "title": "先救人",
+  "status": "SPECIFICATION_ONLY_NO_MEDIA_GENERATION",
+  "sourceScreenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+  "sourceDialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c",
+  "sourceShotListPath": "samples/screen01/screen01_shot_list.json",
+  "segmentStart": "scene-03 / shot-015",
+  "segmentEnd": "scene-03 / shot-023",
+  "durationSeconds": 82,
+  "shotIds": ["shot-015","shot-016","shot-017","shot-018","shot-019","shot-020","shot-021","shot-022","shot-023"],
+  "dialogueIds": ["dlg-015","dlg-016","dlg-017","dlg-018","dlg-019","dlg-020","dlg-021","dlg-022","dlg-023"],
+  "testObjectives": [
+    "陸塵行的台灣華語短句與乾式判斷是否自然。",
+    "愛醬是否以主動預警改變事件，而非等待命令。",
+    "救人與箱子衝突是否能靠畫面與短句成立。",
+    "凹壁 blocking、浪向、鬆石與撬點是否具空間連續性。",
+    "浪聲、金屬聲與沉默是否能取代旁白。"
+  ],
+  "beginning": "救援空間建立，陸塵行與周克分工；傷者拒絕放棄箱子。",
+  "turn": "愛醬預警來浪，陸塵行離開撬點救她，傷者手傷惡化。",
+  "ending": "傷者脫困；陸塵行確認真正危險是不可預測的下一波浪。",
+  "subtitlePath": "samples/screen01/screen01_video_pilot_zh-Hant-TW.srt",
+  "productionSafety": [
+    "不可在真實湧浪下實拍救援。",
+    "落石、撬桿、犬隻與手部傷勢需替身／特效／顧問。",
+    "不得生成圖片或影片，直到後續工作包與人類視覺批准。"
+  ],
+  "generationAuthorized": false,
+  "providerAuthorized": false
+}
