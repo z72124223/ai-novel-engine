@@ -9,7 +9,7 @@
 - 遠端預設分支：`codex/mvp6-checkpoint-branching-spec`
 - 邊界：`NON_CANON_PILOT`
 
-最終實作 Commit、Push 與預設分支 Merge SHA 由 Git 完成後的外部最終回報提供，避免 Commit 自我引用。
+實作成果 Commit：`90c619552b602a462e007886c4c59e27eb3eb761`。該 Commit 已普通 Push 至實作分支，並由預設分支從 `d61aa1bf73dd377e4cd12ff10989b343196dfa15` 安全 fast-forward。最終治理收尾 Commit 由外部最終回報提供，避免 Commit 自我引用。
 
 ## 另一台電腦的 Agent 必讀
 

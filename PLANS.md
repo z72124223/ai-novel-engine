@@ -55,7 +55,7 @@
 - [x] Step 3：執行唯一一次修訂，同步最終劇本、對白、Shot 與 82 秒 SRT。
 - [x] Step 4：建立選擇決策、Hash manifest、影片交接 overlay、報告與 Git handoff。
 - [x] Step 5：執行 focused／完整 Gradle、JSON、Hash、SRT、引用、秘密、scope 與 Git 驗證。
-- [ ] Step 6：Push 實作分支，安全併回預設分支，更新完成狀態並一次回報。
+- [x] Step 6：Push 實作分支，安全併回預設分支，更新完成狀態並一次回報。
 
 ### Verification
 
@@ -77,6 +77,7 @@
 - 2026-07-12：完成 31 句稽核、AI 模擬朗讀與三份隔離評審；只修訂 dlg-022，所有 Shot、事件與 82 秒 Pilot 不變。
 - 2026-07-12：建立最終劇本、對白、SRT、Selection、Hash manifest、Video overlay、報告與 Git handoff；SCREEN-01 舊宣告 Hash 與目前檔案 bytes 的歷史不一致已明示，不覆寫歷史。
 - 2026-07-12：靜態契約檢查 PASS；focused Gradle PASS；完整 `clean test` 6m04s PASS，只有既有 ExperimentalSerializationApi warnings。
+- 2026-07-12：實作 Commit `90c6195` 已普通 Push，並由遠端預設分支 `d61aa1b` 安全 fast-forward；未使用 force push。最終治理收尾另以 Git Commit 記錄，不在檔案內自我引用。
 
 ## Historical — Current Plan Window V2
 

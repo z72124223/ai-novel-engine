@@ -4,7 +4,7 @@
 
 ## 0. Current Override — DIALOGUE-01 V2
 
-- Status：`DIALOGUE01_COMPLETE_VALIDATED_PENDING_GIT_DELIVERY`
+- Status：`DIALOGUE01_COMPLETE_MERGED`
 - Product destination：`SERIALIZED_VIDEO_ANIMATION`
 - Current work：`DIALOGUE-01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`
 - Collaboration mode：`GPT_PLANS_CODEX_IMPLEMENTS`
@@ -17,6 +17,7 @@
 - Final dialogue：`samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json`
 - Final 82-second subtitle：`samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt`
 - Automatic next work：`PROHIBITED`
+- Delivery status：implementation branch and remote default branch synchronized after ordinary fast-forward push
 - GitHub remote is the highest team authority.
 - Local host, SQLite, terminal and `out/**` are replaceable execution environments.
 
@@ -132,7 +133,7 @@ DIALOGUE-01 V2 — 華語真人對白定稿
 狀態：
 
 ```text
-DIALOGUE01_COMPLETE_VALIDATED_PENDING_GIT_DELIVERY
+DIALOGUE01_COMPLETE_MERGED
 ```
 
 Codex 實作分支：
