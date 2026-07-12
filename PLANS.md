@@ -1,16 +1,107 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-07):** Read only `## Current Plan Window V0`
-> (`CURRENT_PLAN_WINDOW_V0`) first. All `## Historical ...` sections are archived
+> **Startup rule (2026-07-12):** Read only `## Current Plan Window V1`
+> (`STORY01_REAL_CHAPTER_PRODUCTION_TEST`) first. All older plan windows are archived
 > evidence only. Do not treat them as current work.
 > Worktree baseline: commits `3249db2` + `fa13693` on
 > `codex/mvp6-checkpoint-branching-spec`. Active creative world: `塵行`.
 > Rain Gate samples remain test/demo only. Default story samples:
 > `samples/chenxing/`.
 > **Product charter (2026-07-08):** script-first; video is downstream only.
-> Read `## Current Plan Window V0` before any other slice.
+> Read `## Current Plan Window V1` before any other slice.
 
-## Current Plan Window V0
+## Current Plan Window V1
+
+標記：`STORY01_REAL_CHAPTER_PRODUCTION_TEST`
+
+狀態：**ACTIVE — REBOOT-01 技術基礎通過；開始真實完整章節、獨立全文評審與作者工作台驗證，圖片／影片維持暫停**
+
+日期：2026-07-12
+
+### Goal
+
+在不接外部付費 API、不修改正式 Canon、不弱化 SQLite／Validator／Hash／Knowledge Boundary 的前提下，讓目前 Codex 模型真正讀取由 SQL 世界來源與 Runtime Context 匯出的交接包，產生一篇完整中文場景／章節；再由三個獨立全文評審閱讀、最多修訂一次，將初稿、評語、修訂稿與選定的 non-Canon pilot 稿保存進 SQLite，並由本機作者工作台呈現與操作。
+
+### Global Strategy
+
+- 先修復愛醬 World Source 的跨平台換行完整性：Git blob 已證明是 3019 bytes，Windows CRLF checkout 才造成 3051 bytes；以 Repository eol 規則固定 LF，不改來源文字或正式 manifest 宣告。
+- 重用 REBOOT-01 的隔離 SQLite、Context、run evidence 與 loopback Web，不另造第二套狀態引擎。
+- 以 provider-neutral file handoff（供應商中立檔案交接）讓 Codex 讀取 SQL-backed packet（SQL 支撐交接包）並產生稿件；Repository 不保存 API key、不直接呼叫外部模型 API。
+- 評審必須實際閱讀全文並輸出文字證據、引用片段與分項判斷；不得再以預先設定的 Boolean 開關冒充品質分數。
+- 最多進行一次有證據的最小修訂。選定結果只標記為 non-Canon pilot，不是正式出版稿、Canon 或下游圖片批准。
+- 每一步完成最小測試、Diff 審查與計畫更新；高風險 Migration／Repository／Web lifecycle 於整合後做 High review。
+
+### Non-Goals
+
+- 不啟動圖片、影片、Daping tasks 02–07 或任何付費 Provider。
+- 不接 OpenAI API 或其他模型 API；不保存 API key。
+- 不把 STORY-01 稿件升格為正式 Canon、角色命運、戀愛定案或 Production Lock。
+- 不以固定六句 Scenario 冒充自由章節生成，也不把 deterministic rule score（確定性規則分數）描述成獨立 AI 文學評分。
+- 不修改 001–012 migrations；只允許 additive migration（加法式資料庫遷移）。
+- 不操作原本 HEAD `89e522f`、123 項狀態的髒工作樹。
+
+### Scope
+
+- Git／來源完整性：`.gitattributes`、World Source import 的直接測試與文件證據。
+- Story production：additive migration 013、直接 Models／Repository／Service／CLI／Tests。
+- Pilot artifacts：`samples/story01/**`，包含 SQL-backed handoff、初稿、三份獨立評審、最多一次修訂與 E2E 證據。
+- Author workbench：重用 loopback-only Kotlin Web server／靜態資源，提供章節版本、評語、接受／退回／選定 pilot 稿；不得公開部署。
+- 治理與證據：`docs/story01/**`、`docs/development_journal/story01/**`、`PROJECT_STATE.md`、本 Current Plan Window。
+
+### Confirmed Facts
+
+- `origin/reboot/playable-depth-v1` 最終 SHA 是 `4a13e824df60b8876ca027654e1d5763807ce588`，REBOOT worktree 乾淨且已推送。
+- STORY-01 worktree 是 `C:\Users\f7212\OneDrive\文件\ai-novel-engine-story01`；分支是 `codex/story01-real-chapter-pilot`，起點為 REBOOT 最終 SHA。
+- GPT 已實際審查分支並判定：技術地基通過；固定六回合、規則型 NPC 與 Boolean 驅動評分不能證明高品質 AI 故事生產。
+- `world/chenxing/raw/09_aijiang_detailed_setting.md` 的 Git blob 是 3019 bytes、32 行；Windows worktree 是 3051 bytes，差值等於 32 個 CR 字元。正式 manifest 的 3019 bytes／SHA 對應 Git blob，內容本身不需改寫。
+- 現有 migration 010／012 已保存 turn-level raw/revised draft 與 deterministic drama evidence，但沒有 chapter-level production/review lifecycle。
+- 現有 Web 每次操作會跑隔離 SQLite 的正式 prepare／validate／resolve；它目前仍是 deterministic bounded scenario，不是自由模型生成。
+- Repository 規則禁止引擎直接接 OpenAI API；AI／Codex 可透過 JSON 檔案協議產生結果。
+
+### Assumptions
+
+- STORY-01 第一篇使用現有 Chenxing／大坪海岸 opening 與 non-Canon sandbox pressure；文章只作 pilot，不改正式角色命運。
+- Codex 可作為本次實際生成模型，前提是 SQL-backed handoff packet、生成 metadata、全文與 Hash 都被保存；這不等同於引擎內建模型 API。
+- 三個獨立評審可由彼此隔離的 Codex reviewer agents 完成，輸出必須是可提交 JSON／Markdown 證據；主代理只整合，不替評審改寫原意。
+
+### Open Questions
+
+- 文章實際長度與品質能否達到可讀章節標準，必須等全文生成與三評審證據後判定，不能預先宣稱 PASS。
+- 作者是否正式採用 STORY-01 選定稿，仍需使用者在工作台或後續明確批准；自動流程只能選出 `SELECTED_PILOT_DRAFT`。
+- 若三評審對是否修訂無法形成可解釋共識，保留初稿與全部評語並標記 `HUMAN_DECISION_REQUIRED`，不得自動二次修訂。
+
+### Implementation Steps
+
+- [x] Step 0：固定 Chenxing raw archive LF checkout，重跑 4 個 World Source tests 與完整匯入，證明正式 manifest／tracked source 一致且 SQL 寫入成功。
+- [ ] Step 1：新增 chapter production／review additive migration 013、models、repository lifecycle 與 transaction tests。
+- [ ] Step 2：新增 SQL-backed chapter handoff／draft intake／review intake／single revision／pilot selection CLI 與契約測試。
+- [ ] Step 3：實際建立 Chenxing STORY-01 SQL sandbox 與交接包；由 Codex 讀取交接包產生完整中文初稿並 intake 到 SQLite。
+- [ ] Step 4：由三個獨立全文評審輸出 Logic／Character／Reader 評語；整合一次最小修訂或標記 human decision；保存初稿、評語、修訂稿與 selected pilot。
+- [ ] Step 5：將本機 Web 擴充為 STORY-01 author workbench（作者工作台），呈現版本／評語／SQL 狀態並支援接受、退回、選定 pilot；保留 loopback／Origin／lifecycle 安全。
+- [ ] Step 6：執行 focused／full／E2E／SQL／JSON／secret／scope 驗證，完成 High review、文件、開發日誌、分段 Commit 與普通 Push。
+
+### Verification
+
+- Step 0：4 個既有 World Source tests 全數通過；正式 import 寫入 1 archive／9 documents／預期 chunks；不得使用 audit-local manifest。
+- Step 1–2：Migration fresh DB／upgrade、transaction rollback、Hash mismatch、source packet mismatch、reviewer uniqueness、revision limit、non-Canon boundary tests。
+- Step 3–4：交接包內容來自 SQL query 與 Runtime Context；保存 packet／draft／review／revision Hash；三評審引用文章實際文字；revision count ≤ 1。
+- Step 5：loopback Host／foreign Origin／concurrency／save-load／cleanup 回歸，另驗證 chapter actions 真的修改隔離 SQLite，而非只改畫面。
+- Step 6：`git diff --check`、所有 JSON parse、focused tests、完整 `clean test`、SQL evidence query、secret scan、Canon／image／provider scope scan。
+
+### Risks
+
+- `.gitattributes` 是跨平台完整性邊界；需確認只固定 raw archive 換行，不造成其他大規模 renormalization。
+- Migration／Repository transaction 與 Hash binding 是最高風險；任何稿件狀態轉移失敗不得留下半份 review 或 selected draft。
+- Codex 生成章節仍可能有 AI 味或品質不足；不得用工程測試掩蓋產品 FAIL。
+- 作者工作台不得把 `SELECTED_PILOT_DRAFT` 誤標成 Canon／正式出版／圖片可用。
+
+### Drift Log
+
+- 2026-07-12：使用者在 GPT 完成 REBOOT-01 深度審查後明確要求「開始」；建立 STORY-01 獨立乾淨分支／worktree，未碰原 123 項髒工作樹。
+- 2026-07-12：證實 World Source #09 的 32-byte 差異等於 32 行的 CRLF checkout 差異；Git blob 與 formal manifest byte size 都是 3019，策略改為固定 LF，不修改愛醬內容或偷偷重寫 manifest。
+- 2026-07-12：以 path-specific `.gitattributes` 固定 LF；focused World Source tests PASS。正式 manifest 直接匯入成功：1 archive／9 documents／255 chunks，愛醬 classified query 回傳 5 個 official-source hits。
+
+## Historical - Current Plan Window V0 (REBOOT-01 Playable Depth Slice)
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
