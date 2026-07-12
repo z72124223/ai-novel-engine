@@ -1,10 +1,100 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-13):** Read only `## Current Plan Window V4`
-> (`ENGINE_RULES01_DIALOGUE02`) first. All older plan windows
+> **Startup rule (2026-07-13):** Read only `## Current Plan Window V5`
+> (`LOCAL_HYBRID_RETRIEVAL_BLUEPRINT_V1`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `179f8acb3d03d7bed40ef1c0f95bfa615df2ef0d` on
-> `codex/engine-rules01-dialogue02`. GitHub remote is the team authority.
+> `8f74d13ba676a181c7800b76320e4adf7d344d9f` on
+> `codex/local-hybrid-retrieval-blueprint-v1`. GitHub remote is the team authority.
+
+## Current Plan Window V5
+
+標記：`LOCAL_HYBRID_RETRIEVAL_BLUEPRINT_V1`
+
+狀態：**ACTIVE DOCS-ONLY — 將本地抽取、SQL/BM25、Embedding、Reranker、證據交接與隱私邊界加入正式總藍圖；不啟動實作**
+
+日期：2026-07-13
+
+### Goal
+
+把 GPT 新討論的兩層知識架構整理成符合本 Repository 邊界的正式藍圖：資料匯入時採確定性解析加可選本地抽取，查詢時採 SQL/BM25 與 Embedding 召回、Reranker 重排，再將最少且允許上雲的證據交給 GPT；建立可量化的 `RETRIEVAL-01` 未啟動候選，不下載模型、不修改 Runtime。
+
+### Global Strategy
+
+- 新增單一 V1 藍圖，作為既有 `DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` 的本地實作研究補充，不覆寫歷史文件。
+- 明確區分正式 SQLite／角色知識邊界、sidecar retrieval index（旁路檢索索引）與雲端證據交接。
+- 第一階段只規劃離線雙模型基準：既有 LIKE／FTS/BM25 baseline 對比 Embedding＋Reranker；MCP、抽取模型與雲端 API 都後置。
+- 以實機證據與官方來源修正硬體／模型敘述，所有效能與 VRAM 數字仍須實測，不寫成保證。
+
+### Non-Goals
+
+- 不下載、安裝或執行 Qwen、GBrain、Ollama、llama.cpp 或任何陌生模型／Repository。
+- 不修改 Kotlin、Test、Migration、SQLite、Validator、StateReducer、Canon、世界資料或媒體產線。
+- 不接 OpenAI API、不架 REST/Web Server、不開 Port、不啟動 MCP Tunnel。
+- 不把抽取結果自動升格為正式事實，不把完整資料庫送上雲端。
+
+### Scope
+
+- `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `PROJECT_STATE.md`
+- `PLANS.md`
+
+### Confirmed Facts
+
+- 實機查詢結果：GTX 1080 Ti、11264 MiB VRAM、Compute Capability 6.1、Windows 10、Intel i7-8700；不是附件中的 i7-8700K。
+- Qwen 官方列出 Embedding 與 Reranker 各有 0.6B／4B／8B；Embedding 為 dual encoder，Reranker 為 cross encoder。
+- NVIDIA 官方確認 GTX 1080 Ti 為 Pascal、11GB；GP102 的高效 FP16 路徑不等同 Tesla P100。
+- GBrain 官方支援 hybrid retrieval 與可替換的本地／雲端 embedding、reranker，但不等於安裝後自動配置三個本地模型。
+- OpenAI 官方目前說明 ChatGPT 連接 remote MCP；私有／本機 MCP 需 Secure MCP Tunnel，功能與方案可用性會變動。
+- 本 Repository 長期邊界仍是 Kotlin/JVM CLI、SQLite、JSON；不建立 Web Server、不接 OpenAI API。
+
+### Assumptions
+
+- 0.6B Embedding＋0.6B Reranker 是最值得先基準測試的候選，但是否能同時常駐、速度是否可接受，必須以本機 P50/P95 latency、peak VRAM 與品質資料決定。
+- 未來索引較適合作為可重建 sidecar，而非直接混入正式世界狀態；此項仍需未來 storage decision。
+
+### Open Questions
+
+- 未來本地推理 adapter 使用 llama.cpp、Ollama、ONNX Runtime 或其他方式，尚未批准。
+- BM25 使用 SQLite FTS5 或另一個本地索引，尚未批准。
+- 雲端推理是否使用 OpenAI API、Codex CLI 交接或其他方式，需另行權限／隱私決策。
+
+### Implementation Steps
+
+- [x] Step 1：讀取新討論、現有 Query／Memory／Whole Project 藍圖與實機硬體證據。
+- [x] Step 2：新增本地混合檢索知識藍圖，定義架構、分期、基準指標、隱私與禁止事項。
+- [x] Step 3：在總藍圖、Demand-Driven Query 與 `PROJECT_STATE.md` 建立非啟動入口。
+- [x] Step 4：驗證文件連結、狀態、範圍、私人路徑、`git diff --check`，Commit／Push。
+
+### Verification
+
+- 所有新增路徑與引用存在。
+- 文件明確標示 docs-only／future candidate，不宣稱模型已下載、索引已建立或檢索已實作。
+- 不修改 Kotlin／Test／Migration／Canon／媒體資產。
+- 不授權 Web Server、OpenAI API、MCP、Provider 或付費操作。
+- `git diff --check`、私人路徑／秘密掃描與 Git scope PASS。
+
+驗證結果（2026-07-13）：
+
+- `git diff --check`：PASS。
+- Git scope：只有本 Plan、`PROJECT_STATE.md`、兩份既有藍圖入口與一份新 V1 藍圖；沒有 Kotlin、Test、Migration、Canon、世界資料或媒體資產變更。
+- 新增路徑與所有本次入口引用：存在。
+- 新增行私人絕對路徑／API key／token／password 掃描：0 hits。
+- 文件狀態一致：`DOCS_ONLY_FUTURE_CANDIDATE_NOT_ACTIVE`；`RETRIEVAL-01` 仍需未來明確指派。
+- 文件工作不執行 Gradle；沒有 Runtime 行為變更需要測試。
+
+### Risks
+
+- 模型、工具與 ChatGPT MCP 方案會變動；實作前必須重新核對官方文件。
+- GTX 1080 Ti 容量足夠不等於 Pascal 推理速度足夠；不可用 RTX 4060 效能外推。
+- 檢索相關不等於知識授權；角色可見性與 author-only 邊界必須在召回前後都過濾。
+
+### Drift Log
+
+- 2026-07-13：附件將 CPU 寫為 i7-8700K；實機證據是 i7-8700，藍圖採實機結果。
+- 2026-07-13：附件提出 REST／OpenAI API／MCP 路線；因本 Repository 長期規則禁止 Web Server 與 OpenAI API，改列為未來外部整合決策，不進第一階段。
+- 2026-07-13：附件中的 ChatGPT 方案名稱／MCP 可用性可能隨產品更新而變；藍圖不固化方案假設，要求任何實作決策前重新核對 OpenAI 官方文件。
 
 ## Current Plan Window V4
 

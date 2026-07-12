@@ -4,6 +4,15 @@ Status: `DOCS_ONLY_FUTURE_PRODUCT_BLUEPRINT`
 
 Date: 2026-06-22
 
+Local implementation research addendum (2026-07-13):
+`docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md` refines a possible
+local-first implementation route using deterministic parsing, optional local
+extraction, SQL/FTS/BM25, Embedding recall, Reranker ordering, visibility
+filtering, and bounded evidence handoff. This document remains the product
+contract; the addendum is a docs-only future candidate and does not authorize
+model download, vector storage, schema changes, runtime work, API calls, MCP,
+or implementation.
+
 This document defines a future product-layer query blueprint for the new-world / storyboard production line. It does not implement Kotlin source, tests, schema, migrations, Validator behavior, StateReducer behavior, `resolve-turn`, `stateVersion`, `contextHash`, CLI commands, SQLite tables, OpenAI API calls, GPT browser automation, Seedance integration, Oiioii integration, or runtime enforcement.
 
 ## 1. VERDICT

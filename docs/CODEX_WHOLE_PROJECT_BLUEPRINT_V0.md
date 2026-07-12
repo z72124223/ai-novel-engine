@@ -35,9 +35,17 @@ The whole-project route is now backed by a work package layer:
 - `docs/CODEX_POSITIVE_APPROVAL_MATRIX_V0.md`
 - `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md`
 - `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md`
+- `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
 
 These documents define the direction before future small or medium tasks are
 assigned. They do not start implementation.
+
+The local hybrid retrieval blueprint is specifically a future implementation
+research candidate for the demand-driven query layer. Its first candidate work
+package, `RETRIEVAL-01`, is not active. It preserves the Kotlin/JVM CLI,
+SQLite, JSON, Validator, StateReducer, Canon, and character-visibility
+boundaries; it does not approve model download, local model serving, vector
+storage, API, MCP, provider use, or runtime changes.
 
 ## Execution Control Layer
 
@@ -123,7 +131,7 @@ The project should become a governed local workbench that supports:
 | 0.6 | A-group optimization audit lane | `A_GROUP_OPTIMIZATION_AUDIT_LANE_V0_CONTROL_PACKET` defines A組06 as planning-only route-weight and drift-prevention auditor. | Use A組06 when the project becomes heavy, repeats status layers, looks idle, or risks cutting required work while trying to lighten the route. | Stop if optimization removes required scope, bypasses A01/B01, dispatches B02/B03, or claims approval/final completion. |
 | 1 | User / 00 input | `NEW_WORLD_FOUNDATION_QUESTIONNAIRE` exists as input surface. | Convert user answers into a reviewable `NEW_WORLD_FOUNDATION_BRIEF` only after enough answers exist. | Stop if user direction is missing or if content becomes canon without approval. |
 | 2 | 09 foundation cards | Candidate blueprint pool exists, but not active canon. | Define card families, ids, review fields, source links, and setting-pack readiness flags. | Stop if cards become setting pack, runtime data, canon, or approved assets. |
-| 3 | Demand-driven query / retrieval layer | `DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT` exists; SQL/query implementation is not active. | Add query request / response JSON templates, source scope rules, and query audit evidence. | Stop if this becomes SQLite schema, vector DB, external retrieval, provider/API, or runtime enforcement without approval. |
+| 3 | Demand-driven query / retrieval layer | `DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT` exists; `LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1` records a docs-only local implementation candidate; no SQL/model/query implementation is active. | After explicit activation, run `RETRIEVAL-01` as an offline benchmark of the existing baseline versus SQL/FTS/BM25 + Embedding + Reranker before choosing storage or adapters. | Stop if this downloads models, changes SQLite/schema/runtime, starts vector storage, exposes author-only data, or uses external retrieval, provider/API, or MCP without approval. |
 | 4 | Script-ready scene packet | Contract exists; not active generation. | Align packet templates with 09/query outputs and storyboard needs. | Stop if it restarts 04/05/06/07/08 or exposes author-only data. |
 | 5 | 04/05/06/07/08 workflow | Paused manual windows. | Draft a resumption decision brief and explicit approval chain. | Stop if automation advances these windows or treats silence as approval. |
 | 6 | Storyboard / camera packet | Planning docs exist. | Define deterministic storyboard/camera packet draft and review artifacts before image generation. | Stop if it generates images or claims final visual approval. |
@@ -142,6 +150,12 @@ The data layer must be explicit before implementation:
 
 - Source docs and planning registers remain non-canon until promoted.
 - Query packets should request scoped facts, not whole world dumps.
+- A future local hybrid path may combine exact SQL/FTS/BM25 retrieval with
+  Embedding candidate recall and Reranker ordering, but only after an offline
+  benchmark proves useful quality and acceptable local latency.
+- Any extraction output or retrieval index remains provisional, source-linked,
+  and rebuildable. Retrieval relevance never grants character knowledge,
+  Canon status, write authority, or permission to expose author-only material.
 - SQLite remains runtime state and approved setting-pack data only; direct SQL
   writes are forbidden.
 - Any future SQL / schema / migration / query-audit table work requires its own
