@@ -6,6 +6,7 @@
 - Branch：`codex/screen01-video-first-pilot`
 - Base：`510527c24a612331590e25e42b004d00cd66858a`
 - Final Commit：推送完成後由 Git 提供並在最終回報列出。Commit SHA 無法安全寫入包含本檔自身的同一 Commit，否則會形成自我引用循環。
+- Hash manifest SHA-256：`ff138b45be478cc2d6b48bd770b22c4cc07f9b92ee59a12a6d9224db718ee8aa`
 
 ## 先讀
 

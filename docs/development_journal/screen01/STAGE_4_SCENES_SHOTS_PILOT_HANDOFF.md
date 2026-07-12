@@ -7,11 +7,11 @@
 | 產物 | 數量／時長 | SHA-256 |
 |---|---:|---|
 | `samples/screen01/screen01_scene_list.json` | 4 場／440 秒 | `3f87270c0a3da6769a0d8d5946a4df257f43aa20f271713b9cb5963b1915e009` |
-| `samples/screen01/screen01_shot_list.json` | 31 Shot／440 秒 | `a43a0843b7c9b7404604b5463428a956de893f79f8ed33232d072b8bcede67bb` |
+| `samples/screen01/screen01_shot_list.json` | 31 Shot／440 秒 | `646d58feeffd565214cd361b6123c1e41857fd88c68b12d846946fbce45950f9` |
 | `samples/screen01/screen01_video_pilot_60_90s.json` | 9 Shot／82 秒 | `057dba23288248a8b2997c6325f71b54a779ff137018c449c2b7ddbbf76752b5` |
 | `samples/screen01/screen01_video_pilot_zh-Hant-TW.srt` | 11 cues／79.7 秒內 | `8dce6fd94b4d6ba3b1f3b2edfcaee8e6f9865289f01bd64863edae52f7ffb1e0` |
-| `samples/screen01/screen01_locale_release_matrix.json` | 4 發行目標 | `fa95b4c5d6a17ba2424ebdcd53ae1a27af48728caf09c83c8c2c60bc563583ec` |
-| `samples/screen01/screen01_video_handoff.json` | Future-only handoff | `3cb0b77e983736355982a5d63c6197c34ac67003da7e665d13d50e4b9b1b1e04` |
+| `samples/screen01/screen01_locale_release_matrix.json` | 4 發行目標 | `3542a990a296cc531962a775eb7b9a4851a3b7f376315d9e56a480d9e2b43098` |
+| `samples/screen01/screen01_video_handoff.json` | Future-only handoff | `d586e5fcf0b7fbf56197cbb921ae9d9f6f22d442c7b8dc9180e3c5c859129576` |
 
 ## Pilot 選擇
 

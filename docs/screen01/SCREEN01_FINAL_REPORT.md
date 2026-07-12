@@ -67,7 +67,20 @@ SCREEN-01 已把〈潮線之外〉轉成 Git 可交接的影片前期製作資�
 
 ## 驗證摘要
 
-JSON、Hash、ID 引用、review quote、Scene／Shot duration、82 秒 Pilot、SRT 時間、私人路徑、秘密、Provider／Canon／媒體 scope、Git diff 與 Gradle 完整測試結果，會在最終驗證後寫入本報告的完成 Commit 與最終回報。
+- Full Gradle：`849 tests / 0 failures / 0 errors / 0 skipped`。
+- JSON parse：14 個生產 JSON 全部通過。
+- Hash manifest：16 個生產產物與 1 個來源全部匹配。
+- Hash manifest 自身 SHA-256：`ff138b45be478cc2d6b48bd770b22c4cc07f9b92ee59a12a6d9224db718ee8aa`。
+- 三份評審引用逐字存在：PASS。
+- 多說話者 Shot 與 dialogue speaker 契約：PASS。
+- Scene duration = Shot duration = 440 秒：PASS。
+- Pilot shot sum = 82 秒：PASS。
+- SRT：11 cues，單調、無重疊、79.7 秒內結束：PASS。
+- 私人路徑、秘密、Provider／Canon／媒體越界掃描：PASS。
+- `git diff --check`：PASS。
+- High 只讀總審曾要求修正 Stage 1 舊 Hash、多說話者 Shot、`zh-Hans-MY` 目標與來源分支；均已修正並重新計算 Hash。
+
+最終 Commit SHA 由普通 Push 後的 Git 身分在交接訊息列出，不寫入包含本檔自身的同一 Commit，以避免自我引用循環。
 
 ## 下一步建議
 

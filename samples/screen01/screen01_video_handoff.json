@@ -8,11 +8,11 @@
   "canonBoundary": "NON_CANON_PILOT",
   "status": "READY_FOR_FUTURE_VISUAL_PREPRODUCTION_NOT_GENERATION",
   "authoritativeInputs": [
-    {"path":"samples/screen01/screen01_story_production_master.json","sha256":"1216d5aa56919c1172cba1898aa112978330ba3e4fed119008f7119bcc987e45"},
+    {"path":"samples/screen01/screen01_story_production_master.json","sha256":"f8cd061bf9b57f0e923839bd386dc11bec2cbd1b722fc18a7457f9406555579f"},
     {"path":"samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md","sha256":"4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c"},
     {"path":"samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json","sha256":"6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"},
     {"path":"samples/screen01/screen01_scene_list.json","sha256":"3f87270c0a3da6769a0d8d5946a4df257f43aa20f271713b9cb5963b1915e009"},
-    {"path":"samples/screen01/screen01_shot_list.json","sha256":"a43a0843b7c9b7404604b5463428a956de893f79f8ed33232d072b8bcede67bb"},
+    {"path":"samples/screen01/screen01_shot_list.json","sha256":"646d58feeffd565214cd361b6123c1e41857fd88c68b12d846946fbce45950f9"},
     {"path":"samples/screen01/screen01_video_pilot_60_90s.json","sha256":"057dba23288248a8b2997c6325f71b54a779ff137018c449c2b7ddbbf76752b5"}
   ],
   "pilot": {"pilotId":"screen01-pilot-rescue-choice-82s","shotRange":"shot-015..shot-023","durationSeconds":82,"subtitlePath":"samples/screen01/screen01_video_pilot_zh-Hant-TW.srt"},

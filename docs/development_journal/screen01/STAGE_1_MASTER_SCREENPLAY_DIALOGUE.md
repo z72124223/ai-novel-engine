@@ -6,10 +6,10 @@
 
 | 產物 | SHA-256 |
 |---|---|
-| `samples/screen01/screen01_story_production_master.json` | `1216d5aa56919c1172cba1898aa112978330ba3e4fed119008f7119bcc987e45` |
+| `samples/screen01/screen01_story_production_master.json` | `f8cd061bf9b57f0e923839bd386dc11bec2cbd1b722fc18a7457f9406555579f` |
 | `samples/screen01/screen01_screenplay_initial_zh-Hant-TW.md` | `376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4` |
 | `samples/screen01/screen01_dialogue_bible_zh-Hant-TW.json` | `023d5a1361bf8bb22afc847e02bb07823f7a3c7e5bb89a4772b125d9514f3cd2` |
-| `samples/screen01/screen01_dialogue_track_initial_zh-Hant-TW.json` | `4489c9a530d09c74c90af0f0c0a5a70d46b03b1d9b60f9398ef1733e72af62b9` |
+| `samples/screen01/screen01_dialogue_track_initial_zh-Hant-TW.json` | `01672b1be3ba2d3340977dc42dfc9d41a25bccfba095cdd6be34a58686a16c1b` |
 
 ## 創作處理
 

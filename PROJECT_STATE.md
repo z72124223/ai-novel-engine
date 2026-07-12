@@ -6,7 +6,7 @@
 
 - Branch：`codex/screen01-video-first-pilot`
 - Base：`510527c24a612331590e25e42b004d00cd66858a`
-- Status：`COMPLETED_AWAITING_FINAL_VALIDATION_AND_PUSH`
+- Status：`COMPLETED_AWAITING_PUSH_AND_REMOTE_REVIEW`
 - Completion class：`SCREEN01_PASS_WITH_DIALOGUE_WARNINGS`
 - Selected screenplay：`samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md`
 - Selected screenplay SHA-256：`4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c`
@@ -17,7 +17,7 @@
 - Future video Pilot：`82 seconds / shot-015..shot-023`
 - Boundary：`NON_CANON_PILOT`
 
-下一步只允許完成 SCREEN-01 最終驗證、Commit、Push 與 GPT／產品負責人審查。不得自動生成圖片／影片、呼叫 Provider、升格 Canon 或寫下一章。
+驗證：Full Gradle `849/849 PASS`；JSON／Hash／引用／Scene／Shot／Pilot／SRT／秘密／私人路徑／scope／diff 全部 PASS。下一步只允許完成 Commit、Push、遠端核對與 GPT／產品負責人審查。不得自動生成圖片／影片、呼叫 Provider、升格 Canon 或寫下一章。
 
 ## 1. 最終產品
 

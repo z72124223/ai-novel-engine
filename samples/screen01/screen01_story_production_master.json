@@ -3,7 +3,7 @@
   "productionId": "screen01-tideline-beyond",
   "title": "潮線之外",
   "sourceRepository": "z72124223/ai-novel-engine",
-  "sourceBranch": "codex/screen01-video-first-pilot",
+  "sourceBranch": "codex/mvp6-checkpoint-branching-spec",
   "sourceCommitSha": "510527c24a612331590e25e42b004d00cd66858a",
   "sourceArtifactPath": "samples/story01/story01_revised_draft.md",
   "sourceArtifactSha256": "ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91",

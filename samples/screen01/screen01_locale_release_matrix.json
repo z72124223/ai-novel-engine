@@ -7,7 +7,7 @@
     {"locale":"zh-Hant-TW","script":"Traditional","status":"MASTER","rules":["保留一一九、潮表、有含稅嗎與愛醬名稱","口語以台灣自然節奏為準"]},
     {"locale":"zh-Hans-CN","script":"Simplified","status":"FUTURE_LOCALIZATION_REVIEW","rules":["字形轉簡體","119 不改為 120；以片頭／發行說明標明台灣背景","潮表首次可譯為潮汐表","乾式笑點做功能等值，不刪角色性"]},
     {"locale":"zh-Hant-HK","script":"Traditional","status":"FUTURE_TERMINOLOGY_REVIEW","rules":["保留台灣地點與 119，必要時註明台灣緊急電話","高線可譯為較高安全路線","避免擅改為香港999而造成地點漂移"]},
-    {"locale":"zh-Hans-MY-SG","script":"Simplified","status":"FUTURE_READABILITY_REVIEW","rules":["分開處理馬來西亞999／112與新加坡995認知，不覆寫母稿號碼","首次出現補足潮汐表語意","愛醬保留為名字"]}
+    {"locale":"zh-Hans-MY","coverage":["Malaysia","Singapore"],"script":"Simplified","status":"FUTURE_READABILITY_REVIEW","rules":["分開處理馬來西亞999／112與新加坡995認知，不覆寫母稿號碼","首次出現補足潮汐表語意","愛醬保留為名字"]}
   ],
   "termMatrix": [
     {"source":"一一九","meaning":"台灣消防與緊急救護電話","masterAction":"KEEP","regionalAction":"CONTEXT_NOTE_ONLY"},
