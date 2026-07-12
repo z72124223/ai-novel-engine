@@ -135,10 +135,11 @@ internal object StorySessionCli {
             sourceDatabasePath = Path.of(options.requiredCliOption("db")),
             productionId = options.requiredCliOption("production"),
             requestedPort = options["port"]?.toIntOrNull() ?: 8766,
+            decisionArtifactPath = Path.of(options["decision-out"] ?: "out/story01/author-decision.json"),
         ).start()
         Runtime.getRuntime().addShutdownHook(Thread { server.close() })
         println("STORY-01 author workbench: http://127.0.0.1:${server.port}")
-        println("Loopback only; all decisions modify an isolated database copy. Press Ctrl+C to stop.")
+        println("Loopback only; decisions modify an isolated database copy and emit a hash-bound decision artifact. Press Ctrl+C to stop.")
         java.util.concurrent.CountDownLatch(1).await()
         return 0
     }

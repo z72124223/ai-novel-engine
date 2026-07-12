@@ -8,6 +8,8 @@ import com.localnovel.engine.model.StoryChapterReviewRecord
 import com.localnovel.engine.model.StoryChapterReviewerRole
 import com.localnovel.engine.model.StoryChapterReviewVerdict
 import com.localnovel.engine.model.StoryChapterRevisionIntake
+import com.localnovel.engine.model.StoryChapterFullTextReview
+import com.localnovel.engine.support.JsonSupport
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import java.nio.file.Files
@@ -16,6 +18,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import kotlinx.serialization.encodeToString
 
 class StoryChapterProductionRepositoryTest {
     @Test
@@ -25,7 +28,7 @@ class StoryChapterProductionRepositoryTest {
         fixture.chapter.ingestDraft(
             StoryChapterDraftIntake(PRODUCTION_ID, hash(SOURCE_PACKET), draft, hash(draft), "{\"model\":\"manual-codex\"}"),
         )
-        fixture.chapter.recordReviewBatch(PRODUCTION_ID, reviews(hash(draft)))
+        fixture.chapter.recordReviewBatch(PRODUCTION_ID, reviews(draft, hash(draft)))
         val revised = "第一章修訂稿：潮聲壓住愛醬的低吼，陸塵行終於看見礁石後的血痕。"
         fixture.chapter.ingestRevision(
             StoryChapterRevisionIntake(PRODUCTION_ID, hash(draft), revised, hash(revised), "{\"revision\":1}"),
@@ -47,7 +50,7 @@ class StoryChapterProductionRepositoryTest {
         val fixture = fixture()
         val draft = "需要審查的完整章節。"
         fixture.chapter.ingestDraft(StoryChapterDraftIntake(PRODUCTION_ID, hash(SOURCE_PACKET), draft, hash(draft)))
-        val invalid = reviews(hash(draft)).mapIndexed { index, review ->
+        val invalid = reviews(draft, hash(draft)).mapIndexed { index, review ->
             if (index == 1) review.copy(reviewId = "review-logic") else review
         }
 
@@ -69,13 +72,31 @@ class StoryChapterProductionRepositoryTest {
                 StoryChapterPilotSelection(PRODUCTION_ID, hash(draft), "APPROVE_PILOT_DRAFT", "product-owner"),
             )
         }
-        fixture.chapter.recordReviewBatch(PRODUCTION_ID, reviews(hash(draft)))
+        fixture.chapter.recordReviewBatch(PRODUCTION_ID, reviews(draft, hash(draft)))
+        assertFailsWith<IllegalArgumentException> {
+            fixture.chapter.ingestRevision(StoryChapterRevisionIntake(PRODUCTION_ID, hash(draft), draft, hash(draft)))
+        }
         val revised = "唯一修訂稿。"
         fixture.chapter.ingestRevision(StoryChapterRevisionIntake(PRODUCTION_ID, hash(draft), revised, hash(revised)))
         assertFailsWith<IllegalArgumentException> {
             fixture.chapter.ingestRevision(StoryChapterRevisionIntake(PRODUCTION_ID, hash(draft), "第二次修訂", hash("第二次修訂")))
         }
         assertTrue(fixture.chapter.get(PRODUCTION_ID).selectedDraft.isBlank())
+    }
+
+    @Test
+    fun databaseRejectsImpossibleCrossFieldStatus() {
+        val fixture = fixture()
+        assertFailsWith<Exception> {
+            fixture.repository.withTransaction { connection ->
+                fixture.repository.executeUpdate(
+                    connection,
+                    "UPDATE story_chapter_productions SET status = 'SELECTED_PILOT_DRAFT' WHERE production_id = ?",
+                    PRODUCTION_ID,
+                )
+            }
+        }
+        assertEquals(StoryChapterProductionStatus.DRAFT_REQUESTED, fixture.chapter.get(PRODUCTION_ID).status)
     }
 
     private fun fixture(): Fixture {
@@ -96,20 +117,34 @@ class StoryChapterProductionRepositoryTest {
         return Fixture(repository, chapter)
     }
 
-    private fun reviews(draftHash: String): List<StoryChapterReviewRecord> = listOf(
+    private fun reviews(draft: String, draftHash: String): List<StoryChapterReviewRecord> = listOf(
         StoryChapterReviewRecord(
             "review-logic", PRODUCTION_ID, StoryChapterReviewerRole.LOGIC, "agent-logic", draftHash,
-            StoryChapterReviewVerdict.REVISE, "{\"finding\":\"因果轉折需補證據\"}",
+            StoryChapterReviewVerdict.REVISE, reviewJson(StoryChapterReviewerRole.LOGIC, "agent-logic", draft, draftHash, StoryChapterReviewVerdict.REVISE),
         ),
         StoryChapterReviewRecord(
             "review-character", PRODUCTION_ID, StoryChapterReviewerRole.CHARACTER, "agent-character", draftHash,
-            StoryChapterReviewVerdict.PASS, "{\"finding\":\"角色聲線成立\"}",
+            StoryChapterReviewVerdict.PASS, reviewJson(StoryChapterReviewerRole.CHARACTER, "agent-character", draft, draftHash, StoryChapterReviewVerdict.PASS),
         ),
         StoryChapterReviewRecord(
             "review-reader", PRODUCTION_ID, StoryChapterReviewerRole.READER, "agent-reader", draftHash,
-            StoryChapterReviewVerdict.PASS, "{\"finding\":\"閱讀推進成立\"}",
+            StoryChapterReviewVerdict.PASS, reviewJson(StoryChapterReviewerRole.READER, "agent-reader", draft, draftHash, StoryChapterReviewVerdict.PASS),
         ),
     )
+
+    private fun reviewJson(role: StoryChapterReviewerRole, instance: String, draft: String, hash: String, verdict: StoryChapterReviewVerdict): String =
+        JsonSupport.json.encodeToString(
+            StoryChapterFullTextReview(
+                reviewerRole = role,
+                reviewerInstanceId = instance,
+                sourceDraftSha256 = hash,
+                verdict = verdict,
+                summary = "完整全文評審",
+                quotedEvidence = List(3) { draft.take(8) },
+                strengths = listOf("可驗證優點"),
+                findings = listOf("可驗證發現"),
+            ),
+        )
 
     private fun hash(value: String): String = MessageDigest.getInstance("SHA-256")
         .digest(value.toByteArray(Charsets.UTF_8))

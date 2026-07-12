@@ -55,6 +55,7 @@ class Cli {
                 "ingest-story-chapter-revision-file" -> StoryChapterProductionCli.ingestRevisionFile(options)
                 "select-story-chapter-pilot" -> StoryChapterProductionCli.selectPilot(options)
                 "show-story-chapter-production" -> StoryChapterProductionCli.show(options)
+                "apply-story-chapter-decision-artifact" -> StoryChapterProductionCli.applyDecisionArtifact(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
@@ -227,7 +228,7 @@ class Cli {
               run-reboot01-vertical-slice --db <path> --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               benchmark-reboot01-evolution --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]
               serve-reboot01-web [--evidence-dir <path>] [--port <loopback-port>]
-              serve-story01-author-workbench --db <path> --production <id> [--port <loopback-port>]
+              serve-story01-author-workbench --db <path> --production <id> [--port <loopback-port>] [--decision-out <path>]
               create-story-chapter-handoff [--db <path>] --input <path> --out <path>
               ingest-story-chapter-draft [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-draft-file [--db <path>] --input <path> [--out <path>]
@@ -237,6 +238,7 @@ class Cli {
               ingest-story-chapter-revision-file [--db <path>] --input <path> [--out <path>]
               select-story-chapter-pilot [--db <path>] --input <path> [--out <path>]
               show-story-chapter-production [--db <path>] --production <id> [--out <path>]
+              apply-story-chapter-decision-artifact [--db <path>] --input <path> [--out <path>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>

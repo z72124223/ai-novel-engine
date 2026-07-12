@@ -8,8 +8,11 @@ import com.localnovel.engine.model.StoryChapterProductionView
 import com.localnovel.engine.model.StoryChapterReviewRecord
 import com.localnovel.engine.model.StoryChapterReviewerRole
 import com.localnovel.engine.model.StoryChapterRevisionIntake
+import com.localnovel.engine.model.StoryChapterFullTextReview
+import com.localnovel.engine.support.JsonSupport
 import java.security.MessageDigest
 import java.time.Instant
+import kotlinx.serialization.decodeFromString
 
 class StoryChapterProductionRepository(
     private val repository: SqliteStoryRepository,
@@ -81,12 +84,24 @@ class StoryChapterProductionRepository(
                 "Each review role must use an independent reviewer instance."
             }
             val draftHash = row.getValue("initial_draft_sha256")
+            val initialDraft = row.getValue("initial_draft")
             reviews.forEach { review ->
                 require(review.productionId == productionId)
                 require(normalizedHash(review.sourceDraftSha256) == draftHash) {
                     "Review ${review.reviewId} does not reference the persisted initial draft."
                 }
                 require(review.reviewJson.isNotBlank()) { "Review evidence cannot be blank." }
+                val evidence = runCatching { JsonSupport.json.decodeFromString<StoryChapterFullTextReview>(review.reviewJson) }
+                    .getOrElse { error("Review ${review.reviewId} is not a valid full-text review: ${it.message}") }
+                require(evidence.reviewerRole == review.reviewerRole)
+                require(evidence.reviewerInstanceId == review.reviewerInstanceId)
+                require(normalizedHash(evidence.sourceDraftSha256) == draftHash)
+                require(evidence.verdict == review.verdict)
+                require(evidence.summary.isNotBlank() && evidence.strengths.isNotEmpty() && evidence.findings.isNotEmpty())
+                require(evidence.quotedEvidence.size >= 3) { "Review ${review.reviewId} must quote at least three passages." }
+                require(evidence.quotedEvidence.all { quote -> quote.trim().trim('「', '」', '“', '”', '"').let(initialDraft::contains) }) {
+                    "Review ${review.reviewId} contains quoted evidence that is absent from the draft."
+                }
                 repository.executeUpdate(
                     connection,
                     """
@@ -126,6 +141,14 @@ class StoryChapterProductionRepository(
         }
         require(input.revisedDraft.isNotBlank()) { "Revised chapter cannot be blank." }
         requireHash(input.revisedDraft, input.revisedDraftSha256, "revised draft")
+        val reviewsRequireRevision = repository.queryRows(
+            connection,
+            "SELECT verdict FROM story_chapter_reviews WHERE production_id = ?",
+            input.productionId,
+        ).any { it["verdict"] == "REVISE" }
+        require(!reviewsRequireRevision || normalizedHash(input.revisedDraftSha256) != row.getValue("initial_draft_sha256")) {
+            "A required revision must differ from the reviewed initial draft."
+        }
         check(
             repository.executeUpdate(
                 connection,

@@ -11,6 +11,9 @@ class WorldSourceQueryService(
         text: String,
         classification: String = "",
         limit: Int = 10,
+        projectLabel: String = "",
+        sourceIds: List<String> = emptyList(),
+        officialOnly: Boolean = false,
     ): WorldSourceQueryReport {
         repository.initialize()
         val safeLimit = limit.coerceIn(1, 50)
@@ -26,6 +29,18 @@ class WorldSourceQueryService(
             if (normalizedClassification.isNotBlank()) {
                 where += "classification = ?"
                 args += normalizedClassification
+            }
+            if (projectLabel.isNotBlank()) {
+                where += "project_label = ?"
+                args += projectLabel
+            }
+            if (sourceIds.isNotEmpty()) {
+                where += "source_id IN (${sourceIds.joinToString(",") { "?" }})"
+                args += sourceIds
+            }
+            if (officialOnly) {
+                where += "official_source_data = 1"
+                where += "source_authority_status IN ('official_source', 'PROVIDED_SOURCE_DATA')"
             }
             val sql = buildString {
                 append(

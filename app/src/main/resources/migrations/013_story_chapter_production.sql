@@ -29,6 +29,13 @@ CREATE TABLE IF NOT EXISTS story_chapter_productions (
     canon_status TEXT NOT NULL DEFAULT 'NON_CANON_PILOT' CHECK (canon_status = 'NON_CANON_PILOT'),
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
+    ,CHECK (
+        (status = 'DRAFT_REQUESTED' AND initial_draft = '' AND revision_count = 0 AND selected_draft = '') OR
+        (status = 'DRAFT_INGESTED' AND initial_draft <> '' AND initial_draft_sha256 <> '' AND revision_count = 0 AND selected_draft = '') OR
+        (status IN ('REVIEWS_COMPLETE', 'HUMAN_DECISION_REQUIRED', 'REJECTED') AND initial_draft <> '' AND initial_draft_sha256 <> '' AND revision_count IN (0, 1) AND selected_draft = '') OR
+        (status = 'REVISION_INGESTED' AND initial_draft <> '' AND revised_draft <> '' AND revised_draft_sha256 <> '' AND revision_count = 1 AND selected_draft = '') OR
+        (status = 'SELECTED_PILOT_DRAFT' AND initial_draft <> '' AND selected_draft <> '' AND selected_draft_sha256 <> '' AND human_decision = 'APPROVE_PILOT_DRAFT' AND human_actor_id <> '')
+    )
 );
 
 CREATE TABLE IF NOT EXISTS story_chapter_reviews (

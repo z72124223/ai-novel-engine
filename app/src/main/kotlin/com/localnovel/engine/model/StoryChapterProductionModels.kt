@@ -122,6 +122,7 @@ data class StoryChapterWorldQuery(
     val text: String,
     val classification: String = "",
     val limit: Int = 8,
+    val allowedSourceIds: List<String>,
 )
 
 @Serializable
@@ -130,6 +131,7 @@ data class StoryChapterHandoffRequest(
     val projectId: String,
     val sessionId: String,
     val runId: String,
+    val runtimeScenarioSeed: String,
     val scenarioSeed: String,
     val sourceCommitSha: String,
     val chapterTitle: String,
@@ -195,4 +197,22 @@ data class StoryChapterFullTextReview(
     val findings: List<String>,
     val requiredChanges: List<String> = emptyList(),
     val scorecard: JsonObject = JsonObject(emptyMap()),
+)
+
+@Serializable
+data class StoryChapterDecisionArtifact(
+    val artifactVersion: String = "story-chapter-decision-v1",
+    val productionId: String,
+    val decision: String,
+    val selectedDraftSha256: String = "",
+    val actorId: String,
+    val sourceStatus: StoryChapterProductionStatus,
+    val canonStatus: String = "NON_CANON_PILOT",
+    val createdAt: String,
+)
+
+@Serializable
+data class StoryChapterDecisionEnvelope(
+    val artifact: StoryChapterDecisionArtifact,
+    val artifactSha256: String,
 )

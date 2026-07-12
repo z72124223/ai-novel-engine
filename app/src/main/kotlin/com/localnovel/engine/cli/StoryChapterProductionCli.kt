@@ -8,11 +8,14 @@ import com.localnovel.engine.model.StoryChapterReviewBatch
 import com.localnovel.engine.model.StoryChapterReviewFileBatch
 import com.localnovel.engine.model.StoryChapterReviewRecord
 import com.localnovel.engine.model.StoryChapterFullTextReview
+import com.localnovel.engine.model.StoryChapterDecisionArtifact
+import com.localnovel.engine.model.StoryChapterDecisionEnvelope
 import com.localnovel.engine.model.StoryChapterRevisionIntake
 import com.localnovel.engine.model.StoryChapterRevisionFileIntake
 import java.nio.file.Files
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.encodeToString
+import java.security.MessageDigest
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.service.StoryChapterProductionService
 import java.nio.file.Path
@@ -111,6 +114,25 @@ internal object StoryChapterProductionCli {
         println("revisionCount=${view.revisionCount}")
         println("canonStatus=${view.canonStatus}")
         return 0
+    }
+
+    fun applyDecisionArtifact(options: Map<String, String>): Int = mutate(options) { chapter ->
+        val envelope = readCliJson<StoryChapterDecisionEnvelope>(Path.of(options.requiredCliOption("input")))
+        val canonical = JsonSupport.json.encodeToString(StoryChapterDecisionArtifact.serializer(), envelope.artifact)
+        val actualHash = MessageDigest.getInstance("SHA-256").digest(canonical.toByteArray(Charsets.UTF_8))
+            .joinToString("") { "%02x".format(it) }
+        require(actualHash == envelope.artifactSha256.lowercase()) { "Decision artifact SHA-256 mismatch." }
+        val artifact = envelope.artifact
+        require(chapter.get(artifact.productionId).status == artifact.sourceStatus) { "Decision source status no longer matches." }
+        when (artifact.decision) {
+            "SELECT_INITIAL", "SELECT_REVISED" -> chapter.selectPilot(
+                StoryChapterPilotSelection(artifact.productionId, artifact.selectedDraftSha256, "APPROVE_PILOT_DRAFT", artifact.actorId),
+            )
+            "REJECT" -> chapter.rejectPilot(artifact.productionId, artifact.actorId)
+            "REQUIRE_HUMAN_DECISION" -> chapter.requireHumanDecision(artifact.productionId)
+            else -> error("DECISION_INVALID")
+        }
+        artifact.productionId
     }
 
     private inline fun mutate(

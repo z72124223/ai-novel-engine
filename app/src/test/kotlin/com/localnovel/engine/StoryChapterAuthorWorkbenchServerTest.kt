@@ -7,6 +7,7 @@ import com.localnovel.engine.model.StoryChapterReviewRecord
 import com.localnovel.engine.model.StoryChapterReviewerRole
 import com.localnovel.engine.model.StoryChapterReviewVerdict
 import com.localnovel.engine.model.StoryChapterRevisionIntake
+import com.localnovel.engine.model.StoryChapterFullTextReview
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.service.StoryChapterAuthorWorkbenchServer
@@ -28,13 +29,15 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import kotlinx.serialization.encodeToString
 
 class StoryChapterAuthorWorkbenchServerTest {
     @Test
     fun servesReviewsAndAppliesDecisionOnlyToIsolatedDatabase() {
         val source = fixture()
+        val decisionPath = Files.createTempDirectory("story-workbench-decision").resolve("decision.json")
         var workRoot: Path? = null
-        StoryChapterAuthorWorkbenchServer(source.databasePath(), PRODUCTION_ID, 0).start().use { server ->
+        StoryChapterAuthorWorkbenchServer(source.databasePath(), PRODUCTION_ID, 0, decisionPath).start().use { server ->
             assertTrue(server.bindingAddress.isLoopbackAddress)
             val base = "http://127.0.0.1:${server.port}"
             assertTrue(get("$base/").contains("STORY-01 作者工作台"))
@@ -61,6 +64,7 @@ class StoryChapterAuthorWorkbenchServerTest {
             }.toString()))
             assertEquals("SELECTED_PILOT_DRAFT", selected["status"]!!.jsonPrimitive.content)
             assertEquals("NON_CANON_PILOT", selected["canonStatus"]!!.jsonPrimitive.content)
+            assertTrue(Files.readString(decisionPath).contains("artifactSha256"))
             workRoot = server.workRootForTest()
             assertTrue(Files.exists(server.workingDatabasePathForTest()))
         }
@@ -70,6 +74,12 @@ class StoryChapterAuthorWorkbenchServerTest {
             StoryChapterProductionRepository(source).get(PRODUCTION_ID).status,
             "Workbench decision must not mutate the source database.",
         )
+        assertEquals(0, Cli().run(listOf(
+            "apply-story-chapter-decision-artifact",
+            "--db", source.databasePath().toString(),
+            "--input", decisionPath.toString(),
+        )))
+        assertEquals(StoryChapterProductionStatus.SELECTED_PILOT_DRAFT, StoryChapterProductionRepository(source).get(PRODUCTION_ID).status)
     }
 
     private fun fixture(): SqliteStoryRepository {
@@ -88,7 +98,18 @@ class StoryChapterAuthorWorkbenchServerTest {
                 reviewerInstanceId = "agent-${role.name}",
                 sourceDraftSha256 = hash(initial),
                 verdict = if (role == StoryChapterReviewerRole.CHARACTER) StoryChapterReviewVerdict.PASS else StoryChapterReviewVerdict.REVISE,
-                reviewJson = "{\"summary\":\"全文評審 ${role.name}\"}",
+                reviewJson = JsonSupport.json.encodeToString(
+                    StoryChapterFullTextReview(
+                        reviewerRole = role,
+                        reviewerInstanceId = "agent-${role.name}",
+                        sourceDraftSha256 = hash(initial),
+                        verdict = if (role == StoryChapterReviewerRole.CHARACTER) StoryChapterReviewVerdict.PASS else StoryChapterReviewVerdict.REVISE,
+                        summary = "全文評審 ${role.name}",
+                        quotedEvidence = List(3) { "初稿" },
+                        strengths = listOf("優點"),
+                        findings = listOf("發現"),
+                    ),
+                ),
             )
         })
         chapter.ingestRevision(StoryChapterRevisionIntake(PRODUCTION_ID, hash(initial), revised, hash(revised)))

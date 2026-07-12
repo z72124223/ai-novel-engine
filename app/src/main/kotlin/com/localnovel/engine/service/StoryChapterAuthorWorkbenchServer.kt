@@ -1,6 +1,8 @@
 package com.localnovel.engine.service
 
 import com.localnovel.engine.model.StoryChapterPilotSelection
+import com.localnovel.engine.model.StoryChapterDecisionArtifact
+import com.localnovel.engine.model.StoryChapterDecisionEnvelope
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.support.JsonSupport
@@ -12,6 +14,9 @@ import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
+import java.security.MessageDigest
+import java.sql.DriverManager
+import java.time.Instant
 import java.util.Comparator
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -28,6 +33,7 @@ class StoryChapterAuthorWorkbenchServer(
     private val sourceDatabasePath: Path,
     private val productionId: String,
     private val requestedPort: Int = 0,
+    private val decisionArtifactPath: Path = Path.of("out/story01/author-decision.json"),
 ) : AutoCloseable {
     private val workRoot: Path = Files.createTempDirectory("story01-author-workbench-")
     private val workingDatabasePath: Path = workRoot.resolve("story.db")
@@ -39,7 +45,12 @@ class StoryChapterAuthorWorkbenchServer(
 
     init {
         require(Files.isRegularFile(sourceDatabasePath)) { "STORY_DATABASE_NOT_FOUND" }
-        Files.copy(sourceDatabasePath, workingDatabasePath)
+        DriverManager.getConnection("jdbc:sqlite:$sourceDatabasePath").use { connection ->
+            connection.prepareStatement("VACUUM INTO ?").use { statement ->
+                statement.setString(1, workingDatabasePath.toString())
+                statement.executeUpdate()
+            }
+        }
         repository = SqliteStoryRepository(workingDatabasePath).also { it.initialize() }
         chapter = StoryChapterProductionRepository(repository)
         chapter.get(productionId)
@@ -99,15 +110,42 @@ class StoryChapterAuthorWorkbenchServer(
         require(body.string("productionId") == productionId) { "PRODUCTION_ID_MISMATCH" }
         val actor = body.string("actorId")
         val before = chapter.get(productionId)
-        when (body.string("decision")) {
+        val decision = body.string("decision")
+        val selectedHash = when (decision) {
             "SELECT_INITIAL" -> chapter.selectPilot(StoryChapterPilotSelection(productionId, before.initialDraftSha256, "APPROVE_PILOT_DRAFT", actor))
+                .let { before.initialDraftSha256 }
             "SELECT_REVISED" -> chapter.selectPilot(StoryChapterPilotSelection(productionId, before.revisedDraftSha256, "APPROVE_PILOT_DRAFT", actor))
-            "REJECT" -> chapter.rejectPilot(productionId, actor)
-            "REQUIRE_HUMAN_DECISION" -> chapter.requireHumanDecision(productionId)
+                .let { before.revisedDraftSha256 }
+            "REJECT" -> chapter.rejectPilot(productionId, actor).let { "" }
+            "REQUIRE_HUMAN_DECISION" -> chapter.requireHumanDecision(productionId).let { "" }
             else -> error("DECISION_INVALID")
         }
+        persistDecision(before, decision, selectedHash, actor)
         sendChapter(exchange)
     }
+
+    private fun persistDecision(
+        before: com.localnovel.engine.model.StoryChapterProductionView,
+        decision: String,
+        selectedHash: String,
+        actor: String,
+    ) {
+        val artifact = StoryChapterDecisionArtifact(
+            productionId = productionId,
+            decision = decision,
+            selectedDraftSha256 = selectedHash,
+            actorId = actor,
+            sourceStatus = before.status,
+            createdAt = Instant.now().toString(),
+        )
+        val canonical = JsonSupport.json.encodeToString(artifact)
+        val envelope = StoryChapterDecisionEnvelope(artifact, sha256(canonical))
+        decisionArtifactPath.parent?.let(Files::createDirectories)
+        Files.writeString(decisionArtifactPath, JsonSupport.json.encodeToString(envelope), StandardCharsets.UTF_8)
+    }
+
+    private fun sha256(value: String): String = MessageDigest.getInstance("SHA-256")
+        .digest(value.toByteArray(StandardCharsets.UTF_8)).joinToString("") { "%02x".format(it) }
 
     private fun isTrusted(exchange: HttpExchange): Boolean {
         val host = exchange.requestHeaders.getFirst("Host") ?: return false

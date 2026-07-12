@@ -4,11 +4,13 @@ import com.localnovel.engine.model.StoryChapterHandoffArtifact
 import com.localnovel.engine.model.StoryChapterHandoffRequest
 import com.localnovel.engine.model.StoryChapterProductionSeed
 import com.localnovel.engine.model.StoryChapterSourcePacket
+import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.support.JsonSupport
 import java.security.MessageDigest
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 
 class StoryChapterProductionService(
     private val repository: SqliteStoryRepository,
@@ -23,7 +25,8 @@ class StoryChapterProductionService(
             repository.queryRows(
                 connection,
                 """
-                SELECT project_id, session_id, scenario_seed, context_id, context_hash, context_snapshot_json
+                SELECT project_id, session_id, scenario_seed, context_id, context_hash, context_snapshot_json,
+                       validation_classification, status
                 FROM reboot_run_evidence WHERE run_id = ?
                 """.trimIndent(),
                 request.runId,
@@ -31,9 +34,27 @@ class StoryChapterProductionService(
         } ?: error("Unknown SQL runtime evidence run: ${request.runId}")
         require(runtime["project_id"] == request.projectId) { "Runtime project does not match handoff request." }
         require(runtime["session_id"] == request.sessionId) { "Runtime session does not match handoff request." }
+        require(runtime["scenario_seed"] == request.runtimeScenarioSeed) { "Runtime scenario seed does not match handoff request." }
+        require(runtime["status"] == "APPLIED") { "Only APPLIED runtime evidence may enter a chapter handoff." }
+        require(runtime["validation_classification"] in setOf("PASS", "QUALITY_WARNING")) {
+            "Hard-failed runtime evidence cannot enter a chapter handoff."
+        }
+        val runtimeContext = JsonSupport.json.decodeFromString<ContextPacket>(runtime["context_snapshot_json"].orEmpty())
+        require(runtimeContext.project.id == request.projectId && runtimeContext.sessionId == request.sessionId)
+        require(runtimeContext.contextId == runtime["context_id"] && runtimeContext.contextHash == runtime["context_hash"])
+        val recomputedContextHash = sha256(JsonSupport.json.encodeToString(runtimeContext.copy(contextHash = "")))
+        require(recomputedContextHash == runtimeContext.contextHash) { "Runtime context hash verification failed." }
 
         val worldReports = request.worldQueries.map { query ->
-            WorldSourceQueryService(repository).query(query.text, query.classification, query.limit)
+            require(query.allowedSourceIds.isNotEmpty()) { "Every chapter query requires an explicit source allowlist." }
+            WorldSourceQueryService(repository).query(
+                text = query.text,
+                classification = query.classification,
+                limit = query.limit,
+                projectLabel = request.projectId,
+                sourceIds = query.allowedSourceIds,
+                officialOnly = true,
+            )
                 .also { require(it.hitCount > 0) { "World-source query returned no SQL evidence: ${query.text}" } }
         }
         val packet = StoryChapterSourcePacket(
