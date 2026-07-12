@@ -93,6 +93,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "010_reboot_run_evidence.sql",
                     "011_npc_autonomy_runtime.sql",
                     "012_reboot_drama_evaluation.sql",
+                    "013_story_chapter_production.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
