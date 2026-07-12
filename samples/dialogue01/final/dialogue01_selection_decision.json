@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "dialogue01-selection-decision-v2",
+  "productionId": "screen01-tideline-beyond",
+  "decision": "SELECT_DIALOGUE01_FINAL",
+  "completionClassification": "DIALOGUE01_PASS_WITH_REGIONAL_WARNINGS",
+  "boundary": "NON_CANON_PILOT",
+  "revisionCount": 1,
+  "selectedScreenplayPath": "samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md",
+  "selectedScreenplaySha256": "a3816d7ab99a6aa92285f86642ef8a857ff369c030b06253d05333f7f05aa7e4",
+  "selectedDialoguePath": "samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json",
+  "selectedDialogueSha256": "a990cbb8e6da28c97dc59f7dfbc48defa7253f7fe3714fa99702230695abfc4d",
+  "selectedSubtitlePath": "samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt",
+  "selectedSubtitleSha256": "6bbfcc86ba42001f894b27ee38576342d9647be59f80f32a4bd041e5db23e379",
+  "changedDialogueIds": ["dlg-022"],
+  "decisionReasons": [
+    "三份隔離評審均確認 31 句整體自然、可演且保留角色差異。",
+    "唯一修訂將『潮表還早』改為『潮表還沒到』，降低時間與潮勢指涉歧義。",
+    "沒有改變四場、三十一鏡、救援因果、角色能力、第二行動者假設或 82 秒 Pilot。"
+  ],
+  "regionalWarnings": [
+    "『一一九』是台灣緊急救援識別；跨地區版本應由在地化層說明，不改母稿。",
+    "『潮表』是海岸現場詞彙；畫面需提供潮汐與手機時間語境。",
+    "『先碰你』必須以救援動作和克制表演消除脫離畫面的歧義。"
+  ],
+  "humanTableReadStatus": "READY_BUT_NOT_YET_PERFORMED",
+  "prohibitions": ["NOT_CANON", "NO_IMAGE_GENERATION", "NO_VIDEO_GENERATION", "NO_PROVIDER_CALL", "NO_AUTOMATIC_SECOND_REVISION"]
+}

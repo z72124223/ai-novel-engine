@@ -1,0 +1,73 @@
+{
+  "reviewerRole": "PAN_CHINESE_COMPREHENSION_REVIEWER",
+  "independenceStatement": "本審查僅依據指定三份來源獨立完成，未採用既有審查結論；保留 zh-Hant-TW 台灣華語聲線與 NON_CANON_PILOT 邊界。",
+  "sourceHashes": {
+    "provided": {
+      "screenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+      "dialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"
+    },
+    "observed": {
+      "screenplaySha256": "E06E1F7ABAF90649AD5CFA51BC28AAB6B5CDF74D76023380DC2958B299F3AA04",
+      "dialogueSha256": "C93B035F57CC50D1B427BA52C5B5B813CE6D84024D1ADA36DE790B13873DB4A5",
+      "dialogueBibleSha256": "1F28FC13CB9A735B310161C1DA3AE741045D5A76F3A40206043E52793CF98D5D"
+    }
+  },
+  "overall": {
+    "verdict": "PASS_WITH_BLOCKING_INTEGRITY_EXCEPTION",
+    "score": 88,
+    "scopeCheck": "已審閱全部 31 行；所有 exactQuote 均存在於劇本來源。"
+  },
+  "lineFindings": [
+    {"dialogueId":"dlg-001","exactQuote":"好。今天還有別的。","severity":"none","finding":"短句自然，跨地區華語均可理解，保留台灣口語節奏。","recommendation":"保留。"},
+    {"dialogueId":"dlg-002","exactQuote":"又不肯直接講。","severity":"none","finding":"語意直接，口語自然，沒有地區理解障礙。","recommendation":"保留。"},
+    {"dialogueId":"dlg-003","exactQuote":"有人搬過。還不只一趟。","severity":"none","finding":"資訊清楚，短句切分適合危急觀察。","recommendation":"保留。"},
+    {"dialogueId":"dlg-004","exactQuote":"十分鐘！走人！","severity":"none","finding":"命令感明確；「走人」跨地區可理解，仍保有台灣現場語感。","recommendation":"保留。"},
+    {"dialogueId":"dlg-005","exactQuote":"你上次的十分鐘，有含稅嗎？","severity":"none","finding":"乾式玩笑可由上下文理解；「含稅」在各華語地區普遍可懂。","recommendation":"保留。"},
+    {"dialogueId":"dlg-006","exactQuote":"今天不要賭。","severity":"none","finding":"簡短且情境明確，跨地區理解穩定。","recommendation":"保留。"},
+    {"dialogueId":"dlg-007","exactQuote":"照片呢？","severity":"none","finding":"極簡問句清楚自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-008","exactQuote":"卡住了。看它賞不賞臉。","severity":"minor","finding":"「賞不賞臉」具台灣華語口語色彩，其他地區多可依上下文理解，但部分觀眾可能將其視為較個人化的擬人玩笑。","recommendation":"保留台灣聲線；若作跨地區字幕，可在表演或畫面中強化上傳停滯的指涉。"},
+    {"dialogueId":"dlg-009","exactQuote":"山坡在另一邊。","severity":"none","finding":"方向資訊明確，無地域詞彙障礙。","recommendation":"保留。"},
+    {"dialogueId":"dlg-010","exactQuote":"先看得到的。","severity":"none","finding":"省略主語但情境足以補足，符合短句與行動優先原則。","recommendation":"保留。"},
+    {"dialogueId":"dlg-011","exactQuote":"別碰箱子。","severity":"none","finding":"禁令清楚，跨地區理解一致。","recommendation":"保留。"},
+    {"dialogueId":"dlg-012","exactQuote":"好。先碰你。","severity":"minor","finding":"玩笑意圖可由「別碰箱子」與救援動作理解；脫離畫面時，部分地區觀眾可能短暫誤解為人身挑逗。","recommendation":"保留原句與台灣式乾幽默，依靠現場表演及動作維持指涉。"},
+    {"dialogueId":"dlg-013","exactQuote":"那是我的。","severity":"none","finding":"佔有意圖清楚，語言中性。","recommendation":"保留。"},
+    {"dialogueId":"dlg-014","exactQuote":"先上去。箱子等等再說。","severity":"none","finding":"救援優先順序明確；「等等再說」跨地區自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-015","exactQuote":"我抬石頭。你拉人。","severity":"none","finding":"分工資訊清楚，符合危急時可執行資訊原則。","recommendation":"保留。"},
+    {"dialogueId":"dlg-016","exactQuote":"箱子？","severity":"none","finding":"單詞式追問易懂，符合防衛與執念反應。","recommendation":"保留。"},
+    {"dialogueId":"dlg-017","exactQuote":"不管。","severity":"none","finding":"語氣直接，跨地區無障礙。","recommendation":"保留。"},
+    {"dialogueId":"dlg-018","exactQuote":"不行！","severity":"none","finding":"拒絕訊號清楚，無地域限制。","recommendation":"保留。"},
+    {"dialogueId":"dlg-019","exactQuote":"手，還是箱子？","severity":"none","finding":"二選一結構清楚，畫面情境可補足「先救哪個」的省略。","recommendation":"保留。"},
+    {"dialogueId":"dlg-020","exactQuote":"現在！","severity":"none","finding":"倒數與迫切性明確。","recommendation":"保留。"},
+    {"dialogueId":"dlg-021","exactQuote":"太快了。","severity":"none","finding":"短句可同時承接浪勢與行動節奏，跨地區可理解。","recommendation":"保留。"},
+    {"dialogueId":"dlg-022","exactQuote":"潮表還早。","severity":"minor","finding":"「潮表」是海岸情境中的專門詞，台灣觀眾較易直接理解；其他地區觀眾通常可由上下文推知與潮汐時間有關，但不是所有觀眾都熟悉。","recommendation":"保留專業現場語感；以畫面中的手機時間、海水變化或表演補足，不需改成泛化詞。"},
+    {"dialogueId":"dlg-023","exactQuote":"是浪。下一波不知道什麼時候來。","severity":"none","finding":"「下一波」跨地區自然，並清楚修正前句對潮汐的誤判。","recommendation":"保留。"},
+    {"dialogueId":"dlg-024","exactQuote":"固定。抬高。布給我。","severity":"none","finding":"連續動作指令極清楚，符合危急短句規則。","recommendation":"保留。"},
+    {"dialogueId":"dlg-025","exactQuote":"裡面什麼？","severity":"none","finding":"追問直接，無地域理解問題。","recommendation":"保留。"},
+    {"dialogueId":"dlg-026","exactQuote":"好。先不問。","severity":"none","finding":"語意明確，呈現先救命後追問，人物轉變自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-027","exactQuote":"回不去了。走上面。","severity":"none","finding":"路線判斷清楚，口語自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-028","exactQuote":"值守室能擋雨。我重撥一一九。","severity":"minor","finding":"「值守室」跨地區大致可理解；「一一九」是台灣緊急救援識別，港澳、中國大陸、新加坡及馬來西亞觀眾未必知道其對應服務。這是地域設定資訊，不是台灣華語缺陷。","recommendation":"保留原句以維持台灣場景；由畫面、字幕註記或前後文承擔跨地區識別，不宜改成泛稱。"},
+    {"dialogueId":"dlg-029","exactQuote":"走。","severity":"none","finding":"單字指令清楚有力。","recommendation":"保留。"},
+    {"dialogueId":"dlg-030","exactQuote":"大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——","severity":"none","finding":"報案式資訊排列清楚；「人清醒」為自然現場簡述，跨地區可理解。","recommendation":"保留。"},
+    {"dialogueId":"dlg-031","exactQuote":"等雨小一點。","severity":"none","finding":"簡潔且符合危急後的現實判斷，無地域障礙。","recommendation":"保留。"}
+  ],
+  "strengths": [
+    "31 行整體維持短句、打斷、動作導向與危急資訊優先。",
+    "台灣華語特色集中在自然口語與現場語感，沒有混入明顯中國大陸、香港、新加坡或馬來西亞地域詞彙。",
+    "幽默只出現在安全的觀察段落，救援段落迅速收斂，符合角色語言聖經。",
+    "「下一波」與「先不問」等修訂有效提升跨地區直覺理解，同時沒有抹平台灣來源聲音。",
+    "人物分工可由台詞直接辨認：陸塵行觀察與吐槽、周克報時與路線、拾潮者防衛與佔有。"
+  ],
+  "blockingIssues": [
+    {
+      "type": "SOURCE_HASH_MISMATCH",
+      "finding": "工作區實際 screenplay SHA-256 為 E06E1F7ABAF90649AD5CFA51BC28AAB6B5CDF74D76023380DC2958B299F3AA04，與提供的 4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c 不一致；實際 dialogue track SHA-256 為 C93B035F57CC50D1B427BA52C5B5B813CE6D84024D1ADA36DE790B13873DB4A5，與提供的 6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c 不一致。",
+      "recommendation": "提交本審查前，確認工作區檔案是否為指定版本；若內容正確，更新提交用來源雜湊；若雜湊才是權威，請提供相符檔案。"
+    }
+  ],
+  "revisionPriorities": [
+    "優先解決 screenplay 與 dialogue track 的 SHA-256 身分不一致問題。",
+    "保留「賞不賞臉」與「先碰你」的台灣式乾幽默，僅在跨地區發行層補足畫面或字幕語境。",
+    "保留「潮表」與「一一九」等場景地域標記，不以泛化詞彙抹平台灣設定。",
+    "除來源完整性外，沒有必須改寫的跨華語理解問題。"
+  ]
+}

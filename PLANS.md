@@ -1,12 +1,84 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-12):** Read only `## Current Plan Window V2`
-> (`SCREEN01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT`) first. All older plan windows
+> **Startup rule (2026-07-12):** Read only `## Current Plan Window V3`
+> (`DIALOGUE01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `510527c24a612331590e25e42b004d00cd66858a` on
-> `codex/screen01-video-first-pilot`. GitHub remote is the team authority.
+> `d61aa1bf73dd377e4cd12ff10989b343196dfa15` on
+> `codex/dialogue01-human-voice-finalization`. GitHub remote is the team authority.
 
-## Current Plan Window V2
+## Current Plan Window V3
+
+標記：`DIALOGUE01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`
+
+狀態：**ACTIVE — 完成 31 句口語稽核、模擬朗讀、三份隔離評審、唯一一次修訂與 Git 交接**
+
+日期：2026-07-12
+
+### Goal
+
+以 SCREEN-01 選定版為不可覆寫來源，完成 31 句逐句稽核、AI 模擬朗讀、三份獨立評審與最多一次修訂；同步最終劇本、對白軌、Shot 引用、82 秒繁體中文字幕、Hash 與 Git 交接，普通 Push 並安全併回遠端預設分支。
+
+### Global Strategy
+
+- 綁定來源 SHA 與 `NON_CANON_PILOT` 邊界，不覆寫 SCREEN-01 歷史。
+- 工程與驗證使用 Medium；對白判斷與唯一修訂使用 bounded High（限定範圍高推理）。
+- 三位 reviewer 隔離工作、綁定來源 Hash、提供逐字證據；主代理只整合。
+- 實作分支完整驗證後普通 Push；再次同步遠端並以快轉方式更新預設分支，不 force push。
+
+### Non-Goals
+
+- 不使用 WORK，不生成圖片、影片、音訊，不呼叫或購買 Provider。
+- 不升格 Canon、不寫下一章、不新增互動遊戲或 Runtime 功能。
+- 不修改 Kotlin、Test、Migration、Schema、世界設定或 SCREEN-01 歷史成果。
+- 不讓陸塵行為了對白效果故意變笨。
+
+### Scope
+
+- `samples/dialogue01/**`
+- `docs/dialogue01/**`
+- `docs/development_journal/dialogue01/**`
+- `PROJECT_STATE.md`、`PLANS.md` 與必要的日誌索引。
+
+### Confirmed Facts
+
+- 乾淨 worktree：`ai-novel-engine-dialogue01`；分支：`codex/dialogue01-human-voice-finalization`；起點：`d61aa1bf73dd377e4cd12ff10989b343196dfa15`。
+- SCREEN-01 來源 Commit：`513c9d9ac1b1e168ac7c1217ea3f6ba581181719`。
+- 選定劇本 SHA-256：`4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c`。
+- 選定對白軌 SHA-256：`6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c`。
+- 對白共 31 句；Pilot 為 shot-015..023、82 秒、11 段字幕；原髒工作樹未操作。
+
+### Implementation Steps
+
+- [x] Step 0：同步遠端、建立乾淨 worktree、完成必讀與固定來源 Hash。
+- [x] Step 1：建立 31 句逐句稽核與 AI 模擬朗讀紀錄。
+- [x] Step 2：完成三份隔離獨立評審，驗證引用與來源 Hash。
+- [x] Step 3：執行唯一一次修訂，同步最終劇本、對白、Shot 與 82 秒 SRT。
+- [x] Step 4：建立選擇決策、Hash manifest、影片交接 overlay、報告與 Git handoff。
+- [x] Step 5：執行 focused／完整 Gradle、JSON、Hash、SRT、引用、秘密、scope 與 Git 驗證。
+- [ ] Step 6：Push 實作分支，安全併回預設分支，更新完成狀態並一次回報。
+
+### Verification
+
+- 31 句各恰好一筆稽核；三份評審身分、來源 Hash 與逐字引用可驗證。
+- revision count 恰為 1；最終 screenplay／dialogue／Shot／SRT 文字與 ID 一致。
+- Pilot 維持 82 秒；SRT 時碼合法且不重疊。
+- JSON、Hash、私人路徑、秘密、Provider、Canon、媒體生成與 Git scope 檢查通過。
+- focused tests、完整測試、`git diff --check`、乾淨狀態與遠端同步通過。
+
+### Risks
+
+- 過度修訂會抹平人物聲音；只修證據支持的生硬、呼吸或跨地區理解問題。
+- SRT 與 Shot 對白若不同步會破壞交接；以 dialogueId 與時間碼逐項驗證。
+- 合併前若遠端前進，必須重新同步並維持普通快轉，不得 force。
+
+### Drift Log
+
+- 2026-07-12：恢復 DIALOGUE-01 V2；同步遠端、建立乾淨 worktree、完成必讀與來源固定，不操作原髒工作樹。
+- 2026-07-12：完成 31 句稽核、AI 模擬朗讀與三份隔離評審；只修訂 dlg-022，所有 Shot、事件與 82 秒 Pilot 不變。
+- 2026-07-12：建立最終劇本、對白、SRT、Selection、Hash manifest、Video overlay、報告與 Git handoff；SCREEN-01 舊宣告 Hash 與目前檔案 bytes 的歷史不一致已明示，不覆寫歷史。
+- 2026-07-12：靜態契約檢查 PASS；focused Gradle PASS；完整 `clean test` 6m04s PASS，只有既有 ExperimentalSerializationApi warnings。
+
+## Historical — Current Plan Window V2
 
 標記：`SCREEN01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT`
 

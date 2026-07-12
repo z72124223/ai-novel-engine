@@ -4,7 +4,7 @@
 
 ## 0. Current Override — DIALOGUE-01 V2
 
-- Status：`GPT_BLUEPRINT_COMPLETE_CODEX_READY`
+- Status：`DIALOGUE01_COMPLETE_VALIDATED_PENDING_GIT_DELIVERY`
 - Product destination：`SERIALIZED_VIDEO_ANIMATION`
 - Current work：`DIALOGUE-01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`
 - Collaboration mode：`GPT_PLANS_CODEX_IMPLEMENTS`
@@ -12,6 +12,11 @@
 - Independent WORK role：`CANCELLED`
 - Implementation branch：`codex/dialogue01-human-voice-finalization`
 - Source SCREEN-01 head：`513c9d9ac1b1e168ac7c1217ea3f6ba581181719`
+- Completion classification：`DIALOGUE01_PASS_WITH_REGIONAL_WARNINGS`
+- Final screenplay：`samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md`
+- Final dialogue：`samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json`
+- Final 82-second subtitle：`samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt`
+- Automatic next work：`PROHIBITED`
 - GitHub remote is the highest team authority.
 - Local host, SQLite, terminal and `out/**` are replaceable execution environments.
 
@@ -127,7 +132,7 @@ DIALOGUE-01 V2 — 華語真人對白定稿
 狀態：
 
 ```text
-READY_FOR_AUTONOMOUS_CODEX_EXECUTION
+DIALOGUE01_COMPLETE_VALIDATED_PENDING_GIT_DELIVERY
 ```
 
 Codex 實作分支：

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "dialogue01-hash-manifest-v2",
+  "algorithm": "SHA-256",
+  "hashBasis": "exact tracked file bytes",
+  "boundary": "NON_CANON_PILOT",
+  "sourceIntegrityNote": "SCREEN-01 declared hashes are retained as historical metadata; observed source file hashes are recorded separately because they differ.",
+  "sourceFiles": [
+    {"path":"samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md","declaredSha256":"4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c","observedSha256":"e06e1f7abaf90649ad5cfa51bc28aab6b5cdf74d76023380dc2958b299f3aa04","match":false},
+    {"path":"samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json","declaredSha256":"6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c","observedSha256":"c93b035f57cc50d1b427ba52c5b5b813ce6d84024d1ada36de790b13873db4a5","match":false}
+  ],
+  "artifacts": [
+    {"path":"samples/dialogue01/dialogue01_line_audit.json","sha256":"bc1e3e442281178a9bc48a32c328af90ab587ee6b52245bdca9f32d31402ad74"},
+    {"path":"samples/dialogue01/dialogue01_simulated_read_aloud_notes.md","sha256":"6673b95a150125fe80337d5ec61d1620a03dba669da2d04a2aee56ee12c0099c"},
+    {"path":"samples/dialogue01/reviews/taiwan_everyday_speech_review.json","sha256":"399a5fdda7f41d728cedc40ec21533df018599c7b4c9e21eea74376c3f4ff9b9"},
+    {"path":"samples/dialogue01/reviews/actor_breath_performance_review.json","sha256":"5cadac0cf8f13c30c9cc3c3ec51a35a36399d9c2ad49b958f7b03b91595e27f7"},
+    {"path":"samples/dialogue01/reviews/pan_chinese_comprehension_review.json","sha256":"026130858ee2ca25b1295be761cc5b86c7ac887f599aa3c215c1a6d034720393"},
+    {"path":"samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md","sha256":"a3816d7ab99a6aa92285f86642ef8a857ff369c030b06253d05333f7f05aa7e4"},
+    {"path":"samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json","sha256":"a990cbb8e6da28c97dc59f7dfbc48defa7253f7fe3714fa99702230695abfc4d"},
+    {"path":"samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt","sha256":"6bbfcc86ba42001f894b27ee38576342d9647be59f80f32a4bd041e5db23e379"},
+    {"path":"samples/dialogue01/final/dialogue01_selection_decision.json","sha256":"2f48d0a734c7143272b6f92d93d5d4e6d2bea222bb6e2ca87552f433ca97e3a9"},
+    {"path":"samples/dialogue01/final/dialogue01_video_handoff_overlay.json","sha256":"3e1a36cef90c20ac0e182b36f4aaf3e920a62c3da8c875c752558f532d17c15e"},
+    {"path":"docs/dialogue01/DIALOGUE01_FINAL_REPORT.md","sha256":"6a58999b93f3725764fe22d4e73a422dcd0588f28e6a1f354d06070f7b313dbd"},
+    {"path":"docs/dialogue01/DIALOGUE01_GIT_HANDOFF.md","sha256":"4744f335a76e7171b79ba2ec4fecf53fed8ac86c1202b91e300a653fe009a8a4"},
+    {"path":"docs/development_journal/dialogue01/DIALOGUE01_V2_EXECUTION.md","sha256":"bc74c6eecb7d43034ac89395d525e969ec67db27dd684dfcc6e632b35a10d3c2"}
+  ],
+  "selfHashExcluded": true
+}

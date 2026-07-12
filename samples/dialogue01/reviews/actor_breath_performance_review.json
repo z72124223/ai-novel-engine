@@ -1,0 +1,86 @@
+{
+  "reviewerRole": "ACTOR_BREATH_PERFORMANCE_REVIEWER",
+  "independenceStatement": "獨立依據指定劇本、對白軌與 dialogue bible（對白聖經）完成逐行審查；未依賴其他 review paths，並維持 NON_CANON_PILOT 邊界。",
+  "sourceHashes": {
+    "declared": {
+      "screenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+      "dialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"
+    },
+    "observed": {
+      "screenplaySha256": "e06e1f7abaf90649ad5cfa51bc28aab6b5cdf74d76023380dc2958b299f3aa04",
+      "dialogueSha256": "c93b035f57cc50d1b427ba52c5b5b813ce6d84024d1ada36de790b13873db4a5"
+    },
+    "integrityStatus": "MISMATCH"
+  },
+  "overall": {
+    "verdict": "CONDITIONAL_PASS",
+    "score": 8.7,
+    "summary": "31 行整體具備清楚呼吸組、可演的短句節奏、有效打斷與現場動作對應。dlg-023 有輕微連續語意負荷；另有來源檔案 SHA-256 與提供值不一致，需先確認版本完整性。"
+  },
+  "lineFindings": [
+    {"dialogueId":"dlg-001","exactQuote":"好。今天還有別的。","severity":"none","finding":"兩個自然呼吸組，先承認再轉入觀察，演員可在收起手機後輕鬆完成。","recommendation":"保留；「好」後留極短停頓。"},
+    {"dialogueId":"dlg-002","exactQuote":"又不肯直接講。","severity":"none","finding":"短句、低動作負荷，適合帶著看愛醬的反應說出。","recommendation":"保留；語氣可偏乾，不需加重笑意。"},
+    {"dialogueId":"dlg-003","exactQuote":"有人搬過。還不只一趟。","severity":"none","finding":"兩段結論對應拍攝發現，呼吸與資訊量平衡良好。","recommendation":"保留；第二句可壓低聲量。"},
+    {"dialogueId":"dlg-004","exactQuote":"十分鐘！走人！","severity":"none","finding":"兩個可獨立喊出的命令，符合遠距離、風雨中的現場投射。","recommendation":"保留；兩句之間不必填補語氣。"},
+    {"dialogueId":"dlg-005","exactQuote":"你上次的十分鐘，有含稅嗎？","severity":"none","finding":"玩笑句可在連拍後作為短暫卸壓，句內呼吸自然，未造成動作說明負擔。","recommendation":"保留；避免演成完整喜劇節拍。"},
+    {"dialogueId":"dlg-006","exactQuote":"今天不要賭。","severity":"none","finding":"短、硬、無解釋，符合周克壓力下的說話模式。","recommendation":"保留；可直接接在收繩動作上。"},
+    {"dialogueId":"dlg-007","exactQuote":"照片呢？","severity":"none","finding":"單一意圖，適合在趕路中拋出。","recommendation":"保留；不需停下來完整面向對方。"},
+    {"dialogueId":"dlg-008","exactQuote":"卡住了。看它賞不賞臉。","severity":"none","finding":"兩個短呼吸組，帶有角色習慣性的半句吐槽，手機查看動作負荷可控。","recommendation":"保留；「看它賞不賞臉」不要拖長。"},
+    {"dialogueId":"dlg-009","exactQuote":"山坡在另一邊。","severity":"none","finding":"方向資訊單純，適合周克抓繩時說出。","recommendation":"保留；語尾保持指示性。"},
+    {"dialogueId":"dlg-010","exactQuote":"先看得到的。","severity":"none","finding":"極短回應有效形成打斷，也能在移動中完成。","recommendation":"保留；可不看周克。"},
+    {"dialogueId":"dlg-011","exactQuote":"別碰箱子。","severity":"none","finding":"受傷者的防衛命令短促清楚，呼吸負荷最低。","recommendation":"保留；以疼痛限制聲量，不必喊滿。"},
+    {"dialogueId":"dlg-012","exactQuote":"好。先碰你。","severity":"none","finding":"「好」到救援優先級轉換清楚，兩段節拍可直接落在靠近傷者的動作上。","recommendation":"保留；「先碰你」應是立即決定，不是玩笑。"},
+    {"dialogueId":"dlg-013","exactQuote":"那是我的。","severity":"none","finding":"短句承載執念，適合抓住提把時以殘餘力氣說出。","recommendation":"保留；避免增加背景解釋。"},
+    {"dialogueId":"dlg-014","exactQuote":"先上去。箱子等等再說。","severity":"none","finding":"命令與延後處理分成兩個呼吸組，符合救援現場的可執行資訊。","recommendation":"保留；第一句應先於搬動動作落下。"},
+    {"dialogueId":"dlg-015","exactQuote":"我抬石頭。你拉人。","severity":"none","finding":"兩個短指令清楚分工，與撬石、拉繩的動作同步。","recommendation":"保留；每句對應一個動作，不需連成長句。"},
+    {"dialogueId":"dlg-016","exactQuote":"箱子？","severity":"none","finding":"單字式追問有效插入，不妨礙救援節奏。","recommendation":"保留；以疑問而非完整句呈現。"},
+    {"dialogueId":"dlg-017","exactQuote":"不管。","severity":"none","finding":"極短拒絕形成清楚優先級，演員可在撬桿操作中完成。","recommendation":"保留；語氣平直即可。"},
+    {"dialogueId":"dlg-018","exactQuote":"不行！","severity":"none","finding":"突發抗拒，適合從拾潮者猛抬頭直接爆出。","recommendation":"保留；可短促喊出，不需延長。"},
+    {"dialogueId":"dlg-019","exactQuote":"手，還是箱子？","severity":"none","finding":"兩個選項形成壓縮式逼問，逗點提供自然換氣與視線切換點。","recommendation":"保留；「手」後留短停頓。"},
+    {"dialogueId":"dlg-020","exactQuote":"現在！","severity":"none","finding":"單字命令是明確救援觸發點，適合遠距離喊出。","recommendation":"保留；保持爆發短促。"},
+    {"dialogueId":"dlg-021","exactQuote":"太快了。","severity":"none","finding":"救援後的短反應可在喘息中自然完成，未重述潮汐資訊。","recommendation":"保留；可帶身體衝擊後的失衡感。"},
+    {"dialogueId":"dlg-022","exactQuote":"潮表還早。","severity":"none","finding":"短句與前句形成即時反駁，周克可在承重或整理繩索時說出。","recommendation":"保留；不需補充原理。"},
+    {"dialogueId":"dlg-023","exactQuote":"是浪。下一波不知道什麼時候來。","severity":"minor","finding":"三個語意單位連續出現，對剛完成救援且仍在浪線旁的陸塵行略有呼吸與注意力負荷。","recommendation":"可保留現有文字；演出時在「是浪」後和「下一波」前各留微停頓，避免一口氣說完。"},
+    {"dialogueId":"dlg-024","exactQuote":"固定。抬高。布給我。","severity":"none","finding":"三個單動作命令是全段最可播放的急救節奏，呼吸與動作高度一致。","recommendation":"保留；每個短句各自落在一個處置動作上。"},
+    {"dialogueId":"dlg-025","exactQuote":"裡面什麼？","severity":"none","finding":"短問句能在固定傷處時插入，維持角色追問但不延誤處置。","recommendation":"保留；問完即可接受沉默。"},
+    {"dialogueId":"dlg-026","exactQuote":"好。先不問。","severity":"none","finding":"兩段節拍明確表現停止追問，符合看見傷害後以行動代替解釋。","recommendation":"保留；「先不問」應真正收住，不帶反問尾音。"},
+    {"dialogueId":"dlg-027","exactQuote":"回不去了。走上面。","severity":"none","finding":"先判斷路線、再給方向，兩組呼吸自然，適合指向山坡時說出。","recommendation":"保留；第二句應立即接行動。"},
+    {"dialogueId":"dlg-028","exactQuote":"值守室能擋雨。我重撥一一九。","severity":"none","finding":"兩個實際資訊單位，周克放下傷者後打電話，動作負荷低且可清楚傳達。","recommendation":"保留；「擋雨」後微停頓即可。"},
+    {"dialogueId":"dlg-029","exactQuote":"走。","severity":"none","finding":"單字命令乾淨，符合陸塵行重新進入撤離節奏。","recommendation":"保留；不需加主語或理由。"},
+    {"dialogueId":"dlg-030","exactQuote":"大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——","severity":"none","finding":"無線電式資訊分組清楚，破折號自然留下接線員打斷或回報續接空間；4 秒估時可演。","recommendation":"保留；以報案節奏說，不要演成背稿。"},
+    {"dialogueId":"dlg-031","exactQuote":"等雨小一點。","severity":"none","finding":"低音量短句，適合檢查愛醬腳掌時說出，具備安撫與暫緩意圖。","recommendation":"保留；留白比額外解釋更重要。"}
+  ],
+  "strengths": [
+    "短句、停頓與命令節奏符合 dialogue bible 的角色規則。",
+    "危急段落大多採一個呼吸組對應一個動作，演員不必邊做複雜救援邊背誦說明。",
+    "打斷與沉默被保留下來，尤其是 dlg-016 至 dlg-020 的救援交換。",
+    "陸塵行的幽默集中在低風險時刻；傷勢確認後轉為短指令與停止追問。",
+    "周克維持倒數、路線、承重與報案資訊，不被迫配合主角玩笑。",
+    "拾潮者的命令、否定與重複具備防衛性，沒有越界解釋箱子背景。",
+    "所有審查結論均限於 NON_CANON_PILOT 表演與對白品質，未將推測內容提升為正式世界觀。"
+  ],
+  "blockingIssues": [
+    {
+      "issue": "提供的 screenplay 與 dialogue source SHA-256 均與實際讀取檔案不一致。",
+      "impact": "無法確認本次審查檔案是否就是指定雜湊版本；提交前需完成版本與來源完整性確認。",
+      "recommendation": "確認檔案版本後重新提供正確雜湊，或重新核對指定來源；在完整性確認前不應將本審查標記為無條件通過。"
+    }
+  ],
+  "revisionPriorities": [
+    {
+      "priority": 1,
+      "action": "先解決兩個來源檔案的 SHA-256 不一致問題。",
+      "dialogueIds": []
+    },
+    {
+      "priority": 2,
+      "action": "錄排時特別測試 dlg-023 的三段呼吸與救援後身體狀態；必要時只調整停頓，不改文字。",
+      "dialogueIds": ["dlg-023"]
+    },
+    {
+      "priority": 3,
+      "action": "維持現有短句、命令與沉默結構，不進一步增加解釋性台詞。",
+      "dialogueIds": ["dlg-004","dlg-014","dlg-015","dlg-019","dlg-024","dlg-030"]
+    }
+  ]
+}
