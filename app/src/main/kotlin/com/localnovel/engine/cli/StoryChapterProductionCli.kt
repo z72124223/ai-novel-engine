@@ -1,10 +1,13 @@
 package com.localnovel.engine.cli
 
 import com.localnovel.engine.model.StoryChapterDraftIntake
+import com.localnovel.engine.model.StoryChapterDraftFileIntake
 import com.localnovel.engine.model.StoryChapterHandoffRequest
 import com.localnovel.engine.model.StoryChapterPilotSelection
 import com.localnovel.engine.model.StoryChapterReviewBatch
 import com.localnovel.engine.model.StoryChapterRevisionIntake
+import com.localnovel.engine.model.StoryChapterRevisionFileIntake
+import java.nio.file.Files
 import com.localnovel.engine.repository.StoryChapterProductionRepository
 import com.localnovel.engine.service.StoryChapterProductionService
 import java.nio.file.Path
@@ -27,6 +30,20 @@ internal object StoryChapterProductionCli {
         input.productionId
     }
 
+    fun ingestDraftFile(options: Map<String, String>): Int = mutate(options) { chapter ->
+        val input = readCliJson<StoryChapterDraftFileIntake>(Path.of(options.requiredCliOption("input")))
+        chapter.ingestDraft(
+            StoryChapterDraftIntake(
+                productionId = input.productionId,
+                sourcePacketSha256 = input.sourcePacketSha256,
+                draft = Files.readString(Path.of(input.draftPath)).removePrefix("\uFEFF"),
+                draftSha256 = input.draftSha256,
+                modelMetadataJson = input.modelMetadataJson,
+            ),
+        )
+        input.productionId
+    }
+
     fun ingestReviews(options: Map<String, String>): Int = mutate(options) { chapter ->
         val batch = readCliJson<StoryChapterReviewBatch>(Path.of(options.requiredCliOption("input")))
         chapter.recordReviewBatch(batch.productionId, batch.reviews)
@@ -36,6 +53,20 @@ internal object StoryChapterProductionCli {
     fun ingestRevision(options: Map<String, String>): Int = mutate(options) { chapter ->
         val input = readCliJson<StoryChapterRevisionIntake>(Path.of(options.requiredCliOption("input")))
         chapter.ingestRevision(input)
+        input.productionId
+    }
+
+    fun ingestRevisionFile(options: Map<String, String>): Int = mutate(options) { chapter ->
+        val input = readCliJson<StoryChapterRevisionFileIntake>(Path.of(options.requiredCliOption("input")))
+        chapter.ingestRevision(
+            StoryChapterRevisionIntake(
+                productionId = input.productionId,
+                sourceDraftSha256 = input.sourceDraftSha256,
+                revisedDraft = Files.readString(Path.of(input.revisedDraftPath)).removePrefix("\uFEFF"),
+                revisedDraftSha256 = input.revisedDraftSha256,
+                modelMetadataJson = input.modelMetadataJson,
+            ),
+        )
         input.productionId
     }
 

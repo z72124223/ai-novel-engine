@@ -47,8 +47,10 @@ class Cli {
                 "serve-reboot01-web" -> StorySessionCli.serveReboot01Web(options)
                 "create-story-chapter-handoff" -> StoryChapterProductionCli.createHandoff(options)
                 "ingest-story-chapter-draft" -> StoryChapterProductionCli.ingestDraft(options)
+                "ingest-story-chapter-draft-file" -> StoryChapterProductionCli.ingestDraftFile(options)
                 "ingest-story-chapter-reviews" -> StoryChapterProductionCli.ingestReviews(options)
                 "ingest-story-chapter-revision" -> StoryChapterProductionCli.ingestRevision(options)
+                "ingest-story-chapter-revision-file" -> StoryChapterProductionCli.ingestRevisionFile(options)
                 "select-story-chapter-pilot" -> StoryChapterProductionCli.selectPilot(options)
                 "show-story-chapter-production" -> StoryChapterProductionCli.show(options)
                 "show-session" -> StorySessionCli.showSession(options)
@@ -225,8 +227,10 @@ class Cli {
               serve-reboot01-web [--evidence-dir <path>] [--port <loopback-port>]
               create-story-chapter-handoff [--db <path>] --input <path> --out <path>
               ingest-story-chapter-draft [--db <path>] --input <path> [--out <path>]
+              ingest-story-chapter-draft-file [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-reviews [--db <path>] --input <path> [--out <path>]
               ingest-story-chapter-revision [--db <path>] --input <path> [--out <path>]
+              ingest-story-chapter-revision-file [--db <path>] --input <path> [--out <path>]
               select-story-chapter-pilot [--db <path>] --input <path> [--out <path>]
               show-story-chapter-production [--db <path>] --production <id> [--out <path>]
               show-session [--db <path>] --session <id>

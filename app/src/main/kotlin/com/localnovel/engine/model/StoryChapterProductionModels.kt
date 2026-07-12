@@ -49,6 +49,15 @@ data class StoryChapterDraftIntake(
 )
 
 @Serializable
+data class StoryChapterDraftFileIntake(
+    val productionId: String,
+    val sourcePacketSha256: String,
+    val draftPath: String,
+    val draftSha256: String,
+    val modelMetadataJson: String = "{}",
+)
+
+@Serializable
 data class StoryChapterReviewRecord(
     val reviewId: String,
     val productionId: String,
@@ -64,6 +73,15 @@ data class StoryChapterRevisionIntake(
     val productionId: String,
     val sourceDraftSha256: String,
     val revisedDraft: String,
+    val revisedDraftSha256: String,
+    val modelMetadataJson: String = "{}",
+)
+
+@Serializable
+data class StoryChapterRevisionFileIntake(
+    val productionId: String,
+    val sourceDraftSha256: String,
+    val revisedDraftPath: String,
     val revisedDraftSha256: String,
     val modelMetadataJson: String = "{}",
 )
