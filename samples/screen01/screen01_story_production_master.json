@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "screen01-story-production-master-v1",
+  "productionId": "screen01-tideline-beyond",
+  "title": "潮線之外",
+  "sourceRepository": "z72124223/ai-novel-engine",
+  "sourceBranch": "codex/screen01-video-first-pilot",
+  "sourceCommitSha": "510527c24a612331590e25e42b004d00cd66858a",
+  "sourceArtifactPath": "samples/story01/story01_revised_draft.md",
+  "sourceArtifactSha256": "ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91",
+  "languageMaster": "zh-Hant-TW",
+  "canonBoundary": "NON_CANON_PILOT",
+  "targetFinalMedium": "SERIALIZED_VIDEO_ANIMATION",
+  "premise": "颱風外圍逼近大坪海岸時，陸塵行與愛醬發現疑似遭人搬運的異常碎片。追查痕跡使他們找到一名被落石與金屬箱夾住的拾潮者；陸塵行必須在保存證據與救人撤離之間作出選擇。",
+  "timeline": {
+    "start": "距天文滿潮 1 小時 47 分",
+    "rescueCheckpoint": "周克第一次吹哨後 18 分鐘",
+    "end": "距天文滿潮 1 小時 29 分；颱風湧浪已封住原路"
+  },
+  "locations": [
+    {"locationId": "loc-daping-coast-upper-rock", "name": "大坪海岸較高岩脊", "function": "觀察海象、發現碎片與建立撤退壓力"},
+    {"locationId": "loc-daping-coast-lower-platform", "name": "較低潮間帶平台", "function": "追蹤鞋印、血點與金屬聲"},
+    {"locationId": "loc-daping-coast-recess", "name": "低處凹壁", "function": "救援、落石與證物取捨"},
+    {"locationId": "loc-abandoned-watch-room", "name": "山坡廢棄值守室", "function": "暫避、聯絡救護與發現第二串鞋印"}
+  ],
+  "charactersPresent": [
+    {"characterId": "character-lu-chenxing", "name": "陸塵行", "role": "主角／現場判斷與救援"},
+    {"characterId": "character-aijiang", "name": "愛醬", "role": "主動偵察、危險預警與情緒支點"},
+    {"characterId": "character-zhou-ke", "name": "周克", "role": "撤退與繩索協助者"},
+    {"characterId": "character-tide-picker", "name": "拾潮者", "role": "傷者／證物利益持有人"}
+  ],
+  "characterGoals": [
+    {"characterId": "character-lu-chenxing", "goals": ["辨識異常碎片與人為痕跡", "確保愛醬與現場人員安全", "保存可驗證的現場證據"]},
+    {"characterId": "character-aijiang", "goals": ["辨識陌生氣味與危險方向", "避開落石與來浪", "維持與陸塵行的互相照應"]},
+    {"characterId": "character-zhou-ke", "goals": ["在潮路封閉前撤離", "協助救出傷者", "取得緊急救援聯繫"]},
+    {"characterId": "character-tide-picker", "goals": ["保住金屬箱的控制權", "隱瞞箱內資訊", "在受傷後活著離開"]}
+  ],
+  "characterKnowledge": [
+    {"characterId": "character-lu-chenxing", "knows": ["潮表數字與現場海況有落差", "碎片與鞋印顯示近期人為搬運", "凹壁裡的箱與碎片可能同源", "第二串鞋印只支持另有行動者的工作假設"], "doesNotKnow": ["箱內內容", "第二名行動者身分", "異常物件的正式來源"]},
+    {"characterId": "character-aijiang", "knows": ["山坡與岩縫有異常氣味或聲音", "海側來浪與鬆石構成即時危險"], "doesNotKnow": ["金屬箱用途", "人類事件全貌"]},
+    {"characterId": "character-zhou-ke", "knows": ["海況惡化且撤退窗口縮短", "值守室可暫避並重撥緊急電話"], "doesNotKnow": ["碎片與箱子的來源"]},
+    {"characterId": "character-tide-picker", "knows": ["箱子的私密價值"], "doesNotDisclose": ["箱內內容", "搬運同伴或競爭者資訊"]}
+  ],
+  "characterRelationships": [
+    {"pair": ["character-lu-chenxing", "character-aijiang"], "state": "長期家人式默契；彼此先讀動作再下判斷"},
+    {"pair": ["character-lu-chenxing", "character-zhou-ke"], "state": "可互相託付現場工作；周克不配合玩笑時代表真實警訊"},
+    {"pair": ["character-lu-chenxing", "character-tide-picker"], "state": "救援者與防衛性傷者；信任尚未建立"}
+  ],
+  "props": [
+    {"propId": "prop-phone-waterproof", "name": "防水手機", "uses": ["潮汐倒數", "現場拍照", "離線證據", "緊急聯絡"]},
+    {"propId": "prop-dark-fragment", "name": "灰黑碎片", "status": "只拍攝與定位，未帶離"},
+    {"propId": "prop-metal-case", "name": "金屬箱", "status": "留在凹壁並被浪淹沒；內容未知"},
+    {"propId": "prop-pry-bar", "name": "短撬桿", "uses": ["嘗試抬升落石"]},
+    {"propId": "prop-rope-sling", "name": "繩套與亮橘繩尾", "uses": ["救援固定", "現場方位標記"]},
+    {"propId": "prop-first-aid", "name": "三角巾與硬片", "uses": ["臨時固定傷手"]}
+  ],
+  "storyBeats": [
+    {"beatId": "beat-01", "name": "海先變臉", "event": "潮表尚早，颱風湧浪已改變海況；愛醬注意山坡異常。"},
+    {"beatId": "beat-02", "name": "人為痕跡", "event": "灰黑碎片、來回鞋印、拖痕與血點證明近期有人搬運。"},
+    {"beatId": "beat-03", "name": "撤退壓力", "event": "周克警告十分鐘撤退；潮溝迅速升高。"},
+    {"beatId": "beat-04", "name": "聽見受困者", "event": "愛醬與陸塵行辨認岩縫金屬聲與咳嗽，改走高線。"},
+    {"beatId": "beat-05", "name": "救人或護箱", "event": "拾潮者拒放箱，陸塵行明確把救人排在證物之前。"},
+    {"beatId": "beat-06", "name": "正確選擇的代價", "event": "陸塵行先拉回愛醬，撬桿彈開，拾潮者手傷惡化，箱仍未取出。"},
+    {"beatId": "beat-07", "name": "撤離與急救", "event": "原路封閉，眾人沿山坡撤至值守室並聯絡救護。"},
+    {"beatId": "beat-08", "name": "第二串鞋印", "event": "離線照片與愛醬指出不同尺寸鞋印通往窄徑；只保留另有行動者的工作假設。"}
+  ],
+  "choices": [
+    {"choiceId": "choice-rescue-over-evidence", "actor": "character-lu-chenxing", "options": ["冒險留在凹壁保存更多證物", "先救人並撤離"], "selected": "先救人並撤離", "reason": "生命與不可逆手傷優先，證據仍可透過照片與定位保存。"}
+  ],
+  "consequences": [
+    "拾潮者獲救但左手重傷，必須等待救護。",
+    "金屬箱暫時失去控制，可能被浪或其他行動者移動。",
+    "原潮間帶路線封閉，隊伍被迫轉往山坡。",
+    "第二名行動者取得時間優勢；其存在尚未證實為正式事實。",
+    "陸塵行與愛醬的互相保護被可見化。"
+  ],
+  "reveals": [
+    "碎片不是自然漂流物，近期曾被人搬動。",
+    "拾潮者是主要拖箱痕跡的主人。",
+    "另有不同尺寸鞋印沿山坡窄徑離開。"
+  ],
+  "unresolvedQuestions": [
+    "箱內是什麼？",
+    "灰黑碎片與箱子來自何處？",
+    "第二串鞋印屬於誰？",
+    "另一名行動者是否會返回？"
+  ],
+  "emotionalWave": ["異樣", "好奇", "警戒", "短促幽默", "壓迫", "救援緊張", "傷害震盪", "克制", "餘波與追索"],
+  "continuityLocks": [
+    "撤離人數固定為三個人和一隻狗。",
+    "愛醬主動發現、預警並選擇安全路線，不是口令工具。",
+    "拾潮者手傷惡化發生在陸塵行先保護愛醬後。",
+    "箱內內容始終未知，未出現無來源的記憶卡。",
+    "潮路封閉主因是颱風外圍長周期浪，不是天文潮瞬間跳時。",
+    "第二名行動者只可稱工作假設。"
+  ],
+  "forbiddenReveals": [
+    "逆行門與裂縫的正式真相",
+    "兩道門模型",
+    "先遣隊命運",
+    "新世界力量或修煉體系答案",
+    "箱內物品與第二名行動者身分"
+  ]
+}

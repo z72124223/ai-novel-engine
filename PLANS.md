@@ -63,8 +63,8 @@
 ### Implementation Steps
 
 - [x] Step 0：建立 Stage 0 Git／來源／邊界紀錄與 SCREEN-01 目錄骨架，驗證來源 Hash。
-- [ ] **Current Step 1：** 建立 Story Production Master、對白 Bible、初版完整影視劇本與初版對白軌。
-- [ ] Step 2：三個隔離 reviewer 讀取完整初版劇本／對白並提交 Hash-bound 評審。
+- [x] Step 1：建立 Story Production Master、對白 Bible、初版完整影視劇本與初版對白軌。
+- [ ] **Current Step 2：** 三個隔離 reviewer 讀取完整初版劇本／對白並提交 Hash-bound 評審。
 - [ ] Step 3：依評審完成最多一次劇本／對白修訂，固定選定版。
 - [ ] Step 4：建立場景表、鏡頭表、60–90 秒 Pilot、SRT 字幕、地區語言說明與媒體交接包。
 - [ ] Step 5：建立對白評審報告、Git handoff、開發日誌與最終報告。
@@ -90,6 +90,7 @@
 
 - 2026-07-12：依使用者指令更新遠端並建立乾淨 SCREEN-01 worktree；Base `510527c`，來源 Hash 通過，原髒工作樹未操作。
 - 2026-07-12：Stage 0 完成。Git／來源／NON_CANON／Provider 與媒體禁制均寫入追蹤日誌；來源 SHA-256 與控制文件一致。
+- 2026-07-12：Stage 1 完成。建立故事主檔、4 場完整初版影視劇本、4 角色對白 Bible 與 31 句初版對白軌；小說內心轉為可見動作／聲音，劇本與對白限定使用 High，工程維持 Medium。
 
 ## Historical — Current Plan Window V1
 
