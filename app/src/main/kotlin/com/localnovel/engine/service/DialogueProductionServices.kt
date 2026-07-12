@@ -11,19 +11,27 @@ import com.localnovel.engine.repository.DialogueProductionRepository
 class DialogueReviewOrchestrator(private val repository: DialogueProductionRepository) {
     fun evaluate(artifact: DialogueArtifact): DialogueReviewHandoff {
         repository.bootstrap()
-        val hashBoundArtifact = if (artifact.contentSha256.isBlank()) {
-            artifact.copy(contentSha256 = ProductionRuleRegistry.artifactHash(artifact))
-        } else {
-            artifact
-        }
-        repository.ingestArtifact(hashBoundArtifact)
         val ruleSet = ProductionRuleRegistry.activeRuleSet()
         val profiles = ProductionRuleRegistry.characterProfiles()
         val language = ProductionRuleRegistry.languageProfile()
+        val referencedProfiles = profiles.filter { it.profileId in artifact.characterVoiceProfileIds }
+        val identityBoundArtifact = artifact.copy(
+            ruleSetContentSha256 = artifact.ruleSetContentSha256.ifBlank { ruleSet.contentSha256 },
+            characterVoiceProfileHashes = artifact.characterVoiceProfileHashes.ifEmpty {
+                referencedProfiles.associate { it.profileId to it.profileSha256 }
+            },
+            languageProfileSha256 = artifact.languageProfileSha256.ifBlank { language.profileSha256 },
+        )
+        val hashBoundArtifact = if (identityBoundArtifact.contentSha256.isBlank()) {
+            identityBoundArtifact.copy(contentSha256 = ProductionRuleRegistry.artifactHash(identityBoundArtifact))
+        } else {
+            identityBoundArtifact
+        }
+        repository.ingestArtifact(hashBoundArtifact)
         return DialogueReviewHandoff(
             artifact = hashBoundArtifact,
             ruleSet = ruleSet,
-            characterVoiceProfiles = profiles.filter { it.profileId in hashBoundArtifact.characterVoiceProfileIds },
+            characterVoiceProfiles = referencedProfiles,
             languageProfile = language,
             requiredReviewerRoles = ruleSet.requiredReviewerRoles,
             hardBlockerCodes = ruleSet.hardBlockerCodes,
@@ -41,8 +49,5 @@ class DialogueSelectionGateService(private val repository: DialogueProductionRep
 }
 
 class DialogueFinalizationService(private val repository: DialogueProductionRepository) {
-    fun finalize(request: DialogueFinalizeRequest): DialogueSelectionDecision {
-        repository.recordReviewBatch(request.reviewBatch)
-        return repository.select(request.selection)
-    }
+    fun finalize(request: DialogueFinalizeRequest): DialogueSelectionDecision = repository.finalize(request)
 }

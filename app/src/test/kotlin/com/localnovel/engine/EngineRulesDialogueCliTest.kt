@@ -13,6 +13,7 @@ import com.localnovel.engine.model.DialogueReviewVerdict
 import com.localnovel.engine.model.DialogueSelectionDecision
 import com.localnovel.engine.model.DialogueSelectionRequest
 import com.localnovel.engine.model.DialogueSelectionStatus
+import com.localnovel.engine.model.ProductionRuleSeverity
 import com.localnovel.engine.service.ProductionRuleRegistry
 import com.localnovel.engine.support.JsonSupport
 import java.nio.file.Files
@@ -60,7 +61,60 @@ class EngineRulesDialogueCliTest {
         assertEquals(1, Cli().run(listOf("evaluate-dialogue", "--db", db.toString(), "--input", path.toString())))
     }
 
+    @Test
+    fun cliRejectsUnknownNestedFields() {
+        val root = Files.createTempDirectory("engine-rules-cli-nested-unknown")
+        val db = root.resolve("story.db")
+        val encoded = JsonSupport.json.encodeToString(DialogueEvaluationRequest(artifact()))
+            .replace("\"productionId\"", "\"unexpectedNested\":true,\"productionId\"")
+        val path = root.resolve("bad-nested.json")
+        Files.writeString(path, encoded)
+
+        assertEquals(1, Cli().run(listOf("evaluate-dialogue", "--db", db.toString(), "--input", path.toString())))
+    }
+
+    @Test
+    fun blockedFinalizationReturnsNonZeroMachineStatus() {
+        val root = Files.createTempDirectory("engine-rules-cli-blocked")
+        val db = root.resolve("story.db")
+        val clean = artifact()
+        val badDraft = clean.copy(
+            artifactId = "cli-blocked-rescue",
+            contentSha256 = "",
+            lines = clean.lines.map { line -> if (line.lineId == "dlg-012") line.copy(text = "好。先碰你。") else line },
+        )
+        val bad = badDraft.copy(contentSha256 = ProductionRuleRegistry.artifactHash(badDraft))
+        val evaluation = write(root.resolve("evaluation.json"), DialogueEvaluationRequest(bad))
+        assertEquals(0, Cli().run(listOf("evaluate-dialogue", "--db", db.toString(), "--input", evaluation.toString())))
+        val blockers = ProductionRuleRegistry.canonicalFixtureFindings(bad)
+        val reviews = cleanReviews(bad).let { batch ->
+            batch.copy(
+                reviews = batch.reviews.mapIndexed { index, review ->
+                    if (index == 0) review.copy(
+                        verdict = DialogueReviewVerdict.REVISE,
+                        lineReviews = review.lineReviews.map { line ->
+                            line.copy(findings = blockers.filter { it.lineId == line.lineId })
+                        },
+                    ) else review
+                },
+            )
+        }
+        assertTrue(blockers.all { it.severity == ProductionRuleSeverity.BLOCKER })
+        val request = DialogueFinalizeRequest(
+            reviewBatch = reviews,
+            selection = DialogueSelectionRequest("cli-blocked-decision", bad.artifactId, "codex-cli", "cli-commit"),
+        )
+        val input = write(root.resolve("finalize.json"), request)
+        assertEquals(2, Cli().run(listOf("finalize-dialogue", "--db", db.toString(), "--input", input.toString())))
+    }
+
     private fun artifact(): DialogueArtifact {
+        val ruleSet = ProductionRuleRegistry.activeRuleSet()
+        val profileIds = listOf("voice-lu-chenxing-v1", "voice-tide-picker-v1")
+        val profileHashes = ProductionRuleRegistry.characterProfiles()
+            .filter { it.profileId in profileIds }
+            .associate { it.profileId to it.profileSha256 }
+        val language = ProductionRuleRegistry.languageProfile()
         val draft = DialogueArtifact(
             artifactId = "cli-natural-rescue",
             productionId = "dialogue02-cli",
@@ -68,8 +122,11 @@ class EngineRulesDialogueCliTest {
             contentSha256 = "",
             ruleSetId = ProductionRuleRegistry.RULE_SET_ID,
             ruleSetVersion = ProductionRuleRegistry.RULE_SET_VERSION,
-            characterVoiceProfileIds = listOf("voice-lu-chenxing-v1", "voice-tide-picker-v1"),
+            ruleSetContentSha256 = ruleSet.contentSha256,
+            characterVoiceProfileIds = profileIds,
+            characterVoiceProfileHashes = profileHashes,
             languageProfileId = ProductionRuleRegistry.LANGUAGE_PROFILE_ID,
+            languageProfileSha256 = language.profileSha256,
             lines = listOf(
                 DialogueLine("dlg-011", "scene-02", "character-tide-picker", "別碰箱子。", "HIGH", listOf("shot-013")),
                 DialogueLine("dlg-012", "scene-02", "character-lu-chenxing", "先救你。", "HIGH", listOf("shot-013")),

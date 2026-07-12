@@ -66,10 +66,10 @@
 - [x] Step 1：新增模型、Rule Registry、Profile 與 Migration 014，接入 migration loader。
 - [x] Step 2：新增 transaction-safe Repository、Review Intake、Selection Gate、Finalization Service 與 bypass 防護。
 - [x] Step 3：新增四個 CLI 命令與 Main help／dispatch，建立 JSON file protocol。
-- [ ] Step 4（CURRENT）：加入 mandatory negative／positive／revision re-review／rollback／Hash／CLI tests。
-- [ ] Step 5：重驗 DIALOGUE-01，提交 Rule Set、Profiles、三份 revised reviews、Findings、Decision 與報告。
-- [ ] Step 6：focused／full／migration upgrade／scope／secret／Hash 驗證與 High 唯讀 review。
-- [ ] Step 7：聚焦 Commit／Push，安全合併預設分支，更新 PROJECT_STATE 並停止。
+- [x] Step 4：完成 additive Migration 015、正規化 Artifact／Review 行證據、既有 014 trigger 升級、Rule Set／Profile content Hash 綁定，以及 mandatory negative／positive／revision re-review／rollback／Hash／CLI tests。
+- [x] Step 5：重驗 DIALOGUE-01，提交 Rule Set、Profiles、三份 revised reviews、Findings、Decision 與報告。
+- [x] Step 6：focused／full／migration upgrade／scope／secret／Hash 驗證與 High 唯讀 review。
+- [ ] Step 7（CURRENT）：聚焦 Commit／Push，安全合併預設分支，更新 PROJECT_STATE 並停止。
 
 ### Verification
 
@@ -91,6 +91,10 @@
 - 2026-07-13：藍圖腳本因主機只有 Windows Store Python stub 無法直接執行；以相同 copy／override 邏輯套用全部受控文件，Hash 與 diff 通過，沒有縮減藍圖範圍。
 - 2026-07-13：Step 1 完成。新增 14 個 Production Rule codes、Rule Set／角色／語言 Profile、Artifact／Review／Selection 模型與 additive Migration 014；migration loader 增加 trigger-aware 最小解析，compile 與既有 StoryChapter repository migration test PASS。
 - 2026-07-13：Step 2–3 完成。新增 immutable review batch、三角色／三 instance／逐句 quote／Rule Set／Hash 驗證、zero-blocker transaction gate、SQL trigger bypass guard、Finalization service 與四個 CLI；EngineRules repository／CLI focused tests PASS。
+- 2026-07-13：High 唯讀審查發現 `dialogue_selection_decisions` 可先 INSERT `NOT_SELECTABLE` 再 UPDATE 成 `SELECTED`，以及 verdict／`requiresHumanApproval` 未進 gate、Artifact Hash 僅綁 lines、finalize 分成兩個 transaction。完整測試在修補前停止；計畫更新為先封閉上述 authority bypass，再重新產生證據與跑完整驗證。
+- 2026-07-13：第一輪修補 focused tests PASS；第二輪 High 複核確認六項原 finding 已解決，但指出直接修改 014 無法升級已安裝 DB，且 SQL trigger 尚不能證明逐句 coverage／exactQuote。新增 Step 4 範圍：Migration 015 正規化行證據、重建 trigger、保護 Rule/Profile authority rows，並加入舊 014→015 與 fake-review bypass 測試。
+- 2026-07-13：Migration 015 與 hash schema v2 focused/full tests PASS；最終 High 複核再發現 JSON path 缺失的 SQLite NULL 三值邏輯，以及 SELECTED 後可追加 evidence。Step 4 最後修補加入明確 `json_type=array` 檢查與狀態感知 INSERT guards，修補後重跑 focused/full。
+- 2026-07-13：所有 release blockers 已修復；最後 High verdict `PASS_WITH_RISKS`、release blockers `NONE`、`APPROVE_RELEASE`。Focused tests PASS；完整套件 872 tests、0 failures／errors／skipped；JSON、Hash、quote、coverage、scope、secret 與 `git diff --check` PASS。進入 Step 7 Git 發布。
 
 ## Historical — Current Plan Window V3
 

@@ -77,9 +77,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
 
     override fun initialize() {
         dbPath.parent?.let { Files.createDirectories(it) }
-        connect { connection ->
+        withTransaction { connection ->
             connection.createStatement().use { statement ->
-                statement.executeUpdate("PRAGMA foreign_keys = ON")
                 listOf(
                     "001_init.sql",
                     "002_multi_turn_runtime.sql",
@@ -95,6 +94,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "012_reboot_drama_evaluation.sql",
                     "013_story_chapter_production.sql",
                     "014_production_rule_runtime.sql",
+                    "015_production_rule_authority_hardening.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")

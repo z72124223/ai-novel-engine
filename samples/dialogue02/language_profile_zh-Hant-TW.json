@@ -1,0 +1,14 @@
+{
+    "profileId":  "language-zh-Hant-TW-natural-v1",
+    "version":  "1.0.0",
+    "ruleSetId":  "engine-production-rules",
+    "ruleSetVersion":  "1.0.0",
+    "language":  "zh-Hant-TW",
+    "spokenRegister":  "Natural Taiwan Mandarin",
+    "localizationPolicy":  [
+                               "母稿維持自然台灣華語",
+                               "泛華語理解透過 metadata 與 localization，不混寫各地詞彙",
+                               "地區警告不得被誤升為 BLOCKER，除非造成重大語意誤讀"
+                           ],
+    "profileSha256":  "a5b1dd32d1361950fecb6424c26634f3706a2be4d5316c15204abe7bced31e78"
+}

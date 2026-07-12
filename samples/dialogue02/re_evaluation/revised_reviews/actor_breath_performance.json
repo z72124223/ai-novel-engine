@@ -1,0 +1,263 @@
+{
+    "reviewId":  "review-dialogue01-revised-actor-breath-20260713-01",
+    "artifactId":  "dialogue01-engine-rules-v1-revised",
+    "artifactSha256":  "0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2",
+    "ruleSetId":  "engine-production-rules",
+    "ruleSetVersion":  "1.0.0",
+    "reviewerRole":  "ACTOR_BREATH_AND_PERFORMANCE",
+    "reviewerInstanceId":  "actor-breath-performance-revised-20260713-01",
+    "lineReviews":  [
+                        {
+                            "lineId":  "dlg-001",
+                            "exactQuote":  "好。今天還有別的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "短句停點自然，可直接表演。"
+                        },
+                        {
+                            "lineId":  "dlg-002",
+                            "exactQuote":  "又不肯直接講。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "語意完整，不依賴額外表演修正。"
+                        },
+                        {
+                            "lineId":  "dlg-003",
+                            "exactQuote":  "有人搬過。還不只一趟。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "兩個觀察節拍清楚，呼吸可執行。"
+                        },
+                        {
+                            "lineId":  "dlg-004",
+                            "exactQuote":  "十分鐘！走人！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "警告與撤離命令明確。"
+                        },
+                        {
+                            "lineId":  "dlg-005",
+                            "exactQuote":  "你上次的十分鐘，有含稅嗎？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "非高壓救援核心段落，乾式玩笑可直接成立。"
+                        },
+                        {
+                            "lineId":  "dlg-006",
+                            "exactQuote":  "今天不要賭。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "短促制止清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-007",
+                            "exactQuote":  "照片呢？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "詢問對象明確。"
+                        },
+                        {
+                            "lineId":  "dlg-008",
+                            "exactQuote":  "卡住了。看它賞不賞臉。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "兩段式呼吸自然，未妨礙行動資訊。"
+                        },
+                        {
+                            "lineId":  "dlg-009",
+                            "exactQuote":  "山坡在另一邊。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "路線資訊簡潔可執行。"
+                        },
+                        {
+                            "lineId":  "dlg-010",
+                            "exactQuote":  "先看得到的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "當下行動優先順序清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-011",
+                            "exactQuote":  "別碰箱子。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "受傷者的防衛命令短促清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-012",
+                            "exactQuote":  "先救你。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "救援意圖由文字直接確立，無雙關或表演依賴。"
+                        },
+                        {
+                            "lineId":  "dlg-013",
+                            "exactQuote":  "那是我的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "防衛焦點明確，符合創傷下碎裂表達。"
+                        },
+                        {
+                            "lineId":  "dlg-014",
+                            "exactQuote":  "先上去。箱子等等再說。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離優先與箱子延後均明確可執行。"
+                        },
+                        {
+                            "lineId":  "dlg-015",
+                            "exactQuote":  "我抬石頭。你拉人。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "角色分工精確，適合高壓呼吸。"
+                        },
+                        {
+                            "lineId":  "dlg-016",
+                            "exactQuote":  "箱子？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "確認目標的單詞問句可直接表演。"
+                        },
+                        {
+                            "lineId":  "dlg-017",
+                            "exactQuote":  "不管。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "優先順序回應明確。"
+                        },
+                        {
+                            "lineId":  "dlg-018",
+                            "exactQuote":  "不行！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "受傷者抗拒清楚且符合壓力狀態。"
+                        },
+                        {
+                            "lineId":  "dlg-019",
+                            "exactQuote":  "手，還是箱子？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "選擇項明確，促使放棄箱子，無需表演補足救援意圖。"
+                        },
+                        {
+                            "lineId":  "dlg-020",
+                            "exactQuote":  "現在！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "即時行動命令清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-021",
+                            "exactQuote":  "太快了。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "承接浪況變化，短句可在受力後直接說出。"
+                        },
+                        {
+                            "lineId":  "dlg-022",
+                            "exactQuote":  "潮表還沒到。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "反差資訊簡潔，呼吸負擔低。"
+                        },
+                        {
+                            "lineId":  "dlg-023",
+                            "exactQuote":  "是浪。下一波不知道什麼時候來。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "危險來源與不確定性均由文字說清，長度適合高壓場景。"
+                        },
+                        {
+                            "lineId":  "dlg-024",
+                            "exactQuote":  "固定。抬高。布給我。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "三個急救動作分節明確，可逐項執行。"
+                        },
+                        {
+                            "lineId":  "dlg-025",
+                            "exactQuote":  "裡面什麼？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "詢問簡短，不拖延現場處置。"
+                        },
+                        {
+                            "lineId":  "dlg-026",
+                            "exactQuote":  "好。先不問。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "明確停止追問，文字本身即可成立。"
+                        },
+                        {
+                            "lineId":  "dlg-027",
+                            "exactQuote":  "回不去了。走上面。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "封路判斷與替代路線完整。"
+                        },
+                        {
+                            "lineId":  "dlg-028",
+                            "exactQuote":  "值守室能擋雨。我重撥一一九。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "避難點與聯絡行動具體可執行。"
+                        },
+                        {
+                            "lineId":  "dlg-029",
+                            "exactQuote":  "走。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離命令極短且明確。"
+                        },
+                        {
+                            "lineId":  "dlg-030",
+                            "exactQuote":  "大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——",
+                            "findings":  [
+
+                                         ],
+                            "note":  "報案資訊按位置、傷者、傷勢與狀態分節，單次呼吸可分段完成。"
+                        },
+                        {
+                            "lineId":  "dlg-031",
+                            "exactQuote":  "等雨小一點。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "延後行動的條件清楚，不依賴語氣避免誤讀。"
+                        }
+                    ],
+    "overallScore":  98,
+    "verdict":  "PASS",
+    "summary":  "修訂稿的 31 行對白全部完成獨立逐行覆蓋。高壓救援段落以短句、明確分工、撤離優先與急救命令構成，呼吸節點可執行；「先救你」直接消除救援意圖的雙關與表演依賴，未發現 BLOCKER 或其他需列入 finding 的問題。本評審只判定 engine-production-rules@1.0.0 下的對白可選性，不改變 NON_CANON_PILOT 邊界。",
+    "sourceCommitSha":  "31f7072da143559c6a1280b3631ea2f70cad404d"
+}

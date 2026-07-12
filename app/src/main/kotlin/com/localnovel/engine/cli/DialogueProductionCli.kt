@@ -2,6 +2,7 @@ package com.localnovel.engine.cli
 
 import com.localnovel.engine.model.DialogueEvaluationRequest
 import com.localnovel.engine.model.DialogueFinalizeRequest
+import com.localnovel.engine.model.DialogueSelectionStatus
 import com.localnovel.engine.repository.DialogueProductionRepository
 import com.localnovel.engine.service.DialogueFinalizationService
 import com.localnovel.engine.service.DialogueReviewOrchestrator
@@ -9,13 +10,20 @@ import com.localnovel.engine.service.DialogueSelectionGateService
 import com.localnovel.engine.support.JsonSupport
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 
 internal object DialogueProductionCli {
+    private val strictInputJson = Json {
+        ignoreUnknownKeys = false
+        explicitNulls = false
+    }
+
     fun evaluate(options: Map<String, String>): Int {
         val inputPath = Path.of(options.requiredCliOption("input"))
         requireTopLevelKeys(inputPath, setOf("artifact"))
-        val request = readCliJson<DialogueEvaluationRequest>(inputPath)
+        val request = readStrictCliJson<DialogueEvaluationRequest>(inputPath)
         val repository = dialogueRepository(options)
         val handoff = DialogueReviewOrchestrator(repository).evaluate(request.artifact)
         options["out"]?.let { writeCliJson(Path.of(it), handoff) }
@@ -41,7 +49,7 @@ internal object DialogueProductionCli {
     fun finalize(options: Map<String, String>): Int {
         val inputPath = Path.of(options.requiredCliOption("input"))
         requireTopLevelKeys(inputPath, setOf("reviewBatch", "selection"))
-        val request = readCliJson<DialogueFinalizeRequest>(inputPath)
+        val request = readStrictCliJson<DialogueFinalizeRequest>(inputPath)
         val decision = DialogueFinalizationService(dialogueRepository(options)).finalize(request)
         options["out"]?.let { writeCliJson(Path.of(it), decision) }
         println("artifactId=${decision.artifactId}")
@@ -49,7 +57,7 @@ internal object DialogueProductionCli {
         println("blockerCount=${decision.blockerCount}")
         println("warningCount=${decision.warningCount}")
         println("decisionSha256=${decision.decisionSha256}")
-        return 0
+        return if (decision.status == DialogueSelectionStatus.SELECTED) 0 else 2
     }
 
     fun showSelection(options: Map<String, String>): Int {
@@ -59,7 +67,7 @@ internal object DialogueProductionCli {
         println("artifactId=${view.artifact.artifactId}")
         println("approvalState=${view.approvalState}")
         println("selectionStatus=${decision?.status ?: "NONE"}")
-        println("selectedArtifactSha256=${decision?.selectedArtifactSha256.orEmpty()}")
+        println("selectedArtifactSha256=${decision?.takeIf { it.status == DialogueSelectionStatus.SELECTED }?.selectedArtifactSha256.orEmpty()}")
         return 0
     }
 
@@ -72,4 +80,7 @@ internal object DialogueProductionCli {
         val keys = JsonSupport.json.parseToJsonElement(Files.readString(path).removePrefix("\uFEFF")).jsonObject.keys
         require(keys == allowed) { "Unexpected or missing top-level fields: expected $allowed, got $keys" }
     }
+
+    private inline fun <reified T> readStrictCliJson(path: Path): T =
+        strictInputJson.decodeFromString(Files.readString(path).removePrefix("\uFEFF"))
 }

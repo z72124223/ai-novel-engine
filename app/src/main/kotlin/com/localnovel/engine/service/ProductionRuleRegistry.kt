@@ -2,6 +2,7 @@ package com.localnovel.engine.service
 
 import com.localnovel.engine.model.CharacterVoiceProfile
 import com.localnovel.engine.model.DialogueArtifact
+import com.localnovel.engine.model.DialogueArtifactHashPayload
 import com.localnovel.engine.model.DialogueFinding
 import com.localnovel.engine.model.DialogueReviewerRole
 import com.localnovel.engine.model.LanguageProductionProfile
@@ -98,7 +99,27 @@ object ProductionRuleRegistry {
         return withoutHash.copy(profileSha256 = sha256(JsonSupport.json.encodeToString(withoutHash)))
     }
 
-    fun artifactHash(artifact: DialogueArtifact): String = sha256(JsonSupport.json.encodeToString(artifact.lines))
+    fun artifactHash(artifact: DialogueArtifact): String = sha256(
+        JsonSupport.json.encodeToString(
+            DialogueArtifactHashPayload(
+                artifactId = artifact.artifactId,
+                productionId = artifact.productionId,
+                artifactKind = artifact.artifactKind,
+                parentArtifactSha256 = artifact.parentArtifactSha256,
+                ruleSetId = artifact.ruleSetId,
+                ruleSetVersion = artifact.ruleSetVersion,
+                ruleSetContentSha256 = artifact.ruleSetContentSha256,
+                characterVoiceProfileIds = artifact.characterVoiceProfileIds.sorted(),
+                characterVoiceProfileHashes = artifact.characterVoiceProfileHashes.toSortedMap(),
+                languageProfileId = artifact.languageProfileId,
+                languageProfileSha256 = artifact.languageProfileSha256,
+                lines = artifact.lines,
+                autoRevisionCount = artifact.autoRevisionCount,
+                boundary = artifact.boundary,
+                sourceCommitSha = artifact.sourceCommitSha,
+            ),
+        ),
+    )
 
     fun canonicalFixtureFindings(artifact: DialogueArtifact): List<DialogueFinding> {
         val lines = artifact.lines

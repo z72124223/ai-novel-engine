@@ -4,7 +4,7 @@
 
 ## Current Override — ENGINE-RULES-01 / DIALOGUE-02
 
-- Status: `GPT_BLUEPRINT_COMPLETE_CODEX_READY`
+- Status: `ENGINE_RULES01_IMPLEMENTATION_COMPLETE_READY_TO_PUBLISH`
 - Current work: `ENGINE_RULES01_DIALOGUE02`
 - Collaboration: `GPT_PLANS_CODEX_IMPLEMENTS`
 - Implementation branch: `codex/engine-rules01-dialogue02`
@@ -15,6 +15,11 @@
 - Required charter: `docs/ENGINE_ENFORCED_PRODUCTION_RULES_V1.md`
 - Required work package: `docs/work-packages/ENGINE-RULES-01_DIALOGUE-02.md`
 - DIALOGUE-01 is historical evidence and must be re-evaluated, not silently trusted.
+- Rule Set: `engine-production-rules@1.0.0`
+- Initial Artifact: `NOT_SELECTABLE`, SHA-256 `805cb62cd19ab42ca10df6b98cdde315fb6580a6d098ded7e235cd178f28a0a9`, blockers `9`.
+- Revised Artifact: `SELECTED`, SHA-256 `0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2`, blockers `0`, warnings `1`.
+- Verification: focused PASS; full suite `872/872` PASS; High review `PASS_WITH_RISKS`, release blockers `NONE`.
+- Completion classification: `ENGINE_RULES01_PASS_WITH_SEMANTIC_WARNINGS`.
 - GitHub remote is the highest team authority.
 - Do not start image, video, Provider, Canon, next chapter or interactive game.
 

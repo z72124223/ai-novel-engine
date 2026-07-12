@@ -1,0 +1,518 @@
+{
+    "artifact": {
+        "artifactId": "dialogue01-engine-rules-v1-revised",
+        "productionId": "screen01-tideline-beyond-dialogue02",
+        "artifactKind": "REVISED",
+        "parentArtifactSha256": "805cb62cd19ab42ca10df6b98cdde315fb6580a6d098ded7e235cd178f28a0a9",
+        "contentSha256": "0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2",
+        "ruleSetId": "engine-production-rules",
+        "ruleSetVersion": "1.0.0",
+        "ruleSetContentSha256": "0bcf00b5081a7b34dd0936c146d499e5ed2620184a5ec22e7cfc9a28ffb701ac",
+        "characterVoiceProfileIds": [
+            "voice-lu-chenxing-v1",
+            "voice-zhou-ke-v1",
+            "voice-tide-picker-v1"
+        ],
+        "characterVoiceProfileHashes": {
+            "voice-lu-chenxing-v1": "da67fbbbc3e7f3b1cecf0133566fdcd3597f2c5ae8fb21688510d27f13b9ac47",
+            "voice-zhou-ke-v1": "bde2c9bae22fef4e6705813209fb07fc63bd0654d4a1034b8e4a116137af8f60",
+            "voice-tide-picker-v1": "a53e720af23156f1939a2db0758322b81160d7b70c39265167dc3bca7dd50a71"
+        },
+        "languageProfileId": "language-zh-Hant-TW-natural-v1",
+        "languageProfileSha256": "a5b1dd32d1361950fecb6424c26634f3706a2be4d5316c15204abe7bced31e78",
+        "lines": [
+            {
+                "lineId": "dlg-001",
+                "sceneId": "scene-01",
+                "speakerId": "character-lu-chenxing",
+                "text": "好。今天還有別的。",
+                "shotIds": [
+                    "shot-003"
+                ]
+            },
+            {
+                "lineId": "dlg-002",
+                "sceneId": "scene-01",
+                "speakerId": "character-lu-chenxing",
+                "text": "又不肯直接講。",
+                "shotIds": [
+                    "shot-003"
+                ]
+            },
+            {
+                "lineId": "dlg-003",
+                "sceneId": "scene-01",
+                "speakerId": "character-lu-chenxing",
+                "text": "有人搬過。還不只一趟。",
+                "shotIds": [
+                    "shot-004"
+                ]
+            },
+            {
+                "lineId": "dlg-004",
+                "sceneId": "scene-01",
+                "speakerId": "character-zhou-ke",
+                "text": "十分鐘！走人！",
+                "shotIds": [
+                    "shot-005"
+                ]
+            },
+            {
+                "lineId": "dlg-005",
+                "sceneId": "scene-01",
+                "speakerId": "character-lu-chenxing",
+                "text": "你上次的十分鐘，有含稅嗎？",
+                "shotIds": [
+                    "shot-006"
+                ]
+            },
+            {
+                "lineId": "dlg-006",
+                "sceneId": "scene-01",
+                "speakerId": "character-zhou-ke",
+                "text": "今天不要賭。",
+                "shotIds": [
+                    "shot-006"
+                ]
+            },
+            {
+                "lineId": "dlg-007",
+                "sceneId": "scene-02",
+                "speakerId": "character-zhou-ke",
+                "text": "照片呢？",
+                "shotIds": [
+                    "shot-009"
+                ]
+            },
+            {
+                "lineId": "dlg-008",
+                "sceneId": "scene-02",
+                "speakerId": "character-lu-chenxing",
+                "text": "卡住了。看它賞不賞臉。",
+                "shotIds": [
+                    "shot-009"
+                ]
+            },
+            {
+                "lineId": "dlg-009",
+                "sceneId": "scene-02",
+                "speakerId": "character-zhou-ke",
+                "text": "山坡在另一邊。",
+                "shotIds": [
+                    "shot-011"
+                ]
+            },
+            {
+                "lineId": "dlg-010",
+                "sceneId": "scene-02",
+                "speakerId": "character-lu-chenxing",
+                "text": "先看得到的。",
+                "shotIds": [
+                    "shot-011"
+                ]
+            },
+            {
+                "lineId": "dlg-011",
+                "sceneId": "scene-02",
+                "speakerId": "character-tide-picker",
+                "text": "別碰箱子。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-013"
+                ]
+            },
+            {
+                "lineId": "dlg-012",
+                "sceneId": "scene-02",
+                "speakerId": "character-lu-chenxing",
+                "text": "先救你。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-013"
+                ]
+            },
+            {
+                "lineId": "dlg-013",
+                "sceneId": "scene-02",
+                "speakerId": "character-tide-picker",
+                "text": "那是我的。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-013"
+                ]
+            },
+            {
+                "lineId": "dlg-014",
+                "sceneId": "scene-02",
+                "speakerId": "character-lu-chenxing",
+                "text": "先上去。箱子等等再說。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-013"
+                ]
+            },
+            {
+                "lineId": "dlg-015",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "我抬石頭。你拉人。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-017"
+                ]
+            },
+            {
+                "lineId": "dlg-016",
+                "sceneId": "scene-03",
+                "speakerId": "character-zhou-ke",
+                "text": "箱子？",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-017"
+                ]
+            },
+            {
+                "lineId": "dlg-017",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "不管。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-017"
+                ]
+            },
+            {
+                "lineId": "dlg-018",
+                "sceneId": "scene-03",
+                "speakerId": "character-tide-picker",
+                "text": "不行！",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-017"
+                ]
+            },
+            {
+                "lineId": "dlg-019",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "手，還是箱子？",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-017"
+                ]
+            },
+            {
+                "lineId": "dlg-020",
+                "sceneId": "scene-03",
+                "speakerId": "character-zhou-ke",
+                "text": "現在！",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-021"
+                ]
+            },
+            {
+                "lineId": "dlg-021",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "太快了。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-023"
+                ]
+            },
+            {
+                "lineId": "dlg-022",
+                "sceneId": "scene-03",
+                "speakerId": "character-zhou-ke",
+                "text": "潮表還沒到。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-023"
+                ]
+            },
+            {
+                "lineId": "dlg-023",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "是浪。下一波不知道什麼時候來。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-023"
+                ]
+            },
+            {
+                "lineId": "dlg-024",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "固定。抬高。布給我。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-024"
+                ]
+            },
+            {
+                "lineId": "dlg-025",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "裡面什麼？",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-024"
+                ]
+            },
+            {
+                "lineId": "dlg-026",
+                "sceneId": "scene-03",
+                "speakerId": "character-lu-chenxing",
+                "text": "好。先不問。",
+                "pressureLevel": "HIGH",
+                "shotIds": [
+                    "shot-024"
+                ]
+            },
+            {
+                "lineId": "dlg-027",
+                "sceneId": "scene-04",
+                "speakerId": "character-zhou-ke",
+                "text": "回不去了。走上面。",
+                "shotIds": [
+                    "shot-025"
+                ]
+            },
+            {
+                "lineId": "dlg-028",
+                "sceneId": "scene-04",
+                "speakerId": "character-zhou-ke",
+                "text": "值守室能擋雨。我重撥一一九。",
+                "shotIds": [
+                    "shot-025"
+                ]
+            },
+            {
+                "lineId": "dlg-029",
+                "sceneId": "scene-04",
+                "speakerId": "character-lu-chenxing",
+                "text": "走。",
+                "shotIds": [
+                    "shot-026"
+                ]
+            },
+            {
+                "lineId": "dlg-030",
+                "sceneId": "scene-04",
+                "speakerId": "character-zhou-ke",
+                "text": "大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——",
+                "shotIds": [
+                    "shot-028"
+                ]
+            },
+            {
+                "lineId": "dlg-031",
+                "sceneId": "scene-04",
+                "speakerId": "character-lu-chenxing",
+                "text": "等雨小一點。",
+                "shotIds": [
+                    "shot-031"
+                ]
+            }
+        ],
+        "autoRevisionCount": 1,
+        "sourceCommitSha": "31f7072da143559c6a1280b3631ea2f70cad404d"
+    },
+    "ruleSet": {
+        "ruleSetId": "engine-production-rules",
+        "version": "1.0.0",
+        "rules": [
+            {
+                "code": "UNNATURAL_SPOKEN_CHINESE",
+                "category": "LANGUAGE_LOCALE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "unnatural spoken chinese"
+            },
+            {
+                "code": "ESSAY_LIKE_DIALOGUE",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "essay like dialogue"
+            },
+            {
+                "code": "SYMMETRIC_ARGUMENT_EXCHANGE",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "symmetric argument exchange"
+            },
+            {
+                "code": "CHARACTER_VOICE_COLLAPSE",
+                "category": "CHARACTER_VOICE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "character voice collapse"
+            },
+            {
+                "code": "HIGH_PRESSURE_OVERLONG_LINE",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "high pressure overlong line"
+            },
+            {
+                "code": "FORCED_WIT_UNDER_DANGER",
+                "category": "DIALOGUE",
+                "defaultSeverity": "BLOCKER",
+                "hardBlocker": true,
+                "description": "High-pressure dialogue sacrifices executable rescue information for a clever line."
+            },
+            {
+                "code": "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+                "category": "DIALOGUE",
+                "defaultSeverity": "BLOCKER",
+                "hardBlocker": true,
+                "description": "A rescue or trauma line creates accidental flirtation or a consequential double meaning."
+            },
+            {
+                "code": "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING",
+                "category": "DIALOGUE",
+                "defaultSeverity": "BLOCKER",
+                "hardBlocker": true,
+                "description": "The text requires acting or staging to avoid a major misreading."
+            },
+            {
+                "code": "DIALOGUE_ACTION_REDUNDANCY",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "dialogue action redundancy"
+            },
+            {
+                "code": "EXPOSITION_AS_SPEECH",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "exposition as speech"
+            },
+            {
+                "code": "AMBIGUOUS_PRONOUN_OR_OBJECT",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "ambiguous pronoun or object"
+            },
+            {
+                "code": "MEMORABLE_LINE_DENSITY_EXCEEDED",
+                "category": "DIALOGUE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "memorable line density exceeded"
+            },
+            {
+                "code": "UNSUPPORTED_REGIONAL_TERM",
+                "category": "LANGUAGE_LOCALE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "unsupported regional term"
+            },
+            {
+                "code": "TRANSLATION_LIKE_PHRASING",
+                "category": "LANGUAGE_LOCALE",
+                "defaultSeverity": "WARNING",
+                "hardBlocker": false,
+                "description": "translation like phrasing"
+            }
+        ],
+        "requiredReviewerRoles": [
+            "TAIWAN_SPOKEN_DIALOGUE",
+            "ACTOR_BREATH_AND_PERFORMANCE",
+            "PAN_CHINESE_COMPREHENSION"
+        ],
+        "hardBlockerCodes": [
+            "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+            "FORCED_WIT_UNDER_DANGER",
+            "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING"
+        ],
+        "contentSha256": "0bcf00b5081a7b34dd0936c146d499e5ed2620184a5ec22e7cfc9a28ffb701ac"
+    },
+    "characterVoiceProfiles": [
+        {
+            "profileId": "voice-lu-chenxing-v1",
+            "version": "1.0.0",
+            "characterId": "character-lu-chenxing",
+            "ruleSetId": "engine-production-rules",
+            "ruleSetVersion": "1.0.0",
+            "voiceRules": [
+                "短句",
+                "觀察型乾式幽默",
+                "高壓時減少笑話",
+                "真實傷害後停下",
+                "不靠降智"
+            ],
+            "forbiddenPatterns": [
+                "高壓救援中的調情雙關",
+                "長篇解釋證明聰明"
+            ],
+            "profileSha256": "da67fbbbc3e7f3b1cecf0133566fdcd3597f2c5ae8fb21688510d27f13b9ac47"
+        },
+        {
+            "profileId": "voice-zhou-ke-v1",
+            "version": "1.0.0",
+            "characterId": "character-zhou-ke",
+            "ruleSetId": "engine-production-rules",
+            "ruleSetVersion": "1.0.0",
+            "voiceRules": [
+                "極短",
+                "命令、路線、救援",
+                "害怕時更少話"
+            ],
+            "forbiddenPatterns": [
+                "配合主角所有笑點",
+                "危急時完整論述"
+            ],
+            "profileSha256": "bde2c9bae22fef4e6705813209fb07fc63bd0654d4a1034b8e4a116137af8f60"
+        },
+        {
+            "profileId": "voice-tide-picker-v1",
+            "version": "1.0.0",
+            "characterId": "character-tide-picker",
+            "ruleSetId": "engine-production-rules",
+            "ruleSetVersion": "1.0.0",
+            "voiceRules": [
+                "防衛、重複、碎裂",
+                "受傷時只保留關鍵詞"
+            ],
+            "forbiddenPatterns": [
+                "長篇解釋箱子",
+                "在創傷中完整說理"
+            ],
+            "profileSha256": "a53e720af23156f1939a2db0758322b81160d7b70c39265167dc3bca7dd50a71"
+        }
+    ],
+    "languageProfile": {
+        "profileId": "language-zh-Hant-TW-natural-v1",
+        "version": "1.0.0",
+        "ruleSetId": "engine-production-rules",
+        "ruleSetVersion": "1.0.0",
+        "language": "zh-Hant-TW",
+        "spokenRegister": "Natural Taiwan Mandarin",
+        "localizationPolicy": [
+            "母稿維持自然台灣華語",
+            "泛華語理解透過 metadata 與 localization，不混寫各地詞彙",
+            "地區警告不得被誤升為 BLOCKER，除非造成重大語意誤讀"
+        ],
+        "profileSha256": "a5b1dd32d1361950fecb6424c26634f3706a2be4d5316c15204abe7bced31e78"
+    },
+    "requiredReviewerRoles": [
+        "TAIWAN_SPOKEN_DIALOGUE",
+        "ACTOR_BREATH_AND_PERFORMANCE",
+        "PAN_CHINESE_COMPREHENSION"
+    ],
+    "hardBlockerCodes": [
+        "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+        "FORCED_WIT_UNDER_DANGER",
+        "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING"
+    ],
+    "deterministicFindings": [],
+    "instruction": "三位獨立 reviewer 必須逐句覆蓋、引用 exact quote、綁定 Artifact SHA 與 Rule Set；任何 BLOCKER 禁止選定。"
+}

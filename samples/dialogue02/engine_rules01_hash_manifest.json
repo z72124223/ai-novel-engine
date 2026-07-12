@@ -1,0 +1,126 @@
+{
+    "manifestId":  "engine-rules01-evidence-hashes-v1",
+    "workPackage":  "ENGINE-RULES-01_DIALOGUE-02",
+    "ruleSet":  "engine-production-rules@1.0.0",
+    "generatedAt":  "2026-07-13",
+    "hashAlgorithm":  "SHA-256",
+    "excludesSelf":  true,
+    "entryCount":  23,
+    "entries":  [
+                    {
+                        "path":  "samples/dialogue02/active_rule_set.json",
+                        "sha256":  "af2c5ea0ec4f983567be40a761af724961e0c56d9851ecae96351890df447f09",
+                        "bytes":  5395
+                    },
+                    {
+                        "path":  "samples/dialogue02/character_voice_profiles.json",
+                        "sha256":  "819ecadcb7be13f673efeb60678f927807f0a53dad970f3ebfcc5b9aec7fb819",
+                        "bytes":  2193
+                    },
+                    {
+                        "path":  "samples/dialogue02/fixtures/accidental_flirtation_rescue.json",
+                        "sha256":  "ad8f714c3abb16cd964386161c05e29c0ae15004b727461d4b46a04f46ead020",
+                        "bytes":  634
+                    },
+                    {
+                        "path":  "samples/dialogue02/fixtures/natural_rescue_control.json",
+                        "sha256":  "d61283154d70e39c33fefd68be73ed42d68f2c985024b36219bf7d5f161cf7ee",
+                        "bytes":  504
+                    },
+                    {
+                        "path":  "samples/dialogue02/language_profile_zh-Hant-TW.json",
+                        "sha256":  "923df187b0b19ad051ecef3766d444a2b7fc1652029d6170b5ede4ee47f8c76c",
+                        "bytes":  675
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_artifact_view.json",
+                        "sha256":  "597b508f3d0e44f57b66981a98dc70a47faa931732ea6d123f13e9a6371d6f0f",
+                        "bytes":  47935
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_evaluation_request.json",
+                        "sha256":  "31890f050653be3bbef1583a426eb002fcffbc6c8a3da4a93ab0cab494dd6867",
+                        "bytes":  5290
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_finalize_request.json",
+                        "sha256":  "a44c0e8798018745f28ab9309eaf648b4b13b2db9bb01d4963bd923f82754111",
+                        "bytes":  77559
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_review_handoff.json",
+                        "sha256":  "16f9fa5f08655bd2210e717d1a6ef9491e08e5fba1e92760e173db11f8261eb1",
+                        "bytes":  19685
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_reviews/actor_breath_performance.json",
+                        "sha256":  "0b2847d2cc2bfbb2036dacddd924fc6ab37098754774eb2ac136eaa9568caa5d",
+                        "bytes":  15277
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_reviews/pan_chinese_comprehension.json",
+                        "sha256":  "e2661c5af99f8129419e3ad2143c48eacf87c9da5989a44d253d11b2f2087215",
+                        "bytes":  15753
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_reviews/taiwan_spoken_dialogue.json",
+                        "sha256":  "b990669af279f6b5d1531f40463227f6150b6976a0564f57ae642778c5fe0d4c",
+                        "bytes":  14522
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/initial_selection_decision.json",
+                        "sha256":  "9cd24f048a68b7aa704a3bea65f76122c8bf361829e07424e70edd5e2c9ea361",
+                        "bytes":  758
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_artifact.json",
+                        "sha256":  "e65d2d2c482000b5171914549da524f982098fdefe770caf068e96c7e12f78d1",
+                        "bytes":  14074
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_artifact_view.json",
+                        "sha256":  "61d56f05455f49108bc0d3084547a38da96b1ffe300b294f9fbcbdd18d789451",
+                        "bytes":  36690
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_evaluation_request.json",
+                        "sha256":  "c3633d8d310e1002ca0bc18e8557148fb4010a1b6056c58b5561ae4dbd268308",
+                        "bytes":  18681
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_finalize_request.json",
+                        "sha256":  "739fbda8e2126e791aa9594a303acf60caadc44cd8b042fca35d6328006826f9",
+                        "bytes":  66035
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_review_handoff.json",
+                        "sha256":  "8bb8b9bd8b1300e9a76e413599da733db0b9f4a5d37024bd359bfca3cddbc6e0",
+                        "bytes":  18524
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_reviews/actor_breath_performance.json",
+                        "sha256":  "6375a7b4f5bec4cfd88d09f6d7fcb3bf8afe91f1ea67529bb08c13df77ef0f50",
+                        "bytes":  11995
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_reviews/pan_chinese_comprehension.json",
+                        "sha256":  "59ccd96e70594bac262f017892e1220916f04c286f27e7f8d30f851c696a9b3f",
+                        "bytes":  12937
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_reviews/taiwan_spoken_dialogue.json",
+                        "sha256":  "eb835ecf0bb95bf30d10ee9df9d1630f279f1e6085893f74d14a6d3e7cdcb920",
+                        "bytes":  12296
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_selection_decision.json",
+                        "sha256":  "30c547962182e61bd9c93402a966b0c5c597519202ab7388c169ef55bd7a357f",
+                        "bytes":  685
+                    },
+                    {
+                        "path":  "samples/dialogue02/re_evaluation/revised_selection_view.json",
+                        "sha256":  "61d56f05455f49108bc0d3084547a38da96b1ffe300b294f9fbcbdd18d789451",
+                        "bytes":  36690
+                    }
+                ]
+}

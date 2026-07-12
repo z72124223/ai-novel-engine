@@ -6,6 +6,7 @@ import com.localnovel.engine.model.DialogueArtifact
 import com.localnovel.engine.model.DialogueArtifactKind
 import com.localnovel.engine.model.DialogueArtifactView
 import com.localnovel.engine.model.DialogueFinding
+import com.localnovel.engine.model.DialogueFinalizeRequest
 import com.localnovel.engine.model.DialogueReviewBatch
 import com.localnovel.engine.model.DialogueReviewRun
 import com.localnovel.engine.model.DialogueReviewerRole
@@ -101,6 +102,15 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
                 JsonSupport.json.encodeToString(profile),
                 timestamp,
             )
+            val persistedProfileHash = repository.queryRows(
+                connection,
+                "SELECT profile_sha256 FROM character_voice_profiles WHERE profile_id = ? AND profile_version = ?",
+                profile.profileId,
+                profile.version,
+            ).single().getValue("profile_sha256")
+            require(persistedProfileHash == profile.profileSha256) {
+                "Character voice profile identity already exists with different content."
+            }
         }
         require(languageProfile.ruleSetId == ruleSet.ruleSetId && languageProfile.ruleSetVersion == ruleSet.version)
         require(languageProfile.profileSha256 == ProductionRuleRegistry.sha256(JsonSupport.json.encodeToString(languageProfile.copy(profileSha256 = ""))))
@@ -120,6 +130,15 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
             JsonSupport.json.encodeToString(languageProfile),
             timestamp,
         )
+        val persistedLanguageHash = repository.queryRows(
+            connection,
+            "SELECT profile_sha256 FROM language_production_profiles WHERE profile_id = ? AND profile_version = ?",
+            languageProfile.profileId,
+            languageProfile.version,
+        ).single().getValue("profile_sha256")
+        require(persistedLanguageHash == languageProfile.profileSha256) {
+            "Language profile identity already exists with different content."
+        }
     }
 
     fun ingestArtifact(artifact: DialogueArtifact) = repository.withTransaction { connection ->
@@ -131,6 +150,13 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
         require(artifact.lines.all { it.lineId.isNotBlank() && it.speakerId.isNotBlank() && it.text.isNotBlank() })
         require(artifact.contentSha256 == ProductionRuleRegistry.artifactHash(artifact)) { "Dialogue artifact SHA-256 mismatch." }
         require(ruleSetExists(connection, artifact.ruleSetId, artifact.ruleSetVersion)) { "Unknown Rule Set." }
+        val persistedRuleSetHash = repository.queryRows(
+            connection,
+            "SELECT content_sha256 FROM production_rule_sets WHERE rule_set_id = ? AND rule_set_version = ? AND status = 'ACTIVE'",
+            artifact.ruleSetId,
+            artifact.ruleSetVersion,
+        ).single().getValue("content_sha256")
+        require(artifact.ruleSetContentSha256 == persistedRuleSetHash) { "Artifact Rule Set content hash mismatch." }
         requireProfiles(connection, artifact)
 
         val initialState = when (artifact.artifactKind) {
@@ -147,6 +173,8 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
                     "Revision requires a blocked and reviewed initial artifact."
                 }
                 require(parent.getValue("content_sha256") != artifact.contentSha256) { "Revision hash must differ from initial hash." }
+                val parentArtifact = JsonSupport.json.decodeFromString<DialogueArtifact>(parent.getValue("content_json").orEmpty())
+                require(parentArtifact.lines != artifact.lines) { "Revision must change dialogue content, not only metadata." }
                 DialogueApprovalState.REVISED_PENDING_REVIEW
             }
         }
@@ -158,8 +186,8 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
                 artifact_id, production_id, artifact_kind, parent_artifact_sha256, content_sha256,
                 content_json, rule_set_id, rule_set_version, character_profile_refs_json,
                 language_profile_ref, approval_state, auto_revision_count, boundary,
-                source_commit_sha, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                source_commit_sha, created_at, updated_at, hash_schema_version
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 2)
             """.trimIndent(),
             artifact.artifactId,
             artifact.productionId,
@@ -178,9 +206,28 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
             timestamp,
             timestamp,
         )
+        artifact.lines.forEach { line ->
+            repository.executeUpdate(
+                connection,
+                "INSERT INTO dialogue_artifact_lines(artifact_id, line_id, exact_quote) VALUES (?, ?, ?)",
+                artifact.artifactId,
+                line.lineId,
+                line.text,
+            )
+        }
     }
 
     fun recordReviewBatch(batch: DialogueReviewBatch) = repository.withTransaction { connection ->
+        recordReviewBatch(connection, batch)
+    }
+
+    fun finalize(request: DialogueFinalizeRequest): DialogueSelectionDecision = repository.withTransaction { connection ->
+        recordReviewBatch(connection, request.reviewBatch)
+        select(connection, request.selection)
+    }
+
+    private fun recordReviewBatch(connection: Connection, batch: DialogueReviewBatch) {
+        requireCurrentHashSchema(connection, batch.artifactId)
         val artifact = artifact(connection, batch.artifactId)
         val state = artifactState(connection, batch.artifactId)
         require(state in setOf(DialogueApprovalState.REVIEW_PENDING, DialogueApprovalState.REVISED_PENDING_REVIEW)) {
@@ -230,6 +277,15 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
                 review.sourceCommitSha,
                 now(),
             )
+            review.lineReviews.forEach { lineReview ->
+                repository.executeUpdate(
+                    connection,
+                    "INSERT INTO dialogue_review_line_coverage(review_id, line_id, exact_quote) VALUES (?, ?, ?)",
+                    review.reviewId,
+                    lineReview.lineId,
+                    lineReview.exactQuote,
+                )
+            }
             review.lineReviews.flatMap { it.findings }.forEach { finding ->
                 repository.executeUpdate(
                     connection,
@@ -253,10 +309,14 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
             }
         }
         val blockerCount = allSubmittedFindings.count { it.severity == ProductionRuleSeverity.BLOCKER }
+        val requiresHumanDecision = batch.reviews.any { it.verdict == DialogueReviewVerdict.HUMAN_DECISION_REQUIRED } ||
+            allSubmittedFindings.any { it.requiresHumanApproval }
+        val requiresRevision = blockerCount > 0 || batch.reviews.any { it.verdict == DialogueReviewVerdict.REVISE }
         val nextState = when {
-            blockerCount == 0 -> DialogueApprovalState.SELECTABLE
-            artifact.artifactKind == DialogueArtifactKind.REVISED -> DialogueApprovalState.HUMAN_DECISION_REQUIRED
-            else -> DialogueApprovalState.REVISE_REQUIRED
+            requiresHumanDecision -> DialogueApprovalState.HUMAN_DECISION_REQUIRED
+            requiresRevision && artifact.artifactKind == DialogueArtifactKind.REVISED -> DialogueApprovalState.HUMAN_DECISION_REQUIRED
+            requiresRevision -> DialogueApprovalState.REVISE_REQUIRED
+            else -> DialogueApprovalState.SELECTABLE
         }
         check(
             repository.executeUpdate(
@@ -271,7 +331,12 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
     }
 
     fun select(request: DialogueSelectionRequest): DialogueSelectionDecision = repository.withTransaction { connection ->
+        select(connection, request)
+    }
+
+    private fun select(connection: Connection, request: DialogueSelectionRequest): DialogueSelectionDecision {
         require(request.decisionId.isNotBlank() && request.decisionActorId.isNotBlank() && request.sourceCommitSha.isNotBlank())
+        requireCurrentHashSchema(connection, request.artifactId)
         val artifact = artifact(connection, request.artifactId)
         val state = artifactState(connection, request.artifactId)
         val reviews = reviewRows(connection, artifact.artifactId)
@@ -285,6 +350,9 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
         if (!covered) reasons += "LINE_COVERAGE_INCOMPLETE"
         val blockerCount = findings.count { it.severity == ProductionRuleSeverity.BLOCKER }
         if (blockerCount > 0) reasons += "BLOCKER_PRESENT"
+        if (reviews.any { it.verdict == DialogueReviewVerdict.REVISE }) reasons += "REVIEW_REQUIRES_REVISION"
+        if (reviews.any { it.verdict == DialogueReviewVerdict.HUMAN_DECISION_REQUIRED }) reasons += "REVIEW_REQUIRES_HUMAN_DECISION"
+        if (findings.any { it.requiresHumanApproval }) reasons += "FINDING_REQUIRES_HUMAN_APPROVAL"
         if (state != DialogueApprovalState.SELECTABLE) reasons += "ARTIFACT_NOT_SELECTABLE"
         if (artifact.artifactKind == DialogueArtifactKind.REVISED) {
             if (artifact.autoRevisionCount != 1 || artifact.parentArtifactSha256.isBlank()) reasons += "REVISION_LIFECYCLE_INVALID"
@@ -292,7 +360,9 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
         val warningCount = findings.count { it.severity == ProductionRuleSeverity.WARNING }
         val status = when {
             reasons.isEmpty() -> DialogueSelectionStatus.SELECTED
-            artifact.artifactKind == DialogueArtifactKind.REVISED && blockerCount > 0 -> DialogueSelectionStatus.HUMAN_DECISION_REQUIRED
+            state == DialogueApprovalState.HUMAN_DECISION_REQUIRED ||
+                reviews.any { it.verdict == DialogueReviewVerdict.HUMAN_DECISION_REQUIRED } ||
+                findings.any { it.requiresHumanApproval } -> DialogueSelectionStatus.HUMAN_DECISION_REQUIRED
             else -> DialogueSelectionStatus.NOT_SELECTABLE
         }
         val unsigned = DialogueSelectionDecision(
@@ -344,7 +414,7 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
                 ) == 1,
             ) { "Dialogue selection state changed concurrently." }
         }
-        decision
+        return decision
     }
 
     fun get(artifactId: String): DialogueArtifactView = repository.withConnection { connection ->
@@ -380,27 +450,38 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
             }
         }
         val hasBlocker = review.lineReviews.flatMap { it.findings }.any { it.severity == ProductionRuleSeverity.BLOCKER }
+        val requiresHumanApproval = review.lineReviews.flatMap { it.findings }.any { it.requiresHumanApproval }
         require(!hasBlocker || review.verdict != DialogueReviewVerdict.PASS) { "PASS cannot conceal a BLOCKER." }
+        require(!requiresHumanApproval || review.verdict == DialogueReviewVerdict.HUMAN_DECISION_REQUIRED) {
+            "A finding requiring human approval must produce HUMAN_DECISION_REQUIRED."
+        }
+        require(review.verdict != DialogueReviewVerdict.PASS || !requiresHumanApproval) {
+            "PASS cannot conceal a human-approval requirement."
+        }
     }
 
     private fun requireProfiles(connection: Connection, artifact: DialogueArtifact) {
         require(artifact.characterVoiceProfileIds.isNotEmpty())
+        require(artifact.characterVoiceProfileHashes.keys == artifact.characterVoiceProfileIds.toSet()) {
+            "Artifact character profile hashes must exactly cover referenced profiles."
+        }
         val persisted = repository.queryRows(
             connection,
-            "SELECT profile_id FROM character_voice_profiles WHERE rule_set_id = ? AND rule_set_version = ? AND status = 'ACTIVE'",
+            "SELECT profile_id, profile_sha256 FROM character_voice_profiles WHERE rule_set_id = ? AND rule_set_version = ? AND status = 'ACTIVE'",
             artifact.ruleSetId,
             artifact.ruleSetVersion,
-        ).map { it.getValue("profile_id") }.toSet()
-        require(persisted.containsAll(artifact.characterVoiceProfileIds)) { "Unknown character voice profile." }
-        require(
-            repository.queryRows(
-                connection,
-                "SELECT profile_id FROM language_production_profiles WHERE profile_id = ? AND rule_set_id = ? AND rule_set_version = ? AND status = 'ACTIVE'",
-                artifact.languageProfileId,
-                artifact.ruleSetId,
-                artifact.ruleSetVersion,
-            ).size == 1,
-        ) { "Unknown language production profile." }
+        ).associate { it.getValue("profile_id").orEmpty() to it.getValue("profile_sha256").orEmpty() }
+        artifact.characterVoiceProfileHashes.forEach { (profileId, expectedHash) ->
+            require(persisted[profileId] == expectedHash) { "Unknown or changed character voice profile: $profileId" }
+        }
+        val languageHash = repository.queryRows(
+            connection,
+            "SELECT profile_sha256 FROM language_production_profiles WHERE profile_id = ? AND rule_set_id = ? AND rule_set_version = ? AND status = 'ACTIVE'",
+            artifact.languageProfileId,
+            artifact.ruleSetId,
+            artifact.ruleSetVersion,
+        ).singleOrNull()?.getValue("profile_sha256")
+        require(languageHash == artifact.languageProfileSha256) { "Unknown or changed language production profile." }
     }
 
     private fun ruleSetExists(connection: Connection, id: String, version: String): Boolean = repository.queryRows(
@@ -409,6 +490,15 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
         id,
         version,
     ).size == 1
+
+    private fun requireCurrentHashSchema(connection: Connection, artifactId: String) {
+        val version = repository.queryRows(
+            connection,
+            "SELECT hash_schema_version FROM dialogue_artifacts WHERE artifact_id = ?",
+            artifactId,
+        ).singleOrNull()?.getValue("hash_schema_version")?.toIntOrNull()
+        require(version == 2) { "Legacy dialogue artifact is quarantined and must be re-ingested under hash schema v2." }
+    }
 
     private fun artifact(connection: Connection, artifactId: String): DialogueArtifact = repository.queryRows(
         connection,
@@ -425,7 +515,7 @@ class DialogueProductionRepository(private val repository: SqliteStoryRepository
 
     private fun artifactRowByHash(connection: Connection, productionId: String, hash: String): Map<String, String?>? = repository.queryRows(
         connection,
-        "SELECT artifact_kind, approval_state, content_sha256 FROM dialogue_artifacts WHERE production_id = ? AND content_sha256 = ?",
+        "SELECT artifact_kind, approval_state, content_sha256, content_json FROM dialogue_artifacts WHERE production_id = ? AND content_sha256 = ?",
         productionId,
         hash,
     ).singleOrNull()

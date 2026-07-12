@@ -1,0 +1,11 @@
+{
+  "fixtureId": "natural-rescue-control",
+  "boundary": "NON_CANON_PILOT",
+  "context": "受傷救援，高壓，直接表明救人優先。",
+  "lines": [
+    {"lineId":"dlg-011","sceneId":"scene-02","speakerId":"character-tide-picker","text":"別碰箱子。","pressureLevel":"HIGH"},
+    {"lineId":"dlg-012","sceneId":"scene-02","speakerId":"character-lu-chenxing","text":"先救你。","pressureLevel":"HIGH"}
+  ],
+  "expectedBlockers": [],
+  "expectedSelectionAfterThreeCleanReviews": "SELECTED"
+}
