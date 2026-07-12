@@ -129,6 +129,7 @@ data class StoryChapterWorldQuery(
 data class StoryChapterHandoffRequest(
     val productionId: String,
     val projectId: String,
+    val worldSourceProjectLabel: String,
     val sessionId: String,
     val runId: String,
     val runtimeScenarioSeed: String,

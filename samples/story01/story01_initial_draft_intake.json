@@ -1,6 +1,6 @@
 {
   "productionId": "story01-chenxing-daping-chapter-001",
-  "sourcePacketSha256": "2afd92df19ac0c6088e71a69999a1f3b0094bcbf4b2be287f2abbb288e3223cb",
+  "sourcePacketSha256": "12449236e779f8a8b2a8c1281e0e95ec52add641fc526eff4e436ab82d1e4a01",
   "draftPath": "samples/story01/story01_initial_draft.md",
   "draftSha256": "05f0d58935c73018295ce7c8ac2c2e16389d2dd220a2234605b982641012027e",
   "modelMetadataJson": "{\"provider\":\"Codex desktop\",\"modelRole\":\"chapter-writer\",\"generationMode\":\"SQL-backed file handoff\",\"apiCalledByEngine\":false,\"generatedAt\":\"2026-07-12\"}"

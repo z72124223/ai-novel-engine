@@ -18,6 +18,7 @@ class StoryChapterProductionService(
     fun createHandoff(request: StoryChapterHandoffRequest): StoryChapterHandoffArtifact {
         repository.initialize()
         require(request.productionId.isNotBlank() && request.runId.isNotBlank())
+        require(request.worldSourceProjectLabel.isNotBlank()) { "World-source project label is required." }
         require(request.worldQueries.isNotEmpty()) { "At least one SQL world-source query is required." }
         require(request.targetChineseCharactersMin >= 1500)
         require(request.targetChineseCharactersMax >= request.targetChineseCharactersMin)
@@ -51,7 +52,7 @@ class StoryChapterProductionService(
                 text = query.text,
                 classification = query.classification,
                 limit = query.limit,
-                projectLabel = request.projectId,
+                projectLabel = request.worldSourceProjectLabel,
                 sourceIds = query.allowedSourceIds,
                 officialOnly = true,
             )

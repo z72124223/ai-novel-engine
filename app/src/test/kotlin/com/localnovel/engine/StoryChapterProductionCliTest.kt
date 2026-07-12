@@ -30,6 +30,7 @@ class StoryChapterProductionCliTest {
         val request = StoryChapterHandoffRequest(
                 productionId = "story01-cli",
                 projectId = "chenxing",
+                worldSourceProjectLabel = "chenxing",
                 sessionId = runtimeContext.sessionId,
                 runId = "run-story01",
                 scenarioSeed = "story01-seed",

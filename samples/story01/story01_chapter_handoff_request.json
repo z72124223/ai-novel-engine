@@ -1,20 +1,22 @@
 {
   "productionId": "story01-chenxing-daping-chapter-001",
   "projectId": "chenxing",
-  "sessionId": "session-24573c48-4217-4f7c-9107-5795af395c4b",
-  "runId": "reboot-run-f771aef9-e0b6-466d-9c84-fa1d18f6b3b9",
+  "worldSourceProjectLabel": "塵行",
+  "sessionId": "session-592cff59-d320-4dc2-a34c-9a0d5701f53b",
+  "runId": "reboot-run-754a3cab-ad44-4b4e-8055-80fc976bb72b",
+  "runtimeScenarioSeed": "reboot01-chenxing-depth-v1",
   "scenarioSeed": "story01-chenxing-daping-full-chapter-v1",
-  "sourceCommitSha": "2fd0597",
+  "sourceCommitSha": "947a727",
   "chapterTitle": "潮線之外",
   "premise": "2026 年颱風外圍逼近大坪海岸。陸塵行與愛醬在撤離前發現被人移動的異常碎片與另一串通往山坡的腳印；他必須在救人、保存證據與追查遺跡之間做出有代價的選擇。",
   "targetChineseCharactersMin": 2800,
   "targetChineseCharactersMax": 4200,
   "worldQueries": [
-    { "text": "好奇心", "limit": 10 },
-    { "text": "愛醬", "limit": 10 },
-    { "text": "長毛哈士奇", "limit": 8 },
-    { "text": "2026年", "limit": 8 },
-    { "text": "地球", "limit": 8 }
+    { "text": "好奇心", "limit": 10, "allowedSourceIds": ["chenxing-world-raw-01-core-settings"] },
+    { "text": "愛醬", "limit": 10, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "長毛哈士奇", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "2026年", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "地球", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-01-core-settings"] }
   ],
   "requiredBeats": [
     "以真實潮汐、長周期浪與颱風外圍壓力建立倒數，而非抽象危機",

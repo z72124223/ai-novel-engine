@@ -1,5 +1,23 @@
 # AI Novel Engine 專案狀態
 
+## Current Override — STORY-01（2026-07-12）
+
+本段取代下方 REBOOT-01 的「目前工作包」敘述；下方內容保留為已完成技術基線與歷史證據。
+
+- Active branch：`codex/story01-real-chapter-pilot`
+- Base：`reboot/playable-depth-v1` at `4a13e824df60b8876ca027654e1d5763807ce588`
+- Work Package：`STORY-01_REAL_CHAPTER_PRODUCTION_TEST`
+- Status：`COMPLETED_AWAITING_GPT_REVIEW`
+- Selected artifact：`samples/story01/story01_revised_draft.md`
+- SQL status：`SELECTED_PILOT_DRAFT`
+- Boundary：`NON_CANON_PILOT`
+- Reviews：LOGIC `REVISE/76`、CHARACTER `PASS/96`、READER `REVISE/86`
+- Revision count：`1`（上限已用完）
+- Full tests：`849 passed / 0 failed`
+- Author workbench：loopback-only、SQLite consistent snapshot、決策輸出 Hash-bound artifact；正式來源 DB 只由 CLI intake 修改。
+
+目前不得開始圖片、影片、Daping tasks 02–07、外部 Provider、第二次文字修訂或 Canon 升格。下一步只有 GPT／產品負責人審查 STORY-01 分支與修訂稿，決定合併、退回或另開後續工作包。
+
 > **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer、Subagent 或外部協作者必須先讀本檔，再依本檔指定的 Route Gate、Work Package、Blueprint、Addenda 與模型政策執行。舊 HANDOFF、舊 charter、舊 route card、圖片 Work Package 或舊 `PLANS.md` 中的 `current`／`active`／`目前定案` 都是歷史標籤，不能跳過本檔。
 
 ## 1. Current Product Direction
