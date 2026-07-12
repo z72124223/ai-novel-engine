@@ -94,6 +94,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "011_npc_autonomy_runtime.sql",
                     "012_reboot_drama_evaluation.sql",
                     "013_story_chapter_production.sql",
+                    "014_production_rule_runtime.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -3976,12 +3977,37 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         value?.let { runCatching { JsonSupport.json.decodeFromString<List<String>>(it) }.getOrNull() }
             ?: emptyList()
 
-    private fun String.splitToStatements(): List<String> =
+    private fun String.splitToStatements(): List<String> {
+        val statements = mutableListOf<String>()
+        val buffer = StringBuilder()
+        var trigger = false
+
         lineSequence()
             .filterNot { it.trimStart().startsWith("--") }
-            .joinToString("\n")
-            .split(";")
-            .map { it.trim() }
+            .forEach { line ->
+                if (buffer.isEmpty() && line.isBlank()) return@forEach
+                if (buffer.isNotEmpty()) buffer.append('\n')
+                buffer.append(line)
+                if (!trigger && buffer.toString().trimStart().startsWith("CREATE TRIGGER", ignoreCase = true)) {
+                    trigger = true
+                }
+                if (trigger) {
+                    if (line.trim().equals("END;", ignoreCase = true)) {
+                        statements += buffer.toString().trim().removeSuffix(";")
+                        buffer.clear()
+                        trigger = false
+                    }
+                } else {
+                    while (';' in buffer) {
+                        val statement = buffer.substring(0, buffer.indexOf(";")).trim()
+                        if (statement.isNotEmpty()) statements += statement
+                        buffer.delete(0, buffer.indexOf(";") + 1)
+                    }
+                }
+            }
+        buffer.toString().trim().takeIf { it.isNotEmpty() }?.let(statements::add)
+        return statements
+    }
 
     private fun now(): String = Instant.now().toString()
 

@@ -1,12 +1,98 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-12):** Read only `## Current Plan Window V3`
-> (`DIALOGUE01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`) first. All older plan windows
+> **Startup rule (2026-07-13):** Read only `## Current Plan Window V4`
+> (`ENGINE_RULES01_DIALOGUE02`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `d61aa1bf73dd377e4cd12ff10989b343196dfa15` on
-> `codex/dialogue01-human-voice-finalization`. GitHub remote is the team authority.
+> `179f8acb3d03d7bed40ef1c0f95bfa615df2ef0d` on
+> `codex/engine-rules01-dialogue02`. GitHub remote is the team authority.
 
-## Current Plan Window V3
+## Current Plan Window V4
+
+標記：`ENGINE_RULES01_DIALOGUE02`
+
+狀態：**ACTIVE — 將對白品質規則落入 Kotlin／SQLite／CLI／交易式選定門檻，重驗 DIALOGUE-01**
+
+日期：2026-07-13
+
+### Goal
+
+建立版本化 Production Rule Registry、角色／語言 Profile、Hash-bound 對白 Artifact、三評審逐句 Finding、fail-closed Review Intake 與 zero-blocker Selection Gate；以 additive migration 保存證據，將「好。先碰你。」固定為 BLOCKER 負向測試，重新評審 DIALOGUE-01 並安全交付 GitHub。
+
+### Global Strategy
+
+- 新增獨立的 production-rule 模型、Repository、Service 與 CLI，不修改舊 DIALOGUE-01 歷史。
+- 引擎負責規則代碼、嚴重度、Hash、三評審、覆蓋率、獨立性與選定權；語意 finding 由結構化 reviewer 輸入。
+- Migration 014 僅 additive；所有 review batch、selection decision 與失敗證據走 transaction（交易）。
+- 先完成核心模型／Registry／Migration，再完成 intake／gate／CLI，最後產生 DIALOGUE-01 新規則重驗證據。
+- 每一步跑 focused tests；完成後跑 full suite、High 唯讀審查、普通 Push 與預設分支安全快轉。
+
+### Non-Goals
+
+- 不以 regex 冒充完整語意判斷；只允許確定性 fixture 與格式檢查。
+- 不生成圖片、影片、音訊，不呼叫 Provider，不修改 Canon。
+- 不寫下一章、不新增互動遊戲、不覆寫 SCREEN-01／DIALOGUE-01 歷史。
+- 不 force push、不破壞既有 migration。
+
+### Scope
+
+- `app/src/main/kotlin/com/localnovel/engine/{model,repository,service,cli}/Production*` 與 `Dialogue*`
+- `app/src/main/kotlin/com/localnovel/engine/Main.kt`
+- `app/src/main/kotlin/com/localnovel/engine/repository/SqliteStoryRepository.kt`
+- `app/src/main/resources/migrations/014_production_rule_runtime.sql`
+- 直接測試、`samples/dialogue02/**`、`docs/engine_rules01/**`
+- `PROJECT_STATE.md`、`PLANS.md` 與開發日誌
+
+### Confirmed Facts
+
+- 遠端預設分支包含 DIALOGUE-01 commits `90c6195`、`60a871b`。
+- 藍圖包 SHA-256 與 9 個內容 Hash 全部通過；控制文件 Commit `179f8ac` 已普通 Push 到預設分支。
+- 乾淨實作 worktree／branch 從 `179f8ac` 建立；原 123 項髒工作樹未操作。
+- 現有 Migration 到 013；`SqliteStoryRepository` 依固定清單順序初始化 migration，並提供 internal transaction／query helpers。
+- 現有 StoryChapterProduction 是可參考的 Hash-bound transaction pattern，但修訂稿不會強制重新三評審，因此需獨立新 lifecycle。
+- Kotlin 使用 kotlinx.serialization 與 SQLite JDBC，測試使用 kotlin.test／JUnit Platform。
+
+### Assumptions
+
+- Production Rule Runtime 可作為獨立 bounded context，不必破壞 StoryChapterProduction API。
+- DIALOGUE-01 新重驗在一處 blocker 被替換後可得到 SELECTABLE；若新三評審仍回 blocker，必須 HUMAN_DECISION_REQUIRED。
+
+### Open Questions
+
+- 無需使用者決策；任何剩餘語意 blocker 由 fail-closed gate 保存而非自動第二次修訂。
+
+### Implementation Steps
+
+- [x] Step 0：驗證藍圖／遠端前置 Commit，套用並 Push 控制文件，建立乾淨實作分支。
+- [x] Step 1：新增模型、Rule Registry、Profile 與 Migration 014，接入 migration loader。
+- [x] Step 2：新增 transaction-safe Repository、Review Intake、Selection Gate、Finalization Service 與 bypass 防護。
+- [x] Step 3：新增四個 CLI 命令與 Main help／dispatch，建立 JSON file protocol。
+- [ ] Step 4（CURRENT）：加入 mandatory negative／positive／revision re-review／rollback／Hash／CLI tests。
+- [ ] Step 5：重驗 DIALOGUE-01，提交 Rule Set、Profiles、三份 revised reviews、Findings、Decision 與報告。
+- [ ] Step 6：focused／full／migration upgrade／scope／secret／Hash 驗證與 High 唯讀 review。
+- [ ] Step 7：聚焦 Commit／Push，安全合併預設分支，更新 PROJECT_STATE 並停止。
+
+### Verification
+
+- Migration fresh DB、existing DB upgrade、idempotency、constraints 與 rollback。
+- Review role／instance／artifact Hash／Rule Set／quote／line coverage／severity integrity。
+- Revised artifact 不得沿用 initial reviews；BLOCKER 不得被平均分或 PASS note 覆蓋。
+- Repository 直接 selection bypass 必須失敗；CLI 與 Service gate 結果相同。
+- 負向 fixture 至少產生三個指定 BLOCKER；正向 fixture可通過完整三評審。
+- JSON／Hash／Quote／SRT／private path／secret／Provider／Canon／media scope、`git diff --check`、focused/full tests。
+
+### Risks
+
+- Migration constraint 與 Repository lifecycle 是最高風險，需 High review 與 rollback tests。
+- 語意審查不能由 regex 完整取代；引擎只強制 reviewer 結構與 authority（權限）。
+- DIALOGUE-01 歷史 Hash 有既有 declared／observed 差異；新 Artifact 必須明確綁定實際 bytes/content Hash。
+
+### Drift Log
+
+- 2026-07-13：藍圖腳本因主機只有 Windows Store Python stub 無法直接執行；以相同 copy／override 邏輯套用全部受控文件，Hash 與 diff 通過，沒有縮減藍圖範圍。
+- 2026-07-13：Step 1 完成。新增 14 個 Production Rule codes、Rule Set／角色／語言 Profile、Artifact／Review／Selection 模型與 additive Migration 014；migration loader 增加 trigger-aware 最小解析，compile 與既有 StoryChapter repository migration test PASS。
+- 2026-07-13：Step 2–3 完成。新增 immutable review batch、三角色／三 instance／逐句 quote／Rule Set／Hash 驗證、zero-blocker transaction gate、SQL trigger bypass guard、Finalization service 與四個 CLI；EngineRules repository／CLI focused tests PASS。
+
+## Historical — Current Plan Window V3
 
 標記：`DIALOGUE01_HUMAN_CHINESE_DIALOGUE_FINALIZATION_V2`
 

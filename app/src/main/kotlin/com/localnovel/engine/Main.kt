@@ -9,6 +9,7 @@ import com.localnovel.engine.cli.NovelizationCli
 import com.localnovel.engine.cli.SettingPackCli
 import com.localnovel.engine.cli.StorySessionCli
 import com.localnovel.engine.cli.StoryChapterProductionCli
+import com.localnovel.engine.cli.DialogueProductionCli
 import com.localnovel.engine.cli.StoryboardPipelineCli
 import com.localnovel.engine.cli.ProvisionalLayerCli
 import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
@@ -56,6 +57,10 @@ class Cli {
                 "select-story-chapter-pilot" -> StoryChapterProductionCli.selectPilot(options)
                 "show-story-chapter-production" -> StoryChapterProductionCli.show(options)
                 "apply-story-chapter-decision-artifact" -> StoryChapterProductionCli.applyDecisionArtifact(options)
+                "evaluate-dialogue" -> DialogueProductionCli.evaluate(options)
+                "show-dialogue-findings" -> DialogueProductionCli.showFindings(options)
+                "finalize-dialogue" -> DialogueProductionCli.finalize(options)
+                "show-dialogue-selection" -> DialogueProductionCli.showSelection(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
@@ -239,6 +244,10 @@ class Cli {
               select-story-chapter-pilot [--db <path>] --input <path> [--out <path>]
               show-story-chapter-production [--db <path>] --production <id> [--out <path>]
               apply-story-chapter-decision-artifact [--db <path>] --input <path> [--out <path>]
+              evaluate-dialogue [--db <path>] --input <path> [--out <path>]
+              show-dialogue-findings [--db <path>] --artifact <id> [--out <path>]
+              finalize-dialogue [--db <path>] --input <path> [--out <path>]
+              show-dialogue-selection [--db <path>] --artifact <id> [--out <path>]
               show-session [--db <path>] --session <id>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>
