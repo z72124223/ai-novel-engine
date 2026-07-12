@@ -1,350 +1,317 @@
-# AI Novel Engine 專案狀態
+# AI Novel Engine — 現在狀態
 
-## Current Override — STORY-01（2026-07-12）
+> **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-本段取代下方 REBOOT-01 的「目前工作包」敘述；下方內容保留為已完成技術基線與歷史證據。
+## 1. 最終產品
 
-- Active branch：`codex/story01-real-chapter-pilot`
-- Base：`reboot/playable-depth-v1` at `4a13e824df60b8876ca027654e1d5763807ce588`
-- Work Package：`STORY-01_REAL_CHAPTER_PRODUCTION_TEST`
-- Status：`COMPLETED_AWAITING_GPT_REVIEW`
-- Selected artifact：`samples/story01/story01_revised_draft.md`
-- SQL status：`SELECTED_PILOT_DRAFT`
-- Boundary：`NON_CANON_PILOT`
-- Reviews：LOGIC `REVISE/76`、CHARACTER `PASS/96`、READER `REVISE/86`
-- Revision count：`1`（上限已用完）
-- Full tests：`849 passed / 0 failed`
-- Author workbench：loopback-only、SQLite consistent snapshot、決策輸出 Hash-bound artifact；正式來源 DB 只由 CLI intake 修改。
+本專案的主要終點是：
 
-目前不得開始圖片、影片、Daping tasks 02–07、外部 Provider、第二次文字修訂或 Canon 升格。下一步只有 GPT／產品負責人審查 STORY-01 分支與修訂稿，決定合併、退回或另開後續工作包。
+> **可長期連載的動畫／影片故事。**
 
-> **唯一現況入口。** 新的 GPT、Codex CLI、Reviewer、Subagent 或外部協作者必須先讀本檔，再依本檔指定的 Route Gate、Work Package、Blueprint、Addenda 與模型政策執行。舊 HANDOFF、舊 charter、舊 route card、圖片 Work Package 或舊 `PLANS.md` 中的 `current`／`active`／`目前定案` 都是歷史標籤，不能跳過本檔。
+不是單純小說生成器，也不是目前優先做互動遊戲。
 
-## 1. Current Product Direction
-
-目前正式產品方向是：
-
-> 建立一個具有正式世界狀態、自主 NPC、主題驅動戲劇、可重播演化、本機可玩介面，以及未來視覺／影片輸出的長篇 AI 敘事世界。
-
-近期唯一主線：
+正式生產路線：
 
 ```text
-真實引擎基線
-→ 世界觀／SQL／Runtime Reality Audit
-→ 簡化過度阻擋
-→ SQL 保存 Run Evidence
-→ 非 Canon 世界候選修補包進 Sandbox
-→ NPC 離場自主性
-→ Drama Director／Critics／Audience Expectation
-→ 塵行 5–10 回合可玩垂直切片
-→ 同 Seed Replay／規則演化
-→ 本機 Web 可玩介面
-→ 誠實整合報告
+世界觀與角色資料
+→ 故事事件主檔
+→ 影視劇本
+→ 場景與正式對白
+→ 分鏡與鏡頭表
+→ 角色／場景固定資產
+→ 關鍵影格
+→ 單鏡影片
+→ 剪輯、聲音、字幕
+→ 完整影片
 ```
 
-圖片與影片仍是長期產品方向，但目前暫停，以免媒體產線再次取代引擎真實運行。
+小說可以是故事測試、出版版本或補充內容，但不是最高生產權威。
 
-## 2. Mandatory Current Route
+## 2. GitHub 是團隊最高工作場所
 
-- Current Route Gate: `docs/CURRENT_ROUTE_GATE_V3.md`
-- Active Work Package: `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
-- Autonomous Execution Addendum: `docs/work-packages/REBOOT-01_EXECUTION_ADDENDUM_V1.md`
-- Active Blueprint: `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-- Mandatory Creative／World Addendum: `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
-- Mandatory Narrative Voice／Fair Surprise Addendum: `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
-- Model／Subagent／Budget Policy: `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
-- Future Video Provider Plan: `docs/VIDEO_PROVIDER_BAKEOFF_PLAN_V2.md`
-- Development Journal: `docs/development_journal/INDEX.md`
+正式規則：
 
-Required startup order:
+> **GitHub 遠端 Repository 是多人團隊協作、版本、交接、批准紀錄與長期記憶的最高權威。**
+
+本機電腦、Worktree、終端、暫存資料夾、`out/**`、本機 SQLite 和模型工作階段都只是可替換的執行環境。
+
+以下成果不能只留在本機：
+
+- 世界資料；
+- 故事主檔；
+- 小說試稿；
+- 影視劇本；
+- 對白軌；
+- 場景表；
+- 分鏡／鏡頭表；
+- 評審；
+- 作者決策；
+- 圖片／影片交接包；
+- Hash；
+- 測試與開發日誌。
+
+所有正式交接必須包含：
+
+```text
+Repository
+Branch
+Commit SHA
+Repo-relative Path
+Content SHA-256（需要時）
+```
+
+私人絕對路徑、未 Push 工作樹和「我本機最新版」不是正式交接。
+
+完整規則：
+
+```text
+docs/VIDEO_FIRST_GIT_FIRST_PRODUCTION_CHARTER_V1.md
+```
+
+## 3. STORY-01 狀態
+
+STORY-01 已作為技術與內容里程碑納入目前遠端預設分支。
+
+來源：
+
+```text
+samples/story01/story01_revised_draft.md
+```
+
+SHA-256：
+
+```text
+ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91
+```
+
+狀態：
+
+```text
+NON_CANON_PILOT
+```
+
+它證明正式世界來源、SQL、全文產生、三個評審、一次修訂與作者工作台可以運作。
+
+它不代表最終產品已改成小說。
+
+不得再自動做第二次小說修訂，也不得升格正式 Canon。
+
+## 4. 現在唯一工作包
+
+```text
+SCREEN-01 — 影片優先影視劇本與華語對白試作
+```
+
+狀態：
+
+```text
+READY_FOR_AUTONOMOUS_CODEX_EXECUTION
+```
+
+Codex 實作分支：
+
+```text
+codex/screen01-video-first-pilot
+```
+
+基線：
+
+```text
+最新遠端預設分支
+```
+
+Codex 開始前先 `git fetch --prune origin`，再記錄實際 Base SHA。
+
+完整工作包：
+
+```text
+docs/work-packages/SCREEN-01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT.md
+```
+
+## 5. 必讀順序
 
 1. `PROJECT_STATE.md`
 2. `.codex/project_controller.md`
-3. `docs/CURRENT_ROUTE_GATE_V3.md`
-4. `docs/work-packages/REBOOT-01_PLAYABLE_DEPTH_SLICE.md`
-5. `docs/work-packages/REBOOT-01_EXECUTION_ADDENDUM_V1.md`
-6. `docs/REBOOT_2026_PLAYABLE_DEPTH_BLUEPRINT_V1.md`
-7. `docs/REBOOT_2026_CREATIVE_WORLD_EXECUTION_ADDENDUM_V1.md`
-8. `docs/REBOOT_2026_NARRATIVE_VOICE_AND_UNPREDICTABILITY_ADDENDUM_V1.md`
-9. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
-10. `docs/development_journal/INDEX.md`
-11. `AGENTS.md`
-12. Only the code, tests, world data and historical evidence required by the active Stage
+3. `docs/CURRENT_ROUTE_GATE_V4.md`
+4. `docs/VIDEO_FIRST_GIT_FIRST_PRODUCTION_CHARTER_V1.md`
+5. `docs/work-packages/SCREEN-01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT.md`
+6. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
+7. `docs/development_journal/INDEX.md`
+8. `AGENTS.md`
+9. `samples/story01/story01_revised_draft.md`
+10. 只有 SCREEN-01 真正需要的程式、測試和資料
 
-The following are superseded for current execution:
+## 6. SCREEN-01 要做什麼
 
-- `docs/CURRENT_ROUTE_GATE_V1.md`
-- `docs/CURRENT_ROUTE_GATE_V2.md`
-- `docs/CODEX_MODEL_AND_BUDGET_POLICY_V1.md`
-- image Work Packages as active routing
-- the old one-package-then-return rule for REBOOT-01 internal Stages
+把〈潮線之外〉轉成真正可接影像產線的資料：
 
-## 3. Current Work Package
+- 故事生產主檔；
+- 完整繁體中文影視劇本；
+- 自然華語對白規格；
+- 對白軌；
+- 三個獨立全文評審；
+- 最多一次影視劇本／對白修訂；
+- 場景表；
+- 鏡頭表；
+- 60–90 秒未來影片試作規格；
+- 繁體中文字幕；
+- 中國大陸、台灣、香港、馬來西亞／新加坡的語言發行說明；
+- 未來圖片／影片交接包；
+- 所有成果、報告與 Hash Commit 到 GitHub。
 
-- ID: `REBOOT-01 Playable Depth Slice`
-- Status: `COMPLETION_AUDIT_COMPLETE_ON_REBOOT_BRANCH`
-- Required branch: `reboot/playable-depth-v1`
-- Required base: latest remote default branch after `git fetch --prune origin`
-- Main model: `gpt-5.6-sol`
-- Default reasoning: `medium`
-- Repository Explorer: `gpt-5.6-terra / low`
-- Runtime Tester: `gpt-5.6-terra / medium`
-- Narrative Systems Critic: `gpt-5.6-sol / medium`
-- Cost／Complexity Auditor: `gpt-5.6-luna / low`
-- High Risk Reviewer: `gpt-5.6-sol / high`, read-only and on demand
-- Targeted High: Migration／Transaction／StateReducer／Validator／Knowledge Boundary／Version-Hash／source-authority conflict／hard replay bug／final integration review
-- `xhigh`／`max`／`ultra`: prohibited by default; use only under the evidence conditions in Model Policy V2
+現在不實際生成圖片或影片。
 
-Project-scoped defaults are stored in `.codex/config.toml`. Dedicated agent profiles are stored under `.codex/agents/`.
+## 7. 主角方向
 
-REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete all internal Stages, validate and Commit each Stage, Push the final branch and report once. It does not need to return to GPT or the user after ordinary internal decisions.
+陸塵行可以聰明、可靠、敏銳。
 
-REBOOT-01 operating evidence and honest limitations are recorded in `docs/reboot/REBOOT01_FINAL_REPORT.md` and `docs/reboot/REBOOT01_PLAY_GUIDE.md`. The completion audit adds the exact world-patch pipeline, explicit voice/grief/social-cost tests, and an engine-backed deterministic local Web Scenario. Do not start a provider or image follow-up automatically; this branch must be reviewed and merged first.
+不需要為了製造戲劇而故意變笨或犯低級錯誤。
 
-## 4. Required Operating Outcomes
+他的主要成長線是進入新世界後：
 
-Completion requires operating evidence, not only documents:
+- 適應文化與生活方式；
+- 理解制度、階級、人情與政治；
+- 理解力量帶來的責任；
+- 從保護自己和愛醬，走向承擔更多人的命運；
+- 最後能影響戰局與世界。
 
-- one resettable Chenxing non-Canon Scenario;
-- 5–10 continuous turns;
-- protagonist, two meaningful NPCs and at least one opposing actor/force;
-- at least one offscreen NPC action while the player is absent;
-- at least one value dilemma;
-- at least one irreversible Runtime consequence;
-- at least three lasting world／relationship／character-state changes;
-- raw draft, Critic scores, one bounded revision, State Delta and SQL evidence preserved;
-- Narrative Stall detection and recovery;
-- same-seed replay comparison;
-- a minimal operable local Web slice after the engine loop passes;
-- an honest final report containing successes, failures, limitations, model use and next recommendations.
+衝突應來自資訊不完整、價值兩難、對手適應、正確決定的代價，以及新世界與地球經驗的差異，不靠角色集體降智。
 
-Mandatory World／Creative outcomes:
+## 8. 華語對白方向
 
-- `docs/reboot/REBOOT01_WORLD_AND_CHARACTER_REALITY_AUDIT.md`;
-- machine-readable world audit inventory;
-- proof separating formal-file existence, SQL load, Context retrieval, Runtime use and Scenario trigger;
-- one validated non-Canon Chenxing World Patch Candidate applied only to a resettable Sandbox;
-- evidence that the patch is actually retrieved and used by Runtime／NPC Agents;
-- two deep NPCs and one opposing actor or force with an understandable value claim;
-- at least one world pressure that advances while the player is absent.
-
-Mandatory Narrative outcomes:
-
-- protagonist voice candidate with observational sarcasm, self-deprecation, risk awareness, social cost and serious-scene restraint;
-- `AudienceExpectationLedger` or equivalent;
-- `IDIOT_PLOT_RISK` detection;
-- predictability, reversal fairness and character-intelligence scoring;
-- a natural banter moment that reveals character or relationship;
-- an obvious danger recognized and reasonably mitigated;
-- a fair second-order consequence after the first-order expectation;
-- a moment where high pressure suppresses humor;
-- warmth, friendship, cuteness or romantic tension;
-- local closure plus a new unresolved pull.
-
-## 5. Narrative And Emotional Direction
-
-The project supports a long-running ensemble world with **local closure and global continuation**.
-
-Desired emotional rhythm:
+母稿：
 
 ```text
-lightness／humor／daily friction
-→ warmth／friendship／romance
-→ unease
-→ conflict escalation
-→ value dilemma
-→ anger／loss／reflection
-→ relationship change
-→ partial relief／new hope／new unresolved question
+繁體中文 / zh-Hant-TW
 ```
 
-The reader should laugh and become attached before heavier consequences land. Emotional turns must grow from prior causes, not arbitrary shock.
-
-### Protagonist Voice Candidate
-
-For the REBOOT-01 Sandbox, Lu Chenxing may use:
+陸塵行口語基礎：
 
 ```text
-DAILY_QUIP
-DANGER_OBSERVATION
-GRIEF_RESTRAINT
+自然台灣華語
 ```
 
-This means observational sarcasm, self-deprecating humor, risk-aware commentary, socially costly quips and restraint in serious scenes. It is a non-Canon candidate until the user later approves promotion.
+同時要讓中國大陸、香港、馬來西亞、新加坡及其他華語讀者容易理解。
 
-Lu may recognize obvious danger or trope-like behavior, forcing the world and opponents to respond intelligently. He must not become fourth-wall omniscient, know author-only facts, make every joke correct or use humor to erase grief.
+禁止：
 
-### Fair Surprise
+- 兩個 AI 輪流講完整論文；
+- 每句都說清楚價值觀；
+- 每句都像金句；
+- 每個角色同一語氣；
+- 危急時仍講很長的工整句；
+- 過多「不是 A，而是 B」；
+- 在同一母稿亂混各地詞彙。
 
-The system must distinguish:
+優先：
 
-- fair setup from obvious repetition;
-- character intelligence from author-forced stupidity;
-- causal reversal from random twist;
-- expected first-order outcome from unexpected second-order consequence;
-- a smart character changing the outcome from a character ignoring a clear warning.
+- 短句；
+- 打斷；
+- 停頓；
+- 答非所問；
+- 誤會；
+- 沉默；
+- 動作代替解釋；
+- 每個角色有不同語氣。
 
-Any character entering obvious danger needs a documented motive, knowledge gap, urgency, obligation, pressure, resource constraint, false belief, coercion or calculated tradeoff. Otherwise record `IDIOT_PLOT_RISK`.
+## 9. 模型
 
-### Growth And Continuation
-
-The protagonist may gradually gain enough power, knowledge, responsibility and influence to affect major conflicts, but growth must also increase cost, moral pressure, leadership burden and risk of loss. Supporting characters, rivals, romantic interests and ordinary people require their own goals and growth.
-
-There is no single terminal ending that permanently removes the world from the reader. Each arc must still pay off promises, alter relationships, leave lasting state and close a character phase. `No final ending` must not become endless repetition or unresolved setup.
-
-## 6. Architecture Direction
-
-Absorb design strengths rather than copying whole stacks:
-
-- Generative Agents: memory stream, importance, reflection, planning, schedule, offscreen simulation;
-- Concordia-like Game Master: agents propose actions; the environment resolves legal outcomes;
-- SOTOPIA-like social evaluation: trust, cooperation, deception, persuasion, relationships and cost;
-- TextWorld-like replay: reset, step, observation, score and deterministic comparison;
-- ink-like deterministic narrative structure: flags, conditions, choices, variables and local endings.
-
-Core flow:
+一般工程與整合：
 
 ```text
-World and Character Reality Audit
-→ non-Canon Sandbox patch
-→ NPC Agents
-→ Game Master
-→ Drama Director
-→ Writer
-→ independent Logic / Character-Drama / Prose-Pacing Critics
-→ Audience Expectation / Fair Surprise checks
-→ at most one bounded revision
-→ legality re-check
-→ SQL evidence and Runtime result
+gpt-5.6-sol / medium
 ```
 
-The Drama Director may choose what legal conflict is worth presenting, but may not force a character to violate identity or leak Director metadata into character knowledge.
-
-## 7. Validation Simplification
-
-Only three categories remain hard blockers:
-
-1. protocol safety;
-2. world legality and transactional state safety;
-3. irreversible human approval such as Canon, formal assets, destructive changes, release or paid providers.
-
-Prose quality, pacing, repetition, AI-writing feel, weak subtext, emotional impact and predictability are `WARNING／SCORE`, not reasons to discard Run Evidence.
-
-Evidence policy:
+真正的影視劇本與對白轉換，可在限定範圍使用：
 
 ```text
-raw model output → always persist as run evidence
-legal but unpolished result → persist as provisional/candidate
-world-legal State Delta → apply through existing Runtime transaction
-quality findings → persist scores and revision suggestions
+gpt-5.6-sol / high
 ```
 
-## 8. Multi-Agent And Cost Policy
-
-Codex may use up to four direct Subagents with `max_depth = 1`.
-
-Only the main `gpt-5.6-sol` Agent writes core Kotlin／SQL. Subagents perform exploration, testing, criticism and cost auditing. A High Risk Reviewer may replace one Subagent slot when needed.
-
-Do not use High／Max for routine work. Hashes, JSON parsing, path checks, diffs, test statistics and benchmark calculations should be handled by scripts or deterministic tools.
-
-Every Stage records the actual model, reasoning, Subagents, elapsed time, retries and High escalations. If Token／credit data is unavailable, record `NOT_AVAILABLE` rather than inventing values.
-
-## 9. Image Lane Status
+三個獨立評審：
 
 ```text
-IMAGE_LANE_PAUSED_AFTER_USER_APPROVED_CANDIDATE
+gpt-5.6-sol / medium
 ```
 
-The Daping Coast master-panorama candidate was generated and the user agreed with it. It has not completed Codex file transfer, SHA-256, controlled intake or Candidate Reference acceptance.
+搜尋與測試分析使用 Terra Low／Medium；Hash、JSON、字幕時間、Diff 和統計使用程式，不浪費高級模型。
 
-It remains:
+Max／Ultra 預設禁止。
+
+## 10. Codex 執行方式
+
+使用者啟動一次後，Codex可以：
 
 ```text
-USER_APPROVED_CANDIDATE
-not Canon
-not APPROVED_REFERENCE
-not LOCATION_REFERENCE_ACCEPTED
-not PRODUCTION_LOCK
+建立乾淨分支
+→ 完成 SCREEN-01 所有階段
+→ 每階段驗證與 Commit
+→ 將劇本、對白、場景、鏡頭、字幕、評審和報告全部 Push
+→ 最後一次回報
 ```
 
-Do not continue Daping tasks 02–07 during REBOOT-01. Preserve the candidate and handoff evidence.
+一般文字調整、檔案結構、Shot 數量、字幕時間、測試或作者工作台設計，不需要回來詢問。
 
-When image work resumes, character art direction must be selected before background art direction:
+## 11. 現在禁止
+
+SCREEN-01 期間不得：
+
+- 寫第二、第三章小說；
+- 再修改 STORY-01 小說；
+- 生成圖片；
+- 生成影片；
+- 呼叫 Grok、Gemini/Veo、Seedance／即夢、Runway 或其他 Provider；
+- 購買 API 或保存 API Key；
+- 選定最終影片 Provider；
+- 升格 Canon；
+- 決定永久死亡或戀愛結果；
+- 新增互動 RPG 功能；
+- 公開部署網站；
+- 把必要成果只放在主機環境。
+
+## 12. 真正停止條件
+
+只有以下情況 Codex 才停下詢問：
+
+- 必須決定正式 Canon；
+- 必須決定永久角色命運或戀愛；
+- 必須決定正式美術；
+- 必須花錢、使用 Provider 或 API Key；
+- 無法避免破壞性 Git／資料操作；
+- 必須弱化 Transaction、Knowledge、Hash 或批准邊界；
+- 同一核心問題經一次 Medium 和一次 High 有證據修復仍失敗。
+
+## 13. 完成條件
+
+SCREEN-01 只有在遠端 Git 分支可以讓另一台電腦上的 Agent 取得下列成果時才完成：
+
+- 故事生產主檔；
+- 初版與選定版影視劇本；
+- 對白 Bible 與對白軌；
+- 三份全文評審；
+- 場景表；
+- 鏡頭表；
+- 60–90 秒影片 Pilot 規格；
+- 字幕；
+- 地區語言說明；
+- 未來圖片／影片交接；
+- 程式與測試（如有）；
+- 最終報告；
+- 所有重要 SHA-256；
+- 最終 Branch 與 Commit。
+
+本機 SQLite 有資料但未輸出／未 Commit，不算完成。
+
+## 14. 直接交給 Codex 的命令
 
 ```text
-character likeness
-→ character rendering style A/B/C
-→ Lu + Aijiang shared frame
-→ costume material/light
-→ scene style
-→ Location Bible
-→ shot keyframes
-→ video
+先執行 git fetch --prune origin。
+讀取最新遠端預設分支的 PROJECT_STATE.md，依其中必讀順序執行。
+從最新遠端預設分支建立乾淨的 codex/screen01-video-first-pilot 分支與 worktree。
+完整執行 SCREEN-01，將影視劇本、自然華語對白、評審、場景表、鏡頭表、60–90 秒 Pilot 規格、字幕、語言發行說明、未來媒體交接、程式、測試與報告全部 Commit 並 Push 到 GitHub。
+GitHub 遠端是團隊最高權威；不得把必要成果只留在本機、SQLite、out 目錄或終端輸出。
+一般工程與整合使用 gpt-5.6-sol / medium；限定的劇本與對白工作需要時使用 high；不得全程 Max／Ultra。
+除 PROJECT_STATE.md 的真正停止條件外，不要中途詢問。
+不要生成圖片、影片，不要呼叫或購買 Provider，不要升格 Canon，不要開始第二章小說或互動遊戲功能。
+完成後 Push 並一次回報。
 ```
-
-## 10. Video Provider Status
-
-```text
-VIDEO_LANE_FUTURE_PROVIDER_BAKEOFF_NO_SPEND
-```
-
-Future providers may include Gemini Omni Flash, Veo, Grok Imagine Video, Seedance／Jimeng and Runway. The project must use one provider-neutral `VideoShotHandoff` and compare providers on the same approved clean keyframe and motion contract.
-
-The user-supplied YouTube video's verified title and the transcript limitation are recorded in Video Provider Plan V2. Unverified spoken details are not API facts.
-
-No paid API call, provider account purchase, API key, background generation or whole-episode generation is authorized during REBOOT-01.
-
-## 11. Web Status
-
-The old permanent prohibition on a local Web Server／React／Ktor／Port is retired.
-
-REBOOT-01 provides a minimal local-only engine-backed Web interface after the engine loop passes. Each submit executes the isolated SQLite `prepare → validate → resolve` route through the selected turn. Its result adapter is deterministic and Scenario-bounded, not a free-form model. It may not be publicly deployed or connected to paid external model APIs during this package.
-
-## 12. True Stop Conditions
-
-Codex stops and asks the user only when:
-
-- a formal Canon, permanent character-fate, romance or visual taste decision is required;
-- paid API／provider spending or an API key is required;
-- a destructive Git action is unavoidable and no safe alternative exists;
-- AUTHOR_LOCKED sources directly conflict and source authority cannot resolve them;
-- progress would require weakening Transaction, Knowledge Boundary, `stateVersion`, `contextHash` or irreversible approval safety;
-- one evidence-based Medium attempt and one evidence-based High attempt still cannot restore the same core blocker.
-
-Ordinary architecture choices, additive migrations, test failures, bounded refactors, Critic disagreement, Sandbox world candidate design and local Web implementation choices are not user stop conditions.
-
-## 13. Development Memory
-
-The reconstructed project discussion is stored at:
-
-```text
-docs/development_journal/2026-07-11_PROJECT_DISCUSSION_ARCHIVE_V1.md
-```
-
-It preserves the available user-visible discussion and Git evidence. It is not a raw export of unavailable older chat sessions and does not contain hidden system prompts, private reasoning or credentials.
-
-Every REBOOT Stage must add or update an entry under:
-
-```text
-docs/development_journal/reboot01/
-```
-
-Future product-direction changes, important failures, user criticisms, model/provider decisions and rule retirements must be added to the Journal.
-
-## 14. User Command To Start
-
-```text
-Fetch the latest remote default branch. Read PROJECT_STATE.md and execute the active REBOOT-01 umbrella Work Package and all mandatory Addenda end-to-end on a clean reboot/playable-depth-v1 worktree. Use gpt-5.6-sol with medium reasoning by default, follow CODEX_MODEL_AND_BUDGET_POLICY_V2 and the project .codex agent profiles, validate and Commit every internal Stage, Push the final branch, and report once at completion. Do not return for ordinary implementation decisions. Stop only for the True Stop Conditions in PROJECT_STATE.md and the active Work Package.
-```
-
-## 15. Source Of Truth Order
-
-1. latest explicit user instruction;
-2. `PROJECT_STATE.md`;
-3. `.codex/project_controller.md`;
-4. `docs/CURRENT_ROUTE_GATE_V3.md`;
-5. active REBOOT-01 Work Package and Execution Addendum;
-6. Reboot Blueprint plus Creative／World and Narrative Addenda;
-7. Model／Subagent／Budget Policy V2 and project agent profiles;
-8. verified code, tests, SQL output and formal world sources;
-9. development journal and historical route evidence.
