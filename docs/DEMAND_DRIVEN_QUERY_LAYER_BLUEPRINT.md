@@ -13,6 +13,13 @@ contract; the addendum is a docs-only future candidate and does not authorize
 model download, vector storage, schema changes, runtime work, API calls, MCP,
 or implementation.
 
+The mandatory predecessor is `RETRIEVAL-00 — Authority, Rebuild And Retention
+Foundation`. It must prove that a clean Git clone can rebuild the same logical
+formal SQLite data and query corpus, classify authority/retention, remove
+private-path requirements, and report archive/delete candidates without
+deleting them. `RETRIEVAL-01` model benchmarking remains blocked until that
+foundation is separately assigned and accepted.
+
 This document defines a future product-layer query blueprint for the new-world / storyboard production line. It does not implement Kotlin source, tests, schema, migrations, Validator behavior, StateReducer behavior, `resolve-turn`, `stateVersion`, `contextHash`, CLI commands, SQLite tables, OpenAI API calls, GPT browser automation, Seedance integration, Oiioii integration, or runtime enforcement.
 
 ## 1. VERDICT

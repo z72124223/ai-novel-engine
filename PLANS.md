@@ -1,10 +1,99 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-13):** Read only `## Current Plan Window V5`
-> (`LOCAL_HYBRID_RETRIEVAL_BLUEPRINT_V1`) first. All older plan windows
+> **Startup rule (2026-07-13):** Read only `## Current Plan Window V6`
+> (`RETRIEVAL00_DATA_FOUNDATION_BLUEPRINT`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `8f74d13ba676a181c7800b76320e4adf7d344d9f` on
-> `codex/local-hybrid-retrieval-blueprint-v1`. GitHub remote is the team authority.
+> `e217bdcfb3b7283cbd86ff32814976d97fc64c72` on
+> `codex/retrieval00-data-foundation-blueprint`. GitHub remote is the team authority.
+
+## Current Plan Window V6
+
+標記：`RETRIEVAL00_DATA_FOUNDATION_BLUEPRINT`
+
+狀態：**COMPLETED DOCS-ONLY — 已將資料權威、可重建 SQLite、保留／淘汰政策加入混合檢索藍圖；未啟動 Runtime 實作**
+
+日期：2026-07-13
+
+### Goal
+
+在任何 Embedding／Reranker 基準前新增 `RETRIEVAL-00`，把 Git 來源、SQLite 正式結構、可重建檢索索引、測試／歷史證據與可刪快取分層；定義新 Clone 可重建資料庫、來源 Hash、權威 Registry、保留政策與膨脹指標，避免專案以無限文件和本機 DB 修補成長。
+
+### Global Strategy
+
+- Git 保存可審查的唯一來源與人工決策；SQLite 保存正式結構知識與執行狀態；FTS／向量索引只作可重建衍生資料。
+- 圖片／影片仍保存為檔案，SQL 只記錄 id、路徑、Hash、狀態、版本與批准證據。
+- 新增單一 `RETRIEVAL-00` 工作包規格，成為 `RETRIEVAL-01` 的必要前置，不再增加零散清理工作包。
+- 以 fresh-clone rebuild（全新 Clone 重建）與 logical content hash（邏輯內容 Hash）驗證可攜性，不把 SQLite 二進位檔 Hash 當跨電腦權威。
+
+### Non-Goals
+
+- 不在本包實作 Kotlin、Migration、Schema、CLI、SQLite、FTS、Embedding、Reranker 或模型下載。
+- 不刪除、搬移或改寫現有 Docs、Samples、Memory、舊 DB、世界資料、Canon 或媒體。
+- 不把原始資料自動升格為 Canon，不把衍生索引當正式真相。
+- 不啟動 `RETRIEVAL-00` 或 `RETRIEVAL-01`，不接 API／MCP／Provider。
+
+### Scope
+
+- `PLANS.md`
+- `PROJECT_STATE.md`
+- `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
+- `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md`
+- `docs/CODEX_WHOLE_PROJECT_BLUEPRINT_V0.md`
+- `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
+
+### Confirmed Facts
+
+- 全套 Gradle 測試 `872/872` PASS；15 個 Migration 可建立 66 張表。
+- 全新暫存 SQLite 可依序匯入 5 份塵行 Setting Pack，Canon validation 為 PASS。
+- 9 份 raw world source 共 206344 bytes，可從 Git 重建為 9 documents／255 chunks，Hash 與 query 均 PASS。
+- Git／目前乾淨 Worktree 沒有 `data/story.db`；原工作區有 23 個舊 E2E／Pilot DB，皆非 Git 權威。
+- Repository 目前有 344 Docs、203 Samples、17 Memory JSON、24 Formal JSON、5 Engine Setting Packs、40 張 world 圖片／Preview；並非全部都應進正式 SQL。
+- PowerShell 終端中文可能亂碼，但 UTF-8 JSON 查詢結果正確。
+
+### Assumptions
+
+- 正式資料 Registry 最終形式可能是 Git JSON manifest 加 SQLite mirror；具體 Schema 留待 `RETRIEVAL-00` 實作設計。
+- 舊 Docs／Samples／DB 的刪除必須先完成引用與獨有資料證明，不能只依檔齡判斷。
+
+### Open Questions
+
+- FTS5 與未來向量索引採同一 SQLite、旁路 SQLite 或另一個 sidecar，需由 RETRIEVAL-00 證據決定。
+- 歷史文件的封存位置、壓縮方式與 Git 歷史保留政策尚未批准。
+- `memory/quarterfull_world_memory_capsule.json` 為 local-only 且不在 Git，需在未來盤點其獨有內容與正式替代來源。
+
+### Implementation Steps
+
+- [x] Step 1：完成引擎、Migration、Setting Pack、World Source rebuild 與 Repository 資料量證據盤點。
+- [x] Step 2：更新 V1 混合檢索藍圖，加入 RETRIEVAL-00 分層、重建、保留與驗收規則。
+- [x] Step 3：新增 RETRIEVAL-00 工作包並更新所有入口指標。
+- [x] Step 4：驗證 Docs-only 範圍、引用、狀態、秘密、`git diff --check`，Commit／Push 並安全快轉預設分支。
+
+### Verification
+
+- `RETRIEVAL-00` 明確先於 `RETRIEVAL-01`，兩者都保持 `NOT_ACTIVE`。
+- 所有資料類別恰好有 authority／retention／rebuild 規則，不要求把圖片、測試或歷史文件塞入正式 SQL。
+- Fresh clone 重建、logical hash、來源 provenance、秘密／knowledge visibility 與刪除停止條件均有驗收標準。
+- 只修改六份允許文件；`git diff --check` 與新增行秘密／私人路徑掃描 PASS。
+
+驗證結果（2026-07-13）：
+
+- 允許的六份文件均存在；Git scope 沒有 Kotlin、Test、Migration、Schema、World、Memory、Sample 或媒體變更。
+- `RETRIEVAL-00` 為 `NOT_ACTIVE / REQUIRES_EXPLICIT_ASSIGNMENT`；`RETRIEVAL-01` 為 `BLOCKED_BY_RETRIEVAL_00`。
+- 新增行私人絕對路徑／API key／token／password／private key 掃描：0 hits。
+- 藍圖章節順序、入口引用與工作包路徑：PASS。
+- `git diff --check`：PASS；Docs-only 變更不需重跑 Gradle。
+
+### Risks
+
+- 把所有資料放進 SQL 會複製原文、降低 Git 可審查性並讓 DB 本身膨脹。
+- 過早刪除歷史檔可能遺失尚未合併的規則、評審或創作決策。
+- 以 SQLite file hash 驗證可重建性可能因 page layout／timestamp 產生假差異，必須使用 logical content hash。
+
+### Drift Log
+
+- 2026-07-13：使用者明確要求新混合檢索路線取代無限修補；新增 RETRIEVAL-00 作為資料整合與淘汰前置，不直接擴大模型階段。
+
+## Current Plan Window V5
 
 ## Current Plan Window V5
 

@@ -245,9 +245,143 @@ reranker_max_length: 512
 
 These are starting values, not fixed production constants.
 
-## 7. First Candidate Work Package
+## 7. Mandatory Data Foundation Before Model Work
+
+The project must not begin Embedding or Reranker integration while authority,
+rebuild and retention remain split across tracked files, ignored databases,
+local-only memory and historical evidence. The mandatory first candidate is:
 
 Candidate only:
+
+```text
+RETRIEVAL-00 — Authority, Rebuild And Retention Foundation
+```
+
+Status:
+
+```text
+NOT_ACTIVE / REQUIRES_EXPLICIT_ASSIGNMENT
+```
+
+Detailed work package:
+
+```text
+docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md
+```
+
+### 7.1 Data classes
+
+Every governed item must belong to exactly one primary class:
+
+| Class | Purpose | Authority | Storage rule | Retention rule |
+| --- | --- | --- | --- | --- |
+| `AUTHORITATIVE_SOURCE` | Raw source, author decision, approved screenplay, formal asset file | Git-reviewed source and explicit approval | Human-reviewable files; binary media remains a file | Keep; version deliberately |
+| `FORMAL_STRUCTURED_DATA` | Current entities, relations, timelines, rules, approvals and runtime state | Validated SQLite rows derived from approved sources | SQLite with source revision, source hash and visibility | Keep current plus required audit history |
+| `REBUILDABLE_INDEX` | FTS/BM25 chunks, embeddings, retrieval metadata and caches | Never truth; derived from the first two classes | Sidecar SQLite/index selected by later evidence | Delete/rebuild whenever source or model changes |
+| `TEST_OR_REVIEW_EVIDENCE` | Fixtures, labeled queries, reviews, regression cases and selection evidence | Test/review authority only | Git when needed for reproducibility | Keep referenced evidence; archive superseded bulk |
+| `EPHEMERAL_OR_ARCHIVE_CANDIDATE` | Generated reports, duplicate snapshots, old local DBs and terminal/build output | No current product authority until proven otherwise | Outside formal DB or in a declared archive | Expire, archive or delete only after uniqueness/reference proof |
+
+Images, audio and video are never copied into the formal knowledge database by
+default. SQL stores their stable id, repo-relative path, SHA-256, version,
+status, provenance and approval evidence.
+
+### 7.2 Authority registry
+
+RETRIEVAL-00 must define one machine-readable authority registry. The future
+implementation may use a Git JSON manifest with a validated SQLite mirror, but
+it must expose at least:
+
+```text
+recordId
+primaryClass
+repoRelativePath or structuredRecordRef
+contentSha256 or logicalContentHash
+sourceRevision / sourceCommitSha
+authorityStatus
+visibility
+supersedes / supersededBy
+rebuildRecipe
+retentionStatus
+retentionReason
+lastVerifiedAt
+```
+
+Private absolute paths are diagnostic only and may not be required to rebuild
+the project on another computer.
+
+### 7.3 Fresh-clone rebuild contract
+
+A future approved implementation must provide one documented CLI entrypoint
+that starts from a clean Git clone and performs this bounded sequence:
+
+```text
+verify tracked source hashes
+→ create a new local SQLite database
+→ apply all approved additive migrations
+→ import approved Setting Packs in declared order
+→ import world source archives and chunks
+→ rebuild approved exact-search indexes
+→ run Canon / provenance / visibility / secret checks
+→ emit a logical-content manifest and rebuild report
+```
+
+The generated SQLite file remains local and ignored. Rebuild equivalence is
+measured by sorted logical row/content hashes, schema version, source hashes
+and validation results—not by the binary SQLite file hash, page layout,
+timestamps or generated row order.
+
+### 7.4 Retention and anti-bloat policy
+
+Each governed artifact receives one status:
+
+```text
+CURRENT
+HISTORICAL_REFERENCED
+REBUILDABLE_CACHE
+ARCHIVE_CANDIDATE
+DELETE_CANDIDATE
+UNKNOWN_REQUIRES_REVIEW
+```
+
+No automated deletion is allowed merely because a file is old, duplicated by
+name or absent from the current route. `DELETE_CANDIDATE` requires evidence
+that it has no unique content, no live references, no approval/audit duty and
+can be reconstructed or recovered from Git history.
+
+The rebuild report must measure at least:
+
+- tracked file count and bytes by primary class;
+- duplicate content hashes and duplicate logical records;
+- current versus historical Docs/Samples/Memory evidence;
+- local ignored database count and age;
+- unreferenced artifacts;
+- formal SQLite row counts by authority/visibility;
+- rebuildable index size and rebuild duration;
+- unresolved absolute-path and missing-source references.
+
+### 7.5 RETRIEVAL-00 acceptance gate
+
+- a clean clone can build a usable local SQLite database without a copied
+  `data/story.db` or private attachment path;
+- all 15 current migrations, five current Chenxing Setting Packs and nine raw
+  world sources are represented by an ordered, hash-bound rebuild recipe;
+- every formal structured row is traceable to an approved source revision or
+  an explicit validated runtime transaction;
+- author-only and character-knowledge visibility survive import and querying;
+- media stays file-based and is represented in SQL only by metadata;
+- ignored/local-only data is either replaced by tracked source, declared as a
+  local cache, or marked `UNKNOWN_REQUIRES_REVIEW`;
+- no historical file or DB is deleted during the foundation package;
+- a logical-content report proves deterministic rebuild equivalence;
+- the retention report separates current, historical, rebuildable, archive and
+  delete candidates without treating the classification as deletion approval.
+
+Failure blocks RETRIEVAL-01. It does not authorize copying an old database into
+Git, broad deletion or silent Canon conversion.
+
+## 8. Second Candidate Work Package
+
+Only after RETRIEVAL-00 passes and receives explicit acceptance:
 
 ```text
 RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark
@@ -256,7 +390,7 @@ RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark
 Status:
 
 ```text
-NOT_ACTIVE / REQUIRES_EXPLICIT_ASSIGNMENT
+NOT_ACTIVE / BLOCKED_BY_RETRIEVAL_00 / REQUIRES_EXPLICIT_ASSIGNMENT
 ```
 
 ### Scope
@@ -295,7 +429,7 @@ At least 50 labeled queries across:
 
 Failure does not authorize a larger model automatically. It produces evidence for chunking, routing, index, model or hardware decisions.
 
-## 8. Model Upgrade Order
+## 9. Model Upgrade Order
 
 Only after RETRIEVAL-01 passes:
 
@@ -307,7 +441,7 @@ Only after RETRIEVAL-01 passes:
 
 Do not begin with two FP16 4B models. Their raw weight estimate alone is about 16 GB before runtime overhead, exceeding 11 GB VRAM. Quantized deployment remains a separate compatibility and quality experiment.
 
-## 9. Later Phases
+## 10. Later Phases
 
 ### RETRIEVAL-02 — Collection router and visibility enforcement
 
@@ -345,7 +479,7 @@ The full database is not uploaded, but selected chunks still leave the local mac
 
 MCP is last. It requires current plan/permission verification, threat review, prompt-injection controls, authentication and a deliberate deployment decision. It must not be used to justify a Web Server or open port inside the current Repository.
 
-## 10. Cloud And Secret Controls
+## 11. Cloud And Secret Controls
 
 Before any cloud handoff:
 
@@ -358,7 +492,7 @@ Before any cloud handoff:
 - require source references for consequential conclusions;
 - never allow cloud output to directly write formal SQLite or Canon.
 
-## 11. Repository Integration Boundary
+## 12. Repository Integration Boundary
 
 The current Repository remains Kotlin/JVM CLI + SQLite + JSON file protocol.
 
@@ -372,7 +506,7 @@ This blueprint does not authorize Python dependencies, Docker, Ktor/Spring/FastA
 
 The existing `MemoryRetriever`, Context budget, `knowledgeClaims`, Validator and StateReducer remain unchanged until a separate runtime-integration decision and regression suite exist.
 
-## 12. Download And Supply-Chain Gate
+## 13. Download And Supply-Chain Gate
 
 Before any model or external Repository is downloaded or executed:
 
@@ -385,7 +519,7 @@ Before any model or external Repository is downloaded or executed:
 - define offline deletion/rollback;
 - obtain explicit assignment for disk, network and GPU use.
 
-## 13. Non-Goals
+## 14. Non-Goals
 
 This blueprint does not approve:
 
@@ -400,7 +534,7 @@ This blueprint does not approve:
 - image/video/audio generation;
 - automatic next-work-package execution.
 
-## 14. Evidence Sources
+## 15. Evidence Sources
 
 Official sources verified on 2026-07-13:
 

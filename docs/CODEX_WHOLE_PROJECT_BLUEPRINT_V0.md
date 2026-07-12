@@ -42,7 +42,11 @@ assigned. They do not start implementation.
 
 The local hybrid retrieval blueprint is specifically a future implementation
 research candidate for the demand-driven query layer. Its first candidate work
-package, `RETRIEVAL-01`, is not active. It preserves the Kotlin/JVM CLI,
+package, `RETRIEVAL-00`, is not active. RETRIEVAL-00 establishes source
+authority, fresh-clone SQLite rebuild, logical-content verification and
+retention/anti-bloat classification before any model benchmark. `RETRIEVAL-01`
+is blocked until RETRIEVAL-00 is explicitly assigned and accepted. The route
+preserves the Kotlin/JVM CLI,
 SQLite, JSON, Validator, StateReducer, Canon, and character-visibility
 boundaries; it does not approve model download, local model serving, vector
 storage, API, MCP, provider use, or runtime changes.
@@ -131,7 +135,7 @@ The project should become a governed local workbench that supports:
 | 0.6 | A-group optimization audit lane | `A_GROUP_OPTIMIZATION_AUDIT_LANE_V0_CONTROL_PACKET` defines A組06 as planning-only route-weight and drift-prevention auditor. | Use A組06 when the project becomes heavy, repeats status layers, looks idle, or risks cutting required work while trying to lighten the route. | Stop if optimization removes required scope, bypasses A01/B01, dispatches B02/B03, or claims approval/final completion. |
 | 1 | User / 00 input | `NEW_WORLD_FOUNDATION_QUESTIONNAIRE` exists as input surface. | Convert user answers into a reviewable `NEW_WORLD_FOUNDATION_BRIEF` only after enough answers exist. | Stop if user direction is missing or if content becomes canon without approval. |
 | 2 | 09 foundation cards | Candidate blueprint pool exists, but not active canon. | Define card families, ids, review fields, source links, and setting-pack readiness flags. | Stop if cards become setting pack, runtime data, canon, or approved assets. |
-| 3 | Demand-driven query / retrieval layer | `DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT` exists; `LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1` records a docs-only local implementation candidate; no SQL/model/query implementation is active. | After explicit activation, run `RETRIEVAL-01` as an offline benchmark of the existing baseline versus SQL/FTS/BM25 + Embedding + Reranker before choosing storage or adapters. | Stop if this downloads models, changes SQLite/schema/runtime, starts vector storage, exposes author-only data, or uses external retrieval, provider/API, or MCP without approval. |
+| 3 | Demand-driven query / retrieval layer | `DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT` exists; `LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1` records a docs-only route; no data-foundation/model/query implementation is active. | Explicitly assign and complete `RETRIEVAL-00` first: authority registry, fresh-clone rebuild, logical-content verification and retention report. Only after acceptance may `RETRIEVAL-01` benchmark SQL/FTS/BM25 + Embedding + Reranker. | Stop on broad deletion, copied historical DBs, silent Canon conversion, model download, vector storage, author-only leakage, provider/API or MCP without separate approval. |
 | 4 | Script-ready scene packet | Contract exists; not active generation. | Align packet templates with 09/query outputs and storyboard needs. | Stop if it restarts 04/05/06/07/08 or exposes author-only data. |
 | 5 | 04/05/06/07/08 workflow | Paused manual windows. | Draft a resumption decision brief and explicit approval chain. | Stop if automation advances these windows or treats silence as approval. |
 | 6 | Storyboard / camera packet | Planning docs exist. | Define deterministic storyboard/camera packet draft and review artifacts before image generation. | Stop if it generates images or claims final visual approval. |
@@ -164,11 +168,14 @@ The data layer must be explicit before implementation:
 
 Minimum future artifacts:
 
-1. `BlueprintRecord` / planning register entry format.
-2. `QueryRequest` / `QueryResponse` JSON templates.
-3. `QueryScopeReviewReport` for checking no author-only leakage and no overbroad
+1. Authority/retention registry and fresh-clone rebuild manifest defined by
+   `RETRIEVAL-00`.
+2. Logical-content rebuild report that does not rely on SQLite binary hashes.
+3. `BlueprintRecord` / planning register entry format.
+4. `QueryRequest` / `QueryResponse` JSON templates.
+5. `QueryScopeReviewReport` for checking no author-only leakage and no overbroad
    retrieval.
-4. Mapping from 09 cards to script-ready scene packets.
+6. Mapping from 09 cards to script-ready scene packets.
 
 ## Approval Blueprint
 

@@ -30,11 +30,13 @@
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
 - Status: `DOCS_ONLY_FUTURE_CANDIDATE_NOT_ACTIVE`
-- Candidate first work package: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
+- Mandatory first candidate: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
+- Work package: `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
+- `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark` is blocked until RETRIEVAL-00 is explicitly assigned, implemented, verified and accepted.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - No retrieval model, extraction model, GBrain component, MCP service, vector database, provider, or API has been downloaded, installed, approved, or activated.
-- This candidate does not create an active next work package. A future explicit approval must activate `RETRIEVAL-01`; until then, the current completed ENGINE-RULES state and all existing stop boundaries remain in force.
+- This candidate does not create an active next work package. A future explicit approval must activate `RETRIEVAL-00`; RETRIEVAL-00 completion still does not automatically activate RETRIEVAL-01. Until then, the current completed ENGINE-RULES state and all existing stop boundaries remain in force.
 
 ## 1. 最終產品
 
