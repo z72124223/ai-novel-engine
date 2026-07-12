@@ -2,6 +2,23 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
+## 0. SCREEN-01 執行覆寫（2026-07-12）
+
+- Branch：`codex/screen01-video-first-pilot`
+- Base：`510527c24a612331590e25e42b004d00cd66858a`
+- Status：`COMPLETED_AWAITING_FINAL_VALIDATION_AND_PUSH`
+- Completion class：`SCREEN01_PASS_WITH_DIALOGUE_WARNINGS`
+- Selected screenplay：`samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md`
+- Selected screenplay SHA-256：`4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c`
+- Selected dialogue：`samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json`
+- Selected dialogue SHA-256：`6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c`
+- Revision：`1 / 1`
+- Scenes／Shots：`4 / 31`，總節拍 440 秒
+- Future video Pilot：`82 seconds / shot-015..shot-023`
+- Boundary：`NON_CANON_PILOT`
+
+下一步只允許完成 SCREEN-01 最終驗證、Commit、Push 與 GPT／產品負責人審查。不得自動生成圖片／影片、呼叫 Provider、升格 Canon 或寫下一章。
+
 ## 1. 最終產品
 
 本專案的主要終點是：

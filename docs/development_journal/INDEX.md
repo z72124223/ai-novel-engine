@@ -98,15 +98,15 @@ STORY-01 狀態：
 NON_CANON_PILOT
 ```
 
-## SCREEN-01 未來紀錄
+## SCREEN-01 執行紀錄
 
-Codex 執行 SCREEN-01 時建立：
+路徑：
 
 ```text
 docs/development_journal/screen01/
 ```
 
-至少記錄：
+目前已記錄：
 
 - Base SHA；
 - Git branch／Commit；
@@ -120,6 +120,8 @@ docs/development_journal/screen01/
 - 字幕與地區語言說明；
 - Git handoff；
 - 測試、失敗、模型與成本。
+
+SCREEN-01 已建立 Story Production Master、初版／選定劇本、自然華語對白、三份獨立評審、唯一一次修訂、4 場／31 鏡、82 秒 Pilot、繁體中文字幕、區域語言矩陣與未來媒體交接。狀態以 `PROJECT_STATE.md` 與 `docs/screen01/SCREEN01_FINAL_REPORT.md` 為準。
 
 ## 未來追加規則
 

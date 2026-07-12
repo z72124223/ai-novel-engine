@@ -9,7 +9,7 @@
 | `samples/screen01/screen01_scene_list.json` | 4 場／440 秒 | `3f87270c0a3da6769a0d8d5946a4df257f43aa20f271713b9cb5963b1915e009` |
 | `samples/screen01/screen01_shot_list.json` | 31 Shot／440 秒 | `a43a0843b7c9b7404604b5463428a956de893f79f8ed33232d072b8bcede67bb` |
 | `samples/screen01/screen01_video_pilot_60_90s.json` | 9 Shot／82 秒 | `057dba23288248a8b2997c6325f71b54a779ff137018c449c2b7ddbbf76752b5` |
-| `samples/screen01/screen01_video_pilot_zh-Hant-TW.srt` | 11 cues／79.7 秒內 | `f98653f5f21e1893d19adebd000271bbf9a40adf4d109b9da71ab60ce9f72ebc` |
+| `samples/screen01/screen01_video_pilot_zh-Hant-TW.srt` | 11 cues／79.7 秒內 | `8dce6fd94b4d6ba3b1f3b2edfcaee8e6f9865289f01bd64863edae52f7ffb1e0` |
 | `samples/screen01/screen01_locale_release_matrix.json` | 4 發行目標 | `fa95b4c5d6a17ba2424ebdcd53ae1a27af48728caf09c83c8c2c60bc563583ec` |
 | `samples/screen01/screen01_video_handoff.json` | Future-only handoff | `3cb0b77e983736355982a5d63c6197c34ac67003da7e665d13d50e4b9b1b1e04` |
 

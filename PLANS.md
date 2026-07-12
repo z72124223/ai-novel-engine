@@ -67,8 +67,8 @@
 - [x] Step 2：三個隔離 reviewer 讀取完整初版劇本／對白並提交 Hash-bound 評審。
 - [x] Step 3：依評審完成最多一次劇本／對白修訂，固定選定版。
 - [x] Step 4：建立場景表、鏡頭表、60–90 秒 Pilot、SRT 字幕、地區語言說明與媒體交接包。
-- [ ] **Current Step 5：** 建立對白評審報告、Git handoff、開發日誌與最終報告。
-- [ ] Step 6：執行 JSON／reference／Hash／subtitle／scope／secret／focused／full suite 驗證與 High 只讀總審。
+- [x] Step 5：建立對白評審報告、Git handoff、開發日誌與最終報告。
+- [ ] **Current Step 6：** 執行 JSON／reference／Hash／subtitle／scope／secret／focused／full suite 驗證與 High 只讀總審。
 - [ ] Step 7：完成聚焦 Commit chain、普通 Push 與一次最終回報；不自動開始視覺生產。
 
 ### Verification
@@ -94,6 +94,7 @@
 - 2026-07-12：Stage 2 完成。三位隔離 Medium reviewer 均綁定初版 screenplay／dialogue Hash 並輸出逐字引用；TAIWAN 79／REVISE、PAN-CHINESE 88／REVISE、SCREEN PERFORMANCE 74／REVISE，所有引用經程式驗證存在。
 - 2026-07-12：Stage 3 完成唯一一次修訂。選定劇本建立救援空間與可見鞋印、依 Shot 節拍重算為 7:20、修正口語／誤字／急救；選定 screenplay SHA `4b2ac13f...554c`，仍為 NON_CANON_PILOT。
 - 2026-07-12：Stage 4 完成。4 場／31 Shot 總長 440 秒；選出 shot-015..023 連續 82 秒 Pilot，11 段 SRT cue；Locale matrix 與未來媒體交接明確禁止生成、Provider 與自動批准。
+- 2026-07-12：Stage 5 完成。Hash manifest、對白評審摘要、Git handoff 與最終報告均建立為 tracked artifact；沒有必要成果只留本機或 SQLite。
 
 ## Historical — Current Plan Window V1
 
