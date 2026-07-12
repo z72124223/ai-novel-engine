@@ -84,6 +84,7 @@ Current REBOOT-01 entries:
 - `reboot01/STAGE_5_REPLAY_AND_EVOLUTION.md` — isolated same-seed benchmark, normalized state fingerprint, measured no-regression gate, and one adopted retry reduction.
 - `reboot01/STAGE_6_LOCAL_WEB.md` — loopback-only local UI, six submit steps, developer evidence, and save/load smoke.
 - `reboot01/STAGE_7_FINAL_INTEGRATION.md` — final targeted/full tests, end-to-end, replay, Web, SQL, secret, scope, and honest limitation evidence.
+- `reboot01/COMPLETION_AUDIT.md` — exact world-patch pipeline, narrative voice evidence, engine-backed Web correction, multi-agent findings and final revalidation record.
 
 ## Future Append Rule
 

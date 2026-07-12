@@ -64,7 +64,7 @@ The following are superseded for current execution:
 ## 3. Current Work Package
 
 - ID: `REBOOT-01 Playable Depth Slice`
-- Status: `IMPLEMENTATION_COMPLETE_ON_REBOOT_BRANCH`
+- Status: `COMPLETION_AUDIT_COMPLETE_ON_REBOOT_BRANCH`
 - Required branch: `reboot/playable-depth-v1`
 - Required base: latest remote default branch after `git fetch --prune origin`
 - Main model: `gpt-5.6-sol`
@@ -81,7 +81,7 @@ Project-scoped defaults are stored in `.codex/config.toml`. Dedicated agent prof
 
 REBOOT-01 is an approved Umbrella Work Package. After the user explicitly starts one Codex CLI session, Codex may complete all internal Stages, validate and Commit each Stage, Push the final branch and report once. It does not need to return to GPT or the user after ordinary internal decisions.
 
-REBOOT-01 operating evidence and honest limitations are recorded in `docs/reboot/REBOOT01_FINAL_REPORT.md` and `docs/reboot/REBOOT01_PLAY_GUIDE.md`. Do not start the recommended live-turn follow-up automatically; this branch must be reviewed and merged first.
+REBOOT-01 operating evidence and honest limitations are recorded in `docs/reboot/REBOOT01_FINAL_REPORT.md` and `docs/reboot/REBOOT01_PLAY_GUIDE.md`. The completion audit adds the exact world-patch pipeline, explicit voice/grief/social-cost tests, and an engine-backed deterministic local Web Scenario. Do not start a provider or image follow-up automatically; this branch must be reviewed and merged first.
 
 ## 4. Required Operating Outcomes
 
@@ -280,7 +280,7 @@ No paid API call, provider account purchase, API key, background generation or w
 
 The old permanent prohibition on a local Web Server／React／Ktor／Port is retired.
 
-REBOOT-01 may create a minimal local-only playable Web interface after the engine loop passes. It may not be publicly deployed or connected to paid external model APIs during this package.
+REBOOT-01 provides a minimal local-only engine-backed Web interface after the engine loop passes. Each submit executes the isolated SQLite `prepare → validate → resolve` route through the selected turn. Its result adapter is deterministic and Scenario-bounded, not a free-form model. It may not be publicly deployed or connected to paid external model APIs during this package.
 
 ## 12. True Stop Conditions
 

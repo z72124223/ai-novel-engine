@@ -14,7 +14,7 @@
 
 標記：`REBOOT01_PLAYABLE_DEPTH_SLICE`
 
-狀態：**REBOOT-01 Stage 0–7 已完成；High 安全複審 PASS，等待最終普通 Push 與分支審查，不自動開始 REBOOT-02**
+狀態：**REBOOT-01 補完稽核完成；完整世界修補證據、敘事聲音證據、引擎驅動本機 Web、全套測試與最終 High 複審已完成，不開始圖片線或外部 Provider**
 
 日期：2026-07-11
 
@@ -78,6 +78,10 @@
 - [x] Step 5：同 Seed 重播、benchmark 與敘事演化比較；驗證後獨立 Commit。
 - [x] Step 6：前述引擎關卡通過後，建立最小本機 playable Web UI；驗證後獨立 Commit。
 - [x] Step 7：完成外部人工批准來源、完整 replay fingerprint／adoption gate、Web Host／Origin／DNS-rebinding 防護、全套驗證、報告與 High 複審；獨立 Commit 後普通 Push 一次。
+- [x] Step 8：補齊精確的 `chenxing_world_patch_candidate_v1.json` 與 parse → validate → diff → impact preview → sandbox apply 長期證據，並證明正式來源、SQL、Context、NPC／Runtime 與 Scenario 五層連通。
+- [x] Step 9：補齊 `DAILY_QUIP`、`DANGER_OBSERVATION`、`GRIEF_RESTRAINT`、吐槽社交代價、情緒波形與主角成長軸的可執行 Scenario／Critic 測試證據。
+- [x] Step 10：將本機 Web 從固定 evidence replay 改成受限但真實的 engine-backed scenario（引擎驅動情境）；每次操作必須實際 prepare、validate、resolve 並寫入隔離 SQLite，保留無外部模型與非自由生成限制。
+- [x] Step 11：重跑 targeted／full／E2E／replay／Web／SQL／secret／scope 驗證，更新報告、指南、開發日誌與治理狀態，完成最終 High 唯讀複審；分段 Commit 與普通 Push 於本次收尾執行。
 
 ### Verification
 
@@ -125,6 +129,10 @@
 - 2026-07-12：REBOOT-01 最終分類為 `PASS_WITH_KNOWN_UNRELATED_FAILURES`。本機 Web 仍是固定 verified replay，不是 live model loop；下一個建議為另行批准的 provider-neutral `REBOOT-02 Live Turn Gateway`，不得自動開始。
 - 2026-07-12：Stage 7 High read-only review 暫時 BLOCK Push：Runner 不得自簽 human approval；Replay 必須涵蓋 session/time、facts、knowledge/memory、scene/thread、approval 與完整 NPC proposal/resolution；本機 Web 必須拒絕非 loopback Host／foreign Origin。先修正並重驗，不以文件宣稱覆蓋安全缺口。
 - 2026-07-12：三項安全缺口已修復：CLI 強制讀取獨立 user-authority approval grant；Replay 加入完整狀態／批准／NPC 語意與負向 adoption tests；Web 使用 literal loopback Host 白名單並拒絕 foreign Origin／DNS rebinding。High 複審最終 `PASS`。
+- 2026-07-12：使用者要求依 GPT 完整規格一次補完。重新核對發現既有 `samples/reboot01/chenxing_sandbox_world_patch_candidate.json` 不是規格要求的可套用 Setting Pack，且缺少以精確路徑保存的 parse／validate／diff／impact／sandbox apply 證據；Stage 6 Web 也明確只是 `LOCAL_VERIFIED_REPLAY`。先更正 Current Plan，再進行最小補完，不修改正式 Canon、圖片或外部 Provider。
+- 2026-07-12：完成精確 world patch candidate、五段 Setting Pack 證據、六回合重產、聲音／社交代價／grief restraint／成長軸證據，以及 `LOCAL_ENGINE_BACKED_SCENARIO` Web。Focused completion tests PASS；full suite 843 項中 839 PASS，唯一 4 FAIL 仍是既有 World Source #09 authority drift。
+- 2026-07-12：Completion High review 先後阻擋 Sandbox metadata／正式 location update、第二回合 input attribution、Web snapshot／load cleanup 競爭，以及 close 對 in-flight rebuild 的生命週期競爭；均已修正並通過 focused regression tests，等待最終 High re-review 結論。
+- 2026-07-12：第三次 completion High re-review 讀取最新工作樹後回傳 `PASS`。最終 scope scan：Canon 0、圖片／影片 0、Migration 0、Provider 0、secret hit 0；原髒工作樹仍為 HEAD `89e522f`、123 項，未變。
 
 ## Historical - Current Plan Window V0 (Script-First Pivot)
 

@@ -32,12 +32,12 @@
 <body>
 <main>
   <header>
-    <div><h1>塵行：大坪海岸深度切片</h1><div class="subtle">本機、無登入、無外部模型；逐回合檢視已通過引擎驗證的六回合 Scenario（情境）。</div></div>
+    <div><h1>塵行：大坪海岸深度切片</h1><div class="subtle">本機、無登入、無外部模型；每次送出都在隔離 SQLite 中實際執行 prepare／validate／resolve。敘事由受限情境轉接器提供，不是自由生成。</div></div>
     <div class="meta"><span class="chip" id="turn">回合 0 / 6</span><span class="chip" id="clock">T+0m</span></div>
   </header>
   <div class="grid">
     <section class="panel">
-      <div id="story">按下「送出」開始。你的輸入會保存在本機 Session（工作階段）；本切片不呼叫外部模型，結果來自已驗證的固定情境。</div>
+      <div id="story">按下「送出」開始。你的輸入會進入真實 Context（上下文）並由本機引擎套用受限情境結果；本切片不呼叫外部模型。</div>
       <textarea id="input" aria-label="玩家輸入"></textarea>
       <div class="actions">
         <button id="submit">送出</button>

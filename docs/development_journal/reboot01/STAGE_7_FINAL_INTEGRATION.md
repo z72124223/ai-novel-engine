@@ -7,7 +7,7 @@ Status: `COMPLETED`
 ## Verification performed
 
 - REBOOT targeted suites: 31/31 PASS.
-- Full suite: 840 total, 836 PASS, four known World Source failures only.
+- Completion-audit full suite: 843 total, 839 PASS, four known World Source failures only; post-review Web lifecycle focused tests also PASS.
 - Fresh six-turn end-to-end: PASS.
 - Fresh isolated replay benchmark: PASS / ADOPT.
 - Real loopback Web smoke: PASS.
@@ -16,10 +16,11 @@ Status: `COMPLETED`
 - Canon/image scope: no changed files.
 - Original dirty worktree: `89e522f`, 123 status entries, unchanged.
 - High review: initial BLOCK on approval provenance, replay coverage, and DNS rebinding; all corrected; final re-review PASS.
+- Completion audit High review: two evidence-based BLOCK rounds corrected; third re-review PASS.
 
 ## Honest boundary
 
-The local page is a fixed verified replay, not a live model loop. World Source #09 remains mismatched. Narrative advisories remain evidence rather than silently adopted hard rules. Provider spend and external model calls are zero.
+The completion audit replaced fixed-replay behavior with `LOCAL_ENGINE_BACKED_SCENARIO`: each submit executes the official Runtime path in a fresh isolated SQLite sandbox. It remains a deterministic bounded adapter, not a live model loop. World Source #09 remains mismatched. Narrative advisories remain evidence rather than silently adopted hard rules. Provider spend and external model calls are zero.
 
 ## Model record
 

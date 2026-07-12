@@ -1,48 +1,30 @@
-# REBOOT-01 Stage 6 — Minimal Local Playable Web Slice
+# REBOOT-01 Stage 6 — Local Engine-Backed Web Slice
 
 Date: 2026-07-12
 
-Status: `STAGE_6_PASS`
+Status: `STAGE_6_COMPLETION_AUDIT_PASS`
 
 ## Delivered behavior
 
-The Stage 6 interface is a dependency-free Kotlin/JDK local HTTP wrapper around the committed six-turn evidence. It binds only to the loopback interface and serves one responsive Traditional Chinese page.
+The dependency-free Kotlin/JDK server binds only to literal loopback hosts. Each Web Session owns a temporary working directory. Every submit rebuilds a fresh isolated SQLite database and runs `RebootVerticalSliceRunner` through the requested turn, which uses `MultiTurnRuntime.prepareTurn` and `resolveTurn` with the normal Validator, state-version, Context-hash and transaction boundaries.
 
-The page supports:
-
-- story text and player input;
-- six explicit submit steps;
-- world time;
-- character and relationship summaries;
-- local save and load;
-- developer-mode Context, Critic, DecisionTrace, and State Delta inspection.
-
-The browser never receives a SQLite path or direct database connection. There is no login, deployment, cloud service, provider key, or external model call. Request bodies are bounded, session state stays in local memory, and save files are validated against the scenario format and seed.
+The page supports six actions, story text, world time, character and relationship summaries, save/load, and developer-mode Context, Critic, DecisionTrace and State Delta inspection.
 
 ## Honest product boundary
 
-This first UI is a `LOCAL_VERIFIED_REPLAY`, not a free-form model gateway. It records the player's local text and advances through the six engine-verified outcomes from Stage 4. The page displays this limitation explicitly. It is useful for validating the playable presentation, state/evidence views, and save/load contract without pretending that an unavailable external model generated new branches.
+Mode is `LOCAL_ENGINE_BACKED_SCENARIO`. The result adapter is `DETERMINISTIC_SCENARIO_ADAPTER`. Player input enters Context and is persisted as a sandbox intent event, so different inputs produce different Context hashes and SQL evidence. Narrative resolution remains bounded; there is no external model or claim of free-form generation.
 
-## Run locally
-
-```powershell
-$env:LOCALAPPDATA = Join-Path $env:TEMP 'ai-novel-engine-reboot01-localappdata'
-.\gradlew.bat :app:run --no-daemon --args="serve-reboot01-web --port 8765"
-```
-
-Open `http://127.0.0.1:8765`. Stop with `Ctrl+C`.
+The browser never receives a SQLite path. There is no login, public deployment, cloud service, API key or provider call.
 
 ## Verification
 
-`RebootLocalWebServerTest` starts a real ephemeral loopback server and verifies:
+`RebootLocalWebServerTest` verifies:
 
-- home page and health endpoint;
-- loopback-only binding;
-- all six turn submissions;
-- story, world time, character, relationship, and debug evidence responses;
-- completed state at `T+35m`;
-- save and load into a new local Session.
+- loopback-only binding, literal Host allowlist and foreign-Origin rejection;
+- six real engine-backed submissions;
+- State Version / applied-turn progression;
+- different player inputs produce different Context hashes and State Delta evidence;
+- debug evidence, completion at `T+35m`, save and load by deterministic engine reconstruction;
+- temporary Session data is removed when the server closes, with an explicit cleanup assertion.
 
-Stage 4–6 integration selection: 3/3 PASS. `git diff --check` passed before staging.
-
-No Canon, image, external provider, or original dirty-worktree content was modified.
+No Canon, image, external provider or original dirty-worktree content is modified.
