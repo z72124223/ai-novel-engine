@@ -1,13 +1,13 @@
 {
     "projectId": "chenxing",
-    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-6",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-6",
     "narrative": "陸塵行把布條遞給周克，自己壓住傷口。愛醬靠著他的小腿，沒有叫。遠處還有一串腳印，朝山坡更深處去。",
     "resultId": "turn-06-result",
-    "contextId": "ctx-d92af2d7-155e-4e1b-acda-162fa55c08b2",
-    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
+    "contextId": "ctx-b1a9d88e-26db-411d-b921-cea324357f52",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
     "turnNumber": 6,
     "baseStateVersion": 5,
-    "contextHash": "5415c75d06c94b976ed1bfc18184fbb1b789c7c046304c1315dfb0e2e2d65583",
+    "contextHash": "cfa5fa139f1bd39edcf5166399666d09c2f889b45331da9822dd1493f4dca375",
     "turnSummary": "陸塵行把布條遞給周克，自己壓住傷口。愛醬靠著他的小腿，沒有叫。遠處還有一串腳印，朝山坡更深處去。",
     "characterActions": [
         {
@@ -34,6 +34,14 @@
             "targetId": "local-closure-open-question",
             "payload": {
                 "summary": "眾人暫時穩住傷勢，但另一串腳印通往山坡深處。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-6",
+            "payload": {
+                "summary": "先救人，再問他把東西交給了誰。線索可以追，手接不回來。"
             }
         }
     ]

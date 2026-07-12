@@ -20,12 +20,12 @@ The benchmark normalizes generated UUIDs and timestamps before hashing story out
 | legal apply rate | 1.0 | 1.0 |
 | stall count | 0 | 0 |
 | autonomy score | 100 | 100 |
-| emotional wave coverage | 85.0 | 85.0 |
+| emotional wave coverage | 67.5 | 67.5 |
 | irreversible change count | 1 | 1 |
 | repetition / AI prose risk | 10.0 | 10.0 |
-| overall drama score | 70.4 | 70.4 |
-| fair surprise | 57.0 | 57.0 |
-| reader attachment | 73.0 | 73.0 |
+| overall drama score | 67.83 | 67.83 |
+| fair surprise | 53.33 | 53.33 |
+| reader attachment | 70.0 | 70.0 |
 | elapsed world minutes | 35 | 35 |
 | retry count | 1 | 0 |
 | model | deterministic-local | deterministic-local |
@@ -34,10 +34,10 @@ The benchmark normalizes generated UUIDs and timestamps before hashing story out
 Both runs produced normalized replay fingerprint:
 
 ```text
-33600a42f1ae18d033f4cc7131ebffc246652378431d5b3f2ddfd851c43a2447
+87177414d30ad56041eff53e1bcdf1b1598eed0a341df7887ae7bc0375d641dc
 ```
 
-Local execution time was 3180 ms for the baseline and 1972 ms for the evolved run. Timing is recorded as observational evidence, not a stable performance guarantee.
+Completion-audit execution time was 3066 ms for the baseline and 2016 ms for the evolved run. Timing is observational evidence, not a stable performance guarantee.
 
 ## Decision
 

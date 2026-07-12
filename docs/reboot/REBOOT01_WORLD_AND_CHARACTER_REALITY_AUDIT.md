@@ -1,6 +1,6 @@
 # REBOOT-01 World And Character Reality Audit
 
-Status: `STAGE_0_REALITY_AUDIT_COMPLETE`
+Status: `COMPLETION_AUDIT_UPDATED`
 
 Date: 2026-07-11
 
@@ -107,3 +107,33 @@ The file is intentionally under ignored `out/**`. It records entity status, SQL 
 The current repository is a real executable state engine with a valid Chenxing opening pair and environment. It is not yet the promised living-world drama slice. The missing cast, adaptive opposition, offscreen agenda, irreversible consequence, explicit voice evidence, and replayable decision traces must be added as bounded non-Canon candidates in later REBOOT stages.
 
 Verdict: `REALITY_BASELINE_SUFFICIENT_TO_CONTINUE`.
+
+## Completion audit — operating proof
+
+The Stage 0 gaps were rechecked after implementation. The exact candidate now exists at:
+
+`samples/reboot01/chenxing_world_patch_candidate_v1.json`
+
+SHA-256:
+
+`57bb8ddeeae6908e307425b1d1e7f98f27c49df142d8378d3dabc1e464e2b0cf`
+
+The tracked run evidence proves the full chain:
+
+| Layer | Result | Evidence |
+| --- | --- | --- |
+| parse | PASS | `world-patch-parse.json` |
+| validate | PASS (`valid=true`) | `world-patch-validation.json` |
+| diff | PASS (8 additive entries; no formal entity update) | `world-patch-diff.json` |
+| impact preview | PASS | `world-patch-impact-preview.json` |
+| resettable sandbox apply | PASS (`applied=true`) | `world-patch-sandbox-apply.json` |
+| SQL load | PASS | `sql-state-snapshot.json` |
+| Context retrieval | PASS | `turn-01-context.json` contains the candidate NPCs, facts and rules |
+| NPC Runtime use | PASS | `turn-02-decision-trace-row.json` and `turn-02-offscreen-result.json` |
+| Scenario trigger | PASS | six applied turns, six drama evaluations and one approved irreversible non-Canon consequence |
+
+The candidate contains two motivated off-screen-agenda NPCs, one opposing actor with an understandable value claim, shelter/evidence material pressure, a value dilemma, a humor/grief boundary and a separately approved irreversible sandbox consequence. `canonMutationAllowed` remains false.
+
+The machine-readable final inventory is `out/reboot01/world_audit/world_reality_inventory.json`. It remains ignored local evidence by design; the tracked evidence above preserves the same conclusions for Git review.
+
+Completion verdict: `FORMAL_TO_SQL_TO_CONTEXT_TO_NPC_RUNTIME_TO_SCENARIO_PROVEN`.

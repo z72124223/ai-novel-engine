@@ -55,6 +55,12 @@ data class AudienceExpectationLedger(
 data class NarrativeSignals(
     val sarcasmPresent: Boolean = false,
     val banterPresent: Boolean = false,
+    val dailyQuip: Boolean = false,
+    val dangerObservation: Boolean = false,
+    val griefRestraint: Boolean = false,
+    val sarcasmCreatesSocialCost: Boolean = false,
+    val griefOrInjuryBeat: Boolean = false,
+    val authorMetaCommentary: Boolean = false,
     val genreDangerRecognized: Boolean = false,
     val omniscientKnowledgeUsed: Boolean = false,
     val riskTakingHasReason: Boolean = true,

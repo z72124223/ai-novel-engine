@@ -1,13 +1,13 @@
 {
     "projectId": "chenxing",
-    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-5",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-5",
     "narrative": "碎石落下時，陸塵行只來得及拉回愛醬。拾潮者護住證據的手被壓在石縫裡，從此再也無法像以前那樣用力。海浪沒有替任何人辯解。",
     "resultId": "turn-05-result",
-    "contextId": "ctx-52d42f2f-c469-4ff3-94a6-4ae811739926",
-    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
+    "contextId": "ctx-1fd6447f-755e-45f6-a8cb-e0f0d6fc6f46",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
     "turnNumber": 5,
     "baseStateVersion": 4,
-    "contextHash": "24730448888004c24316aa8c50ef22027ee9794306ba427fc39694c57ae96978",
+    "contextHash": "04ccbdf0e8cc8bb62eea893c3f2d846131a0efad0de20d6b5a4f5e84800fea63",
     "turnSummary": "碎石落下時，陸塵行只來得及拉回愛醬。拾潮者護住證據的手被壓在石縫裡，從此再也無法像以前那樣用力。海浪沒有替任何人辯解。",
     "characterActions": [
         {
@@ -34,6 +34,14 @@
             "targetId": "sandbox-irreversible-injury",
             "payload": {
                 "summary": "拾潮者在潮溝崩落中留下永久手傷。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-5",
+            "payload": {
+                "summary": "潮溝要塌了，先把人拉出來。"
             }
         }
     ]

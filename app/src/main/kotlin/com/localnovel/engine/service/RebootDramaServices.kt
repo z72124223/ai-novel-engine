@@ -30,6 +30,7 @@ class LogicCritic {
         if (signals.omniscientKnowledgeUsed) add(finding("GENRE_AWARENESS_BECAME_OMNISCIENCE", "critical", "Genre awareness uses unavailable knowledge.", "Keep recognition limited to visible danger and owned knowledge."))
         if (signals.cheapTwist || ledger.retrospectiveClueValidity.isBlank()) add(finding("CHEAP_TWIST_RISK", "major", "The surprise lacks retrospective clue validity.", "Plant a clue and derive the second layer from world or antagonist adaptation."))
         if (signals.directorMetadataLeak) add(finding("DIRECTOR_METADATA_LEAK", "critical", "Director-only metadata entered reader-facing prose.", "Remove director metadata from character knowledge and narrative."))
+        if (signals.authorMetaCommentary) add(finding("AUTHOR_META_COMMENTARY", "major", "A character quip became author or production commentary.", "Keep the quip grounded in visible circumstances and character knowledge."))
     }
 
     private fun finding(code: String, severity: String, message: String, fix: String) =
@@ -41,6 +42,9 @@ class CharacterDramaCritic {
         if (!signals.genreDangerRecognized) add(DramaCriticFinding("OBVIOUS_DANGER_UNRECOGNIZED", "CharacterDramaCritic", "major", "The character ignores an obvious genre danger.", "Let the character recognize the danger without learning hidden facts."))
         if (frame.valueConflict.valueA.isBlank() || frame.valueConflict.valueB.isBlank()) add(DramaCriticFinding("VALUE_CONFLICT_MISSING", "CharacterDramaCritic", "major", "Scene lacks a real value conflict.", "Name two values that cannot both be preserved."))
         if (signals.sarcasmPresent && signals.seriousBeat) add(DramaCriticFinding("SARCASM_UNDERCUTS_PRESSURE", "CharacterDramaCritic", "minor", "Sarcasm may undercut a serious beat.", "Reduce jokes when pressure becomes real."))
+        if (signals.sarcasmPresent && !signals.sarcasmCreatesSocialCost) add(DramaCriticFinding("SARCASM_WITHOUT_SOCIAL_COST", "CharacterDramaCritic", "minor", "The quip has no observable relationship consequence.", "Let another character react or make the speaker repair the social cost later."))
+        if (signals.griefOrInjuryBeat && (!signals.griefRestraint || signals.sarcasmPresent)) add(DramaCriticFinding("GRIEF_RESTRAINT_FAILED", "CharacterDramaCritic", "major", "Humor or emotional distance weakens a real injury or grief beat.", "Suppress quips and respond through concrete care, silence, anger or acknowledged loss."))
+        if (signals.dailyQuip && signals.dangerObservation) add(DramaCriticFinding("VOICE_MODE_COLLISION", "CharacterDramaCritic", "minor", "A daily quip is being used as the same evidence as danger recognition.", "Give daily friction and danger observation separate beats."))
     }
 }
 

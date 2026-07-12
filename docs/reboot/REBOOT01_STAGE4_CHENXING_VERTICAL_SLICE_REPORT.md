@@ -6,7 +6,7 @@ Status: `STAGE_4_PASS`
 
 ## Executed slice
 
-The local runner applied the formal Chenxing setting pack to a fresh temporary database, then applied the resettable `reboot01-chenxing-sandbox-addon` package. The add-on is explicitly non-Canon, resettable, and promotion-forbidden.
+The local runner applied the formal Chenxing setting pack to a fresh temporary database, then applied `samples/reboot01/chenxing_world_patch_candidate_v1.json`. The candidate is explicitly non-Canon, resettable and promotion-forbidden; separate parse, validation, diff, impact-preview and sandbox-apply evidence is preserved.
 
 The six-turn slice includes:
 
@@ -28,17 +28,17 @@ applied turns: 6
 final state version: 6
 elapsed world minutes: 35
 decision traces: 1
-drama evaluations: 5
+drama evaluations: 6
 run evidence rows: 6
 irreversible approvals: 1
 ```
 
-Long-term evidence is stored under `samples/reboot01/vertical_slice_run/`, including turn contexts, AI results, reader narratives, drama/critic records, the off-screen result and DecisionTrace row, setting-pack apply reports, session evidence, and the final SQL snapshot. The executable reset test also checks the antagonist injury and verifies that every sandbox world-patch candidate has `canon_mutation_allowed=0`.
+Long-term evidence is stored under `samples/reboot01/vertical_slice_run/`, including the five world-patch pipeline records, turn contexts, AI results, reader narratives, six drama/critic records, the off-screen result and DecisionTrace row, session evidence, protagonist growth evidence and the final SQL snapshot. The executable reset test also checks the antagonist injury and verifies that every sandbox world-patch candidate has `canon_mutation_allowed=0`.
 
 ## Verification
 
 - `RebootVerticalSliceRunnerTest` plus Stage 1–3 related suites: 28/28 PASS.
-- Generated JSON: 25/25 parsed successfully, including the separate user-authority approval grant copied into turn evidence.
+- Generated JSON: 32/32 parsed successfully, including the world-patch pipeline and separate user-authority approval grant.
 - `git diff --check`: PASS before staging.
 - Original dirty worktree: untouched.
 

@@ -71,6 +71,44 @@ class RebootDramaLoopTest {
     }
 
     @Test
+    fun voiceCriticSeparatesDailyQuipDangerAndGriefRestraint() {
+        val bad = NarrativeRevisionCoordinator().evaluate(
+            sampleInput().copy(
+                rawSignals = NarrativeSignals(
+                    sarcasmPresent = true,
+                    dailyQuip = true,
+                    dangerObservation = true,
+                    griefOrInjuryBeat = true,
+                    griefRestraint = false,
+                    authorMetaCommentary = true,
+                    genreDangerRecognized = true,
+                ),
+                revisedDraftCandidate = "",
+                revisedSignals = null,
+            ),
+        )
+        val codes = bad.findings.map { it.code }.toSet()
+        assertTrue("AUTHOR_META_COMMENTARY" in codes)
+        assertTrue("SARCASM_WITHOUT_SOCIAL_COST" in codes)
+        assertTrue("GRIEF_RESTRAINT_FAILED" in codes)
+        assertTrue("VOICE_MODE_COLLISION" in codes)
+
+        val restrained = NarrativeRevisionCoordinator().evaluate(
+            sampleInput().copy(
+                rawSignals = NarrativeSignals(
+                    griefOrInjuryBeat = true,
+                    griefRestraint = true,
+                    seriousBeat = true,
+                    genreDangerRecognized = true,
+                ),
+                revisedDraftCandidate = "",
+                revisedSignals = null,
+            ),
+        )
+        assertTrue(restrained.findings.none { it.code == "GRIEF_RESTRAINT_FAILED" || it.code == "SARCASM_UNDERCUTS_PRESSURE" })
+    }
+
+    @Test
     fun cliEvaluatesSampleAndWritesReport() {
         val repository = repository()
         val out = Files.createTempFile("reboot-drama", ".json")

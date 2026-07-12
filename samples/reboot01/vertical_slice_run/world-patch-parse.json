@@ -1,0 +1,9 @@
+{
+    "path": "samples/reboot01/chenxing_world_patch_candidate_v1.json",
+    "sha256": "57bb8ddeeae6908e307425b1d1e7f98f27c49df142d8378d3dabc1e464e2b0cf",
+    "packId": "reboot01-chenxing-world-patch-candidate-v1",
+    "packVersion": 1,
+    "projectId": "chenxing",
+    "nonCanon": true,
+    "resettable": true
+}

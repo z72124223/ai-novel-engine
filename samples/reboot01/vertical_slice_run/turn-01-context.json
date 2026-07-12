@@ -6,7 +6,7 @@
         "summary": "2026 台灣海岸生存開場；主角陸塵行與愛醬在颱風與漲潮壓力下探索異常遺跡。",
         "activeSceneId": "scene-daping-coast-opening"
     },
-    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-1",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-1",
     "turnNumber": 1,
     "playerInput": "先離開潮間帶，別讓看得見的危險替我們做決定。",
     "activeScene": {
@@ -45,7 +45,16 @@
             "projectId": "chenxing",
             "name": "周克（Sandbox）",
             "role": "storm shelter keeper",
-            "description": "A practical caretaker who protects people first but hides his prior knowledge of the ruin."
+            "description": "A practical caretaker who protects people first but hides his prior knowledge of the ruin.",
+            "profile": {
+                "deepMotivation": "Keep the coast community alive even if that requires withholding evidence about his earlier failure.",
+                "falseBelief": "Admitting the old mistake now will make evacuation impossible.",
+                "offscreenAgenda": [
+                    "Close the unsafe route",
+                    "Count evacuees and hide the key until everyone reaches shelter"
+                ],
+                "sandboxCandidateOnly": true
+            }
         },
         {
             "id": "char-aijiang",
@@ -59,14 +68,28 @@
             "projectId": "chenxing",
             "name": "拾潮者（Sandbox）",
             "role": "antagonistic scavenger",
-            "description": "A rival evidence scavenger who believes survival entitles the first claimant to erase competitors' traces."
+            "description": "A rival evidence scavenger who believes survival entitles the first claimant to control scarce discoveries.",
+            "profile": {
+                "understandableValueClaim": "People who accept the physical risk should control the evidence needed to survive.",
+                "adaptationPattern": "Exploit the time cost created by the protagonist's safety precautions rather than wait at the obvious trap.",
+                "sandboxCandidateOnly": true
+            }
         },
         {
             "id": "char-lin-yao-sandbox",
             "projectId": "chenxing",
             "name": "林遙（Sandbox）",
             "role": "coast observer",
-            "description": "A cautious local volunteer who values evidence over heroics and distrusts unexplained structures."
+            "description": "A cautious local volunteer who values evidence over heroics and distrusts unexplained structures.",
+            "profile": {
+                "deepMotivation": "Preserve evidence so powerful people cannot rewrite what happened.",
+                "falseBelief": "Anyone entering without documenting the site first intends to steal or erase evidence.",
+                "offscreenAgenda": [
+                    "Document fresh footprints while Lu Chenxing is away",
+                    "Secure one trace without becoming the player's guide"
+                ],
+                "sandboxCandidateOnly": true
+            }
         }
     ],
     "characterStates": [
@@ -162,6 +185,20 @@
             "priority": 9
         },
         {
+            "id": "rule-sandbox-evidence-has-social-cost",
+            "projectId": "chenxing",
+            "title": "Evidence custody creates social pressure",
+            "content": "Whoever controls physical evidence can influence shelter access, public trust and later rescu...",
+            "priority": 8
+        },
+        {
+            "id": "rule-sandbox-humor-yields-to-harm",
+            "projectId": "chenxing",
+            "title": "Warmth and humor stop at real harm",
+            "content": "Banter may build trust during ordinary friction, but visible injury, grief or another person'...",
+            "priority": 7
+        },
+        {
             "id": "rule-fortress-wilderness-later",
             "projectId": "chenxing",
             "title": "要塞與荒野（穿越後世界）",
@@ -199,13 +236,19 @@
             "id": "fact-sandbox-fresh-footprints",
             "projectId": "chenxing",
             "content": "Fresh boot prints lead away from the obvious seam before the tide turns.",
-            "source": "setting_pack:reboot01-chenxing-sandbox-addon"
+            "source": "setting_pack:reboot01-chenxing-world-patch-candidate-v1"
         },
         {
             "id": "fact-sandbox-shelter-key",
             "projectId": "chenxing",
             "content": "A corroded shelter key bears recent scrape marks.",
-            "source": "setting_pack:reboot01-chenxing-sandbox-addon"
+            "source": "setting_pack:reboot01-chenxing-world-patch-candidate-v1"
+        },
+        {
+            "id": "fact-sandbox-shelter-pressure",
+            "projectId": "chenxing",
+            "content": "The storm shelter has limited dry space, so evidence custody and evac...",
+            "source": "setting_pack:reboot01-chenxing-world-patch-candidate-v1"
         }
     ],
     "items": [
@@ -224,11 +267,11 @@
             "ownerCharacterId": "char-lu-chenxing"
         }
     ],
-    "contextId": "ctx-2b3be72c-ec4b-44a3-9316-9ff836991e55",
-    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
-    "branchId": "branch-c77c793e-0ad3-409f-8b4e-eaad578533ad",
-    "contextHash": "d7f4fe58526eb1880c4ff69a12337f344f828a9fa681b941c35fa43196ff0e74",
-    "generatedAt": "2026-07-11T21:38:09.717384800Z",
+    "contextId": "ctx-1becb050-15e7-408a-ab6d-e6905bece089",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
+    "branchId": "branch-d0476656-9bac-486d-9de9-d5e11e35abf6",
+    "contextHash": "6b3f6cfb5802d94a939f95c9513e591961ed60ad53f1dd83334544c6d15c115c",
+    "generatedAt": "2026-07-12T02:44:27.757548500Z",
     "outputRequirements": {
         "mustIncludeTurnSummary": true,
         "mustIncludeCharacterActions": true,
@@ -237,7 +280,7 @@
     },
     "contextBudget": {
         "maxBytes": 24576,
-        "actualBytes": 17329,
+        "actualBytes": 19730,
         "includedMemoryCount": 0,
         "omittedMemoryCount": 0,
         "includedKnowledgeCount": 0,
@@ -248,7 +291,7 @@
         "truncationReasonCodes": []
     },
     "sceneLifecycle": {
-        "sceneInstanceId": "scene-instance-54fca68a-ef80-4d47-a873-a4cc72c5e38a",
+        "sceneInstanceId": "scene-instance-0835ad14-70aa-4210-a6b8-8472a0d9d105",
         "sceneId": "scene-daping-coast-opening"
     },
     "activeStoryThreads": [
@@ -267,7 +310,7 @@
         "turnNumber": 1
     },
     "continuityConstraints": {
-        "currentSceneInstanceId": "scene-instance-54fca68a-ef80-4d47-a873-a4cc72c5e38a",
+        "currentSceneInstanceId": "scene-instance-0835ad14-70aa-4210-a6b8-8472a0d9d105",
         "currentSceneLocationId": "loc-daping-coast",
         "characterLocations": {
             "char-aijiang": "loc-daping-coast",
@@ -293,7 +336,7 @@
             "entityType": "character",
             "entityId": "char-lin-yao-sandbox",
             "name": "林遙（Sandbox）",
-            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackId": "reboot01-chenxing-world-patch-candidate-v1",
             "sourcePackVersion": 1
         },
         {
@@ -307,14 +350,14 @@
             "entityType": "character",
             "entityId": "char-tide-scavenger-sandbox",
             "name": "拾潮者（Sandbox）",
-            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackId": "reboot01-chenxing-world-patch-candidate-v1",
             "sourcePackVersion": 1
         },
         {
             "entityType": "character",
             "entityId": "char-zhou-ke-sandbox",
             "name": "周克（Sandbox）",
-            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "sourcePackId": "reboot01-chenxing-world-patch-candidate-v1",
             "sourcePackVersion": 1
         },
         {
@@ -343,9 +386,9 @@
         {
             "entityType": "location",
             "entityId": "loc-daping-coast",
-            "name": "大坪海岸（Sandbox runtime reference）",
-            "summary": "Stage 4 reuses the formal location id only inside a r...",
-            "sourcePackId": "reboot01-chenxing-sandbox-addon",
+            "name": "大坪海岸",
+            "summary": "基隆八斗子海蝕平台與潮間帶。低潮時可進，漲潮與颱風外圍會迅速封死回頭路。",
+            "sourcePackId": "chenxing-formal-v1",
             "sourcePackVersion": 1
         },
         {
@@ -378,25 +421,25 @@
         }
     ],
     "settingContextBudget": {
-        "actualBytes": 3074,
+        "actualBytes": 3115,
         "includedSettingCount": 11
     },
     "canonRevisionSummary": {
         "importedPacks": [
             "chenxing-formal-v1@1",
-            "reboot01-chenxing-sandbox-addon@1"
+            "reboot01-chenxing-world-patch-candidate-v1@1"
         ],
         "relevantRevisionIds": [
-            "entity-revision-13c1a10e-210b-409b-8cab-0eaf9ed23d29",
-            "entity-revision-1c5b261b-dec4-4366-970c-6e206e8ce87d",
-            "entity-revision-2e6ec231-a95f-48dc-94a5-de51754c3337",
-            "entity-revision-318ed978-48b4-4d3e-a644-4471c1ff493f",
-            "entity-revision-5af0d72d-180b-49ba-aa86-05557e29940f",
-            "entity-revision-637c1c6b-2ce3-4a1e-8dca-02d35c67dc78",
-            "entity-revision-b0c4ee07-981c-4e67-9a2f-671e12e6dee8",
-            "entity-revision-bf88fb74-3e58-49dd-8fd2-46f60aa267de"
+            "entity-revision-168dd6c2-3428-4e8c-9197-9fd26a625d88",
+            "entity-revision-180583a9-df00-4173-b565-38f879463055",
+            "entity-revision-362d79b7-c063-4727-9897-dffedded28c3",
+            "entity-revision-3a4f4b24-dde4-4fba-8e7d-23c5b9e553cb",
+            "entity-revision-3d281021-ef63-452a-89f3-7b60778fb658",
+            "entity-revision-5417a226-a7c1-4b9a-91ef-0d3a0fbf7f00",
+            "entity-revision-68cbdab7-d34a-4640-ae63-9269c097c6e7",
+            "entity-revision-76986cd6-c59e-44e5-a4ce-e99b12875552"
         ],
-        "latestImportId": "setting-import-ec7d1e94-7510-4401-8189-6cf9d1681b09"
+        "latestImportId": "setting-import-ae30c06d-5cb9-4c2b-aefa-cafd1afedddc"
     },
     "readerMode": true,
     "narrativeDelivery": {

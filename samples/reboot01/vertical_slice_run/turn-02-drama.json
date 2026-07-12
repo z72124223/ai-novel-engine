@@ -1,0 +1,23 @@
+{
+    "evaluationId": "slice-drama-2-974cea34-3e9f-452f-8e49-752a6b2f7f89",
+    "rawScores": {
+        "sarcasmVoiceFit": 65,
+        "banterNaturalness": 60,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 75,
+        "fairSurprise": 35,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 35,
+        "antagonistAdaptation": 35,
+        "emotionalWaveCoverage": 70,
+        "readerAttachment": 55,
+        "overall": 59
+    },
+    "findings": [],
+    "revisionSuggestion": "",
+    "revisionCount": 0,
+    "selectedDraft": "林遙在陸塵行離場時自行封存足跡；她不等待主角授權，也不掌握主角未公開的資訊。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

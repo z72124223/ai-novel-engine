@@ -1,11 +1,11 @@
 {
     "applied": true,
-    "importId": "setting-import-ec7d1e94-7510-4401-8189-6cf9d1681b09",
-    "packId": "reboot01-chenxing-sandbox-addon",
+    "importId": "setting-import-ae30c06d-5cb9-4c2b-aefa-cafd1afedddc",
+    "packId": "reboot01-chenxing-world-patch-candidate-v1",
     "packVersion": 1,
-    "canonicalHash": "025c54286adedd49a827baeef8d909f741a886758ce8d863988f4e70d2dec8c4",
+    "canonicalHash": "2813cf1e000a08d4eb3c782bc8498548149c133f1142d3c03113802a75d54ae6",
     "diff": {
-        "packId": "reboot01-chenxing-sandbox-addon",
+        "packId": "reboot01-chenxing-world-patch-candidate-v1",
         "packVersion": 1,
         "entries": [
             {
@@ -27,14 +27,16 @@
                 "newVersion": 1
             },
             {
-                "action": "UPDATE",
-                "entityType": "location",
-                "entityId": "loc-daping-coast",
-                "previousVersion": 1,
-                "newVersion": 2,
-                "fieldChanges": {
-                    "snapshot": "changed"
-                }
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-sandbox-evidence-has-social-cost",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "world_rule",
+                "entityId": "rule-sandbox-humor-yields-to-harm",
+                "newVersion": 1
             },
             {
                 "action": "ADD",
@@ -47,12 +49,18 @@
                 "entityType": "fact",
                 "entityId": "fact-sandbox-shelter-key",
                 "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-sandbox-shelter-pressure",
+                "newVersion": 1
             }
         ],
-        "canonicalHash": "025c54286adedd49a827baeef8d909f741a886758ce8d863988f4e70d2dec8c4"
+        "canonicalHash": "2813cf1e000a08d4eb3c782bc8498548149c133f1142d3c03113802a75d54ae6"
     },
     "impact": {
-        "packId": "reboot01-chenxing-sandbox-addon",
+        "packId": "reboot01-chenxing-world-patch-candidate-v1",
         "packVersion": 1,
         "changedRoots": [
             "character:char-lin-yao-sandbox",
@@ -60,130 +68,9 @@
             "character:char-zhou-ke-sandbox",
             "fact:fact-sandbox-fresh-footprints",
             "fact:fact-sandbox-shelter-key",
-            "location:loc-daping-coast"
-        ],
-        "impactedCharacters": [
-            "char-aijiang",
-            "char-lu-chenxing"
-        ],
-        "impactedScenes": [
-            "scene-daping-coast-opening"
-        ],
-        "paths": [
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "character",
-                "impactedId": "char-aijiang",
-                "relationPath": [
-                    "LOCATED_IN:character:char-aijiang"
-                ],
-                "severity": "MEDIUM",
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "character",
-                "impactedId": "char-lu-chenxing",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing"
-                ],
-                "severity": "MEDIUM",
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "character",
-                "impactedId": "char-lu-chenxing",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing",
-                    "OWNS:item:item-phone",
-                    "OWNS:character:char-lu-chenxing"
-                ],
-                "severity": "MEDIUM",
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "character",
-                "impactedId": "char-lu-chenxing",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing",
-                    "OWNS:item:item-tide-notes",
-                    "OWNS:character:char-lu-chenxing"
-                ],
-                "severity": "MEDIUM",
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "item",
-                "impactedId": "item-phone",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing",
-                    "OWNS:item:item-phone"
-                ],
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "item",
-                "impactedId": "item-tide-notes",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing",
-                    "OWNS:item:item-tide-notes"
-                ],
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "location",
-                "impactedId": "loc-daping-coast",
-                "relationPath": [
-                    "LOCATED_IN:character:char-aijiang",
-                    "LOCATED_IN:location:loc-daping-coast"
-                ],
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "location",
-                "impactedId": "loc-daping-coast",
-                "relationPath": [
-                    "LOCATED_IN:character:char-lu-chenxing",
-                    "LOCATED_IN:location:loc-daping-coast"
-                ],
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "location",
-                "impactedId": "loc-daping-coast",
-                "relationPath": [
-                    "LOCATED_IN:scene:scene-daping-coast-opening",
-                    "LOCATED_IN:location:loc-daping-coast"
-                ],
-                "reason": "Dependency path from changed canon."
-            },
-            {
-                "rootType": "location",
-                "rootId": "loc-daping-coast",
-                "impactedType": "scene",
-                "impactedId": "scene-daping-coast-opening",
-                "relationPath": [
-                    "LOCATED_IN:scene:scene-daping-coast-opening"
-                ],
-                "severity": "MEDIUM",
-                "reason": "Dependency path from changed canon."
-            }
+            "fact:fact-sandbox-shelter-pressure",
+            "world_rule:rule-sandbox-evidence-has-social-cost",
+            "world_rule:rule-sandbox-humor-yields-to-harm"
         ]
     }
 }

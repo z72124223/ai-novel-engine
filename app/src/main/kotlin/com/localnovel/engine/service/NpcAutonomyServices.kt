@@ -184,6 +184,7 @@ class OffscreenSimulationService(private val repository: SqliteStoryRepository) 
         profile: NpcAutonomyProfile,
         scenarioSeed: String,
         proposalOverride: NpcActionProposal? = null,
+        turnInput: String = "[OFFSCREEN_TICK:$scenarioSeed] Advance the world without player intervention.",
     ): OffscreenSimulationResult {
         require(profile.sandboxCandidateOnly) { "Stage 2 accepts sandbox candidate profiles only." }
         val session = repository.getSession(sessionId) ?: error("Session not found: $sessionId")
@@ -198,7 +199,7 @@ class OffscreenSimulationService(private val repository: SqliteStoryRepository) 
             ),
         )
         val runtime = MultiTurnRuntime(repository)
-        val context = runtime.prepareTurn(sessionId, "[OFFSCREEN_TICK:$scenarioSeed] Advance the world without player intervention.")
+        val context = runtime.prepareTurn(sessionId, turnInput)
         val perception = NpcPerceptionService().perceive(context, profile)
         val memory = NpcMemoryImportanceService().assess(context, profile)
         val reflection = NpcReflectionService().reflect(profile, perception, memory)

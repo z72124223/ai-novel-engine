@@ -98,7 +98,7 @@ internal object StorySessionCli {
             outputDir = Path.of(options.requiredCliOption("out-dir")),
         ).run(
             basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
-            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
+            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_world_patch_candidate_v1.json"),
             npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
             approvalGrantPath = Path.of(options.requiredCliOption("approval-grant")),
         )
@@ -109,7 +109,7 @@ internal object StorySessionCli {
     fun benchmarkReboot01Evolution(options: Map<String, String>): Int {
         val report = RebootReplayBenchmarkRunner(Path.of(options.requiredCliOption("out-dir"))).run(
             basePackPath = Path.of(options["base-pack"] ?: "world/chenxing/engine/chenxing_setting_pack_v1.json"),
-            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_vertical_slice_addon.json"),
+            addonPackPath = Path.of(options["addon-pack"] ?: "samples/reboot01/chenxing_world_patch_candidate_v1.json"),
             npcProfilePath = Path.of(options["npc-profile"] ?: "samples/reboot01/lin_yao_offscreen_profile.json"),
             approvalGrantPath = Path.of(options.requiredCliOption("approval-grant")),
         )

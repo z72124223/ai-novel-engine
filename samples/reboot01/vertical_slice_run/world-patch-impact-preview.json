@@ -1,0 +1,14 @@
+{
+    "packId": "reboot01-chenxing-world-patch-candidate-v1",
+    "packVersion": 1,
+    "changedRoots": [
+        "character:char-lin-yao-sandbox",
+        "character:char-tide-scavenger-sandbox",
+        "character:char-zhou-ke-sandbox",
+        "fact:fact-sandbox-fresh-footprints",
+        "fact:fact-sandbox-shelter-key",
+        "fact:fact-sandbox-shelter-pressure",
+        "world_rule:rule-sandbox-evidence-has-social-cost",
+        "world_rule:rule-sandbox-humor-yields-to-harm"
+    ]
+}

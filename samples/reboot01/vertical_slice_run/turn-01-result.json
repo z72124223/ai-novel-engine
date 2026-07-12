@@ -1,12 +1,12 @@
 {
     "projectId": "chenxing",
-    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-1",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-1",
     "narrative": "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
     "resultId": "turn-01-result",
-    "contextId": "ctx-2b3be72c-ec4b-44a3-9316-9ff836991e55",
-    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
+    "contextId": "ctx-1becb050-15e7-408a-ab6d-e6905bece089",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
     "turnNumber": 1,
-    "contextHash": "d7f4fe58526eb1880c4ff69a12337f344f828a9fa681b941c35fa43196ff0e74",
+    "contextHash": "6b3f6cfb5802d94a939f95c9513e591961ed60ad53f1dd83334544c6d15c115c",
     "turnSummary": "陸塵行看著水線，只說了一句『這地方連退場提示都省了。』下一秒，他收起玩笑，把愛醬帶向山坡。",
     "characterActions": [
         {
@@ -41,6 +41,14 @@
             "targetId": "char-aijiang",
             "payload": {
                 "locationId": "loc-hillside-ruin"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-1",
+            "payload": {
+                "summary": "先離開潮間帶，別讓看得見的危險替我們做決定。"
             }
         }
     ]

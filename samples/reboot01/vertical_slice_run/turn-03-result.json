@@ -1,14 +1,14 @@
 {
     "projectId": "chenxing",
-    "turnId": "session-26629571-d5bf-4535-8303-871556ad9aad-turn-3",
-    "narrative": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-3",
+    "narrative": "周克在海岸吹了聲短哨。陸塵行折返時瞥他一眼：『你這個安全哨，保固是不是只到退潮？』周克沒笑，只把沾鹽的繩結塞進他手裡：『想活就先學會聽一次。』愛醬靠過來蹭了蹭他的膝側；林遙的標記還在，原本的碎片卻少了一塊。",
     "resultId": "turn-03-result",
-    "contextId": "ctx-f2a7e436-4fe6-4ddb-a495-3aa97e7bcd8d",
-    "sessionId": "session-26629571-d5bf-4535-8303-871556ad9aad",
+    "contextId": "ctx-6268b371-476c-4c26-8bd6-669e41483c92",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
     "turnNumber": 3,
     "baseStateVersion": 2,
-    "contextHash": "5806ea636b14e7f45bc941813f71d2b62820538c37d5d1546b092e22c91faba3",
-    "turnSummary": "周克在海岸吹了聲短哨。陸塵行和愛醬折返時，林遙留下的標記還在，原本的碎片卻少了一塊。",
+    "contextHash": "ae768280b5ebb6b6eeba9a028bf50437cdedfc3ed6fb0c801ca6c90a021e046d",
+    "turnSummary": "周克在海岸吹了聲短哨。陸塵行折返時瞥他一眼：『你這個安全哨，保固是不是只到退潮？』周克沒笑，只把沾鹽的繩結塞進他手裡：『想活就先學會聽一次。』愛醬靠過來蹭了蹭他的膝側；林遙的標記還在，原本的碎片卻少了一塊。",
     "characterActions": [
         {
             "characterId": "char-zhou-ke-sandbox",
@@ -42,6 +42,14 @@
             "targetId": "return-observes-offscreen",
             "payload": {
                 "summary": "林遙的記號證明有人在陸塵行離場時轉移過碎片。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-3",
+            "payload": {
+                "summary": "等水線穩住再回去，看誰趁我們不在動過現場。"
             }
         }
     ]
