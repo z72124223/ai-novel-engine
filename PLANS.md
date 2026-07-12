@@ -1,16 +1,97 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-12):** Read only `## Current Plan Window V1`
-> (`STORY01_REAL_CHAPTER_PRODUCTION_TEST`) first. All older plan windows are archived
-> evidence only. Do not treat them as current work.
-> Worktree baseline: commits `3249db2` + `fa13693` on
-> `codex/mvp6-checkpoint-branching-spec`. Active creative world: `塵行`.
-> Rain Gate samples remain test/demo only. Default story samples:
-> `samples/chenxing/`.
-> **Product charter (2026-07-08):** script-first; video is downstream only.
-> Read `## Current Plan Window V1` before any other slice.
+> **Startup rule (2026-07-12):** Read only `## Current Plan Window V2`
+> (`SCREEN01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT`) first. All older plan windows
+> are archived evidence only. Current clean-worktree base:
+> `510527c24a612331590e25e42b004d00cd66858a` on
+> `codex/screen01-video-first-pilot`. GitHub remote is the team authority.
 
-## Current Plan Window V1
+## Current Plan Window V2
+
+標記：`SCREEN01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT`
+
+狀態：**ACTIVE — 將〈潮線之外〉轉成 Git 可交接的影視劇本、自然華語對白、場景／鏡頭／字幕與未來媒體交接；不生成圖片或影片**
+
+日期：2026-07-12
+
+### Goal
+
+以 STORY-01 修訂稿為不變來源，建立故事生產主檔、完整繁體中文影視劇本、自然華語對白、三份獨立評審、最多一次劇本／對白修訂、場景表、鏡頭表、60–90 秒影片 Pilot 規格、字幕、華語地區說明與未來圖片／影片交接包；所有重要成果、Hash、測試與報告 Commit／Push 到 GitHub。
+
+### Global Strategy
+
+- 先固定來源、Git 身分與 `NON_CANON_PILOT` 邊界，再建立不依賴小說文風的 Story Production Master。
+- 劇本與對白採 bounded High（限定範圍高推理）完成；工程整合、格式、Hash、字幕與驗證維持 Medium／程式工具。
+- 初版劇本與對白完成後，由三個隔離 reviewer 分別檢查台灣口語、泛華語可讀性、可表演／可拍性；評審綁定來源 Hash 並引用原文。
+- 最多一次衍生劇本／對白修訂；不修改 STORY-01 小說，不新增 Canon 答案。
+- 場景、鏡頭、Pilot、字幕與媒體交接全部由選定版劇本／對白派生，並以 ID／Hash／時間碼交叉驗證。
+- 每一階段完成最小驗證與聚焦 Commit；最終跑完整測試、Git scope／秘密／私人路徑掃描後普通 Push。
+
+### Non-Goals
+
+- 不生成圖片、影片、音訊或 Provider job，不花費 API／Provider 成本。
+- 不升格 Canon，不決定永久死亡、戀愛或正式美術。
+- 不寫第二、第三章小說，不再次修改 STORY-01 prose。
+- 不新增互動 RPG、公開 Web 或與 SCREEN-01 無關的 Kotlin 功能。
+
+### Scope
+
+- `samples/screen01/**`
+- `docs/screen01/**`
+- `docs/development_journal/screen01/**`
+- `PROJECT_STATE.md`、`PLANS.md`、`docs/development_journal/INDEX.md`
+- 僅在確實需要可重現驗證時加入小型腳本／測試；目前無此需求。
+
+### Confirmed Facts
+
+- 已執行 `git fetch --prune origin`；遠端 `origin/codex/screen01-video-first-pilot` 是 `510527c24a612331590e25e42b004d00cd66858a`。
+- 已建立乾淨 worktree `ai-novel-engine-screen01`，本地分支追蹤同名遠端分支；建立時 status 為空。
+- STORY-01 來源 `samples/story01/story01_revised_draft.md` SHA-256 為 `ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91`，符合控制文件。
+- 來源狀態是 `NON_CANON_PILOT`；圖片、影片與 Provider 工作均不在本包範圍。
+- Repository 尚無 `samples/screen01/**` 或 `docs/screen01/**` 成果；本包從明確規格建立第一套 Git 交接。
+
+### Assumptions
+
+- 完整劇本可保留小說全部故事事件，但 60–90 秒 Pilot 只選取「發現異物至決定先救人」的連續片段。
+- 不新增資料庫／作者工作台仍可達成本包完成條件，因所有決策與產物會以追蹤檔案、Hash 與報告保存。
+
+### Open Questions
+
+- 三個評審是否要求修訂，需等初版全文與對白完成後依證據決定；最多只做一次。
+- 60–90 秒片段的最終精確長度需依 Shot 與字幕時間碼驗證，不預先宣稱。
+
+### Implementation Steps
+
+- [x] Step 0：建立 Stage 0 Git／來源／邊界紀錄與 SCREEN-01 目錄骨架，驗證來源 Hash。
+- [ ] **Current Step 1：** 建立 Story Production Master、對白 Bible、初版完整影視劇本與初版對白軌。
+- [ ] Step 2：三個隔離 reviewer 讀取完整初版劇本／對白並提交 Hash-bound 評審。
+- [ ] Step 3：依評審完成最多一次劇本／對白修訂，固定選定版。
+- [ ] Step 4：建立場景表、鏡頭表、60–90 秒 Pilot、SRT 字幕、地區語言說明與媒體交接包。
+- [ ] Step 5：建立對白評審報告、Git handoff、開發日誌與最終報告。
+- [ ] Step 6：執行 JSON／reference／Hash／subtitle／scope／secret／focused／full suite 驗證與 High 只讀總審。
+- [ ] Step 7：完成聚焦 Commit chain、普通 Push 與一次最終回報；不自動開始視覺生產。
+
+### Verification
+
+- 所有 JSON 可解析；必要 ID 唯一且引用存在。
+- 評審引用必須存在於綁定 Hash 的初版劇本或對白。
+- 修訂版 Hash 必須與初版不同，revision count 為 1。
+- Scene／Shot／Dialogue／Pilot／Subtitle 引用與時間碼一致；Pilot 總長 60–90 秒。
+- 掃描私人絕對路徑、秘密、Provider 執行宣稱、Canon／圖片／影片變更。
+- `git diff --check`、完整 Gradle test、最終 clean status 與遠端同步。
+
+### Risks
+
+- 小說內心敘述若直接搬入劇本會產生不可拍內容；必須轉為動作、聲音或必要的極少量畫外資訊。
+- 對白自然度與泛華語可讀性可能衝突；母稿維持自然台灣華語，地區差異放 Localization，不混成書面公版。
+- 60–90 秒 Pilot 若塞入完整章節會過載；需選擇一個可獨立成立的連續測試片段。
+
+### Drift Log
+
+- 2026-07-12：依使用者指令更新遠端並建立乾淨 SCREEN-01 worktree；Base `510527c`，來源 Hash 通過，原髒工作樹未操作。
+- 2026-07-12：Stage 0 完成。Git／來源／NON_CANON／Provider 與媒體禁制均寫入追蹤日誌；來源 SHA-256 與控制文件一致。
+
+## Historical — Current Plan Window V1
 
 標記：`STORY01_REAL_CHAPTER_PRODUCTION_TEST`
 
