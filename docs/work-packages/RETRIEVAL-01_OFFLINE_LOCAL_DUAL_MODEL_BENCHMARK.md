@@ -1,6 +1,6 @@
 # RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark
 
-Status: `PRE_MODEL_BASELINE_PASS / BLOCKED_AT_EXPLICIT_MODEL_EXECUTION_GATE`
+Status: `COMPLETE / SOURCE_LEVEL_ACCEPTANCE_PASS`
 
 Pre-model Commit: `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8`
 
@@ -8,7 +8,7 @@ Git integration: `REMOTE_DEFAULT_BRANCH_FAST_FORWARD_COMPLETE`
 
 Date: `2026-07-13`
 
-Base Commit: `0922bb2ce1599101c2726431f8b81b1259abc56d`
+Execution Base Commit: `bc97365dc5853bd5fd80a608ac5bd701a7d68e2b`
 
 Branch: `codex/retrieval01-offline-dual-model-benchmark`
 
@@ -20,8 +20,9 @@ Parent blueprint:
 Build the deterministic benchmark harness, labeled query set and external-model
 JSON protocol needed to compare the current exact SQL path with a future local
 Embedding + Reranker path. Model binaries and Python/runtime dependencies stay
-outside Git and may not be downloaded or executed until the disk/network/GPU
-gate is explicitly approved.
+outside Git. The user explicitly approved the disk/network/GPU gate on
+2026-07-13; the pinned models were downloaded, hash-verified and executed in an
+external isolated runtime.
 
 ## 2. Candidate models
 
@@ -105,3 +106,22 @@ focused/full test results
 Git Commit and Push
 acceptance or blocked verdict
 ```
+
+## 8. Completion evidence
+
+```text
+docs/retrieval/RETRIEVAL01_MODEL_ENVIRONMENT_LOCK.json
+docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_REPORT.md
+docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_SUMMARY.json
+docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_FULL.json
+```
+
+Final verdict:
+
+```text
+PASS_WITH_SOURCE_LEVEL_LABEL_LIMITATION
+```
+
+The current query labels prove expected source-document retrieval, not precise
+answer-bearing chunk precision. Runtime promotion and NPC-ACTOR-01 remain
+separate authorization gates.

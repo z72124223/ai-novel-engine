@@ -1,6 +1,6 @@
 # RETRIEVAL-01 Supply-Chain Review
 
-Status: `STATIC_REVIEW_PASS / DOWNLOAD_NOT_AUTHORIZED`
+Status: `STATIC_REVIEW_PASS / AUTHORIZED_DOWNLOAD_AND_HASH_VERIFICATION_COMPLETE`
 
 Date: `2026-07-13`
 
@@ -116,10 +116,32 @@ If later approved:
 - rollback by stopping the subprocess and deleting only the verified isolated
   directory after showing its resolved absolute path.
 
+## Executed isolated runtime
+
+The user explicitly authorized the bounded download and GPU run on 2026-07-13.
+Execution used an isolated environment outside the Repository:
+
+```text
+Python 3.13.9
+PyTorch 2.7.1+cu118
+Transformers 4.53.3
+CUDA runtime 11.8
+attention implementation: eager
+FlashAttention: not installed
+trust_remote_code: false
+server/port: none
+```
+
+Both model files and both tokenizer files matched the official pinned byte
+sizes and SHA-256 values above. The runtime and weights remain outside Git. See
+`docs/retrieval/RETRIEVAL01_MODEL_ENVIRONMENT_LOCK.json` for the exact lock and
+`docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_REPORT.md` for execution evidence.
+
 ## Current verdict
 
 ```text
 STATIC_SUPPLY_CHAIN_REVIEW_PASS
-MODEL_DOWNLOAD_NOT_AUTHORIZED
-MODEL_EXECUTION_NOT_STARTED
+PINNED_DOWNLOAD_VERIFIED
+OFFLINE_MODEL_EXECUTION_PASS
+NO_RUNTIME_PROMOTION_AUTHORIZED
 ```

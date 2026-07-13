@@ -3,14 +3,14 @@
 > **Startup rule (2026-07-13):** Read only `## Current Plan Window V7`
 > (`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `8caeacc728a5dcb49b6bf9181c4f50fb1ec19d89` on
-> `codex/retrieval00-authority-rebuild-runtime`. GitHub remote is the team authority.
+> `bc97365dc5853bd5fd80a608ac5bd701a7d68e2b` on
+> `codex/retrieval01-offline-dual-model-benchmark`. GitHub remote is the team authority.
 
 ## Current Plan Window V7
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**ACTIVE — RETRIEVAL-00 已完成並納入預設分支；進入 RETRIEVAL-01 靜態供應鏈準備，模型下載仍是停止 Gate**
+狀態：**RETRIEVAL-01 SOURCE-LEVEL ACCEPTANCE PASS — 模型仍僅在 Repository 外隔離環境，不代表 Runtime 升格**
 
 日期：2026-07-13
 
@@ -48,6 +48,8 @@
 - 目前 `NpcAutonomyProfile` 已有 motivation、false belief、fear、relationship debts、agenda；Perception／Memory／Goal／Proposal／GameMaster legality 路徑已存在。
 - 現有 NPC action/narrative 仍含硬編碼英文模板，尚非 GPT NPC Actor。
 - OpenAI 官方目前提供 Responses API conversation state、Structured Outputs 與 GPT-5.6 Sol/Terra/Luna 模型／reasoning effort；實作前仍需以官方文件核對 request schema。
+- 2026-07-13 使用者已明確同意下載約 2.4 GB 官方 Qwen 權重、建立隔離 Python／PyTorch／Transformers 環境並使用 GTX 1080 Ti 執行 RETRIEVAL-01。
+- 目前分支、遠端預設分支與乾淨工作樹均對齊 `bc97365dc5853bd5fd80a608ac5bd701a7d68e2b`。
 
 ### Assumptions
 
@@ -57,7 +59,7 @@
 ### Open Questions
 
 - Authority Registry 最終是否需要 additive formal table，待最小設計與測試決定。
-- RETRIEVAL-01 的本地 adapter 與模型格式仍需 supply-chain／license／硬體基準。
+- RETRIEVAL-01 的實際 Python／PyTorch／Transformers 版本與 Pascal GPU 相容性需以安裝後證據固定。
 - 真實 OpenAI API 呼叫需 API Key 與付費授權；到該 Gate 才是必要停止條件。
 
 ### Implementation Steps
@@ -66,11 +68,13 @@
 - [x] Step 2：實作 RETRIEVAL-00 manifest、authority/retention inventory、fresh-clone rebuild 與 logical-content hash。
 - [x] Step 3：新增 focused tests、雙重重建等價、完整測試與交接證據。
 - [x] Step 4：Commit／Push／安全快轉預設分支並更新 PROJECT_STATE。
-- [ ] Step 5（CURRENT）：執行 RETRIEVAL-01 靜態供應鏈檢查與離線基準準備；模型下載／安裝／GPU 執行前停止取得明確授權，不得因失敗自動升級模型。
+- [x] Step 5：完成 RETRIEVAL-01 官方雙模型下載、隔離執行環境、GPU 基準與驗收；未因失敗自動升級模型。
   - [x] 5.1：建立 RETRIEVAL-01 工作包，核對官方 Qwen 來源、revision、License、模型／Tokenizer SHA-256 與本機 GPU／Runtime 現況。
   - [x] 5.2：建立 50+ labeled queries、模型 subprocess JSON protocol 與 deterministic exact baseline harness。
   - [x] 5.3：執行 baseline、focused tests、JSON／秘密／路徑驗證與 full suite。
-  - [ ] 5.4（BLOCKED AT TRUE STOP）：baseline Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` 已 Push 並快轉預設分支；model download／package install／GPU execution 需使用者明確授權。
+  - [x] 5.4：依明確授權建立 Repository 外隔離環境，下載固定 revision 的官方 0.6B Embedding／Reranker，驗證權重與 Tokenizer SHA-256；隔離 Python 3.13.9、PyTorch 2.7.1+cu118、Transformers 4.53.3 與 GTX 1080 Ti CUDA smoke test 均通過。
+  - [x] 5.5：使用相同 50 題執行 Embedding top-50、Reranker top-20 → top-8、可見性與 VRAM／延遲基準；最終 batch 4/2 以 1,821 MiB 實測最低系統餘量通過。
+  - [x] 5.6：產出完整模型報告；focused 4/4、full 876/876、JSON／來源 Hash／引用／秘密／Git scope 檢查全部 PASS；完成治理更新並準備 Push。
 - [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
 
 ### Verification
@@ -93,6 +97,10 @@
 - 2026-07-13：RETRIEVAL-00 以 21 份 Hash 綁定輸入完成雙重重建；logical hash `30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32`，focused 3/3、full 875/875 PASS。
 - 2026-07-13：RETRIEVAL-01 靜態供應鏈審查固定官方 0.6B Embedding／Reranker revision 與 Safetensors Hash；本機無可用 Python Runtime，模型與套件尚未下載。
 - 2026-07-13：RETRIEVAL-01 pre-model baseline 完成 50 題；LIKE 10/38、lexical 38/38、6 policy blocks、6 corpus gaps、0 visibility leaks；focused PASS、full 876/876 PASS。
+- 2026-07-13：使用者明確批准約 2.4 GB 官方固定版 Qwen 權重、外部隔離 Python/PyTorch/Transformers 與 GTX 1080 Ti 執行；四個模型／Tokenizer SHA-256 全部相符。
+- 2026-07-13：第一次受監測的 batch 8/4 執行雖為 38/38，但最低系統可用 VRAM 僅 498 MiB，依 Gate 判定 FAIL；未關閉使用者程式、未換大模型，改用 batch 4/2 重跑。
+- 2026-07-13：最終 RETRIEVAL-01 模型基準為 Embedding top-50 38/38、final top-8 38/38、semantic 10/10、exact 10/10、visibility leak 0、最低系統可用 VRAM 1,821 MiB；標籤粒度仍是 source document，禁止宣稱 chunk precision 100%。
+- 2026-07-13：使用者通過真正授權 Gate；允許約 2.4 GB 官方模型下載、Repository 外隔離 Python／PyTorch／Transformers 安裝、網路與 GTX 1080 Ti 執行。仍禁止付費 API、模型升級、Server／Port、Canon／Runtime 寫入與媒體生成。
 
 ## Current Plan Window V6
 

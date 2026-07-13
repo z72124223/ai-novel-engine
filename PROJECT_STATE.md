@@ -4,11 +4,11 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_PRE_MODEL_BASELINE_PASS_MODEL_GATE_BLOCKED`
-- Current work: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
-- Implementation branch: `codex/retrieval00-authority-rebuild-runtime`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_REQUIRES_SEPARATE_ACTIVATION`
+- Current work: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark (complete)`
+- Implementation branch: `codex/retrieval01-offline-dual-model-benchmark`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Required work package: `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
+- Required work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`
 - NPC route blueprint: `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
 - NPC pilot package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
 - Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`; gates may not be skipped.
@@ -19,13 +19,17 @@
 - Rebuild runbook: `docs/PROJECT_DATA_REBUILD_RUNBOOK_V1.md`.
 - Validation evidence: `docs/retrieval/RETRIEVAL00_IMPLEMENTATION_REPORT.md` and `docs/retrieval/RETRIEVAL00_VALIDATION_SUMMARY.json`.
 - RETRIEVAL-00 implementation Commit `82ed30bf94b69902e92737fdbdb32074db565840` is present on the remote default branch.
-- The next bounded action is RETRIEVAL-01 static supply-chain and benchmark preparation. Downloading/installing/executing external models still requires explicit disk/network/GPU authorization.
+- The user explicitly authorized the bounded RETRIEVAL-01 model download, isolated runtime and GTX 1080 Ti execution on 2026-07-13.
 - RETRIEVAL-01 branch: `codex/retrieval01-offline-dual-model-benchmark` from default Commit `0922bb2ce1599101c2726431f8b81b1259abc56d`.
 - RETRIEVAL-01 work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`.
-- Supply-chain evidence: `docs/retrieval/RETRIEVAL01_SUPPLY_CHAIN_REVIEW.md`; no model weight, Python package or executable has been downloaded.
+- Supply-chain evidence: `docs/retrieval/RETRIEVAL01_SUPPLY_CHAIN_REVIEW.md` and `docs/retrieval/RETRIEVAL01_MODEL_ENVIRONMENT_LOCK.json`; pinned official model/tokenizer hashes were verified and all binaries remain outside Git.
 - RETRIEVAL-01 baseline evidence: `docs/retrieval/RETRIEVAL01_EXACT_BASELINE_REPORT.md` and `docs/retrieval/RETRIEVAL01_BASELINE_SUMMARY.json`.
 - Baseline result: 50 queries; 38 retrievable; LIKE top-8 10/38; lexical top-8 38/38; 6 knowledge-boundary blocks; 6 code/docs corpus gaps; 0 visibility leaks; full test suite 876/876 PASS.
-- Current true stop: downloading approximately 2.4 GB official model weights, installing an isolated Python/PyTorch/Transformers runtime, and executing on the GTX 1080 Ti require explicit disk/network/GPU approval.
+- RETRIEVAL-01 final evidence: `docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_REPORT.md`, `docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_SUMMARY.json` and `docs/retrieval/RETRIEVAL01_MODEL_BENCHMARK_FULL.json`.
+- Final source-document-level result: 38/38 Embedding top-50, 38/38 final Reranker top-8, semantic 10/10 versus LIKE 0/10, exact 10/10 with 0 regression, 0 visibility leaks and 1,821 MiB observed minimum system-free VRAM.
+- Label limitation: expected relevance is currently source-document-level, not precise answer-bearing chunk-level. Do not claim 100% chunk precision or enable an actor-visible production path from this benchmark alone.
+- RETRIEVAL-01 used no cloud/API/Provider, port, vector database, Canon write or runtime state write. The external model runtime is not part of Gradle or the shipped Kotlin runtime.
+- Current true stop: NPC-ACTOR-01 or any production retrieval integration requires a separate explicit activation and must preserve visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
 ## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
@@ -55,14 +59,15 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_ACTIVE / LATER_GATES_BLOCKED`
-- Mandatory first candidate: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
-- Work package: `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
-- `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark` is blocked until RETRIEVAL-00 is explicitly assigned, implemented, verified and accepted.
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_NOT_ACTIVE`
+- Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
+- Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
+- Current work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`
+- `NPC-ACTOR-01 — Single NPC Actor Pilot` is the next candidate but is not active without separate explicit assignment.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
-- No retrieval model, extraction model, GBrain component, MCP service, vector database, provider, or API has been downloaded, installed, approved, or activated.
-- RETRIEVAL-00 is now explicitly active. Its completion requires verification and acceptance before RETRIEVAL-01; NPC-ACTOR-01 remains blocked by both retrieval gates. Live GPT API calls remain separately blocked by API Key, cost and privacy approval.
+- Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.
+- No extraction model, GBrain component, MCP service, vector database, provider, or live API has been activated. NPC-ACTOR-01 and live GPT API calls remain separately blocked by assignment, API Key, cost and privacy approval.
 
 ## 1. 最終產品
 

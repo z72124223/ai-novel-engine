@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "status": "RETRIEVAL_01_EXTERNAL_RUNTIME_LOCKED",
+  "date": "2026-07-13",
+  "repositoryBoundary": "EXTERNAL_TO_REPOSITORY",
+  "runtimeLocation": "CODEX_HOME/external/retrieval01-qwen-dual-v1",
+  "python": "3.13.9",
+  "torch": "2.7.1+cu118",
+  "transformers": "4.53.3",
+  "huggingfaceHub": "0.33.4",
+  "safetensors": "0.5.3",
+  "tokenizers": "0.21.2",
+  "numpy": "2.5.1",
+  "cudaRuntime": "11.8",
+  "gpu": "NVIDIA GeForce GTX 1080 Ti",
+  "gpuComputeCapability": "6.1",
+  "driver": "576.88",
+  "attentionImplementation": "EAGER_NO_FLASH_ATTENTION",
+  "embeddingBatchSize": 4,
+  "rerankerBatchSize": 2,
+  "maxTokenLength": 1024,
+  "cublasWorkspaceConfig": ":4096:8",
+  "networkDuringInference": false,
+  "serverPortOpened": false,
+  "remoteCodeTrusted": false,
+  "modelFilesCommittedToGit": false,
+  "models": {
+    "embedding": {
+      "repository": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "modelSafetensorsBytes": 1191586416,
+      "modelSafetensorsSha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+      "tokenizerJsonBytes": 11423705,
+      "tokenizerJsonSha256": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a"
+    },
+    "reranker": {
+      "repository": "Qwen/Qwen3-Reranker-0.6B",
+      "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+      "modelSafetensorsBytes": 1191588280,
+      "modelSafetensorsSha256": "27cd75a405b9c1b46b59abfd88aaa209e6fed2a1972cde9b70e7659537c5e65b",
+      "tokenizerJsonBytes": 11422654,
+      "tokenizerJsonSha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    }
+  },
+  "rollback": "Stop the subprocess and remove only CODEX_HOME/external/retrieval01-qwen-dual-v1 after explicit confirmation; Git and SQLite evidence remain untouched."
+}
