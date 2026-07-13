@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/retrieval/local_retrieval_model_protocol_v1.schema.json",
+  "title": "Local Retrieval Model Protocol V1",
+  "oneOf": [
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/response" }
+  ],
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chunkId", "text", "sourceSha256", "visibility"],
+      "properties": {
+        "chunkId": { "type": "string", "minLength": 1 },
+        "text": { "type": "string" },
+        "sourceSha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+        "visibility": { "enum": ["public", "character_visible", "author_only"] }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocolVersion", "requestId", "operation", "modelRevision", "query", "candidates", "topK"],
+      "properties": {
+        "protocolVersion": { "const": "1.0" },
+        "requestId": { "type": "string", "minLength": 1 },
+        "operation": { "enum": ["EMBED_QUERY_AND_DOCUMENTS", "RERANK"] },
+        "modelRevision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "query": { "type": "string" },
+        "instruction": { "type": "string" },
+        "candidates": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/candidate" } },
+        "topK": { "type": "integer", "minimum": 1, "maximum": 50 }
+      }
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chunkId", "score"],
+      "properties": {
+        "chunkId": { "type": "string", "minLength": 1 },
+        "score": { "type": "number" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocolVersion", "requestId", "operation", "modelRevision", "scores", "durationMs", "peakVramMiB"],
+      "properties": {
+        "protocolVersion": { "const": "1.0" },
+        "requestId": { "type": "string", "minLength": 1 },
+        "operation": { "enum": ["EMBED_QUERY_AND_DOCUMENTS", "RERANK"] },
+        "modelRevision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "scores": { "type": "array", "maxItems": 50, "items": { "$ref": "#/$defs/score" } },
+        "durationMs": { "type": "integer", "minimum": 0 },
+        "peakVramMiB": { "type": "integer", "minimum": 0 },
+        "error": { "type": "string" }
+      }
+    }
+  }
+}

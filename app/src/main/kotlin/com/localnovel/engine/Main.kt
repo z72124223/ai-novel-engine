@@ -13,6 +13,7 @@ import com.localnovel.engine.cli.DialogueProductionCli
 import com.localnovel.engine.cli.DataFoundationCli
 import com.localnovel.engine.cli.StoryboardPipelineCli
 import com.localnovel.engine.cli.ProvisionalLayerCli
+import com.localnovel.engine.cli.RetrievalBenchmarkCli
 import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
 import com.localnovel.engine.cli.parseCliOptions
 import kotlin.system.exitProcess
@@ -34,6 +35,7 @@ class Cli {
             when (command) {
                 "init-db" -> StorySessionCli.initDb(options)
                 "rebuild-project-data" -> DataFoundationCli.rebuildProjectData(options)
+                "benchmark-retrieval-exact-baseline" -> RetrievalBenchmarkCli.benchmarkExactBaseline(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -221,6 +223,7 @@ class Cli {
 
             Commands:
               rebuild-project-data --repo <repository-root> --manifest <rebuild-manifest.json> --db <new-db-path> --out <report.json>
+              benchmark-retrieval-exact-baseline --db <path> --queries <query-set.json> --out <report.json> [--top-k 8]
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>

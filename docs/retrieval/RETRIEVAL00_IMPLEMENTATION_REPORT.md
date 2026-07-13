@@ -46,6 +46,12 @@ logical-content SHA-256:
 Two independent temporary database rebuilds produced the same table digests
 and root logical-content SHA-256.
 
+Cross-worktree verification additionally found that Windows `core.autocrlf`
+may materialize migrations 014/015 with CRLF. Input verification therefore
+uses canonical LF text bytes while reporting working-tree bytes and whether
+normalization occurred. The canonical hashes remain the Git Blob content
+hashes recorded by the manifest; non-line-ending changes still fail.
+
 ## Authority and retention evidence
 
 Governed tracked data inventory:

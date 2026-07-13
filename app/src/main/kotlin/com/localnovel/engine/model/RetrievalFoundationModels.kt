@@ -54,6 +54,8 @@ data class VerifiedRebuildInput(
     val order: Int,
     val sha256: String,
     val byteSize: Long,
+    val workingTreeByteSize: Long = byteSize,
+    val lineEndingNormalizationApplied: Boolean = false,
     val status: String,
 )
 

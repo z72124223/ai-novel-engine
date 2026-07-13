@@ -4,31 +4,31 @@
   "status": "RETRIEVAL_00_REBUILD_READY",
   "projectId": "chenxing",
   "migrationInputs": [
-    { "path": "app/src/main/resources/migrations/001_init.sql", "inputType": "MIGRATION", "order": 1, "sha256": "7ed488f36e2af9fc3c9c8c5126a94079122a67decf672038d7c8188caacdaa3c", "byteSize": 6608 },
-    { "path": "app/src/main/resources/migrations/002_multi_turn_runtime.sql", "inputType": "MIGRATION", "order": 2, "sha256": "d63feede01511f4a1da9ed417c3a44ff3acb02da58ed1ac06e24370bfeeb6ac6", "byteSize": 1691 },
-    { "path": "app/src/main/resources/migrations/003_memory_knowledge_runtime.sql", "inputType": "MIGRATION", "order": 3, "sha256": "9ed9cf5c3e731dcd982d5be7db7415c7e858f4bf918b1f3aa63dd71a64bb47b5", "byteSize": 4610 },
-    { "path": "app/src/main/resources/migrations/004_scene_thread_runtime.sql", "inputType": "MIGRATION", "order": 4, "sha256": "4842fbc0b6f75dd08f277dde4d4b6055ef52a103f0fd45bea3ec4f7d3f84b651", "byteSize": 7255 },
-    { "path": "app/src/main/resources/migrations/005_setting_pack_runtime.sql", "inputType": "MIGRATION", "order": 5, "sha256": "a128a359a6cb6468c1ab975476bab8303aa763b43fcc8e091082b209d79293a4", "byteSize": 3952 },
-    { "path": "app/src/main/resources/migrations/006_checkpoint_branching_runtime.sql", "inputType": "MIGRATION", "order": 6, "sha256": "047f21d339cf1d7bffa0f4f4aeb91f336c4fb92619e98bd57cee4b136581f714", "byteSize": 3683 },
-    { "path": "app/src/main/resources/migrations/007_world_source_archive.sql", "inputType": "MIGRATION", "order": 7, "sha256": "f114498b6b2a685ac823893912372a3e56c845d44995c1f96bdf985bc7344e43", "byteSize": 3044 },
-    { "path": "app/src/main/resources/migrations/008_ai_task_queue.sql", "inputType": "MIGRATION", "order": 8, "sha256": "1c66d4580275d9906f27334e7bd31fef35c22fdd3c07481cb01beb8b5f085948", "byteSize": 1248 },
-    { "path": "app/src/main/resources/migrations/009_provisional_layer.sql", "inputType": "MIGRATION", "order": 9, "sha256": "d9652296812ca6944fb668b260f52b74bde1d6e0ddba32617968b773c2898132", "byteSize": 2981 },
-    { "path": "app/src/main/resources/migrations/010_reboot_run_evidence.sql", "inputType": "MIGRATION", "order": 10, "sha256": "f3f13b336848a62a3979fc2702c80fb409226fa50b4b996bfa31d91e501ac6ea", "byteSize": 1499 },
-    { "path": "app/src/main/resources/migrations/011_npc_autonomy_runtime.sql", "inputType": "MIGRATION", "order": 11, "sha256": "7294cc6d78da09d38938a414945bbb3b1ee79345146cfb98be3628ace00ac573", "byteSize": 1018 },
-    { "path": "app/src/main/resources/migrations/012_reboot_drama_evaluation.sql", "inputType": "MIGRATION", "order": 12, "sha256": "2767d221cd180cdeb80997785de6ea30b9057415258f671abe06c0956ebea15d", "byteSize": 846 },
-    { "path": "app/src/main/resources/migrations/013_story_chapter_production.sql", "inputType": "MIGRATION", "order": 13, "sha256": "1a8e1bef764afd0345051dca08f9dbfab18248e98a2a2e124559f4c9f0041a90", "byteSize": 3059 },
+    { "path": "app/src/main/resources/migrations/001_init.sql", "inputType": "MIGRATION", "order": 1, "sha256": "829f094311e7b7c8cb9b1b651835fe96892325a03a83d4ee850d8e36e8ac647a", "byteSize": 6408 },
+    { "path": "app/src/main/resources/migrations/002_multi_turn_runtime.sql", "inputType": "MIGRATION", "order": 2, "sha256": "0de0f68d2e2a59faa9a125ca57be1478cd94e0d2a6ee2633e76ec7300ac5c2ae", "byteSize": 1651 },
+    { "path": "app/src/main/resources/migrations/003_memory_knowledge_runtime.sql", "inputType": "MIGRATION", "order": 3, "sha256": "a03f1b6d7e17394f1c2e42187a56a3c10c2a52d8df7ea9f377fc257145cf8cb6", "byteSize": 4521 },
+    { "path": "app/src/main/resources/migrations/004_scene_thread_runtime.sql", "inputType": "MIGRATION", "order": 4, "sha256": "5343601466bec862fdec228c5f53698a8f3abfe27d9f184332d414319fb45383", "byteSize": 7074 },
+    { "path": "app/src/main/resources/migrations/005_setting_pack_runtime.sql", "inputType": "MIGRATION", "order": 5, "sha256": "dbb58999f11be33b8a4f0df7ed68d48ac3e088e73082378dd5790b68677fded1", "byteSize": 3851 },
+    { "path": "app/src/main/resources/migrations/006_checkpoint_branching_runtime.sql", "inputType": "MIGRATION", "order": 6, "sha256": "9e7f96dcb2079014160a6948d5f7d434064ef9be7a8c988b9e180dc34a962127", "byteSize": 3590 },
+    { "path": "app/src/main/resources/migrations/007_world_source_archive.sql", "inputType": "MIGRATION", "order": 7, "sha256": "dded7686003725e7ac3d95f0527c48008ca3dec30b6f423b98272160d519bf16", "byteSize": 2964 },
+    { "path": "app/src/main/resources/migrations/008_ai_task_queue.sql", "inputType": "MIGRATION", "order": 8, "sha256": "01421609fcca40912a499d0188208eae74dc1af2fe4507fb0e74ffe7fb3225f4", "byteSize": 1208 },
+    { "path": "app/src/main/resources/migrations/009_provisional_layer.sql", "inputType": "MIGRATION", "order": 9, "sha256": "5ff644e46f061391ea634b67819e3baca11708ced42ff369fe3838d6488cbeb6", "byteSize": 2895 },
+    { "path": "app/src/main/resources/migrations/010_reboot_run_evidence.sql", "inputType": "MIGRATION", "order": 10, "sha256": "19799de763ab6563fdf1c0ae7af3ec84ac3edfa05456a510b1ba95492dd7743c", "byteSize": 1460 },
+    { "path": "app/src/main/resources/migrations/011_npc_autonomy_runtime.sql", "inputType": "MIGRATION", "order": 11, "sha256": "8d9395172e0e95aa23f4ad7743b79f2ff01e08f61154aeeeb379f86ce24db967", "byteSize": 990 },
+    { "path": "app/src/main/resources/migrations/012_reboot_drama_evaluation.sql", "inputType": "MIGRATION", "order": 12, "sha256": "d239394624a0659ed893d96087ce2efd79ec81621034d2454846206624d5dfb5", "byteSize": 823 },
+    { "path": "app/src/main/resources/migrations/013_story_chapter_production.sql", "inputType": "MIGRATION", "order": 13, "sha256": "52fb1f12c7827146aaeb85c717341619bd8b241c1e5c9bd9591411e99f07b096", "byteSize": 3000 },
     { "path": "app/src/main/resources/migrations/014_production_rule_runtime.sql", "inputType": "MIGRATION", "order": 14, "sha256": "04aa7be4865aea2905e85e562b72fbfec840f12851279a2bef87155155677a12", "byteSize": 8258 },
     { "path": "app/src/main/resources/migrations/015_production_rule_authority_hardening.sql", "inputType": "MIGRATION", "order": 15, "sha256": "dd2f9e489880cf687ba7c20107cee4aa43d1a6e54a22454f6bb013f4c165b09f", "byteSize": 18556 }
   ],
   "settingPackInputs": [
-    { "path": "world/chenxing/engine/chenxing_setting_pack_v1.json", "inputType": "SETTING_PACK", "order": 1, "sha256": "e17ba8e37714ef789e7bc30345ca22709ec717053be59f5c4e8c94cce1a18f42", "byteSize": 10237 },
-    { "path": "world/chenxing/engine/chenxing_setting_pack_v2_visual_turnarounds.json", "inputType": "SETTING_PACK", "order": 2, "sha256": "6c1f738987f732890a7ff376d8ca9fe46167d58c7364a145fe26e60425d1e8cb", "byteSize": 5486 },
-    { "path": "world/chenxing/engine/chenxing_setting_pack_v3_opening_modern_costume.json", "inputType": "SETTING_PACK", "order": 3, "sha256": "1337bb77afe6d23c9d6dca6cfb7716605c19523aca183accd5a4e43d1c0d8a24", "byteSize": 4641 },
-    { "path": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json", "inputType": "SETTING_PACK", "order": 4, "sha256": "b992a4734d36592be9d11a3a440fc40fea590e5845841eacf7f78c6c9dbe89db", "byteSize": 5428 },
-    { "path": "world/chenxing/engine/chenxing_setting_pack_v5_ruin_interior.json", "inputType": "SETTING_PACK", "order": 5, "sha256": "c0d28583e3e21b0d3807e8b1ccdb5c6932be1be25173f73ed0604108a1beebd7", "byteSize": 18734 }
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v1.json", "inputType": "SETTING_PACK", "order": 1, "sha256": "552facdb13945426a237e922219996955ebb28bfbf8ce34ae7c93fc47c0d89bd", "byteSize": 9950 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v2_visual_turnarounds.json", "inputType": "SETTING_PACK", "order": 2, "sha256": "1f14327994e79587594a268a5192f605e0a30b188d88ffa15044f5eb36bb952a", "byteSize": 5350 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v3_opening_modern_costume.json", "inputType": "SETTING_PACK", "order": 3, "sha256": "c1cc4ba2b72acb98b04995be51c709631333e703ee6f005e0c0b6f624a16fcc1", "byteSize": 4540 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json", "inputType": "SETTING_PACK", "order": 4, "sha256": "e696780a4eae24bbff537a7dfe5725cb0f45031a7ff25a8d40f70db1531ef4c2", "byteSize": 5262 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v5_ruin_interior.json", "inputType": "SETTING_PACK", "order": 5, "sha256": "f9ab9585faf9055cacb0369d1b81ce0fd564359c4847306dc04e2a0c5cf63b48", "byteSize": 18199 }
   ],
   "worldSourceInputs": [
-    { "path": "memory/chenxing_world_source_manifest.json", "inputType": "WORLD_SOURCE_MANIFEST", "order": 1, "sha256": "98861ae371ce17fbc54425575b4fb8c3e7e5ff9b7a067f39f80e017e2dcbc2fb", "byteSize": 6947 }
+    { "path": "memory/chenxing_world_source_manifest.json", "inputType": "WORLD_SOURCE_MANIFEST", "order": 1, "sha256": "3c0361281fa021e3af049c98f3e2a51d065c2e526884c20f736035164c037d42", "byteSize": 6800 }
   ],
   "governedRoots": [
     "app/src/main/resources/migrations",

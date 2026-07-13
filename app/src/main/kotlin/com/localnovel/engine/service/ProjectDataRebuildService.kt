@@ -127,14 +127,30 @@ class ProjectDataRebuildService {
         val path = runCatching { resolveRepositoryPath(root, input.path, manifest.boundary.allowAbsoluteRepositoryInputs) }
             .getOrElse { error ->
                 findings += RebuildFinding("UNSAFE_INPUT_PATH", "error", error.message.orEmpty(), input.path)
-                return VerifiedRebuildInput(input.path, input.inputType, input.order, input.sha256, input.byteSize, "FAIL")
+                return VerifiedRebuildInput(
+                    path = input.path,
+                    inputType = input.inputType,
+                    order = input.order,
+                    sha256 = input.sha256,
+                    byteSize = input.byteSize,
+                    status = "FAIL",
+                )
             }
         if (!Files.isRegularFile(path)) {
             findings += RebuildFinding("INPUT_MISSING", "error", "Input file is missing.", input.path)
-            return VerifiedRebuildInput(input.path, input.inputType, input.order, input.sha256, input.byteSize, "FAIL")
+            return VerifiedRebuildInput(
+                path = input.path,
+                inputType = input.inputType,
+                order = input.order,
+                sha256 = input.sha256,
+                byteSize = input.byteSize,
+                status = "FAIL",
+            )
         }
-        val actualBytes = Files.size(path)
-        val actualHash = sha256(path)
+        val workingBytes = Files.readAllBytes(path)
+        val canonicalBytes = canonicalTrackedTextBytes(workingBytes)
+        val actualBytes = canonicalBytes.size.toLong()
+        val actualHash = sha256(canonicalBytes)
         if (actualBytes != input.byteSize) {
             findings += RebuildFinding("INPUT_SIZE_MISMATCH", "error", "Expected ${input.byteSize}, got $actualBytes.", input.path)
         }
@@ -147,6 +163,8 @@ class ProjectDataRebuildService {
             order = input.order,
             sha256 = actualHash,
             byteSize = actualBytes,
+            workingTreeByteSize = workingBytes.size.toLong(),
+            lineEndingNormalizationApplied = !workingBytes.contentEquals(canonicalBytes),
             status = if (actualBytes == input.byteSize && actualHash.equals(input.sha256, true)) "PASS" else "FAIL",
         )
     }
@@ -296,6 +314,11 @@ class ProjectDataRebuildService {
     }.getOrDefault(true)
 
     private fun sha256(path: Path): String = sha256(Files.readAllBytes(path))
+
+    private fun canonicalTrackedTextBytes(bytes: ByteArray): ByteArray = bytes.toString(Charsets.UTF_8)
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .toByteArray(Charsets.UTF_8)
 
     private fun sha256(bytes: ByteArray): String = MessageDigest.getInstance("SHA-256")
         .digest(bytes).joinToString("") { "%02x".format(it) }

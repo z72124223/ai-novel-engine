@@ -29,8 +29,9 @@
   },
   "tests": {
     "focused": { "tests": 3, "failures": 0 },
-    "full": { "tests": 875, "failures": 0, "errors": 0, "skipped": 0 }
+    "full": { "tests": 876, "failures": 0, "errors": 0, "skipped": 0 }
   },
+  "crossWorktreeLineEndingVerification": true,
   "boundaries": {
     "providerCalls": false,
     "modelExecution": false,

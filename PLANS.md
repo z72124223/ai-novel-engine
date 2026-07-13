@@ -67,6 +67,10 @@
 - [x] Step 3：新增 focused tests、雙重重建等價、完整測試與交接證據。
 - [x] Step 4：Commit／Push／安全快轉預設分支並更新 PROJECT_STATE。
 - [ ] Step 5（CURRENT）：執行 RETRIEVAL-01 靜態供應鏈檢查與離線基準準備；模型下載／安裝／GPU 執行前停止取得明確授權，不得因失敗自動升級模型。
+  - [x] 5.1：建立 RETRIEVAL-01 工作包，核對官方 Qwen 來源、revision、License、模型／Tokenizer SHA-256 與本機 GPU／Runtime 現況。
+  - [x] 5.2：建立 50+ labeled queries、模型 subprocess JSON protocol 與 deterministic exact baseline harness。
+  - [x] 5.3：執行 baseline、focused tests、JSON／秘密／路徑驗證與 full suite。
+  - [ ] 5.4（CURRENT）：Commit／Push baseline evidence，然後在 model download／package install／GPU execution Gate 停止，回報所需磁碟、網路、Runtime 與風險，等待明確授權。
 - [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
 
 ### Verification
@@ -87,6 +91,8 @@
 
 - 2026-07-13：使用者將 RETRIEVAL-00 從未啟動候選改為正式實作，並要求後續加入 GPT API NPC Actor 路線。
 - 2026-07-13：RETRIEVAL-00 以 21 份 Hash 綁定輸入完成雙重重建；logical hash `30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32`，focused 3/3、full 875/875 PASS。
+- 2026-07-13：RETRIEVAL-01 靜態供應鏈審查固定官方 0.6B Embedding／Reranker revision 與 Safetensors Hash；本機無可用 Python Runtime，模型與套件尚未下載。
+- 2026-07-13：RETRIEVAL-01 pre-model baseline 完成 50 題；LIKE 10/38、lexical 38/38、6 policy blocks、6 corpus gaps、0 visibility leaks；focused PASS、full 876/876 PASS。
 
 ## Current Plan Window V6
 

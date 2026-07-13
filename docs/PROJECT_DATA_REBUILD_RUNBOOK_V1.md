@@ -58,6 +58,11 @@ Compare logical-content hashes, not SQLite binary hashes. Timestamps, random
 import/revision IDs, absolute local database paths and SQLite page layout are
 excluded from the semantic digest.
 
+Declared text inputs are verified after canonicalizing Git checkout line
+endings to LF. The report separately records the working-tree byte count and
+whether CRLF normalization occurred. This prevents `core.autocrlf` from
+creating a false mismatch while preserving a canonical SHA-256 content check.
+
 ## Safety checks
 
 The rebuild fails when:

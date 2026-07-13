@@ -4,7 +4,7 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS_DEFAULT_BRANCH_INTEGRATED / RETRIEVAL01_STATIC_PREPARATION_ACTIVE`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_PRE_MODEL_BASELINE_PASS_MODEL_GATE_BLOCKED`
 - Current work: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Implementation branch: `codex/retrieval00-authority-rebuild-runtime`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
@@ -20,6 +20,12 @@
 - Validation evidence: `docs/retrieval/RETRIEVAL00_IMPLEMENTATION_REPORT.md` and `docs/retrieval/RETRIEVAL00_VALIDATION_SUMMARY.json`.
 - RETRIEVAL-00 implementation Commit `82ed30bf94b69902e92737fdbdb32074db565840` is present on the remote default branch.
 - The next bounded action is RETRIEVAL-01 static supply-chain and benchmark preparation. Downloading/installing/executing external models still requires explicit disk/network/GPU authorization.
+- RETRIEVAL-01 branch: `codex/retrieval01-offline-dual-model-benchmark` from default Commit `0922bb2ce1599101c2726431f8b81b1259abc56d`.
+- RETRIEVAL-01 work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`.
+- Supply-chain evidence: `docs/retrieval/RETRIEVAL01_SUPPLY_CHAIN_REVIEW.md`; no model weight, Python package or executable has been downloaded.
+- RETRIEVAL-01 baseline evidence: `docs/retrieval/RETRIEVAL01_EXACT_BASELINE_REPORT.md` and `docs/retrieval/RETRIEVAL01_BASELINE_SUMMARY.json`.
+- Baseline result: 50 queries; 38 retrievable; LIKE top-8 10/38; lexical top-8 38/38; 6 knowledge-boundary blocks; 6 code/docs corpus gaps; 0 visibility leaks; full test suite 876/876 PASS.
+- Current true stop: downloading approximately 2.4 GB official model weights, installing an isolated Python/PyTorch/Transformers runtime, and executing on the GTX 1080 Ti require explicit disk/network/GPU approval.
 
 ## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
 

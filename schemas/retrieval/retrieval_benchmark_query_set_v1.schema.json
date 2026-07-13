@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/retrieval/retrieval_benchmark_query_set_v1.schema.json",
+  "title": "Retrieval Benchmark Query Set V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "querySetId", "status", "sourceManifestPath", "sourceManifestSha256", "queries"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "querySetId": { "type": "string", "minLength": 1 },
+    "status": { "const": "RETRIEVAL_01_LABELED_QUERY_SET_READY" },
+    "sourceManifestPath": { "type": "string", "minLength": 1 },
+    "sourceManifestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "queries": { "type": "array", "minItems": 50, "items": { "$ref": "#/$defs/query" } }
+  },
+  "$defs": {
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["queryId", "category", "text", "visibilityTarget", "expectedDisposition"],
+      "properties": {
+        "queryId": { "type": "string", "minLength": 1 },
+        "category": { "enum": ["EXACT_ENTITY", "SEMANTIC_PARAPHRASE", "TEMPORAL_CURRENT_STATE", "CAUSAL", "CODE_DEVELOPMENT_DOC", "KNOWLEDGE_BOUNDARY", "CHAPTER_CONTINUITY"] },
+        "text": { "type": "string", "minLength": 1 },
+        "expectedSourceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "visibilityTarget": { "enum": ["AUTHOR", "CHARACTER"] },
+        "expectedDisposition": { "enum": ["RETRIEVE", "BLOCK_BY_POLICY", "CORPUS_GAP"] },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}
