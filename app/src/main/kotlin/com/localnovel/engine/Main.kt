@@ -43,6 +43,10 @@ class Cli {
                 "evaluate-npc-actor-hard-blind" -> NpcActorCli.evaluateHardBlind(options)
                 "validate-npc-actor-hard-blind-review" -> NpcActorCli.validateHardBlindHumanReview(options)
                 "reveal-npc-actor-hard-blind-review" -> NpcActorCli.revealHardBlindHumanReview(options)
+                "create-npc-actor-calibration-policy" -> NpcActorCli.createCalibrationPolicy(options)
+                "create-npc-actor-calibration-suite" -> NpcActorCli.createCalibrationSuite(options)
+                "evaluate-npc-actor-calibration" -> NpcActorCli.evaluateCalibration(options)
+                "validate-npc-actor-calibration-review" -> NpcActorCli.validateCalibrationHumanReview(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -237,6 +241,10 @@ class Cli {
               evaluate-npc-actor-hard-blind --suite <suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
               validate-npc-actor-hard-blind-review --packet <blind-review.json> --result <human-review-result.json>
               reveal-npc-actor-hard-blind-review --packet <blind-review.json> --result <human-review-result.json> --answer-key <answer-key.json> --out <summary.json>
+              create-npc-actor-calibration-policy --out <policy.json>
+              create-npc-actor-calibration-suite --policy <policy.json> --out <suite.json>
+              evaluate-npc-actor-calibration --policy <policy.json> --suite <suite.json> --development-suite <npc-actor02-suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
+              validate-npc-actor-calibration-review --packet <blind-review.json> --result <human-review-result.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>

@@ -204,6 +204,13 @@ of appearing in every line. The revealed NPC-ACTOR-02 set is development data,
 not final evidence; a new holdout is mandatory. If the single revision still
 shows no advantage, stop rather than tuning fixtures until they win.
 
+The single NPC-ACTOR-03 revision has now passed its technical gates with eight
+new non-Canon holdout scenes, four profiles represented twice, zero id/content
+overlap with the development set, 4/4 deterministic identity balance and no
+structure, strawman, secret or length violation. Its answer key remains sealed
+while the Product Owner completes the anonymous review. This technical pass
+does not authorize a live API, second calibration revision or production use.
+
 ## 11. Stop Conditions
 
 - API Key or paid call is required and not explicitly approved;

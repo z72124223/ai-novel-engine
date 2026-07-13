@@ -1,0 +1,23 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor03-adaptive-holdout-8-v1",
+    "policyId": "npc-actor-adaptive-expression-v1",
+    "scenarioCount": 8,
+    "profileCount": 4,
+    "adaptiveOptionACount": 4,
+    "adaptiveOptionBCount": 4,
+    "developmentScenarioIdOverlapCount": 0,
+    "developmentContentFingerprintOverlapCount": 0,
+    "turnStructureViolationCount": 0,
+    "strawmanPatternCount": 0,
+    "forbiddenInformationViolationCount": 0,
+    "lengthBalanceViolationCount": 0,
+    "maximumSpokenLengthRatio": 1.25,
+    "technicalDecision": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING",
+    "humanBlindReviewStatus": "HUMAN_BLIND_REVIEW_PENDING",
+    "claimBoundary": [
+        "This is one offline calibration revision over manually authored fixtures.",
+        "The revealed NPC-ACTOR-02 set is development data and not holdout evidence.",
+        "No live API, production rollout, Canon promotion or SQLite state write is authorized."
+    ]
+}

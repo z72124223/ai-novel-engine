@@ -1,12 +1,18 @@
 package com.localnovel.engine.cli
 
 import com.localnovel.engine.model.NpcActorEvaluationSuite
+import com.localnovel.engine.model.NpcActorCalibrationHumanReviewResult
+import com.localnovel.engine.model.NpcActorCalibrationPolicy
+import com.localnovel.engine.model.NpcActorCalibrationReviewPacket
+import com.localnovel.engine.model.NpcActorCalibrationSuite
 import com.localnovel.engine.model.NpcActorHardBlindSuite
 import com.localnovel.engine.model.NpcActorHardBlindHumanReviewResult
 import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
 import com.localnovel.engine.service.NpcActorEvaluationFixtureFactory
 import com.localnovel.engine.service.NpcActorEvaluationService
+import com.localnovel.engine.service.NpcActorCalibrationEvaluationService
+import com.localnovel.engine.service.NpcActorCalibrationFixtureFactory
 import com.localnovel.engine.service.NpcActorHardBlindEvaluationService
 import com.localnovel.engine.service.NpcActorHardBlindFixtureFactory
 import com.localnovel.engine.service.NpcActorJson
@@ -16,6 +22,73 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
 internal object NpcActorCli {
+    fun createCalibrationPolicy(options: Map<String, String>): Int {
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, NpcActorCalibrationFixtureFactory.createPolicy())
+        println("policyId=${NpcActorCalibrationFixtureFactory.POLICY_ID}")
+        println("revisionNumber=1")
+        println("status=EVALUATION_ONLY")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun createCalibrationSuite(options: Map<String, String>): Int {
+        val policyPath = Path.of(options.requiredCliOption("policy"))
+        val policy = NpcActorJson.strict.decodeFromString<NpcActorCalibrationPolicy>(
+            Files.readString(policyPath).removePrefix("\uFEFF"),
+        )
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, NpcActorCalibrationFixtureFactory.createSuite(policy.policyId))
+        println("scenarios=8")
+        println("profiles=4")
+        println("boundary=NON_CANON_EVALUATION")
+        println("fixtureOrigin=MANUALLY_AUTHORED_OFFLINE_HOLDOUT_FIXTURE")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun evaluateCalibration(options: Map<String, String>): Int {
+        val policy = NpcActorJson.strict.decodeFromString<NpcActorCalibrationPolicy>(
+            Files.readString(Path.of(options.requiredCliOption("policy"))).removePrefix("\uFEFF"),
+        )
+        val suite = NpcActorJson.strict.decodeFromString<NpcActorCalibrationSuite>(
+            Files.readString(Path.of(options.requiredCliOption("suite"))).removePrefix("\uFEFF"),
+        )
+        val developmentSuite = NpcActorJson.strict.decodeFromString<NpcActorHardBlindSuite>(
+            Files.readString(Path.of(options.requiredCliOption("development-suite"))).removePrefix("\uFEFF"),
+        )
+        val artifacts = NpcActorCalibrationEvaluationService().evaluate(policy, suite, developmentSuite)
+        val report = Path.of(options.requiredCliOption("report"))
+        val blind = Path.of(options.requiredCliOption("blind"))
+        val answerKey = Path.of(options.requiredCliOption("answer-key"))
+        writeStrictJson(report, artifacts.report)
+        writeStrictJson(blind, artifacts.blindReviewPacket)
+        writeStrictJson(answerKey, artifacts.blindReviewAnswerKey)
+        println("technicalDecision=${artifacts.report.technicalDecision}")
+        println("humanBlindReviewStatus=${artifacts.report.humanBlindReviewStatus}")
+        println("scenarioCount=${artifacts.report.scenarioCount}")
+        println("profileCount=${artifacts.report.profileCount}")
+        println("adaptiveOptionBalance=${artifacts.report.adaptiveOptionACount}/${artifacts.report.adaptiveOptionBCount}")
+        println("report=$report")
+        println("blind=$blind")
+        println("answerKey=$answerKey")
+        return if (artifacts.report.technicalDecision == "TECHNICAL_PASS_HUMAN_REVIEW_PENDING") 0 else 1
+    }
+
+    fun validateCalibrationHumanReview(options: Map<String, String>): Int {
+        val packet = NpcActorJson.strict.decodeFromString<NpcActorCalibrationReviewPacket>(
+            Files.readString(Path.of(options.requiredCliOption("packet"))).removePrefix("\uFEFF"),
+        )
+        val result = NpcActorJson.strict.decodeFromString<NpcActorCalibrationHumanReviewResult>(
+            Files.readString(Path.of(options.requiredCliOption("result"))).removePrefix("\uFEFF"),
+        )
+        NpcActorCalibrationEvaluationService().validateHumanReviewResult(packet, result)
+        println("humanReviewValidation=PASS")
+        println("packetId=${packet.packetId}")
+        println("ratings=${result.ratings.size}")
+        return 0
+    }
+
     fun createEvaluationSuite(options: Map<String, String>): Int {
         val output = Path.of(options.requiredCliOption("out"))
         writeStrictJson(output, NpcActorEvaluationFixtureFactory.create())

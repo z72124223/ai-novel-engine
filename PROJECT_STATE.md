@@ -4,8 +4,8 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_OFFLINE_CALIBRATION_ACTIVE`
-- Current work: `NPC-ACTOR-03 — Adaptive Profile Expression Calibration`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
+- Current work: `NPC-ACTOR-03 — Product Owner 8-item anonymous blind review`
 - Implementation branch: `codex/npc-actor03-adaptive-profile-calibration`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
 - Required work package: `docs/work-packages/NPC-ACTOR-03_ADAPTIVE_PROFILE_EXPRESSION_CALIBRATION.md`
@@ -42,7 +42,9 @@
 - NPC-ACTOR-02 human result: Actor 4, natural control 6, TIE 2, BOTH_FAIL 0, knowledge/safety concerns 0; decision `NO_ACTOR_ADVANTAGE_OBSERVED`.
 - The result does not justify live API or production rollout. Profile-level variation is real, but the cause is unknown because no qualitative issue tags were supplied.
 - On 2026-07-13 the user explicitly requested continuation after completing NPC-ACTOR-02; this authorizes one bounded offline calibration revision under NPC-ACTOR-03 only.
-- Current next step: build one adaptive profile-expression revision and a new 8-item holdout packet; revealed NPC-ACTOR-02 scenes are development evidence only.
+- NPC-ACTOR-03 technical evidence is ready: one evaluation-only revision, 8 new holdout scenes, four profiles exactly twice each, NPC-ACTOR-02 id/content overlap 0, deterministic A/B 4/4, maximum spoken-length ratio 1.25 and 0 structure/strawman/secret/length violations.
+- NPC-ACTOR-03 verification: focused 6/6 and full 898/898 PASS; JSON 7/7, SHA-256 6/6, anonymity, secret, private-path, network and Git-scope checks PASS.
+- Current next step: Product Owner completes all 8 anonymous ratings in `samples/npc_actor03/npc_actor03_blind_review_packet_v1.json`; the separate answer key must remain unopened until the result is saved and validated.
 - Current true stops: any live API/API Key/paid Provider/privacy export, production rollout, Canon decision, or weakening of visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
@@ -73,13 +75,13 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_OFFLINE_CALIBRATION_ACTIVE`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
 - Current work package: `docs/work-packages/NPC-ACTOR-03_ADAPTIVE_PROFILE_EXPRESSION_CALIBRATION.md`
 - `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and the first human blind review. The 20／20 preference is accepted only as a basic anti-exposition signal because the comparison was too easy.
 - `NPC-ACTOR-02` human review is complete: Actor 4, natural control 6 and 2 ties. No Actor advantage was observed, so live API remains blocked.
-- `NPC-ACTOR-03` is the single allowed offline calibration revision; it must use a new 8-item holdout and stop rather than repeatedly rewriting until it wins.
+- `NPC-ACTOR-03` single offline calibration and new 8-item holdout have passed technical gates. The active stop is Product Owner anonymous review; do not open the answer key, start a second revision or enable live API.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.

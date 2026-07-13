@@ -1,6 +1,6 @@
 # NPC-ACTOR-03 — Adaptive Profile Expression Calibration
 
-Status: `ACTIVE / OFFLINE_ONLY / ONE_REVISION_LIMIT / LIVE_API_BLOCKED`
+Status: `TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING / ANSWER_KEY_SEALED / LIVE_API_BLOCKED`
 
 Date: `2026-07-13`
 
@@ -92,3 +92,12 @@ Stop when the new anonymous 8-item holdout packet is ready for Product Owner
 review. Stop separately before any live API/API Key/cost/privacy operation,
 production rollout, Canon decision, safety-boundary weakening or second
 calibration revision.
+
+## Technical Completion Evidence
+
+- One evaluation-only policy revision was implemented; revision 2 is rejected.
+- Eight new holdout scenes cover four profiles exactly twice each.
+- NPC-ACTOR-02 development id overlap and content-fingerprint overlap are both zero.
+- Candidate paths contain four turns, use plausible natural controls and remain within the 25 percent spoken-length boundary.
+- Deterministic A/B placement is balanced 4/4; the answer key is separate.
+- The anonymous packet is now the only active Product Owner task. Do not open the answer key before all eight ratings are saved and validated.
