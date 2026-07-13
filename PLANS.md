@@ -1,10 +1,90 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-13):** Read only `## Current Plan Window V7`
-> (`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`) first. All older plan windows
-> are archived evidence only. Current clean-worktree base:
-> `363b6535a6166e41a52577d51214bf9c40af4321` on
-> `codex/npc-actor01-offline-pilot`. GitHub remote is the team authority.
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V8`
+> (`WORLD_PHYSICS01_PHYSICAL_AFFORDANCE_FOUNDATION`) first. All older plan
+> windows are preserved evidence only. Current clean-worktree base:
+> `3b86e967891c48ea52789daf25698b8ca611e3b0` on
+> `codex/world-physics01-physical-affordance`. GitHub remote is the team authority.
+
+## Current Plan Window V8
+
+標記：`WORLD_PHYSICS01_PHYSICAL_AFFORDANCE_FOUNDATION`
+
+狀態：**ACTIVE — NPC-ACTOR-04 已證明文字場景連續性，但未證明形態與物理可行性；本輪建立低成本確定性物理規則核心**
+
+日期：2026-07-14
+
+### Goal
+
+建立 `WORLD-PHYSICS-01` 物理可行性基礎，讓角色動作在進入正式狀態流程前，可以依實體形態、質量、尺寸、承重、觸及、阻擋、容器與重力規則得到可重現的接受或拒絕結果。首要回歸案例是：成年角色不得把中型犬的肩側當作起身承重支點。
+
+### Global Strategy
+
+- 採 physics-lite（輕量物理規則）而非完整 3D 引擎、模型再判斷或世界模型訓練。
+- 以公分、公斤與三維座標建立連續空間證據，不再只依 zone adjacency（區域相鄰）推定物理可行性。
+- 模型只提出結構化動作；本機 `PhysicalAffordanceValidator` 依世界快照作確定性裁決。
+- 第一包先建立獨立、無副作用的 validator（驗證器）、Schema（資料格式規範）、60+ 對抗案例與測試；不得修改歷史 NPC-ACTOR-04 成果。
+- 正式 `AiTurnResultValidator`／`StateReducer` 接線留待獨立工作包，必須先證明資料契約與拒絕碼穩定。
+
+### Non-Goals
+
+- 不建立 Unity、Godot、剛體模擬、動畫碰撞或完整流體／布料物理。
+- 不使用 GPT/API/Provider 作第二裁判，不下載模型，不產生費用。
+- 不修改 SQLite、Migration、Canon、Knowledge、Memory 或正式 Runtime state。
+- 不修改、揭露或重評 NPC-ACTOR-03/04 封存答案。
+- 不生成圖片、影片或音訊。
+
+### Scope
+
+- 治理與藍圖：`PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md`、WORLD-PHYSICS 文件。
+- Kotlin：獨立物理資料模型、確定性驗證器與離線 fixture factory。
+- 證據：strict JSON Schema、60+ 非 Canon 對抗案例、技術報告與 SHA-256 manifest。
+- 測試：形態、承重、觸及、阻擋、抬舉、推動、容器、通道、放置、重力與無副作用。
+
+### Confirmed Facts
+
+- 遠端預設分支基準為 `3b86e967891c48ea52789daf25698b8ca611e3b0`。
+- NPC-ACTOR-04 有 4 個場景、12 個 beat、明確區域、物件、可視性、相鄰移動和狀態連續性；focused 7/7、full 905/905 PASS。
+- NPC-ACTOR-04 報告明確聲明它不是物理模擬，不能證明物理理解。
+- 使用者指出具體失敗例：把狗的肩側寫成成年人起身支點，顯示只驗證文字連續性不足。
+- 現有正式狀態仍必須經 `AiTurnResultValidator` 與 `StateReducer`；本輪不得弱化此邊界。
+
+### Assumptions
+
+- 以可重用實體 archetype（原型）與少量實例狀態，可避免每個場景重複描述同一物種和物件的物理常識。
+- 第一版涵蓋常見接觸與剛體近似，已能攔截高價值錯誤；它不等於真實世界全物理理解。
+
+### Open Questions
+
+- 正式世界角色與物件如何綁定物理 archetype，需在 WORLD-PHYSICS-02 依現有 Model／Setting Pack 證據決定。
+- 哪些物理拒絕可自動要求 NPC Actor 修正、哪些必須交 Game Master，需在 Runtime 接線前另行定義。
+
+### Implementation Steps
+
+- [x] Step 1：讀取遠端治理、NPC-ACTOR-04 契約與現有 Validator 邊界，建立 WORLD-PHYSICS-01 藍圖、工作包與當前計畫。
+- [x] Step 2：實作公制三維實體／狀態／障礙／動作資料模型與純函式 `PhysicalAffordanceValidator`。
+- [x] Step 3：建立 64 個對抗案例，涵蓋合理動作、狗肩承重、超載、超距、穿牆、容器、通道、推動、放置與重力。
+- [x] Step 4：建立 strict Schema、技術報告、Hash manifest，執行 focused/full/JSON/Hash/secret/Git-scope 驗證。
+- [ ] Step 5：更新治理完成狀態，Commit、Push 功能分支並以普通 fast-forward 整合遠端預設分支。
+
+### Verification
+
+- `./gradlew.bat :app:test --tests "com.localnovel.engine.PhysicalAffordanceValidatorTest" --no-daemon`
+- `./gradlew.bat clean test --no-daemon`
+- JSON parse、Schema 驗證、SHA-256、私人路徑、秘密、網路字樣與 Git 範圍檢查。
+- 失敗案例必須回傳穩定拒絕碼；驗證不得修改輸入快照或寫入任何 Repository/SQLite。
+
+### Risks
+
+- 規則過少會漏掉物理錯誤；規則過多會假裝成完整模擬。以明確 claim boundary（主張邊界）控制。
+- 若由動作提案自行聲稱距離或承重，AI 仍可提供錯誤資料；因此幾何與物性必須來自引擎快照。
+- 正式 Runtime 尚未提供所有實體物理欄位；本輪不得用臆測值回填 Canon。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 指出 NPC-ACTOR-04 雖有環境圖與狀態，仍不能阻止「成年人扶狗肩起身」等形態／物理錯誤；NPC-ACTOR-04 評審保持封存，路線轉入 WORLD-PHYSICS-01。
+- 2026-07-14：採用零模型執行費的確定性 physics-lite 核心；完整 3D 引擎、世界模型訓練和 API 第二裁判均排除。
+- 2026-07-14：第一版 64 案例全部符合預期；focused 7/7、full 912/912、Schema 3/3、Hash 3/3 PASS。共用 archetype 改為 suite 單一 registry，證據檔由 592,691 bytes 降至 255,294 bytes，避免快照重複物性資料。
 
 ## Current Plan Window V7
 

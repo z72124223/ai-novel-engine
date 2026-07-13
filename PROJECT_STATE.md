@@ -2,7 +2,26 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — RETRIEVAL-00 / NPC Actor Route
+## Current Override — WORLD-PHYSICS-01 Physical Affordance Foundation
+
+- Status: `WORLD_PHYSICS01_TECHNICAL_PASS_RUNTIME_NOT_CONNECTED / NPC_ACTOR04_REVIEW_DEFERRED_BY_PHYSICAL_GROUNDING_LIMITATION`
+- Current work: `WORLD-PHYSICS-01 — Commit, Push and ordinary fast-forward integration`
+- Implementation branch: `codex/world-physics01-physical-affordance`
+- Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
+- Required work package: `docs/work-packages/WORLD-PHYSICS-01_PHYSICAL_AFFORDANCE_FOUNDATION.md`
+- Required plan: `PLANS.md` Current Plan Window V8.
+- Base SHA: `3b86e967891c48ea52789daf25698b8ca611e3b0` from the remote default branch.
+- Product trigger: the existing text scene checks cannot reject morphology errors such as an adult using a medium dog's shoulder as a load-bearing aid while standing up.
+- First implementation is deterministic and offline: metric 3D positions, body/object profiles, support, reach, barriers, load, containers, openings and gravity-derived effects.
+- This package creates a reusable validation core and adversarial evidence only. It does not yet wire physical data into formal Setting Packs, `AiTurnResultValidator`, `StateReducer` or SQLite.
+- Verification: 64/64 expected case outcomes, focused 7/7, full 912/912, JSON Schema contract 3/3 and SHA-256 3/3 PASS.
+- Data reuse: 20 physical archetypes are stored once in the suite registry; 18 snapshots contain only instance state and barriers. The generated suite shrank from 592,691 to 255,294 bytes during implementation without reducing case coverage.
+- NPC-ACTOR-03/04 packets and sealed answer keys remain preserved and unchanged. No human result is inferred.
+- No API, model download, Provider, Canon promotion, media generation, migration or formal state write is authorized.
+- True stops: any proposal to invent Canon physical values, change formal transaction boundaries, use a paid/live model, or claim full real-world simulation.
+- Next candidate after Git integration: `WORLD-PHYSICS-02`, but it is not authorized automatically.
+
+## Previous Override — RETRIEVAL-00 / NPC Actor Route
 
 - Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR03_REVIEW_DESIGN_LIMITATION / NPC_ACTOR04_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
 - Current work: `NPC-ACTOR-04 — Product Owner Full-Trajectory Review Gate`

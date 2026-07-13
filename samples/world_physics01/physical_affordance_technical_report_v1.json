@@ -1,0 +1,661 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "world-physics01-affordance-64-v1",
+    "caseCount": 64,
+    "expectationMatchCount": 64,
+    "expectationMismatchCount": 0,
+    "actionCoverage": [
+        {
+            "actionType": "USE_AS_SUPPORT",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "LIFT",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "PUSH",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "REACH",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "PLACE_ON",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "DROP",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "ENTER_CONTAINER",
+            "caseCount": 8,
+            "acceptedCaseCount": 1,
+            "rejectedCaseCount": 7
+        },
+        {
+            "actionType": "PASS_THROUGH",
+            "caseCount": 8,
+            "acceptedCaseCount": 2,
+            "rejectedCaseCount": 6
+        }
+    ],
+    "rejectionCodeCounts": {
+        "ACTOR_NOT_FOUND": 2,
+        "BODY_PLAN_NOT_SUPPORTED": 1,
+        "CONTAINER_INTERIOR_TOO_SMALL": 2,
+        "CONTAINER_LOAD_EXCEEDED": 1,
+        "DESTINATION_REQUIRED": 2,
+        "GRASPING_NOT_AVAILABLE": 1,
+        "GRAVITY_NOT_POSITIVE": 1,
+        "LIFT_LIMIT_EXCEEDED": 4,
+        "MOVEMENT_BLOCKED_BY_BARRIER": 3,
+        "NO_FALL_DISTANCE": 1,
+        "OBJECT_NOT_HELD_BY_ACTOR": 3,
+        "OPENING_TOO_SMALL": 3,
+        "OUT_OF_REACH": 7,
+        "PUSH_LIMIT_EXCEEDED": 3,
+        "REACH_BLOCKED_BY_BARRIER": 5,
+        "SECONDARY_TARGET_NOT_FOUND": 1,
+        "SUPPORT_CAPACITY_EXCEEDED": 3,
+        "SUPPORT_FOOTPRINT_TOO_SMALL": 1,
+        "SUPPORT_SURFACE_NOT_FOUND": 2,
+        "SUPPORT_USE_NOT_ALLOWED": 2,
+        "SUPPORT_USE_REQUIRED": 1,
+        "TARGET_NOT_CONTAINER": 1,
+        "TARGET_NOT_FOUND": 6,
+        "TARGET_NOT_MOVABLE": 3,
+        "TARGET_NOT_OPENING": 1,
+        "TARGET_NOT_STABLE_SUPPORT": 1
+    },
+    "outcomes": [
+        {
+            "caseId": "support-01-chair-assist",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-02-dog-shoulder-adult",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "BODY_PLAN_NOT_SUPPORTED",
+                "SUPPORT_CAPACITY_EXCEEDED",
+                "SUPPORT_USE_NOT_ALLOWED",
+                "TARGET_NOT_STABLE_SUPPORT"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-03-full-body-on-chair-arm",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_USE_NOT_ALLOWED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-04-overloaded-chair",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_CAPACITY_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-05-far-chair",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-06-through-wall",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-07-unknown-surface",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_SURFACE_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "support-08-use-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_USE_REQUIRED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-01-near-chair",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-02-far-chair",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-03-high-chair",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-04-wall",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-05-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-06-actor-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "ACTOR_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-07-child-far",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "reach-08-wall-to-rail",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-01-light-crate",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-02-heavy-crate",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "LIFT_LIMIT_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-03-fixed-statue",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "LIFT_LIMIT_EXCEEDED",
+                "TARGET_NOT_MOVABLE"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-04-dog-no-grasp",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "GRASPING_NOT_AVAILABLE",
+                "LIFT_LIMIT_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-05-far-light-crate",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-06-through-wall",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-07-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "lift-08-child-limit",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "LIFT_LIMIT_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-01-heavy-crate",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-02-fixed-statue",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "PUSH_LIMIT_EXCEEDED",
+                "TARGET_NOT_MOVABLE"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-03-anvil-limit",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "PUSH_LIMIT_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-04-destination-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "DESTINATION_REQUIRED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-05-path-blocked",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "MOVEMENT_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-06-target-far",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-07-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "push-08-dog-limit",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "PUSH_LIMIT_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-01-light-on-table",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-02-object-not-held",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OBJECT_NOT_HELD_BY_ACTOR"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-03-support-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SECONDARY_TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-04-surface-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_SURFACE_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-05-overloaded-table",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_CAPACITY_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-06-narrow-shelf",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "SUPPORT_FOOTPRINT_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-07-far-table",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OUT_OF_REACH"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "place-08-through-wall",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-01-held-above-ground",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": [
+                "FALL_DOWNWARD",
+                "RELEASE_HELD_OBJECT"
+            ]
+        },
+        {
+            "caseId": "drop-02-not-held",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OBJECT_NOT_HELD_BY_ACTOR"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-03-zero-gravity",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "GRAVITY_NOT_POSITIVE"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-04-no-fall-distance",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "NO_FALL_DISTANCE"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-05-fixed-object",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_MOVABLE"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-06-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-07-wrong-holder",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OBJECT_NOT_HELD_BY_ACTOR"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "drop-08-actor-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "ACTOR_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-01-large-container",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-02-opening-small",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OPENING_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-03-interior-small",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "CONTAINER_INTERIOR_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-04-load-exceeded",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "CONTAINER_LOAD_EXCEEDED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-05-not-container",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_CONTAINER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-06-path-blocked",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "MOVEMENT_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-07-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "enter-08-child-small-interior",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "CONTAINER_INTERIOR_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-01-wide-door",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-02-narrow-door",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OPENING_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-03-low-door",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "OPENING_TOO_SMALL"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-04-not-opening",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_OPENING"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-05-destination-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "DESTINATION_REQUIRED"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-06-path-blocked",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "MOVEMENT_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-07-target-missing",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualRejectionCodes": [
+                "TARGET_NOT_FOUND"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "pass-08-child-medium-door",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualRejectionCodes": [],
+            "actualRequiredEffects": []
+        }
+    ],
+    "technicalDecision": "FOUNDATION_TECHNICAL_PASS_RUNTIME_NOT_CONNECTED",
+    "runtimeIntegrationStatus": "NOT_CONNECTED",
+    "claimBoundary": [
+        "V1 is a deterministic rigid-body approximation, not a complete physics simulation.",
+        "A pass means no V1 rule disproved the action; it does not prove general real-world realism.",
+        "No formal Runtime, SQLite, Canon, Provider or model integration is authorized by this report."
+    ]
+}

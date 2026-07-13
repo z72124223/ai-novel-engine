@@ -1,0 +1,23 @@
+{
+    "schemaVersion": "1.0",
+    "hashAlgorithm": "SHA-256",
+    "scope": "WORLD-PHYSICS-01 PHYSICAL AFFORDANCE FOUNDATION",
+    "selfHashExcluded": true,
+    "files": [
+        {
+            "path": "samples/world_physics01/physical_affordance_suite_v1.json",
+            "sha256": "4e763f15a8600e09c6dd21589708f5e63b2b9afff5e79e737547f62ff8ebf7e2",
+            "bytes": 255294
+        },
+        {
+            "path": "samples/world_physics01/physical_affordance_technical_report_v1.json",
+            "sha256": "b32278701b61dae286195ca4ed1c6f33c02ffbccde4524937484ae7c7b181010",
+            "bytes": 20542
+        },
+        {
+            "path": "schemas/world_physics/physical_affordance_v1.schema.json",
+            "sha256": "53bb5e538c637c822d20fbd81b36f66323cb6ca3792953d1765f1046d0a5a534",
+            "bytes": 10821
+        }
+    ]
+}
