@@ -10,7 +10,7 @@
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**NPC-ACTOR-03 TECHNICAL PASS；PRODUCT OWNER 8-ITEM BLIND REVIEW PENDING；LIVE API 與正式 Runtime 升格仍禁止**
+狀態：**NPC-ACTOR-03 REVIEW DESIGN LIMITATION；NPC-ACTOR-04 TECHNICAL PASS／PRODUCT OWNER FULL-TRAJECTORY REVIEW PENDING；LIVE API 與正式 Runtime 升格仍禁止**
 
 日期：2026-07-13
 
@@ -95,7 +95,13 @@
   - [x] 9.1：將 Actor 4／Control 6／TIE 2 與角色分布轉成一個可測、不可假定為真的校準假設；工作包限制只允許一次 revision。
   - [x] 9.2：實作一版 evaluation-only adaptive expression policy 與 8 個全新多輪 holdout；不得重用已揭答題目。
   - [x] 9.3：產生匿名包、答案表、Schema、Hash、focused/full tests 與安全檢查。
-  - [ ] 9.4：停在 Product Owner 8 題真人評分；不得啟動 live API 或第二次校準。
+  - [ ] 9.4：原 8 題真人評分因缺少持續環境而延後；答案表維持封存，不得虛構或補填結果。
+- [ ] Step 10：執行 NPC-ACTOR-04 Embodied Scene Rollout Evaluation；以完整場景軌跡取代單句偏好作為產品 Gate。
+  - [x] 10.1：接受 Product Owner 對點對點測試的設計限制，建立四場具身多代理環境工作包；NPC-ACTOR-03 revision 1 不再修改。
+  - [x] 10.2：實作空間、物件、角色、感知、時間、環境事件、動作與狀態轉移契約。
+  - [x] 10.3：建立四個全新非 Canon 場景與兩條完整可信軌跡，每條三個決策節點。
+  - [x] 10.4：完成 adjacency、visibility、continuity、silence、multi-agent、anonymity 與 result-contract Gate。
+  - [x] 10.5：產生 Schema、JSON、Hash、focused 7/7、full 905/905 與安全證據；等待 Commit／Push 後停在四場真人評審。
 
 ### Verification
 
@@ -133,6 +139,8 @@
 - 2026-07-13：NPC-ACTOR-02 產出 12 個全新人工離線多輪情境；4 名角色各 3 場，A/B 6／6，最大發言長度比 1.2174，結構／稻草人／作者秘密／長度違規皆 0。新增可驗證真人結果契約；focused 6／6、full 892／892 PASS。技術 Gate 通過並停在真人盲測，不啟動 live API。
 - 2026-07-13：Product Owner 完成 NPC-ACTOR-02 後才揭答；Actor 4、Control 6、TIE 2，決策 `NO_ACTOR_ADVANTAGE_OBSERVED`。結果與摘要已 Hash 綁定，JSON 8／8、Hash 7／7、full 892／892 PASS；建立 NPC-ACTOR-03 單次離線校準工作包，不允許反覆改題直到勝出。
 - 2026-07-13：NPC-ACTOR-03 單次校準完成技術 Gate；8 個全新 holdout、4 profiles 各 2 題、NPC-ACTOR-02 id/content overlap 0、A/B 4／4、最大長度比 1.25。focused 6／6、full 898／898、JSON 7／7、Hash 6／6 與安全檢查 PASS；停在 Product Owner 8 題匿名評分，答案表維持封存。
+- 2026-07-13：Product Owner 在 NPC-ACTOR-03 評分前指出點對點對白缺少空間、多人、時間與環境後果，無法支持三維世界判斷。保留技術資料且不揭答，另啟動 NPC-ACTOR-04 完整具身場景軌跡評估；這不構成第二次校準 revision。
+- 2026-07-13：NPC-ACTOR-04 技術 Gate 完成：4 個全新非 Canon 場景、4 profiles、12 beats、A/B 2/2，reference／visibility／adjacency／timing／continuity／behavior／secret／length 違規皆 0；focused 7/7、full 905/905、Schema 4/4 PASS。答案表封存，停在四場完整軌跡真人評審。
 
 ## Current Plan Window V6
 

@@ -1,0 +1,27 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor04-embodied-holdout-4-v1",
+    "scenarioCount": 4,
+    "profileCount": 4,
+    "beatCount": 12,
+    "embodiedOptionACount": 2,
+    "embodiedOptionBCount": 2,
+    "priorScenarioIdOverlapCount": 0,
+    "priorContentFingerprintOverlapCount": 0,
+    "unknownReferenceViolationCount": 0,
+    "visibilityViolationCount": 0,
+    "adjacencyViolationCount": 0,
+    "timingViolationCount": 0,
+    "stateContinuityViolationCount": 0,
+    "requiredBehaviorViolationCount": 0,
+    "forbiddenInformationViolationCount": 0,
+    "lengthBalanceViolationCount": 0,
+    "maximumSpokenLengthRatio": 1.0952380952380953,
+    "technicalDecision": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING",
+    "humanReviewStatus": "HUMAN_EMBODIED_TRAJECTORY_REVIEW_PENDING",
+    "claimBoundary": [
+        "These are manually authored offline text trajectories, not live model outputs or a physics simulation.",
+        "The wider scene state tests environmental coherence but does not prove general human likeness.",
+        "No live API, production rollout, Canon promotion or SQLite state write is authorized."
+    ]
+}

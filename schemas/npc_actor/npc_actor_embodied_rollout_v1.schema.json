@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_embodied_rollout_v1.schema.json",
+  "title": "NPC Actor Embodied Scene Rollout Evaluation Artifacts V1",
+  "oneOf": [
+    { "$ref": "#/$defs/suite" },
+    { "$ref": "#/$defs/reviewPacket" },
+    { "$ref": "#/$defs/answerKey" },
+    { "$ref": "#/$defs/technicalReport" },
+    { "$ref": "#/$defs/humanReviewResult" }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "kind", "summary", "visibility", "sourceSha256"],
+      "properties": {
+        "evidenceId": { "$ref": "#/$defs/nonEmpty" },
+        "kind": { "$ref": "#/$defs/nonEmpty" },
+        "summary": { "$ref": "#/$defs/nonEmpty" },
+        "visibility": { "enum": ["ACTOR_OWNED", "ACTOR_VISIBLE", "AUTHOR_ONLY"] },
+        "sourceSha256": { "type": ["string", "null"] }
+      }
+    },
+    "zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zoneId", "label", "adjacentZoneIds", "visibleZoneIds"],
+      "properties": {
+        "zoneId": { "$ref": "#/$defs/nonEmpty" },
+        "label": { "$ref": "#/$defs/nonEmpty" },
+        "adjacentZoneIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "visibleZoneIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityId", "label", "entityType", "zoneId", "state"],
+      "properties": {
+        "entityId": { "$ref": "#/$defs/nonEmpty" },
+        "label": { "$ref": "#/$defs/nonEmpty" },
+        "entityType": { "enum": ["ACTOR", "OBJECT", "HAZARD"] },
+        "zoneId": { "$ref": "#/$defs/nonEmpty" },
+        "state": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "beat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["beatId", "tick", "eventSummary", "visibleEntityIdsAdded"],
+      "properties": {
+        "beatId": { "$ref": "#/$defs/nonEmpty" },
+        "tick": { "type": "integer", "minimum": 0 },
+        "eventSummary": { "$ref": "#/$defs/nonEmpty" },
+        "visibleEntityIdsAdded": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "stateChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityId", "field", "before", "after"],
+      "properties": {
+        "entityId": { "$ref": "#/$defs/nonEmpty" },
+        "field": { "enum": ["zoneId", "state"] },
+        "before": { "$ref": "#/$defs/nonEmpty" },
+        "after": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "decisionStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["beatId", "perceivedEntityIds", "chosenPriority", "actionType", "targetEntityIds", "actionDescription", "utterance", "nonverbal", "stateChanges", "otherActorReactions", "resultingStateSummary"],
+      "properties": {
+        "beatId": { "$ref": "#/$defs/nonEmpty" },
+        "perceivedEntityIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "chosenPriority": { "$ref": "#/$defs/nonEmpty" },
+        "actionType": { "$ref": "#/$defs/nonEmpty" },
+        "targetEntityIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "actionDescription": { "$ref": "#/$defs/nonEmpty" },
+        "utterance": { "type": "string" },
+        "nonverbal": { "type": "string" },
+        "stateChanges": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/stateChange" } },
+        "otherActorReactions": { "type": "array", "items": { "$ref": "#/$defs/nonEmpty" } },
+        "resultingStateSummary": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "trajectory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceType", "steps"],
+      "properties": {
+        "sourceType": { "enum": ["CONCISE_CONTROL_TRAJECTORY", "EMBODIED_ACTOR_TRAJECTORY"] },
+        "steps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/decisionStep" } }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenarioId", "title", "category", "boundary", "actorId", "actorLabel", "reviewerCharacterBrief", "worldBrief", "zones", "initialEntities", "environmentBeats", "actorOwnedEvidence", "forbiddenEvidence", "naturalControlTrajectory", "embodiedActorTrajectory", "ratingDimensions"],
+      "properties": {
+        "scenarioId": { "type": "string", "pattern": "^npc-actor04-" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "category": { "$ref": "#/$defs/nonEmpty" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "actorId": { "type": "string", "pattern": "^npc-eval-" },
+        "actorLabel": { "$ref": "#/$defs/nonEmpty" },
+        "reviewerCharacterBrief": { "$ref": "#/$defs/nonEmpty" },
+        "worldBrief": { "$ref": "#/$defs/nonEmpty" },
+        "zones": { "type": "array", "minItems": 5, "items": { "$ref": "#/$defs/zone" } },
+        "initialEntities": { "type": "array", "minItems": 10, "items": { "$ref": "#/$defs/entity" } },
+        "environmentBeats": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/beat" } },
+        "actorOwnedEvidence": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/evidence" } },
+        "forbiddenEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+        "naturalControlTrajectory": { "$ref": "#/$defs/trajectory" },
+        "embodiedActorTrajectory": { "$ref": "#/$defs/trajectory" },
+        "ratingDimensions": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": { "enum": ["ENVIRONMENT_AWARENESS", "SPATIAL_COHERENCE", "PRIORITY_AND_TIMING", "SOCIAL_REALISM", "VOICE_NATURALNESS", "STATE_CONTINUITY", "KNOWLEDGE_BOUNDARY"] } }
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "status", "fixtureOrigin", "frozenPolicyId", "randomizationSeed", "scenarios"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "const": "npc-actor04-embodied-holdout-4-v1" },
+        "status": { "const": "NON_CANON_EMBODIED_HOLDOUT_READY" },
+        "fixtureOrigin": { "const": "MANUALLY_AUTHORED_OFFLINE_EMBODIED_FIXTURE" },
+        "frozenPolicyId": { "const": "npc-actor-adaptive-expression-v1" },
+        "randomizationSeed": { "$ref": "#/$defs/nonEmpty" },
+        "scenarios": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/scenario" } }
+      }
+    },
+    "reviewStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["beatId", "perceived", "chosenPriority", "action", "utterance", "nonverbal", "otherActorReactions", "resultingStateSummary"],
+      "properties": {
+        "beatId": { "$ref": "#/$defs/nonEmpty" },
+        "perceived": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "chosenPriority": { "$ref": "#/$defs/nonEmpty" },
+        "action": { "$ref": "#/$defs/nonEmpty" },
+        "utterance": { "type": "string" },
+        "nonverbal": { "type": "string" },
+        "otherActorReactions": { "type": "array", "items": { "$ref": "#/$defs/nonEmpty" } },
+        "resultingStateSummary": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "reviewTrajectory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["steps"],
+      "properties": { "steps": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/reviewStep" } } }
+    },
+    "reviewItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewId", "scenarioId", "title", "characterBrief", "worldBrief", "zoneMap", "initialState", "sharedEnvironmentBeats", "optionA", "optionB", "ratingDimensions", "ratingPrompt"],
+      "properties": {
+        "reviewId": { "type": "string", "pattern": "^review-npc-actor04-" },
+        "scenarioId": { "type": "string", "pattern": "^npc-actor04-" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "characterBrief": { "$ref": "#/$defs/nonEmpty" },
+        "worldBrief": { "$ref": "#/$defs/nonEmpty" },
+        "zoneMap": { "type": "array", "minItems": 5, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "initialState": { "type": "array", "minItems": 10, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "sharedEnvironmentBeats": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/beat" } },
+        "optionA": { "$ref": "#/$defs/reviewTrajectory" },
+        "optionB": { "$ref": "#/$defs/reviewTrajectory" },
+        "ratingDimensions": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": { "type": "string" } },
+        "ratingPrompt": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "reviewPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "packetId", "status", "sourceDisclosure", "items"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "pattern": "^npc-actor04-embodied-" },
+        "status": { "const": "HUMAN_REVIEW_REQUIRED" },
+        "sourceDisclosure": { "$ref": "#/$defs/nonEmpty" },
+        "items": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/reviewItem" } }
+      }
+    },
+    "answerKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "packetId", "randomizationMethod", "randomizationSeed", "answers"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "pattern": "^npc-actor04-embodied-" },
+        "randomizationMethod": { "const": "SHA256_RANK_BALANCED" },
+        "randomizationSeed": { "$ref": "#/$defs/nonEmpty" },
+        "answers": {
+          "type": "array", "minItems": 4, "maxItems": 4,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["reviewId", "embodiedActorOption"],
+            "properties": {
+              "reviewId": { "type": "string", "pattern": "^review-npc-actor04-" },
+              "embodiedActorOption": { "enum": ["A", "B"] }
+            }
+          }
+        }
+      }
+    },
+    "technicalReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "scenarioCount", "profileCount", "beatCount", "embodiedOptionACount", "embodiedOptionBCount", "priorScenarioIdOverlapCount", "priorContentFingerprintOverlapCount", "unknownReferenceViolationCount", "visibilityViolationCount", "adjacencyViolationCount", "timingViolationCount", "stateContinuityViolationCount", "requiredBehaviorViolationCount", "forbiddenInformationViolationCount", "lengthBalanceViolationCount", "maximumSpokenLengthRatio", "technicalDecision", "humanReviewStatus", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "const": "npc-actor04-embodied-holdout-4-v1" },
+        "scenarioCount": { "const": 4 },
+        "profileCount": { "const": 4 },
+        "beatCount": { "const": 12 },
+        "embodiedOptionACount": { "const": 2 },
+        "embodiedOptionBCount": { "const": 2 },
+        "priorScenarioIdOverlapCount": { "const": 0 },
+        "priorContentFingerprintOverlapCount": { "const": 0 },
+        "unknownReferenceViolationCount": { "const": 0 },
+        "visibilityViolationCount": { "const": 0 },
+        "adjacencyViolationCount": { "const": 0 },
+        "timingViolationCount": { "const": 0 },
+        "stateContinuityViolationCount": { "const": 0 },
+        "requiredBehaviorViolationCount": { "const": 0 },
+        "forbiddenInformationViolationCount": { "const": 0 },
+        "lengthBalanceViolationCount": { "const": 0 },
+        "maximumSpokenLengthRatio": { "type": "number", "maximum": 1.25 },
+        "technicalDecision": { "const": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING" },
+        "humanReviewStatus": { "const": "HUMAN_EMBODIED_TRAJECTORY_REVIEW_PENDING" },
+        "claimBoundary": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "humanReviewResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "packetId", "status", "reviewerRole", "answerKeyOpenedBeforeCompletion", "ratings"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "pattern": "^npc-actor04-embodied-" },
+        "status": { "const": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE" },
+        "reviewerRole": { "const": "PRODUCT_OWNER" },
+        "answerKeyOpenedBeforeCompletion": { "const": false },
+        "ratings": {
+          "type": "array", "minItems": 4, "maxItems": 4,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["reviewId", "selection", "flaggedDimensions", "knowledgeBoundaryConcern", "safetyBoundaryConcern", "notes"],
+            "properties": {
+              "reviewId": { "type": "string", "pattern": "^review-npc-actor04-" },
+              "selection": { "enum": ["A", "B", "TIE", "BOTH_FAIL"] },
+              "flaggedDimensions": { "type": "array", "uniqueItems": true, "items": { "enum": ["ENVIRONMENT_AWARENESS", "SPATIAL_COHERENCE", "PRIORITY_AND_TIMING", "SOCIAL_REALISM", "VOICE_NATURALNESS", "STATE_CONTINUITY", "KNOWLEDGE_BOUNDARY"] } },
+              "knowledgeBoundaryConcern": { "type": "boolean" },
+              "safetyBoundaryConcern": { "type": "boolean" },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

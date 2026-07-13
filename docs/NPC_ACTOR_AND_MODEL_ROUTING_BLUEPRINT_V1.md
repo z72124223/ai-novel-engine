@@ -204,11 +204,17 @@ of appearing in every line. The revealed NPC-ACTOR-02 set is development data,
 not final evidence; a new holdout is mandatory. If the single revision still
 shows no advantage, stop rather than tuning fixtures until they win.
 
-The single NPC-ACTOR-03 revision has now passed its technical gates with eight
-new non-Canon holdout scenes, four profiles represented twice, zero id/content
-overlap with the development set, 4/4 deterministic identity balance and no
-structure, strawman, secret or length violation. Its answer key remains sealed
-while the Product Owner completes the anonymous review. This technical pass
+The single NPC-ACTOR-03 revision passed its technical gates, but before rating
+the Product Owner identified that point-to-point dialogue did not provide a
+persistent environment deep enough to judge a three-dimensional world. Its
+packet remains preserved and answer key sealed; no result is fabricated.
+
+NPC-ACTOR-04 therefore widens only the evaluation unit, not the calibration
+revision. It supplies four full scene trajectories with zone adjacency,
+visibility, actors, objects, hazards, monotonic beats, actions, reactions and
+explicit state changes. Its technical gates passed with 4 scenes, 12 beats,
+balanced 2/2 anonymous identity, focused 7/7 and full 905/905 tests. The current
+Gate is Product Owner comparison of all four complete trajectories. This still
 does not authorize a live API, second calibration revision or production use.
 
 ## 11. Stop Conditions
