@@ -101,7 +101,7 @@
   - [x] 10.2：實作空間、物件、角色、感知、時間、環境事件、動作與狀態轉移契約。
   - [x] 10.3：建立四個全新非 Canon 場景與兩條完整可信軌跡，每條三個決策節點。
   - [x] 10.4：完成 adjacency、visibility、continuity、silence、multi-agent、anonymity 與 result-contract Gate。
-  - [x] 10.5：產生 Schema、JSON、Hash、focused 7/7、full 905/905 與安全證據；等待 Commit／Push 後停在四場真人評審。
+  - [x] 10.5：產生 Schema、JSON、Hash、focused 7/7、full 905/905 與安全證據；Commit／Push 完成後停在四場真人評審。
 
 ### Verification
 
@@ -141,6 +141,7 @@
 - 2026-07-13：NPC-ACTOR-03 單次校準完成技術 Gate；8 個全新 holdout、4 profiles 各 2 題、NPC-ACTOR-02 id/content overlap 0、A/B 4／4、最大長度比 1.25。focused 6／6、full 898／898、JSON 7／7、Hash 6／6 與安全檢查 PASS；停在 Product Owner 8 題匿名評分，答案表維持封存。
 - 2026-07-13：Product Owner 在 NPC-ACTOR-03 評分前指出點對點對白缺少空間、多人、時間與環境後果，無法支持三維世界判斷。保留技術資料且不揭答，另啟動 NPC-ACTOR-04 完整具身場景軌跡評估；這不構成第二次校準 revision。
 - 2026-07-13：NPC-ACTOR-04 技術 Gate 完成：4 個全新非 Canon 場景、4 profiles、12 beats、A/B 2/2，reference／visibility／adjacency／timing／continuity／behavior／secret／length 違規皆 0；focused 7/7、full 905/905、Schema 4/4 PASS。答案表封存，停在四場完整軌跡真人評審。
+- 2026-07-13：NPC-ACTOR-04 實作 Commit `367f324` 已推送功能分支並以普通 fast-forward 推送遠端預設分支；未使用 force push，真人結果仍未填寫或揭答。
 
 ## Current Plan Window V6
 
