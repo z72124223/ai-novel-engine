@@ -8,6 +8,8 @@ Branch: `codex/world-physics03-formal-turn-gate`
 
 Base: `3aace566e133fd89a50167d350c780c7ec95c996`
 
+Implementation Commit: `bb05fd99c95b752278a000f1028014414ae755b9`
+
 ## Outcome
 
 WORLD-PHYSICS-03 connects declared `PhysicalActionProposal` values to both

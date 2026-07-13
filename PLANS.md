@@ -10,7 +10,7 @@
 
 標記：`WORLD_PHYSICS03_FORMAL_TURN_GATE`
 
-狀態：**ACTIVE — 將結構化物理動作接入正式回合寫入前驗證；不新增物理狀態持久化**
+狀態：**COMPLETED — 正式回合交易前物理閘門通過；有狀態物理動作維持 fail closed**
 
 日期：2026-07-14
 
@@ -71,7 +71,7 @@
 - [x] Step 3：實作 formal-turn physical context、嚴格 JSON、Validator 與 CLI／Runtime 接線。
 - [x] Step 4：建立固定案例、Schema、報告與 Hash；涵蓋狗肩拒絕、椅子接受、Hash／allowlist 拒絕及 stateful action 阻擋。
 - [x] Step 5：執行 focused、related、full、transaction、JSON、Schema、Hash、secret 與 Git-scope 驗證。
-- [ ] Step 6：更新治理完成狀態，Commit、Push 功能分支；遠端未漂移時普通 fast-forward 整合預設分支。
+- [x] Step 6：更新治理完成狀態，Commit、Push 功能分支；遠端未漂移時普通 fast-forward 整合預設分支。
 
 ### Verification
 
@@ -95,6 +95,8 @@
   不建立沒有資料來源與寫入語意的 Migration。
 - 2026-07-14：正式閘門 8/8 固定案例、focused 10/10、related 57/57、full 931/931、
   JSON 5/5 與 SHA-256 4/4 PASS；狗肩承重在 `resolveTurn` 正式寫入前被拒絕且 session state 不變。
+- 2026-07-14：Implementation Commit `bb05fd99c95b752278a000f1028014414ae755b9` 已推送功能分支，
+  並以普通 fast-forward 納入遠端預設分支；沒有 force push。
 
 ## Current Plan Window V9
 

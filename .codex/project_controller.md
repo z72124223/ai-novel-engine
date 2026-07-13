@@ -6,7 +6,7 @@
 NPC-ACTOR-04 physical-grounding limitation
 → WORLD-PHYSICS-01 deterministic foundation PASS
 → WORLD-PHYSICS-02 NPC physical action binding PASS
-→ WORLD-PHYSICS-03 formal turn transaction-preflight gate ACTIVE
+→ WORLD-PHYSICS-03 formal turn transaction-preflight gate PASS
 ```
 
 GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
@@ -46,3 +46,7 @@ Codex may prove only that declared transient physical actions are checked before
 formal turn state writes. It may not claim that undeclared prose was understood,
 that physical relations were persisted, or that the V1 approximation is a full
 real-world simulation. Stateful actions remain explicitly blocked.
+
+WORLD-PHYSICS-03 is complete. Do not start a physical persistence migration,
+WORLD-PHYSICS-04, API, Provider, media or Canon work without a new reviewed plan
+and explicit Product Owner authorization.

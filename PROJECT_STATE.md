@@ -4,8 +4,8 @@
 
 ## Current Override — WORLD-PHYSICS-03 Formal Turn Physical Gate
 
-- Status: `WORLD_PHYSICS03_ACTIVE / TRANSACTION_PREFLIGHT_ONLY`
-- Current work: declared physical proposals must pass a hash-bound engine-owned context before formal turn writes.
+- Status: `WORLD_PHYSICS03_COMPLETE / FORMAL_TURN_PHYSICAL_GATE_PASS_STATEFUL_ACTIONS_BLOCKED`
+- Current work: WORLD-PHYSICS-03 is complete; no later physical persistence package is authorized automatically.
 - Implementation branch: `codex/world-physics03-formal-turn-gate`
 - Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
 - Required work package: `docs/work-packages/WORLD-PHYSICS-03_FORMAL_TURN_GATE.md`
@@ -13,6 +13,9 @@
 - Base SHA: `3aace566e133fd89a50167d350c780c7ec95c996` from the remote default branch.
 - Persistence decision: no Migration, Repository or `StateReducer` change; stateful physical actions remain fail-closed until a reviewed physical relation state exists.
 - Scope boundary: only structured proposals are checked; undeclared physical prose is not inferred automatically.
+- Verification: evidence 8/8, focused 10/10, related 57/57, full 931/931, JSON 5/5 and SHA-256 4/4 PASS.
+- Implementation Commit: `bb05fd99c95b752278a000f1028014414ae755b9`; feature and remote default branch push completed by ordinary fast-forward.
+- Evidence report: `docs/world_physics/WORLD_PHYSICS03_IMPLEMENTATION_REPORT.md`.
 - No API, Provider, model download, Canon measurement, image, video or audio is authorized.
 
 ## Previous Override — WORLD-PHYSICS-02 NPC Action Binding
