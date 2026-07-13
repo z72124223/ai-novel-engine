@@ -70,7 +70,7 @@
   - [x] 5.1：建立 RETRIEVAL-01 工作包，核對官方 Qwen 來源、revision、License、模型／Tokenizer SHA-256 與本機 GPU／Runtime 現況。
   - [x] 5.2：建立 50+ labeled queries、模型 subprocess JSON protocol 與 deterministic exact baseline harness。
   - [x] 5.3：執行 baseline、focused tests、JSON／秘密／路徑驗證與 full suite。
-  - [ ] 5.4（CURRENT）：Commit／Push baseline evidence，然後在 model download／package install／GPU execution Gate 停止，回報所需磁碟、網路、Runtime 與風險，等待明確授權。
+  - [ ] 5.4（BLOCKED AT TRUE STOP）：baseline Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` 已 Push 並快轉預設分支；model download／package install／GPU execution 需使用者明確授權。
 - [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
 
 ### Verification

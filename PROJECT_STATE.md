@@ -26,6 +26,7 @@
 - RETRIEVAL-01 baseline evidence: `docs/retrieval/RETRIEVAL01_EXACT_BASELINE_REPORT.md` and `docs/retrieval/RETRIEVAL01_BASELINE_SUMMARY.json`.
 - Baseline result: 50 queries; 38 retrievable; LIKE top-8 10/38; lexical top-8 38/38; 6 knowledge-boundary blocks; 6 code/docs corpus gaps; 0 visibility leaks; full test suite 876/876 PASS.
 - Current true stop: downloading approximately 2.4 GB official model weights, installing an isolated Python/PyTorch/Transformers runtime, and executing on the GTX 1080 Ti require explicit disk/network/GPU approval.
+- RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
 ## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
 
