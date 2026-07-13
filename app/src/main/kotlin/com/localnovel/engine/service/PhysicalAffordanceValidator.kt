@@ -21,9 +21,10 @@ class PhysicalAffordanceValidator {
         archetypeRegistry: List<PhysicalArchetype>,
         snapshot: PhysicalWorldSnapshot,
         proposal: PhysicalActionProposal,
+        expectedBoundary: String = NON_CANON_EVALUATION_BOUNDARY,
     ): PhysicalAffordanceValidationResult {
         val findings = linkedSetOf<String>()
-        findings += validateSnapshot(archetypeRegistry, snapshot)
+        findings += validateSnapshot(archetypeRegistry, snapshot, expectedBoundary)
 
         val archetypes = archetypeRegistry.associateBy { it.archetypeId }
         val entities = snapshot.entities.associateBy { it.entityId }
@@ -283,9 +284,10 @@ class PhysicalAffordanceValidator {
     private fun validateSnapshot(
         archetypeRegistry: List<PhysicalArchetype>,
         snapshot: PhysicalWorldSnapshot,
+        expectedBoundary: String,
     ): Set<String> {
         val findings = linkedSetOf<String>()
-        if (snapshot.boundary != "NON_CANON_EVALUATION") findings += INVALID_EVALUATION_BOUNDARY
+        if (snapshot.boundary != expectedBoundary) findings += INVALID_EVALUATION_BOUNDARY
         if (!snapshot.gravityMps2.isFinite() || snapshot.gravityMps2 < 0.0) findings += INVALID_PHYSICAL_DATA
         if (archetypeRegistry.map { it.archetypeId }.distinct().size != archetypeRegistry.size) findings += INVALID_PHYSICAL_DATA
         if (snapshot.entities.map { it.entityId }.distinct().size != snapshot.entities.size) findings += INVALID_PHYSICAL_DATA
@@ -405,6 +407,7 @@ class PhysicalAffordanceValidator {
             value.depthCm.isFinite() && value.depthCm > 0.0 && value.allowedUses.isNotEmpty()
 
     companion object {
+        const val NON_CANON_EVALUATION_BOUNDARY = "NON_CANON_EVALUATION"
         const val ACTOR_NOT_FOUND = "ACTOR_NOT_FOUND"
         const val TARGET_NOT_FOUND = "TARGET_NOT_FOUND"
         const val ACTOR_ARCHETYPE_NOT_FOUND = "ACTOR_ARCHETYPE_NOT_FOUND"

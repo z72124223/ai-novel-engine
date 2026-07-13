@@ -254,13 +254,13 @@ class Cli {
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>
-              validate-result --db <path> --context <path> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
+              validate-result --db <path> --context <path> --result <path> [--physical-context <path>] [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               apply-result --db <path> --context <path> --result <path>
               run-manual-turn --db <path> --project <id> --player-input <text> --context-out <path> --result <path>
               show-state --db <path> --project <id>
               start-session [--db <path>] --project <id> --scene <id> [--reader-mode]
               prepare-turn [--db <path>] --session <id> (--input <text> | --input-file <path>) --out <path>
-              resolve-turn [--db <path>] --session <id> --result <path> [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--scenario-seed <seed>] [--revision-suggestion <text>] [--revised-draft-file <path>] [--irreversible-contract <path> --irreversible-approval <path>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
+              resolve-turn [--db <path>] --session <id> --result <path> [--physical-context <path>] [--evidence <path>] [--logic-audit <path>] [--sample-label <text>] [--scenario-seed <seed>] [--revision-suggestion <text>] [--revised-draft-file <path>] [--irreversible-contract <path> --irreversible-approval <path>] [--strict-narrative-quality] [--narrative-quality-out <path>] [--promotion-out <path>] [--no-auto-promote-learned-rules]
               run-offscreen-npc-tick [--db <path>] --session <id> --profile <path> --scenario-seed <seed> [--out <path>]
               evaluate-reboot-drama [--db <path>] --input <path> [--out <path>]
               run-reboot01-vertical-slice --db <path> --out-dir <path> --approval-grant <path> [--base-pack <path>] [--addon-pack <path>] [--npc-profile <path>]

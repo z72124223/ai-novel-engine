@@ -1,0 +1,28 @@
+{
+    "schemaVersion": "1.0",
+    "hashAlgorithm": "SHA-256",
+    "scope": "WORLD-PHYSICS-03 FORMAL TURN PHYSICAL GATE",
+    "selfHashExcluded": true,
+    "files": [
+        {
+            "path": "samples/world_physics03/formal_turn_physical_gate_suite_v1.json",
+            "sha256": "6ee6166048ac03069fbad12827a2e03013ec78a3513846babf8c4cd22d6feeb0",
+            "bytes": 302307
+        },
+        {
+            "path": "samples/world_physics03/formal_turn_physical_gate_report_v1.json",
+            "sha256": "0598d17969a78ad5a75d86db66b9333409d83b24a077c801f6473868a558ad22",
+            "bytes": 2597
+        },
+        {
+            "path": "samples/world_physics03/formal_turn_physical_context_example_v1.json",
+            "sha256": "02f89af2209880b520ec9fe4ed09480371272613afde560beac69b3b96e16186",
+            "bytes": 25783
+        },
+        {
+            "path": "schemas/world_physics/formal_turn_physical_context_v1.schema.json",
+            "sha256": "c8596c893f911609b9a60c6c827df0b750db046e08465ba8500e3c8ff4d92b3b",
+            "bytes": 2843
+        }
+    ]
+}

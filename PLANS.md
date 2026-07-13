@@ -1,10 +1,100 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V9`
-> (`WORLD_PHYSICS02_NPC_ACTION_BINDING`) first. All older plan windows are
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V10`
+> (`WORLD_PHYSICS03_FORMAL_TURN_GATE`) first. All older plan windows are
 > preserved evidence only. Current clean-worktree base:
-> `f67d48a78e5943e477de3e855778cfc45a915a38` on
-> `codex/world-physics02-npc-action-binding`. GitHub remote is the team authority.
+> `3aace566e133fd89a50167d350c780c7ec95c996` on
+> `codex/world-physics03-formal-turn-gate`. GitHub remote is the team authority.
+
+## Current Plan Window V10
+
+標記：`WORLD_PHYSICS03_FORMAL_TURN_GATE`
+
+狀態：**ACTIVE — 將結構化物理動作接入正式回合寫入前驗證；不新增物理狀態持久化**
+
+日期：2026-07-14
+
+### Goal
+
+把 WORLD-PHYSICS-01／02 已通過的確定性規則接到 `AiTurnResultValidator` 與
+`MultiTurnRuntime.resolveTurn` 的交易前驗證路徑。當 `AiTurnResult` 宣告物理動作時，
+必須同時提供與目前 Context／Result Hash 綁定的 engine-owned physical context
+（引擎持有物理上下文）；任何身分、allowlist、Hash 或物理規則失敗都必須在
+`repository.resolvePendingTurn` 之前 fail closed（封閉失敗）。
+
+### Strategy
+
+- 在 `AiTurnResult` 新增預設為空的 `physicalActionProposals`，維持舊 JSON 相容。
+- 另建嚴格、不可由模型覆寫幾何與物性的正式回合 physical context sidecar
+  （物理上下文旁車檔），綁定 project/session/turn/context/state/result Hash。
+- `AiTurnResultValidator` 執行契約綁定、allowlist 與 `PhysicalAffordanceValidator`；
+  `validate-result` 與 `resolve-turn` 以 `--physical-context <path>` 接入同一條路徑。
+- 沒有 sidecar 的既有非物理回合保持相容；有 physical proposal 卻沒有 sidecar、
+  或有 sidecar 卻沒有 proposal，一律拒絕。
+- V1 正式閘門只允許不需持久化物件關係的 `USE_AS_SUPPORT` 與 `REACH`。
+  `LIFT`、`PUSH`、`PLACE_ON`、`DROP`、`ENTER_CONTAINER`、`PASS_THROUGH` 在正式物理
+  state schema（狀態資料格式）與 additive migration（增量遷移）存在前明確拒絕。
+
+### Non-Goals
+
+- 不新增或修改 Migration、SQLite table、Repository 寫入、`StateReducer` 或 Canon。
+- 不從敘事文字自動推斷未宣告的物理動作；本包只驗證結構化 proposal。
+- 不允許模型提供質量、尺寸、承重、障礙或座標。
+- 不使用 API、Provider、模型下載、圖片、影片或音訊。
+- 不宣稱 V1 是完整物理模擬或能證明所有敘事都符合現實。
+
+### Scope
+
+- 治理與規格：本計畫、WORLD-PHYSICS 藍圖、WP-03 工作包與實作報告。
+- Kotlin：正式回合 physical context model／validator、`AiTurnResult` 可選欄位、
+  `AiTurnResultValidator`、`MultiTurnRuntime`、CLI 接線與直接測試。
+- 契約與證據：strict JSON Schema、固定正式閘門案例、技術報告與 SHA-256 manifest。
+- 明確保持 `StateReducer`、Repository、Migration 與既有 NPC Actor V1 契約不變。
+
+### Confirmed Facts
+
+- 遠端基準 `3aace566e133fd89a50167d350c780c7ec95c996` 已包含 WORLD-PHYSICS-02；
+  8/8 binding、focused 9/9、related 23/23、full 921/921 PASS。
+- `MultiTurnRuntime.resolveTurn` 目前先執行 `validate(context, result)`，通過敘事品質閘門後
+  才呼叫 `repository.resolvePendingTurn`；因此物理驗證可在不移動 transaction boundary
+  （交易邊界）的情況下加入。
+- `PhysicalAffordanceValidator` 無 I/O、無 Repository 寫入，適合重用。
+- Repository 目前沒有正式位置、held/supported/contained 關係與 physical archetype table；
+  沒有證據支持本包新增資料庫遷移。
+- `DROP` 會產生 `FALL_DOWNWARD` 與 `RELEASE_HELD_OBJECT`；其他移動／持有類動作也會改變
+  持久狀態，不能只驗證後假裝已保存。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取治理、正式回合、交易與物理證據。
+- [x] Step 2：建立 V10 計畫與 WORLD-PHYSICS-03 工作包，鎖定 sidecar、Hash 與無 Migration 決策。
+- [x] Step 3：實作 formal-turn physical context、嚴格 JSON、Validator 與 CLI／Runtime 接線。
+- [x] Step 4：建立固定案例、Schema、報告與 Hash；涵蓋狗肩拒絕、椅子接受、Hash／allowlist 拒絕及 stateful action 阻擋。
+- [x] Step 5：執行 focused、related、full、transaction、JSON、Schema、Hash、secret 與 Git-scope 驗證。
+- [ ] Step 6：更新治理完成狀態，Commit、Push 功能分支；遠端未漂移時普通 fast-forward 整合預設分支。
+
+### Verification
+
+- 新增正式物理閘門 focused tests。
+- 既有 `EngineTest`、`PhysicalAffordanceValidatorTest`、`NpcActorPhysicalBindingTest`。
+- `./gradlew.bat clean test --no-daemon`。
+- 嚴格 JSON、Schema、SHA-256、私人路徑、秘密、網路字樣與 Git scope 檢查。
+- 拒絕案例必須保持 pending context、`stateVersion`、`nextTurnNumber` 與 applied turn count 不變。
+
+### True Stops
+
+- 需要發明或升格 Canon 物理數值。
+- 無法在 `repository.resolvePendingTurn` 前完成 fail-closed 驗證。
+- 需要修改 `StateReducer`、Repository transaction、Migration 或 SQLite 才能聲稱本包完成。
+- 需要付費 API／Provider、force push 或破壞性 Git 操作。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 回覆「好，下一步」，明確授權依既定 rollout 啟動 WORLD-PHYSICS-03。
+- 2026-07-14：證據審查確認正式 DB 尚無物理關係 state；本包採交易前 sidecar gate，
+  不建立沒有資料來源與寫入語意的 Migration。
+- 2026-07-14：正式閘門 8/8 固定案例、focused 10/10、related 57/57、full 931/931、
+  JSON 5/5 與 SHA-256 4/4 PASS；狗肩承重在 `resolveTurn` 正式寫入前被拒絕且 session state 不變。
 
 ## Current Plan Window V9
 

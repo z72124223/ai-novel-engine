@@ -5,6 +5,7 @@ import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DramaEvaluationInput
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.NpcAutonomyProfile
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
@@ -21,6 +22,7 @@ import com.localnovel.engine.service.NarrativeQualityAuditService
 import com.localnovel.engine.service.NarrativeQualityGateOptions
 import com.localnovel.engine.service.NarrativeQualityGateService
 import com.localnovel.engine.service.ResolveTurnOptions
+import com.localnovel.engine.service.FormalTurnPhysicalJson
 import com.localnovel.engine.service.RebootRunEvidenceService
 import com.localnovel.engine.service.RebootDramaLoopService
 import com.localnovel.engine.service.RebootVerticalSliceRunner
@@ -163,7 +165,12 @@ internal object StorySessionCli {
         val resultPath = Path.of(options.requiredCliOption("result"))
         val context = readCliJson<ContextPacket>(contextPath)
         val result = readCliJson<AiTurnResult>(resultPath)
-        val report = AiTurnResultValidator(repository).validate(context, result)
+        val physicalContext = options["physical-context"]?.let { path ->
+            FormalTurnPhysicalJson.strict.decodeFromString<FormalTurnPhysicalValidationContext>(
+                Files.readString(Path.of(path)).removePrefix("\uFEFF"),
+            )
+        }
+        val report = AiTurnResultValidator(repository).validate(context, result, physicalContext)
         if (!report.isValid) {
             report.errors.forEach { System.err.println("${it.code}: ${it.message}") }
             return 1
@@ -363,6 +370,24 @@ internal object StorySessionCli {
             )
             throw error
         }
+        val physicalContext = try {
+            options["physical-context"]?.let { path ->
+                FormalTurnPhysicalJson.strict.decodeFromString<FormalTurnPhysicalValidationContext>(
+                    Files.readString(Path.of(path)).removePrefix("\uFEFF"),
+                )
+            }
+        } catch (error: Throwable) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = rawResultText,
+                parsedResult = result,
+                options = baseResolveOptions,
+                code = "malformed_physical_context",
+                message = error.message.orEmpty(),
+                startedAtNanos = startedAtNanos,
+            )
+            throw error
+        }
         val irreversibleContract = try {
             options["irreversible-contract"]
                 ?.let { readCliJson<com.localnovel.engine.model.IrreversibleChangeContract>(Path.of(it)) }
@@ -396,6 +421,7 @@ internal object StorySessionCli {
         val resolveOptions = baseResolveOptions.copy(
             irreversibleChangeContract = irreversibleContract,
             irreversibleApprovalArtifact = irreversibleApproval,
+            formalTurnPhysicalContext = physicalContext,
         )
         options["narrative-quality-out"]?.let { outPath ->
             val context = repository.getPendingContext(sessionId, result.contextId)

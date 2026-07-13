@@ -2,7 +2,20 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — WORLD-PHYSICS-02 NPC Action Binding
+## Current Override — WORLD-PHYSICS-03 Formal Turn Physical Gate
+
+- Status: `WORLD_PHYSICS03_ACTIVE / TRANSACTION_PREFLIGHT_ONLY`
+- Current work: declared physical proposals must pass a hash-bound engine-owned context before formal turn writes.
+- Implementation branch: `codex/world-physics03-formal-turn-gate`
+- Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
+- Required work package: `docs/work-packages/WORLD-PHYSICS-03_FORMAL_TURN_GATE.md`
+- Required plan: `PLANS.md` Current Plan Window V10.
+- Base SHA: `3aace566e133fd89a50167d350c780c7ec95c996` from the remote default branch.
+- Persistence decision: no Migration, Repository or `StateReducer` change; stateful physical actions remain fail-closed until a reviewed physical relation state exists.
+- Scope boundary: only structured proposals are checked; undeclared physical prose is not inferred automatically.
+- No API, Provider, model download, Canon measurement, image, video or audio is authorized.
+
+## Previous Override — WORLD-PHYSICS-02 NPC Action Binding
 
 - Status: `WORLD_PHYSICS02_TECHNICAL_PASS / FORMAL_TURN_RUNTIME_NOT_CONNECTED`
 - Current work: `WORLD-PHYSICS-02 complete — WORLD-PHYSICS-03 not authorized.`

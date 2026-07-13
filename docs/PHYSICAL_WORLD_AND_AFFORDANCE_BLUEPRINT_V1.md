@@ -39,6 +39,14 @@ author mass, dimensions, load capacity, barriers or distances. Both the Actor
 contract and physical affordance result must pass before a proposal can be
 forwarded to Game Master review. Formal turn state remains unchanged.
 
+WORLD-PHYSICS-03 adds an opt-in, fail-closed formal turn gate. Structured
+physical proposals live in `AiTurnResult`, while metric truth remains in a
+strict engine-owned sidecar bound to the exact Context and canonical Result
+hash. The gate runs before the existing SQLite transaction. Because the current
+formal state has no position or held/supported/contained relation schema, V1
+allows only transient support/reach validation and rejects stateful physical
+actions explicitly instead of pretending their effects were persisted.
+
 ## Authoritative Inputs
 
 The action proposal may choose an action and targets, but it may not declare
@@ -98,7 +106,9 @@ explicit code; the validator may not guess Canon measurements.
 1. `WORLD-PHYSICS-01`: standalone deterministic validator and adversarial suite.
 2. `WORLD-PHYSICS-02`: bind reviewed physical archetypes to NPC action proposals.
 3. `WORLD-PHYSICS-03`: integrate accepted fields into formal turn validation,
-   with additive migration only if evidence proves it necessary.
+   with additive migration only if evidence proves it necessary. Current
+   evidence supports a transaction-preflight sidecar gate and does not support
+   adding a migration in this package.
 4. Later optional work: richer spatial indexing or external simulation, only if
    measured failures justify the cost.
 

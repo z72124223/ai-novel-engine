@@ -8,6 +8,7 @@ import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextBudgetForensicsReport
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DirectorPressure
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.OutputRequirements
 import com.localnovel.engine.model.StorySession
 import com.localnovel.engine.model.ValidationError
@@ -258,7 +259,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             )
             error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
         }
-        val report = validate(context, result)
+        val report = validate(context, result, options.formalTurnPhysicalContext)
         if (!report.isValid) {
             RebootRunEvidenceService(repository).persistAttempt(
                 context = context,
@@ -343,7 +344,11 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         }
     }
 
-    fun validate(context: ContextPacket, result: AiTurnResult): ValidationReport {
+    fun validate(
+        context: ContextPacket,
+        result: AiTurnResult,
+        physicalContext: FormalTurnPhysicalValidationContext? = null,
+    ): ValidationReport {
         val errors = mutableListOf<ValidationError>()
         if (context.protocolVersion != SUPPORTED_PROTOCOL_VERSION || result.protocolVersion != SUPPORTED_PROTOCOL_VERSION) {
             errors += ValidationError("unsupported_protocol", "Only protocolVersion $SUPPORTED_PROTOCOL_VERSION is supported for multi-turn runtime.")
@@ -396,6 +401,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         errors += MemoryLifecycleService(repository).validate(context, result)
         errors += EmotionReducer().validate(context, result)
         errors += ProvisionalLayerValidator(repository).validate(context, result)
+        errors += FormalTurnPhysicalGateValidator().validate(context, result, physicalContext)
         if (result.characterActions.isEmpty()) {
             errors += ValidationError("missing_character_actions", "At least one characterAction is required.")
         }

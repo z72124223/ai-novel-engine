@@ -29,6 +29,7 @@ data class ResolveTurnOptions(
     val irreversibleApprovalArtifact: com.localnovel.engine.model.IrreversibleApprovalArtifact? = null,
     val npcDecisionTrace: com.localnovel.engine.model.NpcDecisionTrace? = null,
     val npcGameMasterResolution: com.localnovel.engine.model.GameMasterResolution? = null,
+    val formalTurnPhysicalContext: com.localnovel.engine.model.FormalTurnPhysicalValidationContext? = null,
 )
 
 data class NarrativeQualityGateResult(

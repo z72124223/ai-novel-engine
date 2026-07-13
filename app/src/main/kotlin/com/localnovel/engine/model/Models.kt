@@ -627,6 +627,7 @@ data class AiTurnResult(
     val worldEventAcknowledgements: List<WorldEventAcknowledgement> = emptyList(),
     val timeAdvanceProposal: TimeAdvanceProposal? = null,
     val capabilityUseChecks: List<CapabilityUseCheck> = emptyList(),
+    val physicalActionProposals: List<PhysicalActionProposal> = emptyList(),
     val entityProposals: List<com.localnovel.engine.model.ProvisionalEntityProposal> = emptyList(),
     val promotionRecommendations: List<com.localnovel.engine.model.ProvisionalPromotionRecommendation> = emptyList(),
     val creativeGapNotes: List<com.localnovel.engine.model.CreativeGapNote> = emptyList(),
