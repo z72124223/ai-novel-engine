@@ -74,6 +74,7 @@
 - 2026-07-14：Product Owner 明確同意把物理規劃加入藍圖並實作；依 WORLD-PHYSICS rollout 順序啟動第二包。
 - 2026-07-14：證據審查決定新增獨立 physical binding 封套，避免修改 `NpcActorRequest/Response V1` 與封存評測資料。
 - 2026-07-14：8/8 固定綁定案例符合預期；新增測試 9/9、相關 focused 23/23、完整 921/921 PASS。狗肩承重、穿牆、未允許動作／目標與身分錯配均不產生 Game Master proposal；合理椅子支撐與合法 drop 保留 required effects 後通過。
+- 2026-07-14：功能提交 `96451e4c4f60027d403c5aab11252f26d3215df2` 已推送 `codex/world-physics02-npc-action-binding`；治理完成提交後只允許普通 fast-forward 更新遠端預設分支。
 
 ## Current Plan Window V8
 

@@ -8,6 +8,8 @@ Branch: `codex/world-physics02-npc-action-binding`
 
 Base: `f67d48a78e5943e477de3e855778cfc45a915a38`
 
+Implementation Commit: `96451e4c4f60027d403c5aab11252f26d3215df2`
+
 ## Outcome
 
 WORLD-PHYSICS-02 adds a provider-neutral, offline binding layer between the
