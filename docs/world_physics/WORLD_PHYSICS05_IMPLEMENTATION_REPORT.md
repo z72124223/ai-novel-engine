@@ -76,6 +76,14 @@
 - `git diff --check`：PASS。
 - 圖片、影片、音訊、Provider、API、模型下載、Canon、下一章：0 項。
 
+## Git 交接
+
+- 功能分支：`codex/world-physics05-embodied-scene-pilot`
+- 實作 Commit：`56d525289f59e09543fdf450bd00f343daf1ef98`
+- 遠端整合：功能分支與 `codex/mvp6-checkpoint-branching-spec` 均以普通 Push 更新。
+- 整合前關係：遠端缺少 0 個、本地多 1 個 Commit（`0 1`），符合 fast-forward 條件。
+- Force push：未使用。
+
 ## 跨平台 Hash 修正
 
 驗證期間發現 WORLD-PHYSICS-04 JSON 與 Migration 016 未完整鎖定 LF（跨平台換行格式），

@@ -10,7 +10,7 @@
 
 標記：`WORLD_PHYSICS05_EMBODIED_SCENE_PILOT`
 
-狀態：**ACTIVE — 使用〈潮線之外〉第三場做五回合、非 Canon、正式 Runtime 連續試演**
+狀態：**COMPLETE — 五回合正式 Runtime 試演 PASS，已普通推送並進入真正停止點**
 
 日期：2026-07-14
 
@@ -83,7 +83,7 @@
 - [x] Step 4：讓五回合透過正式 Runtime 與 SQLite transaction 完整執行，產生固定報告。
 - [x] Step 5：驗證 JSON、Schema、Hash、來源引用、秘密、私人路徑、Git scope、舊物理回歸
   與完整 Gradle 測試。
-- [ ] Step 6（CURRENT）：更新報告與治理狀態，建立明確 Commit，普通 Push 功能分支；遠端未漂移時
+- [x] Step 6：更新報告與治理狀態，建立明確 Commit，普通 Push 功能分支；遠端未漂移時
   以普通 fast-forward 整合預設分支。
 
 ### Verification
@@ -118,6 +118,9 @@
 - 2026-07-14：related tests 42／42、完整 `clean test` 940／940、JSON 3／3、Hash 4／4、
   Schema、私人路徑／秘密與 `git diff --check` 全部 PASS。另補上 WORLD-PHYSICS-04／05 與
   Migration 016 的 LF 換行規則，排除 Windows checkout 造成的假 Hash 漂移。
+- 2026-07-14：實作 Commit `56d525289f59e09543fdf450bd00f343daf1ef98` 已以普通 Push
+  推送功能分支，並在遠端未漂移的 `0 1` 關係下 fast-forward 整合預設分支；未使用 force。
+  WORLD-PHYSICS-05 完成，後續可選階段未自動啟動。
 
 ## Current Plan Window V11
 

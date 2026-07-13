@@ -8,7 +8,7 @@ NPC-ACTOR-04 physical-grounding limitation
 → WORLD-PHYSICS-02 NPC physical action binding PASS
 → WORLD-PHYSICS-03 formal turn transaction-preflight gate PASS
 → WORLD-PHYSICS-04 physical state persistence PASS
-→ WORLD-PHYSICS-05 embodied SCREEN-01 scene pilot VALIDATED / GIT INTEGRATION PENDING
+→ WORLD-PHYSICS-05 embodied SCREEN-01 scene pilot COMPLETE / TRUE STOP
 ```
 
 GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
@@ -49,7 +49,7 @@ persisted coherently through the existing formal transaction. It may not claim
 that undeclared prose was understood, that runtime physical values are Canon,
 or that the V1 approximation is a full real-world simulation.
 
-WORLD-PHYSICS-05 implementation and verification are complete. Only ordinary
-Git integration remains. After integration, stop: do not start optional richer
-physics, API, Provider, media, Canon work or any package without a new measured
-failure, reviewed plan and explicit Product Owner authorization.
+WORLD-PHYSICS-05 implementation, verification and ordinary Git integration are
+complete. Stop: do not start optional richer physics, API, Provider, media,
+Canon work or any package without a new measured failure, reviewed plan and
+explicit Product Owner authorization.
