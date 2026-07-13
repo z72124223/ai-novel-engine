@@ -2,7 +2,20 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — WORLD-PHYSICS-03 Formal Turn Physical Gate
+## Current Override — WORLD-PHYSICS-04 Physical State Persistence
+
+- Status: `WORLD_PHYSICS04_ACTIVE / EXPLICITLY_AUTHORIZED`
+- Current work: implement bounded non-Canon physical runtime state and atomic stateful action persistence.
+- Implementation branch: `codex/world-physics04-physical-state-persistence`
+- Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
+- Required work package: `docs/work-packages/WORLD-PHYSICS-04_PHYSICAL_STATE_PERSISTENCE.md`
+- Required plan: `PLANS.md` Current Plan Window V11.
+- Base SHA: `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9` from the remote default branch.
+- Authorization: Product Owner replied `授權` at the WORLD-PHYSICS-03 persistence gate on 2026-07-14.
+- Boundary: runtime physical state remains `FORMAL_TURN_RUNTIME_NON_CANON`; no measurement becomes Canon.
+- No API, Provider, model download, image, video or audio is authorized.
+
+## Previous Override — WORLD-PHYSICS-03 Formal Turn Physical Gate
 
 - Status: `WORLD_PHYSICS03_COMPLETE / FORMAL_TURN_PHYSICAL_GATE_PASS_STATEFUL_ACTIONS_BLOCKED`
 - Current work: WORLD-PHYSICS-03 is complete; no later physical persistence package is authorized automatically.

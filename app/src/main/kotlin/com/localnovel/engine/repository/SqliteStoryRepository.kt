@@ -13,6 +13,8 @@ import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DependencyEdge
 import com.localnovel.engine.model.Event
 import com.localnovel.engine.model.Fact
+import com.localnovel.engine.model.FormalPhysicalStateRecord
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.Faction
 import com.localnovel.engine.model.InitialRuntimeTemplate
 import com.localnovel.engine.model.Item
@@ -53,6 +55,8 @@ import com.localnovel.engine.model.AvailableTransition
 import com.localnovel.engine.model.PendingWorldEventView
 import com.localnovel.engine.model.WorldRule
 import com.localnovel.engine.model.allDeltaOperations
+import com.localnovel.engine.service.FormalPhysicalStateHash
+import com.localnovel.engine.service.PhysicalStateReducer
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -95,6 +99,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "013_story_chapter_production.sql",
                     "014_production_rule_runtime.sql",
                     "015_production_rule_authority_hardening.sql",
+                    "016_physical_state_runtime.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -150,6 +155,22 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(1, projectId)
             statement.executeQuery().use { rows ->
                 if (rows.next()) rows.toProject() else null
+            }
+        }
+    }
+
+    fun getFormalPhysicalState(sessionId: String): FormalPhysicalStateRecord? = connect { connection ->
+        selectFormalPhysicalState(connection, sessionId)
+    }
+
+    fun formalPhysicalTransitionCount(sessionId: String): Int = connect { connection ->
+        connection.prepareStatement(
+            "SELECT COUNT(*) FROM formal_physical_state_transitions WHERE session_id = ?",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                check(rows.next())
+                rows.getInt(1)
             }
         }
     }
@@ -1554,6 +1575,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         rebootRunElapsedTimeMs: Long = 0,
         npcDecisionTrace: com.localnovel.engine.model.NpcDecisionTrace? = null,
         npcGameMasterResolution: com.localnovel.engine.model.GameMasterResolution? = null,
+        formalTurnPhysicalContext: FormalTurnPhysicalValidationContext? = null,
     ): ApplyResult = connect { connection ->
         connection.autoCommit = false
         try {
@@ -1576,6 +1598,8 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 ?: error("Pending context not found: ${context.contextId}")
             require(!result.resultId.isBlank()) { "resultId is required." }
             require(!selectResultExists(connection, result.resultId)) { "Result already applied: ${result.resultId}" }
+
+            applyFormalPhysicalStateTransitions(connection, context, result, formalTurnPhysicalContext)
 
             result.allDeltaOperations().forEach { operation ->
                 recordStateDelta(connection, context.project.id, context.turnId, operation.type.name.lowercase(), operation.targetType, operation.targetId, JsonSupport.json.encodeToString(operation.payload))
@@ -1651,6 +1675,181 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             throw error
         } finally {
             connection.autoCommit = true
+        }
+    }
+
+    private fun applyFormalPhysicalStateTransitions(
+        connection: Connection,
+        context: ContextPacket,
+        result: AiTurnResult,
+        physicalContext: FormalTurnPhysicalValidationContext?,
+    ) {
+        if (result.physicalActionProposals.none { it.actionType in PhysicalStateReducer.STATEFUL_ACTIONS }) return
+        val boundContext = requireNotNull(physicalContext) { "Stateful physical actions require a V2 physical context." }
+        require(boundContext.schemaVersion == PhysicalStateReducer.SCHEMA_VERSION) {
+            "Stateful physical actions require physical context schemaVersion ${PhysicalStateReducer.SCHEMA_VERSION}."
+        }
+        val persisted = selectFormalPhysicalState(connection, context.sessionId)
+        val suppliedVersion = requireNotNull(boundContext.physicalStateVersion)
+        if (persisted == null) {
+            require(suppliedVersion == 0) { "The first persisted physical turn must use physicalStateVersion 0." }
+        } else {
+            require(persisted.projectId == context.project.id) { "Persisted physical project identity mismatch." }
+            require(persisted.physicalStateVersion == suppliedVersion) { "Stale persisted physical state version." }
+            require(
+                persisted.physicalSnapshotCanonicalSha256.equals(boundContext.physicalSnapshotCanonicalSha256, ignoreCase = true),
+            ) { "Stale persisted physical snapshot Hash." }
+            require(
+                persisted.physicalArchetypeRegistryCanonicalSha256.equals(
+                    boundContext.physicalArchetypeRegistryCanonicalSha256,
+                    ignoreCase = true,
+                ),
+            ) { "Persisted physical archetype registry Hash mismatch." }
+        }
+
+        val plan = PhysicalStateReducer().plan(boundContext, result)
+        val archetypesJson = JsonSupport.json.encodeToString(
+            FormalPhysicalStateHash.normalizeArchetypes(boundContext.physicalArchetypes),
+        )
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT OR IGNORE INTO physical_archetype_registries(
+                registry_sha256, schema_version, archetypes_json, authority_boundary, created_at
+            ) VALUES (?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, plan.physicalArchetypeRegistryCanonicalSha256)
+            statement.setString(2, PhysicalStateReducer.SCHEMA_VERSION)
+            statement.setString(3, archetypesJson)
+            statement.setString(4, PhysicalStateReducer.RUNTIME_BOUNDARY)
+            statement.setString(5, timestamp)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            "SELECT archetypes_json, authority_boundary FROM physical_archetype_registries WHERE registry_sha256 = ?",
+        ).use { statement ->
+            statement.setString(1, plan.physicalArchetypeRegistryCanonicalSha256)
+            statement.executeQuery().use { rows ->
+                require(rows.next()) { "Physical archetype registry was not persisted." }
+                require(rows.getString("archetypes_json") == archetypesJson) { "Physical archetype registry Hash collision or non-canonical payload." }
+                require(rows.getString("authority_boundary") == PhysicalStateReducer.RUNTIME_BOUNDARY)
+            }
+        }
+
+        plan.transitions.forEach { transition ->
+            connection.prepareStatement(
+                """
+                INSERT INTO formal_physical_state_transitions(
+                    transition_id, project_id, session_id, turn_id, result_id, context_id,
+                    action_id, action_type, before_state_version, after_state_version,
+                    before_snapshot_sha256, after_snapshot_sha256, proposal_json,
+                    applied_effects_json, authority_boundary, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, newId("physical-transition"))
+                statement.setString(2, context.project.id)
+                statement.setString(3, context.sessionId)
+                statement.setString(4, context.turnId)
+                statement.setString(5, result.resultId)
+                statement.setString(6, context.contextId)
+                statement.setString(7, transition.actionId)
+                statement.setString(8, transition.actionType.name)
+                statement.setInt(9, transition.beforeStateVersion)
+                statement.setInt(10, transition.afterStateVersion)
+                statement.setString(11, transition.beforeSnapshotCanonicalSha256)
+                statement.setString(12, transition.afterSnapshotCanonicalSha256)
+                statement.setString(13, JsonSupport.json.encodeToString(transition.proposal))
+                statement.setString(14, JsonSupport.json.encodeToString(transition.appliedEffects))
+                statement.setString(15, PhysicalStateReducer.RUNTIME_BOUNDARY)
+                statement.setString(16, timestamp)
+                statement.executeUpdate()
+            }
+        }
+
+        val finalSnapshotJson = JsonSupport.json.encodeToString(plan.finalSnapshot)
+        if (persisted == null) {
+            connection.prepareStatement(
+                """
+                INSERT INTO formal_physical_states(
+                    session_id, project_id, physical_state_version, registry_sha256,
+                    snapshot_sha256, snapshot_json, authority_boundary, source_context_id,
+                    last_turn_id, last_result_id, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, context.sessionId)
+                statement.setString(2, context.project.id)
+                statement.setInt(3, plan.finalStateVersion)
+                statement.setString(4, plan.physicalArchetypeRegistryCanonicalSha256)
+                statement.setString(5, plan.finalSnapshotCanonicalSha256)
+                statement.setString(6, finalSnapshotJson)
+                statement.setString(7, PhysicalStateReducer.RUNTIME_BOUNDARY)
+                statement.setString(8, context.contextId)
+                statement.setString(9, context.turnId)
+                statement.setString(10, result.resultId)
+                statement.setString(11, timestamp)
+                statement.setString(12, timestamp)
+                require(statement.executeUpdate() == 1) { "Physical state seed insert failed." }
+            }
+        } else {
+            connection.prepareStatement(
+                """
+                UPDATE formal_physical_states
+                SET physical_state_version = ?, snapshot_sha256 = ?, snapshot_json = ?,
+                    source_context_id = ?, last_turn_id = ?, last_result_id = ?, updated_at = ?
+                WHERE session_id = ? AND project_id = ? AND physical_state_version = ?
+                  AND registry_sha256 = ? AND snapshot_sha256 = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setInt(1, plan.finalStateVersion)
+                statement.setString(2, plan.finalSnapshotCanonicalSha256)
+                statement.setString(3, finalSnapshotJson)
+                statement.setString(4, context.contextId)
+                statement.setString(5, context.turnId)
+                statement.setString(6, result.resultId)
+                statement.setString(7, timestamp)
+                statement.setString(8, context.sessionId)
+                statement.setString(9, context.project.id)
+                statement.setInt(10, plan.startStateVersion)
+                statement.setString(11, plan.physicalArchetypeRegistryCanonicalSha256)
+                statement.setString(12, plan.startSnapshotCanonicalSha256)
+                require(statement.executeUpdate() == 1) { "Concurrent physical state update detected." }
+            }
+        }
+    }
+
+    private fun selectFormalPhysicalState(
+        connection: Connection,
+        sessionId: String,
+    ): FormalPhysicalStateRecord? = connection.prepareStatement(
+        """
+        SELECT project_id, session_id, physical_state_version, registry_sha256,
+               snapshot_sha256, snapshot_json, authority_boundary, source_context_id,
+               last_turn_id, last_result_id
+        FROM formal_physical_states
+        WHERE session_id = ?
+        """.trimIndent(),
+    ).use { statement ->
+        statement.setString(1, sessionId)
+        statement.executeQuery().use { rows ->
+            if (rows.next()) {
+                FormalPhysicalStateRecord(
+                    boundary = rows.getString("authority_boundary"),
+                    projectId = rows.getString("project_id"),
+                    sessionId = rows.getString("session_id"),
+                    physicalStateVersion = rows.getInt("physical_state_version"),
+                    physicalArchetypeRegistryCanonicalSha256 = rows.getString("registry_sha256"),
+                    physicalSnapshotCanonicalSha256 = rows.getString("snapshot_sha256"),
+                    physicalSnapshot = JsonSupport.json.decodeFromString(rows.getString("snapshot_json")),
+                    sourceContextId = rows.getString("source_context_id"),
+                    lastTurnId = rows.getString("last_turn_id"),
+                    lastResultId = rows.getString("last_result_id"),
+                )
+            } else {
+                null
+            }
         }
     }
 

@@ -1,0 +1,23 @@
+{
+    "schemaVersion": "2.0",
+    "boundary": "FORMAL_TURN_RUNTIME_NON_CANON",
+    "scenarioCount": 7,
+    "persistedTransitionCount": 2,
+    "coveredStatefulActionTypes": [
+        "DROP",
+        "ENTER_CONTAINER",
+        "LIFT",
+        "PASS_THROUGH",
+        "PLACE_ON",
+        "PUSH"
+    ],
+    "migrationStatus": "ADDITIVE_IDEMPOTENT",
+    "rollbackStatus": "SINGLE_TRANSACTION_VERIFIED",
+    "technicalDecision": "WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE_PASS",
+    "canonPromotionAllowed": false,
+    "claimBoundary": [
+        "Only declared bounded actions are reduced; free text is not converted into actions.",
+        "The V1 ground plane and support-top approximation are not a complete physics simulation.",
+        "Persisted runtime state is non-Canon and cannot promote Chenxing facts."
+    ]
+}

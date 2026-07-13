@@ -80,6 +80,7 @@ class Cli {
                 "finalize-dialogue" -> DialogueProductionCli.finalize(options)
                 "show-dialogue-selection" -> DialogueProductionCli.showSelection(options)
                 "show-session" -> StorySessionCli.showSession(options)
+                "show-physical-state" -> StorySessionCli.showPhysicalState(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
                 "preview-recall" -> StorySessionCli.previewRecall(options)
@@ -282,6 +283,7 @@ class Cli {
               finalize-dialogue [--db <path>] --input <path> [--out <path>]
               show-dialogue-selection [--db <path>] --artifact <id> [--out <path>]
               show-session [--db <path>] --session <id>
+              show-physical-state [--db <path>] --session <id> [--out <path>]
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>
               preview-recall [--db <path>] --session <id> --character <id> --input <text>

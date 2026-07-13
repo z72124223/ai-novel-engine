@@ -327,7 +327,8 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.timeAdvanceProposal != null ||
             result.capabilityUseChecks.isNotEmpty() ||
             result.entityProposals.isNotEmpty() ||
-            result.promotionRecommendations.isNotEmpty()
+            result.promotionRecommendations.isNotEmpty() ||
+            result.physicalActionProposals.any { it.actionType in PhysicalStateReducer.STATEFUL_ACTIONS }
         return try {
             repository.resolvePendingTurn(
                 context = context,
@@ -337,6 +338,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
                 rebootRunElapsedTimeMs = evidenceService.elapsedMillis(startedAtNanos),
                 npcDecisionTrace = options.npcDecisionTrace,
                 npcGameMasterResolution = options.npcGameMasterResolution,
+                formalTurnPhysicalContext = options.formalTurnPhysicalContext,
             )
         } catch (error: Throwable) {
             evidenceService.markFailed(evidenceRunId, error, startedAtNanos)
@@ -402,6 +404,7 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         errors += EmotionReducer().validate(context, result)
         errors += ProvisionalLayerValidator(repository).validate(context, result)
         errors += FormalTurnPhysicalGateValidator().validate(context, result, physicalContext)
+        errors += FormalPhysicalStatePersistenceValidator(repository).validate(context, result, physicalContext)
         if (result.characterActions.isEmpty()) {
             errors += ValidationError("missing_character_actions", "At least one characterAction is required.")
         }

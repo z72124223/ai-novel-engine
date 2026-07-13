@@ -1,0 +1,924 @@
+{
+    "schemaVersion": "2.0",
+    "boundary": "FORMAL_TURN_RUNTIME_NON_CANON",
+    "projectId": "wp04",
+    "sessionId": "wp04-session-1",
+    "startStateVersion": 0,
+    "finalStateVersion": 2,
+    "physicalArchetypeRegistryCanonicalSha256": "d3707f597411ac3bcff573ddb82b85fc1cce294ed031c5e17d7249342d2cbae2",
+    "startSnapshotCanonicalSha256": "8714be9991de736e3d3be353392c3a86b624c4127ca9d8e7e1132a71f4b422b0",
+    "finalSnapshotCanonicalSha256": "45458f79d6db66cd0a0a5ec04d1169b51399f6c0aea95d4428842ad5f9de8452",
+    "transitions": [
+        {
+            "actionId": "wp04-evidence-lift",
+            "actionType": "LIFT",
+            "beforeStateVersion": 0,
+            "afterStateVersion": 1,
+            "beforeSnapshotCanonicalSha256": "8714be9991de736e3d3be353392c3a86b624c4127ca9d8e7e1132a71f4b422b0",
+            "afterSnapshotCanonicalSha256": "148d446b8267fb4ad5c019d25b55c166e1bee85f45184410f9c7ff8913105749",
+            "proposal": {
+                "actionId": "wp04-evidence-lift",
+                "actionType": "LIFT",
+                "actorId": "adult",
+                "targetId": "light-crate",
+                "secondaryTargetId": null,
+                "supportSurfaceId": null,
+                "supportUse": null,
+                "destinationCenterCm": null
+            },
+            "appliedEffects": [
+                "CLEAR_CONTAINED_BY",
+                "CLEAR_SUPPORTED_BY",
+                "MOVE_TO_ACTOR_ANCHOR",
+                "SET_HELD_BY"
+            ],
+            "afterSnapshot": {
+                "snapshotId": "wp04-session-1-physical-v1",
+                "boundary": "FORMAL_TURN_VALIDATION_INPUT",
+                "gravityMps2": 9.80665,
+                "entities": [
+                    {
+                        "entityId": "adult",
+                        "label": "成年角色",
+                        "archetypeId": "adult-human",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 87.5
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "anvil",
+                        "label": "鐵砧",
+                        "archetypeId": "anvil",
+                        "centerCm": {
+                            "x": 60.0,
+                            "y": 0.0,
+                            "z": 30.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "chair",
+                        "label": "木椅",
+                        "archetypeId": "chair",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 45.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "child",
+                        "label": "兒童角色",
+                        "archetypeId": "child-human",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 10.0,
+                            "z": 60.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "dog",
+                        "label": "中型犬",
+                        "archetypeId": "medium-dog",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 27.5
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "heavy-crate",
+                        "label": "重木箱",
+                        "archetypeId": "heavy-crate",
+                        "centerCm": {
+                            "x": 60.0,
+                            "y": 0.0,
+                            "z": 30.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "large-container",
+                        "label": "大容器",
+                        "archetypeId": "large-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 0.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "light-crate",
+                        "label": "輕木箱",
+                        "archetypeId": "light-crate",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 87.5
+                        },
+                        "heldByEntityId": "adult",
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "low-door",
+                        "label": "低門洞",
+                        "archetypeId": "low-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -10.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "medium-door",
+                        "label": "中門洞",
+                        "archetypeId": "medium-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 20.0,
+                            "z": 80.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-container",
+                        "label": "窄口容器",
+                        "archetypeId": "narrow-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 10.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-door",
+                        "label": "窄門洞",
+                        "archetypeId": "narrow-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 10.0,
+                            "z": 105.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-shelf",
+                        "label": "窄架",
+                        "archetypeId": "narrow-shelf",
+                        "centerCm": {
+                            "x": 55.0,
+                            "y": -20.0,
+                            "z": 60.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "plain-box",
+                        "label": "普通箱體",
+                        "archetypeId": "plain-box",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -20.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "rail",
+                        "label": "固定扶手",
+                        "archetypeId": "rail",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 10.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "small-container",
+                        "label": "小容器",
+                        "archetypeId": "small-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -10.0,
+                            "z": 75.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "statue",
+                        "label": "固定石像",
+                        "archetypeId": "statue",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "table",
+                        "label": "工作桌",
+                        "archetypeId": "table",
+                        "centerCm": {
+                            "x": 55.0,
+                            "y": 20.0,
+                            "z": 40.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "weak-container",
+                        "label": "弱承重容器",
+                        "archetypeId": "weak-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 20.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "wide-door",
+                        "label": "寬門洞",
+                        "archetypeId": "wide-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 0.0,
+                            "z": 105.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    }
+                ],
+                "barriers": []
+            }
+        },
+        {
+            "actionId": "wp04-evidence-drop",
+            "actionType": "DROP",
+            "beforeStateVersion": 1,
+            "afterStateVersion": 2,
+            "beforeSnapshotCanonicalSha256": "148d446b8267fb4ad5c019d25b55c166e1bee85f45184410f9c7ff8913105749",
+            "afterSnapshotCanonicalSha256": "45458f79d6db66cd0a0a5ec04d1169b51399f6c0aea95d4428842ad5f9de8452",
+            "proposal": {
+                "actionId": "wp04-evidence-drop",
+                "actionType": "DROP",
+                "actorId": "adult",
+                "targetId": "light-crate",
+                "secondaryTargetId": null,
+                "supportSurfaceId": null,
+                "supportUse": null,
+                "destinationCenterCm": null
+            },
+            "appliedEffects": [
+                "FALL_DOWNWARD",
+                "MOVE_TO_GROUND_PLANE",
+                "RELEASE_HELD_OBJECT"
+            ],
+            "afterSnapshot": {
+                "snapshotId": "wp04-session-1-physical-v2",
+                "boundary": "FORMAL_TURN_VALIDATION_INPUT",
+                "gravityMps2": 9.80665,
+                "entities": [
+                    {
+                        "entityId": "adult",
+                        "label": "成年角色",
+                        "archetypeId": "adult-human",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 87.5
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "anvil",
+                        "label": "鐵砧",
+                        "archetypeId": "anvil",
+                        "centerCm": {
+                            "x": 60.0,
+                            "y": 0.0,
+                            "z": 30.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "chair",
+                        "label": "木椅",
+                        "archetypeId": "chair",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 45.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "child",
+                        "label": "兒童角色",
+                        "archetypeId": "child-human",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 10.0,
+                            "z": 60.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "dog",
+                        "label": "中型犬",
+                        "archetypeId": "medium-dog",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 27.5
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "heavy-crate",
+                        "label": "重木箱",
+                        "archetypeId": "heavy-crate",
+                        "centerCm": {
+                            "x": 60.0,
+                            "y": 0.0,
+                            "z": 30.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "large-container",
+                        "label": "大容器",
+                        "archetypeId": "large-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 0.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "light-crate",
+                        "label": "輕木箱",
+                        "archetypeId": "light-crate",
+                        "centerCm": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 15.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "low-door",
+                        "label": "低門洞",
+                        "archetypeId": "low-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -10.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "medium-door",
+                        "label": "中門洞",
+                        "archetypeId": "medium-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 20.0,
+                            "z": 80.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-container",
+                        "label": "窄口容器",
+                        "archetypeId": "narrow-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 10.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-door",
+                        "label": "窄門洞",
+                        "archetypeId": "narrow-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 10.0,
+                            "z": 105.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "narrow-shelf",
+                        "label": "窄架",
+                        "archetypeId": "narrow-shelf",
+                        "centerCm": {
+                            "x": 55.0,
+                            "y": -20.0,
+                            "z": 60.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "plain-box",
+                        "label": "普通箱體",
+                        "archetypeId": "plain-box",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -20.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "rail",
+                        "label": "固定扶手",
+                        "archetypeId": "rail",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 10.0,
+                            "z": 50.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "small-container",
+                        "label": "小容器",
+                        "archetypeId": "small-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": -10.0,
+                            "z": 75.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "statue",
+                        "label": "固定石像",
+                        "archetypeId": "statue",
+                        "centerCm": {
+                            "x": 50.0,
+                            "y": 0.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "table",
+                        "label": "工作桌",
+                        "archetypeId": "table",
+                        "centerCm": {
+                            "x": 55.0,
+                            "y": 20.0,
+                            "z": 40.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "weak-container",
+                        "label": "弱承重容器",
+                        "archetypeId": "weak-container",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 20.0,
+                            "z": 100.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    },
+                    {
+                        "entityId": "wide-door",
+                        "label": "寬門洞",
+                        "archetypeId": "wide-door",
+                        "centerCm": {
+                            "x": 100.0,
+                            "y": 0.0,
+                            "z": 105.0
+                        },
+                        "heldByEntityId": null,
+                        "supportedByEntityId": null,
+                        "containedByEntityId": null,
+                        "supportLoadKgBySurface": {}
+                    }
+                ],
+                "barriers": []
+            }
+        }
+    ],
+    "finalSnapshot": {
+        "snapshotId": "wp04-session-1-physical-v2",
+        "boundary": "FORMAL_TURN_VALIDATION_INPUT",
+        "gravityMps2": 9.80665,
+        "entities": [
+            {
+                "entityId": "adult",
+                "label": "成年角色",
+                "archetypeId": "adult-human",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "anvil",
+                "label": "鐵砧",
+                "archetypeId": "anvil",
+                "centerCm": {
+                    "x": 60.0,
+                    "y": 0.0,
+                    "z": 30.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "chair",
+                "label": "木椅",
+                "archetypeId": "chair",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 45.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "child",
+                "label": "兒童角色",
+                "archetypeId": "child-human",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 10.0,
+                    "z": 60.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "dog",
+                "label": "中型犬",
+                "archetypeId": "medium-dog",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 27.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "heavy-crate",
+                "label": "重木箱",
+                "archetypeId": "heavy-crate",
+                "centerCm": {
+                    "x": 60.0,
+                    "y": 0.0,
+                    "z": 30.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "large-container",
+                "label": "大容器",
+                "archetypeId": "large-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "light-crate",
+                "label": "輕木箱",
+                "archetypeId": "light-crate",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 15.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "low-door",
+                "label": "低門洞",
+                "archetypeId": "low-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -10.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "medium-door",
+                "label": "中門洞",
+                "archetypeId": "medium-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 20.0,
+                    "z": 80.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-container",
+                "label": "窄口容器",
+                "archetypeId": "narrow-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 10.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-door",
+                "label": "窄門洞",
+                "archetypeId": "narrow-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 10.0,
+                    "z": 105.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-shelf",
+                "label": "窄架",
+                "archetypeId": "narrow-shelf",
+                "centerCm": {
+                    "x": 55.0,
+                    "y": -20.0,
+                    "z": 60.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "plain-box",
+                "label": "普通箱體",
+                "archetypeId": "plain-box",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -20.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "rail",
+                "label": "固定扶手",
+                "archetypeId": "rail",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 10.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "small-container",
+                "label": "小容器",
+                "archetypeId": "small-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -10.0,
+                    "z": 75.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "statue",
+                "label": "固定石像",
+                "archetypeId": "statue",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "table",
+                "label": "工作桌",
+                "archetypeId": "table",
+                "centerCm": {
+                    "x": 55.0,
+                    "y": 20.0,
+                    "z": 40.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "weak-container",
+                "label": "弱承重容器",
+                "archetypeId": "weak-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 20.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "wide-door",
+                "label": "寬門洞",
+                "archetypeId": "wide-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 105.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            }
+        ],
+        "barriers": []
+    }
+}

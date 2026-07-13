@@ -8,6 +8,7 @@ import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.ValidationError
 import com.localnovel.engine.model.ValidationReport
 import com.localnovel.engine.repository.StoryRepository
+import com.localnovel.engine.repository.SqliteStoryRepository
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -85,6 +86,9 @@ class AiTurnResultValidator(private val repository: StoryRepository) {
         }
 
         errors += FormalTurnPhysicalGateValidator().validate(context, result, physicalContext)
+        if (repository is SqliteStoryRepository) {
+            errors += FormalPhysicalStatePersistenceValidator(repository).validate(context, result, physicalContext)
+        }
 
         return ValidationReport(errors)
     }

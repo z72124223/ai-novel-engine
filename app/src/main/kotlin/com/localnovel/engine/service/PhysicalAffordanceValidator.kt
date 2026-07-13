@@ -300,6 +300,19 @@ class PhysicalAffordanceValidator {
                     .filterNotNull().any { it !in entityIds }
             }
         ) findings += INVALID_PHYSICAL_DATA
+        if (snapshot.entities.any { entity ->
+                val relations = listOf(entity.heldByEntityId, entity.supportedByEntityId, entity.containedByEntityId).count { it != null }
+                relations > 1 ||
+                    listOf(entity.heldByEntityId, entity.supportedByEntityId, entity.containedByEntityId).any { it == entity.entityId } ||
+                    (entity.supportedByEntityId == null) != (entity.supportedBySurfaceId == null)
+            }
+        ) findings += INVALID_PHYSICAL_DATA
+        if (snapshot.entities.any { entity ->
+                val support = entity.supportedByEntityId?.let { supportId -> snapshot.entities.firstOrNull { it.entityId == supportId } }
+                val supportArchetype = support?.let { supportEntity -> archetypeRegistry.firstOrNull { it.archetypeId == supportEntity.archetypeId } }
+                entity.supportedBySurfaceId?.let { surfaceId -> supportArchetype?.supportSurfaces?.none { it.surfaceId == surfaceId } != false } == true
+            }
+        ) findings += INVALID_PHYSICAL_DATA
         if (archetypeRegistry.any { archetype ->
                 archetype.archetypeId.isBlank() || archetype.bodyPlan.isBlank() ||
                     !archetype.massKg.isFinite() || archetype.massKg <= 0.0 ||

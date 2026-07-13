@@ -1,10 +1,111 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V10`
-> (`WORLD_PHYSICS03_FORMAL_TURN_GATE`) first. All older plan windows are
-> preserved evidence only. Current clean-worktree base:
-> `3aace566e133fd89a50167d350c780c7ec95c996` on
-> `codex/world-physics03-formal-turn-gate`. GitHub remote is the team authority.
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V11`
+> (`WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE`) first. All older plan windows
+> are preserved evidence only. Current clean-worktree base:
+> `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9` on
+> `codex/world-physics04-physical-state-persistence`. GitHub remote is the team authority.
+
+## Current Plan Window V11
+
+標記：`WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE`
+
+狀態：**ACTIVE — 已獲 Product Owner 明確授權；先建立可回滾的非 Canon 實體狀態，再解除有狀態動作封鎖**
+
+日期：2026-07-14
+
+### Goal
+
+建立正式回合可使用的 physical runtime state（實體執行狀態），保存每個 Session 的
+三維位置、held／supported／contained 關係與支撐面負載。`LIFT`、`PUSH`、
+`PLACE_ON`、`DROP`、`ENTER_CONTAINER`、`PASS_THROUGH` 只有在既有物理閘門通過後，
+才能與其他故事狀態一起寫入同一個 SQLite transaction（資料庫交易）；任一步失敗必須
+整體回滾。
+
+### Strategy
+
+- 新增 additive migration（增量遷移）`016_physical_state_runtime.sql`；不修改 001–015。
+- 可重用 archetype registry（實體原型登錄）以 canonical SHA-256 為主鍵，只存一次；
+  Session 僅保存 bounded snapshot（有上限的快照）與關係，避免重複膨脹。
+- 正式 physical context V2 綁定 physical state version、snapshot Hash、registry Hash、
+  Context Hash 與 Result Hash；V1 transient（瞬時）支撐／觸及流程保持相容。
+- `PhysicalStateReducer` 只把已通過 `PhysicalAffordanceValidator` 的結構化動作轉成
+  確定性狀態；模型不得提供質量、尺寸、承重或自行改寫資料庫。
+- 第一個 V2 sidecar 可作 `physicalStateVersion=0` 的 reviewed runtime seed
+  （已審查執行種子），但資料邊界固定為非 Canon；後續 sidecar 必須精確匹配已保存
+  的 version 與 Hash，否則 fail closed。
+- 每個有狀態動作都寫入獨立 transition audit（轉移稽核），並在同一正式回合交易中
+  更新 Session 快照；後續寫入失敗時不得留下半套物理狀態。
+
+### Non-Goals
+
+- 不建立完整 3D／剛體模擬、碰撞時間積分、動畫或戰鬥物理。
+- 不從敘事文字推斷未宣告動作，不讓模型自行提出物理量或原型。
+- 不升格 Canon、不修改 Setting Pack、世界來源、Knowledge 或 Memory。
+- 不使用 API、Provider、模型下載、圖片、影片或音訊。
+- 不修改原本約 124 項髒工作樹，不使用 force push 或破壞性 Git 操作。
+
+### Scope
+
+- 治理／規格：V11 計畫、WORLD-PHYSICS-04 工作包、藍圖補充與實作報告。
+- SQLite：新 Migration、共用 archetype registry、Session physical state、transition audit。
+- Kotlin：V2 context 欄位、Hash／state binding、純 `PhysicalStateReducer`、Repository
+  同交易持久化、正式 Runtime 接線與 read-only state 查詢。
+- 證據：strict V2 Schema、固定狀態轉移案例、Hash manifest、focused／full／rollback tests。
+- 重建權威：將 Migration 016 納入 Chenxing rebuild manifest；歷史 RETRIEVAL-00
+  報告保持歷史原文，不改寫舊結論。
+
+### Confirmed Facts
+
+- 遠端基準 `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9` 已完整通過 WORLD-PHYSICS-03：
+  focused 10/10、related 57/57、full 931/931。
+- 正式物理 sidecar 已綁定 project/session/turn/context/state/result Hash，但 V1 沒有
+  physical state version、snapshot Hash 或 registry Hash。
+- 現有正式 SQLite 只有 001–015，沒有位置、held/supported/contained 關係或物理轉移表。
+- `SqliteStoryRepository.resolvePendingTurn` 已是單一正式回合交易，可在不另開交易的情況下
+  同步保存物理轉移並沿用 rollback。
+- `PhysicalEntityInstance` 已有位置與三種關係；缺少支撐面 ID，無法可靠重算每個 surface
+  的負載，本包需以預設欄位補足且維持舊 JSON 相容。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取治理、Migration、Repository、Reducer、
+  正式回合與 WORLD-PHYSICS-03 證據。
+- [x] Step 2：建立 V11 計畫與 WORLD-PHYSICS-04 工作包，鎖定非 Canon seed、Hash、
+  共用 registry、Session snapshot 與同交易回滾設計。
+- [x] Step 3：實作 Migration 016、V2 context／Schema、純 physical state reducer 與
+  persisted state binding。
+- [x] Step 4：把 transition plan 接入 `resolvePendingTurn` 同一交易，建立唯讀查詢並解除
+  六種有狀態動作的 V2 封鎖。
+- [x] Step 5：建立固定 evidence、focused／related／full／rollback／JSON／Schema／Hash／
+  rebuild／secret／Git-scope 驗證。
+- [ ] Step 6：完成報告與治理狀態，Commit、Push 功能分支；遠端未漂移時普通
+  fast-forward 整合預設分支。
+
+### Verification
+
+- Migration 016 全新建庫與重複 initialize 必須通過。
+- 純 Reducer 必須涵蓋六種有狀態動作及 sequential proposals（連續多動作）。
+- V1 transient context 必須保持相容；V1 stateful、V2 stale version/hash 必須拒絕。
+- 成功回合必須同時更新故事 stateVersion 與 physical state；失敗回合兩者都不變。
+- `./gradlew.bat clean test --no-daemon`、strict JSON、Schema、SHA-256、重建、秘密、
+  私人路徑、網路字樣與 Git scope 全部通過。
+
+### True Stops
+
+- 需要發明或升格 Canon 物理數值，或需要把外部 sidecar 當成 Canon。
+- 無法在同一正式回合交易內原子保存與回滾物理狀態。
+- 需要付費 API／Provider、force push、破壞性 Git 操作或修改原髒工作樹。
+- 現有 V1 JSON／非物理回合相容性無法保留。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 在 WORLD-PHYSICS-03 真正授權 Gate 回覆「授權」，明確
+  啟動本包；授權不擴張至 Canon、API、Provider 或媒體。
+- 2026-07-14：證據審查選擇「Hash 去重原型＋Session bounded snapshot＋transition audit」，
+  不建立每場景重複物性資料，也不假裝這是完整現實物理。
+- 2026-07-14：Migration 016、V2 state binding、六種 deterministic transition、唯讀 CLI
+  與同交易 rollback 均已實作；focused 7/7、related 33/33、rebuild 3/3、full 938/938 PASS。
 
 ## Current Plan Window V10
 

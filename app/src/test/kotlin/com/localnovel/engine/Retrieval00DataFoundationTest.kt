@@ -27,7 +27,7 @@ class Retrieval00DataFoundationTest {
 
         assertEquals("PASS", first.verdict, first.findings.joinToString { it.ruleId })
         assertEquals("PASS", second.verdict, second.findings.joinToString { it.ruleId })
-        assertEquals(21, first.verifiedInputs.size)
+        assertEquals(22, first.verifiedInputs.size)
         assertTrue(first.verifiedInputs.all { it.status == "PASS" })
         assertEquals(5, first.settingPacksApplied.size)
         assertTrue(first.canonValid)
@@ -35,7 +35,7 @@ class Retrieval00DataFoundationTest {
         assertEquals(255, first.worldSourceChunkCount)
         assertEquals(first.logicalContent.rootSha256, second.logicalContent.rootSha256)
         assertEquals(first.logicalContent.tables, second.logicalContent.tables)
-        assertEquals(15, first.logicalContent.migrationCount)
+        assertEquals(16, first.logicalContent.migrationCount)
         assertTrue(first.authorityInventory.unclassifiedPaths.isEmpty())
         assertTrue(first.authorityInventory.missingRequiredPaths.isEmpty())
         assertTrue(first.authorityInventory.privateOrAbsolutePathFindings.isEmpty())

@@ -6,6 +6,7 @@ import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DramaEvaluationInput
 import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
+import com.localnovel.engine.model.FormalPhysicalStateView
 import com.localnovel.engine.model.NpcAutonomyProfile
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
@@ -39,6 +40,7 @@ import com.localnovel.engine.model.ComicVideoVoiceTimelineFill
 import com.localnovel.engine.service.SessionEvidenceExporter
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.support.JsonSupport
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.serialization.decodeFromString
@@ -502,6 +504,27 @@ internal object StorySessionCli {
         println("unrevealedSecrets=${repository.listSecrets(session.projectId).count { !it.revealed }}")
         println("sceneProgress=${scene?.progress ?: "{}"}")
         println("completedRequirements=${scene?.completedRequirements?.joinToString() ?: ""}")
+        return 0
+    }
+
+    fun showPhysicalState(options: Map<String, String>): Int {
+        val repository = cliRepository(options)
+        val sessionId = options.requiredCliOption("session")
+        requireNotNull(repository.getSession(sessionId)) { "Session not found: $sessionId" }
+        val state = repository.getFormalPhysicalState(sessionId)
+        val view = FormalPhysicalStateView(
+            status = if (state == null) "NOT_INITIALIZED" else "PERSISTED",
+            sessionId = sessionId,
+            transitionCount = repository.formalPhysicalTransitionCount(sessionId),
+            state = state,
+        )
+        val json = FormalTurnPhysicalJson.strict.encodeToString(FormalPhysicalStateView.serializer(), view)
+        options["out"]?.let { outValue ->
+            val out = Path.of(outValue)
+            out.parent?.let(Files::createDirectories)
+            Files.writeString(out, json + "\n", StandardCharsets.UTF_8)
+        }
+        println(json)
         return 0
     }
 

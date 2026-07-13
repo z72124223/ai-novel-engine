@@ -1,0 +1,58 @@
+{
+    "protocolVersion": "2",
+    "projectId": "wp04",
+    "turnId": "wp04-turn-1",
+    "narrative": "The player performs only the declared bounded physical actions.",
+    "stateDelta": {
+        "summary": "",
+        "operations": []
+    },
+    "resultId": "wp04-evidence-result-1",
+    "contextId": "wp04-context-1",
+    "sessionId": "wp04-session-1",
+    "turnNumber": 1,
+    "baseStateVersion": 0,
+    "contextHash": "wp04-context-hash-v2",
+    "turnSummary": "Declared physical actions were validated and reduced deterministically.",
+    "characterActions": [],
+    "stateDeltas": [],
+    "revealedFacts": [],
+    "memoryEffects": [],
+    "sceneProgressUpdates": [],
+    "newTasks": [],
+    "memoryCandidates": [],
+    "knowledgeUpdates": [],
+    "sceneRequirementUpdates": [],
+    "threadProgressUpdates": [],
+    "transitionProposal": null,
+    "worldEventAcknowledgements": [],
+    "timeAdvanceProposal": null,
+    "capabilityUseChecks": [],
+    "physicalActionProposals": [
+        {
+            "actionId": "wp04-evidence-lift",
+            "actionType": "LIFT",
+            "actorId": "adult",
+            "targetId": "light-crate",
+            "secondaryTargetId": null,
+            "supportSurfaceId": null,
+            "supportUse": null,
+            "destinationCenterCm": null
+        },
+        {
+            "actionId": "wp04-evidence-drop",
+            "actionType": "DROP",
+            "actorId": "adult",
+            "targetId": "light-crate",
+            "secondaryTargetId": null,
+            "supportSurfaceId": null,
+            "supportUse": null,
+            "destinationCenterCm": null
+        }
+    ],
+    "entityProposals": [],
+    "promotionRecommendations": [],
+    "creativeGapNotes": [],
+    "validationNotes": [],
+    "notes": ""
+}

@@ -1,0 +1,38 @@
+{
+    "schemaVersion": "1.0",
+    "hashAlgorithm": "SHA-256",
+    "scope": "WORLD-PHYSICS-04 PHYSICAL STATE PERSISTENCE",
+    "selfHashExcluded": true,
+    "files": [
+        {
+            "path": "samples/world_physics04/formal_physical_state_context_v2.json",
+            "sha256": "2e377100aa9ede93cc349f6ab175d092862e84c86dc2dc98cc7114f19094e359",
+            "bytes": 26002
+        },
+        {
+            "path": "samples/world_physics04/formal_physical_state_result_v2.json",
+            "sha256": "89b332f3911e381f187f00234b591d293609f320c62c22946c78aa098c94cc6f",
+            "bytes": 1768
+        },
+        {
+            "path": "samples/world_physics04/formal_physical_state_transition_plan_v2.json",
+            "sha256": "ee431d8a016efb40e785e4f31c9e5ac77542abdf42240dd8fe23970ab5c107c6",
+            "bytes": 35917
+        },
+        {
+            "path": "samples/world_physics04/formal_physical_state_technical_report_v2.json",
+            "sha256": "b59b9b7cb2d22a15cee342f7a5a9645424d8ea7f458b570e68d8286540f211f4",
+            "bytes": 818
+        },
+        {
+            "path": "schemas/world_physics/formal_physical_state_context_v2.schema.json",
+            "sha256": "8182b7e8003171d000a385605c067043dab3aeef1b680e1da083a9811cab0766",
+            "bytes": 4635
+        },
+        {
+            "path": "app/src/main/resources/migrations/016_physical_state_runtime.sql",
+            "sha256": "ce68f21c09a165b23ab38afdd2ad1d07fe98c6c8e17615125e452c830ddf0bbc",
+            "bytes": 2791
+        }
+    ]
+}

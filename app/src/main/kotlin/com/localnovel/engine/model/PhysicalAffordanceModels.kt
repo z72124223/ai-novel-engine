@@ -1,5 +1,8 @@
+@file:OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+
 package com.localnovel.engine.model
 
+import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -79,6 +82,8 @@ data class PhysicalEntityInstance(
     val centerCm: PhysicalVector3Cm,
     val heldByEntityId: String? = null,
     val supportedByEntityId: String? = null,
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val supportedBySurfaceId: String? = null,
     val containedByEntityId: String? = null,
     val supportLoadKgBySurface: Map<String, Double> = emptyMap(),
 )

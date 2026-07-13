@@ -47,6 +47,14 @@ formal state has no position or held/supported/contained relation schema, V1
 allows only transient support/reach validation and rejects stateful physical
 actions explicitly instead of pretending their effects were persisted.
 
+WORLD-PHYSICS-04 adds bounded runtime persistence after explicit Product Owner
+authorization. Reusable archetype registries are stored once by canonical
+SHA-256; each story Session stores only its current non-Canon snapshot and an
+append-only transition audit. Formal context V2 binds the persisted physical
+state version, registry Hash and snapshot Hash. Stateful actions are reduced
+sequentially and written inside the existing formal turn transaction, so any
+later write failure rolls back both story and physical state.
+
 ## Authoritative Inputs
 
 The action proposal may choose an action and targets, but it may not declare
@@ -109,7 +117,10 @@ explicit code; the validator may not guess Canon measurements.
    with additive migration only if evidence proves it necessary. Current
    evidence supports a transaction-preflight sidecar gate and does not support
    adding a migration in this package.
-4. Later optional work: richer spatial indexing or external simulation, only if
+4. `WORLD-PHYSICS-04`: persist bounded non-Canon Session physical state and
+   transition evidence through additive Migration 016 and the existing formal
+   turn transaction.
+5. Later optional work: richer spatial indexing or external simulation, only if
    measured failures justify the cost.
 
 No later stage is activated by this blueprint alone.

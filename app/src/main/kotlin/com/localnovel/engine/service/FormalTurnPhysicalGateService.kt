@@ -61,8 +61,8 @@ class FormalTurnPhysicalGateValidator(
         physicalContext: FormalTurnPhysicalValidationContext,
         errors: MutableList<ValidationError>,
     ) {
-        if (physicalContext.schemaVersion != SCHEMA_VERSION) {
-            errors += ValidationError(PHYSICAL_SCHEMA_VERSION_MISMATCH, "Only physical context schemaVersion $SCHEMA_VERSION is supported.")
+        if (physicalContext.schemaVersion !in SUPPORTED_SCHEMA_VERSIONS) {
+            errors += ValidationError(PHYSICAL_SCHEMA_VERSION_MISMATCH, "Only physical context schemaVersion 1.0 or 2.0 is supported.")
         }
         if (physicalContext.boundary != FORMAL_TURN_BOUNDARY ||
             physicalContext.physicalSnapshot.boundary != FORMAL_TURN_BOUNDARY
@@ -94,6 +94,21 @@ class FormalTurnPhysicalGateValidator(
                 PHYSICAL_RESULT_HASH_MISMATCH,
                 "Physical context resultCanonicalSha256 does not match the canonical AiTurnResult hash.",
             )
+        }
+
+        if (physicalContext.schemaVersion == PhysicalStateReducer.SCHEMA_VERSION) {
+            val stateVersion = physicalContext.physicalStateVersion
+            if (stateVersion == null || stateVersion < 0) {
+                errors += ValidationError(PHYSICAL_STATE_VERSION_INVALID, "V2 physicalStateVersion must be non-negative.")
+            }
+            val snapshotHash = FormalPhysicalStateHash.snapshot(physicalContext.physicalSnapshot)
+            if (!snapshotHash.equals(physicalContext.physicalSnapshotCanonicalSha256, ignoreCase = true)) {
+                errors += ValidationError(PHYSICAL_SNAPSHOT_HASH_MISMATCH, "V2 physicalSnapshotCanonicalSha256 does not match the canonical snapshot.")
+            }
+            val registryHash = FormalPhysicalStateHash.archetypeRegistry(physicalContext.physicalArchetypes)
+            if (!registryHash.equals(physicalContext.physicalArchetypeRegistryCanonicalSha256, ignoreCase = true)) {
+                errors += ValidationError(PHYSICAL_ARCHETYPE_REGISTRY_HASH_MISMATCH, "V2 physicalArchetypeRegistryCanonicalSha256 does not match the canonical registry.")
+            }
         }
 
         if (physicalContext.physicalArchetypes.isEmpty() ||
@@ -167,14 +182,29 @@ class FormalTurnPhysicalGateValidator(
                     "Physical action '${proposal.actionId}' uses a non-allowlisted target.",
                 )
             }
-            if (proposal.actionType !in FORMAL_TRANSIENT_ACTIONS) {
+            if (proposal.actionType !in FORMAL_TRANSIENT_ACTIONS && physicalContext.schemaVersion != PhysicalStateReducer.SCHEMA_VERSION) {
                 errors += ValidationError(
                     PHYSICAL_STATE_PERSISTENCE_UNAVAILABLE,
-                    "Physical action '${proposal.actionId}' (${proposal.actionType}) changes durable physical relations that V1 does not persist.",
+                    "Physical action '${proposal.actionId}' (${proposal.actionType}) requires a Hash-bound V2 physical state context.",
                 )
-                return@forEach
             }
+        }
 
+        if (errors.isNotEmpty()) return
+
+        if (proposals.any { it.actionType in PhysicalStateReducer.STATEFUL_ACTIONS }) {
+            runCatching { PhysicalStateReducer(physicalValidator).plan(physicalContext, result) }
+                .exceptionOrNull()
+                ?.let { error ->
+                    errors += ValidationError(
+                        PHYSICAL_STATE_REDUCTION_REJECTED,
+                        error.message ?: "Stateful physical action reduction failed.",
+                    )
+                }
+            return
+        }
+
+        proposals.forEach { proposal ->
             val validation = physicalValidator.validate(
                 physicalContext.physicalArchetypes,
                 physicalContext.physicalSnapshot,
@@ -218,6 +248,9 @@ class FormalTurnPhysicalGateValidator(
         const val PHYSICAL_BOUNDARY_MISMATCH = "physical_boundary_mismatch"
         const val PHYSICAL_CONTEXT_BINDING_MISMATCH = "physical_context_binding_mismatch"
         const val PHYSICAL_RESULT_HASH_MISMATCH = "physical_result_hash_mismatch"
+        const val PHYSICAL_STATE_VERSION_INVALID = "physical_state_version_invalid"
+        const val PHYSICAL_SNAPSHOT_HASH_MISMATCH = "physical_snapshot_hash_mismatch"
+        const val PHYSICAL_ARCHETYPE_REGISTRY_HASH_MISMATCH = "physical_archetype_registry_hash_mismatch"
         const val PHYSICAL_CONTEXT_SIZE_INVALID = "physical_context_size_invalid"
         const val PHYSICAL_ARCHETYPE_IDS_INVALID = "physical_archetype_ids_invalid"
         const val PHYSICAL_ENTITY_IDS_INVALID = "physical_entity_ids_invalid"
@@ -230,10 +263,12 @@ class FormalTurnPhysicalGateValidator(
         const val PHYSICAL_ACTOR_NOT_ALLOWLISTED = "physical_actor_not_allowlisted"
         const val PHYSICAL_TARGET_NOT_ALLOWLISTED = "physical_target_not_allowlisted"
         const val PHYSICAL_STATE_PERSISTENCE_UNAVAILABLE = "physical_state_persistence_unavailable"
+        const val PHYSICAL_STATE_REDUCTION_REJECTED = "physical_state_reduction_rejected"
         const val PHYSICAL_AFFORDANCE_REJECTED = "physical_affordance_rejected"
         const val PHYSICAL_UNPERSISTED_REQUIRED_EFFECTS = "physical_unpersisted_required_effects"
 
         const val SCHEMA_VERSION = "1.0"
+        val SUPPORTED_SCHEMA_VERSIONS = setOf(SCHEMA_VERSION, PhysicalStateReducer.SCHEMA_VERSION)
         const val FORMAL_TURN_BOUNDARY = "FORMAL_TURN_VALIDATION_INPUT"
         private val FORMAL_TRANSIENT_ACTIONS = setOf(
             PhysicalActionType.USE_AS_SUPPORT,
