@@ -1,6 +1,6 @@
 # NPC-ACTOR-01 — Single NPC Actor Pilot
 
-Status: `NOT_ACTIVE / BLOCKED_BY_RETRIEVAL_00_AND_RETRIEVAL_01`
+Status: `TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING`
 
 Date: `2026-07-13`
 
@@ -40,3 +40,26 @@ checks pass and human blind review shows a measurable naturalness improvement
 without any knowledge, Canon or transaction violation.
 
 Passing the offline package does not approve paid API use or production rollout.
+
+## Technical completion evidence
+
+- provider-neutral Fake/File gateway and strict contracts implemented;
+- 20/20 actor outputs accepted for downstream Game Master review;
+- knowledge leak 0; continuity violation 0;
+- focused 15/15 and full 886/886 tests PASS;
+- anonymous review packet and separate answer key committed;
+- no Provider, network, API Key, SQLite write or Canon promotion.
+
+The remaining completion condition is a real human blind review. Codex must not
+fabricate it, and no live API or production rollout may start from technical
+completion alone.
+
+## Activation evidence
+
+- RETRIEVAL-00 and RETRIEVAL-01 are complete on remote default Commit
+  `363b6535a6166e41a52577d51214bf9c40af4321`.
+- The user explicitly requested the next long-running blueprint workflow on
+  2026-07-13.
+- Authorization covers only provider-neutral Fake/File execution. Human blind
+  preference, paid API, API Key, privacy export and production rollout remain
+  independent gates.

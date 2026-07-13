@@ -3,14 +3,14 @@
 > **Startup rule (2026-07-13):** Read only `## Current Plan Window V7`
 > (`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `bc97365dc5853bd5fd80a608ac5bd701a7d68e2b` on
-> `codex/retrieval01-offline-dual-model-benchmark`. GitHub remote is the team authority.
+> `363b6535a6166e41a52577d51214bf9c40af4321` on
+> `codex/npc-actor01-offline-pilot`. GitHub remote is the team authority.
 
 ## Current Plan Window V7
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**RETRIEVAL-01 SOURCE-LEVEL ACCEPTANCE PASS — 模型仍僅在 Repository 外隔離環境，不代表 Runtime 升格**
+狀態：**NPC-ACTOR-01 ACTIVE — OFFLINE FAKE／FILE PILOT；LIVE API 與正式 Runtime 升格仍禁止**
 
 日期：2026-07-13
 
@@ -38,7 +38,7 @@
 
 - 藍圖／治理：`PROJECT_STATE.md`、`AGENTS.md`、`PLANS.md`、NPC／Retrieval 藍圖與工作包。
 - RETRIEVAL-00：重建 Manifest、Authority Registry、Retention Report、Kotlin models/service/CLI、必要 additive migration／sidecar、tests、evidence。
-- 後續 Gate：RETRIEVAL-01 離線模型基準與 NPC-ACTOR-01 單 NPC Actor Pilot。
+- 目前工作包：NPC-ACTOR-01 單 NPC Actor 離線 Pilot；只新增 provider-neutral contract、Fake／File gateway、Validator mapping、20 情境與匿名 A/B 評估。
 
 ### Confirmed Facts
 
@@ -47,20 +47,21 @@
 - 現有 15 migrations／66 tables、5 Chenxing Setting Packs、9 raw sources／255 chunks 已分別驗證可重建；全套 `872/872` PASS。
 - 目前 `NpcAutonomyProfile` 已有 motivation、false belief、fear、relationship debts、agenda；Perception／Memory／Goal／Proposal／GameMaster legality 路徑已存在。
 - 現有 NPC action/narrative 仍含硬編碼英文模板，尚非 GPT NPC Actor。
-- OpenAI 官方目前提供 Responses API conversation state、Structured Outputs 與 GPT-5.6 Sol/Terra/Luna 模型／reasoning effort；實作前仍需以官方文件核對 request schema。
+- OpenAI API 仍未獲 Key／成本／隱私授權，本包不新增 SDK、不發出網路請求，也不需要核對即時 API request schema。
 - 2026-07-13 使用者已明確同意下載約 2.4 GB 官方 Qwen 權重、建立隔離 Python／PyTorch／Transformers 環境並使用 GTX 1080 Ti 執行 RETRIEVAL-01。
-- 目前分支、遠端預設分支與乾淨工作樹均對齊 `bc97365dc5853bd5fd80a608ac5bd701a7d68e2b`。
+- RETRIEVAL-01 已以 source-document label 粒度通過，遠端預設分支與本乾淨工作樹起點均為 `363b6535a6166e41a52577d51214bf9c40af4321`。
+- 2026-07-13 使用者要求建立可持續到使用量耗盡的長工作流程，構成 NPC-ACTOR-01 的明確離線啟動授權；不擴張至付費 API、Canon 或媒體。
+- 現有 `NpcAutonomyProfile`、Perception／Memory／Goal／Proposal、GameMaster legality、DecisionTrace 與 `resolve-turn` Transaction 已有 5 個直接測試與 Stage 2 PASS 證據。
 
 ### Assumptions
 
-- RETRIEVAL-00 可先以 Git JSON manifest + validated SQLite rebuild report 完成，不必把 media binary 或歷史文件全文複製進 SQL。
 - 第一版 NPC Actor 可用單次結構化輸出同時產生 intent/action/utterance；兩階段呼叫只有在 eval 證明有品質增益後才啟用。
+- 20 個情境的人工盲測可先產生匿名、順序固定且不揭露 A/B 身分的評分包；Codex 不得偽造真人偏好，技術完成與真人 Gate 分開記錄。
 
 ### Open Questions
 
-- Authority Registry 最終是否需要 additive formal table，待最小設計與測試決定。
-- RETRIEVAL-01 的實際 Python／PyTorch／Transformers 版本與 Pascal GPU 相容性需以安裝後證據固定。
 - 真實 OpenAI API 呼叫需 API Key 與付費授權；到該 Gate 才是必要停止條件。
+- 真人盲測偏好分數需由使用者或未參與實作的人類評審提交；本包先完成可重現評分包與自動安全／自然度代理指標。
 
 ### Implementation Steps
 
@@ -75,7 +76,12 @@
   - [x] 5.4：依明確授權建立 Repository 外隔離環境，下載固定 revision 的官方 0.6B Embedding／Reranker，驗證權重與 Tokenizer SHA-256；隔離 Python 3.13.9、PyTorch 2.7.1+cu118、Transformers 4.53.3 與 GTX 1080 Ti CUDA smoke test 均通過。
   - [x] 5.5：使用相同 50 題執行 Embedding top-50、Reranker top-20 → top-8、可見性與 VRAM／延遲基準；最終 batch 4/2 以 1,821 MiB 實測最低系統餘量通過。
   - [x] 5.6：產出完整模型報告；focused 4/4、full 876/876、JSON／來源 Hash／引用／秘密／Git scope 檢查全部 PASS；完成治理更新並準備 Push。
-- [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
+- [ ] Step 6（CURRENT）：執行 NPC-ACTOR-01 provider-neutral interface、Fake／File gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
+  - [x] 6.1：建立 request／response／scenario／evaluation models 與 strict JSON Schema，擴充 voice profile 預設欄位且保持舊 JSON 相容；focused contract tests 3/3 PASS。
+  - [x] 6.2：建立 visibility-safe request builder、Fake／File gateway 與 response validator／`NpcActionProposal` mapping，不寫 SQLite；相關新舊測試 12／12 PASS。
+  - [x] 6.3：建立 20 個固定 `NON_CANON_EVALUATION` 情境、baseline／actor response、匿名 A/B 包與自動指標；Actor 20／20 通過、知識泄漏 0、連續性違規 0。
+  - [x] 6.4：加入 CLI、focused tests、完整測試、JSON／Hash／秘密／引用／Git scope 驗證與 readiness report；focused 15／15、full 886／886、JSON 8／8、Hash 7／7 PASS。
+  - [ ] 6.5（CURRENT）：Commit／Push／安全快轉預設分支；技術 Gate 與真人盲測 Gate 分開標示。
 
 ### Verification
 
@@ -101,6 +107,13 @@
 - 2026-07-13：第一次受監測的 batch 8/4 執行雖為 38/38，但最低系統可用 VRAM 僅 498 MiB，依 Gate 判定 FAIL；未關閉使用者程式、未換大模型，改用 batch 4/2 重跑。
 - 2026-07-13：最終 RETRIEVAL-01 模型基準為 Embedding top-50 38/38、final top-8 38/38、semantic 10/10、exact 10/10、visibility leak 0、最低系統可用 VRAM 1,821 MiB；標籤粒度仍是 source document，禁止宣稱 chunk precision 100%。
 - 2026-07-13：使用者通過真正授權 Gate；允許約 2.4 GB 官方模型下載、Repository 外隔離 Python／PyTorch／Transformers 安裝、網路與 GTX 1080 Ti 執行。仍禁止付費 API、模型升級、Server／Port、Canon／Runtime 寫入與媒體生成。
+- 2026-07-13：使用者建立長期 Goal 並要求從中斷處持續執行；依 `PROJECT_STATE.md` 路線將 NPC-ACTOR-01 離線 Fake／File Pilot 啟動，真人盲測與 live API 保持獨立 Gate。
+- 2026-07-13：NPC-ACTOR-01 contract slice 新增 request／response／evaluation／blind-review models 與三份 strict Schema；舊 profile JSON 以 voice default 相容，focused 3/3 PASS，未新增 Provider／網路／SQLite 寫入。
+- 2026-07-13：NPC-ACTOR-01 gateway slice 完成 actor-owned evidence 裁切、Fake／File gateway、strict file response parsing 與 Validator mapping；已證明 foreign memory／knowledge／author secret 不進 request，接受輸出只能進 `ACCEPTED_FOR_GAME_MASTER_REVIEW`，focused 12／12 PASS。
+- 2026-07-13：20 個固定非 Canon 情境與可重建 CLI 完成；Actor Validator 20／20、泄漏 0、連續性違規 0，AI 解說句式 26→0，平均對白 37.4→13.25 字。匿名盲測包與獨立答案已產生，真人偏好不得由 Codex 作偽。
+- 2026-07-13：NPC-ACTOR-01 技術驗證完成；focused 15／15、full 886／886、JSON 8／8、Hash 7／7、秘密／絕對路徑／Git scope 均 PASS。技術狀態與真人盲測 Gate 分離，尚未宣稱完整離線驗收 PASS。
+- 2026-07-13：Commit 前安全審查將 knowledge claims 再限縮為 perception 明確選中且 actor-owned，同時將 profile 中的 deep motivation／false belief／fear 作為 actor-owned evidence 加入請求；不擴大知識邊界。
+- 2026-07-13：為使證據 SHA-256 在 Windows checkout 後仍可重現，`.gitattributes` 固定 NPC Actor 樣本與 Schema JSON 為 LF；不變更檔案內容或 Hash。
 
 ## Current Plan Window V6
 

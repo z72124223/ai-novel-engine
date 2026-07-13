@@ -11,6 +11,7 @@ data class NpcAutonomyProfile(
     val relationshipDebts: List<String> = emptyList(),
     val offscreenAgenda: List<String>,
     val resourceIds: List<String> = emptyList(),
+    val voiceProfile: NpcVoiceProfile = NpcVoiceProfile(),
     val sandboxCandidateOnly: Boolean = true,
 )
 

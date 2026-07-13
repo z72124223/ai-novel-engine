@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_request_v1.schema.json",
+  "title": "NPC Actor Request V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "requestId",
+    "scenarioId",
+    "actorId",
+    "targetIds",
+    "locationId",
+    "voiceProfile",
+    "physicalState",
+    "emotionalState",
+    "perceivedFacts",
+    "ownedMemories",
+    "ownedBeliefs",
+    "goals",
+    "relationships",
+    "recentDialogue",
+    "capabilities",
+    "revealableInformationIds",
+    "withholdableInformationIds",
+    "forbiddenInformationIds",
+    "outputConstraints"
+  ],
+  "properties": {
+    "protocolVersion": { "const": "1.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "scenarioId": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "minLength": 1 },
+    "targetIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "locationId": { "type": "string", "minLength": 1 },
+    "voiceProfile": { "$ref": "#/$defs/voiceProfile" },
+    "physicalState": { "type": "string", "minLength": 1 },
+    "emotionalState": { "type": "string", "minLength": 1 },
+    "perceivedFacts": { "$ref": "#/$defs/evidenceList" },
+    "ownedMemories": { "$ref": "#/$defs/evidenceList" },
+    "ownedBeliefs": { "$ref": "#/$defs/evidenceList" },
+    "goals": { "$ref": "#/$defs/evidenceList" },
+    "relationships": { "$ref": "#/$defs/evidenceList" },
+    "recentDialogue": { "$ref": "#/$defs/evidenceList" },
+    "capabilities": { "$ref": "#/$defs/evidenceList" },
+    "revealableInformationIds": { "$ref": "#/$defs/idList" },
+    "withholdableInformationIds": { "$ref": "#/$defs/idList" },
+    "forbiddenInformationIds": { "$ref": "#/$defs/idList" },
+    "outputConstraints": { "$ref": "#/$defs/outputConstraints" }
+  },
+  "$defs": {
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "evidenceList": {
+      "type": "array",
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "kind", "summary", "visibility"],
+      "properties": {
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["PERCEPTION", "MEMORY", "BELIEF", "GOAL", "RELATIONSHIP", "RECENT_DIALOGUE", "CAPABILITY"]
+        },
+        "summary": { "type": "string", "maxLength": 512 },
+        "visibility": { "enum": ["ACTOR_OWNED", "ACTOR_VISIBLE"] },
+        "sourceSha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
+      }
+    },
+    "voiceProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "register", "principles", "preferredPatterns", "forbiddenPatterns"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 1 },
+        "register": { "type": "string", "minLength": 1 },
+        "principles": { "type": "array", "items": { "type": "string" } },
+        "preferredPatterns": { "type": "array", "items": { "type": "string" } },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "outputConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxUtteranceChars", "silenceAllowed", "lieAllowed", "nonverbalAllowed", "forbiddenPatterns"],
+      "properties": {
+        "maxUtteranceChars": { "type": "integer", "minimum": 0, "maximum": 160 },
+        "silenceAllowed": { "type": "boolean" },
+        "lieAllowed": { "type": "boolean" },
+        "nonverbalAllowed": { "type": "boolean" },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -4,11 +4,11 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_REQUIRES_SEPARATE_ACTIVATION`
-- Current work: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark (complete)`
-- Implementation branch: `codex/retrieval01-offline-dual-model-benchmark`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
+- Current work: `NPC-ACTOR-01 — Human Blind Review Gate`
+- Implementation branch: `codex/npc-actor01-offline-pilot`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Required work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`
+- Required work package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
 - NPC route blueprint: `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
 - NPC pilot package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
 - Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`; gates may not be skipped.
@@ -29,7 +29,11 @@
 - Final source-document-level result: 38/38 Embedding top-50, 38/38 final Reranker top-8, semantic 10/10 versus LIKE 0/10, exact 10/10 with 0 regression, 0 visibility leaks and 1,821 MiB observed minimum system-free VRAM.
 - Label limitation: expected relevance is currently source-document-level, not precise answer-bearing chunk-level. Do not claim 100% chunk precision or enable an actor-visible production path from this benchmark alone.
 - RETRIEVAL-01 used no cloud/API/Provider, port, vector database, Canon write or runtime state write. The external model runtime is not part of Gradle or the shipped Kotlin runtime.
-- Current true stop: NPC-ACTOR-01 or any production retrieval integration requires a separate explicit activation and must preserve visibility, transaction, hash and validator boundaries.
+- On 2026-07-13 the user explicitly activated a long-running continuation from RETRIEVAL-01; this authorizes the bounded NPC-ACTOR-01 offline Fake/File Pilot.
+- NPC-ACTOR-01 technical evidence: 20/20 actor outputs accepted for Game Master review; 0 knowledge leaks; 0 continuity violations; AI exposition patterns 26→0; average utterance length 37.4→13.25 characters; focused 15/15 and full 886/886 tests PASS.
+- NPC-ACTOR-01 evidence: `docs/npc_actor/NPC_ACTOR01_IMPLEMENTATION_REPORT.md`, `samples/npc_actor01/npc_actor01_evaluation_report.json`, anonymous blind packet and separate answer key under `samples/npc_actor01/`.
+- Codex may not invent the remaining human preference result. The only next NPC-ACTOR-01 action is an actual human rating of the anonymous 20-item packet.
+- Current true stops: any live API/API Key/paid Provider/privacy export, production rollout, Canon decision, or weakening of visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
 ## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
@@ -59,15 +63,15 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_NOT_ACTIVE`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
-- Current work package: `docs/work-packages/RETRIEVAL-01_OFFLINE_LOCAL_DUAL_MODEL_BENCHMARK.md`
-- `NPC-ACTOR-01 — Single NPC Actor Pilot` is the next candidate but is not active without separate explicit assignment.
+- Current work package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
+- `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and technical evaluation; actual human blind preference remains pending.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.
-- No extraction model, GBrain component, MCP service, vector database, provider, or live API has been activated. NPC-ACTOR-01 and live GPT API calls remain separately blocked by assignment, API Key, cost and privacy approval.
+- No extraction model, GBrain component, MCP service, vector database, provider, or live API has been activated. Live GPT API calls remain separately blocked by API Key, cost and privacy approval.
 
 ## 1. 最終產品
 
