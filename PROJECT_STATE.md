@@ -4,7 +4,7 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_IMPLEMENTED_VALIDATED_PENDING_GIT_INTEGRATION`
+- Status: `RETRIEVAL00_PASS_DEFAULT_BRANCH_INTEGRATED / RETRIEVAL01_STATIC_PREPARATION_ACTIVE`
 - Current work: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Implementation branch: `codex/retrieval00-authority-rebuild-runtime`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
@@ -18,6 +18,8 @@
 - RETRIEVAL-00 implementation evidence: 21/21 inputs verified; 15 migrations; 5 Setting Packs; Canon PASS; 9 documents / 255 chunks; logical SHA-256 `30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32`; focused 3/3 and full 875/875 PASS.
 - Rebuild runbook: `docs/PROJECT_DATA_REBUILD_RUNBOOK_V1.md`.
 - Validation evidence: `docs/retrieval/RETRIEVAL00_IMPLEMENTATION_REPORT.md` and `docs/retrieval/RETRIEVAL00_VALIDATION_SUMMARY.json`.
+- RETRIEVAL-00 implementation Commit `82ed30bf94b69902e92737fdbdb32074db565840` is present on the remote default branch.
+- The next bounded action is RETRIEVAL-01 static supply-chain and benchmark preparation. Downloading/installing/executing external models still requires explicit disk/network/GPU authorization.
 
 ## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
 

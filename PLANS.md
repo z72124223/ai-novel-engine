@@ -10,7 +10,7 @@
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**ACTIVE — RETRIEVAL-00 已實作並驗證；正在完成 Git Push／預設分支整合**
+狀態：**ACTIVE — RETRIEVAL-00 已完成並納入預設分支；進入 RETRIEVAL-01 靜態供應鏈準備，模型下載仍是停止 Gate**
 
 日期：2026-07-13
 
@@ -65,8 +65,8 @@
 - [x] Step 1：新增 NPC Actor／模型路由／API 邊界藍圖，更新治理規則並正式啟動 RETRIEVAL-00。
 - [x] Step 2：實作 RETRIEVAL-00 manifest、authority/retention inventory、fresh-clone rebuild 與 logical-content hash。
 - [x] Step 3：新增 focused tests、雙重重建等價、完整測試與交接證據。
-- [ ] Step 4（CURRENT）：Commit／Push／安全快轉預設分支並更新 PROJECT_STATE。
-- [ ] Step 5：Gate 通過後執行 RETRIEVAL-01 靜態供應鏈檢查與離線基準；不得因失敗自動升級模型。
+- [x] Step 4：Commit／Push／安全快轉預設分支並更新 PROJECT_STATE。
+- [ ] Step 5（CURRENT）：執行 RETRIEVAL-01 靜態供應鏈檢查與離線基準準備；模型下載／安裝／GPU 執行前停止取得明確授權，不得因失敗自動升級模型。
 - [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
 
 ### Verification
