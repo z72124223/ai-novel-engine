@@ -6,4 +6,5 @@ samples/npc_actor03/*.json text eol=lf
 samples/npc_actor04/*.json text eol=lf
 schemas/npc_actor/*.json text eol=lf
 samples/world_physics01/*.json text eol=lf
+samples/world_physics02/*.json text eol=lf
 schemas/world_physics/*.json text eol=lf

@@ -31,6 +31,14 @@ model or authored action proposal
 WORLD-PHYSICS-01 implements only the independent validation core and offline
 evidence. It does not change the formal runtime pipeline.
 
+WORLD-PHYSICS-02 adds an offline NPC action binding layer. It preserves the
+existing NPC Actor V1 request/response contract and introduces a separate
+provider-visible prompt plus engine-owned validation context. The model may
+choose an allowlisted action and visible target identifier, but it cannot
+author mass, dimensions, load capacity, barriers or distances. Both the Actor
+contract and physical affordance result must pass before a proposal can be
+forwarded to Game Master review. Formal turn state remains unchanged.
+
 ## Authoritative Inputs
 
 The action proposal may choose an action and targets, but it may not declare

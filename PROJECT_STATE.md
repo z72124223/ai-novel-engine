@@ -2,7 +2,25 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — WORLD-PHYSICS-01 Physical Affordance Foundation
+## Current Override — WORLD-PHYSICS-02 NPC Action Binding
+
+- Status: `WORLD_PHYSICS02_TECHNICAL_PASS / FORMAL_TURN_RUNTIME_NOT_CONNECTED`
+- Current work: `WORLD-PHYSICS-02 complete — WORLD-PHYSICS-03 not authorized.`
+- Implementation branch: `codex/world-physics02-npc-action-binding`
+- Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
+- Required work package: `docs/work-packages/WORLD-PHYSICS-02_NPC_ACTION_BINDING.md`
+- Required plan: `PLANS.md` Current Plan Window V9.
+- Base SHA: `f67d48a78e5943e477de3e855778cfc45a915a38` from the remote default branch.
+- Compatibility rule: existing `NpcActorRequest/Response V1`, Schemas and sealed NPC-ACTOR evidence remain unchanged; physical actions use a separate strict binding envelope.
+- Trust boundary: model-visible data lists only Actor-visible context and allowed action/target identifiers. Metric archetypes, geometry, load and barriers are engine-owned validation evidence and may not be authored by the model.
+- Acceptance rule: both `NpcActorResponseValidator` and `PhysicalAffordanceValidator` must pass before an `NpcActionProposal` may reach Game Master review.
+- Verification: 8/8 binding cases, new focused 9/9, related focused 23/23, full 921/921, strict JSON 4/4, Schema contract and SHA-256 3/3 PASS.
+- Mandatory regression: adult use of a medium dog's shoulder is rejected; stable chair support is accepted only as a Game Master review candidate.
+- No API, Provider, model download, formal Canon data, migration, SQLite write, image, video or audio is authorized.
+- True stops: invented Canon measurements, formal transaction changes, paid/live execution, force push or weakening knowledge/hash/approval boundaries.
+- Next candidate: `WORLD-PHYSICS-03` formal turn integration, but it requires a new reviewed plan and is not authorized automatically.
+
+## Previous Override — WORLD-PHYSICS-01 Physical Affordance Foundation
 
 - Status: `WORLD_PHYSICS01_TECHNICAL_PASS_RUNTIME_NOT_CONNECTED / NPC_ACTOR04_REVIEW_DEFERRED_BY_PHYSICAL_GROUNDING_LIMITATION`
 - Current work: `WORLD-PHYSICS-01 complete — WORLD-PHYSICS-02 not authorized`

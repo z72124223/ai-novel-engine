@@ -1,10 +1,79 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V8`
-> (`WORLD_PHYSICS01_PHYSICAL_AFFORDANCE_FOUNDATION`) first. All older plan
-> windows are preserved evidence only. Current clean-worktree base:
-> `3b86e967891c48ea52789daf25698b8ca611e3b0` on
-> `codex/world-physics01-physical-affordance`. GitHub remote is the team authority.
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V9`
+> (`WORLD_PHYSICS02_NPC_ACTION_BINDING`) first. All older plan windows are
+> preserved evidence only. Current clean-worktree base:
+> `f67d48a78e5943e477de3e855778cfc45a915a38` on
+> `codex/world-physics02-npc-action-binding`. GitHub remote is the team authority.
+
+## Current Plan Window V9
+
+標記：`WORLD_PHYSICS02_NPC_ACTION_BINDING`
+
+狀態：**COMPLETED — NPC Actor 物理動作雙閘綁定與離線證據通過；正式回合 Runtime 仍未接線**
+
+日期：2026-07-14
+
+### Goal
+
+在不破壞既有 `NpcActorRequest V1`、不改 SQLite／Canon／正式回合交易邊界的前提下，新增一條離線物理動作綁定流程。NPC Actor 可以提出結構化物理動作，但只有既有 Actor 契約與 `PhysicalAffordanceValidator` 都通過時，才可產生送往 Game Master 的 `NpcActionProposal`。
+
+### Strategy
+
+- 保留既有 NPC Actor V1 契約與歷史評測檔，新增獨立 binding（綁定）封套，不做破壞性欄位修改。
+- Provider-visible prompt（模型可見提示封套）只含 Actor 已可見資料、允許的物理動作類型與目標 ID；質量、尺寸、承重與障礙快照留在 engine-owned context（引擎持有的驗證上下文）。
+- `NpcActorResponseValidator` 先驗證身分、知識與輸出契約；通過後才執行物理驗證。任何一關失敗都不得產生 Game Master proposal。
+- 本包只建立離線 Fake／File 契約、確定性驗證、固定案例、Schema、Hash 與測試；不接 `AiTurnResultValidator`、`StateReducer` 或 SQLite。
+
+### Non-Goals
+
+- 不發明正式角色或物件的 Canon 尺寸、質量與承重值。
+- 不修改 Setting Pack、Migration、Repository、正式 ContextPacket 或狀態寫入。
+- 不使用 API、Provider、模型下載、圖片、影片或音訊。
+- 不宣稱通過 V1 規則等於完整理解真實物理。
+
+### Scope
+
+- 治理：`PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md`、WORLD-PHYSICS 藍圖與工作包。
+- Kotlin：新的 NPC physical binding models、gateway／validator／evaluation service、fixture factory 與直接測試。
+- 契約：獨立 strict JSON Schema 與 `NON_CANON_EVALUATION` 固定案例、技術報告、SHA-256 manifest。
+- 既有 NPC Actor V1 models、Schema、封存樣本和 NPC-ACTOR-03/04 評審內容保持不變。
+
+### Confirmed Facts
+
+- 遠端基準 `f67d48a78e5943e477de3e855778cfc45a915a38` 已包含 WORLD-PHYSICS-01：64/64 案例、focused 7/7、full 912/912。
+- 現有 `NpcActorResponseValidator` 只有 Actor／knowledge／voice／capability 契約，通過後直接產生 `NpcActionProposal`，沒有形態、承重、觸及或障礙檢查。
+- `PhysicalAffordanceValidator` 是無 I/O、無狀態變更的純驗證核心，可在 Actor 契約通過後重用。
+- 既有 `NpcActorRequest V1` 與 response Schema 是嚴格契約；直接新增預設輸出欄位會改變既有 JSON，因此本包採獨立 V1 binding 封套。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取治理、NPC Actor 與 WORLD-PHYSICS-01 證據，確定非破壞性封套設計。
+- [x] Step 2：建立工作包、模型、引擎持有上下文、Fake／File gateway 與雙閘驗證服務。
+- [x] Step 3：建立固定綁定案例，涵蓋合理支撐、狗肩承重、穿牆、未允許目標／動作、Actor 契約失敗與重力效果。
+- [x] Step 4：建立 strict Schema、技術報告與 Hash manifest，執行 focused/full/JSON/Hash/secret/Git-scope 驗證。
+- [x] Step 5：更新治理完成狀態，Commit、Push 功能分支，遠端無漂移時以普通 fast-forward 更新預設分支。
+
+### Verification
+
+- `./gradlew.bat :app:test --tests "com.localnovel.engine.NpcActorPhysicalBindingTest" --no-daemon`
+- 既有 `NpcActorContractTest`、`NpcActorServicesTest`、`PhysicalAffordanceValidatorTest`。
+- `./gradlew.bat clean test --no-daemon`
+- strict JSON parse、Schema、SHA-256、SRT/媒體零變更、秘密／私人路徑／網路字樣與 Git 範圍檢查。
+- 驗證前後 engine-owned snapshot JSON 必須相同；拒絕結果不得附帶 `NpcActionProposal`。
+
+### True Stops
+
+- 需要發明或升格 Canon 物理數值。
+- 需要修改正式 transaction（交易）邊界、`AiTurnResultValidator`、`StateReducer`、Migration 或 SQLite。
+- 需要付費 API／Provider、force push 或破壞性 Git 操作。
+- 既有 Actor V1 相容性無法在不覆寫歷史檔的情況下保留。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 明確同意把物理規劃加入藍圖並實作；依 WORLD-PHYSICS rollout 順序啟動第二包。
+- 2026-07-14：證據審查決定新增獨立 physical binding 封套，避免修改 `NpcActorRequest/Response V1` 與封存評測資料。
+- 2026-07-14：8/8 固定綁定案例符合預期；新增測試 9/9、相關 focused 23/23、完整 921/921 PASS。狗肩承重、穿牆、未允許動作／目標與身分錯配均不產生 Game Master proposal；合理椅子支撐與合法 drop 保留 required effects 後通過。
 
 ## Current Plan Window V8
 

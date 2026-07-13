@@ -1,0 +1,23 @@
+{
+    "schemaVersion": "1.0",
+    "hashAlgorithm": "SHA-256",
+    "scope": "WORLD-PHYSICS-02 NPC ACTION BINDING",
+    "selfHashExcluded": true,
+    "files": [
+        {
+            "path": "samples/world_physics02/npc_actor_physical_binding_suite_v1.json",
+            "sha256": "42517d591d03d828d8ea7cbdd1a0036a42eb6a37d75e86a542c7eb7b0c0f781a",
+            "bytes": 80990
+        },
+        {
+            "path": "samples/world_physics02/npc_actor_physical_binding_report_v1.json",
+            "sha256": "a9774a61a04b43f1e7500bbd024ccf02afb3509850f8ac8a18aa2d69ba77fe89",
+            "bytes": 4298
+        },
+        {
+            "path": "schemas/world_physics/npc_actor_physical_binding_v1.schema.json",
+            "sha256": "3ad50949db5d621ab38fa625b4cae951493bfc1ba27ab7eec20798563966a456",
+            "bytes": 17991
+        }
+    ]
+}

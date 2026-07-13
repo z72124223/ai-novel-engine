@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/world_physics/npc_actor_physical_binding_v1.schema.json",
+  "title": "WORLD-PHYSICS-02 NPC Actor Physical Binding Evidence V1",
+  "oneOf": [
+    { "$ref": "#/$defs/suite" },
+    { "$ref": "#/$defs/report" },
+    { "$ref": "#/$defs/manifest" }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "actionType": {
+      "enum": ["USE_AS_SUPPORT", "LIFT", "PUSH", "REACH", "PLACE_ON", "DROP", "ENTER_CONTAINER", "PASS_THROUGH"]
+    },
+    "supportUse": {
+      "enum": ["LIGHT_CONTACT", "STAND_UP_ASSIST", "FULL_BODY_SUPPORT", "OBJECT_PLACEMENT"]
+    },
+    "vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "depth", "height"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "depth": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["center", "dimensions"],
+      "properties": {
+        "center": { "$ref": "#/$defs/vector" },
+        "dimensions": { "$ref": "#/$defs/dimensions" }
+      }
+    },
+    "supportSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surfaceId", "stable", "maxLoadKg", "widthCm", "depthCm", "allowedUses", "allowedBodyPlans"],
+      "properties": {
+        "surfaceId": { "$ref": "#/$defs/nonEmpty" },
+        "stable": { "type": "boolean" },
+        "maxLoadKg": { "type": "number", "minimum": 0 },
+        "widthCm": { "type": "number", "exclusiveMinimum": 0 },
+        "depthCm": { "type": "number", "exclusiveMinimum": 0 },
+        "allowedUses": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/supportUse" } },
+        "allowedBodyPlans": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "archetype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archetypeId", "entityKind", "bodyPlan", "massKg", "dimensionsCm", "movable", "canGrasp", "maxReachCm", "maxLiftKg", "maxPushKg", "supportSurfaces", "containerInteriorCm", "openingCm", "maxContainedLoadKg"],
+      "properties": {
+        "archetypeId": { "$ref": "#/$defs/nonEmpty" },
+        "entityKind": { "$ref": "#/$defs/nonEmpty" },
+        "bodyPlan": { "$ref": "#/$defs/nonEmpty" },
+        "massKg": { "type": "number", "exclusiveMinimum": 0 },
+        "dimensionsCm": { "$ref": "#/$defs/dimensions" },
+        "movable": { "type": "boolean" },
+        "canGrasp": { "type": "boolean" },
+        "maxReachCm": { "type": "number", "minimum": 0 },
+        "maxLiftKg": { "type": "number", "minimum": 0 },
+        "maxPushKg": { "type": "number", "minimum": 0 },
+        "supportSurfaces": { "type": "array", "items": { "$ref": "#/$defs/supportSurface" } },
+        "containerInteriorCm": { "oneOf": [{ "$ref": "#/$defs/dimensions" }, { "type": "null" }] },
+        "openingCm": { "oneOf": [{ "$ref": "#/$defs/dimensions" }, { "type": "null" }] },
+        "maxContainedLoadKg": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityId", "label", "archetypeId", "centerCm", "heldByEntityId", "supportedByEntityId", "containedByEntityId", "supportLoadKgBySurface"],
+      "properties": {
+        "entityId": { "$ref": "#/$defs/nonEmpty" },
+        "label": { "$ref": "#/$defs/nonEmpty" },
+        "archetypeId": { "$ref": "#/$defs/nonEmpty" },
+        "centerCm": { "$ref": "#/$defs/vector" },
+        "heldByEntityId": { "type": ["string", "null"] },
+        "supportedByEntityId": { "type": ["string", "null"] },
+        "containedByEntityId": { "type": ["string", "null"] },
+        "supportLoadKgBySurface": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0 } }
+      }
+    },
+    "barrier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["barrierId", "boundsCm", "blocksReach", "blocksMovement"],
+      "properties": {
+        "barrierId": { "$ref": "#/$defs/nonEmpty" },
+        "boundsCm": { "$ref": "#/$defs/bounds" },
+        "blocksReach": { "type": "boolean" },
+        "blocksMovement": { "type": "boolean" }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshotId", "boundary", "gravityMps2", "entities", "barriers"],
+      "properties": {
+        "snapshotId": { "$ref": "#/$defs/nonEmpty" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "gravityMps2": { "type": "number", "minimum": 0 },
+        "entities": { "type": "array", "minItems": 2, "maxItems": 32, "items": { "$ref": "#/$defs/entity" } },
+        "barriers": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/barrier" } }
+      }
+    },
+    "physicalProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actionId", "actionType", "actorId", "targetId", "secondaryTargetId", "supportSurfaceId", "supportUse", "destinationCenterCm"],
+      "properties": {
+        "actionId": { "$ref": "#/$defs/nonEmpty" },
+        "actionType": { "$ref": "#/$defs/actionType" },
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "targetId": { "$ref": "#/$defs/nonEmpty" },
+        "secondaryTargetId": { "type": ["string", "null"] },
+        "supportSurfaceId": { "type": ["string", "null"] },
+        "supportUse": { "oneOf": [{ "$ref": "#/$defs/supportUse" }, { "type": "null" }] },
+        "destinationCenterCm": { "oneOf": [{ "$ref": "#/$defs/vector" }, { "type": "null" }] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "kind", "summary", "visibility", "sourceSha256"],
+      "properties": {
+        "evidenceId": { "$ref": "#/$defs/nonEmpty" },
+        "kind": { "$ref": "#/$defs/nonEmpty" },
+        "summary": { "type": "string", "maxLength": 512 },
+        "visibility": { "enum": ["ACTOR_OWNED", "ACTOR_VISIBLE"] },
+        "sourceSha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] }
+      }
+    },
+    "evidenceList": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/evidence" } },
+    "voiceProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "register", "principles", "preferredPatterns", "forbiddenPatterns"],
+      "properties": {
+        "locale": { "$ref": "#/$defs/nonEmpty" },
+        "register": { "$ref": "#/$defs/nonEmpty" },
+        "principles": { "type": "array", "items": { "type": "string" } },
+        "preferredPatterns": { "type": "array", "items": { "type": "string" } },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "outputConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxUtteranceChars", "silenceAllowed", "lieAllowed", "nonverbalAllowed", "forbiddenPatterns"],
+      "properties": {
+        "maxUtteranceChars": { "type": "integer", "minimum": 0, "maximum": 160 },
+        "silenceAllowed": { "type": "boolean" },
+        "lieAllowed": { "type": "boolean" },
+        "nonverbalAllowed": { "type": "boolean" },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "actorRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocolVersion", "requestId", "scenarioId", "actorId", "targetIds", "locationId", "voiceProfile", "physicalState", "emotionalState", "perceivedFacts", "ownedMemories", "ownedBeliefs", "goals", "relationships", "recentDialogue", "capabilities", "revealableInformationIds", "withholdableInformationIds", "forbiddenInformationIds", "outputConstraints"],
+      "properties": {
+        "protocolVersion": { "const": "1.0" },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "scenarioId": { "$ref": "#/$defs/nonEmpty" },
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "targetIds": { "$ref": "#/$defs/stringList" },
+        "locationId": { "$ref": "#/$defs/nonEmpty" },
+        "voiceProfile": { "$ref": "#/$defs/voiceProfile" },
+        "physicalState": { "$ref": "#/$defs/nonEmpty" },
+        "emotionalState": { "$ref": "#/$defs/nonEmpty" },
+        "perceivedFacts": { "$ref": "#/$defs/evidenceList" },
+        "ownedMemories": { "$ref": "#/$defs/evidenceList" },
+        "ownedBeliefs": { "$ref": "#/$defs/evidenceList" },
+        "goals": { "$ref": "#/$defs/evidenceList" },
+        "relationships": { "$ref": "#/$defs/evidenceList" },
+        "recentDialogue": { "$ref": "#/$defs/evidenceList" },
+        "capabilities": { "$ref": "#/$defs/evidenceList" },
+        "revealableInformationIds": { "$ref": "#/$defs/stringList" },
+        "withholdableInformationIds": { "$ref": "#/$defs/stringList" },
+        "forbiddenInformationIds": { "$ref": "#/$defs/stringList" },
+        "outputConstraints": { "$ref": "#/$defs/outputConstraints" }
+      }
+    },
+    "decisionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceIds", "selectedActionLabel", "rejectedActionLabels"],
+      "properties": {
+        "evidenceIds": { "$ref": "#/$defs/stringList" },
+        "selectedActionLabel": { "$ref": "#/$defs/nonEmpty" },
+        "rejectedActionLabels": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "capabilityUseCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actorId", "entityType", "entityId", "intendedUse", "eligibilityClaim", "satisfiedPrerequisites", "unsatisfiedPrerequisites", "appliedCosts", "observedLimitations", "resultScope", "evidenceStateDeltaIds", "reason"],
+      "properties": {
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "entityType": { "$ref": "#/$defs/nonEmpty" },
+        "entityId": { "$ref": "#/$defs/nonEmpty" },
+        "intendedUse": { "type": "string" },
+        "eligibilityClaim": { "type": "string" },
+        "satisfiedPrerequisites": { "type": "array", "items": { "type": "string" } },
+        "unsatisfiedPrerequisites": { "type": "array", "items": { "type": "string" } },
+        "appliedCosts": { "type": "array", "items": { "type": "string" } },
+        "observedLimitations": { "type": "array", "items": { "type": "string" } },
+        "resultScope": { "type": "string" },
+        "evidenceStateDeltaIds": { "type": "array", "items": { "type": "string" } },
+        "reason": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "actorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocolVersion", "requestId", "actorId", "targetIds", "speechAct", "immediateGoal", "beliefClaimIds", "memoryIds", "emotionShown", "emotionHidden", "withheldInformationIds", "actionType", "actionIntent", "visibleAction", "utterance", "nonverbalAction", "interruptible", "silenceAllowed", "capabilityUseChecks", "predictedCost", "observableConsequence", "confidence", "decisionSummary"],
+      "properties": {
+        "protocolVersion": { "const": "1.0" },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "targetIds": { "$ref": "#/$defs/stringList" },
+        "speechAct": { "enum": ["ANSWER", "PARTIAL_ANSWER", "QUESTION", "REFUSE", "EVADE", "WARN", "REASSURE", "DECEIVE", "COMMAND", "SILENCE", "NONVERBAL"] },
+        "immediateGoal": { "$ref": "#/$defs/nonEmpty" },
+        "beliefClaimIds": { "$ref": "#/$defs/stringList" },
+        "memoryIds": { "$ref": "#/$defs/stringList" },
+        "emotionShown": { "type": "string" },
+        "emotionHidden": { "type": "string" },
+        "withheldInformationIds": { "$ref": "#/$defs/stringList" },
+        "actionType": { "enum": ["inspect_local_pressure", "protect_local_resource", "seek_local_evidence"] },
+        "actionIntent": { "$ref": "#/$defs/nonEmpty" },
+        "visibleAction": { "type": "string" },
+        "utterance": { "type": "string", "maxLength": 160 },
+        "nonverbalAction": { "type": "string" },
+        "interruptible": { "type": "boolean" },
+        "silenceAllowed": { "type": "boolean" },
+        "capabilityUseChecks": { "type": "array", "items": { "$ref": "#/$defs/capabilityUseCheck" } },
+        "predictedCost": { "type": "string" },
+        "observableConsequence": { "$ref": "#/$defs/nonEmpty" },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "decisionSummary": { "$ref": "#/$defs/decisionSummary" }
+      }
+    },
+    "bindingCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "snapshotId", "actorRequest", "actorResponse", "physicalActionProposal", "allowedPhysicalActionTypes", "visiblePhysicalTargetIds", "expectedAccepted", "expectedStatus", "expectedFindings", "expectedPhysicalRejectionCodes", "expectedRequiredEffects"],
+      "properties": {
+        "caseId": { "$ref": "#/$defs/nonEmpty" },
+        "snapshotId": { "$ref": "#/$defs/nonEmpty" },
+        "actorRequest": { "$ref": "#/$defs/actorRequest" },
+        "actorResponse": { "$ref": "#/$defs/actorResponse" },
+        "physicalActionProposal": { "$ref": "#/$defs/physicalProposal" },
+        "allowedPhysicalActionTypes": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/actionType" } },
+        "visiblePhysicalTargetIds": { "type": "array", "maxItems": 32, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "expectedAccepted": { "type": "boolean" },
+        "expectedStatus": { "$ref": "#/$defs/nonEmpty" },
+        "expectedFindings": { "$ref": "#/$defs/stringList" },
+        "expectedPhysicalRejectionCodes": { "$ref": "#/$defs/stringList" },
+        "expectedRequiredEffects": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "boundary", "physicalArchetypes", "physicalSnapshots", "cases"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "const": "world-physics02-npc-action-binding-v1" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "physicalArchetypes": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "$ref": "#/$defs/archetype" } },
+        "physicalSnapshots": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/snapshot" } },
+        "cases": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "$ref": "#/$defs/bindingCase" } }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "matchedExpectation", "actualAccepted", "actualStatus", "actualFindings", "actualPhysicalRejectionCodes", "actualRequiredEffects"],
+      "properties": {
+        "caseId": { "$ref": "#/$defs/nonEmpty" },
+        "matchedExpectation": { "type": "boolean" },
+        "actualAccepted": { "type": "boolean" },
+        "actualStatus": { "$ref": "#/$defs/nonEmpty" },
+        "actualFindings": { "$ref": "#/$defs/stringList" },
+        "actualPhysicalRejectionCodes": { "$ref": "#/$defs/stringList" },
+        "actualRequiredEffects": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "caseCount", "expectationMatchCount", "expectationMismatchCount", "acceptedCaseCount", "rejectedCaseCount", "outcomes", "technicalDecision", "formalTurnRuntimeStatus", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "const": "world-physics02-npc-action-binding-v1" },
+        "caseCount": { "const": 8 },
+        "expectationMatchCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "expectationMismatchCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "acceptedCaseCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "rejectedCaseCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "outcomes": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "$ref": "#/$defs/outcome" } },
+        "technicalDecision": { "enum": ["NPC_ACTION_BINDING_TECHNICAL_PASS_FORMAL_RUNTIME_NOT_CONNECTED", "NPC_ACTION_BINDING_TECHNICAL_FAIL"] },
+        "formalTurnRuntimeStatus": { "const": "NOT_CONNECTED" },
+        "claimBoundary": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "evidenceFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^(samples/world_physics02|schemas/world_physics)/" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "hashAlgorithm", "scope", "selfHashExcluded", "files"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "hashAlgorithm": { "const": "SHA-256" },
+        "scope": { "const": "WORLD-PHYSICS-02 NPC ACTION BINDING" },
+        "selfHashExcluded": { "const": true },
+        "files": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/evidenceFile" } }
+      }
+    }
+  }
+}

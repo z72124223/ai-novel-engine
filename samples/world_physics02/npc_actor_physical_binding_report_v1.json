@@ -1,0 +1,115 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "world-physics02-npc-action-binding-v1",
+    "caseCount": 8,
+    "expectationMatchCount": 8,
+    "expectationMismatchCount": 0,
+    "acceptedCaseCount": 2,
+    "rejectedCaseCount": 6,
+    "outcomes": [
+        {
+            "caseId": "binding-01-chair-support-accepted",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualStatus": "ACCEPTED_FOR_GAME_MASTER_REVIEW_PHYSICALLY_VALIDATED",
+            "actualFindings": [],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-02-dog-shoulder-rejected",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_PHYSICAL_AFFORDANCE",
+            "actualFindings": [
+                "physical:BODY_PLAN_NOT_SUPPORTED",
+                "physical:SUPPORT_CAPACITY_EXCEEDED",
+                "physical:SUPPORT_USE_NOT_ALLOWED",
+                "physical:TARGET_NOT_STABLE_SUPPORT"
+            ],
+            "actualPhysicalRejectionCodes": [
+                "BODY_PLAN_NOT_SUPPORTED",
+                "SUPPORT_CAPACITY_EXCEEDED",
+                "SUPPORT_USE_NOT_ALLOWED",
+                "TARGET_NOT_STABLE_SUPPORT"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-03-reach-through-wall-rejected",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_PHYSICAL_AFFORDANCE",
+            "actualFindings": [
+                "physical:REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualPhysicalRejectionCodes": [
+                "REACH_BLOCKED_BY_BARRIER"
+            ],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-04-drop-effects-accepted",
+            "matchedExpectation": true,
+            "actualAccepted": true,
+            "actualStatus": "ACCEPTED_FOR_GAME_MASTER_REVIEW_PHYSICALLY_VALIDATED",
+            "actualFindings": [],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": [
+                "FALL_DOWNWARD",
+                "RELEASE_HELD_OBJECT"
+            ]
+        },
+        {
+            "caseId": "binding-05-action-not-allowlisted",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_PHYSICAL_BINDING_CONTRACT",
+            "actualFindings": [
+                "binding:physical_action_not_allowlisted"
+            ],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-06-target-not-bound",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_PHYSICAL_BINDING_CONTRACT",
+            "actualFindings": [
+                "binding:physical_target_not_bound"
+            ],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-07-physical-actor-mismatch",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_PHYSICAL_BINDING_CONTRACT",
+            "actualFindings": [
+                "binding:physical_actor_mismatch"
+            ],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": []
+        },
+        {
+            "caseId": "binding-08-actor-contract-fails-first",
+            "matchedExpectation": true,
+            "actualAccepted": false,
+            "actualStatus": "REJECTED_ACTOR_CONTRACT",
+            "actualFindings": [
+                "actor:request_id_mismatch"
+            ],
+            "actualPhysicalRejectionCodes": [],
+            "actualRequiredEffects": []
+        }
+    ],
+    "technicalDecision": "NPC_ACTION_BINDING_TECHNICAL_PASS_FORMAL_RUNTIME_NOT_CONNECTED",
+    "formalTurnRuntimeStatus": "NOT_CONNECTED",
+    "claimBoundary": [
+        "The committed offline cases are reproducible.",
+        "A pass means only that no implemented V1 rule rejected the action.",
+        "Formal turn validation, SQLite, Canon and live model execution remain disconnected."
+    ]
+}
