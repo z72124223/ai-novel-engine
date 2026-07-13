@@ -16,6 +16,7 @@ import com.localnovel.engine.cli.StoryboardPipelineCli
 import com.localnovel.engine.cli.ProvisionalLayerCli
 import com.localnovel.engine.cli.RetrievalBenchmarkCli
 import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
+import com.localnovel.engine.cli.WorldPhysicsCli
 import com.localnovel.engine.cli.parseCliOptions
 import kotlin.system.exitProcess
 
@@ -81,6 +82,7 @@ class Cli {
                 "show-dialogue-selection" -> DialogueProductionCli.showSelection(options)
                 "show-session" -> StorySessionCli.showSession(options)
                 "show-physical-state" -> StorySessionCli.showPhysicalState(options)
+                "run-world-physics-embodied-pilot" -> WorldPhysicsCli.runEmbodiedScenePilot(options)
                 "abort-pending-turn" -> StorySessionCli.abortPendingTurn(options)
                 "show-character-mind" -> StorySessionCli.showCharacterMind(options)
                 "preview-recall" -> StorySessionCli.previewRecall(options)
@@ -284,6 +286,7 @@ class Cli {
               show-dialogue-selection [--db <path>] --artifact <id> [--out <path>]
               show-session [--db <path>] --session <id>
               show-physical-state [--db <path>] --session <id> [--out <path>]
+              run-world-physics-embodied-pilot --repo <repository-root> --out <report.json>
               abort-pending-turn [--db <path>] --session <id> [--context <id>]
               show-character-mind [--db <path>] --session <id> --character <id>
               preview-recall [--db <path>] --session <id> --character <id> --input <text>

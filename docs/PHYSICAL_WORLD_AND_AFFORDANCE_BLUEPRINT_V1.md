@@ -55,6 +55,14 @@ state version, registry Hash and snapshot Hash. Stateful actions are reduced
 sequentially and written inside the existing formal turn transaction, so any
 later write failure rolls back both story and physical state.
 
+WORLD-PHYSICS-05 is the first story-grounded continuity pilot. It reuses the
+existing SCREEN-01 scene-03 story facts but keeps all metric overlay data
+non-Canon. Five turns must prove that an invalid dog-support proposal remains
+unwritten, a corrected action can continue, and held/support/release relations
+stay coherent when an actor changes position. Measured continuity failures may
+justify one minimal generic relation fix; the package may not add a new physics
+category or claim general world understanding.
+
 ## Authoritative Inputs
 
 The action proposal may choose an action and targets, but it may not declare
@@ -120,7 +128,9 @@ explicit code; the validator may not guess Canon measurements.
 4. `WORLD-PHYSICS-04`: persist bounded non-Canon Session physical state and
    transition evidence through additive Migration 016 and the existing formal
    turn transaction.
-5. Later optional work: richer spatial indexing or external simulation, only if
+5. `WORLD-PHYSICS-05`: run a five-turn SCREEN-01 scene-03 continuity pilot and
+   fix only relation errors demonstrated by that trajectory.
+6. Later optional work: richer spatial indexing or external simulation, only if
    measured failures justify the cost.
 
 No later stage is activated by this blueprint alone.

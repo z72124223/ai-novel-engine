@@ -2,7 +2,28 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — WORLD-PHYSICS-04 Physical State Persistence
+## Current Override — WORLD-PHYSICS-05 Embodied Scene Pilot
+
+- Status: `WORLD_PHYSICS05_VALIDATED / GIT_INTEGRATION_PENDING`.
+- Current work: implementation and verification are complete; finish ordinary Git push and default-branch integration only.
+- Implementation branch: `codex/world-physics05-embodied-scene-pilot`.
+- Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`.
+- Required work package: `docs/work-packages/WORLD-PHYSICS-05_EMBODIED_SCENE_PILOT.md`.
+- Required plan: `PLANS.md` Current Plan Window V12.
+- Base SHA: `7ec8d2b42a6d1024db91e5a04d3ee0438ff354f1` from the remote default branch.
+- Authorization: Product Owner replied `開始` on 2026-07-14 and asked Codex to complete the reviewed non-paid route without intermediate questions.
+- Story source: SCREEN-01 〈潮線之外〉 `scene-03`, still `NON_CANON_PILOT`.
+- Physical overlay: `NON_CANON_EVALUATION`; no metric value becomes Chenxing Canon.
+- Mandatory regression: adult support on Aijiang's shoulder is rejected without world-state mutation.
+- Mandatory continuity: a held pry bar follows its holder through a passage, then supports placement and safe release across later turns.
+- Runtime result: 5 resolved turns, 1 rejected dog-support attempt and 5 persisted physical transitions; every declared check passed.
+- Bug fixed: held/supported/contained dependents now follow their moved root entity instead of remaining at stale coordinates.
+- Verification: focused 2/2, related 42/42, full 940/940, JSON 3/3 and SHA-256 4/4 PASS.
+- Evidence report: `docs/world_physics/WORLD_PHYSICS05_IMPLEMENTATION_REPORT.md`.
+- True stop after Git integration: a new measured failure, reviewed plan and explicit Product Owner authorization are required before optional richer physics or any other package.
+- No API, Provider, model download, image, video, audio, Canon or next-chapter work is authorized.
+
+## Previous Override — WORLD-PHYSICS-04 Physical State Persistence
 
 - Status: `WORLD_PHYSICS04_COMPLETE / WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE_PASS`
 - Current work: WORLD-PHYSICS-04 is complete; no later physical, API, Provider or media package is authorized automatically.

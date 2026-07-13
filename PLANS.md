@@ -1,10 +1,123 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V11`
-> (`WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE`) first. All older plan windows
-> are preserved evidence only. Current clean-worktree base:
-> `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9` on
-> `codex/world-physics04-physical-state-persistence`. GitHub remote is the team authority.
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V12`
+> (`WORLD_PHYSICS05_EMBODIED_SCENE_PILOT`) first. All older plan windows are
+> preserved evidence only. Current clean-worktree base:
+> `7ec8d2b42a6d1024db91e5a04d3ee0438ff354f1` on
+> `codex/world-physics05-embodied-scene-pilot`. GitHub remote is the team authority.
+
+## Current Plan Window V12
+
+標記：`WORLD_PHYSICS05_EMBODIED_SCENE_PILOT`
+
+狀態：**ACTIVE — 使用〈潮線之外〉第三場做五回合、非 Canon、正式 Runtime 連續試演**
+
+日期：2026-07-14
+
+### Goal
+
+不再先增加抽象規則，而是把 WORLD-PHYSICS-01～04 放進一個具名故事場景，證明錯誤動作
+會被拒絕、修正後可繼續，而且物體的 held／supported／contained 關係與位置能跨五個正式
+回合保持一致。試演來源固定為 SCREEN-01〈潮線之外〉`scene-03` 大坪海岸凹壁救援；所有
+公分、重量與支撐值都只是 `NON_CANON_EVALUATION` 覆蓋資料，不得升格世界設定。
+
+### Global Strategy
+
+- 直接引用既有 SCREEN-01 故事主檔與場景表的 Git 路徑及 SHA-256，不複製或改寫劇情。
+- 建立一份小型 physical overlay（物理試演覆蓋資料），把陸塵行、愛醬、短撬桿、穩定岩面
+  與凹壁入口綁到已驗證的物理原型；數值只服務測試。
+- 五回合固定流程：拒絕「扶愛醬肩側起身」並改用穩定岩面、拿起短撬桿、持物通過入口、
+  把撬桿放到穩定撬點、再次拿起後安全放下。
+- 每回合都走既有 `MultiTurnRuntime`、正式物理閘門、`PhysicalStateReducer` 與 SQLite
+  transaction（資料庫交易），不得直接寫資料庫。
+- 先用試演找出跨回合關係錯誤；只有證據顯示現有 Reducer 無法保持關係時，才做最小、
+  通用的關係一致性修正，不增加新的物理種類。
+
+### Non-Goals
+
+- 不宣稱 AI 已理解完整現實物理，也不從自由文字自動抽取物理動作。
+- 不修改 SCREEN-01 劇情、角色命運、正式 Canon、Setting Pack、Knowledge 或 Memory。
+- 不新增 Migration、API、Provider、模型下載、圖片、影片、音訊、Web 或遊戲介面。
+- 不重新開啟 NPC-ACTOR-04 答案，不進行付費或 live model（即時模型）測試。
+- 不修改原本約 124 項髒工作樹，不使用 force push 或破壞性 Git 操作。
+
+### Scope
+
+- 治理：V12 計畫、WORLD-PHYSICS-05 工作包、PROJECT_STATE 與 Controller。
+- 試演契約：嚴格 JSON Schema、固定 SCREEN-01 scene-03 overlay、五回合報告與 Hash manifest。
+- Kotlin：試演模型／工廠／評估服務、必要的關係一致性修正、可重現 CLI 與 focused test。
+- 驗證：錯誤動作不推進、修正版可繼續、五回合連續狀態、正式交易、舊物理測試與完整測試。
+
+### Confirmed Facts
+
+- 遠端預設分支 `7ec8d2b42a6d1024db91e5a04d3ee0438ff354f1` 已通過 WORLD-PHYSICS-04，
+  完整測試為 938／938。
+- SCREEN-01 故事主檔把 `scene-03` 定義為大坪海岸凹壁救援，包含陸塵行、愛醬、周克、
+  拾潮者、短撬桿、金屬箱、固定繩與明確 blocking（站位／空間關係）。
+- SCREEN-01 的資料邊界原本就是 `NON_CANON_PILOT`，可作真實劇情來源但不可升格 Canon。
+- WORLD-PHYSICS-03 已有固定回歸：成人扶中型犬肩側會拒絕，穩定支撐才可通過。
+- WORLD-PHYSICS-04 能保存六種有狀態動作，但目前 `PASS_THROUGH` 只移動 actor 本身；
+  由程式碼可確認，已被 actor 持有的物體不會自動跟著位置移動，這是本試演要驗證的風險。
+
+### Assumptions
+
+- SCREEN-01 scene-03 的非 Canon 物理覆蓋資料足以驗證跨回合一致性，不代表正式角色身高、
+  物件重量或海岸測量值。
+- 正式 Runtime 可使用測試用 Seed 建立同名非 Canon 場景；若既有 Seed 契約不足，應採最小
+  fixture（固定測試資料），不可改正式 Chenxing Setting Pack。
+
+### Open Questions
+
+- 已解答：跨位置動作需要通用 attached-dependent（附著物）平移；focused test 先證明
+  `PASS_THROUGH` 會讓持有物留在舊位置，再以遞迴關係平移修正並通過回歸。
+- 已解答：SCREEN-01 兩份來源已在 Pilot 執行時重新計算 SHA-256 與 bytes，並寫入報告及
+  evidence manifest，不依賴舊訊息猜測。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取 WORLD-PHYSICS-01～04、NPC-ACTOR-04、
+  SCREEN-01 scene-03 與正式 Runtime 證據。
+- [x] Step 2：建立 WORLD-PHYSICS-05 工作包、資料模型、嚴格 Schema 與固定
+  五回合試演契約。
+- [x] Step 3：先建立會暴露持有物跨位置不同步的 focused test，再做最小通用修正。
+- [x] Step 4：讓五回合透過正式 Runtime 與 SQLite transaction 完整執行，產生固定報告。
+- [x] Step 5：驗證 JSON、Schema、Hash、來源引用、秘密、私人路徑、Git scope、舊物理回歸
+  與完整 Gradle 測試。
+- [ ] Step 6（CURRENT）：更新報告與治理狀態，建立明確 Commit，普通 Push 功能分支；遠端未漂移時
+  以普通 fast-forward 整合預設分支。
+
+### Verification
+
+- 狗肩支撐提案必須被拒絕，拒絕後 story／physical version 與 transition 數都不變。
+- 同一回合的穩定支撐修正版必須可通過，且不把錯誤結果寫入資料庫。
+- 拿起工具後穿過入口，工具位置必須跟隨持有者；任何 dangling relation（懸空關係）失敗。
+- 放置、再次拿起與掉落後，持有／支撐關係、位置、版本與 transition audit 必須一致。
+- 五回合完成後另一個 Agent 可只靠 Git 取得場景來源、完整軌跡、每回合狀態與 Hash。
+- focused、WORLD-PHYSICS-01～05 related、full Gradle、JSON、Schema、SHA-256、秘密與 Git
+  scope 全部通過。
+
+### Risks
+
+- SCREEN-01 的戲劇動作比 V1 剛體近似複雜；本包只能證明聲明過的有限動作。
+- 若正式 Runtime 對被拒絕結果會保留 attempt evidence，報告必須區分「安全留下稽核」與
+  「錯誤改寫世界狀態」，不能把稽核紀錄誤判成狀態污染。
+- 關係跟隨修正若處理過度，可能改變既有 PUSH／container 行為；必須用舊測試守住相容性。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 回覆「開始」並要求完成後繼續依藍圖；授權範圍仍不包含
+  Canon、付費 API／Provider、媒體或破壞性 Git。
+- 2026-07-14：證據盤點選擇先做 SCREEN-01 scene-03 的端到端試演，不先建立新物理種類。
+- 2026-07-14：工作包、可序列化報告模型與 strict Schema 已建立；隔離編譯與 JSON 解析 PASS。
+- 2026-07-14：focused test 先重現持有物留在舊位置的失敗，再以通用 attached-dependent
+  平移修正；同一測試由 FAIL 轉為 PASS，沒有新增物理類型或資料表。
+- 2026-07-14：五回合 SCREEN-01 scene-03 Pilot 已透過正式 Runtime 與 SQLite transaction
+  完整執行；1 次非法狗肩支撐安全拒絕、5 次合法回合與 5 筆 physical transition 均留下固定證據。
+- 2026-07-14：CLI reachability（終端入口可到達）、固定報告等價、來源與證據 Hash、持有物
+  跟隨、放置及掉落斷言的 focused tests 已 PASS；進入完整驗證階段。
+- 2026-07-14：related tests 42／42、完整 `clean test` 940／940、JSON 3／3、Hash 4／4、
+  Schema、私人路徑／秘密與 `git diff --check` 全部 PASS。另補上 WORLD-PHYSICS-04／05 與
+  Migration 016 的 LF 換行規則，排除 Windows checkout 造成的假 Hash 漂移。
 
 ## Current Plan Window V11
 

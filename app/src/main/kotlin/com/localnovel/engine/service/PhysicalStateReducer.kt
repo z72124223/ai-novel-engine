@@ -129,6 +129,7 @@ class PhysicalStateReducer(
 
         when (proposal.actionType) {
             PhysicalActionType.LIFT -> {
+                val movedDependents = translateWithAttachedDependents(entityById, target.entityId, actor.centerCm)
                 entityById[target.entityId] = target.copy(
                     centerCm = actor.centerCm,
                     heldByEntityId = actor.entityId,
@@ -137,12 +138,15 @@ class PhysicalStateReducer(
                     containedByEntityId = null,
                 )
                 effects += listOf("SET_HELD_BY", "CLEAR_SUPPORTED_BY", "CLEAR_CONTAINED_BY", "MOVE_TO_ACTOR_ANCHOR")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.PUSH -> {
                 val destination = requireNotNull(proposal.destinationCenterCm) { "PUSH requires destinationCenterCm." }
-                entityById[target.entityId] = target.withExclusivePosition(destination)
+                val movedDependents = translateWithAttachedDependents(entityById, target.entityId, destination)
+                entityById[target.entityId] = requireNotNull(entityById[target.entityId]).withExclusivePosition(destination)
                 effects += listOf("MOVE_TO_DESTINATION", "CLEAR_EXCLUSIVE_RELATIONS")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.PLACE_ON -> {
@@ -160,7 +164,8 @@ class PhysicalStateReducer(
                     y = support.centerCm.y,
                     z = support.centerCm.z + supportArchetype.dimensionsCm.height / 2.0 + targetArchetype.dimensionsCm.height / 2.0,
                 )
-                entityById[target.entityId] = target.copy(
+                val movedDependents = translateWithAttachedDependents(entityById, target.entityId, destination)
+                entityById[target.entityId] = requireNotNull(entityById[target.entityId]).copy(
                     centerCm = destination,
                     heldByEntityId = null,
                     supportedByEntityId = support.entityId,
@@ -168,22 +173,27 @@ class PhysicalStateReducer(
                     containedByEntityId = null,
                 )
                 effects += listOf("RELEASE_HELD_OBJECT", "SET_SUPPORTED_BY", "MOVE_TO_SUPPORT_SURFACE")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.DROP -> {
                 val targetArchetype = requireNotNull(archetypeById[target.archetypeId])
-                entityById[target.entityId] = target.copy(
-                    centerCm = target.centerCm.copy(z = targetArchetype.dimensionsCm.height / 2.0),
+                val destination = target.centerCm.copy(z = targetArchetype.dimensionsCm.height / 2.0)
+                val movedDependents = translateWithAttachedDependents(entityById, target.entityId, destination)
+                entityById[target.entityId] = requireNotNull(entityById[target.entityId]).copy(
+                    centerCm = destination,
                     heldByEntityId = null,
                     supportedByEntityId = null,
                     supportedBySurfaceId = null,
                     containedByEntityId = null,
                 )
                 effects += listOf("RELEASE_HELD_OBJECT", "FALL_DOWNWARD", "MOVE_TO_GROUND_PLANE")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.ENTER_CONTAINER -> {
-                entityById[actor.entityId] = actor.copy(
+                val movedDependents = translateWithAttachedDependents(entityById, actor.entityId, target.centerCm)
+                entityById[actor.entityId] = requireNotNull(entityById[actor.entityId]).copy(
                     centerCm = target.centerCm,
                     heldByEntityId = null,
                     supportedByEntityId = null,
@@ -191,17 +201,20 @@ class PhysicalStateReducer(
                     containedByEntityId = target.entityId,
                 )
                 effects += listOf("SET_CONTAINED_BY", "MOVE_TO_CONTAINER_ANCHOR", "CLEAR_SUPPORT_RELATION")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.PASS_THROUGH -> {
                 val destination = requireNotNull(proposal.destinationCenterCm) { "PASS_THROUGH requires destinationCenterCm." }
-                entityById[actor.entityId] = actor.copy(
+                val movedDependents = translateWithAttachedDependents(entityById, actor.entityId, destination)
+                entityById[actor.entityId] = requireNotNull(entityById[actor.entityId]).copy(
                     centerCm = destination,
                     supportedByEntityId = null,
                     supportedBySurfaceId = null,
                     containedByEntityId = null,
                 )
                 effects += listOf("MOVE_TO_DESTINATION", "CLEAR_SUPPORT_RELATION", "CLEAR_CONTAINMENT_RELATION")
+                if (movedDependents) effects += "MOVE_ATTACHED_DEPENDENTS"
             }
 
             PhysicalActionType.USE_AS_SUPPORT,
@@ -230,6 +243,45 @@ class PhysicalStateReducer(
         return entities.map { entity ->
             entity.copy(supportLoadKgBySurface = loads[entity.entityId]?.toSortedMap().orEmpty())
         }
+    }
+
+    private fun translateWithAttachedDependents(
+        entityById: MutableMap<String, PhysicalEntityInstance>,
+        rootEntityId: String,
+        destination: PhysicalVector3Cm,
+    ): Boolean {
+        val root = requireNotNull(entityById[rootEntityId]) { "Physical entity not found: $rootEntityId" }
+        val delta = PhysicalVector3Cm(
+            x = destination.x - root.centerCm.x,
+            y = destination.y - root.centerCm.y,
+            z = destination.z - root.centerCm.z,
+        )
+        val movedIds = linkedSetOf(rootEntityId)
+        val queue = ArrayDeque<String>()
+        queue.add(rootEntityId)
+        while (queue.isNotEmpty()) {
+            val parentId = queue.removeFirst()
+            entityById.values
+                .filter { entity ->
+                    entity.heldByEntityId == parentId ||
+                        entity.supportedByEntityId == parentId ||
+                        entity.containedByEntityId == parentId
+                }
+                .forEach { dependent ->
+                    if (movedIds.add(dependent.entityId)) queue.add(dependent.entityId)
+                }
+        }
+        movedIds.forEach { entityId ->
+            val entity = requireNotNull(entityById[entityId])
+            entityById[entityId] = entity.copy(
+                centerCm = PhysicalVector3Cm(
+                    x = entity.centerCm.x + delta.x,
+                    y = entity.centerCm.y + delta.y,
+                    z = entity.centerCm.z + delta.z,
+                ),
+            )
+        }
+        return movedIds.size > 1
     }
 
     private fun PhysicalEntityInstance.withExclusivePosition(destination: PhysicalVector3Cm): PhysicalEntityInstance = copy(

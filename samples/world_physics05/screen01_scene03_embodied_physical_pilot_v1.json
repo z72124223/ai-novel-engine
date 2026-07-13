@@ -1,0 +1,257 @@
+{
+    "schemaVersion": "1.0",
+    "pilotId": "world-physics05-screen01-scene03-five-turn-v1",
+    "boundary": "NON_CANON_EVALUATION",
+    "storyBoundary": "NON_CANON_PILOT",
+    "storyTitle": "潮線之外",
+    "sceneId": "scene-03",
+    "locationId": "loc-daping-coast-recess",
+    "sourceFiles": [
+        {
+            "path": "samples/screen01/screen01_story_production_master.json",
+            "sha256": "ca44bc8b0b5f12cfadb774e24c3cf7518a0b6e124d18a712ecacd305c63108ce",
+            "bytes": 7732
+        },
+        {
+            "path": "samples/screen01/screen01_scene_list.json",
+            "sha256": "3cbf6394d14c339c940442b24cc7db63db11ebb678e4ecc9ce1e362dd3442463",
+            "bytes": 4401
+        }
+    ],
+    "resolvedTurnCount": 5,
+    "rejectedAttemptCount": 1,
+    "physicalTransitionCount": 5,
+    "turns": [
+        {
+            "turnNumber": 1,
+            "playerInput": "起身前先找安全支點，不把重量壓在愛醬身上。",
+            "rejectedActionId": "wp05-turn1-dog-shoulder-rejected",
+            "rejectionCodes": [
+                "physical_affordance_rejected"
+            ],
+            "resolvedActionIds": [
+                "wp05-turn1-stable-rock-support"
+            ],
+            "resolvedActionTypes": [
+                "USE_AS_SUPPORT"
+            ],
+            "storyStateVersionBefore": 0,
+            "storyStateVersionAfter": 1,
+            "physicalStateVersionBefore": 0,
+            "physicalStateVersionAfter": 0,
+            "transitionCountBefore": 0,
+            "transitionCountAfter": 0,
+            "actorAfter": {
+                "entityId": "character-lu-chenxing",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            },
+            "toolAfter": {
+                "entityId": "prop-pry-bar",
+                "centerCm": {
+                    "x": 40.0,
+                    "y": 20.0,
+                    "z": 2.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            }
+        },
+        {
+            "turnNumber": 2,
+            "playerInput": "拿起身旁的短撬桿，準備處理受困者周圍的落石。",
+            "rejectedActionId": null,
+            "rejectionCodes": [],
+            "resolvedActionIds": [
+                "wp05-turn2-lift-pry-bar"
+            ],
+            "resolvedActionTypes": [
+                "LIFT"
+            ],
+            "storyStateVersionBefore": 1,
+            "storyStateVersionAfter": 2,
+            "physicalStateVersionBefore": 0,
+            "physicalStateVersionAfter": 1,
+            "transitionCountBefore": 0,
+            "transitionCountAfter": 1,
+            "actorAfter": {
+                "entityId": "character-lu-chenxing",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            },
+            "toolAfter": {
+                "entityId": "prop-pry-bar",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": "character-lu-chenxing",
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            }
+        },
+        {
+            "turnNumber": 3,
+            "playerInput": "握著短撬桿穿過凹壁入口，移到較安全的內側位置。",
+            "rejectedActionId": null,
+            "rejectionCodes": [],
+            "resolvedActionIds": [
+                "wp05-turn3-pass-with-tool"
+            ],
+            "resolvedActionTypes": [
+                "PASS_THROUGH"
+            ],
+            "storyStateVersionBefore": 2,
+            "storyStateVersionAfter": 3,
+            "physicalStateVersionBefore": 1,
+            "physicalStateVersionAfter": 2,
+            "transitionCountBefore": 1,
+            "transitionCountAfter": 2,
+            "actorAfter": {
+                "entityId": "character-lu-chenxing",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            },
+            "toolAfter": {
+                "entityId": "prop-pry-bar",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": "character-lu-chenxing",
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            }
+        },
+        {
+            "turnNumber": 4,
+            "playerInput": "把短撬桿放到已確認穩定的岩面撬點。",
+            "rejectedActionId": null,
+            "rejectionCodes": [],
+            "resolvedActionIds": [
+                "wp05-turn4-place-pry-bar"
+            ],
+            "resolvedActionTypes": [
+                "PLACE_ON"
+            ],
+            "storyStateVersionBefore": 3,
+            "storyStateVersionAfter": 4,
+            "physicalStateVersionBefore": 2,
+            "physicalStateVersionAfter": 3,
+            "transitionCountBefore": 2,
+            "transitionCountAfter": 3,
+            "actorAfter": {
+                "entityId": "character-lu-chenxing",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            },
+            "toolAfter": {
+                "entityId": "prop-pry-bar",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": -20.0,
+                    "z": 82.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": "physical-stable-rock-fulcrum",
+                "supportedBySurfaceId": "fulcrum",
+                "containedByEntityId": null
+            }
+        },
+        {
+            "turnNumber": 5,
+            "playerInput": "救援停止後重新拿起短撬桿，再放到安全地面。",
+            "rejectedActionId": null,
+            "rejectionCodes": [],
+            "resolvedActionIds": [
+                "wp05-turn5-lift-pry-bar",
+                "wp05-turn5-drop-pry-bar"
+            ],
+            "resolvedActionTypes": [
+                "LIFT",
+                "DROP"
+            ],
+            "storyStateVersionBefore": 4,
+            "storyStateVersionAfter": 5,
+            "physicalStateVersionBefore": 3,
+            "physicalStateVersionAfter": 5,
+            "transitionCountBefore": 3,
+            "transitionCountAfter": 5,
+            "actorAfter": {
+                "entityId": "character-lu-chenxing",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            },
+            "toolAfter": {
+                "entityId": "prop-pry-bar",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 2.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "supportedBySurfaceId": null,
+                "containedByEntityId": null
+            }
+        }
+    ],
+    "checks": {
+        "sourceHashesVerified": true,
+        "dogSupportRejected": true,
+        "rejectedAttemptStateUnchanged": true,
+        "samePendingTurnRepairApplied": true,
+        "heldToolFollowedHolder": true,
+        "placedToolRelationPersisted": true,
+        "droppedToolRelationsCleared": true,
+        "formalRuntimeTurnCountVerified": true
+    },
+    "technicalDecision": "WORLD_PHYSICS05_EMBODIED_SCENE_PILOT_PASS",
+    "claimBoundary": [
+        "One fixed non-Canon SCREEN-01 scene trajectory only.",
+        "No free-text action extraction or complete real-world simulation is proven.",
+        "All metric overlay values remain NON_CANON_EVALUATION.",
+        "No live model, Provider, media generation or Canon promotion was used."
+    ]
+}
