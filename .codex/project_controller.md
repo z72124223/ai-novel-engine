@@ -46,3 +46,7 @@ Codex may prove only that the listed deterministic rules accept and reject the
 committed fixtures reproducibly. Passing WORLD-PHYSICS-01 does not prove full
 real-world understanding and does not activate formal runtime enforcement.
 Runtime binding, Canon data and live model use remain separate approval gates.
+
+WORLD-PHYSICS-01 implementation and offline evidence are complete at Commit
+`0a10024bce817a32d989f4203d6ef17e7ee320e1`. Do not start WORLD-PHYSICS-02
+without a new current plan and explicit scope review.

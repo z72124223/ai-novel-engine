@@ -10,7 +10,7 @@
 
 標記：`WORLD_PHYSICS01_PHYSICAL_AFFORDANCE_FOUNDATION`
 
-狀態：**ACTIVE — NPC-ACTOR-04 已證明文字場景連續性，但未證明形態與物理可行性；本輪建立低成本確定性物理規則核心**
+狀態：**COMPLETED — 低成本確定性物理規則核心與 64 案例證據已完成；正式 Runtime 接線尚未授權**
 
 日期：2026-07-14
 
@@ -65,7 +65,7 @@
 - [x] Step 2：實作公制三維實體／狀態／障礙／動作資料模型與純函式 `PhysicalAffordanceValidator`。
 - [x] Step 3：建立 64 個對抗案例，涵蓋合理動作、狗肩承重、超載、超距、穿牆、容器、通道、推動、放置與重力。
 - [x] Step 4：建立 strict Schema、技術報告、Hash manifest，執行 focused/full/JSON/Hash/secret/Git-scope 驗證。
-- [ ] Step 5：更新治理完成狀態，Commit、Push 功能分支並以普通 fast-forward 整合遠端預設分支。
+- [x] Step 5：更新治理完成狀態，Commit、Push 功能分支並以普通 fast-forward 整合遠端預設分支。
 
 ### Verification
 
@@ -85,6 +85,7 @@
 - 2026-07-14：Product Owner 指出 NPC-ACTOR-04 雖有環境圖與狀態，仍不能阻止「成年人扶狗肩起身」等形態／物理錯誤；NPC-ACTOR-04 評審保持封存，路線轉入 WORLD-PHYSICS-01。
 - 2026-07-14：採用零模型執行費的確定性 physics-lite 核心；完整 3D 引擎、世界模型訓練和 API 第二裁判均排除。
 - 2026-07-14：第一版 64 案例全部符合預期；focused 7/7、full 912/912、Schema 3/3、Hash 3/3 PASS。共用 archetype 改為 suite 單一 registry，證據檔由 592,691 bytes 降至 255,294 bytes，避免快照重複物性資料。
+- 2026-07-14：功能提交 `0a10024bce817a32d989f4203d6ef17e7ee320e1` 已推送 `codex/world-physics01-physical-affordance`；完成治理提交後以普通 fast-forward 更新遠端預設分支，不啟動 WORLD-PHYSICS-02。
 
 ## Current Plan Window V7
 

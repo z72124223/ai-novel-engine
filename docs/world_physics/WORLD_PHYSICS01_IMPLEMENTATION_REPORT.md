@@ -8,6 +8,8 @@ Base SHA: `3b86e967891c48ea52789daf25698b8ca611e3b0`
 
 Branch: `codex/world-physics01-physical-affordance`
 
+Implementation Commit: `0a10024bce817a32d989f4203d6ef17e7ee320e1`
+
 ## Outcome
 
 WORLD-PHYSICS-01 adds a deterministic, offline physical-affordance validation

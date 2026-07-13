@@ -5,7 +5,7 @@
 ## Current Override — WORLD-PHYSICS-01 Physical Affordance Foundation
 
 - Status: `WORLD_PHYSICS01_TECHNICAL_PASS_RUNTIME_NOT_CONNECTED / NPC_ACTOR04_REVIEW_DEFERRED_BY_PHYSICAL_GROUNDING_LIMITATION`
-- Current work: `WORLD-PHYSICS-01 — Commit, Push and ordinary fast-forward integration`
+- Current work: `WORLD-PHYSICS-01 complete — WORLD-PHYSICS-02 not authorized`
 - Implementation branch: `codex/world-physics01-physical-affordance`
 - Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
 - Required work package: `docs/work-packages/WORLD-PHYSICS-01_PHYSICAL_AFFORDANCE_FOUNDATION.md`
@@ -20,6 +20,8 @@
 - No API, model download, Provider, Canon promotion, media generation, migration or formal state write is authorized.
 - True stops: any proposal to invent Canon physical values, change formal transaction boundaries, use a paid/live model, or claim full real-world simulation.
 - Next candidate after Git integration: `WORLD-PHYSICS-02`, but it is not authorized automatically.
+- Implementation Commit: `0a10024bce817a32d989f4203d6ef17e7ee320e1`; feature branch push completed.
+- Current true stop: a new reviewed plan is required before binding physical archetypes to formal world data or NPC/turn Runtime.
 
 ## Previous Override — RETRIEVAL-00 / NPC Actor Route
 
