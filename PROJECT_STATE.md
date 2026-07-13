@@ -2,7 +2,24 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — ENGINE-RULES-01 / DIALOGUE-02
+## Current Override — RETRIEVAL-00 / NPC Actor Route
+
+- Status: `RETRIEVAL00_IMPLEMENTED_VALIDATED_PENDING_GIT_INTEGRATION`
+- Current work: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
+- Implementation branch: `codex/retrieval00-authority-rebuild-runtime`
+- Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
+- Required work package: `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
+- NPC route blueprint: `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
+- NPC pilot package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
+- Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`; gates may not be skipped.
+- User explicitly authorized blueprint implementation on 2026-07-13.
+- Codex implements/tests/reviews; ChatGPT is manual audition; an optional GPT API adapter is the future production NPC actor surface.
+- No live API call, API Key, paid Provider, Canon promotion, image/video/audio generation or state-write bypass is authorized by this activation.
+- RETRIEVAL-00 implementation evidence: 21/21 inputs verified; 15 migrations; 5 Setting Packs; Canon PASS; 9 documents / 255 chunks; logical SHA-256 `30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32`; focused 3/3 and full 875/875 PASS.
+- Rebuild runbook: `docs/PROJECT_DATA_REBUILD_RUNBOOK_V1.md`.
+- Validation evidence: `docs/retrieval/RETRIEVAL00_IMPLEMENTATION_REPORT.md` and `docs/retrieval/RETRIEVAL00_VALIDATION_SUMMARY.json`.
+
+## Completed Baseline — ENGINE-RULES-01 / DIALOGUE-02
 
 - Status: `ENGINE_RULES01_COMPLETE_MERGED`
 - Current work: `ENGINE_RULES01_DIALOGUE02`
@@ -22,21 +39,21 @@
 - Completion classification: `ENGINE_RULES01_PASS_WITH_SEMANTIC_WARNINGS`.
 - Implementation commits: `31f7072da143559c6a1280b3631ea2f70cad404d`, `8064d3746c1a8454bf1d0ba432537249a7ed124e`.
 - Remote default branch contains the complete implementation and evidence through `8064d3746c1a8454bf1d0ba432537249a7ed124e`; the final governance-only commit is the Git commit containing this state update.
-- No next work package is active. Do not automatically start images, video, Provider, Canon, next chapter or interactive game.
+- The next active work package is RETRIEVAL-00. Do not start images, video, media Provider, Canon or next chapter.
 - GitHub remote is the highest team authority.
 - Do not start image, video, Provider, Canon, next chapter or interactive game.
 
-## Future Blueprint Candidate — Local Hybrid Retrieval
+## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `DOCS_ONLY_FUTURE_CANDIDATE_NOT_ACTIVE`
+- Status: `RETRIEVAL00_ACTIVE / LATER_GATES_BLOCKED`
 - Mandatory first candidate: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Work package: `docs/work-packages/RETRIEVAL-00_AUTHORITY_REBUILD_RETENTION_FOUNDATION.md`
 - `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark` is blocked until RETRIEVAL-00 is explicitly assigned, implemented, verified and accepted.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - No retrieval model, extraction model, GBrain component, MCP service, vector database, provider, or API has been downloaded, installed, approved, or activated.
-- This candidate does not create an active next work package. A future explicit approval must activate `RETRIEVAL-00`; RETRIEVAL-00 completion still does not automatically activate RETRIEVAL-01. Until then, the current completed ENGINE-RULES state and all existing stop boundaries remain in force.
+- RETRIEVAL-00 is now explicitly active. Its completion requires verification and acceptance before RETRIEVAL-01; NPC-ACTOR-01 remains blocked by both retrieval gates. Live GPT API calls remain separately blocked by API Key, cost and privacy approval.
 
 ## 1. 最終產品
 

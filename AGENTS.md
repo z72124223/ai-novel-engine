@@ -1,4 +1,13 @@
-# AGENTS.md — SCREEN-01 現行規則
+# AGENTS.md — 現行規則
+
+## 0. RETRIEVAL／NPC Actor Override（2026-07-13）
+
+- 現行順序是 `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`；先讀 `PROJECT_STATE.md` 與對應工作包，不得被下方 SCREEN-01 歷史路線覆蓋。
+- Codex 負責工程、測試與評審；ChatGPT 只作人工角色試演；正式 Runtime 的未來演員接口是 provider-neutral `NpcActorGateway`。
+- 在 RETRIEVAL-00、RETRIEVAL-01、NPC-ACTOR-01 Gate 通過後，才可加入 OpenAI Responses adapter。
+- 在 API Key、費用與隱私另行批准前，只能使用 Fake／File gateway，不得發出真實 API 請求。
+- API 模型只能提出結構化 NPC proposal，不得直接寫 SQLite、Canon、Memory、Knowledge 或繞過 Validator／StateReducer／Transaction。
+- 模型與 reasoning effort 必須依工作路由；最後 utterance 預設 Low／Medium，重要決策才比較 Medium／High，不得以 High／Max 冒充自然對白。
 
 ## 1. 先讀什麼
 

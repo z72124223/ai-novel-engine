@@ -36,6 +36,7 @@ The whole-project route is now backed by a work package layer:
 - `docs/CODEX_DEMAND_DRIVEN_QUERY_TEMPLATES_V0.md`
 - `docs/CODEX_09_FOUNDATION_CARD_ORGANIZATION_V0.md`
 - `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
+- `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
 
 These documents define the direction before future small or medium tasks are
 assigned. They do not start implementation.
@@ -115,15 +116,17 @@ The project should become a governed local workbench that supports:
    constraints.
 5. Demand-driven retrieval and query packets so downstream windows request only
    needed information.
-6. Script-ready scene packets.
-7. 04 / 05 / 06 / 07 / 08 storyboard and asset workflow with explicit human
+6. Provider-neutral NPC Actor proposals grounded only in each character's
+   visibility-safe state, memory, beliefs, goals and relationships.
+7. Script-ready scene packets.
+8. 04 / 05 / 06 / 07 / 08 storyboard and asset workflow with explicit human
    approval gates.
-8. Storyboard / camera / panel packet production.
-9. Asset candidate and registry lifecycle.
-10. Voice timeline, subtitle, and SFX planning.
-11. Local renderer adapter / manifest / execution path.
-12. Local package, QA, review, and delivery artifacts.
-13. Optional external provider or paid-tool handoff only after user and funding
+9. Storyboard / camera / panel packet production.
+10. Asset candidate and registry lifecycle.
+11. Voice timeline, subtitle, and SFX planning.
+12. Local renderer adapter / manifest / execution path.
+13. Local package, QA, review, and delivery artifacts.
+14. Optional external provider or paid-tool handoff only after user and funding
     decisions.
 
 ## Whole Route Map

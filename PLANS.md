@@ -1,10 +1,94 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-13):** Read only `## Current Plan Window V6`
-> (`RETRIEVAL00_DATA_FOUNDATION_BLUEPRINT`) first. All older plan windows
+> **Startup rule (2026-07-13):** Read only `## Current Plan Window V7`
+> (`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`) first. All older plan windows
 > are archived evidence only. Current clean-worktree base:
-> `e217bdcfb3b7283cbd86ff32814976d97fc64c72` on
-> `codex/retrieval00-data-foundation-blueprint`. GitHub remote is the team authority.
+> `8caeacc728a5dcb49b6bf9181c4f50fb1ec19d89` on
+> `codex/retrieval00-authority-rebuild-runtime`. GitHub remote is the team authority.
+
+## Current Plan Window V7
+
+標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
+
+狀態：**ACTIVE — RETRIEVAL-00 已實作並驗證；正在完成 Git Push／預設分支整合**
+
+日期：2026-07-13
+
+### Goal
+
+將本輪全部決策納入正式藍圖並開始實作：先讓 Git 正式來源可在新 Clone 重建同一份邏輯 SQLite 與查詢語料，再建立混合檢索，最後以「角色決策 → Validator → 自然對白演出」方式接入可選 GPT API NPC Actor；Codex 只負責工程與評審，不作正式 Runtime NPC。
+
+### Global Strategy
+
+- 依序執行 `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`，任何 Gate 未通過不得跳階。
+- GPT API 是正式 Runtime 的未來演員接口；ChatGPT 窗口只作人工試演，Codex 作工程、測試與評審。
+- 模型與推理強度由用途路由：角色內部決策可 Medium／必要時 High；最後自然台詞以 Low／Medium 為主，避免分析式長句。
+- API 只產生結構化 Proposal；正式狀態仍由本機 Knowledge Boundary、Validator、StateReducer 與 Transaction 決定。
+- 在沒有 API Key／明確付費授權前，只實作 provider-neutral interface、OpenAI request mapping、Fake gateway 與離線 eval，不發出付費請求。
+
+### Non-Goals
+
+- 不讓模型或 Codex 直接寫 SQLite、Canon、Knowledge 或 Memory。
+- 不將 ChatGPT/Codex Session 當 NPC 長期記憶；角色狀態必須在可重建資料層。
+- 不生成圖片、影片、音訊，不啟動 Provider 媒體工作。
+- 不在 RETRIEVAL-00 刪除／搬移歷史 Docs、Samples、Memory 或舊 DB。
+- 不在缺少 API Key／付費授權時嘗試真實 OpenAI API 呼叫。
+
+### Scope
+
+- 藍圖／治理：`PROJECT_STATE.md`、`AGENTS.md`、`PLANS.md`、NPC／Retrieval 藍圖與工作包。
+- RETRIEVAL-00：重建 Manifest、Authority Registry、Retention Report、Kotlin models/service/CLI、必要 additive migration／sidecar、tests、evidence。
+- 後續 Gate：RETRIEVAL-01 離線模型基準與 NPC-ACTOR-01 單 NPC Actor Pilot。
+
+### Confirmed Facts
+
+- 使用者已明確要求加入全部討論並依藍圖持續實作。
+- 遠端預設分支與本分支起點均為 `8caeacc728a5dcb49b6bf9181c4f50fb1ec19d89`。
+- 現有 15 migrations／66 tables、5 Chenxing Setting Packs、9 raw sources／255 chunks 已分別驗證可重建；全套 `872/872` PASS。
+- 目前 `NpcAutonomyProfile` 已有 motivation、false belief、fear、relationship debts、agenda；Perception／Memory／Goal／Proposal／GameMaster legality 路徑已存在。
+- 現有 NPC action/narrative 仍含硬編碼英文模板，尚非 GPT NPC Actor。
+- OpenAI 官方目前提供 Responses API conversation state、Structured Outputs 與 GPT-5.6 Sol/Terra/Luna 模型／reasoning effort；實作前仍需以官方文件核對 request schema。
+
+### Assumptions
+
+- RETRIEVAL-00 可先以 Git JSON manifest + validated SQLite rebuild report 完成，不必把 media binary 或歷史文件全文複製進 SQL。
+- 第一版 NPC Actor 可用單次結構化輸出同時產生 intent/action/utterance；兩階段呼叫只有在 eval 證明有品質增益後才啟用。
+
+### Open Questions
+
+- Authority Registry 最終是否需要 additive formal table，待最小設計與測試決定。
+- RETRIEVAL-01 的本地 adapter 與模型格式仍需 supply-chain／license／硬體基準。
+- 真實 OpenAI API 呼叫需 API Key 與付費授權；到該 Gate 才是必要停止條件。
+
+### Implementation Steps
+
+- [x] Step 1：新增 NPC Actor／模型路由／API 邊界藍圖，更新治理規則並正式啟動 RETRIEVAL-00。
+- [x] Step 2：實作 RETRIEVAL-00 manifest、authority/retention inventory、fresh-clone rebuild 與 logical-content hash。
+- [x] Step 3：新增 focused tests、雙重重建等價、完整測試與交接證據。
+- [ ] Step 4（CURRENT）：Commit／Push／安全快轉預設分支並更新 PROJECT_STATE。
+- [ ] Step 5：Gate 通過後執行 RETRIEVAL-01 靜態供應鏈檢查與離線基準；不得因失敗自動升級模型。
+- [ ] Step 6：Gate 通過後執行 NPC-ACTOR-01 provider-neutral interface、Fake gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
+
+### Verification
+
+- 每步只修改 Plan 允許範圍並跑最小 focused tests；Runtime 變更後跑 full suite。
+- 新 Clone／兩個獨立暫存 DB 的 logical content hash 必須一致。
+- 所有正式資料可追到 repo-relative path、source hash／revision、authority 與 visibility。
+- NPC Actor eval 必須檢查 knowledge leak、voice drift、AI exposition、長句、沉默／迴避與 Validator bypass。
+- 不得出現 API Key、私人絕對路徑、Provider 費用、媒體生成或 force push。
+
+### Risks
+
+- 一次擴大至資料、檢索與 NPC Actor 容易產生路線漂移；以工作包 Gate 和獨立 Commit 控制。
+- 高 reasoning 可能提高決策品質但降低台詞自然度，必須分層 eval，不能以模型強度推定演技。
+- 真實 API 有資料外送、留存與費用；預設 `store=false` 且只傳 visibility-safe evidence，但仍需使用者在真實呼叫 Gate 明確批准。
+
+### Drift Log
+
+- 2026-07-13：使用者將 RETRIEVAL-00 從未啟動候選改為正式實作，並要求後續加入 GPT API NPC Actor 路線。
+- 2026-07-13：RETRIEVAL-00 以 21 份 Hash 綁定輸入完成雙重重建；logical hash `30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32`，focused 3/3、full 875/875 PASS。
+
+## Current Plan Window V6
 
 ## Current Plan Window V6
 

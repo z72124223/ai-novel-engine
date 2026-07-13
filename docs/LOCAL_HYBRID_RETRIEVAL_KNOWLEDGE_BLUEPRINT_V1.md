@@ -479,6 +479,14 @@ The full database is not uploaded, but selected chunks still leave the local mac
 
 MCP is last. It requires current plan/permission verification, threat review, prompt-injection controls, authentication and a deliberate deployment decision. It must not be used to justify a Web Server or open port inside the current Repository.
 
+### NPC-ACTOR-01 — Single NPC Actor Pilot
+
+After RETRIEVAL-00 and RETRIEVAL-01 acceptance, the next product consumer is
+the provider-neutral NPC Actor route defined in
+`docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`. It receives only scoped,
+visibility-safe evidence and returns a structured proposal. It cannot write
+formal state, and live GPT API use remains behind API Key/cost/privacy approval.
+
 ## 11. Cloud And Secret Controls
 
 Before any cloud handoff:

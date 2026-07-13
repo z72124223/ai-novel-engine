@@ -10,6 +10,7 @@ import com.localnovel.engine.cli.SettingPackCli
 import com.localnovel.engine.cli.StorySessionCli
 import com.localnovel.engine.cli.StoryChapterProductionCli
 import com.localnovel.engine.cli.DialogueProductionCli
+import com.localnovel.engine.cli.DataFoundationCli
 import com.localnovel.engine.cli.StoryboardPipelineCli
 import com.localnovel.engine.cli.ProvisionalLayerCli
 import com.localnovel.engine.cli.WorldSourceAndTaskQueueCli
@@ -32,6 +33,7 @@ class Cli {
             val options = parseCliOptions(args.drop(1))
             when (command) {
                 "init-db" -> StorySessionCli.initDb(options)
+                "rebuild-project-data" -> DataFoundationCli.rebuildProjectData(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -218,6 +220,7 @@ class Cli {
             Local Interactive Fiction Engine
 
             Commands:
+              rebuild-project-data --repo <repository-root> --manifest <rebuild-manifest.json> --db <new-db-path> --out <report.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>

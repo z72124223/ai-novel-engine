@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1.0",
+  "manifestId": "chenxing-data-rebuild-v1",
+  "status": "RETRIEVAL_00_REBUILD_READY",
+  "projectId": "chenxing",
+  "migrationInputs": [
+    { "path": "app/src/main/resources/migrations/001_init.sql", "inputType": "MIGRATION", "order": 1, "sha256": "7ed488f36e2af9fc3c9c8c5126a94079122a67decf672038d7c8188caacdaa3c", "byteSize": 6608 },
+    { "path": "app/src/main/resources/migrations/002_multi_turn_runtime.sql", "inputType": "MIGRATION", "order": 2, "sha256": "d63feede01511f4a1da9ed417c3a44ff3acb02da58ed1ac06e24370bfeeb6ac6", "byteSize": 1691 },
+    { "path": "app/src/main/resources/migrations/003_memory_knowledge_runtime.sql", "inputType": "MIGRATION", "order": 3, "sha256": "9ed9cf5c3e731dcd982d5be7db7415c7e858f4bf918b1f3aa63dd71a64bb47b5", "byteSize": 4610 },
+    { "path": "app/src/main/resources/migrations/004_scene_thread_runtime.sql", "inputType": "MIGRATION", "order": 4, "sha256": "4842fbc0b6f75dd08f277dde4d4b6055ef52a103f0fd45bea3ec4f7d3f84b651", "byteSize": 7255 },
+    { "path": "app/src/main/resources/migrations/005_setting_pack_runtime.sql", "inputType": "MIGRATION", "order": 5, "sha256": "a128a359a6cb6468c1ab975476bab8303aa763b43fcc8e091082b209d79293a4", "byteSize": 3952 },
+    { "path": "app/src/main/resources/migrations/006_checkpoint_branching_runtime.sql", "inputType": "MIGRATION", "order": 6, "sha256": "047f21d339cf1d7bffa0f4f4aeb91f336c4fb92619e98bd57cee4b136581f714", "byteSize": 3683 },
+    { "path": "app/src/main/resources/migrations/007_world_source_archive.sql", "inputType": "MIGRATION", "order": 7, "sha256": "f114498b6b2a685ac823893912372a3e56c845d44995c1f96bdf985bc7344e43", "byteSize": 3044 },
+    { "path": "app/src/main/resources/migrations/008_ai_task_queue.sql", "inputType": "MIGRATION", "order": 8, "sha256": "1c66d4580275d9906f27334e7bd31fef35c22fdd3c07481cb01beb8b5f085948", "byteSize": 1248 },
+    { "path": "app/src/main/resources/migrations/009_provisional_layer.sql", "inputType": "MIGRATION", "order": 9, "sha256": "d9652296812ca6944fb668b260f52b74bde1d6e0ddba32617968b773c2898132", "byteSize": 2981 },
+    { "path": "app/src/main/resources/migrations/010_reboot_run_evidence.sql", "inputType": "MIGRATION", "order": 10, "sha256": "f3f13b336848a62a3979fc2702c80fb409226fa50b4b996bfa31d91e501ac6ea", "byteSize": 1499 },
+    { "path": "app/src/main/resources/migrations/011_npc_autonomy_runtime.sql", "inputType": "MIGRATION", "order": 11, "sha256": "7294cc6d78da09d38938a414945bbb3b1ee79345146cfb98be3628ace00ac573", "byteSize": 1018 },
+    { "path": "app/src/main/resources/migrations/012_reboot_drama_evaluation.sql", "inputType": "MIGRATION", "order": 12, "sha256": "2767d221cd180cdeb80997785de6ea30b9057415258f671abe06c0956ebea15d", "byteSize": 846 },
+    { "path": "app/src/main/resources/migrations/013_story_chapter_production.sql", "inputType": "MIGRATION", "order": 13, "sha256": "1a8e1bef764afd0345051dca08f9dbfab18248e98a2a2e124559f4c9f0041a90", "byteSize": 3059 },
+    { "path": "app/src/main/resources/migrations/014_production_rule_runtime.sql", "inputType": "MIGRATION", "order": 14, "sha256": "04aa7be4865aea2905e85e562b72fbfec840f12851279a2bef87155155677a12", "byteSize": 8258 },
+    { "path": "app/src/main/resources/migrations/015_production_rule_authority_hardening.sql", "inputType": "MIGRATION", "order": 15, "sha256": "dd2f9e489880cf687ba7c20107cee4aa43d1a6e54a22454f6bb013f4c165b09f", "byteSize": 18556 }
+  ],
+  "settingPackInputs": [
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v1.json", "inputType": "SETTING_PACK", "order": 1, "sha256": "e17ba8e37714ef789e7bc30345ca22709ec717053be59f5c4e8c94cce1a18f42", "byteSize": 10237 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v2_visual_turnarounds.json", "inputType": "SETTING_PACK", "order": 2, "sha256": "6c1f738987f732890a7ff376d8ca9fe46167d58c7364a145fe26e60425d1e8cb", "byteSize": 5486 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v3_opening_modern_costume.json", "inputType": "SETTING_PACK", "order": 3, "sha256": "1337bb77afe6d23c9d6dca6cfb7716605c19523aca183accd5a4e43d1c0d8a24", "byteSize": 4641 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json", "inputType": "SETTING_PACK", "order": 4, "sha256": "b992a4734d36592be9d11a3a440fc40fea590e5845841eacf7f78c6c9dbe89db", "byteSize": 5428 },
+    { "path": "world/chenxing/engine/chenxing_setting_pack_v5_ruin_interior.json", "inputType": "SETTING_PACK", "order": 5, "sha256": "c0d28583e3e21b0d3807e8b1ccdb5c6932be1be25173f73ed0604108a1beebd7", "byteSize": 18734 }
+  ],
+  "worldSourceInputs": [
+    { "path": "memory/chenxing_world_source_manifest.json", "inputType": "WORLD_SOURCE_MANIFEST", "order": 1, "sha256": "98861ae371ce17fbc54425575b4fb8c3e7e5ff9b7a067f39f80e017e2dcbc2fb", "byteSize": 6947 }
+  ],
+  "governedRoots": [
+    "app/src/main/resources/migrations",
+    "docs",
+    "memory",
+    "samples",
+    "schemas",
+    "world/chenxing/assets",
+    "world/chenxing/engine",
+    "world/chenxing/formal",
+    "world/chenxing/preview",
+    "world/chenxing/production",
+    "world/chenxing/raw"
+  ],
+  "classificationRules": [
+    { "pathPrefix": "app/src/main/resources/migrations", "primaryClass": "FORMAL_STRUCTURED_DATA", "retentionStatus": "CURRENT", "reason": "Additive SQLite schema authority." },
+    { "pathPrefix": "world/chenxing/raw", "primaryClass": "AUTHORITATIVE_SOURCE", "retentionStatus": "CURRENT", "reason": "Unmodified official source archive." },
+    { "pathPrefix": "world/chenxing/formal", "primaryClass": "FORMAL_STRUCTURED_DATA", "retentionStatus": "CURRENT", "reason": "Formal Chenxing structured source." },
+    { "pathPrefix": "world/chenxing/engine", "primaryClass": "FORMAL_STRUCTURED_DATA", "retentionStatus": "CURRENT", "reason": "Validated engine import manifests and Setting Packs." },
+    { "pathPrefix": "world/chenxing/assets", "primaryClass": "AUTHORITATIVE_SOURCE", "retentionStatus": "CURRENT", "reason": "File-based visual source and approval evidence; classification does not imply approval." },
+    { "pathPrefix": "world/chenxing/preview", "primaryClass": "TEST_OR_REVIEW_EVIDENCE", "retentionStatus": "HISTORICAL_REFERENCED", "reason": "Reviewable preview evidence." },
+    { "pathPrefix": "world/chenxing/production", "primaryClass": "TEST_OR_REVIEW_EVIDENCE", "retentionStatus": "CURRENT", "reason": "Current production and handoff evidence." },
+    { "pathPrefix": "memory/chenxing_world_source_manifest.json", "primaryClass": "AUTHORITATIVE_SOURCE", "retentionStatus": "CURRENT", "reason": "Hash-bound World Source archive manifest." },
+    { "pathPrefix": "memory/active_world_source.json", "primaryClass": "AUTHORITATIVE_SOURCE", "retentionStatus": "CURRENT", "reason": "Active source selector." },
+    { "pathPrefix": "memory", "primaryClass": "REBUILDABLE_INDEX", "retentionStatus": "REBUILDABLE_CACHE", "reason": "Tracked import/query/validation mirrors that can be regenerated from formal sources." },
+    { "pathPrefix": "schemas", "primaryClass": "FORMAL_STRUCTURED_DATA", "retentionStatus": "CURRENT", "reason": "Machine-readable interchange contracts." },
+    { "pathPrefix": "samples", "primaryClass": "TEST_OR_REVIEW_EVIDENCE", "retentionStatus": "HISTORICAL_REFERENCED", "reason": "Test fixtures and review examples." },
+    { "pathPrefix": "docs", "primaryClass": "TEST_OR_REVIEW_EVIDENCE", "retentionStatus": "HISTORICAL_REFERENCED", "reason": "Specifications, decisions, audits and handoff evidence." }
+  ],
+  "logicalTables": [
+    "projects",
+    "world_rules",
+    "characters",
+    "locations",
+    "scenes",
+    "facts",
+    "secrets",
+    "setting_packs",
+    "entity_revisions",
+    "dependency_edges",
+    "world_source_archives",
+    "world_source_documents",
+    "world_source_chunks"
+  ],
+  "volatileColumns": [
+    "created_at",
+    "updated_at",
+    "applied_at",
+    "imported_at",
+    "validated_at",
+    "analyzed_at",
+    "import_id",
+    "manifest_path",
+    "source_path",
+    "raw_path",
+    "original_attachment_path",
+    "database_path"
+  ],
+  "volatileColumnsByTable": {
+    "entity_revisions": ["id"]
+  },
+  "requiredTrackedPaths": [
+    "PROJECT_STATE.md",
+    "AGENTS.md",
+    "world/chenxing/engine/chenxing_setting_pack_v1.json",
+    "world/chenxing/engine/chenxing_setting_pack_v5_ruin_interior.json",
+    "memory/chenxing_world_source_manifest.json"
+  ],
+  "boundary": {
+    "allowExistingDatabaseOverwrite": false,
+    "allowAbsoluteRepositoryInputs": false,
+    "allowCanonPromotion": false,
+    "allowRuntimeStateMutation": false,
+    "allowDeletion": false,
+    "allowProviderCalls": false
+  }
+}

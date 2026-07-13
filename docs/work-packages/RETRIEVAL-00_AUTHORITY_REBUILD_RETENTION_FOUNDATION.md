@@ -1,8 +1,12 @@
 # RETRIEVAL-00 — Authority, Rebuild And Retention Foundation
 
-Status: `NOT_ACTIVE / REQUIRES_EXPLICIT_ASSIGNMENT`
+Status: `PASS / IMPLEMENTED / PENDING DEFAULT-BRANCH INTEGRATION`
 
 Date: `2026-07-13`
+
+Base Commit: `8caeacc728a5dcb49b6bf9181c4f50fb1ec19d89`
+
+Implementation branch: `codex/retrieval00-authority-rebuild-runtime`
 
 Parent blueprint:
 `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
@@ -14,9 +18,10 @@ extraction work. The package must make the project reproducible from Git,
 separate truth from derived indexes, and classify bloat without deleting or
 silently promoting data.
 
-This is a future implementation specification. This document does not start
-the package and does not approve code, schema, model, deletion, Canon, API,
-MCP, Provider or media work.
+The user explicitly activated this package on 2026-07-13. It approves the
+minimum code/schema/CLI/test/report work required by Sections 3–12. It still
+does not approve model execution, deletion, Canon, live API, MCP, Provider or
+media work.
 
 ## 2. Required Starting Evidence
 
@@ -216,3 +221,19 @@ RETRIEVAL-01 readiness verdict
 
 Passing RETRIEVAL-00 does not automatically activate RETRIEVAL-01. The next
 package still requires explicit assignment.
+
+## 13. Implementation Evidence
+
+The completed runbook and validation evidence are:
+
+```text
+docs/PROJECT_DATA_REBUILD_RUNBOOK_V1.md
+docs/retrieval/RETRIEVAL00_IMPLEMENTATION_REPORT.md
+docs/retrieval/RETRIEVAL00_VALIDATION_SUMMARY.json
+```
+
+The current logical-content SHA-256 is:
+
+```text
+30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32
+```
