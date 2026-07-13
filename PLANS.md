@@ -10,7 +10,7 @@
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**NPC-ACTOR-02 TECHNICAL PASS；HUMAN HARD BLIND REVIEW PENDING；LIVE API 與正式 Runtime 升格仍禁止**
+狀態：**NPC-ACTOR-02 NO ACTOR ADVANTAGE；NPC-ACTOR-03 SINGLE OFFLINE CALIBRATION ACTIVE；LIVE API 與正式 Runtime 升格仍禁止**
 
 日期：2026-07-13
 
@@ -85,11 +85,17 @@
 - [x] Step 7：由 Product Owner 在答案表揭露前完成 20 題真人匿名評分；20／20 偏好 Actor、0 個知識或安全旗標，但評審明確指出對照過易，因此只接受離線基礎能力，不宣稱一般真人感。
   - [x] 7.1：逐題保存選擇、揭盲結果、評審疑慮與 Claim Boundary；新增 strict JSON Schema 與 SHA-256 證據。
   - [x] 7.2：建立 Hard Blind Multi-Turn Evaluation 工作包；兩側候選均須自然且長度相近，不得再以刻意客服腔作稻草人 baseline。
-- [ ] Step 8：執行 NPC-ACTOR-02 離線 Hard Blind Multi-Turn Evaluation；匿名包與技術驗證已完成，現在停在真人評分 Gate。
+- [x] Step 8：完成 NPC-ACTOR-02 離線 Hard Blind Multi-Turn Evaluation；結果為 `NO_ACTOR_ADVANTAGE_OBSERVED`，不啟動 live API。
   - [x] 8.1：建立 12 個未見、4 名重複角色、每條路徑 4 輪的人工離線情境；兩側均自然可信，不使用明顯 AI 稻草人句型。
   - [x] 8.2：建立 strict Schema、deterministic A/B 6／6、分離答案表、長度／秘密／結構 Gate 與 focused tests。
   - [x] 8.3：重建 suite、技術報告、匿名包、答案表與 SHA-256 manifest；技術決策為 `TECHNICAL_PASS_HUMAN_REVIEW_PENDING`。
-  - [ ] 8.4：由 Product Owner 在答案揭露前完成 12 題 `A／B／TIE／BOTH_FAIL` 評分；完成前不得宣稱 Actor 勝出。
+  - [x] 8.4：Product Owner 在答案揭露前完成 12 題 `A／B／TIE／BOTH_FAIL` 評分；選擇為 `A, A, B, B, B, A, B, TIE, TIE, B, B, B`，結果檔已通過完整性驗證後才開啟答案表。
+  - [x] 8.5：保存揭答摘要、Hash、測試與治理結論；Actor 4、Control 6、TIE 2、BOTH_FAIL 0，分類為 `NO_ACTOR_ADVANTAGE_OBSERVED`，不得進入 live API。
+- [ ] Step 9：執行 NPC-ACTOR-03 單次 adaptive profile-expression calibration；建立 8 個全新 holdout，技術完成後停在真人評分 Gate。
+  - [x] 9.1：將 Actor 4／Control 6／TIE 2 與角色分布轉成一個可測、不可假定為真的校準假設；工作包限制只允許一次 revision。
+  - [ ] 9.2：實作一版 evaluation-only adaptive expression policy 與 8 個全新多輪 holdout；不得重用已揭答題目。
+  - [ ] 9.3：產生匿名包、答案表、Schema、Hash、focused/full tests 與安全檢查。
+  - [ ] 9.4：停在 Product Owner 8 題真人評分；不得啟動 live API 或第二次校準。
 
 ### Verification
 
@@ -125,6 +131,7 @@
 - 2026-07-13：NPC-ACTOR-01 實作 Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5` 已推送 `codex/npc-actor01-offline-pilot` 並以普通 fast-forward 推送遠端預設分支；目前真實停止條件為真人匿名盲測，未啟動 live API。
 - 2026-07-13：Product Owner 在揭露答案表前完成 20 題；20／20 選中 Actor、未標記知識或安全退化。同一評審指出答案過於明顯，因此決策限定為 `OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION`，不得宣稱已達真人或 ChatGPT 對話自然度。
 - 2026-07-13：NPC-ACTOR-02 產出 12 個全新人工離線多輪情境；4 名角色各 3 場，A/B 6／6，最大發言長度比 1.2174，結構／稻草人／作者秘密／長度違規皆 0。新增可驗證真人結果契約；focused 6／6、full 892／892 PASS。技術 Gate 通過並停在真人盲測，不啟動 live API。
+- 2026-07-13：Product Owner 完成 NPC-ACTOR-02 後才揭答；Actor 4、Control 6、TIE 2，決策 `NO_ACTOR_ADVANTAGE_OBSERVED`。結果與摘要已 Hash 綁定，JSON 8／8、Hash 7／7、full 892／892 PASS；建立 NPC-ACTOR-03 單次離線校準工作包，不允許反覆改題直到勝出。
 
 ## Current Plan Window V6
 

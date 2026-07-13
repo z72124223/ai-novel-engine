@@ -42,6 +42,7 @@ class Cli {
                 "create-npc-actor-hard-blind-suite" -> NpcActorCli.createHardBlindSuite(options)
                 "evaluate-npc-actor-hard-blind" -> NpcActorCli.evaluateHardBlind(options)
                 "validate-npc-actor-hard-blind-review" -> NpcActorCli.validateHardBlindHumanReview(options)
+                "reveal-npc-actor-hard-blind-review" -> NpcActorCli.revealHardBlindHumanReview(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -235,6 +236,7 @@ class Cli {
               create-npc-actor-hard-blind-suite --out <suite.json>
               evaluate-npc-actor-hard-blind --suite <suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
               validate-npc-actor-hard-blind-review --packet <blind-review.json> --result <human-review-result.json>
+              reveal-npc-actor-hard-blind-review --packet <blind-review.json> --result <human-review-result.json> --answer-key <answer-key.json> --out <summary.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>

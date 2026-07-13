@@ -25,9 +25,19 @@
       "bytes": 1422
     },
     {
+      "path": "samples/npc_actor02/npc_actor02_human_blind_review_result.json",
+      "sha256": "fe638b3ef037dfe4db2aa2383d50319e2e6539b643b9332978b255cc3652d2fd",
+      "bytes": 2727
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_human_blind_review_summary.json",
+      "sha256": "1c67ab99ea87b4528dabb387002795b6297113413f530c7cfbd2daba284f649d",
+      "bytes": 2752
+    },
+    {
       "path": "schemas/npc_actor/npc_actor_hard_blind_v1.schema.json",
-      "sha256": "36e973a3a94f48ef6be3584eece40332230fa8ffa3a43d3c028b1fba2330cd03",
-      "bytes": 9925
+      "sha256": "72132c8bd1aae538ff4fa323f5d1f3c8f8e93de949be0e5f8a470d8e1586bec2",
+      "bytes": 12027
     }
   ]
 }

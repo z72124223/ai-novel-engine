@@ -4,15 +4,15 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
-- Current work: `NPC-ACTOR-02 — Product Owner Hard Blind Multi-Turn Review`
-- Implementation branch: `codex/npc-actor02-hard-blind-multiturn`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_OFFLINE_CALIBRATION_ACTIVE`
+- Current work: `NPC-ACTOR-03 — Adaptive Profile Expression Calibration`
+- Implementation branch: `codex/npc-actor03-adaptive-profile-calibration`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Required work package: `docs/work-packages/NPC-ACTOR-02_HARD_BLIND_MULTI_TURN_EVALUATION.md`
+- Required work package: `docs/work-packages/NPC-ACTOR-03_ADAPTIVE_PROFILE_EXPRESSION_CALIBRATION.md`
 - NPC route blueprint: `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
 - NPC pilot package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
-- Current work package: `docs/work-packages/NPC-ACTOR-02_HARD_BLIND_MULTI_TURN_EVALUATION.md`
-- Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01 → NPC-ACTOR-02`; gates may not be skipped.
+- Current work package: `docs/work-packages/NPC-ACTOR-03_ADAPTIVE_PROFILE_EXPRESSION_CALIBRATION.md`
+- Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01 → NPC-ACTOR-02 → NPC-ACTOR-03`; gates may not be skipped.
 - User explicitly authorized blueprint implementation on 2026-07-13.
 - Codex implements/tests/reviews; ChatGPT is manual audition; an optional GPT API adapter is the future production NPC actor surface.
 - No live API call, API Key, paid Provider, Canon promotion, image/video/audio generation or state-write bypass is authorized by this activation.
@@ -39,7 +39,10 @@
 - The next evidence-only task is a harder randomized multi-turn blind test where both options are concise and plausible. This does not authorize a live model call.
 - NPC-ACTOR-02 technical evidence is ready: 12 unseen non-Canon scenes, 4 recurring profiles, 4 turns per option path, deterministic A/B 6/6, 0 turn/strawman/secret/length violations and maximum spoken-length ratio 1.2174.
 - NPC-ACTOR-02 evidence: `docs/npc_actor/NPC_ACTOR02_HARD_BLIND_IMPLEMENTATION_REPORT.md`, `samples/npc_actor02/npc_actor02_hard_blind_review_packet_v1.json`, separate answer key, strict Schema and SHA-256 manifest.
-- Current true stop: Product Owner must rate all 12 anonymous multi-turn items before answer-key disclosure. This package uses manually authored offline fixtures and is not a live-model benchmark.
+- NPC-ACTOR-02 human result: Actor 4, natural control 6, TIE 2, BOTH_FAIL 0, knowledge/safety concerns 0; decision `NO_ACTOR_ADVANTAGE_OBSERVED`.
+- The result does not justify live API or production rollout. Profile-level variation is real, but the cause is unknown because no qualitative issue tags were supplied.
+- On 2026-07-13 the user explicitly requested continuation after completing NPC-ACTOR-02; this authorizes one bounded offline calibration revision under NPC-ACTOR-03 only.
+- Current next step: build one adaptive profile-expression revision and a new 8-item holdout packet; revealed NPC-ACTOR-02 scenes are development evidence only.
 - Current true stops: any live API/API Key/paid Provider/privacy export, production rollout, Canon decision, or weakening of visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
@@ -70,12 +73,13 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_LIMITED_ACCEPTANCE / NPC_ACTOR02_NO_ACTOR_ADVANTAGE / NPC_ACTOR03_OFFLINE_CALIBRATION_ACTIVE`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
-- Current work package: `docs/work-packages/NPC-ACTOR-02_HARD_BLIND_MULTI_TURN_EVALUATION.md`
+- Current work package: `docs/work-packages/NPC-ACTOR-03_ADAPTIVE_PROFILE_EXPRESSION_CALIBRATION.md`
 - `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and the first human blind review. The 20／20 preference is accepted only as a basic anti-exposition signal because the comparison was too easy.
-- `NPC-ACTOR-02` has passed its offline technical gates and is stopped at the Product Owner's 12-item anonymous multi-turn review. No answer identity may be disclosed before all ratings are complete.
+- `NPC-ACTOR-02` human review is complete: Actor 4, natural control 6 and 2 ties. No Actor advantage was observed, so live API remains blocked.
+- `NPC-ACTOR-03` is the single allowed offline calibration revision; it must use a new 8-item holdout and stop rather than repeatedly rewriting until it wins.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.

@@ -1,6 +1,6 @@
 # NPC Actor And Model Routing Blueprint V1
 
-Status: `NPC_ACTOR_01_LIMITED_ACCEPTANCE / NPC_ACTOR_02_TECHNICAL_PASS_HUMAN_REVIEW_PENDING / LIVE_API_BLOCKED`
+Status: `NPC_ACTOR_01_LIMITED_ACCEPTANCE / NPC_ACTOR_02_NO_ACTOR_ADVANTAGE / NPC_ACTOR_03_OFFLINE_CALIBRATION_ACTIVE / LIVE_API_BLOCKED`
 
 Date: `2026-07-13`
 
@@ -23,6 +23,7 @@ RETRIEVAL-00 authority / rebuild / retention
 → RETRIEVAL-01 scoped local retrieval benchmark
 → NPC-ACTOR-01 single NPC offline/Fake pilot
 → NPC-ACTOR-02 hard blind multi-turn human review
+→ NPC-ACTOR-03 single adaptive profile-expression calibration
 → explicit API Key / cost / privacy approval
 → optional live GPT API pilot
 ```
@@ -192,8 +193,16 @@ multi-turn scenes, four recurring profiles, balanced deterministic A/B order,
 separate answer identity and a 25 percent spoken-length gate. Both candidates
 are manually authored evaluation fixtures, so Product Owner preference can
 guide the project but cannot be mislabeled as a live-model benchmark. Its
-technical gates have passed; answer disclosure, live API work and any broad
-human-likeness claim remain blocked until the anonymous human review completes.
+technical gates passed, but its completed human review preferred Actor 4 times,
+natural control 6 times and tied twice. The decision is
+`NO_ACTOR_ADVANTAGE_OBSERVED`, so live API work and any broad human-likeness
+claim remain blocked.
+
+NPC-ACTOR-03 may perform one offline calibration revision. Its hypothesis is
+that profile expression should scale with situation and relationship instead
+of appearing in every line. The revealed NPC-ACTOR-02 set is development data,
+not final evidence; a new holdout is mandatory. If the single revision still
+shows no advantage, stop rather than tuning fixtures until they win.
 
 ## 11. Stop Conditions
 

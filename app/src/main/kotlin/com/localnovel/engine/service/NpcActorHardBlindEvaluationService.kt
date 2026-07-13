@@ -4,6 +4,8 @@ import com.localnovel.engine.model.NpcActorHardBlindAnswer
 import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindCandidate
 import com.localnovel.engine.model.NpcActorHardBlindHumanReviewResult
+import com.localnovel.engine.model.NpcActorHardBlindRevealedRating
+import com.localnovel.engine.model.NpcActorHardBlindRevealedSummary
 import com.localnovel.engine.model.NpcActorHardBlindReviewItem
 import com.localnovel.engine.model.NpcActorHardBlindReviewOption
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
@@ -166,6 +168,63 @@ class NpcActorHardBlindEvaluationService {
             rating.flaggedDimensions.distinct().size == rating.flaggedDimensions.size &&
                 rating.flaggedDimensions.all { it in allowedDimensions }
         }) { "Human review dimension flags are invalid." }
+    }
+
+    fun revealHumanReviewResult(
+        packet: NpcActorHardBlindReviewPacket,
+        answerKey: NpcActorHardBlindAnswerKey,
+        result: NpcActorHardBlindHumanReviewResult,
+    ): NpcActorHardBlindRevealedSummary {
+        validateHumanReviewResult(packet, result)
+        require(answerKey.packetId == packet.packetId) { "Answer key packet id does not match." }
+        require(answerKey.answers.size == packet.items.size) { "Answer key must cover every review item." }
+        require(answerKey.answers.map { it.reviewId }.distinct().size == answerKey.answers.size) {
+            "Answer key contains duplicate review ids."
+        }
+        val answerById = answerKey.answers.associateBy { it.reviewId }
+        require(answerById.keys == packet.items.map { it.reviewId }.toSet()) {
+            "Answer key ids do not match the packet."
+        }
+        val itemResults = result.ratings.map { rating ->
+            val actorOption = answerById.getValue(rating.reviewId).actorOption
+            val outcome = when (rating.selection) {
+                "TIE" -> "TIE"
+                "BOTH_FAIL" -> "BOTH_FAIL"
+                actorOption -> "ACTOR_PREFERRED"
+                else -> "CONTROL_PREFERRED"
+            }
+            NpcActorHardBlindRevealedRating(
+                reviewId = rating.reviewId,
+                selection = rating.selection,
+                actorOption = actorOption,
+                outcome = outcome,
+            )
+        }
+        val actorPreferred = itemResults.count { it.outcome == "ACTOR_PREFERRED" }
+        val controlPreferred = itemResults.count { it.outcome == "CONTROL_PREFERRED" }
+        val knowledgeConcerns = result.ratings.count { it.knowledgeBoundaryConcern }
+        val safetyConcerns = result.ratings.count { it.safetyBoundaryConcern }
+        val decision = when {
+            knowledgeConcerns > 0 || safetyConcerns > 0 -> "SAFETY_OR_KNOWLEDGE_CONCERN"
+            actorPreferred > controlPreferred -> "ACTOR_ADVANTAGE_OBSERVED_WITH_SINGLE_RATER_LIMITATION"
+            else -> "NO_ACTOR_ADVANTAGE_OBSERVED"
+        }
+        return NpcActorHardBlindRevealedSummary(
+            packetId = packet.packetId,
+            actorPreferredCount = actorPreferred,
+            controlPreferredCount = controlPreferred,
+            tieCount = itemResults.count { it.outcome == "TIE" },
+            bothFailCount = itemResults.count { it.outcome == "BOTH_FAIL" },
+            knowledgeBoundaryConcernCount = knowledgeConcerns,
+            safetyBoundaryConcernCount = safetyConcerns,
+            overallDecision = decision,
+            claimBoundary = listOf(
+                "The candidates are manually authored offline fixtures, not live-model outputs.",
+                "One Product Owner review can guide design but cannot prove general human likeness.",
+                "No live API, production rollout, Canon promotion or state write is authorized.",
+            ),
+            itemResults = itemResults,
+        )
     }
 
     private fun turnStructureValid(scenario: NpcActorHardBlindScenario): Boolean {

@@ -1,0 +1,91 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor02-hard-b05667eda4e4",
+    "status": "HUMAN_REVIEW_REVEALED",
+    "actorPreferredCount": 4,
+    "controlPreferredCount": 6,
+    "tieCount": 2,
+    "bothFailCount": 0,
+    "knowledgeBoundaryConcernCount": 0,
+    "safetyBoundaryConcernCount": 0,
+    "overallDecision": "NO_ACTOR_ADVANTAGE_OBSERVED",
+    "claimBoundary": [
+        "The candidates are manually authored offline fixtures, not live-model outputs.",
+        "One Product Owner review can guide design but cannot prove general human likeness.",
+        "No live API, production rollout, Canon promotion or state write is authorized."
+    ],
+    "itemResults": [
+        {
+            "reviewId": "review-npc-actor02-01",
+            "selection": "A",
+            "actorOption": "A",
+            "outcome": "ACTOR_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-02",
+            "selection": "A",
+            "actorOption": "B",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-03",
+            "selection": "B",
+            "actorOption": "A",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-04",
+            "selection": "B",
+            "actorOption": "A",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-05",
+            "selection": "B",
+            "actorOption": "A",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-06",
+            "selection": "A",
+            "actorOption": "B",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-07",
+            "selection": "B",
+            "actorOption": "A",
+            "outcome": "CONTROL_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-08",
+            "selection": "TIE",
+            "actorOption": "B",
+            "outcome": "TIE"
+        },
+        {
+            "reviewId": "review-npc-actor02-09",
+            "selection": "TIE",
+            "actorOption": "A",
+            "outcome": "TIE"
+        },
+        {
+            "reviewId": "review-npc-actor02-10",
+            "selection": "B",
+            "actorOption": "B",
+            "outcome": "ACTOR_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-11",
+            "selection": "B",
+            "actorOption": "B",
+            "outcome": "ACTOR_PREFERRED"
+        },
+        {
+            "reviewId": "review-npc-actor02-12",
+            "selection": "B",
+            "actorOption": "B",
+            "outcome": "ACTOR_PREFERRED"
+        }
+    ]
+}

@@ -146,18 +146,26 @@ class NpcActorHardBlindEvaluationTest {
 
     @Test
     fun `human result contract requires complete ratings before answer disclosure`() {
-        val packet = service.evaluate(NpcActorHardBlindFixtureFactory.create()).blindReviewPacket
+        val artifacts = service.evaluate(NpcActorHardBlindFixtureFactory.create())
+        val packet = artifacts.blindReviewPacket
+        val selections = listOf("A", "A", "B", "B", "B", "A", "B", "TIE", "TIE", "B", "B", "B")
         val result = NpcActorHardBlindHumanReviewResult(
             packetId = packet.packetId,
             ratings = packet.items.mapIndexed { index, item ->
                 NpcActorHardBlindHumanRating(
                     reviewId = item.reviewId,
-                    selection = if (index % 2 == 0) "A" else "TIE",
-                    flaggedDimensions = if (index == 0) listOf("CONTINUITY") else emptyList(),
+                    selection = selections[index],
+                    flaggedDimensions = emptyList(),
                 )
             },
         )
         service.validateHumanReviewResult(packet, result)
+        val summary = service.revealHumanReviewResult(packet, artifacts.blindReviewAnswerKey, result)
+        assertEquals(4, summary.actorPreferredCount)
+        assertEquals(6, summary.controlPreferredCount)
+        assertEquals(2, summary.tieCount)
+        assertEquals(0, summary.bothFailCount)
+        assertEquals("NO_ACTOR_ADVANTAGE_OBSERVED", summary.overallDecision)
         assertFailsWith<IllegalArgumentException> {
             service.validateHumanReviewResult(packet, result.copy(answerKeyOpenedBeforeCompletion = true))
         }

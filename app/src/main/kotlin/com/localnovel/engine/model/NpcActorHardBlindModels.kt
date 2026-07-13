@@ -109,6 +109,30 @@ data class NpcActorHardBlindHumanReviewResult(
 )
 
 @Serializable
+data class NpcActorHardBlindRevealedRating(
+    val reviewId: String,
+    val selection: String,
+    val actorOption: String,
+    val outcome: String,
+)
+
+@Serializable
+data class NpcActorHardBlindRevealedSummary(
+    val schemaVersion: String = "1.0",
+    val packetId: String,
+    val status: String = "HUMAN_REVIEW_REVEALED",
+    val actorPreferredCount: Int,
+    val controlPreferredCount: Int,
+    val tieCount: Int,
+    val bothFailCount: Int,
+    val knowledgeBoundaryConcernCount: Int,
+    val safetyBoundaryConcernCount: Int,
+    val overallDecision: String,
+    val claimBoundary: List<String>,
+    val itemResults: List<NpcActorHardBlindRevealedRating>,
+)
+
+@Serializable
 data class NpcActorHardBlindTechnicalReport(
     val schemaVersion: String = "1.0",
     val suiteId: String,

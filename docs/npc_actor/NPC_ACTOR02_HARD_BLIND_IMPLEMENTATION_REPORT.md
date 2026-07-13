@@ -1,6 +1,6 @@
 # NPC-ACTOR-02 硬式多輪盲測實作報告
 
-狀態：`TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING / LIVE_API_BLOCKED`
+狀態：`HUMAN_REVIEW_COMPLETE / NO_ACTOR_ADVANTAGE_OBSERVED / LIVE_API_BLOCKED`
 
 日期：2026-07-13
 
@@ -26,8 +26,25 @@
 - 技術決策：`TECHNICAL_PASS_HUMAN_REVIEW_PENDING`。
 - 針對性測試：6／6 PASS。
 - 完整測試：892／892 PASS；failure 0、error 0、skipped 0。
-- JSON：6／6 可解析；SHA-256：5／5 相符。
+- JSON：8／8 可解析；SHA-256：7／7 相符。
 - 匿名性、秘密、私人絕對路徑、網路呼叫與 Git scope（變更範圍）檢查：PASS。
+
+## 真人盲測結果
+
+Product Owner 在答案表揭露前完成全部 12 題，結果檔先通過完整性驗證，才由正式 CLI 開啟分離答案表並產生摘要：
+
+| 結果 | 題數 |
+| --- | ---: |
+| Actor 候選較好 | 4 |
+| Natural control 候選較好 | 6 |
+| TIE | 2 |
+| BOTH_FAIL | 0 |
+| 知識邊界疑慮 | 0 |
+| 安全邊界疑慮 | 0 |
+
+角色分布為：米拉 Actor 1／Control 2；嚴朔 Actor 0／Control 3；連霜 Actor 0／Control 1／TIE 2；任七 Actor 3／Control 0。主要結論為 `NO_ACTOR_ADVANTAGE_OBSERVED`。
+
+這個結果不支持把目前 Actor 寫法升格為普遍較自然的 NPC 對白策略。角色差異顯示強化人物特徵可能對任七有效、對其他角色無優勢；由於評審未附逐題理由，任何「過度表演」或「性格太強」解釋都只能作為下一輪待驗證假設。
 
 ## 能證明與不能證明的事
 
@@ -35,7 +52,7 @@
 
 尚未證明：NPC 已普遍像真人、已達 ChatGPT 視窗自然度、真實 API 模型一定選中 Actor 路徑，或可直接投入正式 Runtime。
 
-Product Owner 完成盲測後，可作為專案方向證據。若要形成一般化的「像真人」主張，仍需至少一名額外獨立評審或另一個經批准的證據來源。
+Product Owner 的完成結果可作為專案方向證據：目前不得進入 live API 或正式 Runtime。若要形成一般化的「像真人」主張，仍需改良設計、未見資料及至少一名額外獨立評審或另一個經批准的證據來源。
 
 ## 安全邊界
 
@@ -51,6 +68,8 @@ Product Owner 完成盲測後，可作為專案方向證據。若要形成一般
 - 盲測原始套件：`samples/npc_actor02/npc_actor02_hard_blind_suite_v1.json`
 - 真人評分用匿名包：`samples/npc_actor02/npc_actor02_hard_blind_review_packet_v1.json`
 - 分離答案表：`samples/npc_actor02/npc_actor02_hard_blind_answer_key_v1.json`
+- 真人揭答前選擇：`samples/npc_actor02/npc_actor02_human_blind_review_result.json`
+- 正式揭答摘要：`samples/npc_actor02/npc_actor02_human_blind_review_summary.json`
 - 技術報告：`samples/npc_actor02/npc_actor02_hard_blind_technical_report_v1.json`
 - SHA-256：`samples/npc_actor02/npc_actor02_evidence_hashes.json`
 - 嚴格 Schema（包含真人評分結果契約）：`schemas/npc_actor/npc_actor_hard_blind_v1.schema.json`

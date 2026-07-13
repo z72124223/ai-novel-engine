@@ -1,6 +1,6 @@
 # NPC-ACTOR-02 硬式多輪匿名盲測指引
 
-狀態：`HUMAN_BLIND_REVIEW_PENDING`
+狀態：`HUMAN_BLIND_REVIEW_COMPLETE / NO_ACTOR_ADVANTAGE_OBSERVED`
 
 ## 評分前只看這個檔案
 
@@ -52,3 +52,10 @@
 這 12 題的兩側都是人工離線 fixtures（固定評估素材），不是兩個真實模型輸出。因此結果只能測試「目前 Actor 設計偏好的寫法是否更符合角色」，不能直接證明 API 模型會產生相同品質。
 
 完成本盲測也不會自動授權 live API（即時 API）、API Key、付費 Provider、正式 Runtime rollout（上線）、Canon 升格或狀態寫入。
+
+## 完成結果
+
+- Product Owner 在揭答前完成 12／12 題。
+- Actor 4、Control 6、TIE 2、BOTH_FAIL 0。
+- 知識與安全疑慮皆為 0。
+- 結論：`NO_ACTOR_ADVANTAGE_OBSERVED`；目前 Actor 設計不升格、不進入 live API。

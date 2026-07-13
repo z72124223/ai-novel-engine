@@ -3,6 +3,7 @@ package com.localnovel.engine.cli
 import com.localnovel.engine.model.NpcActorEvaluationSuite
 import com.localnovel.engine.model.NpcActorHardBlindSuite
 import com.localnovel.engine.model.NpcActorHardBlindHumanReviewResult
+import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
 import com.localnovel.engine.service.NpcActorEvaluationFixtureFactory
 import com.localnovel.engine.service.NpcActorEvaluationService
@@ -90,6 +91,28 @@ internal object NpcActorCli {
         println("humanReviewValidation=PASS")
         println("packetId=${packet.packetId}")
         println("ratings=${result.ratings.size}")
+        return 0
+    }
+
+    fun revealHardBlindHumanReview(options: Map<String, String>): Int {
+        val packet = NpcActorJson.strict.decodeFromString<NpcActorHardBlindReviewPacket>(
+            Files.readString(Path.of(options.requiredCliOption("packet"))).removePrefix("\uFEFF"),
+        )
+        val result = NpcActorJson.strict.decodeFromString<NpcActorHardBlindHumanReviewResult>(
+            Files.readString(Path.of(options.requiredCliOption("result"))).removePrefix("\uFEFF"),
+        )
+        val answerKey = NpcActorJson.strict.decodeFromString<NpcActorHardBlindAnswerKey>(
+            Files.readString(Path.of(options.requiredCliOption("answer-key"))).removePrefix("\uFEFF"),
+        )
+        val summary = NpcActorHardBlindEvaluationService().revealHumanReviewResult(packet, answerKey, result)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, summary)
+        println("overallDecision=${summary.overallDecision}")
+        println("actorPreferred=${summary.actorPreferredCount}")
+        println("controlPreferred=${summary.controlPreferredCount}")
+        println("tie=${summary.tieCount}")
+        println("bothFail=${summary.bothFailCount}")
+        println("wrote=$output")
         return 0
     }
 
