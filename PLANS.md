@@ -10,7 +10,7 @@
 
 標記：`WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE`
 
-狀態：**ACTIVE — 已獲 Product Owner 明確授權；先建立可回滾的非 Canon 實體狀態，再解除有狀態動作封鎖**
+狀態：**COMPLETED — 非 Canon 實體狀態、六種有狀態動作與同交易回滾已通過**
 
 日期：2026-07-14
 
@@ -79,7 +79,7 @@
   六種有狀態動作的 V2 封鎖。
 - [x] Step 5：建立固定 evidence、focused／related／full／rollback／JSON／Schema／Hash／
   rebuild／secret／Git-scope 驗證。
-- [ ] Step 6：完成報告與治理狀態，Commit、Push 功能分支；遠端未漂移時普通
+- [x] Step 6：完成報告與治理狀態，Commit、Push 功能分支；遠端未漂移時普通
   fast-forward 整合預設分支。
 
 ### Verification
@@ -106,6 +106,8 @@
   不建立每場景重複物性資料，也不假裝這是完整現實物理。
 - 2026-07-14：Migration 016、V2 state binding、六種 deterministic transition、唯讀 CLI
   與同交易 rollback 均已實作；focused 7/7、related 33/33、rebuild 3/3、full 938/938 PASS。
+- 2026-07-14：實作 Commit `54d7a49e30a3b28dc4f8f2f16c8d82a832f07426` 已普通 Push
+  至功能分支；遠端預設分支未漂移，依本計畫以普通 fast-forward 完成整合。
 
 ## Current Plan Window V10
 

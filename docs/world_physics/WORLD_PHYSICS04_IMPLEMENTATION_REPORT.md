@@ -8,7 +8,7 @@ Branch: `codex/world-physics04-physical-state-persistence`
 
 Base: `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9`
 
-Implementation Commit: `TBD_AFTER_VERIFIED_COMMIT`
+Implementation Commit: `54d7a49e30a3b28dc4f8f2f16c8d82a832f07426`
 
 ## Outcome
 

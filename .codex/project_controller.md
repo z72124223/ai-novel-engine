@@ -7,7 +7,7 @@ NPC-ACTOR-04 physical-grounding limitation
 → WORLD-PHYSICS-01 deterministic foundation PASS
 → WORLD-PHYSICS-02 NPC physical action binding PASS
 → WORLD-PHYSICS-03 formal turn transaction-preflight gate PASS
-→ WORLD-PHYSICS-04 physical state persistence ACTIVE
+→ WORLD-PHYSICS-04 physical state persistence PASS
 ```
 
 GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
@@ -48,6 +48,6 @@ runtime relations are persisted atomically. It may not claim that undeclared
 prose was understood, that runtime physical values are Canon, or that the V1
 approximation is a full real-world simulation.
 
-WORLD-PHYSICS-04 is explicitly authorized. Do not start API, Provider, media,
-Canon work or a later physical package without a new reviewed plan and explicit
-Product Owner authorization.
+WORLD-PHYSICS-04 is complete. Stop at this gate. Do not start API, Provider,
+media, Canon work or a later physical package without a new reviewed plan and
+explicit Product Owner authorization.

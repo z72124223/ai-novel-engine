@@ -86,7 +86,9 @@ state version.
 
 ## Completion Decision
 
-Use `WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE_PASS` only if all focused,
-rollback, rebuild and full-suite checks pass and the remote feature branch is
-pushed without force. This proves bounded declared stateful actions persist
-atomically. It does not prove complete real-world understanding or Canon truth.
+Status: `WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE_PASS`.
+
+All focused, rollback, rebuild and full-suite checks passed, and the remote
+feature branch was pushed without force. This proves bounded declared stateful
+actions persist atomically. It does not prove complete real-world understanding
+or Canon truth. No next package is authorized automatically.

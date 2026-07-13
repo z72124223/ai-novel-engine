@@ -4,8 +4,8 @@
 
 ## Current Override — WORLD-PHYSICS-04 Physical State Persistence
 
-- Status: `WORLD_PHYSICS04_ACTIVE / EXPLICITLY_AUTHORIZED`
-- Current work: implement bounded non-Canon physical runtime state and atomic stateful action persistence.
+- Status: `WORLD_PHYSICS04_COMPLETE / WORLD_PHYSICS04_PHYSICAL_STATE_PERSISTENCE_PASS`
+- Current work: WORLD-PHYSICS-04 is complete; no later physical, API, Provider or media package is authorized automatically.
 - Implementation branch: `codex/world-physics04-physical-state-persistence`
 - Required blueprint: `docs/PHYSICAL_WORLD_AND_AFFORDANCE_BLUEPRINT_V1.md`
 - Required work package: `docs/work-packages/WORLD-PHYSICS-04_PHYSICAL_STATE_PERSISTENCE.md`
@@ -13,6 +13,12 @@
 - Base SHA: `931c7d6463a71fe8e8a0706f8ca8c7902ea620c9` from the remote default branch.
 - Authorization: Product Owner replied `授權` at the WORLD-PHYSICS-03 persistence gate on 2026-07-14.
 - Boundary: runtime physical state remains `FORMAL_TURN_RUNTIME_NON_CANON`; no measurement becomes Canon.
+- Runtime result: V2 `LIFT`, `PUSH`, `PLACE_ON`, `DROP`, `ENTER_CONTAINER` and `PASS_THROUGH` persist through Migration 016 inside the existing formal turn transaction.
+- Compatibility: V1 transient support/reach remains valid; V1 stateful input and stale V2 version/hash input fail closed.
+- Verification: focused 7/7, related 33/33, rebuild 3/3, full 938/938, JSON 7/7 and SHA-256 6/6 PASS.
+- Implementation Commit: `54d7a49e30a3b28dc4f8f2f16c8d82a832f07426`; feature and remote default integration completed by ordinary Push without force.
+- Evidence report: `docs/world_physics/WORLD_PHYSICS04_IMPLEMENTATION_REPORT.md`.
+- True stop: a new reviewed plan and explicit Product Owner authorization are required before any later physical package.
 - No API, Provider, model download, image, video or audio is authorized.
 
 ## Previous Override — WORLD-PHYSICS-03 Formal Turn Physical Gate
