@@ -76,12 +76,12 @@
   - [x] 5.4：依明確授權建立 Repository 外隔離環境，下載固定 revision 的官方 0.6B Embedding／Reranker，驗證權重與 Tokenizer SHA-256；隔離 Python 3.13.9、PyTorch 2.7.1+cu118、Transformers 4.53.3 與 GTX 1080 Ti CUDA smoke test 均通過。
   - [x] 5.5：使用相同 50 題執行 Embedding top-50、Reranker top-20 → top-8、可見性與 VRAM／延遲基準；最終 batch 4/2 以 1,821 MiB 實測最低系統餘量通過。
   - [x] 5.6：產出完整模型報告；focused 4/4、full 876/876、JSON／來源 Hash／引用／秘密／Git scope 檢查全部 PASS；完成治理更新並準備 Push。
-- [ ] Step 6（CURRENT）：執行 NPC-ACTOR-01 provider-neutral interface、Fake／File gateway、Prompt／Schema 與 A/B eval；真實 API 呼叫仍受 Key／付費 Gate 阻擋。
+- [x] Step 6：執行 NPC-ACTOR-01 provider-neutral interface、Fake／File gateway、Prompt／Schema 與 A/B eval；技術 Gate 完成，真人盲測與真實 API 仍為獨立停止條件。
   - [x] 6.1：建立 request／response／scenario／evaluation models 與 strict JSON Schema，擴充 voice profile 預設欄位且保持舊 JSON 相容；focused contract tests 3/3 PASS。
   - [x] 6.2：建立 visibility-safe request builder、Fake／File gateway 與 response validator／`NpcActionProposal` mapping，不寫 SQLite；相關新舊測試 12／12 PASS。
   - [x] 6.3：建立 20 個固定 `NON_CANON_EVALUATION` 情境、baseline／actor response、匿名 A/B 包與自動指標；Actor 20／20 通過、知識泄漏 0、連續性違規 0。
   - [x] 6.4：加入 CLI、focused tests、完整測試、JSON／Hash／秘密／引用／Git scope 驗證與 readiness report；focused 15／15、full 886／886、JSON 8／8、Hash 7／7 PASS。
-  - [ ] 6.5（CURRENT）：Commit／Push／安全快轉預設分支；技術 Gate 與真人盲測 Gate 分開標示。
+  - [x] 6.5：Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5`、Push 功能分支並安全快轉預設分支；技術 Gate 與真人盲測 Gate 分開標示。
 
 ### Verification
 
@@ -114,6 +114,7 @@
 - 2026-07-13：NPC-ACTOR-01 技術驗證完成；focused 15／15、full 886／886、JSON 8／8、Hash 7／7、秘密／絕對路徑／Git scope 均 PASS。技術狀態與真人盲測 Gate 分離，尚未宣稱完整離線驗收 PASS。
 - 2026-07-13：Commit 前安全審查將 knowledge claims 再限縮為 perception 明確選中且 actor-owned，同時將 profile 中的 deep motivation／false belief／fear 作為 actor-owned evidence 加入請求；不擴大知識邊界。
 - 2026-07-13：為使證據 SHA-256 在 Windows checkout 後仍可重現，`.gitattributes` 固定 NPC Actor 樣本與 Schema JSON 為 LF；不變更檔案內容或 Hash。
+- 2026-07-13：NPC-ACTOR-01 實作 Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5` 已推送 `codex/npc-actor01-offline-pilot` 並以普通 fast-forward 推送遠端預設分支；目前真實停止條件為真人匿名盲測，未啟動 live API。
 
 ## Current Plan Window V6
 

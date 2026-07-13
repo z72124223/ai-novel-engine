@@ -32,6 +32,7 @@
 - On 2026-07-13 the user explicitly activated a long-running continuation from RETRIEVAL-01; this authorizes the bounded NPC-ACTOR-01 offline Fake/File Pilot.
 - NPC-ACTOR-01 technical evidence: 20/20 actor outputs accepted for Game Master review; 0 knowledge leaks; 0 continuity violations; AI exposition patterns 26→0; average utterance length 37.4→13.25 characters; focused 15/15 and full 886/886 tests PASS.
 - NPC-ACTOR-01 evidence: `docs/npc_actor/NPC_ACTOR01_IMPLEMENTATION_REPORT.md`, `samples/npc_actor01/npc_actor01_evaluation_report.json`, anonymous blind packet and separate answer key under `samples/npc_actor01/`.
+- NPC-ACTOR-01 implementation Commit: `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5`; present on the feature branch and remote default branch.
 - Codex may not invent the remaining human preference result. The only next NPC-ACTOR-01 action is an actual human rating of the anonymous 20-item packet.
 - Current true stops: any live API/API Key/paid Provider/privacy export, production rollout, Canon decision, or weakening of visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
