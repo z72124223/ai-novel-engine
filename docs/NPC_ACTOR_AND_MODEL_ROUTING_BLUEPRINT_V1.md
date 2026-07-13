@@ -1,6 +1,6 @@
 # NPC Actor And Model Routing Blueprint V1
 
-Status: `NPC_ACTOR_01_OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION / HARD_BLIND_REQUIRED / LIVE_API_BLOCKED`
+Status: `NPC_ACTOR_01_LIMITED_ACCEPTANCE / NPC_ACTOR_02_TECHNICAL_PASS_HUMAN_REVIEW_PENDING / LIVE_API_BLOCKED`
 
 Date: `2026-07-13`
 
@@ -22,6 +22,7 @@ ChatGPT auditions.
 RETRIEVAL-00 authority / rebuild / retention
 → RETRIEVAL-01 scoped local retrieval benchmark
 → NPC-ACTOR-01 single NPC offline/Fake pilot
+→ NPC-ACTOR-02 hard blind multi-turn human review
 → explicit API Key / cost / privacy approval
 → optional live GPT API pilot
 ```
@@ -185,6 +186,14 @@ AI exposition only. Before any human-likeness, ChatGPT-naturalness, live API or
 production claim, run a randomized hard blind evaluation where both candidates
 are concise and plausible and where multi-turn scenes test stable voice,
 private motives, hesitation, deception, silence and repair.
+
+NPC-ACTOR-02 supplies that harder offline package with 12 unseen non-Canon
+multi-turn scenes, four recurring profiles, balanced deterministic A/B order,
+separate answer identity and a 25 percent spoken-length gate. Both candidates
+are manually authored evaluation fixtures, so Product Owner preference can
+guide the project but cannot be mislabeled as a live-model benchmark. Its
+technical gates have passed; answer disclosure, live API work and any broad
+human-likeness claim remain blocked until the anonymous human review completes.
 
 ## 11. Stop Conditions
 

@@ -10,7 +10,7 @@
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**NPC-ACTOR-01 OFFLINE FOUNDATION ACCEPTED WITH LIMITATIONS；HARD BLIND MULTI-TURN EVIDENCE REQUIRED；LIVE API 與正式 Runtime 升格仍禁止**
+狀態：**NPC-ACTOR-02 TECHNICAL PASS；HUMAN HARD BLIND REVIEW PENDING；LIVE API 與正式 Runtime 升格仍禁止**
 
 日期：2026-07-13
 
@@ -38,7 +38,7 @@
 
 - 藍圖／治理：`PROJECT_STATE.md`、`AGENTS.md`、`PLANS.md`、NPC／Retrieval 藍圖與工作包。
 - RETRIEVAL-00：重建 Manifest、Authority Registry、Retention Report、Kotlin models/service/CLI、必要 additive migration／sidecar、tests、evidence。
-- 目前工作包：NPC-ACTOR-01 單 NPC Actor 離線 Pilot；只新增 provider-neutral contract、Fake／File gateway、Validator mapping、20 情境與匿名 A/B 評估。
+- 目前工作包：NPC-ACTOR-02 硬式多輪匿名評估；12 個未見非 Canon 情境與技術 Gate 已完成，停在 Product Owner 真人評分。
 
 ### Confirmed Facts
 
@@ -85,7 +85,11 @@
 - [x] Step 7：由 Product Owner 在答案表揭露前完成 20 題真人匿名評分；20／20 偏好 Actor、0 個知識或安全旗標，但評審明確指出對照過易，因此只接受離線基礎能力，不宣稱一般真人感。
   - [x] 7.1：逐題保存選擇、揭盲結果、評審疑慮與 Claim Boundary；新增 strict JSON Schema 與 SHA-256 證據。
   - [x] 7.2：建立 Hard Blind Multi-Turn Evaluation 工作包；兩側候選均須自然且長度相近，不得再以刻意客服腔作稻草人 baseline。
-- [ ] Step 8：執行 NPC-ACTOR-02 離線 Hard Blind Multi-Turn Evaluation；先完成匿名包與技術驗證，再停在真人評分 Gate。
+- [ ] Step 8：執行 NPC-ACTOR-02 離線 Hard Blind Multi-Turn Evaluation；匿名包與技術驗證已完成，現在停在真人評分 Gate。
+  - [x] 8.1：建立 12 個未見、4 名重複角色、每條路徑 4 輪的人工離線情境；兩側均自然可信，不使用明顯 AI 稻草人句型。
+  - [x] 8.2：建立 strict Schema、deterministic A/B 6／6、分離答案表、長度／秘密／結構 Gate 與 focused tests。
+  - [x] 8.3：重建 suite、技術報告、匿名包、答案表與 SHA-256 manifest；技術決策為 `TECHNICAL_PASS_HUMAN_REVIEW_PENDING`。
+  - [ ] 8.4：由 Product Owner 在答案揭露前完成 12 題 `A／B／TIE／BOTH_FAIL` 評分；完成前不得宣稱 Actor 勝出。
 
 ### Verification
 
@@ -120,6 +124,7 @@
 - 2026-07-13：為使證據 SHA-256 在 Windows checkout 後仍可重現，`.gitattributes` 固定 NPC Actor 樣本與 Schema JSON 為 LF；不變更檔案內容或 Hash。
 - 2026-07-13：NPC-ACTOR-01 實作 Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5` 已推送 `codex/npc-actor01-offline-pilot` 並以普通 fast-forward 推送遠端預設分支；目前真實停止條件為真人匿名盲測，未啟動 live API。
 - 2026-07-13：Product Owner 在揭露答案表前完成 20 題；20／20 選中 Actor、未標記知識或安全退化。同一評審指出答案過於明顯，因此決策限定為 `OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION`，不得宣稱已達真人或 ChatGPT 對話自然度。
+- 2026-07-13：NPC-ACTOR-02 產出 12 個全新人工離線多輪情境；4 名角色各 3 場，A/B 6／6，最大發言長度比 1.2174，結構／稻草人／作者秘密／長度違規皆 0。新增可驗證真人結果契約；focused 6／6、full 892／892 PASS。技術 Gate 通過並停在真人盲測，不啟動 live API。
 
 ## Current Plan Window V6
 

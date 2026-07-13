@@ -1,0 +1,56 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor02-hard-b05667eda4e4",
+    "randomizationMethod": "SHA256_RANK_BALANCED",
+    "randomizationSeed": "npc-actor02-balanced-seed-v1",
+    "answers": [
+        {
+            "reviewId": "review-npc-actor02-01",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-02",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor02-03",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-04",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-05",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-06",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor02-07",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-08",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor02-09",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor02-10",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor02-11",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor02-12",
+            "actorOption": "B"
+        }
+    ]
+}

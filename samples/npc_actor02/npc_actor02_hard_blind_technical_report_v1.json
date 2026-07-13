@@ -1,0 +1,26 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor02-hard-blind-12-v1",
+    "scenarioCount": 12,
+    "profileCount": 4,
+    "categoryCount": 12,
+    "actorOptionACount": 6,
+    "actorOptionBCount": 6,
+    "turnStructureViolationCount": 0,
+    "strawmanPatternCount": 0,
+    "forbiddenInformationViolationCount": 0,
+    "lengthBalanceViolationCount": 0,
+    "maximumSpokenLengthRatio": 1.2173913043478262,
+    "technicalDecision": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING",
+    "humanBlindReviewStatus": "HUMAN_BLIND_REVIEW_PENDING",
+    "claimBoundary": [
+        "This package evaluates manually authored offline fixtures, not live model quality.",
+        "A Product Owner result may guide project direction but does not prove general human likeness.",
+        "No live API, production rollout, SQLite write or Canon promotion is authorized."
+    ],
+    "findings": [
+        "Both candidate paths use concise, plausible Traditional Chinese dialogue without the NPC-ACTOR-01 explanatory strawman.",
+        "Every scene contains 3-5 conversational turns and both options share the same interlocutor turns.",
+        "A/B identity is deterministically randomized and balanced 6/6; the answer key remains separate."
+    ]
+}

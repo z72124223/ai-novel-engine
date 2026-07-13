@@ -39,6 +39,9 @@ class Cli {
                 "benchmark-retrieval-exact-baseline" -> RetrievalBenchmarkCli.benchmarkExactBaseline(options)
                 "create-npc-actor-evaluation-suite" -> NpcActorCli.createEvaluationSuite(options)
                 "evaluate-npc-actor-pilot" -> NpcActorCli.evaluate(options)
+                "create-npc-actor-hard-blind-suite" -> NpcActorCli.createHardBlindSuite(options)
+                "evaluate-npc-actor-hard-blind" -> NpcActorCli.evaluateHardBlind(options)
+                "validate-npc-actor-hard-blind-review" -> NpcActorCli.validateHardBlindHumanReview(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -229,6 +232,9 @@ class Cli {
               benchmark-retrieval-exact-baseline --db <path> --queries <query-set.json> --out <report.json> [--top-k 8]
               create-npc-actor-evaluation-suite --out <suite.json>
               evaluate-npc-actor-pilot --suite <suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
+              create-npc-actor-hard-blind-suite --out <suite.json>
+              evaluate-npc-actor-hard-blind --suite <suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
+              validate-npc-actor-hard-blind-review --packet <blind-review.json> --result <human-review-result.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>
