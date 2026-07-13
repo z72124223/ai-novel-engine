@@ -25,6 +25,11 @@
       "bytes": 2123
     },
     {
+      "path": "samples/npc_actor01/npc_actor01_human_blind_review_result.json",
+      "sha256": "b7ca7f9064f8688a040c682a4e5634415459207e681f89ccb5fcd38278802b93",
+      "bytes": 5372
+    },
+    {
       "path": "schemas/npc_actor/npc_actor_request_v1.schema.json",
       "sha256": "2208ea309e61a9ddaceb64ada637eeff0d67f8a7245d6307e5977d618f498d65",
       "bytes": 3865
@@ -38,6 +43,11 @@
       "path": "schemas/npc_actor/npc_actor_evaluation_suite_v1.schema.json",
       "sha256": "c2f7bc4949d126c6063bcb9a9010aa8c34fb4b31a3b07e788cffb9b2001b7d72",
       "bytes": 1866
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_human_blind_review_result_v1.schema.json",
+      "sha256": "abac186eb6547cfb1806b7c9e516dd6fde80ecf3c882f7edac61fc2deaa38fc0",
+      "bytes": 3061
     }
   ]
 }

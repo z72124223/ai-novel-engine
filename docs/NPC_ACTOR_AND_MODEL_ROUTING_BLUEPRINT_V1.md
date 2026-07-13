@@ -1,6 +1,6 @@
 # NPC Actor And Model Routing Blueprint V1
 
-Status: `NPC_ACTOR_01_TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING / LIVE_API_BLOCKED`
+Status: `NPC_ACTOR_01_OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION / HARD_BLIND_REQUIRED / LIVE_API_BLOCKED`
 
 Date: `2026-07-13`
 
@@ -177,6 +177,14 @@ situations. Required measures:
 - latency, tokens and estimated cost when live API is eventually allowed.
 
 No candidate passes with any knowledge-boundary or formal-state bypass.
+
+The first 20-item human review preferred the Actor option 20/20, but the
+reviewer correctly identified an external-validity limitation: the baseline
+used conspicuously explanatory AI phrasing. This is evidence for removing gross
+AI exposition only. Before any human-likeness, ChatGPT-naturalness, live API or
+production claim, run a randomized hard blind evaluation where both candidates
+are concise and plausible and where multi-turn scenes test stable voice,
+private motives, hesitation, deception, silence and repair.
 
 ## 11. Stop Conditions
 

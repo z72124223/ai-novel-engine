@@ -1,6 +1,6 @@
 # NPC-ACTOR-01 — Single NPC Actor Pilot
 
-Status: `TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING`
+Status: `OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION / LIVE_API_BLOCKED`
 
 Date: `2026-07-13`
 
@@ -51,9 +51,12 @@ Passing the offline package does not approve paid API use or production rollout.
 - no Provider, network, API Key, SQLite write or Canon promotion.
 - implementation Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5` is on the remote default branch.
 
-The remaining completion condition is a real human blind review. Codex must not
-fabricate it, and no live API or production rollout may start from technical
-completion alone.
+The Product Owner completed all 20 ratings before answer-key disclosure. Actor
+options were preferred 20/20 with no knowledge or safety flag. The reviewer also
+identified that the explanatory baseline made the comparison too easy. The
+result therefore accepts only the offline anti-exposition foundation; it does
+not prove general human likeness, ChatGPT-conversation naturalness, multi-turn
+stability, live API readiness or production rollout.
 
 ## Activation evidence
 

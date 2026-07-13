@@ -10,7 +10,7 @@
 
 標記：`RETRIEVAL00_RUNTIME_AND_NPC_ACTOR_ROUTE`
 
-狀態：**NPC-ACTOR-01 ACTIVE — OFFLINE FAKE／FILE PILOT；LIVE API 與正式 Runtime 升格仍禁止**
+狀態：**NPC-ACTOR-01 OFFLINE FOUNDATION ACCEPTED WITH LIMITATIONS；HARD BLIND MULTI-TURN EVIDENCE REQUIRED；LIVE API 與正式 Runtime 升格仍禁止**
 
 日期：2026-07-13
 
@@ -56,12 +56,12 @@
 ### Assumptions
 
 - 第一版 NPC Actor 可用單次結構化輸出同時產生 intent/action/utterance；兩階段呼叫只有在 eval 證明有品質增益後才啟用。
-- 20 個情境的人工盲測可先產生匿名、順序固定且不揭露 A/B 身分的評分包；Codex 不得偽造真人偏好，技術完成與真人 Gate 分開記錄。
+- 20 個固定情境只適合驗證明顯 AI 解說腔是否下降；不得把結果外推為一般真人感或多輪角色演技。
 
 ### Open Questions
 
 - 真實 OpenAI API 呼叫需 API Key 與付費授權；到該 Gate 才是必要停止條件。
-- 真人盲測偏好分數需由使用者或未參與實作的人類評審提交；本包先完成可重現評分包與自動安全／自然度代理指標。
+- 下一輪自然度證據必須使用兩邊都簡潔可信、順序隨機、未見情境及多輪角色壓力；目前 20 題不能取代此高難度測試。
 
 ### Implementation Steps
 
@@ -82,6 +82,10 @@
   - [x] 6.3：建立 20 個固定 `NON_CANON_EVALUATION` 情境、baseline／actor response、匿名 A/B 包與自動指標；Actor 20／20 通過、知識泄漏 0、連續性違規 0。
   - [x] 6.4：加入 CLI、focused tests、完整測試、JSON／Hash／秘密／引用／Git scope 驗證與 readiness report；focused 15／15、full 886／886、JSON 8／8、Hash 7／7 PASS。
   - [x] 6.5：Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5`、Push 功能分支並安全快轉預設分支；技術 Gate 與真人盲測 Gate 分開標示。
+- [x] Step 7：由 Product Owner 在答案表揭露前完成 20 題真人匿名評分；20／20 偏好 Actor、0 個知識或安全旗標，但評審明確指出對照過易，因此只接受離線基礎能力，不宣稱一般真人感。
+  - [x] 7.1：逐題保存選擇、揭盲結果、評審疑慮與 Claim Boundary；新增 strict JSON Schema 與 SHA-256 證據。
+  - [x] 7.2：建立 Hard Blind Multi-Turn Evaluation 工作包；兩側候選均須自然且長度相近，不得再以刻意客服腔作稻草人 baseline。
+- [ ] Step 8：執行 NPC-ACTOR-02 離線 Hard Blind Multi-Turn Evaluation；先完成匿名包與技術驗證，再停在真人評分 Gate。
 
 ### Verification
 
@@ -115,6 +119,7 @@
 - 2026-07-13：Commit 前安全審查將 knowledge claims 再限縮為 perception 明確選中且 actor-owned，同時將 profile 中的 deep motivation／false belief／fear 作為 actor-owned evidence 加入請求；不擴大知識邊界。
 - 2026-07-13：為使證據 SHA-256 在 Windows checkout 後仍可重現，`.gitattributes` 固定 NPC Actor 樣本與 Schema JSON 為 LF；不變更檔案內容或 Hash。
 - 2026-07-13：NPC-ACTOR-01 實作 Commit `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5` 已推送 `codex/npc-actor01-offline-pilot` 並以普通 fast-forward 推送遠端預設分支；目前真實停止條件為真人匿名盲測，未啟動 live API。
+- 2026-07-13：Product Owner 在揭露答案表前完成 20 題；20／20 選中 Actor、未標記知識或安全退化。同一評審指出答案過於明顯，因此決策限定為 `OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION`，不得宣稱已達真人或 ChatGPT 對話自然度。
 
 ## Current Plan Window V6
 

@@ -4,13 +4,14 @@
 
 ## Current Override — RETRIEVAL-00 / NPC Actor Route
 
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
-- Current work: `NPC-ACTOR-01 — Human Blind Review Gate`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_ACCEPTANCE_PASS / NPC_ACTOR01_OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION`
+- Current work: `NPC-ACTOR-02 — Hard Blind Multi-Turn Evaluation Design`
 - Implementation branch: `codex/npc-actor01-offline-pilot`
 - Required blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
 - Required work package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
 - NPC route blueprint: `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
 - NPC pilot package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
+- Current work package: `docs/work-packages/NPC-ACTOR-02_HARD_BLIND_MULTI_TURN_EVALUATION.md`
 - Order: `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`; gates may not be skipped.
 - User explicitly authorized blueprint implementation on 2026-07-13.
 - Codex implements/tests/reviews; ChatGPT is manual audition; an optional GPT API adapter is the future production NPC actor surface.
@@ -31,9 +32,11 @@
 - RETRIEVAL-01 used no cloud/API/Provider, port, vector database, Canon write or runtime state write. The external model runtime is not part of Gradle or the shipped Kotlin runtime.
 - On 2026-07-13 the user explicitly activated a long-running continuation from RETRIEVAL-01; this authorizes the bounded NPC-ACTOR-01 offline Fake/File Pilot.
 - NPC-ACTOR-01 technical evidence: 20/20 actor outputs accepted for Game Master review; 0 knowledge leaks; 0 continuity violations; AI exposition patterns 26→0; average utterance length 37.4→13.25 characters; focused 15/15 and full 886/886 tests PASS.
-- NPC-ACTOR-01 evidence: `docs/npc_actor/NPC_ACTOR01_IMPLEMENTATION_REPORT.md`, `samples/npc_actor01/npc_actor01_evaluation_report.json`, anonymous blind packet and separate answer key under `samples/npc_actor01/`.
+- NPC-ACTOR-01 evidence: `docs/npc_actor/NPC_ACTOR01_IMPLEMENTATION_REPORT.md`, `samples/npc_actor01/npc_actor01_evaluation_report.json`, anonymous blind packet, separate answer key and `samples/npc_actor01/npc_actor01_human_blind_review_result.json`.
 - NPC-ACTOR-01 implementation Commit: `b53a2ce69a80f7917f0cddd77ba3746b5619d7d5`; present on the feature branch and remote default branch.
-- Codex may not invent the remaining human preference result. The only next NPC-ACTOR-01 action is an actual human rating of the anonymous 20-item packet.
+- Product Owner completed all 20 blind ratings before answer-key disclosure: Actor preferred 20／20, baseline 0, ties 0, both-fail 0, knowledge/safety flags 0.
+- Evaluation limitation: the baseline repeatedly used obvious AI exposition, so this supports only removal of gross AI phrasing. It does not prove general human likeness, ChatGPT-window naturalness or multi-turn character stability.
+- The next evidence-only task is a harder randomized multi-turn blind test where both options are concise and plausible. This does not authorize a live model call.
 - Current true stops: any live API/API Key/paid Provider/privacy export, production rollout, Canon decision, or weakening of visibility, transaction, hash and validator boundaries.
 - RETRIEVAL-01 pre-model implementation Commit `e01abc792dfe9444ba65dc8cfaa3cae08d536fd8` is present on the remote default branch.
 
@@ -64,11 +67,11 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR01_OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
 - Current work package: `docs/work-packages/NPC-ACTOR-01_SINGLE_NPC_ACTOR_PILOT.md`
-- `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and technical evaluation; actual human blind preference remains pending.
+- `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and the first human blind review. The 20／20 preference is accepted only as a basic anti-exposition signal because the comparison was too easy.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.

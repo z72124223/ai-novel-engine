@@ -1,6 +1,6 @@
 # NPC-ACTOR-01 離線 Pilot 實作報告
 
-狀態：TECHNICAL_PASS / HUMAN_BLIND_REVIEW_PENDING
+狀態：OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION / LIVE_API_BLOCKED
 
 實作 Commit：b53a2ce69a80f7917f0cddd77ba3746b5619d7d5
 
@@ -46,7 +46,9 @@ Baseline 的單一 Validator 失敗是倉庫失火案例故意保留的「綜上
 
 自動結果不能證明「更像真人」。匿名包不標示哪一項是 baseline 或 NPC Actor；答案另存在獨立檔案，評分完成前不可揭露。
 
-目前主要結論固定為 HUMAN_BLIND_REVIEW_PENDING。真人完成 20 項 A/B 選擇並確認沒有角色知識越界後，才可決定是否通過離線 Pilot。即使通過，也不授權 API Key、付費模型、正式 Runtime rollout 或 Canon 升格。
+Product Owner 已在答案表揭露前完成 20 項 A/B 選擇：Actor 20／20、baseline 0、TIE 0、BOTH_FAIL 0，且未標記角色知識越界或安全退化。
+
+評審同時指出 baseline 反覆使用明顯客服／規則解說腔，答案過於容易。因此本包只接受為「離線基礎去 AI 腔能力」，不能宣稱 NPC 已像真人、已達 ChatGPT 對話自然度，或能在多輪壓力情境維持角色。下一輪必須使用兩側都自然且長度相近的隨機多輪 Hard Blind Test。此有限通過仍不授權 API Key、付費模型、正式 Runtime rollout 或 Canon 升格。
 
 ## 安全邊界
 
@@ -62,6 +64,10 @@ Baseline 的單一 Validator 失敗是倉庫失火案例故意保留的「綜上
 - 嚴格 Schema：schemas/npc_actor
 - 20 情境與輸出：samples/npc_actor01
 - SHA-256：samples/npc_actor01/npc_actor01_evidence_hashes.json
+- 真人評審：samples/npc_actor01/npc_actor01_human_blind_review_result.json
+- 真人評審 strict field assertions（嚴格欄位斷言）與 packet／answer-key 對齊：PASS。
+- 本輪 JSON：10／10 可解析；SHA-256：9／9 與 manifest 相符。
+- 本輪 focused tests：PASS；完整 `clean test` 由 Gradle daemon log 確認 `BUILD SUCCESSFUL in 4m 18s`。因桌面工具先於背景 Gradle 完成而逾時，本輪未重新取得逐項 XML 計數；前一技術驗證仍為 886／886。
 - focused tests：NpcActorContractTest、NpcActorServicesTest、NpcActorEvaluationServiceTest、NpcActorCliTest、NpcAutonomyTest
 - focused tests：15／15 PASS。
 - 完整測試：886／886 PASS。

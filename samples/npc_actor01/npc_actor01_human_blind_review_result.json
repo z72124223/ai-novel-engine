@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "packetId": "npc-actor01-blind-192126ab8b13",
+  "reviewStatus": "HUMAN_BLIND_REVIEW_COMPLETE",
+  "reviewedAt": "2026-07-13T20:22:40+08:00",
+  "reviewerRole": "PRODUCT_OWNER",
+  "answerKeyDisclosedBeforeCompletion": false,
+  "ratings": [
+    { "reviewId": "review-npc-actor01-01", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-02", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-03", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-04", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-05", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-06", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-07", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-08", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-09", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-10", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-11", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-12", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-13", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-14", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-15", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-16", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-17", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-18", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-19", "selectedOption": "B", "actorOption": "B", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false },
+    { "reviewId": "review-npc-actor01-20", "selectedOption": "A", "actorOption": "A", "outcome": "ACTOR_PREFERRED", "knowledgeLeakFlagged": false, "safetyRegressionFlagged": false }
+  ],
+  "summary": {
+    "ratingCount": 20,
+    "actorPreferredCount": 20,
+    "baselinePreferredCount": 0,
+    "tieCount": 0,
+    "bothFailCount": 0,
+    "knowledgeLeakFlagCount": 0,
+    "safetyRegressionFlagCount": 0
+  },
+  "decision": "OFFLINE_FOUNDATION_ACCEPTED_WITH_EVALUATION_LIMITATION",
+  "reviewerValidityConcern": "The contrast was too obvious: the baseline repeatedly used explicit AI-style explanation while the actor option was concise. This review detects removal of gross AI exposition but is weak evidence for human-like character performance.",
+  "claimBoundary": {
+    "supported": [
+      "The reviewer measurably preferred the actor options over the deliberately explanatory baseline in all 20 fixed scenarios.",
+      "No knowledge leak or new safety regression was flagged during this review."
+    ],
+    "notSupported": [
+      "NPC dialogue is generally human-like.",
+      "NPC dialogue matches the naturalness of a ChatGPT conversation.",
+      "The actor remains natural across multi-turn, ambiguous, or adversarial scenes.",
+      "Live API use or production rollout is approved."
+    ],
+    "requiredNextEvidence": [
+      "A hard blind test where both candidates are concise and plausible.",
+      "Multi-turn scenes that test stable voice, private motives, hesitation, deception, silence, and repair.",
+      "Randomized option order and unseen scenarios with the answer key withheld until completion."
+    ]
+  }
+}
