@@ -1,16 +1,17 @@
 # Project Controller — NPC-ACTOR-06
 
-## Current route
+## Current route — NPC-ACTOR-08
 
-Current completed package: `NPC-ACTOR-07_FORMAL_RUNTIME_SHADOW`.
+Current active package: `NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE`.
 
 Use `run-local-npc-actor-shadow` only with an existing formal SQLite Session. The command must
 use `previewTurnContext`; it must not initialize a database, create a pending context or call
 `resolve-turn`. Model output remains an untrusted candidate even when every validator accepts it.
 Verify the database SHA-256 and recorded state counters before and after every shadow run.
 
-Stop after NPC-ACTOR-07. NPC-ACTOR-08 requires a new Product Owner authorization before any
-human-approved candidate may enter the formal resolve pipeline.
+The Product Owner authorized building NPC-ACTOR-08. This is not approval for an unseen candidate.
+Every real candidate must be written to a reviewable package and receive a separate exact-bound
+human decision before entering the existing formal resolve pipeline.
 
 ```text
 NPC-ACTOR-05 provides the bounded safety loop
@@ -23,11 +24,22 @@ NPC-ACTOR-05 provides the bounded safety loop
 
 GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
 
-1. `PLANS.md` Current Plan Window V16;
-2. `docs/work-packages/NPC-ACTOR-07_FORMAL_RUNTIME_SHADOW.md`;
+1. `PLANS.md` Current Plan Window V17;
+2. `docs/work-packages/NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE.md`;
 3. `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`;
 4. `docs/npc_actor/NPC_ACTOR05_IMPLEMENTATION_REPORT.md`;
-5. only files required by NPC-ACTOR-07.
+5. only files required by NPC-ACTOR-08.
+
+## NPC-ACTOR-08 mandatory rules
+
+- keep prepare and resolve as separate commands;
+- never interpret package authorization or ordinary chat consent as candidate approval;
+- bind the human decision to candidate and formal Context hashes;
+- reject stale, replayed, tampered or mismatched candidates;
+- never compile model-authored arbitrary state deltas, Canon, Memory or Knowledge writes;
+- call only the existing `MultiTurnRuntime.resolveTurn` path for an approved candidate;
+- use test-only approvals for automated proof and label them as test evidence, not Product Owner review;
+- do not run a real approved 8B candidate without presenting that candidate for separate review.
 
 ## Completed work
 

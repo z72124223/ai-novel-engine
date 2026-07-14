@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_formal_approval_v1.schema.json",
+  "title": "NPC-ACTOR-08 Human-Approved Formal Resolve V1",
+  "oneOf": [
+    { "$ref": "#/$defs/input" },
+    { "$ref": "#/$defs/candidatePackage" },
+    { "$ref": "#/$defs/humanDecision" },
+    { "$ref": "#/$defs/resolveReport" }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "voiceProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "register", "principles", "preferredPatterns", "forbiddenPatterns"],
+      "properties": {
+        "locale": { "$ref": "#/$defs/nonEmpty" },
+        "register": { "$ref": "#/$defs/nonEmpty" },
+        "principles": { "type": "array", "items": { "type": "string" } },
+        "preferredPatterns": { "type": "array", "items": { "type": "string" } },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["npcId", "deepMotivation", "falseBelief", "fear", "relationshipDebts", "offscreenAgenda", "resourceIds", "voiceProfile", "sandboxCandidateOnly"],
+      "properties": {
+        "npcId": { "$ref": "#/$defs/nonEmpty" },
+        "deepMotivation": { "$ref": "#/$defs/nonEmpty" },
+        "falseBelief": { "type": "string" },
+        "fear": { "type": "string" },
+        "relationshipDebts": { "type": "array", "items": { "type": "string" } },
+        "offscreenAgenda": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "resourceIds": { "$ref": "#/$defs/stringList" },
+        "voiceProfile": { "$ref": "#/$defs/voiceProfile" },
+        "sandboxCandidateOnly": { "const": true }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "preparationId", "sessionId", "playerInput", "profile", "targetIds", "physicalContext", "outputConstraints", "maxAttempts", "maxElapsedMinutes"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "FORMAL_RUNTIME_CANDIDATE_INPUT" },
+        "preparationId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "playerInput": { "$ref": "#/$defs/nonEmpty" },
+        "profile": { "$ref": "#/$defs/profile" },
+        "targetIds": { "type": "array", "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "physicalContext": { "$ref": "npc_actor_safety_loop_v1.schema.json#/$defs/engineContext" },
+        "outputConstraints": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/outputConstraints" },
+        "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "maxElapsedMinutes": { "type": "integer", "minimum": 1, "maximum": 60 }
+      }
+    },
+    "stateEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["databaseSha256", "sessionStateVersion", "nextTurnNumber", "appliedTurnCount", "turnLogCount", "eventCount", "memoryCount", "knowledgeCount", "formalPhysicalTransitionCount", "formalPhysicalStateVersion", "pendingContextPresent"],
+      "properties": {
+        "databaseSha256": { "$ref": "#/$defs/sha256" },
+        "sessionStateVersion": { "type": "integer", "minimum": 0 },
+        "nextTurnNumber": { "type": "integer", "minimum": 1 },
+        "appliedTurnCount": { "type": "integer", "minimum": 0 },
+        "turnLogCount": { "type": "integer", "minimum": 0 },
+        "eventCount": { "type": "integer", "minimum": 0 },
+        "memoryCount": { "type": "integer", "minimum": 0 },
+        "knowledgeCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalTransitionCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalStateVersion": { "type": ["integer", "null"], "minimum": 0 },
+        "pendingContextPresent": { "type": "boolean" }
+      }
+    },
+    "candidatePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "candidateId", "preparationId", "projectId", "sessionId", "turnId", "contextId", "contextHash", "turnNumber", "baseStateVersion", "resultId", "resultCanonicalSha256", "actorRequest", "visibleSummary", "selectedResponse", "acceptedProposal", "localModelReport", "aiTurnResult", "formalPhysicalContext", "npcDecisionTrace", "gameMasterResolution", "preparationBeforeState", "preparationAfterState"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "FORMAL_RUNTIME_NON_CANON_CANDIDATE" },
+        "candidateId": { "$ref": "#/$defs/nonEmpty" },
+        "preparationId": { "$ref": "#/$defs/nonEmpty" },
+        "projectId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "turnId": { "$ref": "#/$defs/nonEmpty" },
+        "contextId": { "$ref": "#/$defs/nonEmpty" },
+        "contextHash": { "$ref": "#/$defs/sha256" },
+        "turnNumber": { "type": "integer", "minimum": 1 },
+        "baseStateVersion": { "type": "integer", "minimum": 0 },
+        "resultId": { "$ref": "#/$defs/nonEmpty" },
+        "resultCanonicalSha256": { "$ref": "#/$defs/sha256" },
+        "actorRequest": { "type": "object" },
+        "visibleSummary": { "type": "object" },
+        "selectedResponse": { "type": "object" },
+        "acceptedProposal": { "type": "object" },
+        "localModelReport": { "type": "object" },
+        "aiTurnResult": { "type": "object" },
+        "formalPhysicalContext": { "type": "object" },
+        "npcDecisionTrace": { "type": "object" },
+        "gameMasterResolution": { "type": "object" },
+        "preparationBeforeState": { "$ref": "#/$defs/stateEvidence" },
+        "preparationAfterState": { "$ref": "#/$defs/stateEvidence" }
+      }
+    },
+    "candidatePackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "status", "candidateSha256", "payload", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "status": { "const": "HUMAN_APPROVAL_REQUIRED" },
+        "candidateSha256": { "$ref": "#/$defs/sha256" },
+        "payload": { "$ref": "#/$defs/candidatePayload" },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "humanDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "decisionId", "decision", "candidateId", "candidateSha256", "projectId", "sessionId", "turnId", "contextId", "contextHash", "turnNumber", "baseStateVersion", "resultId", "resultCanonicalSha256", "reviewerId", "reviewedAt", "acknowledgement", "note", "testOnly"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "HUMAN_APPROVAL_DECISION" },
+        "decisionId": { "$ref": "#/$defs/nonEmpty" },
+        "decision": { "enum": ["APPROVE_NON_CANON_FORMAL_TURN", "REJECT_NON_CANON_FORMAL_TURN"] },
+        "candidateId": { "$ref": "#/$defs/nonEmpty" },
+        "candidateSha256": { "$ref": "#/$defs/sha256" },
+        "projectId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "turnId": { "$ref": "#/$defs/nonEmpty" },
+        "contextId": { "$ref": "#/$defs/nonEmpty" },
+        "contextHash": { "$ref": "#/$defs/sha256" },
+        "turnNumber": { "type": "integer", "minimum": 1 },
+        "baseStateVersion": { "type": "integer", "minimum": 0 },
+        "resultId": { "$ref": "#/$defs/nonEmpty" },
+        "resultCanonicalSha256": { "$ref": "#/$defs/sha256" },
+        "reviewerId": { "$ref": "#/$defs/nonEmpty" },
+        "reviewedAt": { "$ref": "#/$defs/nonEmpty" },
+        "acknowledgement": { "const": "I_REVIEWED_AND_APPROVE_OR_REJECT_THIS_EXACT_NON_CANON_CANDIDATE" },
+        "note": { "type": "string" },
+        "testOnly": { "type": "boolean" }
+      }
+    },
+    "resolveReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "status", "candidateId", "candidateSha256", "decisionId", "decisionSha256", "decision", "projectId", "sessionId", "turnId", "contextId", "turnNumber", "resultId", "beforeState", "afterState", "formalTurnApplied", "pendingContextCleared", "testOnlyApproval", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "FORMAL_RUNTIME_NON_CANON_RESOLVE_REPORT" },
+        "status": { "enum": ["APPROVED_AND_APPLIED_NON_CANON", "REJECTED_AND_ABORTED"] },
+        "candidateId": { "$ref": "#/$defs/nonEmpty" },
+        "candidateSha256": { "$ref": "#/$defs/sha256" },
+        "decisionId": { "$ref": "#/$defs/nonEmpty" },
+        "decisionSha256": { "$ref": "#/$defs/sha256" },
+        "decision": { "enum": ["APPROVE_NON_CANON_FORMAL_TURN", "REJECT_NON_CANON_FORMAL_TURN"] },
+        "projectId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "turnId": { "$ref": "#/$defs/nonEmpty" },
+        "contextId": { "$ref": "#/$defs/nonEmpty" },
+        "turnNumber": { "type": "integer", "minimum": 1 },
+        "resultId": { "$ref": "#/$defs/nonEmpty" },
+        "beforeState": { "$ref": "#/$defs/stateEvidence" },
+        "afterState": { "$ref": "#/$defs/stateEvidence" },
+        "formalTurnApplied": { "type": "boolean" },
+        "pendingContextCleared": { "const": true },
+        "testOnlyApproval": { "type": "boolean" },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    }
+  }
+}

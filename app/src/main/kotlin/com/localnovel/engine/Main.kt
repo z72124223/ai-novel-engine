@@ -57,6 +57,8 @@ class Cli {
                 "run-npc-actor-safety-loop" -> NpcActorCli.runSafetyLoop(options)
                 "run-local-npc-actor-safety-loop" -> NpcActorCli.runLocalSafetyLoop(options)
                 "run-local-npc-actor-shadow" -> NpcActorCli.runLocalShadow(options)
+                "prepare-local-npc-actor-formal-turn" -> NpcActorCli.prepareLocalFormalTurn(options)
+                "resolve-local-npc-actor-formal-turn" -> NpcActorCli.resolveLocalFormalTurn(options)
                 "evaluate-npc-actor-safety-loop-suite" -> NpcActorCli.evaluateSafetyLoopSuite(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
@@ -267,6 +269,8 @@ class Cli {
               run-npc-actor-safety-loop --context <context.json> --input <loop-input.json> --out <loop-result.json>
               run-local-npc-actor-safety-loop --repo <repository-root> --context <context.json> (--request <local-request.json> | --input <npc-actor05-loop-input.json>) --out <local-report.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
               run-local-npc-actor-shadow --repo <repository-root> --db <formal.db> --request <shadow-input.json> --out <shadow-report.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
+              prepare-local-npc-actor-formal-turn --repo <repository-root> --db <formal.db> --request <formal-input.json> --out <candidate-package.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
+              resolve-local-npc-actor-formal-turn --db <formal.db> --candidate <candidate-package.json> --decision <human-decision.json> --out <resolve-report.json>
               evaluate-npc-actor-safety-loop-suite --repo <repository-root> --suite <suite.json> --report <report.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]

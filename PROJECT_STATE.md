@@ -2,7 +2,22 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-07 Formal Runtime Shadow
+## Current Override — NPC-ACTOR-08 Human-Approved Formal Resolve
+
+- Status: `NPC_ACTOR08_AUTHORIZED / IMPLEMENTATION_IN_PROGRESS / PER_CANDIDATE_APPROVAL_REQUIRED`.
+- Current branch: `codex/npc-actor08-human-approved-formal-resolve`.
+- Base SHA: `66d86467cfcdf759656d9e0d276ae8ff4008366c` from the remote default branch.
+- Required plan: `PLANS.md` Current Plan Window V17.
+- Required work package: `docs/work-packages/NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE.md`.
+- Product Owner authorization permits building and testing the reviewed non-Canon approval path.
+- The authorization does not approve any unseen model candidate. Every real candidate still requires
+  a separate decision file bound to candidate, Session, Context, turn, state-version and result Hashes.
+- Mandatory path: local candidate → existing safety loop → engine-owned result compilation → exact
+  human decision validation → existing `resolveTurn` validators and SQLite transaction.
+- No cloud API, paid Provider, server, port, Canon promotion, Memory／Knowledge authoring, media or
+  next-chapter work is authorized.
+
+## Previous Override — NPC-ACTOR-07 Formal Runtime Shadow
 
 - Status: `NPC_ACTOR07_TECHNICAL_PASS / NPC_ACTOR08_AUTHORIZATION_REQUIRED`.
 - Current branch: `codex/npc-actor07-formal-runtime-shadow`.

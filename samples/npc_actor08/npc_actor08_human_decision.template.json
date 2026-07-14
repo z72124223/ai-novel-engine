@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "boundary": "HUMAN_APPROVAL_DECISION",
+  "decisionId": "REPLACE_WITH_UNIQUE_DECISION_ID",
+  "decision": "REJECT_NON_CANON_FORMAL_TURN",
+  "candidateId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "candidateSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "projectId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "sessionId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "turnId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "contextId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "contextHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "turnNumber": 1,
+  "baseStateVersion": 0,
+  "resultId": "COPY_FROM_CANDIDATE_PACKAGE",
+  "resultCanonicalSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reviewerId": "REPLACE_WITH_HUMAN_REVIEWER_ID",
+  "reviewedAt": "REPLACE_WITH_ISO_8601_TIMESTAMP",
+  "acknowledgement": "I_REVIEWED_AND_APPROVE_OR_REJECT_THIS_EXACT_NON_CANON_CANDIDATE",
+  "note": "Template defaults to rejection. Copy every binding from the reviewed candidate package before use.",
+  "testOnly": false
+}

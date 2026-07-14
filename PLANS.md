@@ -1,10 +1,109 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V16`
-> (`NPC_ACTOR07_FORMAL_RUNTIME_SHADOW`) first. All older plan windows are preserved
-> evidence only. Current clean-worktree base:
-> `d7064355cc44c55ade90843d62017d29ae98af22` on
-> `codex/npc-actor07-formal-runtime-shadow`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V17`
+> (`NPC_ACTOR08_HUMAN_APPROVED_FORMAL_RESOLVE`) first. All older plan windows are
+> preserved evidence only. Current clean-worktree base:
+> `66d86467cfcdf759656d9e0d276ae8ff4008366c` on
+> `codex/npc-actor08-human-approved-formal-resolve`. GitHub remote is the team authority.
+
+## Current Plan Window V17
+
+標記：`NPC_ACTOR08_HUMAN_APPROVED_FORMAL_RESOLVE`
+
+狀態：**IN_PROGRESS — 已獲工作包授權；逐候選人工核准仍為必要 Gate**
+
+日期：2026-07-15
+
+### Goal
+
+在 NPC-ACTOR-07 唯讀影子流程之後，建立第一個 human-approved（人類核准）非 Canon
+正式回合 Pilot。系統先用既有正式 Session 建立 pending context，再以本機 Qwen3-8B 產生
+候選並通過角色、知識、物理、世界合法性與時間預算安全迴路。候選不得自動套用；只有一份
+精確綁定候選 Hash、Session、Context、turn、state version 與 result Hash 的人工決定檔，
+才能讓既有 `MultiTurnRuntime.resolveTurn` 在原交易中套用。
+
+### Global Strategy
+
+- 工作包授權與逐候選核准分離；Product Owner 的「好」只授權建置 NPC-ACTOR-08，不能自動
+  核准任何尚未看過的模型候選。
+- 準備階段以 `prepareTurn` 建立唯一 pending context，重用 NPC-ACTOR-07 的角色可見性編譯、
+  NPC-ACTOR-06 本機生成與 NPC-ACTOR-05 安全迴路。
+- 引擎將通過的模型回應編譯為固定欄位的 `AiTurnResult`；模型不能自行提供 Session 身分、
+  state delta、Canon、Memory、Knowledge 或資料庫寫入。
+- 候選包使用內容 SHA-256；人工決定必須逐欄綁定候選及正式 Context。竄改、過期、重播、
+  錯誤 Session、錯誤 Hash 或模糊同意一律 fail closed（安全拒絕）。
+- 核准後仍完整通過 `AiTurnResultValidator`、物理 Gate、Knowledge Boundary、Narrative Quality、
+  `StateReducer` 與 SQLite transaction；不新增旁路寫入。
+- 拒絕或候選產生失敗時清除本工作包建立的 pending context，不留下半完成正式回合。
+
+### Non-Goals
+
+- 不把工作包授權冒充逐候選核准，不自動接受任何真實模型輸出。
+- 不接雲端 API、付費 Provider、server 或 port；不下載新模型。
+- 不修改 Migration、Repository transaction、`StateReducer`、Validator 規則或正式 Canon。
+- 不讓模型直接產生 memory／knowledge／Canon 寫入，不生成圖片、影片、音訊或下一章。
+- 不宣稱一次非 Canon Pilot 已達產品上線品質或 NPC 完全像真人。
+
+### Scope
+
+- 治理：`PLANS.md`、工作包、完成報告、`PROJECT_STATE.md`、controller。
+- Kotlin：共用角色可見性 Context 編譯、候選／核准模型、準備與正式套用服務、CLI。
+- 契約：候選包、人工決定與結果報告的嚴格 JSON Schema 和非敏感 sample。
+- 驗證：fake generator、未核准零套用、竄改／過期／重播拒絕、拒絕清理 pending、成功交易、
+  物理與秘密邊界、focused／related／full tests、JSON／Schema／Hash／Git scope。
+
+### Confirmed Facts
+
+- 遠端預設分支基線為 `66d86467cfcdf759656d9e0d276ae8ff4008366c`，NPC-ACTOR-07 已完成。
+- `MultiTurnRuntime.resolveTurn` 已檢查 pending context、Session、turn、state version、Context Hash、
+  result id 重播、所有 Validator、敘事品質，並在既有 SQLite transaction 中套用。
+- `FormalTurnPhysicalGateValidator` 已將物理提案綁定 Context 與 canonical result Hash；瞬時物理
+  動作可用 V1，需保存狀態的物理動作必須使用 V2 Hash-bound context。
+- `LocalNpcActorSafetyLoopReport` 保存所有生成回應與 accepted attempt number，可精確選出通過候選。
+- Repository 已提供 `abortPendingContext`，可在人工拒絕或準備失敗時安全清除本包 pending context。
+
+### Assumptions
+
+- 第一個技術 Pilot 可使用 fake local generator 和 test-only（僅測試）人工決定證明完整交易；
+  工作包完成不會把 Product Owner 未看過的真實 8B 候選自動套用。
+- 第一版正式 NPC 回合只允許引擎產生 bounded event、time advance 與已驗證 physical proposal；
+  模型不得夾帶任意 state delta。
+
+### Open Questions
+
+- 真實 8B 候選的內容核准必須在候選包產生後另行進行，不是本工作包建置授權的一部分。
+- 同場對話仍受現有 Game Master offscreen 規則限制；本包不放寬。
+
+### Implementation Steps
+
+- [x] Step 1：建立乾淨 Worktree、核對正式交易與安全迴路，更新計畫與工作包。
+- [x] Step 2：建立候選封裝、引擎結果編譯、人工核准綁定與過期／重播防護。
+- [x] Step 3：新增 CLI、嚴格 Schema、sample 與 focused tests。
+- [x] Step 4：執行 test-only 人工核准非 Canon 正式交易 Pilot，保存前後狀態及 Hash 證據。
+- [ ] Step 5：執行 related／full tests 與所有契約檢查，更新治理、Commit、Push、整合預設分支。
+
+### Verification
+
+- 未提供人工決定、決定為拒絕、候選被竄改、Session／Context／Hash 不符、狀態過期或重播時，
+  不得套用正式回合。
+- 核准成功只能令既有 pending turn 由 pending 變 applied，Session state version／turn 各增加一，
+  並保存 accepted NPC decision trace；不得改 Canon、Memory 或 Knowledge。
+- 模型只能看到該 NPC 的 actor-visible 資料與物理白名單；不得看 engine-owned 測量、作者秘密或
+  其他角色私有資料。
+- focused、related、`./gradlew.bat clean test --no-daemon`、JSON、Schema、Hash、秘密、路徑、
+  server／port 與 `git diff --check` 全部通過。
+
+### Risks
+
+- 人工決定檔是本機流程證據而非數位簽章；因此只能防止意外竄改與錯誤綁定，不能防止同時惡意
+  改寫候選和決定檔的主機攻擊者。
+- 準備後人工長時間不決定會留下 pending context；必須提供明確 reject／abort 流程並測試。
+- 引擎編譯的敘事仍可能觸發品質 Gate；失敗必須保留 pending 供修正或由人工拒絕，不得繞過 Gate。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「好」，明確授權執行上一則完整說明的 NPC-ACTOR-08。
+- 2026-07-15：授權被限定為建置工作包，不被解讀成對任何尚未產生候選內容的逐筆批准。
 
 ## Current Plan Window V16
 

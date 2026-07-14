@@ -15,6 +15,9 @@ import com.localnovel.engine.model.NpcActorSafetyLoopSuite
 import com.localnovel.engine.model.LocalNpcActorRuntimeConfig
 import com.localnovel.engine.model.LocalNpcActorSafetyLoopRequest
 import com.localnovel.engine.model.LocalNpcActorShadowInput
+import com.localnovel.engine.model.LocalNpcActorFormalTurnCandidatePackage
+import com.localnovel.engine.model.LocalNpcActorFormalTurnDecision
+import com.localnovel.engine.model.LocalNpcActorFormalTurnInput
 import com.localnovel.engine.model.NpcEmbodiedHumanReviewResult
 import com.localnovel.engine.model.NpcEmbodiedAnswerKey
 import com.localnovel.engine.model.NpcEmbodiedInternalReviewResult
@@ -36,6 +39,8 @@ import com.localnovel.engine.service.NpcActorSafetyLoopService
 import com.localnovel.engine.service.LlamaCppNpcActorPhysicalGateway
 import com.localnovel.engine.service.LocalNpcActorSafetyLoopService
 import com.localnovel.engine.service.LocalNpcActorShadowRuntimeService
+import com.localnovel.engine.service.LocalNpcActorFormalTurnPreparationService
+import com.localnovel.engine.service.LocalNpcActorFormalTurnResolutionService
 import com.localnovel.engine.repository.SqliteStoryRepository
 import java.nio.file.Files
 import java.nio.file.Path
@@ -157,6 +162,61 @@ internal object NpcActorCli {
         println("generatedAttemptCount=${report.localModelReport.generatedAttemptCount}")
         println("databaseUnchanged=${report.beforeState.databaseSha256 == report.afterState.databaseSha256}")
         println("formalStateWritePerformed=${report.formalStateWritePerformed}")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun prepareLocalFormalTurn(options: Map<String, String>): Int {
+        val repositoryRoot = Path.of(options.requiredCliOption("repo")).toAbsolutePath().normalize()
+        val database = Path.of(options.requiredCliOption("db")).toAbsolutePath().normalize()
+        require(Files.isRegularFile(database)) {
+            "Formal SQLite database does not exist; NPC-ACTOR-08 never initializes it: $database"
+        }
+        val input = NpcActorJson.strict.decodeFromString<LocalNpcActorFormalTurnInput>(
+            Files.readString(Path.of(options.requiredCliOption("request"))).removePrefix("\uFEFF"),
+        )
+        val schema = Path.of(
+            options["schema"]
+                ?: repositoryRoot.resolve("schemas/npc_actor/npc_actor_physical_response_v1.schema.json").toString(),
+        ).toAbsolutePath().normalize()
+        val repository = SqliteStoryRepository(database)
+        val candidate = LocalNpcActorFormalTurnPreparationService(
+            repository = repository,
+            generator = localGateway(options, schema),
+        ).prepare(input)
+        val output = Path.of(options.requiredCliOption("out"))
+        try {
+            writeStrictJson(output, candidate)
+        } catch (error: Throwable) {
+            repository.abortPendingContext(candidate.payload.sessionId, candidate.payload.contextId)
+            throw error
+        }
+        println("status=${candidate.status}")
+        println("candidateId=${candidate.payload.candidateId}")
+        println("candidateSha256=${candidate.candidateSha256}")
+        println("contextId=${candidate.payload.contextId}")
+        println("formalTurnApplied=false")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun resolveLocalFormalTurn(options: Map<String, String>): Int {
+        val database = Path.of(options.requiredCliOption("db")).toAbsolutePath().normalize()
+        require(Files.isRegularFile(database)) { "Formal SQLite database does not exist: $database" }
+        val candidate = NpcActorJson.strict.decodeFromString<LocalNpcActorFormalTurnCandidatePackage>(
+            Files.readString(Path.of(options.requiredCliOption("candidate"))).removePrefix("\uFEFF"),
+        )
+        val decision = NpcActorJson.strict.decodeFromString<LocalNpcActorFormalTurnDecision>(
+            Files.readString(Path.of(options.requiredCliOption("decision"))).removePrefix("\uFEFF"),
+        )
+        val report = LocalNpcActorFormalTurnResolutionService(SqliteStoryRepository(database))
+            .resolve(candidate, decision)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, report)
+        println("status=${report.status}")
+        println("candidateId=${report.candidateId}")
+        println("formalTurnApplied=${report.formalTurnApplied}")
+        println("pendingContextCleared=${report.pendingContextCleared}")
         println("wrote=$output")
         return 0
     }
