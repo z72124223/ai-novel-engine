@@ -128,10 +128,14 @@ class GameMasterResolutionService {
                 ?: context.characterStates.singleOrNull { it.characterId == player.id }?.locationId
         }.toSet()
         val ownClaimIds = context.knowledgeClaims.filter { it.characterId == proposal.npcId }.map { it.claimId }.toSet()
-        val ownMemoryIds = context.characterMemories
-            .filter { it.ownerCharacterId == proposal.npcId || it.characterId == proposal.npcId }
-            .map { it.id }
-            .toSet()
+        val ownMemoryIds = (
+            context.characterMemories
+                .filter { it.ownerCharacterId == proposal.npcId || it.characterId == proposal.npcId }
+                .map { it.id } +
+                context.retrievedMemories
+                    .filter { it.ownerCharacterId == proposal.npcId }
+                    .map { it.memoryId }
+            ).toSet()
         if (npc == null) findings += "unknown_or_player_actor"
         if (stateLocation != proposal.locationId) findings += "location_mismatch"
         if (proposal.locationId in playerLocations) findings += "player_not_offscreen"

@@ -56,6 +56,7 @@ class Cli {
                 "create-npc-actor-safety-loop-suite" -> NpcActorCli.createSafetyLoopSuite(options)
                 "run-npc-actor-safety-loop" -> NpcActorCli.runSafetyLoop(options)
                 "run-local-npc-actor-safety-loop" -> NpcActorCli.runLocalSafetyLoop(options)
+                "run-local-npc-actor-shadow" -> NpcActorCli.runLocalShadow(options)
                 "evaluate-npc-actor-safety-loop-suite" -> NpcActorCli.evaluateSafetyLoopSuite(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
@@ -265,6 +266,7 @@ class Cli {
               create-npc-actor-safety-loop-suite --repo <repository-root> [--out-dir samples/npc_actor05]
               run-npc-actor-safety-loop --context <context.json> --input <loop-input.json> --out <loop-result.json>
               run-local-npc-actor-safety-loop --repo <repository-root> --context <context.json> (--request <local-request.json> | --input <npc-actor05-loop-input.json>) --out <local-report.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
+              run-local-npc-actor-shadow --repo <repository-root> --db <formal.db> --request <shadow-input.json> --out <shadow-report.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
               evaluate-npc-actor-safety-loop-suite --repo <repository-root> --suite <suite.json> --report <report.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]

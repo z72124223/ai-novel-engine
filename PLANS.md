@@ -1,10 +1,122 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V15`
-> (`NPC_ACTOR06_LOCAL_MODEL_PILOT`) first. All older plan windows are preserved
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V16`
+> (`NPC_ACTOR07_FORMAL_RUNTIME_SHADOW`) first. All older plan windows are preserved
 > evidence only. Current clean-worktree base:
-> `9b7851736c0a80d59e2b407e12ff50777d9ed264` on
-> `codex/npc-actor06-local-model-pilot`. GitHub remote is the team authority.
+> `d7064355cc44c55ade90843d62017d29ae98af22` on
+> `codex/npc-actor07-formal-runtime-shadow`. GitHub remote is the team authority.
+
+## Current Plan Window V16
+
+標記：`NPC_ACTOR07_FORMAL_RUNTIME_SHADOW`
+
+狀態：**COMPLETE — 正式 Session 影子接入通過，停止在 NPC-ACTOR-08 授權 Gate**
+
+日期：2026-07-15
+
+### Goal
+
+把 NPC-ACTOR-06 已驗證的本機 Qwen3-8B 產生器接到真正的 `MultiTurnRuntime` Session，
+但只使用 `previewTurnContext` 建立唯讀影子資料包。模型只能看到指定 NPC 自己可見的狀態、
+記憶、信念、目標、關係、能力與物理動作白名單；輸出仍須通過既有角色、知識、物理、
+世界合法性與時間預算檢查。無論接受或拒絕，本包都不得建立 pending context、呼叫
+`resolve-turn`、改寫 SQLite、Canon、Memory、Knowledge 或物理正式狀態。
+
+### Global Strategy
+
+- 從正式 SQLite Session 以 `MultiTurnRuntime.previewTurnContext` 取得完成正規化與 Hash 的
+  `ContextPacket`，不得呼叫會保存 pending context 的 `prepareTurn`。
+- 新增一個明確的 Shadow Mode（影子模式）輸入契約，把 Session id、NPC profile、玩家刺激、
+  對話目標與 engine-owned（引擎私有）物理上下文綁成可重現請求。
+- 以確定性 actor visibility filter（角色可見性過濾）只保留該 NPC 的 retrieved memory、
+  knowledge claim、current goal、relationship、authorized capability 與同地點／本人相關事件。
+- 重用 NPC-ACTOR-06 的本機生成器與 NPC-ACTOR-05 的五階段安全閉環，不複製 Validator 規則。
+- 產生前後比較 Session state version、pending context、turn log、event 與 DB 檔案 Hash；任何改變
+  都視為失敗。
+- 真實模型 Pilot 只在臨時 SQLite 資料庫執行；證據、Schema、Hash 與報告提交 GitHub，
+  臨時資料庫與模型權重不得提交。
+
+### Non-Goals
+
+- 不呼叫 `resolve-turn`，不自動套用接受候選，不新增人工批准後執行流程。
+- 不修改 Migration、Repository、`StateReducer`、transaction、正式 Canon、Memory 或 Knowledge。
+- 不開 server／port，不接 OpenAI API 或任何付費 Provider，不下載新模型。
+- 不生成圖片、影片、音訊，不寫下一章，不新增互動遊戲功能。
+- 不宣稱一次 Shadow Pilot 證明 NPC 像真人或完整理解現實物理。
+
+### Scope
+
+- 治理：`PLANS.md`、NPC-ACTOR-07 工作包、完成報告、`PROJECT_STATE.md`、controller、`AGENTS.md`。
+- Kotlin：Shadow request／report 模型、可見性編譯器、唯讀 Runtime orchestration、CLI。
+- 契約：嚴格 JSON Schema、可重現 sample input、Pilot report、SHA-256 manifest。
+- 驗證：正式 Session fake-model tests、秘密／跨角色資料隔離、接受／拒絕皆零寫入、真實 8B
+  臨時 Session Pilot、focused／related／full tests 與 Git scope。
+
+### Confirmed Facts
+
+- 遠端預設分支已普通快轉至 `d7064355cc44c55ade90843d62017d29ae98af22`，與本工作區 0／0 對齊。
+- NPC-ACTOR-06 已以 Qwen3-8B Q5_K_M 完成真實本機生成；focused 8／8、related 84／84、
+  full 961／961 PASS，且模型未寫正式狀態。
+- `MultiTurnRuntime.previewTurnContext` 會建立正式 Context，但不呼叫 `savePendingContext`。
+- `NpcActorRequestBuilder` 已能只選指定 NPC 的 retrieved memories、knowledge claims、goal 與
+  authorized capabilities；但現有 perception 會把所有 recent events 視為可見，本包必須再縮限。
+- `LocalNpcActorSafetyLoopService` 已限制最多兩次模型嘗試，且只將通過結果標成
+  `ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE`。
+- 既有 `GameMasterResolutionService` 是 offscreen（離場 NPC）邊界；玩家與 NPC 同地點時會拒絕，
+  本包不得為了讓測試通過而放寬。
+
+### Assumptions
+
+- 臨時正式 Session 加非 Canon 物理 overlay（覆蓋資料）足以驗證唯讀整合，不必改 Repository
+  去讀取正式物理 registry。
+- 8B 模型仍適合 4096 context、512 output 的短 NPC 影子候選；品質與延遲須重新量測。
+
+### Open Questions
+
+- 同場對話的 Game Master 規則需要未來獨立設計；本包只記錄同場拒絕，不擴張 offscreen 規則。
+- 接受候選何時可由人類核准後進入正式 `resolve-turn`，留給 NPC-ACTOR-08 的新授權 Gate。
+
+### Implementation Steps
+
+- [x] Step 1：合併 NPC-ACTOR-06、建立乾淨 Worktree、完成證據與模型盤點，寫入計畫與工作包。
+- [x] Step 2：建立 Shadow request／report、角色可見性編譯器與唯讀 Runtime service。
+- [x] Step 3：新增 CLI、嚴格 Schema、sample 與 focused tests；驗證接受、拒絕、秘密隔離及零寫入。
+- [x] Step 4：在臨時正式 Session 執行真實 Qwen3-8B Pilot，保存延遲、Hash、模型與零寫入證據。
+- [x] Step 5：執行 related／full Gradle、JSON、Schema、Hash、秘密、絕對路徑、port 與 Git scope
+  驗證；更新治理、Commit、普通 Push，停止在 NPC-ACTOR-08 人工批准執行 Gate。
+
+### Verification
+
+- `previewTurnContext` 產生的 context id 不得出現在 pending context；Session state version 不變。
+- Prompt 只能含指定 NPC 自有記憶／信念／目標／關係／能力；不得含 director goal、author-only
+  secret、其他角色私有資料或 engine-owned 物理數值。
+- 接受與拒絕案例執行前後，SQLite 檔案 SHA-256、turn log、event、pending context 與正式物理狀態
+  必須完全不變。
+- 模型最多兩次；修訂仍只能使用已清理的錯誤代碼與白名單。
+- focused tests、NPC Actor／Physics related tests、`./gradlew.bat clean test --no-daemon`、JSON、
+  Schema、Hash、秘密掃描、絕對路徑掃描、零 port 與 `git diff --check` 全部通過。
+
+### Risks
+
+- 正式 Context 仍含導演與世界資料，若可見性編譯器漏篩會造成秘密洩漏；必須以負面測試封鎖。
+- SQLite WAL／journal 可能使簡單檔案 Hash 難以代表邏輯零寫入；同時檢查資料表計數與 Session
+  版本，不能只看一個 Hash。
+- 8B 可能在真實角色名字與繁中內容上格式失敗；不得增加無限重試或把失敗改寫成 PASS。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「好」，授權執行上一則明確提出的 NPC-ACTOR-07 影子接入。
+- 2026-07-15：NPC-ACTOR-06 以普通快轉接入遠端預設分支，沒有 force push，原髒工作樹未動。
+- 2026-07-15：本機模型 advisor 的登錄表尚未收錄新 8B，但 Repository 內真實 Pilot、模型 Hash
+  與 961／961 測試是較新的直接證據；選擇已驗證 Qwen3-8B，1.7B 只作回退。
+- 2026-07-15：focused tests 自動涵蓋離場接受、同場拒絕、跨角色秘密隔離、狗肩物理拒絕、
+  缺失 runtime 安全失敗與 JSON sample strict decode，使用者不需再做 A/B 測試。
+- 2026-07-15：真實 8B Pilot 使用正式 demo Session；第一次輸出缺少 observable consequence，
+  第二次修訂通過角色與物理綁定後，因玩家與 NPC 同地點被既有 world gate 正確拒絕。
+- 2026-07-15：Pilot 發現 `GameMasterResolutionService` 尚只認 legacy `characterMemories`；已依
+  Canonical `retrievedMemories` 規則補齊同一 NPC 記憶 ID，focused regression tests 通過。
+- 2026-07-15：最終驗證 PASS：focused 6／6、related 82／82、full 967／967；JSON parse、
+  evidence Hash、秘密、絕對路徑、server／port code scan、zero-write report 與 `git diff --check` 全部通過。
 
 ## Current Plan Window V15
 

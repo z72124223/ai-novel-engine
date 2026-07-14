@@ -2,7 +2,29 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-06 Local Model Pilot
+## Current Override — NPC-ACTOR-07 Formal Runtime Shadow
+
+- Status: `NPC_ACTOR07_TECHNICAL_PASS / NPC_ACTOR08_AUTHORIZATION_REQUIRED`.
+- Current branch: `codex/npc-actor07-formal-runtime-shadow`.
+- Base SHA: `d7064355cc44c55ade90843d62017d29ae98af22` from the remote default branch.
+- Required plan: `PLANS.md` Current Plan Window V16.
+- Required work package: `docs/work-packages/NPC-ACTOR-07_FORMAL_RUNTIME_SHADOW.md`.
+- Authorized scope: connect the verified local Qwen3-8B actor to a real formal Session through
+  read-only `previewTurnContext`, actor-visible filtering and the existing safety loop.
+- Mandatory boundary: no pending context, no `resolve-turn`, no SQLite / Canon / Memory /
+  Knowledge / formal physical-state write.
+- Implemented evidence: `docs/npc_actor/NPC_ACTOR07_FORMAL_RUNTIME_SHADOW_REPORT.md` and
+  `samples/npc_actor07/npc_actor07_evidence_manifest.json`.
+- Real 8B Pilot: safely rejected in the demo Session because the player and NPC share a location;
+  database SHA-256, Session version, turn logs, events and physical state all remained unchanged.
+- Verification: focused `6/6`, related `82/82`, full `967/967`, JSON / Hash / secret / path /
+  server-port / Git scope checks all PASS.
+- Current step: stop. Do not implement human-approved formal execution until NPC-ACTOR-08 receives
+  a new explicit Product Owner authorization.
+- True stop: any required formal mutation, Validator weakening, private-data exposure, paid API,
+  server, port or Canon decision.
+
+## Previous Override — NPC-ACTOR-06 Local Model Pilot
 
 - Status: `NPC_ACTOR06_LOCAL_MODEL_TECHNICAL_PASS / FORMAL_RUNTIME_AUTOMATION_NOT_AUTHORIZED`.
 - Completed work: 已在 GTX 1080 Ti 上安裝並驗證 Qwen3-8B Q5_K_M，以直接 `llama.cpp` CLI

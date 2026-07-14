@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_formal_runtime_shadow_v1.schema.json",
+  "title": "NPC-ACTOR-07 Formal Runtime Shadow V1",
+  "oneOf": [
+    { "$ref": "#/$defs/input" },
+    { "$ref": "#/$defs/report" }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "voiceProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "register", "principles", "preferredPatterns", "forbiddenPatterns"],
+      "properties": {
+        "locale": { "$ref": "#/$defs/nonEmpty" },
+        "register": { "$ref": "#/$defs/nonEmpty" },
+        "principles": { "type": "array", "items": { "type": "string" } },
+        "preferredPatterns": { "type": "array", "items": { "type": "string" } },
+        "forbiddenPatterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["npcId", "deepMotivation", "falseBelief", "fear", "relationshipDebts", "offscreenAgenda", "resourceIds", "voiceProfile", "sandboxCandidateOnly"],
+      "properties": {
+        "npcId": { "$ref": "#/$defs/nonEmpty" },
+        "deepMotivation": { "$ref": "#/$defs/nonEmpty" },
+        "falseBelief": { "type": "string" },
+        "fear": { "type": "string" },
+        "relationshipDebts": { "type": "array", "items": { "type": "string" } },
+        "offscreenAgenda": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "resourceIds": { "$ref": "#/$defs/stringList" },
+        "voiceProfile": { "$ref": "#/$defs/voiceProfile" },
+        "sandboxCandidateOnly": { "const": true }
+      }
+    },
+    "outputConstraints": {
+      "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/outputConstraints"
+    },
+    "engineContext": {
+      "$ref": "npc_actor_safety_loop_v1.schema.json#/$defs/engineContext"
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "shadowRunId", "sessionId", "playerInput", "profile", "targetIds", "physicalContext", "outputConstraints", "maxAttempts", "maxElapsedMinutes"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "FORMAL_RUNTIME_SHADOW_INPUT" },
+        "shadowRunId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "playerInput": { "$ref": "#/$defs/nonEmpty" },
+        "profile": { "$ref": "#/$defs/profile" },
+        "targetIds": { "type": "array", "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "physicalContext": { "$ref": "#/$defs/engineContext" },
+        "outputConstraints": { "$ref": "#/$defs/outputConstraints" },
+        "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "maxElapsedMinutes": { "type": "integer", "minimum": 1, "maximum": 60 }
+      }
+    },
+    "stateEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["databaseSha256", "sessionStateVersion", "nextTurnNumber", "appliedTurnCount", "turnLogCount", "eventCount", "formalPhysicalTransitionCount", "formalPhysicalStateVersion", "previewContextPersisted"],
+      "properties": {
+        "databaseSha256": { "$ref": "#/$defs/sha256" },
+        "sessionStateVersion": { "type": "integer", "minimum": 0 },
+        "nextTurnNumber": { "type": "integer", "minimum": 1 },
+        "appliedTurnCount": { "type": "integer", "minimum": 0 },
+        "turnLogCount": { "type": "integer", "minimum": 0 },
+        "eventCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalTransitionCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalStateVersion": { "type": ["integer", "null"], "minimum": 0 },
+        "previewContextPersisted": { "const": false }
+      }
+    },
+    "visibleSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actorId", "targetIds", "locationId", "playerIsElsewhere", "perceivedEventIds", "ownedMemoryIds", "ownedBeliefIds", "capabilityIds", "recentDialogueEvidenceIds"],
+      "properties": {
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "targetIds": { "$ref": "#/$defs/stringList" },
+        "locationId": { "$ref": "#/$defs/nonEmpty" },
+        "playerIsElsewhere": { "type": "boolean" },
+        "perceivedEventIds": { "$ref": "#/$defs/stringList" },
+        "ownedMemoryIds": { "$ref": "#/$defs/stringList" },
+        "ownedBeliefIds": { "$ref": "#/$defs/stringList" },
+        "capabilityIds": { "$ref": "#/$defs/stringList" },
+        "recentDialogueEvidenceIds": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "invocationAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "provider", "modelId", "modelRevision", "modelSha256", "modelFileName", "runtimeId", "reasoning", "contextTokens", "maxOutputTokens", "seed", "elapsedMillis", "rawOutputBytes", "promptSha256", "responseSha256", "serverStarted", "portOpened", "formalStateWritePerformed"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "provider": { "const": "LOCAL_LLAMA_CPP_DIRECT_CLI" },
+        "modelId": { "$ref": "#/$defs/nonEmpty" },
+        "modelRevision": { "$ref": "#/$defs/nonEmpty" },
+        "modelSha256": { "$ref": "#/$defs/sha256" },
+        "modelFileName": { "$ref": "#/$defs/nonEmpty" },
+        "runtimeId": { "$ref": "#/$defs/nonEmpty" },
+        "reasoning": { "const": "off" },
+        "contextTokens": { "type": "integer", "minimum": 1024, "maximum": 8192 },
+        "maxOutputTokens": { "type": "integer", "minimum": 128, "maximum": 2048 },
+        "seed": { "type": "integer" },
+        "elapsedMillis": { "type": "integer", "minimum": 0 },
+        "rawOutputBytes": { "type": "integer", "minimum": 1 },
+        "promptSha256": { "$ref": "#/$defs/sha256" },
+        "responseSha256": { "$ref": "#/$defs/sha256" },
+        "serverStarted": { "const": false },
+        "portOpened": { "const": false },
+        "formalStateWritePerformed": { "const": false }
+      }
+    },
+    "localModelReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "loopId", "boundary", "generatedAttemptCount", "generatedResponses", "invocationAudits", "safetyResult", "repairAttempted", "formalStateWritePerformed", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "loopId": { "$ref": "#/$defs/nonEmpty" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "generatedAttemptCount": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "generatedResponses": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "npc_actor_safety_loop_v1.schema.json#/$defs/physicalResponse" } },
+        "invocationAudits": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/invocationAudit" } },
+        "safetyResult": { "$ref": "npc_actor_safety_loop_v1.schema.json#/$defs/result" },
+        "repairAttempted": { "type": "boolean" },
+        "formalStateWritePerformed": { "const": false },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "shadowRunId", "projectId", "sessionId", "turnNumber", "baseStateVersion", "contextId", "contextHash", "actorRequest", "visibleSummary", "localModelReport", "beforeState", "afterState", "technicalDecision", "formalStateWritePerformed", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "FORMAL_RUNTIME_SHADOW_REPORT" },
+        "shadowRunId": { "$ref": "#/$defs/nonEmpty" },
+        "projectId": { "$ref": "#/$defs/nonEmpty" },
+        "sessionId": { "$ref": "#/$defs/nonEmpty" },
+        "turnNumber": { "type": "integer", "minimum": 1 },
+        "baseStateVersion": { "type": "integer", "minimum": 0 },
+        "contextId": { "$ref": "#/$defs/nonEmpty" },
+        "contextHash": { "$ref": "#/$defs/sha256" },
+        "actorRequest": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/actorRequest" },
+        "visibleSummary": { "$ref": "#/$defs/visibleSummary" },
+        "localModelReport": { "$ref": "#/$defs/localModelReport" },
+        "beforeState": { "$ref": "#/$defs/stateEvidence" },
+        "afterState": { "$ref": "#/$defs/stateEvidence" },
+        "technicalDecision": { "enum": ["SHADOW_CANDIDATE_ACCEPTED_NO_STATE_WRITE", "SHADOW_CANDIDATE_REJECTED_NO_STATE_WRITE"] },
+        "formalStateWritePerformed": { "const": false },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    }
+  }
+}

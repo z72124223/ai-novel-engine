@@ -2,6 +2,16 @@
 
 ## Current route
 
+Current completed package: `NPC-ACTOR-07_FORMAL_RUNTIME_SHADOW`.
+
+Use `run-local-npc-actor-shadow` only with an existing formal SQLite Session. The command must
+use `previewTurnContext`; it must not initialize a database, create a pending context or call
+`resolve-turn`. Model output remains an untrusted candidate even when every validator accepts it.
+Verify the database SHA-256 and recorded state counters before and after every shadow run.
+
+Stop after NPC-ACTOR-07. NPC-ACTOR-08 requires a new Product Owner authorization before any
+human-approved candidate may enter the formal resolve pipeline.
+
 ```text
 NPC-ACTOR-05 provides the bounded safety loop
 → Product Owner authorizes one local 8B model Pilot
@@ -13,11 +23,11 @@ NPC-ACTOR-05 provides the bounded safety loop
 
 GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
 
-1. `PLANS.md` Current Plan Window V15;
-2. `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`;
+1. `PLANS.md` Current Plan Window V16;
+2. `docs/work-packages/NPC-ACTOR-07_FORMAL_RUNTIME_SHADOW.md`;
 3. `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`;
 4. `docs/npc_actor/NPC_ACTOR05_IMPLEMENTATION_REPORT.md`;
-5. only files required by NPC-ACTOR-06.
+5. only files required by NPC-ACTOR-07.
 
 ## Completed work
 

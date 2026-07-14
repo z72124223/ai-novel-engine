@@ -14,6 +14,7 @@ import com.localnovel.engine.model.NpcActorSafetyLoopInput
 import com.localnovel.engine.model.NpcActorSafetyLoopSuite
 import com.localnovel.engine.model.LocalNpcActorRuntimeConfig
 import com.localnovel.engine.model.LocalNpcActorSafetyLoopRequest
+import com.localnovel.engine.model.LocalNpcActorShadowInput
 import com.localnovel.engine.model.NpcEmbodiedHumanReviewResult
 import com.localnovel.engine.model.NpcEmbodiedAnswerKey
 import com.localnovel.engine.model.NpcEmbodiedInternalReviewResult
@@ -34,6 +35,8 @@ import com.localnovel.engine.service.NpcActorSafetyLoopFixtureFactory
 import com.localnovel.engine.service.NpcActorSafetyLoopService
 import com.localnovel.engine.service.LlamaCppNpcActorPhysicalGateway
 import com.localnovel.engine.service.LocalNpcActorSafetyLoopService
+import com.localnovel.engine.service.LocalNpcActorShadowRuntimeService
+import com.localnovel.engine.repository.SqliteStoryRepository
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.serialization.decodeFromString
@@ -125,6 +128,35 @@ internal object NpcActorCli {
         println("repairAttempted=${report.repairAttempted}")
         println("formalStateWritePerformed=${report.formalStateWritePerformed}")
         println("provider=${report.invocationAudits.firstOrNull()?.provider ?: "NONE"}")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun runLocalShadow(options: Map<String, String>): Int {
+        val repositoryRoot = Path.of(options.requiredCliOption("repo")).toAbsolutePath().normalize()
+        val database = Path.of(options.requiredCliOption("db")).toAbsolutePath().normalize()
+        require(Files.isRegularFile(database)) {
+            "Formal SQLite database does not exist; shadow mode never initializes it: $database"
+        }
+        val input = NpcActorJson.strict.decodeFromString<LocalNpcActorShadowInput>(
+            Files.readString(Path.of(options.requiredCliOption("request"))).removePrefix("\uFEFF"),
+        )
+        val schema = Path.of(
+            options["schema"]
+                ?: repositoryRoot.resolve("schemas/npc_actor/npc_actor_physical_response_v1.schema.json").toString(),
+        ).toAbsolutePath().normalize()
+        val gateway = localGateway(options, schema)
+        val report = LocalNpcActorShadowRuntimeService(
+            repository = SqliteStoryRepository(database),
+            generator = gateway,
+        ).run(input)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, report)
+        println("technicalDecision=${report.technicalDecision}")
+        println("safetyStatus=${report.localModelReport.safetyResult.status}")
+        println("generatedAttemptCount=${report.localModelReport.generatedAttemptCount}")
+        println("databaseUnchanged=${report.beforeState.databaseSha256 == report.afterState.databaseSha256}")
+        println("formalStateWritePerformed=${report.formalStateWritePerformed}")
         println("wrote=$output")
         return 0
     }
@@ -431,4 +463,23 @@ internal object NpcActorCli {
         }
         return Path.of(configured).toAbsolutePath().normalize()
     }
+
+    private fun localGateway(
+        options: Map<String, String>,
+        schema: Path,
+    ): LlamaCppNpcActorPhysicalGateway = LlamaCppNpcActorPhysicalGateway(
+        LocalNpcActorRuntimeConfig(
+            llamaCliPath = localRuntimePath(options, "llama-cli", "LOCAL_NPC_ACTOR_LLAMA_CLI"),
+            modelPath = localRuntimePath(options, "model", "LOCAL_NPC_ACTOR_MODEL"),
+            responseSchemaPath = schema,
+            modelId = options["model-id"] ?: "Qwen/Qwen3-8B-GGUF",
+            modelRevision = options["model-revision"] ?: "7c41481f57cb95916b40956ab2f0b139b296d974",
+            modelSha256 = options["model-sha256"]
+                ?: "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+            contextTokens = options["context-tokens"]?.toInt() ?: 4096,
+            maxOutputTokens = options["max-output-tokens"]?.toInt() ?: 512,
+            timeoutSeconds = options["timeout-seconds"]?.toLong() ?: 180,
+            seed = options["seed"]?.toInt() ?: 20_260_714,
+        ),
+    )
 }
