@@ -55,6 +55,7 @@ class Cli {
                 "aggregate-npc-actor-embodied-internal-review" -> NpcActorCli.aggregateEmbodiedInternalReview(options)
                 "create-npc-actor-safety-loop-suite" -> NpcActorCli.createSafetyLoopSuite(options)
                 "run-npc-actor-safety-loop" -> NpcActorCli.runSafetyLoop(options)
+                "run-local-npc-actor-safety-loop" -> NpcActorCli.runLocalSafetyLoop(options)
                 "evaluate-npc-actor-safety-loop-suite" -> NpcActorCli.evaluateSafetyLoopSuite(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
@@ -263,6 +264,7 @@ class Cli {
               aggregate-npc-actor-embodied-internal-review --packet <blind-review.json> --environment-review <review.json> --dialogue-review <review.json> --adversarial-review <review.json> --answer-key <answer-key.json> --out <aggregate.json>
               create-npc-actor-safety-loop-suite --repo <repository-root> [--out-dir samples/npc_actor05]
               run-npc-actor-safety-loop --context <context.json> --input <loop-input.json> --out <loop-result.json>
+              run-local-npc-actor-safety-loop --repo <repository-root> --context <context.json> (--request <local-request.json> | --input <npc-actor05-loop-input.json>) --out <local-report.json> [--llama-cli <llama-cli.exe>] [--model <model.gguf>] [--schema <response.schema.json>]
               evaluate-npc-actor-safety-loop-suite --repo <repository-root> --suite <suite.json> --report <report.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]

@@ -1,12 +1,15 @@
 # AGENTS.md — 現行規則
 
-## 0. RETRIEVAL／NPC Actor Override（2026-07-13）
+## 0. NPC-ACTOR-06 Local Model Override（2026-07-14）
 
-- 現行順序是 `RETRIEVAL-00 → RETRIEVAL-01 → NPC-ACTOR-01`；先讀 `PROJECT_STATE.md` 與對應工作包，不得被下方 SCREEN-01 歷史路線覆蓋。
+- 現行工作 `NPC-ACTOR-06_LOCAL_MODEL_PILOT` 已完成；先讀 `PROJECT_STATE.md`、`PLANS.md` Current
+  Plan Window V15 與 `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`，不得被下方
+  SCREEN-01 歷史路線覆蓋。
 - Codex 負責工程、測試與評審；ChatGPT 只作人工角色試演；正式 Runtime 的未來演員接口是 provider-neutral `NpcActorGateway`。
-- 在 RETRIEVAL-00、RETRIEVAL-01、NPC-ACTOR-01 Gate 通過後，才可加入 OpenAI Responses adapter。
-- 在 API Key、費用與隱私另行批准前，只能使用 Fake／File gateway，不得發出真實 API 請求。
-- API 模型只能提出結構化 NPC proposal，不得直接寫 SQLite、Canon、Memory、Knowledge 或繞過 Validator／StateReducer／Transaction。
+- Product Owner 已授權一個本機 7B／8B 模型 Pilot；只允許直接 `llama.cpp` CLI 程序，不得
+  啟動 server、port、OpenAI Responses adapter 或付費／雲端請求。
+- 本機模型只能提出結構化 NPC proposal，不得直接寫 SQLite、Canon、Memory、Knowledge 或繞過 Validator／StateReducer／Transaction。
+- 目前停在正式 Runtime 自動調用授權 Gate；不得因 Pilot 通過就自行啟動下一包。
 - 模型與 reasoning effort 必須依工作路由；最後 utterance 預設 Low／Medium，重要決策才比較 Medium／High，不得以 High／Max 冒充自然對白。
 
 ## 1. 先讀什麼
@@ -15,14 +18,13 @@
 
 1. `PROJECT_STATE.md`
 2. `.codex/project_controller.md`
-3. `docs/CURRENT_ROUTE_GATE_V4.md`
-4. `docs/VIDEO_FIRST_GIT_FIRST_PRODUCTION_CHARTER_V1.md`
-5. `docs/work-packages/SCREEN-01_VIDEO_FIRST_SCRIPT_AND_DIALOGUE_PILOT.md`
-6. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
-7. `docs/development_journal/INDEX.md`
+3. `PLANS.md` Current Plan Window V15
+4. `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`
+5. `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
+6. `docs/npc_actor/NPC_ACTOR05_IMPLEMENTATION_REPORT.md`
+7. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
 8. 本檔
-9. `samples/story01/story01_revised_draft.md`
-10. SCREEN-01 必要程式、測試與資料
+9. NPC-ACTOR-06 必要程式、測試與資料
 
 舊 REBOOT、圖片 Work Package、Route Gate V1–V3、HANDOFF、README 狀態和歷史 `PLANS.md` 只作歷史證據。
 

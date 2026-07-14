@@ -2,7 +2,33 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-05 Offline NPC Action Safety Loop
+## Current Override — NPC-ACTOR-06 Local Model Pilot
+
+- Status: `NPC_ACTOR06_LOCAL_MODEL_TECHNICAL_PASS / FORMAL_RUNTIME_AUTOMATION_NOT_AUTHORIZED`.
+- Completed work: 已在 GTX 1080 Ti 上安裝並驗證 Qwen3-8B Q5_K_M，以直接 `llama.cpp` CLI
+  程序接入 provider-neutral NPC Actor 候選流程，並通過 NPC-ACTOR-05 安全閉環。
+- Implementation branch: `codex/npc-actor06-local-model-pilot`.
+- Required work package: `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`.
+- Required plan: `PLANS.md` Current Plan Window V15.
+- Base SHA: `9b7851736c0a80d59e2b407e12ff50777d9ed264` from the remote default branch.
+- Authorization: Product Owner 已明確授權安裝建議的本機 7B／8B 文本模型，並按需求調用
+  本機既有模型。
+- Verified model: official `Qwen/Qwen3-8B-GGUF`, `Qwen3-8B-Q5_K_M.gguf`，SHA-256
+  `068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738`，Vulkan GPU 載入通過。
+- Runtime boundary: 只允許直接 `llama-cli` 程序；不得啟動 server、port 或雲端 API。
+- Trust boundary: 模型只產生 actor-visible JSON 候選；既有角色、知識、物理、世界合法性與
+  時間預算驗證不變，模型不得寫 SQLite、Canon、Memory 或 Knowledge。
+- Real Pilot: Lian 第一次產生的候選通過；Yan 第一次失敗後只取得已清理修訂單，第二次仍錯後
+  `REJECTED_AFTER_MAX_ATTEMPTS`；兩案 `formalStateWritePerformed=false`。
+- Verification: focused 8/8、NPC Actor／Physics related 84/84、full 961/961 PASS；JSON、Schema、
+  Hash、秘密、絕對路徑、零 port 與 Git scope 均完成檢查。
+- Evidence: `docs/npc_actor/NPC_ACTOR06_LOCAL_MODEL_PILOT_REPORT.md` 與
+  `samples/npc_actor06/npc_actor06_evidence_hashes.json`。
+- Current step: 工作包完成並停在正式 Runtime 自動調用授權 Gate，不自行開始下一包。
+- True stop: 正式 Runtime 自動推進、付費／雲端 Provider、弱化 Validator／Transaction、
+  Canon／角色永久命運決策，或必須進行破壞性 Git／資料操作。
+
+## Previous Override — NPC-ACTOR-05 Offline NPC Action Safety Loop
 
 - Status: `NPC_ACTOR05_COMPLETE / TECHNICAL_PASS / MODEL_INTEGRATION_AUTHORIZATION_REQUIRED`.
 - Current work: NPC 行動提案現在會先經過一個有上限、可重現、離線的安全閉環，通過後也只會成為正式 `resolve-turn` 的候選，不會直接寫入世界狀態。

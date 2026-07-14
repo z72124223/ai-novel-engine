@@ -1,10 +1,126 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V14`
-> (`NPC_ACTOR05_OFFLINE_SAFETY_LOOP`) first. All older plan windows are
-> preserved evidence only. Current clean-worktree base:
-> `e3f75fa3d6c93e080cbd9501d450c5931e245368` on
-> `codex/npc-actor05-offline-safety-loop`. GitHub remote is the team authority.
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V15`
+> (`NPC_ACTOR06_LOCAL_MODEL_PILOT`) first. All older plan windows are preserved
+> evidence only. Current clean-worktree base:
+> `9b7851736c0a80d59e2b407e12ff50777d9ed264` on
+> `codex/npc-actor06-local-model-pilot`. GitHub remote is the team authority.
+
+## Current Plan Window V15
+
+標記：`NPC_ACTOR06_LOCAL_MODEL_PILOT`
+
+狀態：**COMPLETE — 本機 8B 模型安全 Pilot 通過；正式 Runtime 自動調用未授權**
+
+日期：2026-07-14
+
+### Goal
+
+在不開 port（連接埠）、不接雲端 API、不讓模型直接寫 SQLite 的前提下，安裝一個適合
+GTX 1080 Ti 11GB 的本機繁體中文生成模型，透過既有 provider-neutral（供應者中立）
+`NpcActorGateway` 與 JSON 契約產生 NPC 候選，再送入 NPC-ACTOR-05 的角色、知識、物理、
+世界合法性與時間預算安全閉環。最後以可重現的非 Canon Pilot 證明本機模型能產生可解析、
+可驗證、可安全拒絕或修訂的短對白與行動候選。
+
+### Global Strategy
+
+- 使用直接程序呼叫的 `llama.cpp` CLI；不得啟動 `llama-server` 或任何常駐網路服務。
+- 首選官方 `Qwen/Qwen3-8B-GGUF` 的 `Q5_K_M` 量化；下載後必須核對官方來源、大小與
+  SHA-256。若 Vulkan GPU 執行器不相容，降級到已驗證的 CPU／混合執行，不更換安全契約。
+- 模型只看到 `NpcActorRequest`、允許的物理動作／目標與必要修訂單；engine-owned（引擎私有）
+  幾何、質量、作者秘密、其他角色私有記憶與完整資料庫不得進入 Prompt。
+- 以 JSON Schema 約束輸出，之後仍由既有 Kotlin strict parser、`NpcActorResponseValidator`、
+  `NpcActorPhysicalBindingValidator`、`PhysicalAffordanceValidator`、`GameMasterResolutionService`
+  重新驗證；模型輸出永遠只是候選。
+- 現有 Qwen Embedding／Reranker 僅作上游檢索與排序，不得被誤用為生成模型，也不得繞過
+  deterministic visibility filter（確定性可見性過濾）。
+- 模型與執行器放在 Repository 外；Git 只保存安裝契約、模型身分、Hash、設定範例、測試與
+  非敏感 Pilot 證據，不保存數 GB 權重或使用者絕對路徑。
+
+### Non-Goals
+
+- 不接 OpenAI API、Responses API 或任何付費 Provider。
+- 不開 web server、port、Ollama server、LM Studio server 或 `llama-server`。
+- 不修改 Migration、Repository transaction、`StateReducer`、正式 Canon、Memory 或 Knowledge。
+- 不自動套用模型輸出到正式 `resolve-turn`，不生成圖片、影片、音訊或下一章。
+- 不宣稱 8B 本機模型等同 GPT，也不以固定 Pilot 取代未來品質評測。
+
+### Scope
+
+- 治理：本計畫、NPC-ACTOR-06 工作包、`PROJECT_STATE.md` 與實作報告。
+- 外部安裝：可重現的 `llama.cpp` CLI 與官方 8B GGUF 權重，含供應鏈 Hash 證據。
+- Kotlin：本機程序執行抽象、Prompt 編譯器、嚴格 JSON 擷取、`NpcActorGateway` 實作與 CLI。
+- 驗證：fake-process 單元測試、惡意／格式錯誤／逾時測試、focused tests、完整 Gradle tests，
+  以及至少一個非 Canon 真實本機模型 Pilot。
+
+### Confirmed Facts
+
+- Product Owner 已明確授權安裝建議的本機模型並依需求使用本機既有模型。
+- 遠端預設分支 SHA `9b7851736c0a80d59e2b407e12ff50777d9ed264` 已完成
+  NPC-ACTOR-05，完整測試紀錄為 953／953 PASS，停在模型整合授權 Gate。
+- 本機為 i7-8700、31.9GB RAM、GTX 1080 Ti 11264MiB；既有 Qwen3-1.7B Q8_0 已完成
+  繁體中文 llama.cpp CLI 生成驗證，但品質只適合回退與冒煙測試。
+- 官方 Qwen3-8B GGUF 提供 Q4／Q5／Q6／Q8 量化；Q5_K_M 約 5.85GB，符合目前容量級距。
+- 現有 `NpcActorGateway`、Fake／File gateway、嚴格 JSON parser 與五階段離線安全閉環可重用。
+- 現行 Repository 明確禁止本機伺服器與 port，因此只能採直接 CLI／檔案協議。
+
+### Assumptions
+
+- `Qwen3-8B-Q5_K_M` 在 8K 以下上下文與目前顯示記憶體配置可提供可接受的短對白 Pilot；
+  真實速度、顯示記憶體占用與格式遵從率必須安裝後量測。
+- 最新官方 Vulkan Windows 執行器可使用 GTX 1080 Ti；若不相容，CPU 版本仍可完成正確性
+  Pilot，但延遲會較高。
+
+### Open Questions
+
+- 已回答：Vulkan 可將模型載入 GTX 1080 Ti；本 Pilot 採 4096 context，未宣稱 8K 長時間上限。
+- 已回答：完整 `NpcActorPhysicalResponse` Pilot surface 可由 Schema 約束產生；Lian 第一次通過，
+  Yan 經一次已清理修訂後仍錯並被最終拒絕。
+- 仍需新授權：正式 Runtime 是否自動調用本機模型，以及更長上下文與能力使用情境的品質 Gate。
+
+### Implementation Steps
+
+- [x] Step 1：建立 NPC-ACTOR-06 工作包、供應鏈與執行邊界，更新治理狀態。
+- [x] Step 2：在 Repository 外安裝並驗證官方 llama.cpp CLI 與 Qwen3-8B Q5_K_M；記錄 Hash、
+  格式、量化、硬體與不含秘密的基準結果。
+- [x] Step 3：實作直接程序型本機 gateway、Prompt／Schema 約束、逾時與輸出大小限制；以
+  fake process 測試正常、無效 JSON、未知欄位、逾時與非零退出。
+- [x] Step 4：新增本機 NPC Actor CLI 與 NPC-ACTOR-05 串接；最多兩次模型嘗試，修訂 Prompt
+  只能使用已清理的 repair request，不得暴露 engine-owned context。
+- [x] Step 5：執行非 Canon 真實模型 Pilot，保存 request／response／安全閉環結果、Hash、速度、
+  模型身分與誠實品質結論；不寫正式狀態。
+- [x] Step 6：執行 focused、NPC Actor／Physics related、完整 Gradle、JSON、Schema、Hash、秘密、
+  絕對路徑與 Git scope 驗證，完成報告、治理更新、Commit 與普通 Push。
+
+### Verification
+
+- 安裝：官方下載位址、檔案大小、SHA-256、GGUF metadata、CLI `--version` 與單句繁中冒煙測試。
+- 契約：JSON Schema 約束加 Kotlin strict parse；模型輸出不得含未知欄位或 reasoning trace。
+- 安全：秘密字串掃描、Prompt snapshot、逾時／輸出上限、零 port listener、零 SQLite 寫入。
+- 行為：至少一個首次通過或安全修訂通過，以及一個不安全候選仍被既有 Validator 拒絕。
+- 回歸：focused tests、NPC Actor／Physics related tests、`./gradlew.bat clean test --no-daemon`、
+  `git diff --check` 與允許路徑檢查。
+
+### Risks
+
+- 8B 仍可能產生 AI 味、格式錯誤或物理幻覺；品質不足必須標記，不得用 Prompt 隱藏。
+- GTX 1080 Ti 的舊架構可能使新版 GPU binary 不相容；CPU 回退可保正確性但速度較慢。
+- 模型權重很大；不得加入 Git、OneDrive Repository 或 Hash manifest 的 repo-relative 成果清單。
+- 程序輸出可能混入日誌或思考內容；必須以 output file、JSON Schema、大小限制和 strict parser
+  多層封鎖。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 解除 NPC-ACTOR-05 的模型整合授權 Gate，授權安裝本機生成模型。
+- 2026-07-14：依現有 no-server 規則，路線選擇直接 llama.cpp CLI，而非 Ollama／LM Studio／
+  llama-server；雲端模型仍未授權整合。
+- 2026-07-14：選定 8B Q5_K_M 作首選，現有 1.7B Q8_0 僅作安裝前已驗證回退，不作正式品質基準。
+- 2026-07-14：Qwen3-8B Q5_K_M 與 llama.cpp Vulkan 已在 GTX 1080 Ti 實測；模型與 Runtime
+  均留在 Repository 外，官方來源與 SHA-256 已鎖定。
+- 2026-07-14：中文 Repository 路徑與聊天模板控制 token 問題分別以 ASCII 暫存 Schema、
+  raw completion 加 single-turn 解決，沒有搬移專案或開 server。
+- 2026-07-14：真實 Lian 候選第一次通過；真實 Yan 候選經一次安全修訂仍失敗後被拒絕。
+  focused 8/8、related 84/84、full 961/961 PASS，停止在正式 Runtime 自動調用授權 Gate。
 
 ## Current Plan Window V14
 

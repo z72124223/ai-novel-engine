@@ -12,6 +12,8 @@ import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
 import com.localnovel.engine.model.NpcActorSafetyLoopInput
 import com.localnovel.engine.model.NpcActorSafetyLoopSuite
+import com.localnovel.engine.model.LocalNpcActorRuntimeConfig
+import com.localnovel.engine.model.LocalNpcActorSafetyLoopRequest
 import com.localnovel.engine.model.NpcEmbodiedHumanReviewResult
 import com.localnovel.engine.model.NpcEmbodiedAnswerKey
 import com.localnovel.engine.model.NpcEmbodiedInternalReviewResult
@@ -30,6 +32,8 @@ import com.localnovel.engine.service.NpcActorJson
 import com.localnovel.engine.service.NpcActorSafetyLoopEvaluationService
 import com.localnovel.engine.service.NpcActorSafetyLoopFixtureFactory
 import com.localnovel.engine.service.NpcActorSafetyLoopService
+import com.localnovel.engine.service.LlamaCppNpcActorPhysicalGateway
+import com.localnovel.engine.service.LocalNpcActorSafetyLoopService
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.serialization.decodeFromString
@@ -66,6 +70,61 @@ internal object NpcActorCli {
         println("attemptsProcessed=${result.attemptsProcessed}")
         println("acceptedAttemptNumber=${result.acceptedAttemptNumber ?: "NONE"}")
         println("formalStateWritePerformed=${result.formalStateWritePerformed}")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun runLocalSafetyLoop(options: Map<String, String>): Int {
+        val repositoryRoot = Path.of(options.requiredCliOption("repo")).toAbsolutePath().normalize()
+        val context = NpcActorJson.strict.decodeFromString<ContextPacket>(
+            Files.readString(Path.of(options.requiredCliOption("context"))).removePrefix("\uFEFF"),
+        )
+        val request = options["request"]?.let { requestPath ->
+            NpcActorJson.strict.decodeFromString<LocalNpcActorSafetyLoopRequest>(
+                Files.readString(Path.of(requestPath)).removePrefix("\uFEFF"),
+            )
+        } ?: options["input"]?.let { inputPath ->
+            val source = NpcActorJson.strict.decodeFromString<NpcActorSafetyLoopInput>(
+                Files.readString(Path.of(inputPath)).removePrefix("\uFEFF"),
+            )
+            LocalNpcActorSafetyLoopRequest(
+                loopId = source.loopId,
+                boundary = source.boundary,
+                prompt = source.prompt,
+                engineContext = source.engineContext,
+                maxAttempts = source.maxAttempts,
+                maxElapsedMinutes = source.maxElapsedMinutes,
+            )
+        } ?: error("Missing --request <local-request.json> or --input <npc-actor05-loop-input.json>.")
+        val llamaCli = localRuntimePath(options, "llama-cli", "LOCAL_NPC_ACTOR_LLAMA_CLI")
+        val model = localRuntimePath(options, "model", "LOCAL_NPC_ACTOR_MODEL")
+        val schema = Path.of(
+            options["schema"]
+                ?: repositoryRoot.resolve("schemas/npc_actor/npc_actor_physical_response_v1.schema.json").toString(),
+        ).toAbsolutePath().normalize()
+        val gateway = LlamaCppNpcActorPhysicalGateway(
+            LocalNpcActorRuntimeConfig(
+                llamaCliPath = llamaCli,
+                modelPath = model,
+                responseSchemaPath = schema,
+                modelId = options["model-id"] ?: "Qwen/Qwen3-8B-GGUF",
+                modelRevision = options["model-revision"] ?: "7c41481f57cb95916b40956ab2f0b139b296d974",
+                modelSha256 = options["model-sha256"]
+                    ?: "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+                contextTokens = options["context-tokens"]?.toInt() ?: 4096,
+                maxOutputTokens = options["max-output-tokens"]?.toInt() ?: 512,
+                timeoutSeconds = options["timeout-seconds"]?.toLong() ?: 180,
+                seed = options["seed"]?.toInt() ?: 20_260_714,
+            ),
+        )
+        val report = LocalNpcActorSafetyLoopService(gateway).run(context, request)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, report)
+        println("status=${report.safetyResult.status}")
+        println("generatedAttemptCount=${report.generatedAttemptCount}")
+        println("repairAttempted=${report.repairAttempted}")
+        println("formalStateWritePerformed=${report.formalStateWritePerformed}")
+        println("provider=${report.invocationAudits.firstOrNull()?.provider ?: "NONE"}")
         println("wrote=$output")
         return 0
     }
@@ -359,5 +418,17 @@ internal object NpcActorCli {
     private inline fun <reified T> writeStrictJson(path: Path, value: T) {
         path.parent?.let(Files::createDirectories)
         Files.writeString(path, NpcActorJson.strict.encodeToString(value))
+    }
+
+    private fun localRuntimePath(
+        options: Map<String, String>,
+        optionName: String,
+        environmentName: String,
+    ): Path {
+        val configured = options[optionName] ?: System.getenv(environmentName)
+        require(!configured.isNullOrBlank()) {
+            "Missing --$optionName or $environmentName for the local NPC Actor runtime."
+        }
+        return Path.of(configured).toAbsolutePath().normalize()
     }
 }
