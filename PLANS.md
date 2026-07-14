@@ -10,7 +10,7 @@
 
 標記：`NPC_ACTOR08_HUMAN_APPROVED_FORMAL_RESOLVE`
 
-狀態：**IN_PROGRESS — 已獲工作包授權；逐候選人工核准仍為必要 Gate**
+狀態：**COMPLETE / TECHNICAL_PASS — 真實模型候選仍須逐筆人工核准**
 
 日期：2026-07-15
 
@@ -80,7 +80,7 @@
 - [x] Step 2：建立候選封裝、引擎結果編譯、人工核准綁定與過期／重播防護。
 - [x] Step 3：新增 CLI、嚴格 Schema、sample 與 focused tests。
 - [x] Step 4：執行 test-only 人工核准非 Canon 正式交易 Pilot，保存前後狀態及 Hash 證據。
-- [ ] Step 5：執行 related／full tests 與所有契約檢查，更新治理、Commit、Push、整合預設分支。
+- [x] Step 5：執行 related／full tests 與所有契約檢查，更新治理、Commit、Push、整合預設分支。
 
 ### Verification
 

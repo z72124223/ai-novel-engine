@@ -1,13 +1,13 @@
-# Project Controller — NPC-ACTOR-06
+# Project Controller — NPC-ACTOR-08
 
 ## Current route — NPC-ACTOR-08
 
-Current active package: `NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE`.
+Current package: `NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE` is `TECHNICAL_PASS`.
 
-Use `run-local-npc-actor-shadow` only with an existing formal SQLite Session. The command must
-use `previewTurnContext`; it must not initialize a database, create a pending context or call
-`resolve-turn`. Model output remains an untrusted candidate even when every validator accepts it.
-Verify the database SHA-256 and recorded state counters before and after every shadow run.
+The two-stage prepare／resolve path, exact human-decision binding and existing transaction reuse are
+implemented and verified. The current stop is a real-candidate review Gate, not an implementation
+failure. Do not generate or apply an unseen Qwen3-8B candidate without first presenting its package
+and receiving a separate exact-bound decision file.
 
 The Product Owner authorized building NPC-ACTOR-08. This is not approval for an unseen candidate.
 Every real candidate must be written to a reviewable package and receive a separate exact-bound
@@ -43,6 +43,11 @@ GitHub remote is the team authority. Start from `PROJECT_STATE.md`, then read:
 
 ## Completed work
 
+- NPC-ACTOR-08 adds separate prepare and resolve commands, candidate and decision Hash binding,
+  stale／tamper／replay rejection and exact pending-context cleanup;
+- test-only approval proves one complete non-Canon transaction through the existing validators and
+  SQLite transaction; no real unseen model candidate was approved;
+- focused 14／14, related 129／129, full 975／975 and JSON 4／4 pass;
 - NPC-ACTOR-06 已在 GTX 1080 Ti 上驗證 Qwen3-8B Q5_K_M 與 llama.cpp Vulkan 直接 CLI；
 - 本機模型輸出已接入既有安全鏈，最多一次已清理修訂，不開 server／port；
 - Lian 真實模型候選第一次通過，Yan 真實模型候選兩次都被安全拒絕；

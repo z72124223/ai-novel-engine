@@ -4,8 +4,9 @@
 
 ## Current Override — NPC-ACTOR-08 Human-Approved Formal Resolve
 
-- Status: `NPC_ACTOR08_AUTHORIZED / IMPLEMENTATION_IN_PROGRESS / PER_CANDIDATE_APPROVAL_REQUIRED`.
-- Current branch: `codex/npc-actor08-human-approved-formal-resolve`.
+- Status: `NPC_ACTOR08_TECHNICAL_PASS / REAL_CANDIDATE_APPROVAL_REQUIRED`.
+- Implementation branch: `codex/npc-actor08-human-approved-formal-resolve`.
+- Implementation Commit: `f119f4eefa6cd4f8237bf68cf498eb7c3c8735e2`.
 - Base SHA: `66d86467cfcdf759656d9e0d276ae8ff4008366c` from the remote default branch.
 - Required plan: `PLANS.md` Current Plan Window V17.
 - Required work package: `docs/work-packages/NPC-ACTOR-08_HUMAN_APPROVED_FORMAL_RESOLVE.md`.
@@ -14,6 +15,10 @@
   a separate decision file bound to candidate, Session, Context, turn, state-version and result Hashes.
 - Mandatory path: local candidate → existing safety loop → engine-owned result compilation → exact
   human decision validation → existing `resolveTurn` validators and SQLite transaction.
+- Verification: focused 14／14、related 129／129、full 975／975、JSON 4／4 and all Hash／scope／
+  secret／path／server-port checks pass.
+- Current stop: do not generate or apply a real Qwen3-8B candidate until that exact candidate package
+  is presented for review and receives its own bound decision file.
 - No cloud API, paid Provider, server, port, Canon promotion, Memory／Knowledge authoring, media or
   next-chapter work is authorized.
 
