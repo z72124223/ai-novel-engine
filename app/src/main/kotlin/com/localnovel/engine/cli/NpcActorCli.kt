@@ -1,5 +1,6 @@
 package com.localnovel.engine.cli
 
+import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.NpcActorEvaluationSuite
 import com.localnovel.engine.model.NpcActorCalibrationHumanReviewResult
 import com.localnovel.engine.model.NpcActorCalibrationPolicy
@@ -9,6 +10,8 @@ import com.localnovel.engine.model.NpcActorHardBlindSuite
 import com.localnovel.engine.model.NpcActorHardBlindHumanReviewResult
 import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
+import com.localnovel.engine.model.NpcActorSafetyLoopInput
+import com.localnovel.engine.model.NpcActorSafetyLoopSuite
 import com.localnovel.engine.model.NpcEmbodiedHumanReviewResult
 import com.localnovel.engine.model.NpcEmbodiedAnswerKey
 import com.localnovel.engine.model.NpcEmbodiedInternalReviewResult
@@ -24,12 +27,64 @@ import com.localnovel.engine.service.NpcActorEmbodiedRolloutEvaluationService
 import com.localnovel.engine.service.NpcActorEmbodiedRolloutFixtureFactory
 import com.localnovel.engine.service.NpcActorInternalReviewService
 import com.localnovel.engine.service.NpcActorJson
+import com.localnovel.engine.service.NpcActorSafetyLoopEvaluationService
+import com.localnovel.engine.service.NpcActorSafetyLoopFixtureFactory
+import com.localnovel.engine.service.NpcActorSafetyLoopService
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
 internal object NpcActorCli {
+    fun createSafetyLoopSuite(options: Map<String, String>): Int {
+        val repositoryRoot = Path.of(options.requiredCliOption("repo"))
+        val relativeOutputDir = options["out-dir"]
+            ?: NpcActorSafetyLoopFixtureFactory.DEFAULT_RELATIVE_OUTPUT_DIR
+        val (suitePath, suite) = NpcActorSafetyLoopFixtureFactory.writeFixtures(
+            repositoryRoot,
+            relativeOutputDir,
+        )
+        println("suiteId=${suite.suiteId}")
+        println("cases=${suite.cases.size}")
+        println("boundary=${suite.boundary}")
+        println("liveModelStatus=NOT_CONNECTED_AUTHORIZATION_REQUIRED")
+        println("wrote=$suitePath")
+        return 0
+    }
+
+    fun runSafetyLoop(options: Map<String, String>): Int {
+        val context = NpcActorJson.strict.decodeFromString<ContextPacket>(
+            Files.readString(Path.of(options.requiredCliOption("context"))).removePrefix("\uFEFF"),
+        )
+        val input = NpcActorJson.strict.decodeFromString<NpcActorSafetyLoopInput>(
+            Files.readString(Path.of(options.requiredCliOption("input"))).removePrefix("\uFEFF"),
+        )
+        val result = NpcActorSafetyLoopService().run(context, input)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, result)
+        println("status=${result.status}")
+        println("attemptsProcessed=${result.attemptsProcessed}")
+        println("acceptedAttemptNumber=${result.acceptedAttemptNumber ?: "NONE"}")
+        println("formalStateWritePerformed=${result.formalStateWritePerformed}")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun evaluateSafetyLoopSuite(options: Map<String, String>): Int {
+        val repositoryRoot = Path.of(options.requiredCliOption("repo"))
+        val suite = NpcActorJson.strict.decodeFromString<NpcActorSafetyLoopSuite>(
+            Files.readString(Path.of(options.requiredCliOption("suite"))).removePrefix("\uFEFF"),
+        )
+        val report = NpcActorSafetyLoopEvaluationService().evaluate(repositoryRoot, suite)
+        val output = Path.of(options.requiredCliOption("report"))
+        writeStrictJson(output, report)
+        println("technicalDecision=${report.technicalDecision}")
+        println("expectationMatch=${report.expectationMatchCount}/${report.caseCount}")
+        println("liveModelStatus=${report.liveModelStatus}")
+        println("wrote=$output")
+        return if (report.technicalDecision == "TECHNICAL_PASS_MODEL_INTEGRATION_NOT_AUTHORIZED") 0 else 1
+    }
+
     fun createEmbodiedRolloutSuite(options: Map<String, String>): Int {
         val policy = NpcActorJson.strict.decodeFromString<NpcActorCalibrationPolicy>(
             Files.readString(Path.of(options.requiredCliOption("policy"))).removePrefix("\uFEFF"),

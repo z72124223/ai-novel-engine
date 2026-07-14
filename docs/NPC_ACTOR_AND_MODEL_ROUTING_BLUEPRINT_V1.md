@@ -217,6 +217,26 @@ balanced 2/2 anonymous identity, focused 7/7 and full 905/905 tests. The current
 Gate is Product Owner comparison of all four complete trajectories. This still
 does not authorize a live API, second calibration revision or production use.
 
+NPC-ACTOR-04A closes that repeated Product Owner rating request with three
+sealed internal reviews. The aggregate preferred Actor twice, natural control
+once and marked the storm-gate pair `BOTH_FAIL`. This is reproducible internal
+evidence, not a replacement for human taste or live-model evidence.
+
+NPC-ACTOR-05 turns the measured failure into an offline action-safety loop. It
+does not add another style prompt. It composes the existing actor contract,
+physical binding, physical affordance, Game Master world-legality and ten-minute
+time-budget checks in that order. A proposal gets at most two attempts. After
+the first failure, only a sanitized repair request may be returned; after the
+second failure, the proposal is rejected. A passing proposal is only a
+`ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE` and cannot write formal state.
+
+The frozen four-case result is: Mira passes on the first attempt; Lian repairs
+foreign knowledge; Ren repairs an over-limit push; Yan remains rejected when
+both storm-gate attempts violate physical or world constraints. Rope tension,
+friction coefficients, wet-slope dynamics and richer multi-object physics are
+still outside the current model. No live model, Provider or API is connected;
+that remains a separate authorization Gate.
+
 ## 11. Stop Conditions
 
 - API Key or paid call is required and not explicitly approved;

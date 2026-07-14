@@ -1,0 +1,190 @@
+{
+    "protocolVersion": "2",
+    "project": {
+        "id": "npc-actor05-non-canon",
+        "name": "NPC Actor Safety Loop",
+        "summary": "Non-Canon offline safety evaluation.",
+        "activeSceneId": null,
+        "currentTurn": 0
+    },
+    "turnId": "turn-npc-actor05-ren-load-repair",
+    "turnNumber": 1,
+    "playerInput": "[NON_CANON_OFFLINE_NPC_TICK:npc-actor05-ren-load-repair]",
+    "activeScene": null,
+    "sceneContract": null,
+    "characters": [
+        {
+            "id": "adult",
+            "projectId": "npc-actor05-non-canon",
+            "name": "Ren",
+            "role": "npc",
+            "description": "Synthetic safety-loop actor.",
+            "isPlayer": false,
+            "profile": {}
+        },
+        {
+            "id": "player",
+            "projectId": "npc-actor05-non-canon",
+            "name": "Player",
+            "role": "player",
+            "description": "Synthetic off-screen player.",
+            "isPlayer": true,
+            "profile": {}
+        }
+    ],
+    "characterMemories": [
+        {
+            "id": "memory-npc-actor05-ren-load-repair",
+            "projectId": "npc-actor05-non-canon",
+            "characterId": "adult",
+            "ownerCharacterId": "adult",
+            "memoryType": "EPISODIC",
+            "summary": "A prior local safety check.",
+            "details": {},
+            "sourceType": "seed",
+            "sourceId": null,
+            "subjectType": null,
+            "subjectId": null,
+            "tags": [],
+            "triggerTags": [],
+            "emotionalSignature": {},
+            "salience": 1,
+            "confidence": 100,
+            "reliability": 100,
+            "visibility": "private",
+            "createdTurn": 0,
+            "lastRecalledTurnNumber": null,
+            "recallCount": 0,
+            "decayRate": 0.0,
+            "status": "active",
+            "isCanon": false,
+            "supersedesMemoryId": null
+        }
+    ],
+    "characterStates": [
+        {
+            "characterId": "adult",
+            "projectId": "npc-actor05-non-canon",
+            "locationId": "location-npc-actor05-ren-load-repair",
+            "mood": "focused",
+            "health": "stable",
+            "inventory": [],
+            "flags": {}
+        },
+        {
+            "characterId": "player",
+            "projectId": "npc-actor05-non-canon",
+            "locationId": "location-player-elsewhere",
+            "mood": "neutral",
+            "health": "stable",
+            "inventory": [],
+            "flags": {}
+        }
+    ],
+    "worldRules": [],
+    "facts": [],
+    "revealedSecrets": [],
+    "items": [],
+    "techniques": [],
+    "recentEvents": [],
+    "openTasks": [],
+    "contextId": "",
+    "sessionId": "",
+    "branchId": null,
+    "checkpointSummary": null,
+    "baseStateVersion": 0,
+    "contextHash": "",
+    "generatedAt": "",
+    "recentTurnSummaries": [],
+    "sceneProgress": {},
+    "directorPressure": null,
+    "outputRequirements": {
+        "mustIncludeTurnSummary": true,
+        "mustIncludeCharacterActions": true,
+        "mustProduceMeaningfulStateChange": false,
+        "deliveryMode": "DEFAULT"
+    },
+    "retrievedMemories": [],
+    "knowledgeClaims": [
+        {
+            "claimId": "belief-npc-actor05-ren-load-repair",
+            "characterId": "adult",
+            "propositionKey": "local.safety",
+            "statement": "The immediate hazard must be checked first.",
+            "epistemicState": "BELIEVES",
+            "confidence": 80,
+            "sourceType": "fixture",
+            "sourceFactId": null,
+            "sourceMemoryId": "memory-npc-actor05-ren-load-repair"
+        }
+    ],
+    "contextBudget": {
+        "maxBytes": 24576,
+        "actualBytes": 0,
+        "includedMemoryCount": 0,
+        "omittedMemoryCount": 0,
+        "includedKnowledgeCount": 0,
+        "omittedKnowledgeCount": 0,
+        "includedSettingCount": 0,
+        "omittedSettingCount": 0,
+        "truncationApplied": false,
+        "truncationReasonCodes": [],
+        "truncationReasons": []
+    },
+    "sceneLifecycle": {
+        "sceneInstanceId": "",
+        "sceneId": "",
+        "visitNumber": 1,
+        "status": "ACTIVE",
+        "startedTurnNumber": 1,
+        "readyToClose": false,
+        "closureReasons": []
+    },
+    "sceneRequirements": [],
+    "activeStoryThreads": [],
+    "availableTransitions": [],
+    "pendingWorldEvents": [],
+    "worldClock": {
+        "worldTime": "",
+        "elapsedMinutes": 0,
+        "turnNumber": 0
+    },
+    "continuityConstraints": {
+        "currentSceneInstanceId": "",
+        "currentSceneLocationId": "location-npc-actor05-ren-load-repair",
+        "characterLocations": {
+            "adult": "location-npc-actor05-ren-load-repair",
+            "player": "location-player-elsewhere"
+        },
+        "itemLocations": {},
+        "closedSceneSummaries": []
+    },
+    "relevantSettings": [],
+    "activeCapabilityContracts": [],
+    "settingContextBudget": {
+        "maxBytes": 8192,
+        "actualBytes": 0,
+        "includedSettingCount": 0,
+        "omittedSettingCount": 0,
+        "truncationApplied": false,
+        "reasonCodes": [],
+        "reasons": []
+    },
+    "canonRevisionSummary": {
+        "importedPacks": [],
+        "relevantRevisionIds": [],
+        "latestImportId": null
+    },
+    "canonThinZones": [],
+    "provisionalEntities": [],
+    "readerMode": false,
+    "narrativeDelivery": {
+        "deliveryMode": "DEFAULT",
+        "activeBeatId": "",
+        "activeBeatTitle": "",
+        "beatKeywords": [],
+        "requiredExposition": [],
+        "advisoryNote": ""
+    },
+    "oralLineCandidates": []
+}

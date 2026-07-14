@@ -1,10 +1,125 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V13`
-> (`NPC_ACTOR04A_INTERNAL_REVIEW_CLOSURE`) first. All older plan windows are
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V14`
+> (`NPC_ACTOR05_OFFLINE_SAFETY_LOOP`) first. All older plan windows are
 > preserved evidence only. Current clean-worktree base:
-> `dc4ff06670eafbf9c1ff4661935491a8bffa451f` on
-> `codex/npc-actor04-internal-review-closure`. GitHub remote is the team authority.
+> `e3f75fa3d6c93e080cbd9501d450c5931e245368` on
+> `codex/npc-actor05-offline-safety-loop`. GitHub remote is the team authority.
+
+## Current Plan Window V14
+
+標記：`NPC_ACTOR05_OFFLINE_SAFETY_LOOP`
+
+狀態：**COMPLETE — 離線 NPC 行動安全閉環已通過，停止在模型整合授權 Gate**
+
+日期：2026-07-14
+
+### Goal
+
+把既有 NPC 角色契約、知識邊界、實體物理檢查與 Game Master（遊戲裁判）世界合法性檢查
+串成一條可重現的離線安全閉環。每個 NPC 行動最多接受兩份候選回覆：第一次失敗時產生
+不洩漏引擎內部物理資料的結構化修正單；第二次仍失敗就安全停止。只有全部檢查通過的
+候選，才能標記為可交給正式 `resolve-turn` 的候選，本包本身不得寫入 SQLite 或改變世界。
+
+### Global Strategy
+
+- 重用 `NpcActorResponseValidator`、`NpcActorPhysicalBindingValidator`、
+  `PhysicalAffordanceValidator` 與 `GameMasterResolutionService`，不複製判斷規則。
+- 使用嚴格 JSON 檔案協議連接 actor-visible request（角色可見請求）、engine-owned context
+  （引擎私有上下文）與最多兩次 response attempt（回覆嘗試）。
+- 第一次被拒絕時，只向下一次嘗試提供階段、錯誤代碼、允許的行動／目標與安全修正指示；
+  不回傳質量、尺寸、負載、障礙座標或其他引擎私有資料。
+- 通過角色、物理與世界合法性後，再檢查 10 分鐘的離線回合時間上限；任一關失敗都不得
+  產生可正式套用的 proposal（提案）。
+- 以四個具名、非 Canon、可重現的完整情境驗證閉環，其中暴風雨閘門情境必須證明危險
+  行動會被拒絕，安全修正版才可通過；不再要求 Product Owner 做 A/B。
+- 所有樣本、報告、Schema、SHA-256 與測試證據都提交到 GitHub，不能只留在終端或暫存資料夾。
+
+### Non-Goals
+
+- 不接 OpenAI API、Provider、本地生成模型，不啟動或下載模型。
+- 不讓模型直接寫 SQLite，不執行 `OffscreenSimulationService`，不繞過正式 Validator 或交易。
+- 不新增 Migration、不修改 Canon、Setting Pack、正式 Chenxing 世界資料、Knowledge 或 Memory。
+- 不生成圖片、影片或音訊，不寫下一章，不新增 Web／Android／互動遊戲功能。
+- 不宣稱通過此閉環就代表 AI 完整理解現實物理、像真人或已可正式上線。
+- 不建立無上限修正迴圈；每個情境最多兩次嘗試。
+
+### Scope
+
+- 治理：`PLANS.md`、新工作包、完成後的 `PROJECT_STATE.md` 與 controller。
+- 契約：安全閉環 input／repair request／attempt result／final result／suite／report 模型與嚴格 Schema。
+- Kotlin：最小 orchestration service（流程串接服務）、固定離線 fixture、CLI 與 focused tests。
+- 證據：四情境樣本、固定報告、SHA-256 manifest、秘密／路徑／Git scope 檢查。
+
+### Confirmed Facts
+
+- 遠端預設分支 `e3f75fa3d6c93e080cbd9501d450c5931e245368` 已完成 NPC-ACTOR-04A，
+  完整測試 944／944 PASS；使用者已拒絕繼續人工 A/B。
+- `NpcActorResponseValidator` 已檢查 request 身分、角色知識／記憶、語氣、輸出限制、允許行動
+  與 capability（能力）引用，通過後只產生 `NpcActionProposal`。
+- `NpcActorPhysicalBindingValidator` 已依序檢查 actor contract（角色契約）、binding contract
+  （綁定契約）與 physical affordance（物理可行性），不寫正式狀態。
+- `GameMasterResolutionService` 已檢查 NPC 身分、位置、玩家是否在場、行動 allowlist（允許清單）、
+  自有知識／記憶與完整提案；通過時固定回報 10 分鐘。
+- 現有 `FileNpcActorPhysicalGateway` 能以嚴格 JSON 寫出 prompt 並讀入 response，但沒有跨兩次
+  嘗試的結構化修正與最終彙整層。
+- NPC-ACTOR-04A 的暴風雨閘門場景是 `BOTH_FAIL`；繩索、負載、濕滑坡面與跨站位是已知風險。
+
+### Assumptions
+
+- 以既有 validator 組成的兩次離線閉環，足以驗證「錯誤不會直接進正式世界」與「安全修正
+  可重新送驗」；這不等於 live model 品質驗證。
+- 修正單只包含錯誤代碼與安全指示，不含引擎私有幾何／負載數值，可維持 actor-visible 邊界。
+- 四個固定情境可以覆蓋角色契約、世界位置、物理拒絕、一次修正成功與兩次皆失敗。
+
+### Open Questions
+
+- 四個情境的最小實體狀態是否足以重用現有物理原型；若不足，只能增加非 Canon fixture，
+  不可新增正式物理規則。
+- 暴風雨閘門是否能以既有 `PUSH`／`USE_AS_SUPPORT` 等 V1 行動完整表達；若不能，必須保守
+  輸出 `REJECTED_AFTER_MAX_ATTEMPTS`，不得為了讓測試變綠而假造通過。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，完成證據盤點並寫入本計畫與工作包。
+- [x] Step 2：建立安全閉環模型、嚴格 Schema、結構化修正單與 orchestration service。
+- [x] Step 3：建立四個非 Canon 完整情境與 CLI，產生固定 suite／report／Hash 證據。
+- [x] Step 4：完成 focused、NPC actor／physics related、完整 Gradle、JSON、Schema、Hash、
+  引用、秘密、私人路徑與 Git scope 驗證。
+- [x] Step 5：更新治理與實作報告，明確 Commit、普通 Push；停止在模型整合授權 Gate。
+
+### Verification
+
+- 每個情境最多兩次嘗試；第一個通過後不得再執行多餘嘗試，兩次失敗必須安全停止。
+- actor contract、binding、physical affordance、world legality、time budget 五階段皆有獨立結果。
+- 修正單不得包含 `physicalArchetypes`、`physicalSnapshot`、質量、尺寸、承重或障礙座標。
+- 未通過全部階段時，final result 不得包含 accepted proposal，且 `stateMutationPerformed=false`。
+- 四個情境預期與實際結果必須完全一致，暴風雨閘門必須保留風險證據。
+- committed fixture 與 CLI 重新執行結果必須等價；所有證據 SHA-256 可重算。
+- focused、related、full Gradle、JSON、Schema、SHA-256、秘密與 Git scope 全部通過。
+
+### Risks
+
+- 既有物理 V1 是有限的結構化近似，無法證明所有現實動作；報告必須保留 claim boundary。
+- 錯誤代碼若過度具體，可能反向洩漏引擎私有資料；修正單需白名單化並測試禁止欄位。
+- `ContextPacket` 很大；fixture 必須使用小型合成資料，不能提交作者秘密或整個正式世界上下文。
+- 若把 accepted proposal 誤當成正式套用結果，會繞過 `resolve-turn`；狀態名稱與文件必須明確
+  只表示 candidate（候選）。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 授權開始 NPC-ACTOR-05，並要求 Agent 自行完成後續測試。
+- 2026-07-14：模型選擇盤點確認本包不需要生成模型；本地模型與雲端 API 都維持未授權、未啟動。
+- 2026-07-14：證據顯示各層 validator 已存在，缺口收斂為最多兩次的離線串接、修正單與四情境回歸，
+  因此不新增平行規則系統。
+- 2026-07-14：檔案交接若只有第一份失敗回覆，不能誤標為已耗盡；新增
+  `REPAIR_RESPONSE_REQUIRED`，讓外部工具可依安全修正單提供第二份回覆，仍維持最多兩次。
+- 2026-07-14：四個固定情境結果為 3 個可交正式流程候選、1 個安全拒絕；Mira 首次通過、
+  Lian 修正外來知識引用後通過、Ren 修正超載推動後通過、Yan 暴風雨閘門兩次皆不安全並拒絕。
+- 2026-07-14：focused 9／9、related 43／43、full 953／953 全部通過；固定案例 4／4、
+  JSON、Schema、SHA-256、秘密、私人路徑與 Git scope 檢查通過，沒有正式狀態寫入。
+- 2026-07-14：計畫沒有擴張到模型、API、Provider、物理 V2、Canonical data（正式設定資料）
+  或媒體產線；完成後停止在獨立模型整合授權 Gate。
 
 ## Current Plan Window V13
 

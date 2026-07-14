@@ -2,7 +2,28 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-04A Internal Review Closure
+## Current Override — NPC-ACTOR-05 Offline NPC Action Safety Loop
+
+- Status: `NPC_ACTOR05_COMPLETE / TECHNICAL_PASS / MODEL_INTEGRATION_AUTHORIZATION_REQUIRED`.
+- Current work: NPC 行動提案現在會先經過一個有上限、可重現、離線的安全閉環，通過後也只會成為正式 `resolve-turn` 的候選，不會直接寫入世界狀態。
+- Implementation branch: `codex/npc-actor05-offline-safety-loop`.
+- Required work package: `docs/work-packages/NPC-ACTOR-05_OFFLINE_SAFETY_LOOP.md`.
+- Required plan: `PLANS.md` Current Plan Window V14.
+- Base SHA: `e3f75fa3d6c93e080cbd9501d450c5931e245368` from the remote default branch.
+- Pipeline: Actor Contract → Physical Binding → Physical Affordance → Game Master world legality → 10-minute time budget.
+- Retry rule: 每個提案最多兩次；第一次失敗只會產生經過清理的修訂要求，第二次仍失敗就終止。
+- Privacy rule: 修訂要求只暴露角色可見的 ID、允許清單、錯誤碼與固定修訂指示，不暴露引擎內部測量值或作者秘密。
+- Fixed evidence: Mira 首次通過；Lian 修訂後通過；Ren 修訂後通過；Yan 暴風城門兩次都被拒絕。
+- Verification: focused 9/9、NPC Actor／Physics related 43/43、full 953/953 PASS；JSON、Schema、Hash、秘密與 Git scope 另有固定證據。
+- Evidence report: `docs/npc_actor/NPC_ACTOR05_IMPLEMENTATION_REPORT.md`.
+- Frozen suite: `samples/npc_actor05/npc_actor05_safety_loop_suite_v1.json`.
+- Frozen result: `samples/npc_actor05/npc_actor05_safety_loop_report_v1.json`.
+- Formal state: `formalStateWritePerformed=false`; 沒有 SQLite、Migration、Canon、Memory、Knowledge 或正式 Runtime 狀態寫入。
+- Known limit: 繩索張力、摩擦係數、濕滑坡面與更細緻的多物體動力學仍未建模。
+- True stop: 任何 live model、API、Provider 或自動 NPC 生成整合都需要新的計畫與 Product Owner 明確授權。
+- No API、Provider、模型下載、圖片、影片、音訊、Canon 或下一章工作已執行。
+
+## Previous Override — NPC-ACTOR-04A Internal Review Closure
 
 - Status: `NPC_ACTOR04A_COMPLETE / INTERNAL_REVIEW_COMPLETE / PRODUCT_OWNER_A_B_NOT_REQUIRED`.
 - Current work: NPC-ACTOR-04 的重複使用者 A/B Gate 已由三個內部獨立評審封存，現在停止，不自動啟動下一包。
@@ -194,14 +215,15 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR03_REVIEW_DESIGN_LIMITATION / NPC_ACTOR04A_INTERNAL_REVIEW_COMPLETE`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR04A_INTERNAL_REVIEW_COMPLETE / NPC_ACTOR05_TECHNICAL_PASS`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
-- Current closure package: `docs/work-packages/NPC-ACTOR-04A_INTERNAL_REVIEW_CLOSURE.md`
+- Current closure package: `docs/work-packages/NPC-ACTOR-05_OFFLINE_SAFETY_LOOP.md`
 - `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and the first human blind review. The 20／20 preference is accepted only as a basic anti-exposition signal because the comparison was too easy.
 - `NPC-ACTOR-02` human review is complete: Actor 4, natural control 6 and 2 ties. No Actor advantage was observed, so live API remains blocked.
 - `NPC-ACTOR-03` revision 1 and its eight-item micro-dialogue packet remain technically valid, but Product Owner review is deferred because the evaluation lacks persistent environmental depth. Its answer key remains sealed.
 - `NPC-ACTOR-04` evaluates the frozen revision through complete embodied scene trajectories. NPC-ACTOR-04A has now closed the repeated Product Owner rating request with three internal independent reviews: Actor 2, Control 1 and BOTH_FAIL 1. This is internal engineering evidence only, not human preference, live-model proof or production activation.
+- `NPC-ACTOR-05` composes the existing actor, physical and Game Master validators into a maximum-two-attempt offline safety loop. Four fixed cases match expectation; accepted output remains only a formal-resolve candidate, and live-model integration still requires separate authorization.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.

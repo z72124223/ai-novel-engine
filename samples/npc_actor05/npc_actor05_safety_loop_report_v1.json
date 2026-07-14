@@ -1,0 +1,74 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor05-offline-safety-loop-v1",
+    "caseCount": 4,
+    "expectationMatchCount": 4,
+    "expectationMismatchCount": 0,
+    "acceptedCaseCount": 3,
+    "rejectedCaseCount": 1,
+    "repairRequiredCaseCount": 3,
+    "outcomes": [
+        {
+            "caseId": "npc-actor05-mira-stable-first-pass",
+            "matchedExpectation": true,
+            "actualStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "actualAcceptedAttemptNumber": 1,
+            "actualAttemptStages": [
+                "ACCEPTED"
+            ],
+            "actualRepairRequestCount": 0,
+            "findings": []
+        },
+        {
+            "caseId": "npc-actor05-lian-knowledge-repair",
+            "matchedExpectation": true,
+            "actualStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "actualAcceptedAttemptNumber": 2,
+            "actualAttemptStages": [
+                "ACTOR_CONTRACT",
+                "ACCEPTED"
+            ],
+            "actualRepairRequestCount": 1,
+            "findings": [
+                "actor:foreign_knowledge_reference"
+            ]
+        },
+        {
+            "caseId": "npc-actor05-ren-load-repair",
+            "matchedExpectation": true,
+            "actualStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "actualAcceptedAttemptNumber": 2,
+            "actualAttemptStages": [
+                "PHYSICAL_AFFORDANCE",
+                "ACCEPTED"
+            ],
+            "actualRepairRequestCount": 1,
+            "findings": [
+                "physical:PUSH_LIMIT_EXCEEDED"
+            ]
+        },
+        {
+            "caseId": "npc-actor05-yan-storm-gate",
+            "matchedExpectation": true,
+            "actualStatus": "REJECTED_AFTER_MAX_ATTEMPTS",
+            "actualAcceptedAttemptNumber": null,
+            "actualAttemptStages": [
+                "PHYSICAL_AFFORDANCE",
+                "PHYSICAL_AFFORDANCE"
+            ],
+            "actualRepairRequestCount": 1,
+            "findings": [
+                "physical:MOVEMENT_BLOCKED_BY_BARRIER",
+                "physical:PUSH_LIMIT_EXCEEDED"
+            ]
+        }
+    ],
+    "technicalDecision": "TECHNICAL_PASS_MODEL_INTEGRATION_NOT_AUTHORIZED",
+    "stateMutationPerformed": false,
+    "liveModelStatus": "NOT_CONNECTED_AUTHORIZATION_REQUIRED",
+    "claimBoundary": [
+        "The four cases are deterministic non-Canon fixtures, not live-model generations.",
+        "The storm-gate case remains rejected when both bounded attempts are unsafe.",
+        "No accepted proposal was applied to SQLite or formal world state."
+    ]
+}
