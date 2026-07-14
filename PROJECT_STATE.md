@@ -2,7 +2,26 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — WORLD-PHYSICS-05 Embodied Scene Pilot
+## Current Override — NPC-ACTOR-04A Internal Review Closure
+
+- Status: `NPC_ACTOR04A_COMPLETE / INTERNAL_REVIEW_COMPLETE / PRODUCT_OWNER_A_B_NOT_REQUIRED`.
+- Current work: NPC-ACTOR-04 的重複使用者 A/B Gate 已由三個內部獨立評審封存，現在停止，不自動啟動下一包。
+- Implementation branch: `codex/npc-actor04-internal-review-closure`.
+- Required work package: `docs/work-packages/NPC-ACTOR-04A_INTERNAL_REVIEW_CLOSURE.md`.
+- Required plan: `PLANS.md` Current Plan Window V13.
+- Base SHA: `dc4ff06670eafbf9c1ff4661935491a8bffa451f` from the remote default branch.
+- Implementation Commit: `cb9063d` (`test: close npc actor embodied internal review`).
+- Product decision: Product Owner 拒絕再替 Agent 重複完成 A/B，Codex 必須自行完成可自動化的評審與測試。
+- Review method: 三位互相獨立的內部評審先讀匿名包；三份結果完成、驗證與 Hash 後，彙整器才讀封存答案。
+- Result: Actor 2、Control 1、`BOTH_FAIL` 1、TIE 0、無共識 0；overall decision 為 `INTERNAL_REVIEW_COMPLETE`。
+- Known weakness: Yan 暴風城門的兩個候選都存在受力、繩索、濕滑坡面或跨位置操作缺陷，不能宣稱演員版全面通過。
+- Verification: focused 4/4、NPC Actor related 42/42、full 944/944、Schema 4/4、frozen evidence 6/6 PASS。
+- Evidence report: `docs/npc_actor/NPC_ACTOR04A_INTERNAL_REVIEW_CLOSURE_REPORT.md`.
+- Aggregate: `samples/npc_actor04/internal_review/npc_actor04_internal_review_aggregate.json`.
+- True stop: 使用者不需要再完成 NPC-ACTOR-04 A/B；任何 live model、API、Provider、production、Canon 或下一包都需要新的計畫與明確授權。
+- No API、Provider、模型下載、圖片、影片、音訊、Canon、Migration、SQLite 或正式 Runtime 變更已執行。
+
+## Previous Override — WORLD-PHYSICS-05 Embodied Scene Pilot
 
 - Status: `WORLD_PHYSICS05_COMPLETE / WORLD_PHYSICS05_EMBODIED_SCENE_PILOT_PASS`.
 - Current work: WORLD-PHYSICS-05 is complete and integrated; the project is at a true stop.
@@ -175,14 +194,14 @@
 ## Active Blueprint Route — Local Hybrid Retrieval And NPC Actor
 
 - Blueprint: `docs/LOCAL_HYBRID_RETRIEVAL_KNOWLEDGE_BLUEPRINT_V1.md`
-- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR03_REVIEW_DESIGN_LIMITATION / NPC_ACTOR04_TECHNICAL_PASS_HUMAN_REVIEW_PENDING`
+- Status: `RETRIEVAL00_PASS / RETRIEVAL01_SOURCE_LEVEL_PASS / NPC_ACTOR03_REVIEW_DESIGN_LIMITATION / NPC_ACTOR04A_INTERNAL_REVIEW_COMPLETE`
 - Completed foundation: `RETRIEVAL-00 — Authority, Rebuild And Retention Foundation`
 - Completed benchmark: `RETRIEVAL-01 — Offline Local Dual-Model Retrieval Benchmark`
-- Current work package: `docs/work-packages/NPC-ACTOR-04_EMBODIED_SCENE_ROLLOUT_EVALUATION.md`
+- Current closure package: `docs/work-packages/NPC-ACTOR-04A_INTERNAL_REVIEW_CLOSURE.md`
 - `NPC-ACTOR-01 — Single NPC Actor Pilot` has completed provider-neutral Fake/File implementation and the first human blind review. The 20／20 preference is accepted only as a basic anti-exposition signal because the comparison was too easy.
 - `NPC-ACTOR-02` human review is complete: Actor 4, natural control 6 and 2 ties. No Actor advantage was observed, so live API remains blocked.
 - `NPC-ACTOR-03` revision 1 and its eight-item micro-dialogue packet remain technically valid, but Product Owner review is deferred because the evaluation lacks persistent environmental depth. Its answer key remains sealed.
-- `NPC-ACTOR-04` evaluates the frozen revision through complete embodied scene trajectories. Technical gates passed; Product Owner review is pending. This is an evaluation-layer expansion, not a second calibration revision or production activation.
+- `NPC-ACTOR-04` evaluates the frozen revision through complete embodied scene trajectories. NPC-ACTOR-04A has now closed the repeated Product Owner rating request with three internal independent reviews: Actor 2, Control 1 and BOTH_FAIL 1. This is internal engineering evidence only, not human preference, live-model proof or production activation.
 - Intended route: deterministic import and optional local extraction → SQL/FTS/BM25 exact retrieval → Embedding candidate recall → Reranker ordering → a small visibility-safe evidence packet for downstream GPT use.
 - Formal SQLite state, Canon, `AiTurnResultValidator`, `StateReducer`, character knowledge visibility, `contextHash`, `stateVersion`, and transaction boundaries remain authoritative and unchanged.
 - Two pinned official 0.6B Qwen retrieval models were downloaded and benchmarked only in an isolated external runtime. They are not promoted into the Kotlin runtime or an actor-visible production path.

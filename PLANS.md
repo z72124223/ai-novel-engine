@@ -10,7 +10,7 @@
 
 標記：`NPC_ACTOR04A_INTERNAL_REVIEW_CLOSURE`
 
-狀態：**IMPLEMENTATION COMPLETE / FINAL GIT INTEGRATION PENDING — 三個內部獨立評審已封存結論，不再要求 Product Owner 重複 A/B**
+狀態：**COMPLETE — 三個內部獨立評審已封存結論，不再要求 Product Owner 重複 A/B**
 
 日期：2026-07-14
 
@@ -75,7 +75,7 @@
 - [x] Step 3：由三個獨立內部評審完成匿名審查；保存個別 JSON，驗證後再揭露答案。
 - [x] Step 4：產生彙整結果、缺陷清單、Hash manifest 與實作報告；完成唯一一次格式修訂。
 - [x] Step 5：執行 focused、related、完整 Gradle、JSON、Schema、Hash、秘密及 Git scope 檢查。
-- [ ] Step 6（CURRENT）：更新治理狀態，明確 Commit、普通 Push，遠端未漂移時 fast-forward 整合預設分支。
+- [x] Step 6：更新治理狀態，明確 Commit、普通 Push，遠端未漂移時 fast-forward 整合預設分支。
 
 ### Verification
 
@@ -98,6 +98,7 @@
 - 2026-07-14：選擇新增 NPC-ACTOR-04A 封存層，不修改原 NPC-ACTOR-04 歷史與答案。
 - 2026-07-14：三個評審在答案揭露前完成並通過驗證；Mira A／A／B、Yan BOTH_FAIL／A／BOTH_FAIL、Lian A／A／A、Ren B／B／B。
 - 2026-07-14：揭答後多數決為 Actor 2、Control 1、BOTH_FAIL 1、無共識 0；完整測試 944／944 PASS。結論只為 `INTERNAL_REVIEW_COMPLETE`，不宣稱人類或 live model 品質。
+- 2026-07-14：實作 Commit `cb9063d`；治理 Commit 完成後以普通 Push 發布功能分支並 fast-forward 整合遠端預設分支，不使用 force push。
 
 ## Current Plan Window V12
 
