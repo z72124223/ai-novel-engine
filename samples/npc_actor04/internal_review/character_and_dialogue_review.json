@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "artifactType": "NPC_ACTOR04_INTERNAL_REVIEW",
+  "packetId": "npc-actor04-embodied-31462b8a7d2a",
+  "status": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE",
+  "reviewerId": "internal-character-dialogue-01",
+  "reviewerRole": "CHARACTER_AND_DIALOGUE_REVIEWER",
+  "answerKeyReadBeforeCompletion": false,
+  "revisionNumber": 1,
+  "ratings": [
+    {
+      "reviewId": "review-npc-actor04-mira-fire",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 5, "optionB": 3 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 4 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 5, "optionB": 3 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 第一拍直接把孩子移出碎玻璃區。",
+        "A 第二拍清開酒箱後，只用一句短命令分派撤離。",
+        "B 踢開備餐通道的酒箱，卻稱前廳到前門的撤離線因此打開。",
+        "B 第二拍廚工已關爐火，第三拍米拉又說「關火」。"
+      ],
+      "issueTags": ["OPTION_B_SPATIAL_CAUSAL_MISMATCH", "OPTION_B_REDUNDANT_COMMAND"],
+      "rationale": "A 更符合先救人、再清路、最後控火的務實性格；對白短且跟著動作發生。B 的多人協作尚可信，但撤離線因果與重複命令削弱連續性。"
+    },
+    {
+      "reviewId": "review-npc-actor04-yan-storm-gate",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 4, "optionB": 3 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 3 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 5, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 4, "optionB": 3 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 先把孩子推入凹處，再讓板車偏離城門正中。",
+        "A 用短命令讓急遞員與守衛同步核驗警訊。",
+        "A 第二拍只描述踩住繩尾，第三拍卻出現已受力的繩結。",
+        "B 先以肩抵車，之後又以腳卡輪並操作門閂。"
+      ],
+      "issueTags": ["OPTION_A_ROPE_ANCHOR_GAP", "OPTION_B_UNSAFE_BODY_BRACING", "OPTION_B_POSITIONAL_OVERLOAD"],
+      "rationale": "A 的位置調整、分流指令與群眾反應更符合嚴的寡言和不逞強；雖有繩結交代缺口，整體仍比 B 連續。B 讓角色長時間以身體硬擋板車，與角色設定衝突。"
+    },
+    {
+      "reviewId": "review-npc-actor04-lian-market-collapse",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 5, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 4 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 5, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 5, "optionB": 5 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 從側邊斜撐橫梁，持續觀察接點。",
+        "A 讓學徒先帶走孩子，再把藥箱沿地面滑來。",
+        "A 等差役點頭並確實承力後才換手止血。",
+        "B 的旁人以腳踢碎瓷片，可能擴散危險。"
+      ],
+      "issueTags": ["OPTION_B_SHARD_KICKING_RISK", "OPTION_B_SUPPORT_METHOD_WEAKER"],
+      "rationale": "兩者對白都自然簡短，但 A 的合作建立更細緻：先穩結構、再分派可移動者、最後明確交接受力，其他人的反應也形成可信的救援分工。"
+    },
+    {
+      "reviewId": "review-npc-actor04-ren-dock-surge",
+      "selection": "B",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 4, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 3, "optionB": 5 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 3, "optionB": 5 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 5 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 5, "optionB": 5 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 4 }
+      ],
+      "evidence": [
+        "A 直接用肩頂住正在滑動的重木箱。",
+        "B 站在木箱軸線外，讓水手從甲板端改變箱體方向。",
+        "B 的腳夫、水手、港務員與買主都對現場指令作出相符反應。",
+        "B 使用了初始狀態未列出的卸貨粉筆線。"
+      ],
+      "issueTags": ["OPTION_A_UNSAFE_BODY_BRACING", "OPTION_A_CHARACTER_INCONSISTENCY", "OPTION_B_UNGROUNDED_CHALK_LINE"],
+      "rationale": "B 更符合任不拿命換進度的核心性格：先退出夾擊線、從安全站位改變木箱方向，再停止船岸通行。A 的台詞很自然，但以肩硬擋重箱明顯削弱角色一致性。"
+    }
+  ],
+  "claimBoundary": "Internal agent review only; not human preference or live-model proof."
+}

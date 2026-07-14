@@ -1,10 +1,103 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-14):** Read only `## Current Plan Window V12`
-> (`WORLD_PHYSICS05_EMBODIED_SCENE_PILOT`) first. All older plan windows are
+> **Startup rule (2026-07-14):** Read only `## Current Plan Window V13`
+> (`NPC_ACTOR04A_INTERNAL_REVIEW_CLOSURE`) first. All older plan windows are
 > preserved evidence only. Current clean-worktree base:
-> `7ec8d2b42a6d1024db91e5a04d3ee0438ff354f1` on
-> `codex/world-physics05-embodied-scene-pilot`. GitHub remote is the team authority.
+> `dc4ff06670eafbf9c1ff4661935491a8bffa451f` on
+> `codex/npc-actor04-internal-review-closure`. GitHub remote is the team authority.
+
+## Current Plan Window V13
+
+標記：`NPC_ACTOR04A_INTERNAL_REVIEW_CLOSURE`
+
+狀態：**IMPLEMENTATION COMPLETE / FINAL GIT INTEGRATION PENDING — 三個內部獨立評審已封存結論，不再要求 Product Owner 重複 A/B**
+
+日期：2026-07-14
+
+### Goal
+
+關閉 NPC-ACTOR-04 長期懸而未決的人工評審 Gate（關卡），不再要求 Product Owner
+替 Agent 完成四組 A/B 測試。三個相互獨立、看不到答案的內部評審，分別從環境與物理、
+角色與對白、對抗性安全邊界審查同一份匿名完整場景包；之後以確定性規則彙整、揭露答案、
+保存可重現證據，並停止，不自動啟動 live API 或下一輪測試。
+
+### Global Strategy
+
+- 保留 NPC-ACTOR-04 原匿名包、技術報告與封存答案，禁止覆寫歷史。
+- 評審前只能讀匿名包與評審規則；三份結果都固定、驗證並計算 SHA-256 後，彙整器才可讀答案。
+- 每位評審使用不同責任視角，但都必須逐場給出 `A`、`B`、`TIE` 或 `BOTH_FAIL` 與簡短證據。
+- 程式只負責驗證格式、匿名邊界、完整性、評分範圍、三評審角色唯一性與多數決彙整；
+  不把 Agent 判斷偽裝成真人偏好。
+- 本包最多允許一次證據格式修訂，不修改凍結的 revision-1 policy 或原始兩條候選軌跡。
+- 完成後產生 `INTERNAL_REVIEW_COMPLETE`、`NO_INTERNAL_ADVANTAGE` 或
+  `INSUFFICIENT_INTERNAL_CONSENSUS`，不再要求使用者補測。
+
+### Non-Goals
+
+- 不宣稱通過圖靈測試、真人自然度、完整環境理解或完整物理模擬。
+- 不使用 Product Owner 評分，不打開 NPC-ACTOR-03 答案，不修改 NPC-ACTOR-04 原答案。
+- 不接 OpenAI API、Provider、模型下載、圖片、影片、音訊、Canon 或下一章。
+- 不修改 SQLite、Migration、Knowledge、Memory、正式 Runtime transaction 或物理規則。
+- 不進行第二輪、第三輪或無上限 A/B 測試。
+
+### Scope
+
+- 治理：`PLANS.md`、新工作包、`PROJECT_STATE.md` 與 controller。
+- 契約：內部評審 JSON Schema、三份獨立結果、彙整結果與 SHA-256 manifest。
+- Kotlin：最小資料模型、驗證／彙整服務、CLI 入口與 focused tests。
+- 證據：匿名讀取邊界、答案揭露順序、三角色唯一性、多數決與 claim boundary。
+
+### Confirmed Facts
+
+- 遠端預設分支 `dc4ff06670eafbf9c1ff4661935491a8bffa451f` 已完成
+  WORLD-PHYSICS-05，完整測試 940／940 PASS。
+- NPC-ACTOR-04 已有四場、十二拍、A/B 2／2 的匿名完整軌跡，技術檢查與 905／905
+  歷史測試通過；目前只有 Product Owner 人工結果缺失。
+- Product Owner 於 2026-07-14 明確拒絕繼續替 Agent 做重複測試，要求 Codex 自行完成。
+- 原 `validateHumanReviewResult` 只接受 `reviewerRole=PRODUCT_OWNER`，不能冒用為內部結果。
+- NPC-ACTOR-04 原素材是人工編寫的離線測試軌跡，不是 live model 輸出。
+
+### Assumptions
+
+- 三個不同責任視角可提供比單一自評更有用的內部缺陷證據，但仍不等於人類使用者偏好。
+- 固定的匿名結果、理由、分數、Hash 與確定性彙整足以關閉「是否仍要 Product Owner
+  重複評分」的流程問題。
+
+### Open Questions
+
+- 三份內部結果是否形成每場多數決，必須等評審完成後由彙整器計算，不能預先假設。
+- 凍結 actor option 是否獲得優勢，必須在三份結果完成並驗證後才可開答案計算。
+
+### Implementation Steps
+
+- [x] Step 1：讀取遠端治理、NPC-ACTOR-04 契約、匿名包、既有服務／測試與 Git 狀態。
+- [x] Step 2：建立工作包、嚴格 Schema、內部評審模型與確定性彙整規則。
+- [x] Step 3：由三個獨立內部評審完成匿名審查；保存個別 JSON，驗證後再揭露答案。
+- [x] Step 4：產生彙整結果、缺陷清單、Hash manifest 與實作報告；完成唯一一次格式修訂。
+- [x] Step 5：執行 focused、related、完整 Gradle、JSON、Schema、Hash、秘密及 Git scope 檢查。
+- [ ] Step 6（CURRENT）：更新治理狀態，明確 Commit、普通 Push，遠端未漂移時 fast-forward 整合預設分支。
+
+### Verification
+
+- 三位評審角色必須恰好各一份，reviewer id、角色與輸出 SHA-256 不得重複。
+- 每份結果必須覆蓋四場，且只能引用匿名包已存在的 review id 與七個評分維度。
+- 每場各維度使用 1～5 分；選擇與證據不得空白，不得包含答案身分或來源標籤。
+- 彙整只能在三份結果全部有效後讀取答案；多數決、平手與無共識規則必須確定性。
+- 原匿名包、答案、suite 與 frozen policy 的 SHA-256 必須保持不變。
+- 任何結論都必須保留「內部 Agent 評審不等於真人偏好或 live model 品質」限制。
+
+### Risks
+
+- 三位評審仍可能共享模型偏誤；結果只能作內部工程 Gate，不能宣稱真人驗證。
+- 原候選為人工軌跡，優勢不一定能代表未來 GPT API 或本地生成模型。
+- 若評審意見沒有多數，本包必須誠實輸出無共識並停止，不能要求使用者補答。
+
+### Drift Log
+
+- 2026-07-14：Product Owner 拒絕後續人工 A/B，要求 Agent 自行測試並回報成品。
+- 2026-07-14：選擇新增 NPC-ACTOR-04A 封存層，不修改原 NPC-ACTOR-04 歷史與答案。
+- 2026-07-14：三個評審在答案揭露前完成並通過驗證；Mira A／A／B、Yan BOTH_FAIL／A／BOTH_FAIL、Lian A／A／A、Ren B／B／B。
+- 2026-07-14：揭答後多數決為 Actor 2、Control 1、BOTH_FAIL 1、無共識 0；完整測試 944／944 PASS。結論只為 `INTERNAL_REVIEW_COMPLETE`，不宣稱人類或 live model 品質。
 
 ## Current Plan Window V12
 

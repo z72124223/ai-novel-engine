@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "artifactType": "NPC_ACTOR04_INTERNAL_REVIEW",
+  "packetId": "npc-actor04-embodied-31462b8a7d2a",
+  "status": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE",
+  "reviewerId": "internal-environment-physics-01",
+  "reviewerRole": "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+  "answerKeyReadBeforeCompletion": false,
+  "revisionNumber": 1,
+  "ratings": [
+    {
+      "reviewId": "review-npc-actor04-mira-fire",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 5, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 3 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 5 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 4, "optionB": 4 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 先把孩子移出碎玻璃區，再清開酒箱。",
+        "A 只把水潑向油鍋周圍燃燒木面，廚工同時關閉爐火。",
+        "B 以濕毯直接壓住油鍋。",
+        "B 在火場仍警戒時開啟後門換氣。"
+      ],
+      "issueTags": ["WATER_NEAR_OIL_FIRE", "WET_BLANKET_STEAM_RISK", "UNASSESSED_CROSS_DRAFT"],
+      "rationale": "A 的三拍依序處理受困者、撤離通道與火勢外擴，空間和因果較穩。A 在油鍋旁用水仍有濺入風險；B 的濕毯與隨後開門換氣則增加蒸汽及補氧的不確定性。"
+    },
+    {
+      "reviewId": "review-npc-actor04-yan-storm-gate",
+      "selection": "BOTH_FAIL",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 4, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 3, "optionB": 2 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 3, "optionB": 2 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 2, "optionB": 4 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 從板車側面改變車頭方向，避免正面硬接。",
+        "A 僅踩住繩尾，下一拍卻直接出現正在受力的繩結。",
+        "B 在濕滑泥坡用肩抵住滑動板車。",
+        "B 一面用腳卡車輪，一面抬門閂處理通行。"
+      ],
+      "issueTags": ["UNANCHORED_RESTRAINT", "PHANTOM_LOADED_KNOT", "BODY_BLOCKING_MOVING_CART", "MULTITASKING_ON_SLIPPERY_SLOPE"],
+      "rationale": "兩者都先救孩子且最後嘗試控制入口，但關鍵承載行為不可信。A 的繩索沒有錨點卻延續成受力繩結；B 連續以肩膀和腳阻擋滑車，在濕滑坡面上風險過高。"
+    },
+    {
+      "reviewId": "review-npc-actor04-lian-market-collapse",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 4, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 4 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 5, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 5, "optionB": 5 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 5 }
+      ],
+      "evidence": [
+        "A 繞開碎瓷，從側邊斜撐橫梁並持續觀察接點。",
+        "A 指定無碎瓷的牆邊路線，讓學徒先帶走孩子再推送藥箱。",
+        "A 等差役承接受力並點頭後才換手。",
+        "B 以肩膀作主要支撐，旁人則用腳踢動碎瓷。"
+      ],
+      "issueTags": ["LOOSE_POLE_FOOTING", "BODY_AS_PRIMARY_BRACE", "CERAMIC_KICKING_HAZARD"],
+      "rationale": "A 對碎瓷、橫梁受力、疏散路線與交接空窗的處理更完整，三拍因果清楚。木桿底座仍只靠鞋跟暫時固定，但整體比 B 長時間以身體承載更可信。"
+    },
+    {
+      "reviewId": "review-npc-actor04-ren-dock-surge",
+      "selection": "B",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 4, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 3, "optionB": 5 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 3, "optionB": 5 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 5 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 4, "optionB": 5 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 4 }
+      ],
+      "evidence": [
+        "A 衝上斜板並用肩膀頂住滑動重木箱下角。",
+        "B 讓腳夫先退，再由甲板水手把木箱轉離斜板軸線。",
+        "B 不站進木箱下方，並先退回乾石面才使用吊鉤。",
+        "B 使用的卸貨粉筆線未列於初始狀態。"
+      ],
+      "issueTags": ["BODY_IN_CRUSH_PATH", "UNSTABLE_RAMP_ENTRY", "UNGROUNDED_CHALK_LINE"],
+      "rationale": "B 持續避開斷繩回彈面、木箱夾擊線與失去支撐的斜板，並以分工改變貨物方向，明顯優於 A 用身體攔截重箱。粉筆線缺乏封包依據，因此知識邊界略扣分。"
+    }
+  ],
+  "claimBoundary": "Internal agent review only; not human preference or live-model proof."
+}

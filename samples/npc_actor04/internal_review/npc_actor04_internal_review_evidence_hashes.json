@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-04A INTERNAL REVIEW CLOSURE",
+  "selfHashExcluded": true,
+  "sourceFrozenManifest": {
+    "path": "samples/npc_actor04/npc_actor04_evidence_hashes.json",
+    "sha256": "931acc67cd237a601b70c895bd3ff649cc329b51f91f8b152759f3c7a1ffe6c2",
+    "bytes": 1339
+  },
+  "answerDisclosureOrder": {
+    "allReviewsCompletedBeforeAnswerKeyRead": true,
+    "allReviewsValidatedBeforeAnswerKeyRead": true,
+    "allReviewFileHashesCapturedBeforeAnswerKeyRead": true,
+    "reviewerCount": 3,
+    "revisionNumber": 1
+  },
+  "files": [
+    {
+      "path": "schemas/npc_actor/npc_actor_internal_review_v1.schema.json",
+      "sha256": "cbbef59b2bb5c0bd1e828eaf3907c3568353d5ed3fb6112d55f9ba5b238bf2ee",
+      "bytes": 8792
+    },
+    {
+      "path": "samples/npc_actor04/internal_review/environment_and_physics_review.json",
+      "sha256": "9b798007bd18f8f9e77c7150958adb623f1d7833fe7062a68748542076bc5bf2",
+      "bytes": 5585
+    },
+    {
+      "path": "samples/npc_actor04/internal_review/character_and_dialogue_review.json",
+      "sha256": "f51fdfdbbf6682c2eecdf4ba8e53c12c8d5f348a8835b8db433d0230ec5b9d97",
+      "bytes": 5591
+    },
+    {
+      "path": "samples/npc_actor04/internal_review/adversarial_boundary_review.json",
+      "sha256": "cffb4400a940ccd8e5b1aefb8fa3b08f033d9f173c9880f9e03b0719afa33dea",
+      "bytes": 5825
+    },
+    {
+      "path": "samples/npc_actor04/internal_review/npc_actor04_internal_review_aggregate.json",
+      "sha256": "d9547864be71f1a05968de8c39c1a16e916aa5a95765d6667267828f06290a61",
+      "bytes": 6931
+    }
+  ]
+}

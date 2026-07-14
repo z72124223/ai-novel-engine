@@ -10,6 +10,8 @@ import com.localnovel.engine.model.NpcActorHardBlindHumanReviewResult
 import com.localnovel.engine.model.NpcActorHardBlindAnswerKey
 import com.localnovel.engine.model.NpcActorHardBlindReviewPacket
 import com.localnovel.engine.model.NpcEmbodiedHumanReviewResult
+import com.localnovel.engine.model.NpcEmbodiedAnswerKey
+import com.localnovel.engine.model.NpcEmbodiedInternalReviewResult
 import com.localnovel.engine.model.NpcEmbodiedReviewPacket
 import com.localnovel.engine.model.NpcEmbodiedRolloutSuite
 import com.localnovel.engine.service.NpcActorEvaluationFixtureFactory
@@ -20,6 +22,7 @@ import com.localnovel.engine.service.NpcActorHardBlindEvaluationService
 import com.localnovel.engine.service.NpcActorHardBlindFixtureFactory
 import com.localnovel.engine.service.NpcActorEmbodiedRolloutEvaluationService
 import com.localnovel.engine.service.NpcActorEmbodiedRolloutFixtureFactory
+import com.localnovel.engine.service.NpcActorInternalReviewService
 import com.localnovel.engine.service.NpcActorJson
 import java.nio.file.Files
 import java.nio.file.Path
@@ -89,6 +92,47 @@ internal object NpcActorCli {
         println("ratings=${result.ratings.size}")
         return 0
     }
+
+    fun aggregateEmbodiedInternalReview(options: Map<String, String>): Int {
+        val packet = NpcActorJson.strict.decodeFromString<NpcEmbodiedReviewPacket>(
+            Files.readString(Path.of(options.requiredCliOption("packet"))).removePrefix("\uFEFF"),
+        )
+        val reviews = readInternalReviews(options)
+        val answerKey = NpcActorJson.strict.decodeFromString<NpcEmbodiedAnswerKey>(
+            Files.readString(Path.of(options.requiredCliOption("answer-key"))).removePrefix("\uFEFF"),
+        )
+        val aggregate = NpcActorInternalReviewService().aggregate(packet, reviews, answerKey)
+        val output = Path.of(options.requiredCliOption("out"))
+        writeStrictJson(output, aggregate)
+        println("internalReviewDecision=${aggregate.overallDecision}")
+        println("actorWins=${aggregate.actorWins}")
+        println("controlWins=${aggregate.controlWins}")
+        println("ties=${aggregate.ties}")
+        println("bothFail=${aggregate.bothFail}")
+        println("noConsensus=${aggregate.noConsensus}")
+        println("wrote=$output")
+        return 0
+    }
+
+    fun validateEmbodiedInternalReviews(options: Map<String, String>): Int {
+        val packet = NpcActorJson.strict.decodeFromString<NpcEmbodiedReviewPacket>(
+            Files.readString(Path.of(options.requiredCliOption("packet"))).removePrefix("\uFEFF"),
+        )
+        val reviews = readInternalReviews(options)
+        NpcActorInternalReviewService().validateReviews(packet, reviews)
+        println("internalReviewValidation=PASS")
+        println("packetId=${packet.packetId}")
+        println("reviewers=${reviews.size}")
+        println("revisionNumber=${reviews.first().revisionNumber}")
+        return 0
+    }
+
+    private fun readInternalReviews(options: Map<String, String>): List<NpcEmbodiedInternalReviewResult> =
+        listOf("environment-review", "dialogue-review", "adversarial-review").map { option ->
+            NpcActorJson.strict.decodeFromString(
+                Files.readString(Path.of(options.requiredCliOption(option))).removePrefix("\uFEFF"),
+            )
+        }
 
     fun createCalibrationPolicy(options: Map<String, String>): Int {
         val output = Path.of(options.requiredCliOption("out"))

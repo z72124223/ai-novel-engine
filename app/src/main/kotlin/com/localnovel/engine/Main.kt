@@ -51,6 +51,8 @@ class Cli {
                 "create-npc-actor-embodied-suite" -> NpcActorCli.createEmbodiedRolloutSuite(options)
                 "evaluate-npc-actor-embodied-rollout" -> NpcActorCli.evaluateEmbodiedRollout(options)
                 "validate-npc-actor-embodied-review" -> NpcActorCli.validateEmbodiedHumanReview(options)
+                "validate-npc-actor-embodied-internal-reviews" -> NpcActorCli.validateEmbodiedInternalReviews(options)
+                "aggregate-npc-actor-embodied-internal-review" -> NpcActorCli.aggregateEmbodiedInternalReview(options)
                 "seed-demo" -> StorySessionCli.seedDemo(options)
                 "compile-context" -> StorySessionCli.compileContext(options)
                 "validate-result" -> StorySessionCli.validateResult(options)
@@ -254,6 +256,8 @@ class Cli {
               create-npc-actor-embodied-suite --policy <policy.json> --out <suite.json>
               evaluate-npc-actor-embodied-rollout --policy <policy.json> --suite <suite.json> --actor02-suite <npc-actor02-suite.json> --actor03-suite <npc-actor03-suite.json> --report <report.json> --blind <blind-review.json> --answer-key <answer-key.json>
               validate-npc-actor-embodied-review --packet <blind-review.json> --result <human-review-result.json>
+              validate-npc-actor-embodied-internal-reviews --packet <blind-review.json> --environment-review <review.json> --dialogue-review <review.json> --adversarial-review <review.json>
+              aggregate-npc-actor-embodied-internal-review --packet <blind-review.json> --environment-review <review.json> --dialogue-review <review.json> --adversarial-review <review.json> --answer-key <answer-key.json> --out <aggregate.json>
               init-db --db <path>
               seed-demo --db <path> [--seed samples/demo_project_seed.json]
               compile-context --db <path> --project <id> --player-input <text> --out <path>
