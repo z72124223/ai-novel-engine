@@ -10,6 +10,7 @@
 - Required work package: `docs/work-packages/NPC-ACTOR-05_OFFLINE_SAFETY_LOOP.md`.
 - Required plan: `PLANS.md` Current Plan Window V14.
 - Base SHA: `e3f75fa3d6c93e080cbd9501d450c5931e245368` from the remote default branch.
+- Implementation Commit: `d21b1a2eb0fa669ad905028c4b65b2acd366b133`; the feature branch and remote default received it by ordinary fast-forward Push without force.
 - Pipeline: Actor Contract → Physical Binding → Physical Affordance → Game Master world legality → 10-minute time budget.
 - Retry rule: 每個提案最多兩次；第一次失敗只會產生經過清理的修訂要求，第二次仍失敗就終止。
 - Privacy rule: 修訂要求只暴露角色可見的 ID、允許清單、錯誤碼與固定修訂指示，不暴露引擎內部測量值或作者秘密。
@@ -22,6 +23,7 @@
 - Known limit: 繩索張力、摩擦係數、濕滑坡面與更細緻的多物體動力學仍未建模。
 - True stop: 任何 live model、API、Provider 或自動 NPC 生成整合都需要新的計畫與 Product Owner 明確授權。
 - No API、Provider、模型下載、圖片、影片、音訊、Canon 或下一章工作已執行。
+- Final governance Commit: the Git commit containing this state update; it changes documentation only.
 
 ## Previous Override — NPC-ACTOR-04A Internal Review Closure
 
