@@ -2,6 +2,22 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
+## Current Override — NPC-ACTOR-09 Safe Rejection Closure
+
+- Status: `SAFE_REJECTION / SESSION_BOOTSTRAP_REPAIR_REQUIRED / NO_CANDIDATE_CREATED`.
+- Branch: `codex/npc-actor09-real-supervised-pilot`.
+- Base SHA: `54ed365514b228dc20cb3b3a48a21d774705249a`.
+- Required plan: `PLANS.md` Current Plan Window V18.
+- Required work package: `docs/work-packages/NPC-ACTOR-09_REAL_SUPERVISED_PILOT.md`.
+- Result: Qwen3-8B prepare ended as `REJECTED_AFTER_MAX_ATTEMPTS`; no candidate package was created and no
+  formal turn was resolved.
+- Root cause: the opening scene had a `locationId`, so existing `start-session` behavior moved every project
+  character, including the player, to the opening location. The offscreen NPC condition became false and the
+  existing safety Gate correctly rejected the run.
+- Current stop: preserve and Push the rejection evidence. Do not retry this Session. A separately reviewed
+  setup-repair package is required before another real-model attempt.
+- No Production Kotlin, cloud API, Provider, server, port, Canon, Memory／Knowledge authoring or media.
+
 ## Current Override — NPC-ACTOR-08 Human-Approved Formal Resolve
 
 - Status: `NPC_ACTOR08_TECHNICAL_PASS / REAL_CANDIDATE_APPROVAL_REQUIRED`.

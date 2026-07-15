@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "NPC-ACTOR-09_REAL_SUPERVISED_PILOT",
+  "boundary": "NON_CANON_EVALUATION",
+  "result": "SAFE_REJECTION",
+  "reasonCode": "SESSION_BOOTSTRAP_OFFSCREEN_CONDITION_INVALIDATED",
+  "baseCommitSha": "54ed365514b228dc20cb3b3a48a21d774705249a",
+  "session": {
+    "sessionId": "session-f6471aae-7ead-4ec8-8fa4-8156e479a637",
+    "branchId": "branch-f7158060-efc9-4ff5-a1ad-a1762266b374",
+    "stateVersionBefore": 0,
+    "stateVersionAfter": 0,
+    "nextTurnNumberBefore": 1,
+    "nextTurnNumberAfter": 1,
+    "playerLocationAfterStart": "loc-npc09-old-corridor",
+    "npcLocationAfterStart": "loc-npc09-old-corridor",
+    "formalTurnApplied": false
+  },
+  "model": {
+    "name": "Qwen3-8B-Q5_K_M.gguf",
+    "format": "GGUF",
+    "quantization": "Q5_K_M",
+    "sha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+    "bytes": 5851112224
+  },
+  "runtime": {
+    "name": "llama-cli.exe",
+    "distribution": "llama.cpp-b10002-vulkan",
+    "sha256": "f0741939ea8adecc58db40cfeabd8526d156878fdaa1ab2c8c1b6de08bdd8d9e",
+    "bytes": 9216,
+    "serverOrPortUsed": false
+  },
+  "execution": {
+    "command": "prepare-local-npc-actor-formal-turn",
+    "preparationId": "npc-actor09-real-pilot-001",
+    "maxAttempts": 2,
+    "timeoutSeconds": 240,
+    "seed": 20260715,
+    "elapsedSeconds": 131,
+    "outcome": "REJECTED_AFTER_MAX_ATTEMPTS",
+    "candidateFileCreated": false,
+    "resolveCommandExecuted": false
+  },
+  "database": {
+    "committedToGit": false,
+    "sha256BeforePrepare": "dda6927c5394ca731302e7060c2a3eef02c7920a9fbf55a7e8e2918c6c8e03f5",
+    "sha256AfterRejection": "83fc24cd20c1e3c8f6481d6d0a5eb7af1f89d7151f30bad17b5c4e977cbc379f",
+    "semanticStateUnchanged": true,
+    "note": "SQLite file bytes changed during pending-context lifecycle, while exported Session state remained identical."
+  },
+  "artifacts": [
+    {
+      "path": "samples/npc_actor09/npc_actor09_noncanon_seed.json",
+      "sha256": "6fdb5ddce226d11be9fad8b9d44820f740031751c93657682b417a48ff1733b7",
+      "bytes": 3152
+    },
+    {
+      "path": "samples/npc_actor09/npc_actor09_formal_turn_input.template.json",
+      "sha256": "a6001221682be14f2583fe8656e255bd0725229e26fcb4464448afd84bcd78d6",
+      "bytes": 3740
+    },
+    {
+      "path": "samples/npc_actor09/npc_actor09_before_session_evidence.json",
+      "sha256": "aeeaf3a909c438902a509750db40c784388d2a664ca9f88b58a78ea357792d2d",
+      "bytes": 1074
+    },
+    {
+      "path": "samples/npc_actor09/npc_actor09_after_rejection_session_evidence.json",
+      "sha256": "aeeaf3a909c438902a509750db40c784388d2a664ca9f88b58a78ea357792d2d",
+      "bytes": 1074
+    }
+  ],
+  "nextAction": "REVIEW_A_NEW_SESSION_SETUP_REPAIR_PACKAGE_BEFORE_ANY_RETRY"
+}

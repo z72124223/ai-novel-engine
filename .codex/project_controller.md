@@ -1,4 +1,23 @@
-# Project Controller — NPC-ACTOR-08
+# Project Controller — NPC-ACTOR-09 Safe Rejection Closure
+
+## Current route — NPC-ACTOR-09
+
+Current package: `NPC-ACTOR-09_REAL_SUPERVISED_PILOT` is closing as a safe rejection.
+
+The first real Qwen3-8B prepare was safely rejected because `start-session` moved the player into the
+opening scene and invalidated the offscreen condition. Save the rejection evidence to GitHub. Do not
+retry this Session, weaken the safety Gate, or call resolve. There is no candidate for Product Owner review.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V18;
+3. `docs/work-packages/NPC-ACTOR-09_REAL_SUPERVISED_PILOT.md`;
+4. NPC-ACTOR-08 formal resolve contract and only directly required implementation files.
+
+Do not edit Production Kotlin, run SQL directly, start a server／port, connect cloud API, or call
+`resolve-local-npc-actor-formal-turn`. A new reviewed package is required before correcting the fixture
+and attempting another real candidate.
 
 ## Current route — NPC-ACTOR-08
 

@@ -1,10 +1,97 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V17`
-> (`NPC_ACTOR08_HUMAN_APPROVED_FORMAL_RESOLVE`) first. All older plan windows are
-> preserved evidence only. Current clean-worktree base:
-> `66d86467cfcdf759656d9e0d276ae8ff4008366c` on
-> `codex/npc-actor08-human-approved-formal-resolve`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V18`
+> (`NPC_ACTOR09_REAL_SUPERVISED_PILOT`) first. All older plan windows are preserved evidence only.
+> Current clean-worktree base: `54ed365514b228dc20cb3b3a48a21d774705249a` on
+> `codex/npc-actor09-real-supervised-pilot`. GitHub remote is the team authority.
+
+## Current Plan Window V18
+
+標記：`NPC_ACTOR09_REAL_SUPERVISED_PILOT`
+
+狀態：**SAFE_REJECTION — Session 啟動語意使離場條件失效；沒有候選、沒有 resolve**
+
+日期：2026-07-15
+
+### Goal
+
+使用本機已驗證的 Qwen3-8B，從一個隔離、非 Canon 的正式 Session 產生第一份真實 NPC
+回合候選。候選必須完整通過 NPC-ACTOR-08 的角色、知識、物理、世界與時間安全鏈，保存至
+GitHub 並轉成白話審查資料；在 Product Owner 對該份精確候選作出決定前不得 resolve。
+
+### Global Strategy
+
+- 使用官方 CLI 建立臨時資料庫、匯入非 Canon fixture、啟動 Session 與準備候選；不直接寫 SQL。
+- 使用已在 GTX 1080 Ti 驗證的 Qwen3-8B Q5_K_M 與 llama.cpp 直接程序，不開 server／port。
+- 本機模型只產生一個短小、受限的 NPC 行動；SQLite、物理、知識與狀態合法性仍由引擎裁決。
+- `prepare-local-npc-actor-formal-turn` 只建立 pending Context 與候選，不套用正式回合。
+- 保存候選、輸入、模型身分、Hash、前後 Session 證據與可讀審查摘要；不提交臨時 SQLite。
+- 候選若被安全鏈拒絕，保存拒絕證據並停止，不自行放寬規則或反覆生成到碰巧通過。
+
+### Non-Goals
+
+- 不把本次「好」視為對未知候選的核准，不自動 resolve。
+- 不修改 Production Kotlin、Validator、StateReducer、Repository、Migration 或正式 Canon。
+- 不接雲端 API、付費 Provider，不使用 1.7B 取代本專案已驗證的 8B 主模型。
+- 不生成圖片、影片、音訊、下一章，不執行多 NPC 或多回合自動化。
+
+### Scope
+
+- 治理：`PLANS.md`、`PROJECT_STATE.md`、controller 與 NPC-ACTOR-09 工作包。
+- 證據：`samples/npc_actor09/**` 與 `docs/npc_actor/NPC_ACTOR09_REAL_SUPERVISED_PILOT_REPORT.md`。
+- 執行：Repository 外模型／runtime、Worktree 內忽略的臨時 DB／out，以及既有官方 CLI。
+
+### Confirmed Facts
+
+- NPC-ACTOR-08 已在遠端 `54ed365` 技術通過，prepare／resolve 分離且逐候選決定精確綁定。
+- Qwen3-8B Q5_K_M 與 llama.cpp Vulkan 已在 GTX 1080 Ti 完成兩個真實非 Canon Pilot。
+- 模型與 runtime 目前仍存在於 Repository 外；本工作包不下載、不啟動模型伺服器。
+- 既有 sample 輸入可產生 `REACH chair` 瞬時物理候選，但需一個玩家與 NPC 分處不同地點的
+  正式 Session，避免既有 offscreen Gate 正確拒絕同地點行動。
+
+### Assumptions
+
+- 一份只將 demo 玩家移至後殿、保留沈霜位於外廊的非 Canon fixture，足以建立安全審查場景。
+- 第一份真實候選可能被安全鏈拒絕；拒絕本身仍是有效結果，不代表需要降低安全門檻。
+
+### Open Questions
+
+- 候選產生後，Product Owner 必須看見其說話、行動、依據與預期影響，才能另行核准或拒絕。
+- 雲端 API 的模型路由、成本與金鑰規則屬後續工作包，本包不提前實作。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，完成模型與正式回合證據盤點。
+- [x] Step 2：建立工作包、非 Canon fixture 與真實候選輸入，驗證 JSON／路徑／Hash。
+- [x] Step 3：透過官方 CLI 建立臨時正式 Session，保存候選前狀態證據。
+- [x] Step 4：執行一次 Qwen3-8B prepare；安全鏈在兩次上限內拒絕，沒有候選且沒有 resolve。
+- [x] Step 5：完成 focused／related 檢查、證據 Manifest、Commit、Push 並停在設定修復 Gate。
+
+### Verification
+
+- 候選檔可由嚴格 parser／Schema 讀取，candidate／Context／result／model Hash 完整。
+- `formalTurnApplied=false`；Session state version、next turn、applied turn、event、Memory、Knowledge
+  在 prepare 前後不變，只有預期的 pending Context 可新增。
+- 臨時 DB 不進 Git；所有必要審查內容與 Hash 必須 Commit／Push。
+- `git diff --check`、JSON、Hash、秘密、絕對路徑與 Git scope 檢查通過。
+
+### Risks
+
+- 8B 可能產生格式、角色或物理錯誤；最多一次清理修訂後仍錯即安全拒絕。
+- 直接 CLI 每次載入模型有延遲；本包量測但不建立常駐 server。
+- 候選可能包含不自然句子；本包只證明真實正式流程，不宣稱已達雲端模型自然度。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「好」，授權開始 NPC-ACTOR-09，但未核准任何尚未出現的候選。
+- 2026-07-15：原假設已否證。`start-session` 在 opening scene 有 `locationId` 時，會把同專案全部
+  `character_states.location_id` 更新成該場景位置；因此原本位於後殿的玩家也被移到舊廊，離場 NPC
+  條件不成立。Qwen3-8B prepare 依安全規則回傳 `REJECTED_AFTER_MAX_ATTEMPTS`，候選檔未建立。
+- 2026-07-15：依真正停止條件停止重跑，不降低 offscreen Gate、不直接改 SQLite、不修改 Production。
+  後續若獲新工作包授權，應以 opening scene 不帶位置或明確的官方測試設定流程重建新 Session；
+  本次失敗 Session 不得重用。
+- 2026-07-15：focused 8/8、NPC Actor related 73/73、JSON 5/5、Manifest Hash 4/4、
+  前後 Session 證據逐位元相同與 `git diff --check` 通過；沒有候選、Production 變更或正式狀態寫入。
 
 ## Current Plan Window V17
 
