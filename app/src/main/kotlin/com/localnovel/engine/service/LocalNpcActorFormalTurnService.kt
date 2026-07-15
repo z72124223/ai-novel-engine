@@ -8,11 +8,13 @@ import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.GameMasterResolution
 import com.localnovel.engine.model.LocalNpcActorFormalDecisionType
 import com.localnovel.engine.model.LocalNpcActorFormalResolveReport
+import com.localnovel.engine.model.LocalNpcActorFormalRejectionAttemptEvidence
 import com.localnovel.engine.model.LocalNpcActorFormalStateEvidence
 import com.localnovel.engine.model.LocalNpcActorFormalTurnCandidatePackage
 import com.localnovel.engine.model.LocalNpcActorFormalTurnCandidatePayload
 import com.localnovel.engine.model.LocalNpcActorFormalTurnDecision
 import com.localnovel.engine.model.LocalNpcActorFormalTurnInput
+import com.localnovel.engine.model.LocalNpcActorFormalTurnRejectionReport
 import com.localnovel.engine.model.LocalNpcActorSafetyLoopRequest
 import com.localnovel.engine.model.NpcActionProposal
 import com.localnovel.engine.model.NpcActorPhysicalResponse
@@ -39,6 +41,10 @@ object LocalNpcActorFormalTurnHash {
         .digest(value.toByteArray(Charsets.UTF_8))
         .joinToString("") { "%02x".format(it) }
 }
+
+class LocalNpcActorFormalTurnRejectedException(
+    val report: LocalNpcActorFormalTurnRejectionReport,
+) : IllegalArgumentException("Local NPC candidate did not pass the safety loop: ${report.status}")
 
 class LocalNpcActorFormalTurnPreparationService(
     private val repository: SqliteStoryRepository,
@@ -82,8 +88,28 @@ class LocalNpcActorFormalTurnPreparationService(
                     maxElapsedMinutes = input.maxElapsedMinutes,
                 ),
             )
-            require(localReport.safetyResult.accepted) {
-                "Local NPC candidate did not pass the safety loop: ${localReport.safetyResult.status}"
+            if (!localReport.safetyResult.accepted) {
+                require(localReport.safetyResult.status == NpcActorSafetyLoopService.REJECTED_AFTER_MAX_ATTEMPTS) {
+                    "Unexpected rejected safety-loop status: ${localReport.safetyResult.status}"
+                }
+                require(repository.abortPendingContext(input.sessionId, context.contextId) == 1) {
+                    "Rejected NPC preparation did not clear exactly one pending Context."
+                }
+                pendingContextId = null
+                val afterAbort = captureState(input.sessionId, context.contextId)
+                requireFormalStateUnchanged(before, afterAbort)
+                require(!afterAbort.pendingContextPresent) {
+                    "Rejected NPC preparation left its pending Context behind."
+                }
+                throw LocalNpcActorFormalTurnRejectedException(
+                    buildRejectionReport(
+                        input = input,
+                        context = context,
+                        localReport = localReport,
+                        before = before,
+                        afterAbort = afterAbort,
+                    ),
+                )
             }
             val acceptedIndex = requireNotNull(localReport.safetyResult.acceptedAttemptNumber) - 1
             val selectedResponse = localReport.generatedResponses.getOrNull(acceptedIndex)
@@ -171,6 +197,83 @@ class LocalNpcActorFormalTurnPreparationService(
         require(input.playerInput.isNotBlank()) { "A bounded turn stimulus is required." }
         require(input.maxAttempts in 1..2) { "NPC-ACTOR-08 permits at most one repair." }
         require(input.maxElapsedMinutes in 1..60) { "NPC-ACTOR-08 elapsed-minute budget is invalid." }
+    }
+
+    private fun buildRejectionReport(
+        input: LocalNpcActorFormalTurnInput,
+        context: com.localnovel.engine.model.ContextPacket,
+        localReport: com.localnovel.engine.model.LocalNpcActorSafetyLoopReport,
+        before: LocalNpcActorFormalStateEvidence,
+        afterAbort: LocalNpcActorFormalStateEvidence,
+    ): LocalNpcActorFormalTurnRejectionReport {
+        val attempts = localReport.safetyResult.attemptResults.map { attempt ->
+            LocalNpcActorFormalRejectionAttemptEvidence(
+                attemptNumber = attempt.attemptNumber,
+                rejectionStage = attempt.rejectionStage?.takeIf(String::isNotBlank) ?: "UNKNOWN",
+                rejectionCodes = sanitizeRejectionCodes(
+                    attempt.findings + attempt.repairRequest?.rejectionCodes.orEmpty(),
+                ),
+                repairInstructions = attempt.repairRequest?.repairInstructions.orEmpty(),
+                bindingStatus = attempt.bindingStatus,
+                gameMasterStatus = attempt.gameMasterStatus,
+                timeBudgetAccepted = attempt.timeBudgetAccepted,
+                elapsedMinutes = attempt.elapsedMinutes,
+            )
+        }
+        require(attempts.isNotEmpty()) { "Rejected NPC preparation has no attempt evidence." }
+        require(attempts.size == localReport.generatedAttemptCount) {
+            "Rejected NPC attempt evidence does not match generated attempt count."
+        }
+        require(localReport.invocationAudits.size == localReport.generatedAttemptCount) {
+            "Rejected NPC invocation audits do not match generated attempt count."
+        }
+        return LocalNpcActorFormalTurnRejectionReport(
+            preparationId = input.preparationId,
+            projectId = context.project.id,
+            sessionId = context.sessionId,
+            turnId = context.turnId,
+            contextId = context.contextId,
+            contextHash = context.contextHash,
+            turnNumber = context.turnNumber,
+            baseStateVersion = context.baseStateVersion,
+            generatedAttemptCount = localReport.generatedAttemptCount,
+            repairAttempted = localReport.repairAttempted,
+            attemptEvidence = attempts,
+            invocationAudits = localReport.invocationAudits,
+            beforeState = before,
+            afterAbortState = afterAbort,
+            pendingContextCleared = true,
+        )
+    }
+
+    private fun sanitizeRejectionCodes(values: List<String>): List<String> {
+        val sanitized = values
+            .filter { SAFE_REJECTION_CODE.matches(it) }
+            .distinct()
+            .sorted()
+            .take(MAX_REJECTION_CODES)
+        return sanitized.ifEmpty { listOf("UNSPECIFIED_REJECTION") }
+    }
+
+    private fun requireFormalStateUnchanged(
+        before: LocalNpcActorFormalStateEvidence,
+        after: LocalNpcActorFormalStateEvidence,
+    ) {
+        require(after.sessionStateVersion == before.sessionStateVersion) {
+            "Rejected NPC preparation changed the formal Session state version."
+        }
+        require(after.nextTurnNumber == before.nextTurnNumber) {
+            "Rejected NPC preparation changed the formal Session turn number."
+        }
+        require(after.appliedTurnCount == before.appliedTurnCount && after.turnLogCount == before.turnLogCount) {
+            "Rejected NPC preparation wrote formal turn data."
+        }
+        require(after.eventCount == before.eventCount) { "Rejected NPC preparation wrote a formal event." }
+        require(after.memoryCount == before.memoryCount) { "Rejected NPC preparation wrote formal Memory." }
+        require(after.knowledgeCount == before.knowledgeCount) { "Rejected NPC preparation wrote formal Knowledge." }
+        require(after.formalPhysicalTransitionCount == before.formalPhysicalTransitionCount &&
+            after.formalPhysicalStateVersion == before.formalPhysicalStateVersion
+        ) { "Rejected NPC preparation changed formal physical state." }
     }
 
     private fun compileResult(
@@ -335,6 +438,8 @@ class LocalNpcActorFormalTurnPreparationService(
     }
 
     companion object {
+        private val SAFE_REJECTION_CODE = Regex("^[A-Za-z0-9_.:-]{1,96}$")
+        private const val MAX_REJECTION_CODES = 16
         private val TRANSIENT_PHYSICAL_ACTIONS = setOf(PhysicalActionType.USE_AS_SUPPORT, PhysicalActionType.REACH)
     }
 }

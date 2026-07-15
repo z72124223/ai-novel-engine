@@ -7,6 +7,7 @@ import com.localnovel.engine.model.CharacterState
 import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.LocalNpcActorFormalDecisionType
 import com.localnovel.engine.model.LocalNpcActorFormalResolveReport
+import com.localnovel.engine.model.LocalNpcActorFormalTurnRejectionReport
 import com.localnovel.engine.model.LocalNpcActorFormalTurnCandidatePackage
 import com.localnovel.engine.model.LocalNpcActorFormalTurnDecision
 import com.localnovel.engine.model.LocalNpcActorFormalTurnInput
@@ -27,8 +28,10 @@ import com.localnovel.engine.model.PhysicalSupportUse
 import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.repository.SqliteStoryRepository
+import com.localnovel.engine.cli.NpcActorCli
 import com.localnovel.engine.service.LocalNpcActorFormalTurnHash
 import com.localnovel.engine.service.LocalNpcActorFormalTurnPreparationService
+import com.localnovel.engine.service.LocalNpcActorFormalTurnRejectedException
 import com.localnovel.engine.service.LocalNpcActorFormalTurnResolutionService
 import com.localnovel.engine.service.LocalNpcActorGenerator
 import com.localnovel.engine.service.LocalNpcActorFormalTurnResolutionService.Companion.REQUIRED_ACKNOWLEDGEMENT
@@ -155,12 +158,80 @@ class LocalNpcActorFormalTurnServiceTest {
         val fixture = fixture(unsafeDogSupport = true)
         val sessionBefore = requireNotNull(fixture.repository.getSession(fixture.sessionId))
 
-        assertFailsWith<IllegalArgumentException> { fixture.prepare(physicalTargetId = "dog") }
+        val rejected = assertFailsWith<LocalNpcActorFormalTurnRejectedException> {
+            fixture.prepare(physicalTargetId = "dog")
+        }
 
         val sessionAfter = requireNotNull(fixture.repository.getSession(fixture.sessionId))
+        val report = rejected.report
+        val serialized = NpcActorJson.strict.encodeToString(report)
         assertEquals(sessionBefore, sessionAfter)
+        assertEquals("FORMAL_RUNTIME_REJECTION_EVIDENCE", report.boundary)
+        assertEquals("REJECTED_AFTER_MAX_ATTEMPTS", report.status)
+        assertEquals(2, report.generatedAttemptCount)
+        assertEquals(2, report.attemptEvidence.size)
+        assertEquals(2, report.invocationAudits.size)
+        assertTrue(report.repairAttempted)
+        assertTrue(report.pendingContextCleared)
+        assertFalse(report.formalTurnApplied)
+        assertFalse(report.rawModelOutputIncluded)
+        assertFalse(report.engineOwnedContextIncluded)
+        assertTrue(report.attemptEvidence.all { it.rejectionStage.isNotBlank() })
+        assertTrue(
+            report.attemptEvidence.flatMap { it.rejectionCodes }
+                .all { Regex("^[A-Za-z0-9_.:-]{1,96}$").matches(it) },
+        )
+        assertEquals(report.beforeState.sessionStateVersion, report.afterAbortState.sessionStateVersion)
+        assertEquals(report.beforeState.nextTurnNumber, report.afterAbortState.nextTurnNumber)
+        assertEquals(report.beforeState.appliedTurnCount, report.afterAbortState.appliedTurnCount)
+        assertEquals(report.beforeState.turnLogCount, report.afterAbortState.turnLogCount)
+        assertEquals(report.beforeState.eventCount, report.afterAbortState.eventCount)
+        assertEquals(report.beforeState.memoryCount, report.afterAbortState.memoryCount)
+        assertEquals(report.beforeState.knowledgeCount, report.afterAbortState.knowledgeCount)
+        assertFalse(report.afterAbortState.pendingContextPresent)
+        assertFalse(serialized.contains("generatedResponses"))
+        assertFalse(serialized.contains("promptText"))
+        assertFalse(serialized.contains("responseJson"))
+        assertFalse(serialized.contains("physicalSnapshot"))
+        assertFalse(serialized.contains("AUTHOR_ONLY"))
+        assertFalse(serialized.contains("沈霜把重量壓向狗的肩側"))
         assertEquals(0, fixture.repository.appliedTurnCount(fixture.sessionId))
         assertEquals(0, fixture.repository.tableCount("turn_logs"))
+    }
+
+    @Test
+    fun `prepare CLI writes only rejection sidecar when safety attempts are exhausted`() {
+        val fixture = fixture(unsafeDogSupport = true)
+        val root = generateSequence(java.nio.file.Path.of(System.getProperty("user.dir")).toAbsolutePath()) { it.parent }
+            .first { Files.isRegularFile(it.resolve("settings.gradle.kts")) }
+        val temp = Files.createTempDirectory("npc-actor09b-rejection-cli")
+        val request = temp.resolve("request.json")
+        val candidate = temp.resolve("candidate.json")
+        val rejection = temp.resolve("candidate.json.rejection.json")
+        Files.writeString(
+            request,
+            NpcActorJson.strict.encodeToString(fixture.input("dog", "npc-actor09b-cli-rejection")),
+        )
+
+        val exit = NpcActorCli.prepareLocalFormalTurn(
+            options = mapOf(
+                "repo" to root.toString(),
+                "db" to fixture.repository.databasePath().toString(),
+                "request" to request.toString(),
+                "out" to candidate.toString(),
+            ),
+            generatorOverride = fixture.generator,
+        )
+
+        assertEquals(2, exit)
+        assertFalse(Files.exists(candidate))
+        assertTrue(Files.isRegularFile(rejection))
+        val parsed = NpcActorJson.strict.decodeFromString<LocalNpcActorFormalTurnRejectionReport>(
+            Files.readString(rejection),
+        )
+        assertEquals("REJECTED_AFTER_MAX_ATTEMPTS", parsed.status)
+        assertTrue(parsed.pendingContextCleared)
+        assertFalse(parsed.formalTurnApplied)
     }
 
     @Test
@@ -182,6 +253,11 @@ class LocalNpcActorFormalTurnServiceTest {
         ).jsonObject
         assertEquals("NPC-ACTOR-08 Human-Approved Formal Resolve V1", schema["title"]?.toString()?.trim('"'))
         assertTrue(schema["\$defs"]!!.jsonObject.containsKey("humanDecision"))
+        val rejectionSchema = Json.parseToJsonElement(
+            Files.readString(root.resolve("schemas/npc_actor/npc_actor_formal_rejection_evidence_v1.schema.json")),
+        ).jsonObject
+        assertEquals("NPC-ACTOR-09B Formal Rejection Evidence V1", rejectionSchema["title"]?.toString()?.trim('"'))
+        assertEquals("false", rejectionSchema["additionalProperties"].toString())
     }
 
     @Test
@@ -289,7 +365,7 @@ class LocalNpcActorFormalTurnServiceTest {
             LocalNpcActorFormalTurnPreparationService(repository, generator)
                 .prepare(input(physicalTargetId, preparationId))
 
-        private fun input(physicalTargetId: String, preparationId: String): LocalNpcActorFormalTurnInput {
+        fun input(physicalTargetId: String, preparationId: String): LocalNpcActorFormalTurnInput {
             val suite = PhysicalAffordanceFixtureFactory.createSuite()
             val base = suite.snapshots.single { it.snapshotId == "snapshot-base" }
             return LocalNpcActorFormalTurnInput(

@@ -33,6 +33,49 @@ data class LocalNpcActorFormalStateEvidence(
 )
 
 @Serializable
+data class LocalNpcActorFormalRejectionAttemptEvidence(
+    val attemptNumber: Int,
+    val rejectionStage: String,
+    val rejectionCodes: List<String>,
+    val repairInstructions: List<String> = emptyList(),
+    val bindingStatus: String,
+    val gameMasterStatus: String? = null,
+    val timeBudgetAccepted: Boolean? = null,
+    val elapsedMinutes: Int = 0,
+)
+
+@Serializable
+data class LocalNpcActorFormalTurnRejectionReport(
+    val schemaVersion: String = "1.0",
+    val boundary: String = "FORMAL_RUNTIME_REJECTION_EVIDENCE",
+    val status: String = "REJECTED_AFTER_MAX_ATTEMPTS",
+    val preparationId: String,
+    val projectId: String,
+    val sessionId: String,
+    val turnId: String,
+    val contextId: String,
+    val contextHash: String,
+    val turnNumber: Int,
+    val baseStateVersion: Int,
+    val generatedAttemptCount: Int,
+    val repairAttempted: Boolean,
+    val attemptEvidence: List<LocalNpcActorFormalRejectionAttemptEvidence>,
+    val invocationAudits: List<LocalNpcActorInvocationAudit>,
+    val beforeState: LocalNpcActorFormalStateEvidence,
+    val afterAbortState: LocalNpcActorFormalStateEvidence,
+    val pendingContextCleared: Boolean,
+    val formalTurnApplied: Boolean = false,
+    val rawModelOutputIncluded: Boolean = false,
+    val engineOwnedContextIncluded: Boolean = false,
+    val claimBoundary: List<String> = listOf(
+        "This report contains sanitized rejection evidence, not rejected model content.",
+        "Prompt text, raw output, generated responses and engine-owned measurements are excluded.",
+        "The pending Context was aborted and no formal turn was applied.",
+        "The rejected attempt is non-Canon and cannot write Memory or Knowledge.",
+    ),
+)
+
+@Serializable
 data class LocalNpcActorFormalTurnCandidatePayload(
     val schemaVersion: String = "1.0",
     val boundary: String = "FORMAL_RUNTIME_NON_CANON_CANDIDATE",

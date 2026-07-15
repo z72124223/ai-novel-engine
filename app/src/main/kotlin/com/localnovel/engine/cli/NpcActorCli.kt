@@ -40,7 +40,9 @@ import com.localnovel.engine.service.LlamaCppNpcActorPhysicalGateway
 import com.localnovel.engine.service.LocalNpcActorSafetyLoopService
 import com.localnovel.engine.service.LocalNpcActorShadowRuntimeService
 import com.localnovel.engine.service.LocalNpcActorFormalTurnPreparationService
+import com.localnovel.engine.service.LocalNpcActorFormalTurnRejectedException
 import com.localnovel.engine.service.LocalNpcActorFormalTurnResolutionService
+import com.localnovel.engine.service.LocalNpcActorGenerator
 import com.localnovel.engine.repository.SqliteStoryRepository
 import java.nio.file.Files
 import java.nio.file.Path
@@ -166,7 +168,10 @@ internal object NpcActorCli {
         return 0
     }
 
-    fun prepareLocalFormalTurn(options: Map<String, String>): Int {
+    fun prepareLocalFormalTurn(
+        options: Map<String, String>,
+        generatorOverride: LocalNpcActorGenerator? = null,
+    ): Int {
         val repositoryRoot = Path.of(options.requiredCliOption("repo")).toAbsolutePath().normalize()
         val database = Path.of(options.requiredCliOption("db")).toAbsolutePath().normalize()
         require(Files.isRegularFile(database)) {
@@ -180,11 +185,24 @@ internal object NpcActorCli {
                 ?: repositoryRoot.resolve("schemas/npc_actor/npc_actor_physical_response_v1.schema.json").toString(),
         ).toAbsolutePath().normalize()
         val repository = SqliteStoryRepository(database)
-        val candidate = LocalNpcActorFormalTurnPreparationService(
-            repository = repository,
-            generator = localGateway(options, schema),
-        ).prepare(input)
         val output = Path.of(options.requiredCliOption("out"))
+        val rejectionOutput = options["rejection-out"]?.let(Path::of)
+            ?: output.resolveSibling("${output.fileName}.rejection.json")
+        val candidate = try {
+            LocalNpcActorFormalTurnPreparationService(
+                repository = repository,
+                generator = generatorOverride ?: localGateway(options, schema),
+            ).prepare(input)
+        } catch (error: LocalNpcActorFormalTurnRejectedException) {
+            writeStrictJson(rejectionOutput, error.report)
+            println("status=${error.report.status}")
+            println("generatedAttemptCount=${error.report.generatedAttemptCount}")
+            println("rejectionStages=${error.report.attemptEvidence.joinToString(",") { it.rejectionStage }}")
+            println("formalTurnApplied=false")
+            println("pendingContextCleared=${error.report.pendingContextCleared}")
+            println("rejectionEvidence=$rejectionOutput")
+            return 2
+        }
         try {
             writeStrictJson(output, candidate)
         } catch (error: Throwable) {

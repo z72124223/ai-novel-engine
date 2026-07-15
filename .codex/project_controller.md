@@ -1,4 +1,25 @@
-# Project Controller — NPC-ACTOR-09A Session Setup Repair
+# Project Controller — NPC-ACTOR-09B Safe Rejection Observability
+
+## Current route — NPC-ACTOR-09B
+
+Current package: `NPC_ACTOR09B_REJECTION_OBSERVABILITY` is complete and technically verified.
+
+When formal local NPC preparation exhausts its two safety attempts, the CLI now writes a strict sanitized sidecar,
+clears the pending Context, creates no candidate and applies no formal turn. The sidecar excludes prompt text, raw
+output, generated responses, author secrets and engine-owned physical measurements.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V20;
+3. `docs/work-packages/NPC-ACTOR-09B_REJECTION_OBSERVABILITY.md`;
+4. `docs/npc_actor/NPC_ACTOR09B_REJECTION_OBSERVABILITY_REPORT.md`;
+5. only directly required NPC-ACTOR-08／09A implementation evidence.
+
+Do not rerun Qwen3-8B, call resolve, weaken a safety Gate, expose rejected content, connect a cloud API, start a
+server／port, or change Canon／Memory／Knowledge without a new reviewed package and explicit Product Owner authority.
+
+## Previous route — NPC-ACTOR-09A
 
 ## Current route — NPC-ACTOR-09A
 

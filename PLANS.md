@@ -1,9 +1,108 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V19`
-> (`NPC_ACTOR09A_SESSION_SETUP_REPAIR`) first. All older plan windows are preserved evidence only.
-> Current clean-worktree base: `679ec9afbff3706ea76eccdd17e062203d6c1758` on
-> `codex/npc-actor09a-session-setup-repair`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V20`
+> (`NPC_ACTOR09B_REJECTION_OBSERVABILITY`) first. All older plan windows are preserved evidence only.
+> Current clean-worktree base: `fa7ed12f108d15ef0f7bb1ea089e39538fd839d2` from
+> `origin/codex/npc-actor09a-session-setup-repair`. GitHub remote is the team authority.
+
+## Current Plan Window V20
+
+標記：`NPC_ACTOR09B_REJECTION_OBSERVABILITY`
+
+狀態：**COMPLETE / TECHNICAL_PASS — REAL_MODEL_RETRY_NOT_AUTHORIZED**
+
+日期：2026-07-15
+
+### Goal
+
+讓正式 NPC 候選在兩次安全嘗試都失敗時，仍能輸出一份可稽核的拒絕證據。證據只保存拒絕
+階段、經過字元白名單處理的錯誤代碼、模型呼叫 Hash／非敏感稽核資料，以及正式狀態未被
+套用的前後證明；不得保存模型原始回答、Prompt、角色私密內容、作者秘密或引擎私有量測。
+
+### Global Strategy
+
+- 從 NPC-ACTOR-09A 遠端證據分支建立全新乾淨 Worktree，不碰原髒工作樹。
+- 正式 prepare 在安全迴路拒絕後，先由既有 Repository API 清除本次 pending Context，再擷取
+  狀態證據並拋出帶有安全報告的專用例外。
+- CLI 在拒絕時自動寫入獨立 sidecar（旁存證據檔）；候選檔不建立，並以非零狀態結束。
+- 拒絕證據使用嚴格 JSON model 與 Schema；只允許 invocation audit（呼叫稽核）中的 Hash、
+  模型身分、時間與大小等欄位，不允許 `generatedResponses`、`promptText` 或 `rawOutput`。
+- 使用 fake generator（假模型產生器）做確定性測試，不再消耗 Qwen3-8B 推理時間。
+
+### Non-Goals
+
+- 不修改 Validator、StateReducer、Repository transaction、Migration、Canon、Memory 或 Knowledge。
+- 不放寬角色、物理、知識、世界合法性或時間預算規則。
+- 不重新執行 NPC-ACTOR-09A 模型 Pilot，不 resolve，不自動核准候選。
+- 不接雲端 API、付費 Provider、server／port，不下載或更換模型。
+- 不生成圖片、影片、音訊、下一章或多 NPC 自動化。
+
+### Scope
+
+- 治理：`PLANS.md`、NPC-ACTOR-09B 工作包與完成報告。
+- Kotlin：正式拒絕證據 model、prepare 服務的安全拒絕出口、CLI sidecar 寫入。
+- 契約：`npc_actor_formal_rejection_evidence_v1.schema.json`。
+- 測試：拒絕報告內容、秘密排除、pending 清理、正式狀態不變與既有成功路徑回歸。
+
+### Confirmed Facts
+
+- NPC-ACTOR-09A 在有效的離場位置設定下，Qwen3-8B 仍回傳
+  `REJECTED_AFTER_MAX_ATTEMPTS`；既有 CLI 只顯示例外，沒有保留安全迴路的階段證據。
+- `LocalNpcActorSafetyLoopReport` 內同時包含安全結果、呼叫稽核與原始結構化模型回應；因此不能
+  把整份 report 直接當拒絕證據輸出。
+- `NpcActorSafetyLoopAttemptResult` 已提供 rejection stage、findings 與安全 repair request；可從中
+  建立最小、經白名單處理的拒絕摘要。
+- `abortPendingContext` 與正式狀態計數查詢已存在，不需要新增資料庫旁路。
+
+### Assumptions
+
+- DB 檔案 Hash 在 pending Context 建立與清除後可能不同；正式狀態未變應以 Session version、turn、
+  applied turn、event、Memory、Knowledge 與物理狀態計數判斷，不能要求 DB 位元 Hash 相同。
+- CLI 拒絕輸出可使用 `--rejection-out` 指定；未指定時由候選 `--out` 安全推導同目錄 sidecar 路徑。
+
+### Open Questions
+
+- 拒絕證據完成後，下一包才可依實際 stage／code 決定是否修 Prompt、縮小 NPC 行動或評估雲端
+  模型；本包不預先假設拒絕原因。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，確認拒絕資料目前在服務與 CLI 邊界遺失的位置。
+- [x] Step 2：更新 `PLANS.md` 與 NPC-ACTOR-09B 工作包，鎖定安全 sidecar 契約與禁止欄位。
+- [x] Step 3：實作拒絕 evidence models、專用例外、pending 清理後狀態證明與 CLI sidecar。
+- [x] Step 4：新增嚴格 Schema 與 focused tests，證明不含模型原文／Prompt／秘密且正式狀態不變。
+- [x] Step 5：執行 related／full tests、JSON／Schema／秘密／Hash／Git scope 與 `git diff --check`。
+- [x] Step 6：更新完成報告與治理狀態，Commit、普通 Push，回報下一個真正決策 Gate。
+
+### Verification
+
+- 兩次都被拒絕時：候選檔不存在、拒絕 sidecar 存在且可由 strict JSON 與 Schema 驗證。
+- sidecar 只含安全 stage／code、repair 指示、invocation audit Hash／metadata 與前後狀態證據。
+- 序列化內容不得出現模型原始回答、Prompt、actor request、物理 snapshot、作者秘密測試字串或
+  engine-owned measurement（引擎私有量測）。
+- pending Context 必須清除；Session version、next turn、applied turn、turn log、event、Memory、
+  Knowledge 與 formal physical transition／version 均保持不變。
+- 既有可接受候選與人工 resolve 測試不得退化；focused、related、full、JSON、Schema、秘密、
+  絕對路徑、server／port、Git scope 與 `git diff --check` 通過。
+
+### Risks
+
+- `findings` 可能含自由文字；只能用嚴格字元白名單轉成代碼，不可直接輸出。
+- 捕捉狀態的時機錯誤可能把 pending Context 誤報為正式寫入；必須先清除再擷取 after evidence。
+- CLI 若在 sidecar 寫入前又發生 I/O 錯誤，仍需確保服務已清除 pending Context，不能留下半成品。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「恩」，授權執行 NPC-ACTOR-09B；此授權只涵蓋拒絕可觀察性，
+  不包含再次呼叫模型、resolve、雲端 API 或下一個 NPC 功能包。
+- 2026-07-15：模型選擇建議偏向較強雲端 coding model；本包使用目前 Codex 作為 Repository 外部
+  工程工具，不把任何雲端模型接入產品，也不使用本機 1.7B 模型寫程式或扮演 NPC。
+- 2026-07-15：正式 prepare 的安全拒絕現在先以既有 Repository API 清除 pending Context，再建立
+  sidecar；自由文字 findings 只保留符合字元白名單的代碼，空集合改記 `UNSPECIFIED_REJECTION`。
+- 2026-07-15：CLI 預設將拒絕證據寫到 `<candidate>.rejection.json`，回傳狀態 2，且不建立候選檔。
+  `--rejection-out` 可指定其他位置；成功候選路徑與人工 resolve 行為保持不變。
+- 2026-07-15：focused `9/9`、NPC related checks、full `976/976`、strict JSON、Schema、秘密、絕對路徑、
+  server／port、Git scope 與 `git diff --check` 全部通過。沒有重新呼叫模型、resolve 或正式狀態寫入。
 
 ## Current Plan Window V19
 

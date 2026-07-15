@@ -2,7 +2,27 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-09A Session Setup Repair
+## Current Override — NPC-ACTOR-09B Safe Rejection Observability
+
+- Status: `NPC_ACTOR09B_TECHNICAL_PASS / REAL_MODEL_RETRY_AUTHORIZATION_REQUIRED`.
+- Branch: `codex/npc-actor09b-rejection-observability`.
+- Base SHA: `fa7ed12f108d15ef0f7bb1ea089e39538fd839d2` from
+  `origin/codex/npc-actor09a-session-setup-repair`.
+- Required plan: `PLANS.md` Current Plan Window V20.
+- Required work package: `docs/work-packages/NPC-ACTOR-09B_REJECTION_OBSERVABILITY.md`.
+- Evidence report: `docs/npc_actor/NPC_ACTOR09B_REJECTION_OBSERVABILITY_REPORT.md`.
+- Result: formal NPC candidate preparation now emits a sanitized rejection sidecar after exhausting the bounded
+  safety loop. It records stage/code, invocation Hash/metadata and unchanged-state evidence only.
+- Excluded by contract: prompt text, raw output, generated responses, actor-visible content, author secrets and
+  engine-owned physical measurements.
+- Rejection clears the pending Context, creates no candidate, returns a non-zero CLI status and applies no formal turn.
+- Verification: focused `9/9`, related NPC checks PASS, full `976/976`, strict JSON, Schema, secret, path,
+  server/port, Git scope and `git diff --check` PASS.
+- Current stop: no real Qwen3-8B retry or resolve is authorized. A separate reviewed package must run exactly one
+  supervised retry if the Product Owner wants a real rejection sidecar or candidate.
+- No cloud API, Provider, server, port, Canon, Memory／Knowledge authoring, media or next chapter.
+
+## Previous Override — NPC-ACTOR-09A Session Setup Repair
 
 - Status: `SAFE_REJECTION / SETUP_REPAIR_PASS / NO_CANDIDATE_CREATED`.
 - Branch: `codex/npc-actor09a-session-setup-repair`.

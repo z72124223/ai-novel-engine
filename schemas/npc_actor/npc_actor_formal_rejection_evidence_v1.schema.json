@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_formal_rejection_evidence_v1.schema.json",
+  "title": "NPC-ACTOR-09B Formal Rejection Evidence V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "boundary",
+    "status",
+    "preparationId",
+    "projectId",
+    "sessionId",
+    "turnId",
+    "contextId",
+    "contextHash",
+    "turnNumber",
+    "baseStateVersion",
+    "generatedAttemptCount",
+    "repairAttempted",
+    "attemptEvidence",
+    "invocationAudits",
+    "beforeState",
+    "afterAbortState",
+    "pendingContextCleared",
+    "formalTurnApplied",
+    "rawModelOutputIncluded",
+    "engineOwnedContextIncluded",
+    "claimBoundary"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "boundary": { "const": "FORMAL_RUNTIME_REJECTION_EVIDENCE" },
+    "status": { "const": "REJECTED_AFTER_MAX_ATTEMPTS" },
+    "preparationId": { "$ref": "#/$defs/nonEmpty" },
+    "projectId": { "$ref": "#/$defs/nonEmpty" },
+    "sessionId": { "$ref": "#/$defs/nonEmpty" },
+    "turnId": { "$ref": "#/$defs/nonEmpty" },
+    "contextId": { "$ref": "#/$defs/nonEmpty" },
+    "contextHash": { "$ref": "#/$defs/sha256" },
+    "turnNumber": { "type": "integer", "minimum": 1 },
+    "baseStateVersion": { "type": "integer", "minimum": 0 },
+    "generatedAttemptCount": { "type": "integer", "minimum": 1, "maximum": 2 },
+    "repairAttempted": { "type": "boolean" },
+    "attemptEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/attemptEvidence" }
+    },
+    "invocationAudits": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/invocationAudit" }
+    },
+    "beforeState": { "$ref": "#/$defs/stateEvidence" },
+    "afterAbortState": { "$ref": "#/$defs/stateEvidence" },
+    "pendingContextCleared": { "const": true },
+    "formalTurnApplied": { "const": false },
+    "rawModelOutputIncluded": { "const": false },
+    "engineOwnedContextIncluded": { "const": false },
+    "claimBoundary": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/nonEmpty" }
+    }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "attemptEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attemptNumber",
+        "rejectionStage",
+        "rejectionCodes",
+        "repairInstructions",
+        "bindingStatus",
+        "gameMasterStatus",
+        "timeBudgetAccepted",
+        "elapsedMinutes"
+      ],
+      "properties": {
+        "attemptNumber": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "rejectionStage": { "type": "string", "pattern": "^[A-Z0-9_]{1,64}$" },
+        "rejectionCodes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{1,96}$" }
+        },
+        "repairInstructions": { "type": "array", "items": { "type": "string" } },
+        "bindingStatus": { "$ref": "#/$defs/nonEmpty" },
+        "gameMasterStatus": { "type": ["string", "null"] },
+        "timeBudgetAccepted": { "type": ["boolean", "null"] },
+        "elapsedMinutes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "invocationAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "provider",
+        "modelId",
+        "modelRevision",
+        "modelSha256",
+        "modelFileName",
+        "runtimeId",
+        "reasoning",
+        "contextTokens",
+        "maxOutputTokens",
+        "seed",
+        "elapsedMillis",
+        "rawOutputBytes",
+        "promptSha256",
+        "responseSha256",
+        "serverStarted",
+        "portOpened",
+        "formalStateWritePerformed"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "provider": { "const": "LOCAL_LLAMA_CPP_DIRECT_CLI" },
+        "modelId": { "$ref": "#/$defs/nonEmpty" },
+        "modelRevision": { "$ref": "#/$defs/nonEmpty" },
+        "modelSha256": { "$ref": "#/$defs/sha256" },
+        "modelFileName": { "$ref": "#/$defs/nonEmpty" },
+        "runtimeId": { "$ref": "#/$defs/nonEmpty" },
+        "reasoning": { "type": "string" },
+        "contextTokens": { "type": "integer", "minimum": 1 },
+        "maxOutputTokens": { "type": "integer", "minimum": 1 },
+        "seed": { "type": "integer" },
+        "elapsedMillis": { "type": "integer", "minimum": 0 },
+        "rawOutputBytes": { "type": "integer", "minimum": 0 },
+        "promptSha256": { "$ref": "#/$defs/sha256" },
+        "responseSha256": { "$ref": "#/$defs/sha256" },
+        "serverStarted": { "const": false },
+        "portOpened": { "const": false },
+        "formalStateWritePerformed": { "const": false }
+      }
+    },
+    "stateEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "databaseSha256",
+        "sessionStateVersion",
+        "nextTurnNumber",
+        "appliedTurnCount",
+        "turnLogCount",
+        "eventCount",
+        "memoryCount",
+        "knowledgeCount",
+        "formalPhysicalTransitionCount",
+        "formalPhysicalStateVersion",
+        "pendingContextPresent"
+      ],
+      "properties": {
+        "databaseSha256": { "$ref": "#/$defs/sha256" },
+        "sessionStateVersion": { "type": "integer", "minimum": 0 },
+        "nextTurnNumber": { "type": "integer", "minimum": 1 },
+        "appliedTurnCount": { "type": "integer", "minimum": 0 },
+        "turnLogCount": { "type": "integer", "minimum": 0 },
+        "eventCount": { "type": "integer", "minimum": 0 },
+        "memoryCount": { "type": "integer", "minimum": 0 },
+        "knowledgeCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalTransitionCount": { "type": "integer", "minimum": 0 },
+        "formalPhysicalStateVersion": { "type": ["integer", "null"], "minimum": 0 },
+        "pendingContextPresent": { "type": "boolean" }
+      }
+    }
+  }
+}
