@@ -1,6 +1,34 @@
-# Project Controller — NPC-ACTOR-09C Real Post-Safety Validation Diagnosis
+# Project Controller — NPC-ACTOR-10 Cloud API Route Pivot
 
-## Current route — NPC-ACTOR-09C
+## Current route — NPC-ACTOR-10
+
+The Product Owner retired Qwen3-8B from the active NPC Actor generation route and selected a controlled OpenAI
+Responses API route. Preserve every local model file and NPC-ACTOR-06～09C evidence item, but never invoke Qwen3-8B
+as a hidden fallback or rerun it to tune until it passes.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V22;
+3. `docs/work-packages/NPC-ACTOR-10_CLOUD_API_ROUTE_PIVOT.md`;
+4. `docs/npc_actor/NPC_ACTOR_CLOUD_API_BLUEPRINT_V1.md`;
+5. `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`;
+6. `docs/npc_actor/NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT_REPORT.md`.
+
+The selected default is `gpt-5.6-terra` with `medium` reasoning. `gpt-5.6-sol` with `high` is a recorded escalation
+only for a predeclared critical scene or measured evaluation failure. Never use `max`, Pro mode or Sol for every
+ordinary turn. Never silently retry with a more expensive model.
+
+The next implementation package is not authorized by this documentation pivot. Repository `AGENTS.md` still blocks
+OpenAI API integration. After a separate governance revision, the smallest implementation package must build an
+offline `OpenAiResponsesNpcActorGateway` contract with Fake HTTP only. It must not send a network request.
+
+Do not place an API Key in Git, use a server／port, send full SQLite or author-only secrets, weaken any local Gate,
+write formal state directly, call a paid Provider, resolve a real candidate, change Canon／Memory／Knowledge, or
+generate media. A first live non-Canon Pilot requires an environment-only Key, explicit privacy packet and explicit
+per-call／daily budget approval.
+
+## Previous route — NPC-ACTOR-09C
 
 Current package: `NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS` is complete as a safe program rejection.
 

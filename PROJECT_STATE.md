@@ -2,7 +2,30 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-09C Real Post-Safety Validation Diagnosis
+## Current Override — NPC-ACTOR-10 Cloud API Route Pivot
+
+- Status: `QWEN3_8B_RETIRED_FROM_ACTIVE_ROUTE / OPENAI_RESPONSES_ROUTE_SELECTED / NO_LIVE_API_CALL`.
+- Branch: `codex/npc-actor10-cloud-api-route`.
+- Base SHA: `29b4a1b3bcd6aee2481bd27c04ae03f522bad0c1` from
+  `origin/codex/npc-actor09c-real-rejection-diagnosis`.
+- Required plan: `PLANS.md` Current Plan Window V22.
+- Required work package: `docs/work-packages/NPC-ACTOR-10_CLOUD_API_ROUTE_PIVOT.md`.
+- Required cloud blueprint: `docs/npc_actor/NPC_ACTOR_CLOUD_API_BLUEPRINT_V1.md`.
+- Completion report: `docs/npc_actor/NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT_REPORT.md`.
+- Product decision: Qwen3-8B and llama.cpp leave the future NPC Actor generation route. Their local files,
+  tests and Git history remain preserved as evidence; they must not be used as an undeclared fallback.
+- Selected replacement: OpenAI Responses API. The first cloud Pilot uses `gpt-5.6-terra` with
+  `reasoning.effort=medium`; only a predeclared critical scene or measured evaluation need may route to
+  `gpt-5.6-sol` with `high`.
+- The cloud model remains a proposal generator. Existing actor-visible filtering, safety loop, Game Master,
+  physical checks, `AiTurnResultValidator`, human approval, `StateReducer` and SQLite transaction remain mandatory.
+- This package made no live API call, used no API tokens, incurred no Provider cost and did not read or create a Key.
+- Current stop: Repository `AGENTS.md` still says no OpenAI API. A separate governance package must explicitly
+  revise that boundary before Production implementation. The first implementation package must use Fake HTTP only;
+  a paid non-Canon Pilot needs a local `OPENAI_API_KEY`, privacy approval and per-call／daily budget approval.
+- No server／port, direct database write, Canon／Memory／Knowledge promotion, media generation or next chapter.
+
+## Previous Override — NPC-ACTOR-09C Real Post-Safety Validation Diagnosis
 
 - Status: `SAFE_PROGRAM_REJECTION / NO_CANDIDATE / NO_RESOLVE`.
 - Branch: `codex/npc-actor09c-real-rejection-diagnosis`.

@@ -1,8 +1,8 @@
 # NPC Actor And Model Routing Blueprint V1
 
-Status: `NPC_ACTOR_01_LIMITED_ACCEPTANCE / NPC_ACTOR_02_NO_ACTOR_ADVANTAGE / NPC_ACTOR_03_OFFLINE_CALIBRATION_ACTIVE / LIVE_API_BLOCKED`
+Status: `NPC_ACTOR_09C_SAFE_REJECTION / QWEN3_8B_RETIRED_FROM_ACTIVE_ROUTE / OPENAI_RESPONSES_ROUTE_SELECTED / LIVE_API_NOT_YET_CALLED`
 
-Date: `2026-07-13`
+Date: `2026-07-15`
 
 ## 1. Decision
 
@@ -16,6 +16,20 @@ context, schema, state, latency, cost and retries controllable by the engine.
 Naturalness must be measured against the same scenario set used in manual
 ChatGPT auditions.
 
+### 2026-07-15 Route Override
+
+The Product Owner removed Qwen3-8B from the future NPC Actor generation route after NPC-ACTOR-09C. Its local
+installation, historical tests and Git evidence stay preserved, but it is no longer a production candidate or
+fallback. Do not delete those files and do not rerun the model to tune until it passes.
+
+The selected replacement is the OpenAI Responses API:
+
+- default actor model: `gpt-5.6-terra`, reasoning `medium`;
+- controlled quality escalation: `gpt-5.6-sol`, reasoning `high`;
+- no default `max`, Pro mode or per-turn Sol usage;
+- no `gpt-5.6-luna` for major-character acting without a separate quality evaluation;
+- no paid request until API Key, budget, privacy packet and one non-Canon live Pilot are separately approved.
+
 ## 2. Mandatory Route Order
 
 ```text
@@ -24,8 +38,11 @@ RETRIEVAL-00 authority / rebuild / retention
 → NPC-ACTOR-01 single NPC offline/Fake pilot
 → NPC-ACTOR-02 hard blind multi-turn human review
 → NPC-ACTOR-03 single adaptive profile-expression calibration
+→ NPC-ACTOR-04～09C physical, safety, formal-candidate and rejection evidence
+→ NPC-ACTOR-10 cloud API route pivot
+→ NPC-ACTOR-10A offline OpenAI Responses adapter foundation with Fake HTTP
 → explicit API Key / cost / privacy approval
-→ optional live GPT API pilot
+→ NPC-ACTOR-10B one non-Canon live cloud Pilot
 ```
 
 No stage may skip the preceding acceptance gate.
@@ -111,10 +128,11 @@ Model and reasoning effort are separate controls. Initial policy candidates:
 
 | Workload | Model candidate | Reasoning candidate |
 | --- | --- | --- |
-| Major-character high-stakes decision | `gpt-5.6-sol` | `medium`, compare `high` only with measured gain |
-| Important ordinary NPC decision/dialogue | `gpt-5.6-terra` | `medium` |
-| Background NPC or high-volume bounded action | `gpt-5.6-luna` or deterministic rule | `low` |
-| Final short utterance after a separate decision | Sol or Terra | `low` / `medium` |
+| Important ordinary NPC decision/dialogue | `gpt-5.6-terra` | `medium` default |
+| Major-character or high-stakes scene | `gpt-5.6-sol` | `high` only after measured escalation need |
+| Background deterministic action | deterministic rule first | none |
+| Background generated dialogue | `gpt-5.6-terra`; evaluate Luna separately | `low` / `medium` |
+| Final short utterance after a separately approved two-call design | Terra or Sol | `low` / `medium` |
 
 The first NPC-ACTOR-01 implementation uses one call with structured
 intent/action/utterance. A two-call decision→realization route is allowed only
@@ -123,6 +141,10 @@ if blind evaluation proves enough quality gain to justify added latency/cost.
 High/max reasoning is not a synonym for natural dialogue. It may produce
 over-complete, symmetrical or explanatory speech. Max/Ultra is not the default
 for NPC runtime.
+
+Qwen3-8B and llama.cpp are historical evidence only after the 2026-07-15 override. They are not a hidden fallback
+when cloud configuration is missing. If cloud access is unavailable, the engine must stop safely or use an approved
+deterministic／File candidate path; it must not silently change model quality.
 
 ## 8. Provider-Neutral Gateway
 
@@ -135,7 +157,7 @@ NpcActorGateway
 Implementations:
   FakeNpcActorGateway
   FileNpcActorGateway
-  OpenAiResponsesNpcActorGateway (later, gated)
+  OpenAiResponsesNpcActorGateway (NPC-ACTOR-10A, offline tested before live use)
 ```
 
 The Fake/File gateways must complete all schema, Validator and evaluation work
@@ -143,7 +165,7 @@ without network access or API Key.
 
 ## 9. OpenAI Responses API Mapping
 
-If later approved, the OpenAI implementation should use the Responses API,
+The selected cloud implementation uses the Responses API,
 Structured Outputs with a strict JSON Schema, an explicitly selected model and
 reasoning effort, and a visibility-safe input packet.
 
@@ -158,6 +180,25 @@ bounded retry count
 per-call model/reasoning/latency/token audit
 no direct tool that writes SQLite/Canon
 ```
+
+V1 request policy:
+
+```text
+endpoint: POST /v1/responses
+model: gpt-5.6-terra
+reasoning.effort: medium
+store: false
+text.format.type: json_schema
+text.format.strict: true
+max_output_tokens: bounded by the NPC response contract
+tools: none
+API key source: OPENAI_API_KEY environment variable only
+```
+
+Escalation to `gpt-5.6-sol`／`high` is a routing decision recorded in the audit, not a retry lottery. The trigger must
+be a predeclared critical-scene policy or a representative evaluation failure; ordinary schema or safety rejection
+does not automatically spend more money. At most one sanitized repair call may be designed later, and it still must
+pass every local Gate.
 
 Conversation state may be used for a bounded scene, but formal NPC memory and
 relationships remain in SQLite. A provider conversation id is never the sole
@@ -237,9 +278,17 @@ friction coefficients, wet-slope dynamics and richer multi-object physics are
 still outside the current model. No live model, Provider or API is connected;
 that remains a separate authorization Gate.
 
+NPC-ACTOR-06～09C tested a local Qwen3-8B route. The final 09C run reached formal Runtime validation but was rejected
+with `low_character_fit`; no candidate or formal turn was written. This is valid safety evidence, not proof that all
+local models are unusable. The Product Owner nevertheless chose cloud quality as the product route. Therefore no
+local-model retry, 09D tuning loop or Qwen fallback remains on the active roadmap. The post-safety rejection
+observability requirement moves into the cloud adapter foundation because the same local Validator can reject any
+provider's output.
+
 ## 11. Stop Conditions
 
 - API Key or paid call is required and not explicitly approved;
+- a live call has no explicit per-call／daily budget or would silently escalate Terra to Sol;
 - live request would include author-only/private data;
 - model output requires weakening Validator/StateReducer/transaction rules;
 - character fate, romance, Canon or formal creative decision is required;
@@ -251,6 +300,8 @@ that remains a separate authorization Gate.
 - Model/reasoning guidance: `https://developers.openai.com/api/docs/guides/latest-model`
 - Conversation state: `https://developers.openai.com/api/docs/guides/conversation-state`
 - Structured Outputs: `https://developers.openai.com/api/docs/guides/structured-outputs`
+- Pricing: `https://developers.openai.com/api/docs/pricing`
+- Data controls: `https://developers.openai.com/api/docs/guides/your-data`
 
 External model names and request shapes must be reverified immediately before
 the live API implementation.

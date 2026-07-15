@@ -1,9 +1,115 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V21`
-> (`NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS`) first. All older plan windows are preserved evidence only.
-> Current clean-worktree base: `5f0d214a25520cbbe681a024398ac397d9d16963` from
-> `origin/codex/npc-actor09b-rejection-observability`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V22`
+> (`NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT`) first. All older plan windows are preserved evidence only.
+> Current clean-worktree base: `29b4a1b3bcd6aee2481bd27c04ae03f522bad0c1` from
+> `origin/codex/npc-actor09c-real-rejection-diagnosis`. GitHub remote is the team authority.
+
+## Current Plan Window V22
+
+標記：`NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT`
+
+狀態：**COMPLETED — QWEN3-8B RETIRED FROM ACTIVE ROUTE / OPENAI RESPONSES ROUTE SELECTED / NO LIVE CALL**
+
+日期：2026-07-15
+
+### Goal
+
+依 Product Owner 新決策，將 Qwen3-8B 從未來 NPC Actor 正式生成路線移除，改採 OpenAI Responses API
+作為雲端生成方案。保留既有本機模型檔案與 NPC-ACTOR-06～09C 歷史證據，不刪除、不重寫，也不把
+Qwen3-8B 當成 Runtime fallback（備援）。本包只完成藍圖、模型路由、安全與成本邊界，不送出付費請求。
+
+### Global Strategy
+
+- 保留現有 provider-neutral gateway（供應者中立閘道）與 Fake／File 測試能力。
+- 雲端實作使用 OpenAI Responses API；輸出使用 strict Structured Outputs（嚴格結構輸出）接回既有
+  `NpcActorResponse`／物理提案 Schema。
+- 一般重要 NPC 預設 `gpt-5.6-terra`＋`medium`；只有重要場景或代表性評測證明有需要時，才升級
+  `gpt-5.6-sol`＋`high`。
+- 不以 `max`、Pro mode 或最昂貴模型作每回合預設；不以 `gpt-5.6-luna` 作正式主要角色 Actor，除非
+  後續獨立評測證明品質足夠。
+- API 只收到角色可見、已經過知識邊界篩選的 Context；不傳完整 SQLite、作者秘密、其他角色私密
+  Memory 或未來劇情。
+- 模型只產生候選。既有 safety loop、Game Master、`AiTurnResultValidator`、物理驗證、人工 Gate、
+  `StateReducer` 與 transaction 邊界保持不變。
+- API Key 只由環境變數 `OPENAI_API_KEY` 提供，不寫入 Git、JSON、報告、測試輸出或錯誤訊息。
+- 第一個實作包先用 Fake HTTP client 完成契約與錯誤處理；在 API Key、預算與一次非 Canon live pilot
+  另行核准前，不發出任何網路請求。
+
+### Non-Goals
+
+- 不刪除 Qwen3-8B、llama.cpp 或歷史 Commit／證據；只退出未來正式路線。
+- 本包不修改 Production Kotlin、Test、Migration、SQLite、Validator、StateReducer 或安全門檻。
+- 不執行 live API、不讀取或建立 API Key、不產生成本、不啟動 server／port。
+- 不 resolve、不升格 Canon／Memory／Knowledge，不生成圖片、影片、音訊或下一章。
+- 不把 ChatGPT 訂閱使用量誤認為 API 額度；正式 API 成本由 API 平台獨立計費。
+
+### Scope
+
+- `PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md`；
+- `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`；
+- `docs/npc_actor/NPC_ACTOR_CLOUD_API_BLUEPRINT_V1.md`；
+- `docs/work-packages/NPC-ACTOR-10_CLOUD_API_ROUTE_PIVOT.md`；
+- `docs/npc_actor/NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT_REPORT.md`。
+
+### Confirmed Facts
+
+- NPC-ACTOR-09C 的唯一 Qwen3-8B prepare 通過 local safety loop 與 Game Master，但被正式 Runtime 的
+  `low_character_fit` 擋下，沒有候選、沒有 resolve，正式狀態未變。
+- Repository 已有 `LocalNpcActorGenerator`／provider-neutral gateway 與 Fake 測試介面，雲端 adapter
+  不需要重寫 Validator 或正式狀態交易流程。
+- OpenAI 官方文件在 2026-07-15 建議新專案使用 Responses API，並支援 `text.format` strict JSON Schema。
+- 官方模型指引：`gpt-5.6-terra` 是品質／價格平衡，`gpt-5.6-sol` 是旗艦能力；`medium` 是平衡起點，
+  `high` 只應在代表性測試證明有品質增益時使用，`max` 保留給最困難工作。
+- 官方資料政策：API 資料預設不拿來訓練模型，除非帳號主動選擇分享；這不等於可以上傳作者秘密，
+  專案仍採最小必要資料原則與 `store=false`。
+- Repository 根層 `AGENTS.md` 目前仍保留「不接 OpenAI API」舊邊界；本包只更新藍圖，不繞過該規則。
+
+### Assumptions
+
+- `gpt-5.6-terra`＋`medium` 是第一個 live 非 Canon Pilot 的最佳起點，但必須用既有 hard-blind、物理
+  與角色一致性案例實測，不能只憑模型名稱宣稱更像真人。
+- 單次 strict JSON 輸出同時包含決策、動作與短對白，會比兩次 API 呼叫更便宜且較容易維持一致；
+  只有盲測證明兩階段品質提升時才拆成兩次。
+
+### Open Questions
+
+- API 實作前，需在下一個治理包明確修訂 `AGENTS.md` 的舊 no-API 邊界。
+- 第一次付費 live pilot 前，仍需確認 API Key 已由使用者在本機環境安全設定、單次／每日預算上限，
+  以及是否同意傳送該份非 Canon 測試 Context。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取 NPC-ACTOR-09C、既有 gateway 與官方 OpenAI 文件。
+- [x] Step 2：更新 Current Route 與模型路由藍圖，正式將 Qwen3-8B 標為歷史／退出 active route。
+- [x] Step 3：新增 Cloud API 專用藍圖、工作包與完成報告，鎖定模型、推理、秘密、成本與 live Gate。
+- [x] Step 4：完成文件連結、官方來源、Git scope、秘密掃描與 `git diff --check` 驗證，準備以本工作包
+  的獨立 Commit Push。
+
+### Verification
+
+- 當前路線不得再把 Qwen3-8B 或 llama.cpp 列為正式／備援 NPC Actor。
+- 歷史文件與 09C 證據保持不變；本機模型不刪除。
+- 雲端方案必須保留 strict Schema、知識邊界、Validator、Game Master、人工批准與零直接 DB 寫入。
+- `OPENAI_API_KEY` 只能出現在「環境變數名稱」說明，不得有任何實際金鑰值。
+- 本包網路 Provider 呼叫數、API token 用量與付費成本皆為 0。
+- 只修改允許文件；`git diff --check` 通過。
+
+### Risks
+
+- 雲端模型品質較高不代表自動符合角色；仍可能因 `low_character_fit`、知識或物理規則被拒絕。
+- API 成本與模型版本會變動；模型 ID、價格與 request shape 必須在 live Pilot 前再查官方文件。
+- 將過多世界資料送入雲端會增加成本與洩密面；只傳角色當下需要的可見資料。
+- 若沒有固定 eval，只憑單次好看的對白切模型，仍可能回到無限修 Prompt 的循環。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 明確要求「Qwen3-8B 移出計畫，替代方案改雲端 API」。本次解讀為
+  正式路線決策與藍圖授權，不包含刪除本機模型、提交 API Key 或立即產生付費請求。
+- 2026-07-15：模型 advisor 仍優先列出本機 1.7B；因它不符合使用者的雲端決策與品質優先目標，
+  本包依官方 OpenAI 指引選擇 `gpt-5.6-terra`／`medium` 為預設、`gpt-5.6-sol`／`high` 為受控升級。
+- 2026-07-15：OpenAI Developer Docs MCP 已加入 Codex 全域設定；本次桌面工作階段尚未重新載入該
+  工具，因此官方資料以 developers.openai.com 頁面直接核對。
 
 ## Current Plan Window V21
 
