@@ -2,7 +2,29 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-10 Cloud API Route Pivot
+## Current Override — EPISODE-01 Engine-Aligned First-Episode Screenplay
+
+- Status: `EPISODE01_PASS / ENGINE_EVIDENCE_BOUND / NON_CANON_PILOT / NO_MEDIA`.
+- Branch: `codex/episode01-engine-screenplay`.
+- Base SHA: `70822240c8e1875e53d79e3edbc85bef0f75e040` from
+  `origin/codex/npc-actor10-cloud-api-route`.
+- Required plan: `PLANS.md` Current Plan Window V23.
+- Required work package: `docs/work-packages/EPISODE-01_ENGINE_SCREENPLAY.md`.
+- Source manifest: `samples/episode01/episode01_engine_source_manifest_v1.json`.
+- Selected candidate: `samples/episode01/episode01_screenplay_engine_v1_zh-Hant-TW.md`.
+- Completion report: `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_REPORT.md`.
+- Result: one complete four-scene／31-dialogue first-episode screenplay for 〈潮線之外〉, approximately
+  7 minutes 20 seconds. Existing STORY-01, SCREEN-01 and DIALOGUE-01 history remains unchanged.
+- Engine evidence: the official WORLD-PHYSICS-05 replay is byte-identical to tracked evidence and rejects using
+  Aijiang as human standing support. The new screenplay makes Lu Chenxing stand with his own leg and stable rock.
+- Verification: focused Story Chapter／World Physics `6/6`, JSON／source Hash／dialogue／scene／secret／scope and
+  `git diff --check` PASS. No Production Kotlin, Test, Migration or Schema was changed.
+- Boundary: `NON_CANON_PILOT`. No OpenAI API, Qwen3-8B, paid Provider, direct SQLite write, image, video, audio,
+  next episode or Canon／Memory／Knowledge promotion.
+- Current stop: preserve and Push this first-episode screenplay. Human Canon selection, table read, coast／dog
+  safety review and visual production each require a separate package.
+
+## Previous Override — NPC-ACTOR-10 Cloud API Route Pivot
 
 - Status: `QWEN3_8B_RETIRED_FROM_ACTIVE_ROUTE / OPENAI_RESPONSES_ROUTE_SELECTED / NO_LIVE_API_CALL`.
 - Branch: `codex/npc-actor10-cloud-api-route`.

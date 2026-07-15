@@ -1,6 +1,26 @@
-# Project Controller — NPC-ACTOR-10 Cloud API Route Pivot
+# Project Controller — EPISODE-01 Engine-Aligned First-Episode Screenplay
 
-## Current route — NPC-ACTOR-10
+## Current route — EPISODE-01
+
+The first complete engine-evidenced screenplay candidate for 〈潮線之外〉 is complete as a `NON_CANON_PILOT`.
+It preserves the four scenes and 31 selected dialogue lines while correcting the dog-support action that the
+WORLD-PHYSICS-05 formal replay rejects.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V23;
+3. `docs/work-packages/EPISODE-01_ENGINE_SCREENPLAY.md`;
+4. `samples/episode01/episode01_engine_source_manifest_v1.json`;
+5. `samples/episode01/episode01_screenplay_engine_v1_zh-Hant-TW.md`;
+6. `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_REPORT.md`.
+
+Do not overwrite STORY-01, SCREEN-01, DIALOGUE-01 or WORLD-PHYSICS-05 history. Do not run another screenplay
+revision, generate media, start Episode 2, call OpenAI API／Qwen3-8B／Provider, promote Canon, write SQLite directly
+or change Memory／Knowledge. Table read, Canon selection, safety consultation and visual production are separate
+future decisions.
+
+## Previous route — NPC-ACTOR-10
 
 The Product Owner retired Qwen3-8B from the active NPC Actor generation route and selected a controlled OpenAI
 Responses API route. Preserve every local model file and NPC-ACTOR-06～09C evidence item, but never invoke Qwen3-8B

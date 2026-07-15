@@ -1,9 +1,95 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V22`
-> (`NPC_ACTOR10_CLOUD_API_ROUTE_PIVOT`) first. All older plan windows are preserved evidence only.
-> Current clean-worktree base: `29b4a1b3bcd6aee2481bd27c04ae03f522bad0c1` from
-> `origin/codex/npc-actor09c-real-rejection-diagnosis`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V23`
+> (`EPISODE01_ENGINE_SCREENPLAY`) first. V22 and older windows remain historical evidence.
+
+## Current Plan Window V23
+
+標記：`EPISODE01_ENGINE_SCREENPLAY`
+
+狀態：**COMPLETED — ENGINE-EVIDENCED FIRST-EPISODE SCREENPLAY / NON_CANON / PUSH READY**
+
+日期：2026-07-15
+
+### Goal
+
+依 Product Owner 指示，先產生〈潮線之外〉第一話完整繁體中文影視劇本。使用專案引擎已驗證的
+STORY-01 交接、Story Production Master、Dialogue-01 選定稿與 WORLD-PHYSICS-05 物理回合證據，
+建立新的 engine-aligned（引擎對齊）第一話，不覆寫 SCREEN-01／DIALOGUE-01 歷史版本。
+
+### Global Strategy
+
+- 從最新 `origin/codex/npc-actor10-cloud-api-route` 建立乾淨分支與 Worktree。
+- 以 Codex 作外部編劇；引擎負責世界來源、Hash、物理與正式邊界，不讓模型直接寫 SQLite。
+- 重跑官方 `run-world-physics-embodied-pilot`，確認狗肩支撐會被拒絕、穩定岩面支撐可通過。
+- 劇情、角色知識、時間、救援選擇與未揭露秘密沿用既有已審查來源，只修正引擎已證明的具體物理錯誤。
+- 新劇本標為 `NON_CANON_PILOT`；GitHub 保存劇本、來源 manifest（來源清單）與驗證報告。
+
+### Non-Goals
+
+- 不修改 STORY-01、SCREEN-01、DIALOGUE-01 或 WORLD-PHYSICS-05 歷史檔案。
+- 不生成圖片、影片、音訊、第二話或下一章。
+- 不呼叫 OpenAI API、Qwen3-8B 或其他 Provider；不產生 API 費用。
+- 不修改 Production Kotlin、Test、Migration、Schema、SQLite、Canon、Memory 或 Knowledge。
+- 不把本次劇本自動宣稱為正式 Canon 或最終拍攝版。
+
+### Scope
+
+- `PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md`；
+- `docs/work-packages/EPISODE-01_ENGINE_SCREENPLAY.md`；
+- `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_REPORT.md`；
+- `samples/episode01/episode01_engine_source_manifest_v1.json`；
+- `samples/episode01/episode01_screenplay_engine_v1_zh-Hant-TW.md`。
+
+### Confirmed Facts
+
+- STORY-01 修訂稿 SHA-256 為 `ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91`。
+- Story Production Master SHA-256 為 `ca44bc8b0b5f12cfadb774e24c3cf7518a0b6e124d18a712ecacd305c63108ce`。
+- Dialogue-01 選定劇本 SHA-256 為 `a3816d7ab99a6aa92285f86642ef8a857ff369c030b06253d05333f7f05aa7e4`。
+- WORLD-PHYSICS-05 tracked evidence 與本次官方 CLI replay（重跑）byte-identical，SHA-256
+  `899f342e87ee5e1209a721f19266bddbe9683700172d66fc0512a38e126708e7`。
+- 重跑結果為 `WORLD_PHYSICS05_EMBODIED_SCENE_PILOT_PASS`：5 個正式回合、1 個被拒嘗試，
+  `dogSupportRejected=true`。
+- 舊選定劇本仍寫有「握一下愛醬肩側，站起來」，與上述引擎證據衝突；新檔必須改用穩定岩面／自身腿部起身。
+
+### Assumptions
+
+- 本次「第一話」指既有〈潮線之外〉約 7 分 20 秒完整第一話，而不是只重做 82 秒影片 Pilot。
+- 既有 31 句選定對白可保留，因本次物理修正不需要改對白內容。
+
+### Open Questions
+
+- 無阻塞問題。是否升格、是否進真人桌讀與後續視覺製作都留給另一個工作包。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree、核對來源 Hash，重跑 WORLD-PHYSICS-05 官方引擎案例。
+- [x] Step 2：建立工作包、來源 manifest 與完整第一話引擎對齊劇本。
+- [x] Step 3：建立報告，驗證物理修正、秘密邊界、對白數、JSON、Hash 與 Git scope。
+- [x] Step 4：執行 focused tests、`git diff --check`，準備以獨立 Commit Push。
+
+### Verification
+
+- 第一話必須完整包含 4 場、救援選擇、代價、第二串鞋印與未解問題。
+- 禁止把愛醬當成人形支點；必須對齊 `dogSupportRejected=true`。
+- 箱內內容、第二名行動者身分與穿越真相不得被揭露。
+- 劇本中的正式對白數維持 31；沒有新增無來源台詞。
+- Source manifest 每個路徑存在且 Hash 正確；JSON 可解析。
+- focused Story Chapter／World Physics 測試通過；無程式變更時不重跑整套 976+ 測試。
+- 只修改 Scope 內 7 個檔案，`git diff --check` 通過。
+
+### Risks
+
+- 舊劇本已經是完整成品，若整篇重寫容易造成無謂漂移；本次只做引擎證據要求的物理修正與版本封裝。
+- 引擎只證明固定場景中的已建模物理關係，不代表理解所有真實世界物理。
+- 未經真人桌讀與海岸安全顧問檢查，不得稱為最終拍攝版。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 要求先由專案引擎產生第一話劇本。本次沿用已完成的引擎故事生命週期，
+  另以 WORLD-PHYSICS-05 實跑修正已知犬隻支點錯誤；不重啟付費 API 或 Qwen 路線。
+- 2026-07-15：模型 advisor 將任務誤判為 vision 並推薦其他專案的 OpenCV；依任務實際是繁中影視寫作、
+  本機 1.7B 品質不足且 Qwen3-8B 已退出主線，改採當前 Codex 作外部編劇，符合專案既有 STORY-01 作法。
 
 ## Current Plan Window V22
 

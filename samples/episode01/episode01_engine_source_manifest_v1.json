@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "episode01-engine-source-manifest-v1",
+  "artifactId": "episode01-tideline-beyond-engine-screenplay-v1",
+  "title": "潮線之外",
+  "language": "zh-Hant-TW",
+  "boundary": "NON_CANON_PILOT",
+  "sourceCommitSha": "70822240c8e1875e53d79e3edbc85bef0f75e040",
+  "generationMode": "CODEX_EXTERNAL_WRITER_WITH_ENGINE_EVIDENCE",
+  "sources": [
+    {
+      "role": "SELECTED_STORY_SOURCE",
+      "path": "samples/story01/story01_revised_draft.md",
+      "sha256": "ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91",
+      "bytes": 8676
+    },
+    {
+      "role": "STORY_PRODUCTION_AUTHORITY",
+      "path": "samples/screen01/screen01_story_production_master.json",
+      "sha256": "ca44bc8b0b5f12cfadb774e24c3cf7518a0b6e124d18a712ecacd305c63108ce",
+      "bytes": 7732
+    },
+    {
+      "role": "SELECTED_DIALOGUE_AND_SCREENPLAY_BASELINE",
+      "path": "samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md",
+      "sha256": "a3816d7ab99a6aa92285f86642ef8a857ff369c030b06253d05333f7f05aa7e4",
+      "bytes": 7108
+    },
+    {
+      "role": "ENGINE_PHYSICAL_EVIDENCE",
+      "path": "samples/world_physics05/screen01_scene03_embodied_physical_pilot_v1.json",
+      "sha256": "899f342e87ee5e1209a721f19266bddbe9683700172d66fc0512a38e126708e7",
+      "bytes": 9086
+    },
+    {
+      "role": "FORMAL_OPENING_SCENE_SOURCE",
+      "path": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
+      "sha256": "b992a4734d36592be9d11a3a440fc40fea590e5845841eacf7f78c6c9dbe89db",
+      "bytes": 5428
+    }
+  ],
+  "engineReplay": {
+    "command": "run-world-physics-embodied-pilot",
+    "technicalDecision": "WORLD_PHYSICS05_EMBODIED_SCENE_PILOT_PASS",
+    "resolvedTurnCount": 5,
+    "rejectedAttemptCount": 1,
+    "dogSupportRejected": true,
+    "trackedAndReplayByteIdentical": true,
+    "replaySha256": "899f342e87ee5e1209a721f19266bddbe9683700172d66fc0512a38e126708e7"
+  },
+  "transformation": {
+    "preserveSceneCount": 4,
+    "preserveDialogueLineCount": 31,
+    "preserveStoryEvents": true,
+    "physicalCorrections": [
+      {
+        "finding": "DOG_CANNOT_BE_HUMAN_STANDING_SUPPORT",
+        "oldAction": "陸塵行握一下愛醬肩側起身",
+        "newAction": "陸塵行以自身腿部與穩定岩面起身；愛醬只貼近陪伴"
+      }
+    ],
+    "forbiddenRevealsPreserved": true
+  },
+  "output": {
+    "path": "samples/episode01/episode01_screenplay_engine_v1_zh-Hant-TW.md",
+    "status": "ENGINE_ALIGNED_CANDIDATE"
+  },
+  "providerCallCount": 0,
+  "apiCostUsd": 0,
+  "formalStateWritePerformed": false,
+  "canonPromotionPerformed": false
+}
