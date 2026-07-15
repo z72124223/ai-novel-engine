@@ -1,0 +1,104 @@
+{
+  "project": {
+    "id": "npc-actor09a-pilot",
+    "name": "NPC Actor 09A Non-Canon Pilot",
+    "summary": "修正 Session 位置設定的隔離本機模型候選場景，不屬於任何正式世界 Canon。",
+    "activeSceneId": "scene-npc09a-old-corridor"
+  },
+  "characters": [
+    {
+      "id": "char-shen-shuang",
+      "projectId": "npc-actor09a-pilot",
+      "name": "沈霜",
+      "role": "witness",
+      "description": "警覺、克制，遇到異常時先確認現場，不會無故追逐或洩漏未知資訊。"
+    },
+    {
+      "id": "char-player",
+      "projectId": "npc-actor09a-pilot",
+      "name": "旅人",
+      "role": "player",
+      "description": "本次非 Canon Pilot 的玩家角色。",
+      "isPlayer": true
+    }
+  ],
+  "characterStates": [
+    {
+      "characterId": "char-shen-shuang",
+      "projectId": "npc-actor09a-pilot",
+      "locationId": "loc-npc09a-old-corridor",
+      "mood": "警覺",
+      "health": "steady",
+      "flags": {
+        "current_goal": "確認舊廊聲響來源，不破壞現場。"
+      }
+    },
+    {
+      "characterId": "char-player",
+      "projectId": "npc-actor09a-pilot",
+      "locationId": "loc-npc09a-rear-hall",
+      "mood": "neutral",
+      "health": "steady"
+    }
+  ],
+  "characterMemories": [
+    {
+      "id": "memory-npc09a-damp-board",
+      "projectId": "npc-actor09a-pilot",
+      "characterId": "char-shen-shuang",
+      "ownerCharacterId": "char-shen-shuang",
+      "summary": "沈霜記得舊廊木板受潮後，承重時偶爾會發出短促聲響。",
+      "tags": ["舊廊", "木板", "聲響"],
+      "triggerTags": ["舊廊", "聲響", "木板"],
+      "salience": 8,
+      "confidence": 90,
+      "reliability": 90,
+      "visibility": "private",
+      "isCanon": false
+    },
+    {
+      "id": "memory-npc09a-player-private",
+      "projectId": "npc-actor09a-pilot",
+      "characterId": "char-player",
+      "ownerCharacterId": "char-player",
+      "summary": "PLAYER_PRIVATE_MARKER_MUST_NOT_REACH_NPC_ACTOR",
+      "visibility": "private",
+      "isCanon": false
+    }
+  ],
+  "knowledgeClaims": [
+    {
+      "id": "claim-npc09a-damp-board-sound",
+      "projectId": "npc-actor09a-pilot",
+      "characterId": "char-shen-shuang",
+      "propositionKey": "corridor.board.sound",
+      "statement": "受潮木板在承重時可能發出短促聲響。",
+      "epistemicState": "BELIEVES",
+      "confidence": 80,
+      "sourceMemoryId": "memory-npc09a-damp-board",
+      "visibility": "private"
+    }
+  ],
+  "locations": [
+    {
+      "id": "loc-npc09a-old-corridor",
+      "projectId": "npc-actor09a-pilot",
+      "name": "舊廊",
+      "description": "潮濕狹窄的木造走廊，木椅靠在牆邊。"
+    },
+    {
+      "id": "loc-npc09a-rear-hall",
+      "projectId": "npc-actor09a-pilot",
+      "name": "後殿",
+      "description": "與舊廊隔開的內室，玩家停留在此。"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene-npc09a-old-corridor",
+      "projectId": "npc-actor09a-pilot",
+      "title": "離場觀察",
+      "summary": "玩家不在舊廊時，沈霜只做一次受限的現場檢查。"
+    }
+  ]
+}

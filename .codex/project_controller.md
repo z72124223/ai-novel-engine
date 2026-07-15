@@ -1,4 +1,24 @@
-# Project Controller — NPC-ACTOR-09 Safe Rejection Closure
+# Project Controller — NPC-ACTOR-09A Session Setup Repair
+
+## Current route — NPC-ACTOR-09A
+
+Current package: `NPC-ACTOR-09A_SESSION_SETUP_REPAIR` is closing as a valid safe rejection.
+
+The fresh Session correctly preserved different player and NPC locations. One Qwen3-8B prepare still failed
+the bounded safety loop. Save the rejection and unchanged-state evidence, Push, and stop. Do not retry,
+weaken the Gate, call resolve, or invent a candidate that the engine did not accept.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V19;
+3. `docs/work-packages/NPC-ACTOR-09A_SESSION_SETUP_REPAIR.md`;
+4. NPC-ACTOR-09 rejection report and only directly required NPC-ACTOR-08 implementation evidence.
+
+Do not modify Production Kotlin, reuse either failed Session, write SQL directly, use a server／port or cloud
+API, call resolve, or start rejection-observability work without a new reviewed package.
+
+## Previous route — NPC-ACTOR-09
 
 ## Current route — NPC-ACTOR-09
 

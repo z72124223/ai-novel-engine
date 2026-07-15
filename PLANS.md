@@ -1,9 +1,108 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V18`
-> (`NPC_ACTOR09_REAL_SUPERVISED_PILOT`) first. All older plan windows are preserved evidence only.
-> Current clean-worktree base: `54ed365514b228dc20cb3b3a48a21d774705249a` on
-> `codex/npc-actor09-real-supervised-pilot`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V19`
+> (`NPC_ACTOR09A_SESSION_SETUP_REPAIR`) first. All older plan windows are preserved evidence only.
+> Current clean-worktree base: `679ec9afbff3706ea76eccdd17e062203d6c1758` on
+> `codex/npc-actor09a-session-setup-repair`. GitHub remote is the team authority.
+
+## Current Plan Window V19
+
+標記：`NPC_ACTOR09A_SESSION_SETUP_REPAIR`
+
+狀態：**SAFE_REJECTION / VALID_OFFSCREEN_SETUP / NO_CANDIDATE**
+
+日期：2026-07-15
+
+### Goal
+
+不修改引擎的前提下，修正 NPC-ACTOR-09 非 Canon 測試 Session 的位置設定。模型呼叫前必須
+以官方匯出證據確認玩家位於後殿、沈霜位於舊廊；前置條件通過後，只執行一次 Qwen3-8B
+prepare，保存候選或安全拒絕證據，且絕不 resolve。
+
+### Global Strategy
+
+- 從 NPC-ACTOR-09 GitHub 證據分支建立全新乾淨 Worktree，不碰原髒工作樹。
+- 新增 `samples/npc_actor09a/**`，不改寫 NPC-ACTOR-09 的失敗 fixture 與封存證據。
+- opening scene 不宣告 `locationId`，讓既有 `start-session` 保留各角色的 seed 位置。
+- 全部資料庫操作只走官方 CLI；建立全新的忽略式臨時 DB 與全新 Session，不重用失敗 Session。
+- 在模型呼叫前硬性檢查匯出證據；位置未分離就停止，不能用模型重試掩蓋設定錯誤。
+- 前置條件通過後只執行一次 prepare；模型內部最多兩次嘗試，不自動 resolve。
+
+### Non-Goals
+
+- 不修改 Production Kotlin、Test、Migration、Repository、Validator、StateReducer 或 Canon。
+- 不修改或刪除 `samples/npc_actor09/**` 的歷史證據。
+- 不接雲端 API、付費 Provider，不使用常駐 server／port，也不使用 1.7B 替代 8B。
+- 不把本工作包授權視為對尚未出現候選的核准。
+- 不生成圖片、影片、音訊、下一章、多 NPC 或多回合自動化。
+
+### Scope
+
+- 治理：`PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md` 與 NPC-ACTOR-09A 工作包。
+- 證據：`samples/npc_actor09a/**` 與 `docs/npc_actor/NPC_ACTOR09A_SESSION_SETUP_REPAIR_REPORT.md`。
+- 執行：Repository 外 Qwen3-8B／llama.cpp、Worktree 內忽略的臨時 DB，以及既有官方 CLI。
+
+### Confirmed Facts
+
+- NPC-ACTOR-09 的失敗 Session 中，玩家與沈霜都被匯出為 `loc-npc09-old-corridor`。
+- `SqliteStoryRepository.startSession` 只在 opening scene 的 `locationId` 非空時，才批次更新專案
+  全部角色位置。
+- `LocalNpcActorFormalTurnServiceTest` 的離場 fixture 使用沒有 `locationId` 的 `Scene`，並保留
+  玩家與 NPC 的不同 seed 位置。
+- Qwen3-8B Q5_K_M 與 llama.cpp Vulkan 的上一包 Hash 已驗證；本包不下載模型、不開服務。
+
+### Assumptions
+
+- 新 DB 中使用不帶 `locationId` 的 opening scene，可讓官方 `start-session` 保留兩個角色的
+  seed 位置；實際匯出證據必須在模型呼叫前證實此點。
+- 位置設定正確後，候選仍可能因模型內容或安全規則被拒絕；拒絕是合法結果。
+
+### Open Questions
+
+- 若成功產生候選，Product Owner 必須在候選推送後另行核准或拒絕；本包不代替該決定。
+- 雲端 API 路由與成本屬後續工作，不在本包啟動。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，核對上一包根因、模型與正式測試證據。
+- [x] Step 2：建立 NPC-ACTOR-09A 工作包與新的非 Canon fixture／輸入。
+- [x] Step 3：以官方 CLI 建立新 DB／Session，匯出並硬性驗證玩家與 NPC 分處兩地。
+- [x] Step 4：只執行一次 Qwen3-8B prepare；模型在兩次內仍未通過安全鏈，沒有候選、沒有 resolve。
+- [x] Step 5：完成 focused／related、JSON、Hash、秘密、絕對路徑與 Git scope 檢查。
+- [ ] Step 6（current）：Commit、Push，停在拒絕可觀察性工作包的授權 Gate。
+
+### Verification
+
+- 模型呼叫前：玩家位置必須是後殿，沈霜位置必須是舊廊，且兩者不同。
+- 若有候選：嚴格 JSON 可解析，candidate／Context／result／model Hash 完整，pending Context 存在。
+- 無論成功或拒絕：`formalTurnApplied=false`，不執行 resolve；Session state version、next turn、
+  applied turn、event、Memory、Knowledge 不得出現正式變更。
+- 臨時 DB 不進 Git；`git diff --check`、JSON、Hash、秘密、絕對路徑與 Git scope 通過。
+
+### Risks
+
+- opening scene 無位置可能暴露其他 Context 前置條件；先以官方匯出及 focused tests 驗證。
+- 8B 仍可能產生不合法或不自然內容；不可因此放寬安全規則或重複抽樣。
+- 候選成功只代表可供人工審查，不代表已像雲端模型，也不代表允許正式狀態寫入。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「好」，授權 NPC-ACTOR-09A 設定修復與一次新的本機候選 prepare；
+  未核准任何尚未出現的候選，也未授權 resolve 或雲端 API。
+- 2026-07-15：模型 advisor 只登錄 Qwen3-1.7B，但專案自身 NPC-ACTOR-06／09 證據已驗證
+  Qwen3-8B Q5_K_M。依品質優先與專案證據選 8B；不使用已開啟的 1.7B loopback API。
+- 2026-07-15：新增獨立的 `samples/npc_actor09a` fixture 與 formal-turn input；舊 NPC-ACTOR-09
+  證據保持不變。修正版 opening scene 刻意省略 `locationId`，下一步以官方 CLI 證實行為。
+- 2026-07-15：新 Session `session-17df474b-0cd7-4872-96b3-7a1f7702dd8c` 已由官方 CLI 建立。
+  匯出證據確認玩家位於 `loc-npc09a-rear-hall`、沈霜位於 `loc-npc09a-old-corridor`，
+  `stateVersion=0`、`nextTurnNumber=1`、pending Context 0；位置分離 Gate 通過，允許一次模型 prepare。
+- 2026-07-15：Qwen3-8B prepare 在有效的離場設定下執行一次，約 143 秒後回傳
+  `REJECTED_AFTER_MAX_ATTEMPTS`。沒有候選檔，pending Context 已中止；前後匯出 Session 證據
+  SHA-256 都是 `1708c41408e34b252b337e6b4ad871e0fa167f033266e927c3e20176a8956b9c`。
+  依真正停止條件不重跑。下一個合理工作是先補安全拒絕的可觀察證據，而不是盲目改 Prompt。
+- 2026-07-15：focused 8/8、NPC Actor related 73/73、JSON 5/5、Manifest Hash 4/4、
+  位置分離、前後 Session 證據、秘密／私人路徑、Git scope 與 `git diff --check` 全部通過。
+  臨時 DB 保持 ignored（Git 忽略），沒有 Production／Test／Migration 或舊 NPC-ACTOR-09 證據變更。
 
 ## Current Plan Window V18
 
