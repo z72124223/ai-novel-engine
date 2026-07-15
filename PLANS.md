@@ -69,7 +69,7 @@ prepare，保存候選或安全拒絕證據，且絕不 resolve。
 - [x] Step 3：以官方 CLI 建立新 DB／Session，匯出並硬性驗證玩家與 NPC 分處兩地。
 - [x] Step 4：只執行一次 Qwen3-8B prepare；模型在兩次內仍未通過安全鏈，沒有候選、沒有 resolve。
 - [x] Step 5：完成 focused／related、JSON、Hash、秘密、絕對路徑與 Git scope 檢查。
-- [ ] Step 6（current）：Commit、Push，停在拒絕可觀察性工作包的授權 Gate。
+- [x] Step 6：Commit、Push，停在拒絕可觀察性工作包的授權 Gate。
 
 ### Verification
 
@@ -103,6 +103,9 @@ prepare，保存候選或安全拒絕證據，且絕不 resolve。
 - 2026-07-15：focused 8/8、NPC Actor related 73/73、JSON 5/5、Manifest Hash 4/4、
   位置分離、前後 Session 證據、秘密／私人路徑、Git scope 與 `git diff --check` 全部通過。
   臨時 DB 保持 ignored（Git 忽略），沒有 Production／Test／Migration 或舊 NPC-ACTOR-09 證據變更。
+- 2026-07-15：證據 Commit `710382b` 已以普通 Push 推送至
+  `origin/codex/npc-actor09a-session-setup-repair`；沒有 force push，也沒有合併預設分支。
+  NPC-ACTOR-09A 完成並停在 `NPC-ACTOR-09B_REJECTION_OBSERVABILITY` 的新工作包授權 Gate。
 
 ## Current Plan Window V18
 

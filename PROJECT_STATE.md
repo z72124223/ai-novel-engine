@@ -9,6 +9,8 @@
 - Base SHA: `679ec9afbff3706ea76eccdd17e062203d6c1758`.
 - Required plan: `PLANS.md` Current Plan Window V19.
 - Required work package: `docs/work-packages/NPC-ACTOR-09A_SESSION_SETUP_REPAIR.md`.
+- Evidence Commit: `710382b6f45b24b836fe8c0290b3173df58d01e9`.
+- Remote branch: `origin/codex/npc-actor09a-session-setup-repair`.
 - Result: fresh Session evidence proved the player and NPC were in different locations. One Qwen3-8B prepare
   then ended as `REJECTED_AFTER_MAX_ATTEMPTS`; no candidate package was created and no formal turn was resolved.
 - Current stop: preserve and Push this valid rejection evidence. Do not retry until a separately reviewed
