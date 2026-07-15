@@ -1,6 +1,27 @@
-# Project Controller — NPC-ACTOR-09B Safe Rejection Observability
+# Project Controller — NPC-ACTOR-09C Real Post-Safety Validation Diagnosis
 
-## Current route — NPC-ACTOR-09B
+## Current route — NPC-ACTOR-09C
+
+Current package: `NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS` is complete as a safe program rejection.
+
+Exactly one local Qwen3-8B prepare ran against a fresh valid offscreen Session. The proposal passed the local
+safety loop and Game Master, but formal Runtime validation rejected it with `low_character_fit`. No candidate or
+09B safety sidecar was written; failure cleanup removed the pending Context and official before／after Session
+evidence is byte-identical. No resolve or second prepare ran.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V21;
+3. `docs/work-packages/NPC-ACTOR-09C_REAL_REJECTION_DIAGNOSIS.md`;
+4. `docs/npc_actor/NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS_REPORT.md`;
+5. `samples/npc_actor09c/npc_actor09c_evidence_manifest.json` and only directly referenced evidence.
+
+Do not retry Qwen3-8B, call resolve, lower `characterFitScore >= 70`, expose model text, connect a cloud API,
+start a server／port, or change Canon／Memory／Knowledge. A new reviewed package is required before adding the
+post-safety formal-validation rejection sidecar.
+
+## Previous route — NPC-ACTOR-09B
 
 Current package: `NPC_ACTOR09B_REJECTION_OBSERVABILITY` is complete and technically verified.
 

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "NPC-ACTOR-09C_REAL_REJECTION_DIAGNOSIS",
+  "boundary": "NON_CANON_EVALUATION",
+  "result": "SAFE_PROGRAM_REJECTION",
+  "baseCommitSha": "5f0d214a25520cbbe681a024398ac397d9d16963",
+  "branch": "codex/npc-actor09c-real-rejection-diagnosis",
+  "modelPrepareInvocationCount": 1,
+  "candidateFileCreated": false,
+  "safetyRejectionSidecarCreated": false,
+  "programFailureEvidenceCreated": true,
+  "resolveCommandExecuted": false,
+  "formalStateUnchanged": true,
+  "artifacts": [
+    {
+      "path": "samples/npc_actor09c/npc_actor09c_formal_turn_input.json",
+      "sha256": "0970f97ed4fa28d106324d3040f6acbc293a3b01e589a08b9f100b0592deabce",
+      "bytes": 3748
+    },
+    {
+      "path": "samples/npc_actor09c/npc_actor09c_before_prepare_session_evidence.json",
+      "sha256": "2977296df66428c33b5c3110dd61d8aa575e1d13316eed213b35528b31425bac",
+      "bytes": 1077
+    },
+    {
+      "path": "samples/npc_actor09c/npc_actor09c_after_prepare_session_evidence.json",
+      "sha256": "2977296df66428c33b5c3110dd61d8aa575e1d13316eed213b35528b31425bac",
+      "bytes": 1077
+    },
+    {
+      "path": "samples/npc_actor09c/npc_actor09c_program_failure_evidence.json",
+      "sha256": "7d00a79c88a3ebd17013e458074c4be56444e54bb08900f6d8efc71274120cd0",
+      "bytes": 2905
+    }
+  ],
+  "nextAction": "ADD_POST_SAFETY_FORMAL_VALIDATION_REJECTION_OBSERVABILITY_BEFORE_ANY_RETRY"
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "NPC-ACTOR-09C_REAL_REJECTION_DIAGNOSIS",
+  "boundary": "NON_CANON_EVALUATION",
+  "result": "SAFE_PROGRAM_REJECTION",
+  "status": "POST_SAFETY_FORMAL_VALIDATION_REJECTED",
+  "baseCommitSha": "5f0d214a25520cbbe681a024398ac397d9d16963",
+  "failure": {
+    "stage": "FORMAL_RUNTIME_VALIDATION",
+    "errorCode": "low_character_fit",
+    "sanitizedMessage": "characterActions[0] characterFitScore must be >= 70.",
+    "localSafetyLoopAccepted": true,
+    "gameMasterAccepted": true,
+    "candidatePackageWritten": false,
+    "safetyRejectionSidecarWritten": false,
+    "pendingContextCleared": true,
+    "formalTurnApplied": false
+  },
+  "execution": {
+    "command": "prepare-local-npc-actor-formal-turn",
+    "preparationId": "npc-actor09c-real-diagnosis-001",
+    "prepareInvocationCount": 1,
+    "maxAttempts": 2,
+    "timeoutSeconds": 240,
+    "seed": 20260715,
+    "processExitCode": 1,
+    "processElapsedSecondsApprox": 50,
+    "retryPerformed": false,
+    "resolveCommandExecuted": false
+  },
+  "session": {
+    "sessionId": "session-3ad47f02-c93f-44c3-9fd8-9d1a0d6580dc",
+    "branchId": "branch-db90c4b8-f31d-4285-b659-7b3c3dd07322",
+    "playerLocationBefore": "loc-npc09a-rear-hall",
+    "playerLocationAfter": "loc-npc09a-rear-hall",
+    "npcLocationBefore": "loc-npc09a-old-corridor",
+    "npcLocationAfter": "loc-npc09a-old-corridor",
+    "stateVersionBefore": 0,
+    "stateVersionAfter": 0,
+    "nextTurnNumberBefore": 1,
+    "nextTurnNumberAfter": 1,
+    "pendingContextCountBefore": 0,
+    "pendingContextCountAfter": 0
+  },
+  "model": {
+    "name": "Qwen3-8B-Q5_K_M.gguf",
+    "format": "GGUF",
+    "quantization": "Q5_K_M",
+    "sha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+    "bytes": 5851112224
+  },
+  "runtime": {
+    "name": "llama-cli.exe",
+    "distribution": "llama.cpp-b10002-vulkan",
+    "sha256": "f0741939ea8adecc58db40cfeabd8526d156878fdaa1ab2c8c1b6de08bdd8d9e",
+    "bytes": 9216,
+    "serverOrPortUsed": false
+  },
+  "database": {
+    "committedToGit": false,
+    "sha256BeforePrepare": "04e370eca9a7eeb5c32dd6e409e4124005f53b856d0abbbafc6643691d6a0798",
+    "sha256AfterPrepareFailure": "a19fc16695d3ae7948aef846196274f2902cd355acbf3de16ff1ecb4302c330e",
+    "semanticStateUnchanged": true,
+    "note": "SQLite bytes changed during pending-context creation and cleanup; official exported Session evidence remained byte-identical."
+  },
+  "observabilityGap": {
+    "summary": "NPC-ACTOR-09B records bounded safety-loop exhaustion, but this run passed that loop and was rejected later by formal runtime validation, so the existing rejection sidecar type was not emitted.",
+    "rawPromptSaved": false,
+    "rawModelOutputSaved": false,
+    "modelContentSaved": false,
+    "authorSecretSaved": false
+  },
+  "nextAction": "ADD_POST_SAFETY_FORMAL_VALIDATION_REJECTION_OBSERVABILITY_BEFORE_ANY_RETRY"
+}

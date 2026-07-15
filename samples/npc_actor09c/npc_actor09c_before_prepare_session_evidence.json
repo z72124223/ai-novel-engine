@@ -1,0 +1,32 @@
+{
+    "session": {
+        "id": "session-3ad47f02-c93f-44c3-9fd8-9d1a0d6580dc",
+        "projectId": "npc-actor09a-pilot",
+        "currentSceneId": "scene-npc09a-old-corridor",
+        "nextTurnNumber": 1,
+        "stateVersion": 0,
+        "branchId": "branch-db90c4b8-f31d-4285-b659-7b3c3dd07322",
+        "currentSceneInstanceId": "scene-instance-fb3128f5-012f-4fa7-ad05-78fd512c419a",
+        "worldTime": "0001-01-01T00:00:00Z"
+    },
+    "activeSceneInstanceCount": 1,
+    "characterStates": [
+        {
+            "characterId": "char-player",
+            "projectId": "npc-actor09a-pilot",
+            "locationId": "loc-npc09a-rear-hall",
+            "mood": "neutral",
+            "health": "steady"
+        },
+        {
+            "characterId": "char-shen-shuang",
+            "projectId": "npc-actor09a-pilot",
+            "locationId": "loc-npc09a-old-corridor",
+            "mood": "警覺",
+            "health": "steady",
+            "flags": {
+                "current_goal": "確認舊廊聲響來源，不破壞現場。"
+            }
+        }
+    ]
+}

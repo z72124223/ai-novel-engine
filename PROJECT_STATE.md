@@ -2,7 +2,30 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — NPC-ACTOR-09B Safe Rejection Observability
+## Current Override — NPC-ACTOR-09C Real Post-Safety Validation Diagnosis
+
+- Status: `SAFE_PROGRAM_REJECTION / NO_CANDIDATE / NO_RESOLVE`.
+- Branch: `codex/npc-actor09c-real-rejection-diagnosis`.
+- Base SHA: `5f0d214a25520cbbe681a024398ac397d9d16963` from
+  `origin/codex/npc-actor09b-rejection-observability`.
+- Required plan: `PLANS.md` Current Plan Window V21.
+- Required work package: `docs/work-packages/NPC-ACTOR-09C_REAL_REJECTION_DIAGNOSIS.md`.
+- Evidence report: `docs/npc_actor/NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS_REPORT.md`.
+- Result: one fresh offscreen non-Canon Session passed all setup Gates, then exactly one local Qwen3-8B prepare
+  reached formal Runtime validation and was rejected with `low_character_fit` because the first character action
+  had `characterFitScore < 70`.
+- The local safety loop and Game Master had accepted the generated proposal before formal validation rejected it.
+  No candidate, no NPC-ACTOR-09B safety sidecar and no formal turn were written.
+- Existing failure cleanup removed the pending Context. Before／after official Session evidence is byte-identical:
+  `stateVersion=0`, `nextTurnNumber=1`, player and NPC locations unchanged, pending Context 0.
+- Verification: focused `9/9`, related NPC Actor `74/74`, JSON `5/5`, manifest Hash `4/4`, secret／path／ignored DB／
+  Git scope and `git diff --check` PASS. No Production Kotlin, Test or Migration was modified.
+- Current stop: do not retry Qwen3-8B and do not resolve. The smallest next package is a separately authorized
+  `NPC-ACTOR-09D_POST_SAFETY_VALIDATION_OBSERVABILITY`, which may add a sanitized sidecar for this later failure
+  stage without weakening `characterFitScore >= 70` or preserving model text.
+- No cloud API, Provider, server, port, Canon, Memory／Knowledge authoring, media or next chapter.
+
+## Previous Override — NPC-ACTOR-09B Safe Rejection Observability
 
 - Status: `NPC_ACTOR09B_TECHNICAL_PASS / REAL_MODEL_RETRY_AUTHORIZATION_REQUIRED`.
 - Branch: `codex/npc-actor09b-rejection-observability`.

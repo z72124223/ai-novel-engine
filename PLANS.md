@@ -1,9 +1,106 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V20`
-> (`NPC_ACTOR09B_REJECTION_OBSERVABILITY`) first. All older plan windows are preserved evidence only.
-> Current clean-worktree base: `fa7ed12f108d15ef0f7bb1ea089e39538fd839d2` from
-> `origin/codex/npc-actor09a-session-setup-repair`. GitHub remote is the team authority.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V21`
+> (`NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS`) first. All older plan windows are preserved evidence only.
+> Current clean-worktree base: `5f0d214a25520cbbe681a024398ac397d9d16963` from
+> `origin/codex/npc-actor09b-rejection-observability`. GitHub remote is the team authority.
+
+## Current Plan Window V21
+
+標記：`NPC_ACTOR09C_REAL_REJECTION_DIAGNOSIS`
+
+狀態：**COMPLETED — SAFE POST-SAFETY VALIDATION REJECTION / NO CANDIDATE / NO RESOLVE**
+
+日期：2026-07-15
+
+### Goal
+
+在全新、有效的離場 NPC 非 Canon Session 中，只執行一次本機 Qwen3-8B 正式候選 prepare。
+若安全迴路拒絕，保存 NPC-ACTOR-09B 新增的安全 sidecar；若通過，保存完整候選供人工審查。
+兩種結果都不得 resolve，也不得修改正式 Canon、Memory、Knowledge 或其他正式世界資料。
+
+### Global Strategy
+
+- 從 NPC-ACTOR-09B 遠端分支建立全新乾淨 Worktree，不碰原髒工作樹。
+- 重用已提交且驗證過的 NPC-ACTOR-09A seed，但建立全新忽略式 SQLite DB 與全新 Session。
+- 模型呼叫前，以官方 `export-session-evidence` 再次證明玩家在後殿、沈霜在舊廊，且 pending 為 0。
+- 使用已驗證的 Qwen3-8B Q5_K_M 與 llama.cpp Vulkan 直接程序，不開 server／port。
+- prepare 命令只呼叫一次；模型內部最多兩次嘗試。候選或拒絕 sidecar 出現後立即停止。
+- 匯出 prepare 後 Session 證據，建立 Hash manifest、白話報告與 Git 交接；臨時 DB 不進 Git。
+
+### Non-Goals
+
+- 不修改 Production Kotlin、Test、Migration、Repository、Validator、StateReducer 或安全規則。
+- 不使用 1.7B、Embedding、Reranker、雲端 API 或付費 Provider 取代本專案已驗證的 8B。
+- 不執行 resolve，不把本次普通授權視為對未知候選內容的核准。
+- 不反覆抽樣到碰巧通過，不修 Prompt，不變更物理或知識輸入契約。
+- 不生成圖片、影片、音訊、下一章、多 NPC 或多回合自動化。
+
+### Scope
+
+- 治理：`PLANS.md`、`PROJECT_STATE.md`、controller、NPC-ACTOR-09C 工作包與完成報告。
+- 證據：`samples/npc_actor09c/**`；來源 seed 保持 `samples/npc_actor09a/npc_actor09a_noncanon_seed.json`。
+- 執行：Repository 外 Qwen3-8B／llama.cpp、Worktree 內 ignored 臨時 DB，以及既有官方 CLI。
+
+### Confirmed Facts
+
+- NPC-ACTOR-09B 已在 `5f0d214` 完成安全拒絕 sidecar，full tests `976/976` 通過。
+- NPC-ACTOR-09A seed 的 opening scene 沒有 `locationId`，先前正式證據已確認玩家與沈霜分處兩地。
+- 模型檔存在，大小 `5851112224` bytes，SHA-256 為
+  `068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738`。
+- llama.cpp `llama-cli.exe` 存在，大小 `9216` bytes，SHA-256 為
+  `f0741939ea8adecc58db40cfeabd8526d156878fdaa1ab2c8c1b6de08bdd8d9e`。
+- 通用 advisor 只登錄 1.7B；依明確授權、品質需求與專案既有真實 Pilot 證據，本包使用 8B。
+
+### Assumptions
+
+- 原先假設 prepare 只會產生候選或 NPC-ACTOR-09B safety sidecar；真實執行證明還有第三條路徑：
+  local safety loop 接受後，正式 Runtime 驗證仍可拒絕，且 09B 尚未為此建立 sidecar。
+- 模型實際程序約 50 秒完成；沒有重跑。
+
+### Open Questions
+
+- 下一包是否授權 `NPC-ACTOR-09D_POST_SAFETY_VALIDATION_OBSERVABILITY`，只補正式 Runtime 驗證
+  拒絕的安全 sidecar 與測試，不降低 `characterFitScore >= 70`，也不再次呼叫模型。
+
+### Implementation Steps
+
+- [x] Step 1：同步遠端、建立乾淨 Worktree，讀取 09B／09A 證據並核對模型與 runtime Hash。
+- [x] Step 2：更新 `PLANS.md` 與 09C 工作包，鎖定一次 prepare、零 resolve 與停止條件。
+- [x] Step 3：以官方 CLI 建立全新 DB／Session，保存並驗證模型呼叫前 Session 證據。
+- [x] Step 4：只執行一次 Qwen3-8B prepare；正式 Runtime 以 `low_character_fit` 安全拒絕，沒有
+  候選、沒有 09B safety sidecar、沒有 resolve，也沒有第二次 prepare。
+- [x] Step 5：匯出 prepare 後證據，完成 JSON／Hash／秘密／位置／Git scope 驗證；前後 Session
+  證據逐位元相同。
+- [x] Step 6：更新 manifest、完成報告與治理狀態，Commit、普通 Push，停在 09D 診斷授權 Gate。
+
+### Verification
+
+- 模型前置 Gate：玩家位置 `loc-npc09a-rear-hall`、NPC 位置 `loc-npc09a-old-corridor`、兩者不同、
+  `stateVersion=0`、`nextTurnNumber=1`、pending Context 0。
+- prepare 只能產生一份候選或一份拒絕 sidecar；兩者不可同時存在，命令只執行一次。
+- 拒絕時 sidecar 必須通過 strict JSON／Schema，且不含模型原文、Prompt、秘密或 engine-owned measurement。
+- 候選時 candidate Hash 必須重算一致，pending Context 可存在但正式 turn／event／Memory／Knowledge 不變。
+- 無論結果：不執行 resolve；臨時 DB ignored；before／after Session 證據、模型與 runtime Hash、
+  focused／related、秘密、絕對路徑、server／port、Git scope 與 `git diff --check` 通過。
+
+### Risks
+
+- 模型可能再次拒絕；拒絕是有效診斷結果，不得因此重跑或放寬安全 Gate。
+- 候選可能不自然；候選存在只代表可供人工審查，不代表內容核准或雲端品質。
+- CLI 非零狀態 2 代表安全拒絕，不是程序故障；必須以 sidecar 與 Session 證據分類。
+
+### Drift Log
+
+- 2026-07-15：Product Owner 回覆「恩」，明確授權 NPC-ACTOR-09C 一次受監督本機 8B prepare；
+  未授權 resolve、第二次 prepare、雲端 API、Prompt 修訂或下一個功能包。
+- 2026-07-15：模型 advisor 建議已登錄的 1.7B，但該盤點未涵蓋專案外 8B 安裝。本包已重新核對
+  8B／llama.cpp 檔案 Hash，依專案證據與品質優先規則選擇 8B，保持 local-only（僅本機）。
+- 2026-07-15：全新 Session 前置 Gate 通過後，只執行一次 Qwen3-8B prepare。模型結果通過 local
+  safety loop 與 Game Master，但正式 `runtime.validate` 以 `low_character_fit` 拒絕；候選與既有 09B
+  safety sidecar 均未建立。失敗清理後 pending Context 為 0，前後 Session 證據逐位元相同。
+- 2026-07-15：保存不含 Prompt／模型原文／秘密的 program-failure evidence，focused `9/9`、相關
+  `74/74` PASS；不修改 Production／Test／Migration，不重跑模型。下一步只建議 09D 可觀察性補強。
 
 ## Current Plan Window V20
 
