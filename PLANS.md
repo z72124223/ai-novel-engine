@@ -1,7 +1,111 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V23`
-> (`EPISODE01_ENGINE_SCREENPLAY`) first. V22 and older windows remain historical evidence.
+> **Startup rule (2026-07-15):** Read only `## Current Plan Window V24`
+> (`EPISODE01_HUMAN_SCENE_RECOVERY`) first. V23 and older windows remain historical evidence.
+
+## Current Plan Window V24
+
+標記：`EPISODE01_HUMAN_SCENE_RECOVERY`
+
+狀態：**COMPLETED — V1 REJECTED / FORMAL FIRST EPISODE V2 READY FOR PRODUCT OWNER REVIEW**
+
+日期：2026-07-15
+
+### Goal
+
+依 Product Owner 明確判定，撤銷 V23 對第一話 V1 的品質通過結論。V2 開寫前先完整盤點 Repository
+現況與 Git 歷史，依時間順序確認世界資料、引擎 Runtime、故事生產、對白、具身場景、物理、檢索、
+NPC Actor、模型路由與媒體交接能力，避免再次只取局部證據或使用已被後續工作取代的舊基準。
+
+### Global Strategy
+
+- 先建立全專案證據地圖：分支／Commit 時序、工作包、正式產物、測試、取代關係與目前有效邊界。
+- 不覆寫或刪除已 Push 的 V1；明確標記為 `REJECTED_FOR_HUMAN_VOICE_REGRESSION`。
+- V2 不再固定保留舊稿 31 句，也不把格式、Hash 或測試通過誤當成人味通過。
+- 每個場景使用具身場景軌跡：環境事件先發生，角色感知、移動、取捨、他人反應與狀態變化後，才決定是否說話。
+- 吸收「城門泥坡」的優點：動作先於說明、短命令、多人同時反應、空間路線持續、壓力會改變說話方式。
+- 排除其致命缺口：無錨點承重、未建立繩結、濕坡以身擋重物、跨位置同時操作、未宣告道具與犬隻承受人體重量。
+- 沿用 Story Production Master 的事件、知識與秘密邊界；由 Codex 重寫完整第一話 V2，現有引擎負責來源、物理、角色與規則證據。
+
+### Non-Goals
+
+- 不要求 Product Owner 再做 A/B、逐句選擇或重複測試。
+- 不修改 STORY-01、SCREEN-01、DIALOGUE-01、NPC-ACTOR-04 或 WORLD-PHYSICS-05 歷史證據。
+- 不修改 Production Kotlin、Test、Migration、Schema、SQLite、Canon、Memory 或 Knowledge。
+- 不呼叫 OpenAI API、本機小模型或付費 Provider；不生成圖片、影片、音訊或第二話。
+
+### Scope
+
+- `PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md`；
+- `docs/episode01/EPISODE01_FULL_PROJECT_HISTORY_AUDIT.md`；
+- `docs/work-packages/EPISODE-01A_FORMAL_FIRST_EPISODE_RECOVERY.md`；
+- `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_V2_REPORT.md`；
+- `samples/episode01/episode01_engine_source_manifest_v2.json`；
+- `samples/episode01/episode01_screenplay_engine_v2_zh-Hant-TW.md`；
+- `samples/episode01/v2/episode01_screenplay_initial_v2_zh-Hant-TW.md`；
+- `samples/episode01/v2/reviews/*.json`。
+
+### Confirmed Facts
+
+- Product Owner 明確判定 V1 不合格，並指出先前「暴雨中的城門泥坡」已更接近目標。
+- V1 幾乎逐段複製 DIALOGUE-01 舊選定稿，只改兩段犬隻物理動作與加入聲音註記；它不是重新生成的第一話。
+- 「城門泥坡」在角色／對白評審中，演員版自然度為 5/5，環境、優先順序與多人反應接近目標。
+- 同案例最終仍為 `BOTH_FAIL`，原因是無錨點繩索、突然出現受力繩結、濕坡人力制動與跨位置操作；這些不可帶入 V2。
+- WORLD-PHYSICS-05 已證明成人不得把愛醬當人形站立支點；該限制繼續有效。
+- 正式第一話是 `world/chenxing/formal/26_volume_one_opening_storyboard_v1.json` 鎖定的〈第一話　塵〉，
+  內容為大坪海岸 prologue＋九拍，結束於陸塵行與愛醬退到山坡廢墟。
+- 〈潮線之外〉、周克、拾潮者與金屬箱線是 STORY-01／SCREEN-01／DIALOGUE-01 的
+  `NON_CANON_PILOT`，只能作流程證據，不能作正式第一話故事來源。
+- 2026-07-15 現場 `rebuild-project-data` 從 22 個 Git 綁定輸入完成 16 Migration、5 Setting Pack、
+  9 World Source／255 chunks／380 logical rows，Canon validation PASS、findings 0。
+
+### Assumptions
+
+- 人味的最低可觀察證據是角色在共享環境中有不同注意力、不同優先順序、非同步反應與不完整說話，而不是增加口頭禪或填充詞。
+- 正式九拍是事件與秘密邊界，不是必須逐字保留舊分鏡旁白與台詞；V2 可在不改事件的前提下全新編劇。
+
+### Open Questions
+
+- Product Owner 對 V2 的最終主觀接受仍是產品決定，但本包不要求填表或逐題測試。
+
+### Implementation Steps
+
+- [x] Step 1：確認 V1 並非重新生成，且局部比較不足以支撐 V2。
+- [x] Step 2：完整盤點 Repository 結構、治理文件、工作包、正式資料、Runtime、測試與產物。
+- [x] Step 3：依 Git 時序與分支關係重建歷史開發路線，標出保留、取代、暫停與失敗證據。
+- [x] Step 4：建立第一話 V2 應使用的完整能力矩陣與禁止退步條件，更新計畫後才開始寫稿。
+- [x] Step 5：建立工作包、V2 來源 manifest、初稿、三評審、唯一修訂、完整劇本與驗證報告。
+
+### Verification
+
+- V2 必須是完整新稿，不得只替換 V1 的兩段動作。
+- 每一場至少有一個環境變化實際改變角色位置、決策或說話節奏。
+- 第一話只包含陸塵行與愛醬；愛醬只以犬隻可行的感知與動作參與。
+- 高壓台詞不得為了漂亮而犧牲可執行資訊；不得有對稱辯論、說明書式台詞或人人同一語氣。
+- 所有承重、繩索、落腳、路線與道具狀態必須先建立再使用；角色不得瞬移或同時跨位置操作。
+- 日本遺留真相、穿越機制與遺構內部維持未知；V2 為 `NON_CANON_DRAFT`。
+- focused NPC-ACTOR-04／05、WORLD-PHYSICS-05 與 Story Chapter 測試通過；JSON、Hash、秘密、引用、Git scope 與 `git diff --check` 通過。
+
+### Risks
+
+- 自然度不能由自動測試完全證明；本包只能消除已知 AI 腔模式與邏輯錯誤，不能冒稱最終人類品質已通過。
+- 過度追求短句會再次變成整齊、機械的「每句都有功能」；V2 必須允許沉默、誤聽、被環境打斷與未說完。
+- 物理規則目前只覆蓋已建模情境；未建模現實細節仍需保守寫法。
+
+### Completion Evidence
+
+- 初稿 SHA-256：`50c20babb50ae935c19c27ca25bd94416514642a0a5c698060892b9fab7ccb3e`。
+- 最終稿 SHA-256：`03521bc397bfcbb8e0b3c43128c52af4c7dc53e63129e288fbd9d232044d4bdb`。
+- 三份評審為同一 Codex 工作階段的角色分離審查，不冒稱外部獨立模型；只修訂一次。
+- 聚焦測試 48／48、完整測試 976／976、fresh rebuild／Canon／JSON／Hash／禁句／秘密／scope PASS。
+- V2 只含正式〈第一話　塵〉；〈潮線之外〉V1 保留為拒絕歷史，未覆寫。
+
+### Drift Log
+
+- 2026-07-15：V23 錯把「沿用舊稿並修兩個物理動作」當作引擎生成，Product Owner 判定品質明顯退步。
+  策略改為保留失敗 V1、建立完整 V2，並把後期 NPC-ACTOR-04 具身場景能力納入劇本生成基準。
+- 2026-07-15：Product Owner 指出只看城門泥坡仍屬局部判斷。停止 V2 寫作，先完整閱讀 Repository
+  現況與歷史開發，再決定新版劇本應調用的全部能力。
 
 ## Current Plan Window V23
 

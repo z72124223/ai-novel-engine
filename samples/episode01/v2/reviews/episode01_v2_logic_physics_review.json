@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "episode01-internal-review-v1",
+  "reviewId": "episode01-v2-logic-physics-review",
+  "reviewRole": "LOGIC_AND_PHYSICAL_CONTINUITY",
+  "reviewMode": "ROLE_SEPARATED_INTERNAL_REVIEW_SAME_CODEX_SESSION",
+  "boundDraft": {
+    "path": "samples/episode01/v2/episode01_screenplay_initial_v2_zh-Hant-TW.md",
+    "sha256": "50c20babb50ae935c19c27ca25bd94416514642a0a5c698060892b9fab7ccb3e"
+  },
+  "verdict": "REVISE_ONCE",
+  "strengths": [
+    "潮汐、背包、防水袋、胸背與牽繩均在使用前建立",
+    "回程踏點消失後，陸塵行先觀察浪組而非冒險試踩",
+    "坡面滑步使用完整水泥牆面恢復平衡，沒有抓鬆動鏽管，也沒有把犬隻當人體支點",
+    "愛醬始終以犬隻可行的嗅聞、聽覺、停步、回望與警告參與"
+  ],
+  "findings": [
+    {
+      "severity": "HIGH",
+      "code": "PREMATURE_INTERIOR_ANOMALY",
+      "evidence": "門內垂線不動與舊刮痕已進入遺構內部異常資訊",
+      "requiredChange": "第一話只停在入口，刪除內部異常與刮痕，保留愛醬拒絕進入作為下一話入口"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "SLOPE_DURATION_UNDERSTATED",
+      "evidence": "初稿沒有明確呈現 Setting Pack 鎖定的八分鐘上坡",
+      "requiredChange": "加入時間推進與呼吸、步速、等候等可見過程，不以瞬間剪接抵達"
+    }
+  ],
+  "canonPromotionApproved": false,
+  "independentExternalReviewerClaimed": false
+}

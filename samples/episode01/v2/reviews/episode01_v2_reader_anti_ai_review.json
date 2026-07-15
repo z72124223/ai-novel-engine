@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "episode01-internal-review-v1",
+  "reviewId": "episode01-v2-reader-anti-ai-review",
+  "reviewRole": "READER_EXPERIENCE_AND_ANTI_AI_STYLE",
+  "reviewMode": "ROLE_SEPARATED_INTERNAL_REVIEW_SAME_CODEX_SESSION",
+  "boundDraft": {
+    "path": "samples/episode01/v2/episode01_screenplay_initial_v2_zh-Hant-TW.md",
+    "sha256": "50c20babb50ae935c19c27ca25bd94416514642a0a5c698060892b9fab7ccb3e"
+  },
+  "verdict": "REVISE_ONCE",
+  "strengths": [
+    "每場都有環境變化推動行動，而不是角色站著交換說明",
+    "人物注意力不同步：陸塵行盯人工痕跡，愛醬持續檢查退路與門洞",
+    "多數資訊由水位、牽繩、落腳與手機狀態呈現，而非旁白解釋"
+  ],
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "code": "PROLOGUE_OVER_EXPLAINS",
+      "evidence": "前導把廠房、坡道、管線與歷史完整列出，口語傳說感不足",
+      "requiredChange": "縮成長輩會說的幾句話，只留下公開歷史與未說完的疑問"
+    },
+    {
+      "severity": "HIGH",
+      "code": "POETIC_CLOSING_AND_SCOPE_LEAK",
+      "evidence": "『海浪聲還在。只是遠了一點』加上門內不動垂線，形成刻意工整的神秘收尾並越過第一話邊界",
+      "requiredChange": "以兩個角色停在入口的具體狀態收尾；不提前證明遺構內存在異常"
+    }
+  ],
+  "canonPromotionApproved": false,
+  "independentExternalReviewerClaimed": false
+}

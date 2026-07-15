@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "episode01-internal-review-v1",
+  "reviewId": "episode01-v2-character-dialogue-review",
+  "reviewRole": "CHARACTER_AND_NATURAL_DIALOGUE",
+  "reviewMode": "ROLE_SEPARATED_INTERNAL_REVIEW_SAME_CODEX_SESSION",
+  "boundDraft": {
+    "path": "samples/episode01/v2/episode01_screenplay_initial_v2_zh-Hant-TW.md",
+    "sha256": "50c20babb50ae935c19c27ca25bd94416514642a0a5c698060892b9fab7ccb3e"
+  },
+  "verdict": "REVISE_ONCE",
+  "strengths": [
+    "陸塵行先拍全景、近照與比例尺，再敲擊確認，符合實作型好奇心",
+    "愛醬沒有被寫成會說話、解謎提示器或被動道具，她多次作出獨立判斷",
+    "危險升高後，台詞大致縮短為可執行指令"
+  ],
+  "findings": [
+    {
+      "severity": "HIGH",
+      "code": "PRESSURE_WIT_REGRESSION",
+      "evidence": "沒訊號後仍說『今天每樣都很合作』與『當我沒說』，像編劇刻意安排的機智句",
+      "requiredChange": "刪除笑點；讓浪與無服務直接逼出撤退決策"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "CALIBRATION_PHRASE",
+      "evidence": "『潮表沒錯。是浪提早進來了』接近專案禁用的校正式 AI 句型",
+      "requiredChange": "改成角色在現場讀數後自然說出的兩個觀察句，不做概念辯論"
+    },
+    {
+      "severity": "LOW",
+      "code": "CANNED_DOG_BANTER",
+      "evidence": "『欸。小姐，海邊』帶有通用寵物短影音台詞感",
+      "requiredChange": "改成只回應褲管被擦濕的當下小動作"
+    }
+  ],
+  "canonPromotionApproved": false,
+  "independentExternalReviewerClaimed": false
+}

@@ -2,7 +2,31 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — EPISODE-01 Engine-Aligned First-Episode Screenplay
+## Current Override — EPISODE-01A Formal First-Episode Recovery
+
+- Status: `COMPLETE / READY_FOR_PRODUCT_OWNER_REVIEW / NON_CANON_DRAFT`.
+- Branch: `codex/episode01-engine-screenplay`.
+- Required plan: `PLANS.md` Current Plan Window V24.
+- Required work package: `docs/work-packages/EPISODE-01A_FORMAL_FIRST_EPISODE_RECOVERY.md`.
+- Full Repository／history audit: `docs/episode01/EPISODE01_FULL_PROJECT_HISTORY_AUDIT.md`.
+- Formal source manifest: `samples/episode01/episode01_engine_source_manifest_v2.json`.
+- Review candidate: `samples/episode01/episode01_screenplay_engine_v2_zh-Hant-TW.md`.
+- Completion report: `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_V2_REPORT.md`.
+- Correction: V1 incorrectly treated the later `NON_CANON_PILOT` 〈潮線之外〉 as the first episode. The
+  author-locked first episode is 〈第一話　塵〉 at Daping Coast with Lu Chenxing and Aijiang, prologue plus formal
+  beats 01–09, ending at the hillside ruin entrance.
+- V1 is preserved but rejected as `WRONG_NON_CANON_STORY_BASELINE_AND_HUMAN_VOICE_REGRESSION`; it must not be
+  selected, copied or treated as Canon.
+- Live verification: fresh Git-input rebuild and Canon validation PASS; focused tests 48／48; full tests 976／976;
+  JSON／Hash／forbidden-name／AI-calibration-pattern／secret／scope checks PASS.
+- Revision truth: three role-separated internal reviews were performed by one Codex session and bound to the same
+  initial-draft Hash. They are not represented as three independent external models. Exactly one revision ran.
+- Boundary: no Production Kotlin, Test, Migration, Schema, formal SQLite or Canon change; no API, Provider, image,
+  video, audio or Episode 2.
+- Current stop: Product Owner reads the complete V2 candidate. Do not request repeated A/B forms, start a second
+  automatic revision, Episode 2, cloud API or media production without a new explicit decision.
+
+## Previous Override — EPISODE-01 Engine-Aligned First-Episode Screenplay
 
 - Status: `EPISODE01_PASS / ENGINE_EVIDENCE_BOUND / NON_CANON_PILOT / NO_MEDIA`.
 - Branch: `codex/episode01-engine-screenplay`.

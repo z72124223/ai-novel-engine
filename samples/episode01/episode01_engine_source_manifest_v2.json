@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "episode01-engine-source-manifest-v2",
+  "artifactId": "episode01-dust-formal-recovery-v2",
+  "title": "第一話　塵",
+  "language": "zh-Hant-TW",
+  "boundary": "NON_CANON_DRAFT",
+  "reviewStatus": "READY_FOR_PRODUCT_OWNER_REVIEW",
+  "generationBaseSha": "2d4a2e02249dc43a1cf6fc66752292da2af06c34",
+  "generationMode": "CODEX_EXTERNAL_WRITER_WITH_FRESH_ENGINE_AND_FORMAL_SOURCE_EVIDENCE",
+  "formalSources": [
+    {
+      "role": "AUTHOR_LOCKED_PROTAGONISTS",
+      "path": "world/chenxing/formal/20_protagonist_pair_v1.json",
+      "sha256": "120f76d529308de4a3a76bd1352c9974f3c53525b9460b3446f10b9527e3c69d",
+      "bytes": 5983
+    },
+    {
+      "role": "AUTHOR_LOCKED_OPENING_ARC",
+      "path": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+      "sha256": "f8c865cef40a5ff0a59a1d916ceef656930412a2437c3c061969f706376d700a",
+      "bytes": 4304
+    },
+    {
+      "role": "AUTHOR_LOCKED_PROLOGUE",
+      "path": "world/chenxing/formal/22_volume_one_opening_prologue_v1.json",
+      "sha256": "655419a0df3cd50826dcaab1a06f6b0f920b56be719d80c2cd8917e4719245af",
+      "bytes": 2879
+    },
+    {
+      "role": "AUTHOR_LOCKED_EPISODE_STORYBOARD",
+      "path": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+      "sha256": "82fe9690f24a817a240b9fa4b45f89b6e72d03a14230437d1287d90170f83bd8",
+      "bytes": 8574
+    },
+    {
+      "role": "AUTHOR_LOCKED_SCRIPT_FIRST_CHARTER",
+      "path": "world/chenxing/formal/29_project_script_first_charter_v1.json",
+      "sha256": "ca091142f821291e0f4813f93e9cf6368e38976e16ed1337f293b7953e545766",
+      "bytes": 2163
+    },
+    {
+      "role": "AUTHOR_ONLY_SECRET_BOUNDARY",
+      "path": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json",
+      "sha256": "76e05d966c72fe08495fb6c76567da3eee00c4023b74bc39923e99596b47bd8d",
+      "bytes": 8221,
+      "contentExportedToScreenplay": false
+    },
+    {
+      "role": "VALIDATED_OPENING_SCENE_RUNTIME_SOURCE",
+      "path": "world/chenxing/engine/chenxing_setting_pack_v4_opening_scenes.json",
+      "sha256": "b992a4734d36592be9d11a3a440fc40fea590e5845841eacf7f78c6c9dbe89db",
+      "bytes": 5428
+    }
+  ],
+  "freshEngineVerification": {
+    "databaseLocation": "TEMPORARY_OUTSIDE_REPOSITORY",
+    "rebuildCommand": "rebuild-project-data",
+    "rebuildVerdict": "PROJECT_DATA_REBUILD_PASS",
+    "verifiedInputCount": 22,
+    "migrationCount": 16,
+    "settingPackCount": 5,
+    "worldSourceDocumentCount": 9,
+    "worldSourceChunkCount": 255,
+    "logicalTableCount": 13,
+    "logicalRowCount": 380,
+    "logicalContentSha256": "30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32",
+    "canonValidationCommand": "validate-project-canon",
+    "canonValidationVerdict": "PASS",
+    "canonFindingCount": 0,
+    "formalStateWritePerformed": false
+  },
+  "rejectedBaseline": {
+    "path": "samples/episode01/episode01_screenplay_engine_v1_zh-Hant-TW.md",
+    "sha256": "fd75b331cfa2050e72900b9503793c0f30424af7dae7b35ab465f81aec22ef22",
+    "reason": "WRONG_NON_CANON_STORY_BASELINE_AND_HUMAN_VOICE_REGRESSION",
+    "preservedAsHistory": true
+  },
+  "revisionLifecycle": {
+    "initialDraft": {
+      "path": "samples/episode01/v2/episode01_screenplay_initial_v2_zh-Hant-TW.md",
+      "sha256": "50c20babb50ae935c19c27ca25bd94416514642a0a5c698060892b9fab7ccb3e",
+      "bytes": 6704
+    },
+    "reviews": [
+      {
+        "role": "LOGIC_AND_PHYSICAL_CONTINUITY",
+        "path": "samples/episode01/v2/reviews/episode01_v2_logic_physics_review.json",
+        "sha256": "8210a3ef494ba8c89291f867bbd70eb86fdb370d577964ff86628fd790136696"
+      },
+      {
+        "role": "CHARACTER_AND_NATURAL_DIALOGUE",
+        "path": "samples/episode01/v2/reviews/episode01_v2_character_dialogue_review.json",
+        "sha256": "ff95545e4ff5965c528b28948a70bc858616df37c62c5a228cfebd134355621f"
+      },
+      {
+        "role": "READER_EXPERIENCE_AND_ANTI_AI_STYLE",
+        "path": "samples/episode01/v2/reviews/episode01_v2_reader_anti_ai_review.json",
+        "sha256": "30e0bc0a5ef91a3cdf9f8f3e58b8626f740a9221bd47803a8f3236649196cfc2"
+      }
+    ],
+    "reviewIndependenceClaim": "ROLE_SEPARATED_INTERNAL_PASSES_BY_ONE_CODEX_SESSION_NOT_INDEPENDENT_EXTERNAL_MODELS",
+    "revisionCount": 1,
+    "maximumRevisionCount": 1
+  },
+  "output": {
+    "path": "samples/episode01/episode01_screenplay_engine_v2_zh-Hant-TW.md",
+    "sha256": "03521bc397bfcbb8e0b3c43128c52af4c7dc53e63129e288fbd9d232044d4bdb",
+    "bytes": 6517,
+    "sceneCountIncludingPrologue": 4,
+    "formalBeatRange": "PROLOGUE_PLUS_BEATS_01_TO_09",
+    "status": "READY_FOR_PRODUCT_OWNER_REVIEW"
+  },
+  "excludedStoryElements": [
+    "潮線之外",
+    "周克",
+    "拾潮者",
+    "金屬箱救援線",
+    "遺構內部 beats 10-22",
+    "作者秘密答案"
+  ],
+  "verification": {
+    "focusedTestCount": 48,
+    "focusedFailureCount": 0,
+    "fullTestCount": 976,
+    "fullFailureCount": 0,
+    "jsonValid": true,
+    "hashesVerified": true,
+    "forbiddenBaselineNamesAbsent": true,
+    "forbiddenCalibrationPatternAbsent": true,
+    "productionCodeChanged": false
+  },
+  "providerCallCount": 0,
+  "apiCostUsd": 0,
+  "canonPromotionPerformed": false,
+  "mediaGenerated": false
+}

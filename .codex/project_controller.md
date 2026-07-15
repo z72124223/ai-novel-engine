@@ -1,4 +1,25 @@
-# Project Controller — EPISODE-01 Engine-Aligned First-Episode Screenplay
+# Project Controller — EPISODE-01A Formal First-Episode Recovery
+
+## Current route — EPISODE-01A
+
+The formal first-episode recovery is complete as `READY_FOR_PRODUCT_OWNER_REVIEW / NON_CANON_DRAFT`.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V24;
+3. `docs/episode01/EPISODE01_FULL_PROJECT_HISTORY_AUDIT.md`;
+4. `docs/work-packages/EPISODE-01A_FORMAL_FIRST_EPISODE_RECOVERY.md`;
+5. `samples/episode01/episode01_engine_source_manifest_v2.json`;
+6. `samples/episode01/episode01_screenplay_engine_v2_zh-Hant-TW.md`;
+7. `docs/episode01/EPISODE01_ENGINE_SCREENPLAY_V2_REPORT.md`.
+
+V1 used the wrong `NON_CANON_PILOT` story. Preserve it only as rejected history. The current review candidate is
+〈第一話　塵〉 from the author-locked Daping Coast opening, not 〈潮線之外〉. Do not run another automatic rewrite,
+ask the Product Owner to perform repeated A/B tests, start Episode 2, call a cloud／local model, generate media,
+promote Canon or modify Production／SQLite without a new explicit work package.
+
+## Previous route — EPISODE-01 Engine-Aligned First-Episode Screenplay
 
 ## Current route — EPISODE-01
 
