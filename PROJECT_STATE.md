@@ -2,7 +2,39 @@
 
 > **這是唯一現況入口。** 新的 GPT、Codex、Reviewer 或其他 Agent 必須先讀本檔。舊 REBOOT、SCREEN-01、圖片 Work Package、HANDOFF、README 狀態與 `PLANS.md` 舊標題都是歷史資料，不能蓋過本檔。
 
-## Current Override — EPISODE-01A Formal First-Episode Recovery
+## Current Override — Product Scope Freeze And Tool Finalization Handoff
+
+- Status: `PRODUCT_SCOPE_FROZEN / THREAD_ARCHIVE_READY / V1_RELEASE_NOT_STARTED`.
+- Date: 2026-07-16.
+- Product Owner decision: stop expanding this Repository into one combined novel／NPC／image／video／audio／UI／
+  model product. Finalize it first as a reliable local story-world and AI-result validation tool.
+- Formal product identity: Kotlin/JVM CLI + SQLite + JSON file protocol for world state, Context construction,
+  Memory／Knowledge boundaries, continuity／physical／capability validation, Hash／state-version checks,
+  `StateReducer` and transaction-bound formal writes.
+- Model boundary: GPT, Codex, local models and cloud APIs remain external candidate generators. They are not required
+  inside the v1 tool and must not bypass existing validation or write SQLite directly.
+- Out of v1 scope: image／video／audio production, Reader UI, Web／Android app, Provider integration, large NPC social
+  simulation, complete 《塵行》 content production and new MVP expansion.
+- Preserve existing media, model, NPC Actor and story work as historical／experimental evidence; do not delete or
+  treat them as v1 blockers.
+- Required plan: `PLANS.md` Current Plan Window V25.
+- Archive handoff: `docs/PROJECT_TOOL_SCOPE_FREEZE_AND_ARCHIVE_HANDOFF.md`.
+- Latest verified technical snapshot remains 2026-07-15: fresh rebuild／Canon PASS, focused 48／48 and full 976／976.
+  This does not mean `v1.0.0` has been packaged, cross-machine tested or released.
+- Latest formal first-episode candidate remains
+  `samples/episode01/episode01_screenplay_engine_v2_zh-Hant-TW.md`, status
+  `READY_FOR_PRODUCT_OWNER_REVIEW / NON_CANON_DRAFT`; it is story evidence, not a v1 tool completion requirement.
+- Current branch: `codex/episode01-engine-screenplay`. Before this closure update it was 8 commits ahead and 0 behind
+  remote default `codex/mvp6-checkpoint-branching-spec`.
+- Original dirty worktree remains untouched at Branch `codex/mvp6-checkpoint-branching-spec`, HEAD
+  `89e522f18a946426232f5d56009fea0262329b47`, approximately 124 status entries.
+- Current stop: archive this task. Do not start new implementation automatically. The only recommended next package is
+  `TOOL-1.0 — Reliable Local Story Validation Tool Finalization`, limited to supported CLI freeze, installation,
+  minimal examples, smoke test, clean-environment verification, package and Release.
+- This task does not merge the remote default branch, create a Release, start media／API／NPC／Episode 2 work or clean
+  the original dirty worktree.
+
+## Previous Override — EPISODE-01A Formal First-Episode Recovery
 
 - Status: `COMPLETE / READY_FOR_PRODUCT_OWNER_REVIEW / NON_CANON_DRAFT`.
 - Branch: `codex/episode01-engine-screenplay`.

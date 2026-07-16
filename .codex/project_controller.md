@@ -1,4 +1,34 @@
-# Project Controller — EPISODE-01A Formal First-Episode Recovery
+# Project Controller — Product Scope Freeze And Archive Handoff
+
+## Current route — TOOL SCOPE FREEZE
+
+The Product Owner has frozen the product scope. This Repository is now intended to become a reliable local
+story-world and AI-result validation tool, not a combined novel／NPC／image／video／audio／UI／model product.
+
+Read in order:
+
+1. `PROJECT_STATE.md`;
+2. `PLANS.md` Current Plan Window V25;
+3. `docs/PROJECT_TOOL_SCOPE_FREEZE_AND_ARCHIVE_HANDOFF.md`;
+4. only then read older history when needed as evidence.
+
+Do not automatically resume Episode 2, image／video／audio, Reader UI, cloud API, local-model installation, NPC Actor
+expansion, new MVP work or dirty-worktree reconciliation. Existing work is preserved as history and experiment
+evidence, but it is not a v1 completion requirement.
+
+The only recommended future package is:
+
+```text
+TOOL-1.0 — Reliable Local Story Validation Tool Finalization
+```
+
+It must freeze supported CLI commands, document installation, provide one minimal success example and one rejected
+example, run a smoke test in a clean environment, verify rebuild／Canon／full tests, package the tool and create a
+`v1.0.0` Release. It must not add product features.
+
+This task ends at the archive handoff. It does not merge the default branch or start `TOOL-1.0`.
+
+## Previous route — EPISODE-01A Formal First-Episode Recovery
 
 ## Current route — EPISODE-01A
 

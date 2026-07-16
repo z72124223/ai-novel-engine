@@ -1,7 +1,102 @@
 ﻿# Plan
 
-> **Startup rule (2026-07-15):** Read only `## Current Plan Window V24`
-> (`EPISODE01_HUMAN_SCENE_RECOVERY`) first. V23 and older windows remain historical evidence.
+> **Startup rule (2026-07-16):** Read only `## Current Plan Window V25`
+> (`PROJECT_TOOL_SCOPE_FREEZE_AND_ARCHIVE`) first. V24 and older windows remain historical evidence.
+
+## Current Plan Window V25
+
+標記：`PROJECT_TOOL_SCOPE_FREEZE_AND_ARCHIVE`
+
+狀態：**COMPLETED — PRODUCT SCOPE FROZEN / ARCHIVE HANDOFF PUSH READY**
+
+日期：2026-07-16
+
+### Goal
+
+依 Product Owner 最新決策，停止把本 Repository 擴張成小說、NPC 社會模擬、圖片、影片、聲音、
+Reader UI 與模型供應商的單一大型產品。將 `ai-novel-engine` 定位收斂為可靠的本地故事世界與
+AI 結果驗證工具，保存既有歷史證據，建立本窗口封存後可直接接續的正式狀態與交接。
+
+### Global Strategy
+
+- 保留 Kotlin/JVM CLI、SQLite、JSON 檔案協議與既有 Validator／StateReducer／transaction 邊界。
+- 工具負責世界狀態、角色記憶與知識、Context、場景／物品／能力／物理／連續性檢查，以及合法結果寫入。
+- GPT、Codex、本機模型或雲端 API 都視為外部候選內容產生者，不內建於 v1 工具。
+- 圖片、影片、聲音、Reader UI、特定小說內容與模型 Gateway 改由未來獨立 Repository 承接。
+- 本窗口只更新治理、封存交接與持久記憶，不修改 Production、Test、Migration、Schema、SQLite 或 Canon。
+
+### Non-Goals
+
+- 不在本窗口執行 `v1.0.0` 發布、建立 Release 或製作安裝包。
+- 不刪除既有實驗、工作包、分支或 Git 歷史。
+- 不整理原本約 124 項髒工作樹，不合併預設分支，不 force push。
+- 不開始圖片、影片、聲音、UI、API、NPC Actor、第二話或新 MVP。
+- 不把 2026-07-15 的測試快照冒稱永久有效或已完成跨電腦安裝驗證。
+
+### Scope
+
+- `PLANS.md`
+- `PROJECT_STATE.md`
+- `.codex/project_controller.md`
+- `docs/PROJECT_TOOL_SCOPE_FREEZE_AND_ARCHIVE_HANDOFF.md`
+- Codex 持久記憶的單一 ad-hoc update note
+
+### Confirmed Facts
+
+- Product Owner 明確要求專案收斂成工具，其他產品能力未來另開專案。
+- 現有工具核心是 Kotlin/JVM CLI、SQLite、JSON、Validator、StateReducer、Hash 與 transaction。
+- 2026-07-15 的最新驗證快照為 fresh rebuild／Canon PASS、聚焦測試 48／48、完整測試 976／976。
+- 正式第一話 V2 已在 `codex/episode01-engine-screenplay` 的 Commit
+  `6a0e2c2357e2046751b7cd37ec9a744e7ce7f5c2` 推送。
+- 遠端預設分支仍是 `codex/mvp6-checkpoint-branching-spec`，目前 SHA
+  `54ed365514b228dc20cb3b3a48a21d774705249a`；本分支在其上多 8 個 Commit。
+- 原工作樹仍停在 `89e522f18a946426232f5d56009fea0262329b47` 且有約 124 項修改，本窗口不碰它。
+
+### Assumptions
+
+- v1 工具的主要使用者是作者、開發者與外部 AI Agent，而不是一般讀者。
+- 既有媒體、NPC Actor、模型與特定故事產物應保留為歷史／研究證據，不作 v1 完成門檻。
+
+### Open Questions
+
+- `v1.0.0` 的最終穩定 CLI 清單、安裝包格式與公開名稱，留給下一個獨立工作包決定。
+- 是否把目前分支安全合併到遠端預設分支，留給封存後的新工作階段，不在本窗口執行。
+
+### Implementation Steps
+
+- [x] Step 1：核對乾淨工作樹、遠端預設分支、目前分支與原髒工作樹狀態。
+- [x] Step 2：更新專案狀態、控制器與封存交接，正式記錄工具定位和排除範圍。
+- [x] Step 3：建立持久記憶更新，驗證 Diff、Commit 並 Push 本分支。
+
+### Verification
+
+- 只允許治理與封存文件變更，不得出現 Production／Test／Migration／Schema／Canon 修改。
+- `git diff --check` 與 staged scope 必須通過。
+- 遠端 `codex/episode01-engine-screenplay` 必須取得新的收尾 Commit。
+- 原髒工作樹的 Branch、HEAD 與 status 數量必須保持不變。
+- 持久記憶只新增一個 ad-hoc note，不直接修改 memory registry。
+
+### Risks
+
+- 「範圍凍結」不等於已完成 `v1.0.0` 安裝體驗、跨電腦 smoke test 或正式 Release。
+- 既有大量歷史文件仍可能描述不同產品方向；新的 Agent 必須以 `PROJECT_STATE.md` 最上方 Override 為準。
+- 遠端預設分支尚未包含目前 8 個後續 Commit；封存後若要合併，必須另做安全整合。
+
+### Drift Log
+
+- 2026-07-16：Product Owner 判斷整體規劃過大，決定先把本 Repository 定案為可靠工具；圖片、影片、
+  聲音、Reader UI、模型 Gateway 與特定小說內容改由未來獨立專案承接。
+
+### Completion Evidence
+
+- 治理變更只包含 `PLANS.md`、`PROJECT_STATE.md`、`.codex/project_controller.md` 與封存交接文件。
+- Production、Test、Migration、Schema、SQLite、Canon 修改：0。
+- 持久記憶只新增
+  `C:\Users\f7212\.codex\memories\extensions\ad_hoc\notes\20260716-ai-novel-engine-tool-scope-freeze.md`。
+- `git diff --check`：PASS。
+- 原髒工作樹保持 Branch `codex/mvp6-checkpoint-branching-spec`、HEAD
+  `89e522f18a946426232f5d56009fea0262329b47`、status 124。
+- 本窗口沒有開始 `TOOL-1.0`、沒有合併預設分支、沒有建立 Release。
 
 ## Current Plan Window V24
 
