@@ -1,0 +1,33 @@
+{
+  "auditId": "chapter-continuity-sample-001",
+  "previousTitle": "Sample Chapter 1",
+  "draftTitle": "Sample Chapter 2 Draft",
+  "mustAppearInPrevious": [
+    {
+      "checkId": "previous-door-opened",
+      "text": "The sealed door opened after Mira paid the toll.",
+      "severity": "CRITICAL",
+      "description": "The previous accepted chapter already opened the door.",
+      "suggestedFix": "Use the accepted previous chapter as the source of continuity anchors."
+    }
+  ],
+  "mustAppearInDraft": [
+    {
+      "checkId": "draft-must-advance-through-door",
+      "text": "Mira stepped through the opened door",
+      "severity": "MAJOR",
+      "description": "The next draft should advance from the opened door instead of rediscovering it.",
+      "suggestedFix": "Continue from the opened-door state."
+    }
+  ],
+  "mustNotAppearInDraft": [
+    {
+      "checkId": "draft-must-not-reset-door",
+      "text": "Mira found the sealed door for the first time.",
+      "severity": "CRITICAL",
+      "description": "Finding the door for the first time would reset a completed previous-chapter beat.",
+      "suggestedFix": "Remove the reset beat or rewrite it as a memory that advances the new scene."
+    }
+  ],
+  "reviewerNotes": "Neutral fixture for read-only chapter continuity audit."
+}

@@ -1,0 +1,44 @@
+{
+    "briefId": "novelization-writer-brief-sample-001",
+    "projectId": "sample-project",
+    "targetChapter": "chapter-002",
+    "sourcePreflightReport": "samples/novelization_preflight_report_sample.json",
+    "previousChapterRefs": [
+        "samples/chapter_001_accepted.md"
+    ],
+    "acceptedChapterFacts": [
+        "Mira paid the door toll before reaching the checkpoint.",
+        "The inner checkpoint requires a visible mark before questions are answered."
+    ],
+    "characterStates": [
+        "Mira is cautious about revealing desperation.",
+        "The gate guard is under pressure to keep the line moving."
+    ],
+    "openThreads": [
+        "Who controls the inner checkpoint remains unknown to Mira."
+    ],
+    "mustAdvance": [
+        "Mira must learn one actionable rule about crossing without receiving a full lore explanation."
+    ],
+    "mustNotRepeat": [
+        "Do not replay the door toll payment as if it has not already happened."
+    ],
+    "allowedScenes": [
+        "scene-inner-checkpoint"
+    ],
+    "knownUnknowns": [
+        "Do not invent who controls the checkpoint."
+    ],
+    "tonePacingTarget": "Tense, practical, restrained; keep exposition behind visible pressure.",
+    "styleContract": "Dialogue must come from pressure and knowledge boundaries, not from abstract theme explanation.",
+    "characterNuwaReferences": [
+        "character-nuwa-gate-sample-001"
+    ],
+    "antiAiProseConstraints": [
+        "No calibration slogans.",
+        "No polished rhetorical summary of the scene meaning.",
+        "Use concrete action, cost, refusal, or procedure."
+    ],
+    "authorOnlyExcluded": true,
+    "reviewerNotes": "Sample only; not canon."
+}

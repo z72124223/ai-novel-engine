@@ -1,0 +1,43 @@
+{
+    "declarationId": "novelization-revision-handling-declaration-sample-001",
+    "revisionBriefId": "revision-brief-sample-001",
+    "handledChecklist": [
+        {
+            "checklistItem": "ai_taste_revision",
+            "status": "HANDLED",
+            "note": "Replaced abstract phrasing with visible action and consequence."
+        },
+        {
+            "checklistItem": "dialogue_revision",
+            "status": "HANDLED",
+            "note": "Kept dialogue under immediate scene pressure."
+        },
+        {
+            "checklistItem": "character_voice_revision",
+            "status": "HANDLED",
+            "note": "Preserved speaker stance and refusal pattern."
+        },
+        {
+            "checklistItem": "scene_pressure_reinforcement",
+            "status": "HANDLED",
+            "note": "Added visible checkpoint pressure and delay cost."
+        },
+        {
+            "checklistItem": "banned_phrase_removal",
+            "status": "HANDLED",
+            "note": "Removed calibration phrasing."
+        },
+        {
+            "checklistItem": "continuity_anchor_protection",
+            "status": "HANDLED",
+            "note": "Kept toll payment and guard mark requirements."
+        }
+    ],
+    "handledFixes": [
+        {
+            "itemId": "revision-item-001",
+            "status": "HANDLED",
+            "note": "Removed the banned structure and replaced it with concrete action."
+        }
+    ]
+}

@@ -1,0 +1,139 @@
+{
+    "gateId": "character-nuwa-gate-sample-001",
+    "projectId": "sample-project",
+    "sourceChapter": "samples/chapter_002_draft.md",
+    "requiredSpeakingCharacters": [
+        {
+            "characterId": "char-mira",
+            "displayName": "Mira",
+            "requiredDepth": "full_nuwa",
+            "reason": "Point-of-view speaker and emotional center of the scene."
+        },
+        {
+            "characterId": "char-gate-guard",
+            "displayName": "Gate guard",
+            "requiredDepth": "light_voice",
+            "reason": "One-off authority speaker with procedural pressure."
+        }
+    ],
+    "characterCards": [
+        {
+            "cardId": "card-char-mira",
+            "characterId": "char-mira",
+            "displayName": "Mira",
+            "cardDepth": "full_nuwa",
+            "gateStatus": "ready",
+            "narrativeFunction": "pov",
+            "socialPosition": "Outsider who just paid a debt to pass the sealed door.",
+            "currentPressure": "She needs information but cannot look desperate in front of the guard.",
+            "relationshipToProtagonist": "self",
+            "knowledgeBoundary": [
+                "She knows the door opened after the toll was paid.",
+                "She does not know who controls the inner checkpoint."
+            ],
+            "wantsFromScene": "Get through the checkpoint without adding a second debt.",
+            "fearsInScene": "Being marked as someone who can be pressured again.",
+            "hiddenMotiveIfAny": "She wants to learn the rule without admitting she missed it.",
+            "speechRegister": "Controlled, plain, practical.",
+            "sentenceLengthBias": "mixed",
+            "directness": "restrained",
+            "silencePattern": "Pauses before naming what she cannot prove.",
+            "pressureResponse": "As pressure rises, she asks narrower questions and stops volunteering details.",
+            "allowedTells": [
+                "answers with a concrete object or action",
+                "asks for the rule instead of the favor"
+            ],
+            "forbiddenTells": [
+                "explains the theme of the scene",
+                "asks polished rhetorical questions"
+            ],
+            "favoriteMoves": [
+                "asks_back",
+                "answers_with_procedure",
+                "hides_concern_as_instruction"
+            ],
+            "neverDo": [
+                "recite_world_lore",
+                "reveal_author_only_truth",
+                "use_calibration_slogan"
+            ],
+            "sampleLines": {
+                "accepted": [
+                    "Tell me which mark the clerk needs before I cross.",
+                    "If the toll changed, say the number. I can count that much.",
+                    "I paid at the door. I am asking whether that still matters here."
+                ],
+                "rejected": [
+                    "This place is full of ancient secrets and I must discover them.",
+                    "I feel a profound tension between fate and survival.",
+                    "Please explain the whole checkpoint system to me."
+                ]
+            },
+            "bannedStructures": [
+                "這不是XX，這是XXX",
+                "這不是 X，這是 Y",
+                "不是XX，而是XXX",
+                "不是 X，而是 Y",
+                "not X, but Y"
+            ]
+        },
+        {
+            "cardId": "card-char-gate-guard",
+            "characterId": "char-gate-guard",
+            "displayName": "Gate guard",
+            "cardDepth": "light_voice",
+            "gateStatus": "ready",
+            "narrativeFunction": "authority",
+            "socialPosition": "Checkpoint guard",
+            "currentPressure": "He must keep the line moving and avoid being blamed for letting the wrong person through.",
+            "relationshipToProtagonist": "procedural stranger",
+            "knowledgeBoundary": [
+                "He knows the visible checkpoint rule.",
+                "He does not know Mira's private reason for crossing."
+            ],
+            "wantsFromScene": "Make Mira show the proper mark or step aside.",
+            "fearsInScene": "A superior noticing that he let the queue slow down.",
+            "speechRegister": "short procedural commands",
+            "sentenceLengthBias": "short",
+            "directness": "blunt",
+            "silencePattern": "Stops explaining after the first rule.",
+            "pressureResponse": "Repeats the required action instead of arguing.",
+            "allowedTells": [
+                "points to the line",
+                "names the document instead of the person"
+            ],
+            "forbiddenTells": [
+                "becomes a lore narrator"
+            ],
+            "favoriteMoves": [
+                "answers_with_procedure"
+            ],
+            "neverDo": [
+                "recite_world_lore",
+                "solve_scene_for_protagonist",
+                "use_calibration_slogan"
+            ],
+            "sampleLines": {
+                "accepted": [
+                    "Mark first. Questions after."
+                ],
+                "rejected": [
+                    "Let me explain how our city has always managed debt and passage."
+                ]
+            },
+            "bannedStructures": [
+                "這不是XX，這是XXX",
+                "not X, but Y"
+            ]
+        }
+    ],
+    "bannedCalibrationStructures": [
+        "這不是XX，這是XXX",
+        "這不是 X，這是 Y",
+        "不是XX，而是XXX",
+        "不是 X，而是 Y",
+        "not X, but Y",
+        "not X, only Y"
+    ],
+    "reviewerNotes": "Sample file for Character Nuwa Gate validation."
+}

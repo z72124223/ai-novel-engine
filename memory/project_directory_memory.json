@@ -1,0 +1,68 @@
+{
+  "memoryId": "project-directory-memory-v0.1",
+  "status": "ACTIVE_LOCAL_DIRECTORY_MEMORY",
+  "updatedAt": "2026-06-25",
+  "purpose": "Compact local memory for project directory and moved subproject locations. This file is not runtime SQLite memory, not setting-pack data, and not approved asset data.",
+  "boundaries": [
+    "Do not write SQLite directly from this memory file.",
+    "Do not treat local tool folders as Kotlin/JVM runtime modules unless a later milestone explicitly approves that.",
+    "Do not delete standalone tool outputs just because they are large; cleanup requires a separate explicit action and preview.",
+    "Do not promote generated media outputs into production assets without a separate asset-registry decision."
+  ],
+  "records": [
+    {
+      "id": "subproject-novel-reader-video-2026-06-24",
+      "name": "小說朗讀",
+      "packageName": "novel-reader-video",
+      "kind": "local Node.js CLI subproject",
+      "canonicalPath": "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀",
+      "previousInRepoPath": "C:\\Users\\f7212\\OneDrive\\文件\\AI 劇本\\小說朗讀",
+      "status": "standalone_location_restored",
+      "relocationState": {
+        "standaloneLocationIsCanonical": true,
+        "previousInRepoPathRemoved": true,
+        "mergeCopyVerified": true,
+        "externalOnlyFilesPreserved": true,
+        "renameToBackupBlockedByProcessLock": true,
+        "verifiedFileCount": 3790,
+        "verifiedByteCount": 676992556
+      },
+      "summary": "Node.js CLI that converts novel text into narrated videos with stable character voices and aligned subtitles.",
+      "keyPaths": {
+        "source": "src/",
+        "config": "config/default.config.json",
+        "quarterFullText": "quarterfull/塵行/",
+        "localPlan": "PLANS.md",
+        "packageFile": "package.json"
+      },
+      "completedVideos": [
+        {
+          "path": "output/quarterfull/塵行/01-第一話-塵/video.mp4",
+          "verifiedWith": "ffprobe",
+          "video": "H.264 1920x1080",
+          "audio": "AAC"
+        },
+        {
+          "path": "output/quarterfull/塵行/02-第二話-根/video.mp4",
+          "verifiedWith": "ffprobe",
+          "video": "H.264 1920x1080",
+          "audio": "AAC"
+        },
+        {
+          "path": "output/quarterfull/塵行/03-第三話-器/video.mp4",
+          "verifiedWith": "ffprobe",
+          "video": "H.264 1920x1080",
+          "audio": "AAC"
+        }
+      ],
+      "gitBoundary": "The subproject folder contains its own .git directory. Do not assume submodule, subtree, ignored folder, or tracked-source policy until a separate Git hygiene decision is made.",
+      "nextAction": "Use the standalone C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀 path for future work. Do not recreate AI 劇本\\小說朗讀 unless the user explicitly requests an in-repo copy."
+    }
+  ],
+  "sourceEvidence": [
+    "User delegation from 01 主控窗口 on 2026-06-24.",
+    "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀\\PLANS.md relocation drift log.",
+    "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀\\package.json package metadata.",
+    "2026-06-25 merge-copy verification: 3790 files, 676,992,556 bytes, 0 missing source files, 0 size mismatches."
+  ]
+}

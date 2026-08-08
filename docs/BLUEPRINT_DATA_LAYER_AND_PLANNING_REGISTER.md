@@ -269,7 +269,28 @@ This register sits above current docs-only product planning:
 
 Blueprint entries can inform these documents later, but only through 01-approved milestones. They must not be silently promoted into any current workflow.
 
-## 11. Future 03 Review Focus
+## 11. Local Subproject Register Cross-Reference
+
+Local tool and folder registration is tracked separately from the non-canon blueprint pool.
+
+Current local subproject register:
+
+- `docs/PROJECT_DIRECTORY_AND_SUBPROJECT_REGISTER.md`
+
+Registered standalone local tool:
+
+- `小說朗讀`: canonical standalone path `C:\Users\f7212\OneDrive\文件\小說朗讀`; previous in-repo path `C:\Users\f7212\OneDrive\文件\AI 劇本\小說朗讀` was removed after merge-copy verification.
+
+Boundary:
+
+- `小說朗讀` is not a blueprint candidate, not setting-pack content, not runtime data, not SQLite data, not approved asset data, and not permission to start 09 / 04 / 05 / 06 / 07 / 08.
+- Generated MP4 outputs are discoverable local outputs only. They are not promoted into the production asset registry by this planning-register cross-reference.
+
+Related local memory file:
+
+- `memory/project_directory_memory.json`
+
+## 12. Future 03 Review Focus
 
 03 should verify:
 
@@ -282,4 +303,5 @@ Blueprint entries can inform these documents later, but only through 01-approved
 - setting-pack conversion requires a later parse / validate / diff / preview / apply milestone;
 - window archive rules are documented as policy only;
 - manual handoff only remains intact;
+- the local subproject cross-reference keeps `小說朗讀` separate from blueprint candidates and runtime data;
 - no runtime, schema, SQLite, setting-pack apply, approved asset, automation, 09, 04/05/06/07/08, Candidate B, or MVP-8 approval is implied.

@@ -1,0 +1,288 @@
+{
+  "memoryId": "quarterfull-world-memory-capsule-v0.1",
+  "status": "ACTIVE_LOCAL_WORLD_MEMORY",
+  "updatedAt": "2026-06-24",
+  "language": "traditional_chinese",
+  "source": {
+    "provider": "QuarterFull",
+    "visibleWorkspaceTitle": "塵行 · 第 1 章 · 塵",
+    "visibleChapterTitle": "第一話　塵",
+    "sourceUse": "worldview_alignment_memory",
+    "rawProseStored": false,
+    "notes": [
+      "This capsule stores extracted world and continuity memory, not the full prose draft.",
+      "The visible QuarterFull draft is treated as the current authoring source for world direction."
+    ]
+  },
+  "activeBaselinePolicy": {
+    "activeWorldBaseline": "QuarterFull draft world from 塵行",
+    "notYetFormalCanon": [
+      "No SQLite state has been changed.",
+      "No setting pack has been applied.",
+      "This memory capsule is not a formal runtime scene, setting pack, or approved asset registry."
+    ]
+  },
+  "acceptedWorldFacts": {
+    "series": {
+      "title": "塵行",
+      "chapter": "第一話　塵",
+      "openingTone": [
+        "survival",
+        "frontier pressure",
+        "language barrier",
+        "slow evidence-based discovery",
+        "companion protection"
+      ]
+    },
+    "protagonist": {
+      "name": "陸知行",
+      "role": "viewpoint protagonist",
+      "origin": "modern / prior-world displaced person",
+      "arrivalState": [
+        "arrived in an unknown world with Ai-chan",
+        "does not know the local language",
+        "lost phone, backpack, trekking pole, and other useful modern gear",
+        "kept only a mud-soaked outdoor jacket and Ai-chan",
+        "spent early days focused on water, food, warmth, safety, and not dying"
+      ],
+      "publicTraits": [
+        "practical",
+        "observant",
+        "survival-oriented",
+        "protective of Ai-chan",
+        "uses drawing, gestures, counting, and repair logic to understand the world",
+        "has enough modern repair / hands-on experience to reason about tools, sealing, thickening, and workshop organization"
+      ],
+      "knowledgeLimits": [
+        "does not understand the local language at the opening",
+        "does not know whether this world is Earth or another world",
+        "does not know the power system mechanics",
+        "does not know the meaning of the industrial-looking metal pendant symbol",
+        "does not have a confirmed route home"
+      ]
+    },
+    "companion": {
+      "name": "愛醬",
+      "type": "long-haired husky / snow-dog companion",
+      "relationship": "trusted companion who stays with the protagonist through habit, attachment, and simple cues",
+      "behaviorRules": [
+        "usually stays near 陸知行 without a leash",
+        "can ignore casual commands in a dog-like way",
+        "responds to familiar touch / cues when pressure is high",
+        "uses scent, ears, posture, hesitation, and returning glances to signal danger or uncertainty",
+        "is not a human in animal shape and should not explain abstract truth"
+      ],
+      "limits": [
+        "can sense danger or unfamiliar scent patterns",
+        "cannot understand politics, institutions, hidden world causality, or future plot answers",
+        "must not become an all-purpose clue machine"
+      ]
+    },
+    "openingLocation": {
+      "name": "灰關",
+      "type": "frontier fortress / settlement",
+      "firstSeenAfter": "the protagonist and Ai-chan survive several days in a grey-white wilderness",
+      "visualAnchors": [
+        "grey-white moss in cracks that glows faintly at night",
+        "fortress walls",
+        "narrow dirty alleys",
+        "water stains, blade marks, rust or blood-colored marks",
+        "smoke, sweat, cooking oil, harsh medicine smell, and drying animal hide",
+        "stone tables, stone stools, stone-like writing boards, charcoal-like stylus",
+        "repair workshop with a blue-flamed black-mineral furnace"
+      ],
+      "socialTexture": [
+        "used to the limit",
+        "dirty but functional",
+        "scarcity-driven",
+        "hierarchical",
+        "frontier survival culture"
+      ]
+    },
+    "socialStructure": {
+      "visibleGroups": [
+        {
+          "name": "grey-uniform soldiers / patrols",
+          "signals": [
+            "disciplined movement",
+            "weapons such as blades, swords, and unfamiliar polearms",
+            "patrol function",
+            "recordkeeping and procedure"
+          ]
+        },
+        {
+          "name": "cultivators / special practitioners",
+          "signals": [
+            "individualized steadiness",
+            "unusual physical presence",
+            "visible force can affect terrain",
+            "social status above ordinary people"
+          ]
+        },
+        {
+          "name": "ordinary workers",
+          "signals": [
+            "cooking",
+            "washing",
+            "repairing",
+            "moving goods",
+            "working in safer inner settlement zones"
+          ]
+        },
+        {
+          "name": "marginal laborers",
+          "signals": [
+            "patched clothes",
+            "temporary work",
+            "worse food allocation",
+            "unclear group belonging"
+          ]
+        }
+      ],
+      "outsiderTreatment": [
+        "a language-barrier stranger may be handled through gesture, drawings, observation, and authority procedure",
+        "the protagonist is tolerated because he is not immediately threatening and can demonstrate useful practical skill",
+        "status imbalance can make Ai-chan vulnerable to arbitrary treatment by higher-status people"
+      ]
+    },
+    "powerSystem": {
+      "status": "visible_but_not_explained",
+      "knownVisibleFacts": [
+        "some practitioners can create force at a distance strong enough to damage ground",
+        "ordinary people recognize practitioner status through bearing, clothes, and presence",
+        "the cost, training, ranks, institutions, and limits of the system are unknown"
+      ],
+      "rules": [
+        "do not invent ranks yet",
+        "do not explain the metaphysics yet",
+        "show power through observed consequences before exposition",
+        "knowledge of power must follow contact, training, role, or evidence"
+      ]
+    },
+    "materialCulture": {
+      "baseline": "frontier pre-modern with unusual craft / cultivation technologies",
+      "knownMaterialsAndTools": [
+        "stone-like writing board",
+        "charcoal-like writing tool",
+        "metal frames",
+        "glowing stones or lamp cores",
+        "semi-transparent repair adhesive",
+        "dried moss powder as thickening filler",
+        "black mineral fuel with blue flame",
+        "leather / animal hide",
+        "hard dry ration cake",
+        "weapons and tool racks"
+      ],
+      "modernAnomalies": [
+        "the protagonist's outdoor jacket",
+        "the industrial-looking pendant symbol that feels unlike the local visual language"
+      ],
+      "guardrails": [
+        "modern objects must have a source: transported residue, relic, foreign good, or anomaly",
+        "do not casually add phones, firearms, electricity, plastic, vehicles, modern medicine, or modern supply chains"
+      ]
+    },
+    "knownCharacters": [
+      {
+        "name": "沈固",
+        "role": "grey fortress repair craftsman",
+        "status": "accepted local supporting NPC",
+        "traits": [
+          "recognizes practical skill",
+          "repairs lamps, walls, doors, locks, weapon racks, and fortress mechanisms",
+          "offers workshop warmth and a more respectful social space to 陸知行",
+          "is not a cultivator or soldier"
+        ],
+        "relationshipToProtagonist": [
+          "first local person to see 陸知行 in terms of useful ability rather than as a strange object",
+          "allows 陸知行 and 愛醬 to sleep near the workshop furnace after seeing his tool-organization skill"
+        ]
+      },
+      {
+        "name": "scarred grey-uniform officer",
+        "role": "local military / patrol authority figure",
+        "status": "accepted unnamed authority NPC",
+        "visibleDetails": [
+          "forty-ish",
+          "scar from forehead to jaw",
+          "missing two fingers on right hand",
+          "grey uniform",
+          "extra emblem of a sword piercing cracked stone",
+          "keeps a metal pendant with an industrial-looking symbol hidden at the collar"
+        ],
+        "knowledgeBoundary": [
+          "he appears to recognize something about the protagonist's broken-origin drawing",
+          "do not reveal what he knows yet",
+          "do not define the pendant's true origin yet"
+        ]
+      },
+      {
+        "name": "well-dressed young cultivator",
+        "role": "status-pressure incident NPC",
+        "status": "accepted conflict catalyst if continuing the market scene",
+        "visibleActions": [
+          "notices Ai-chan",
+          "tries to touch Ai-chan without permission",
+          "becomes displeased when Ai-chan avoids him",
+          "uses status pressure against 陸知行",
+          "kicks Ai-chan lightly enough to be casual but serious enough to cross 陸知行's boundary"
+        ],
+        "storyFunction": [
+          "tests whether 陸知行 will protect Ai-chan despite status danger",
+          "reveals social hierarchy and companion-animal vulnerability"
+        ]
+      }
+    ],
+    "mysteryAnchors": [
+      {
+        "id": "industrial-symbol-pendant",
+        "publicSurface": "a hidden metal pendant carried by the scarred officer; the symbol feels designed, industrial, and unlike local writing",
+        "allowedUse": [
+          "recurring visual clue",
+          "evidence that some nonlocal or older layer may exist",
+          "motivation for 陸知行 to observe and investigate later"
+        ],
+        "forbiddenUse": [
+          "do not explain the true answer yet",
+          "do not turn it into a destiny mark",
+          "do not make every NPC know its meaning",
+          "do not convert it into a forced reveal schedule"
+        ]
+      }
+    ],
+    "currentStoryState": {
+      "chapterProgress": [
+        "陸知行 and 愛醬 survived the first wilderness days.",
+        "They were found by grey-uniform patrols and brought to 灰關.",
+        "陸知行 communicated through drawings and gestures because he did not know the local language.",
+        "The scarred officer fed 陸知行 and 愛醬 and kept records.",
+        "陸知行 learned the fortress social groups through observation.",
+        "陸知行 helped 沈固 repair a lamp by thickening adhesive with dried moss powder.",
+        "沈固 gave 陸知行 and 愛醬 a warmer place to sleep in the repair workshop.",
+        "At the market, a young cultivator crossed a boundary by trying to touch and then kicking 愛醬."
+      ],
+      "immediateContinuationQuestion": "What are the consequences of 陸知行 attacking or resisting a higher-status young cultivator after 愛醬 is kicked?"
+    }
+  },
+  "quarterfullSupportPrompt": {
+    "purpose": "Paste or summarize this memory into QuarterFull when it forgets the world.",
+    "prompt": "請以《塵行》目前世界觀續寫。當前基準：主角陸知行是現代/原世界位移者，和長毛哈士奇愛醬一起落入未知世界；他沒有手機、背包、登山杖，只剩泥水泡爛的衝鋒衣與愛醬。開局核心是求生、語言不通、觀察制度、保護愛醬、用實作能力換取生存空間。主要地點是灰關：一座骯髒、功能化、階層分明的邊塞要塞，有灰制服巡邏兵、修行者、普通工人、邊緣勞力。世界有修行者與異常工藝，但力量系統尚未解釋，不要自創等級或完整設定。沈固是修繕工，欣賞陸知行的實作能力，讓他和愛醬在工坊靠近藍焰爐火取暖。疤臉少指軍官藏有一枚工業感符號金屬片，這是伏筆，只能作為可見線索，不要揭露真相。愛醬不是人形靈獸，牠用鼻子、耳朵、姿態、停步、回頭、貼身等動物行為傳達警覺，不能變成萬能解謎工具。續寫要保持：世界因果優先、角色不知道就不能說、秘密不能用旁白洩漏、衝突要來自可見壓力與社會階層，而不是作者硬推劇情。"
+  },
+  "qualityGuardrails": [
+    "Prefer concrete sensory detail and visible behavior over explanation.",
+    "Keep 陸知行 practical and observant; he should survive by inference, craft sense, caution, and protection of Ai-chan.",
+    "Keep Ai-chan dog-like: loyal, autonomous, sensory, sometimes distractible, never abstractly omniscient.",
+    "Let social hierarchy and material scarcity create pressure.",
+    "Do not flatten every clue into a mystery-answer pipeline.",
+    "Do not let a helpful NPC explain the whole world early.",
+    "Do not make cultivators uniformly evil or uniformly noble; status pressure should be social and situational."
+  ],
+  "openQuestions": [
+    "Is 陸知行 now the permanently approved protagonist name?",
+    "Should 愛醬 be treated as an ordinary dog, unusually perceptive dog, or setting-touched animal?",
+    "What is the official name and rank of the scarred officer?",
+    "What is the true origin of the industrial-looking pendant symbol?",
+    "What is the cost and institution behind the visible cultivation power?",
+    "How severe should the market conflict consequences be after 陸知行 protects 愛醬?"
+  ]
+}

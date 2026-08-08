@@ -1,16 +1,103 @@
 package com.localnovel.engine
 
 import com.localnovel.engine.model.AiTurnResult
+import com.localnovel.engine.model.AcceptedScriptPacketHandoffPacket
+import com.localnovel.engine.model.AssetCandidateBrief
+import com.localnovel.engine.model.AssetCandidateDraft
+import com.localnovel.engine.model.AssetCandidateDraftValidationReport
+import com.localnovel.engine.model.AssetCandidateHumanReviewDecision
+import com.localnovel.engine.model.AssetCandidateHumanReviewDecisionIntakeReport
+import com.localnovel.engine.model.AssetCandidatePreflightReport
+import com.localnovel.engine.model.StoryboardPacketHumanReviewDecisionIntakeReport
+import com.localnovel.engine.model.AssetCandidateReviewPreflightReport
+import com.localnovel.engine.model.CandidateReferenceHumanAcceptanceDecision
+import com.localnovel.engine.model.CandidateReferenceHumanAcceptanceDecisionIntakeReport
+import com.localnovel.engine.model.CandidateReferenceAcceptancePacket
+import com.localnovel.engine.model.CandidateReferenceRegistryHumanAcceptanceDecision
+import com.localnovel.engine.model.CandidateReferenceRegistryHumanAcceptanceDecisionIntakeReport
+import com.localnovel.engine.model.CandidateReferenceRegistryPacket
+import com.localnovel.engine.model.CandidateReferenceRegistryPacketValidationReport
+import com.localnovel.engine.model.CandidateReferenceRegistryPreflightReport
+import com.localnovel.engine.model.ImageCandidateBrief
+import com.localnovel.engine.model.ImageCandidateExternalResult
+import com.localnovel.engine.model.ImageCandidateExternalResultIntakeReport
+import com.localnovel.engine.model.ImageCandidateReferencePacket
+import com.localnovel.engine.model.ImageCandidateReferencePacketValidationReport
+import com.localnovel.engine.model.ImageCandidateProviderHandoffDecision
+import com.localnovel.engine.model.ImageCandidateProviderHandoffDecisionIntakeReport
+import com.localnovel.engine.model.ImageCandidateProviderHandoffPacket
+import com.localnovel.engine.model.ImageCandidateProviderHandoffPacketValidationReport
+import com.localnovel.engine.model.ImageCandidateProviderHandoffPreflightReport
+import com.localnovel.engine.model.ImageCandidateResultReviewDecision
+import com.localnovel.engine.model.ImageCandidateResultReviewDecisionIntakeReport
+import com.localnovel.engine.model.ImageCandidateResultReviewPreflightReport
+import com.localnovel.engine.model.ImageCandidatePromptPreparation
+import com.localnovel.engine.model.ImageCandidatePromptValidationReport
+import com.localnovel.engine.model.ImageCandidatePreflightReport
+import com.localnovel.engine.model.CharacterNuwaCard
+import com.localnovel.engine.model.CharacterNuwaGateFile
+import com.localnovel.engine.model.CharacterNuwaGateValidationReport
+import com.localnovel.engine.model.CharacterNuwaRequiredSpeaker
+import com.localnovel.engine.model.CharacterNuwaSampleLines
+import com.localnovel.engine.model.ChapterContinuityAnchorFile
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DemoProjectSeed
+import com.localnovel.engine.model.NovelizationDraftIntakeReport
+import com.localnovel.engine.model.NovelizationAcceptedDraftPacket
+import com.localnovel.engine.model.NovelizationProseQualityAuditReport
+import com.localnovel.engine.model.NovelizationRevisedDraftIntakeReport
+import com.localnovel.engine.model.NovelizationRevisionBriefReport
+import com.localnovel.engine.model.NovelizationRevisionContinuityAnchors
+import com.localnovel.engine.model.NovelizationRevisionHandlingDeclaration
+import com.localnovel.engine.model.NovelizationScriptPacketPreflightReport
+import com.localnovel.engine.model.NovelizationWriterBriefValidationReport
+import com.localnovel.engine.model.NovelizationPreflightReport
+import com.localnovel.engine.model.NovelizationWriterBrief
+import com.localnovel.engine.model.ScriptPacketDraft
+import com.localnovel.engine.model.ScriptPacketDraftStructureBridgeReport
+import com.localnovel.engine.model.StoryboardPacketDraft
+import com.localnovel.engine.model.StoryboardPacketDraftValidationReport
+import com.localnovel.engine.model.StoryboardPacketHumanReviewDecision
+import com.localnovel.engine.model.StoryboardPacketHumanReviewPreflightReport
+import com.localnovel.engine.model.StoryboardPacketReviewPacket
+import com.localnovel.engine.model.StoryboardPlanningPreflightReport
+import com.localnovel.engine.model.StoryboardPlanningBrief
 import com.localnovel.engine.model.SettingPack
 import com.localnovel.engine.model.SettingPackEntities
 import com.localnovel.engine.model.SettingPackEntity
 import com.localnovel.engine.model.SettingPackSource
 import com.localnovel.engine.repository.SqliteStoryRepository
 import com.localnovel.engine.service.AiTurnResultValidator
+import com.localnovel.engine.service.AcceptedScriptPacketHandoffPacketService
+import com.localnovel.engine.service.AssetCandidateBriefService
+import com.localnovel.engine.service.AssetCandidateDraftService
+import com.localnovel.engine.service.AssetCandidateDraftValidationService
+import com.localnovel.engine.service.AssetCandidateHumanReviewDecisionIntakeService
+import com.localnovel.engine.service.AssetCandidatePreflightService
+import com.localnovel.engine.service.AssetCandidateReviewPreflightService
+import com.localnovel.engine.service.CandidateReferenceHumanAcceptanceDecisionIntakeService
+import com.localnovel.engine.service.CandidateReferenceAcceptancePacketService
+import com.localnovel.engine.service.CandidateReferenceRegistryHumanAcceptanceDecisionIntakeService
+import com.localnovel.engine.service.CandidateReferenceRegistryPacketService
+import com.localnovel.engine.service.CandidateReferenceRegistryPacketValidationService
+import com.localnovel.engine.service.CandidateReferenceRegistryPreflightService
+import com.localnovel.engine.service.ImageCandidateBriefService
+import com.localnovel.engine.service.ImageCandidatePreflightService
+import com.localnovel.engine.service.ImageCandidatePromptPreparationService
+import com.localnovel.engine.service.ImageCandidatePromptValidationService
+import com.localnovel.engine.service.ImageCandidateProviderHandoffPreflightService
+import com.localnovel.engine.service.ImageCandidateProviderHandoffDecisionIntakeService
+import com.localnovel.engine.service.ImageCandidateProviderHandoffPacketService
+import com.localnovel.engine.service.ImageCandidateProviderHandoffPacketValidationService
+import com.localnovel.engine.service.ImageCandidateExternalResultIntakeService
+import com.localnovel.engine.service.ImageCandidateReferencePacketService
+import com.localnovel.engine.service.ImageCandidateReferencePacketValidationService
+import com.localnovel.engine.service.ImageCandidateResultHumanReviewDecisionIntakeService
+import com.localnovel.engine.service.ImageCandidateResultReviewPreflightService
 import com.localnovel.engine.service.CanonConsistencyValidator
 import com.localnovel.engine.service.CapabilityContractResolver
+import com.localnovel.engine.service.CharacterNuwaGateValidationService
+import com.localnovel.engine.service.ChapterContinuityAuditService
 import com.localnovel.engine.service.CheckpointService
 import com.localnovel.engine.service.ContextCompiler
 import com.localnovel.engine.service.ContextAuditService
@@ -21,6 +108,14 @@ import com.localnovel.engine.service.MultiTurnRuntime
 import com.localnovel.engine.service.NarrativeQualityAuditInput
 import com.localnovel.engine.service.NarrativeQualityAuditService
 import com.localnovel.engine.service.MemoryRetriever
+import com.localnovel.engine.service.NovelizationAcceptedDraftPacketService
+import com.localnovel.engine.service.NovelizationDraftIntakeValidationService
+import com.localnovel.engine.service.NovelizationPreflightValidationService
+import com.localnovel.engine.service.NovelizationProseQualityAuditService
+import com.localnovel.engine.service.NovelizationRevisedDraftIntakeValidationService
+import com.localnovel.engine.service.NovelizationRevisionBriefService
+import com.localnovel.engine.service.NovelizationScriptPacketPreflightService
+import com.localnovel.engine.service.NovelizationWriterBriefValidationService
 import com.localnovel.engine.service.PilotPreflightService
 import com.localnovel.engine.service.SessionEvidenceExporter
 import com.localnovel.engine.service.SettingPackDiffService
@@ -29,7 +124,16 @@ import com.localnovel.engine.service.SettingPackParser
 import com.localnovel.engine.service.SettingPackSchemaValidator
 import com.localnovel.engine.service.StallDetector
 import com.localnovel.engine.service.StateReducer
+import com.localnovel.engine.service.StoryboardPacketDraftValidationService
+import com.localnovel.engine.service.StoryboardPacketHumanReviewDecisionIntakeService
+import com.localnovel.engine.service.StoryboardPacketHumanReviewPreflightService
+import com.localnovel.engine.service.StoryboardPacketReviewService
+import com.localnovel.engine.service.StoryboardPlanningBriefService
+import com.localnovel.engine.service.StoryboardPlanningPreflightService
 import com.localnovel.engine.service.ReplayAuditService
+import com.localnovel.engine.service.ScriptPacketDraftSourceBindingValidationService
+import com.localnovel.engine.service.ScriptPacketDraftStructureBridgeService
+import com.localnovel.engine.service.ScriptPacketDraftValidationService
 import com.localnovel.engine.service.TimelineBranchService
 import com.localnovel.engine.service.TurnRunner
 import com.localnovel.engine.service.canonicalHash
@@ -86,6 +190,53 @@ class Cli {
                 "validate-project-canon" -> validateProjectCanon(options)
                 "audit-context" -> auditContext(options)
                 "audit-narrative-quality" -> auditNarrativeQuality(options)
+                "audit-chapter-continuity" -> auditChapterContinuity(options)
+                "validate-script-packet-draft" -> validateScriptPacketDraft(options)
+                "validate-script-packet-source-binding" -> validateScriptPacketSourceBinding(options)
+                "validate-script-packet-structure-bridge" -> validateScriptPacketStructureBridge(options)
+                "create-accepted-script-packet-handoff-packet" -> createAcceptedScriptPacketHandoffPacket(options)
+                "validate-storyboard-planning-preflight" -> validateStoryboardPlanningPreflight(options)
+                "create-storyboard-planning-brief" -> createStoryboardPlanningBrief(options)
+                "validate-storyboard-packet-draft" -> validateStoryboardPacketDraft(options)
+                "create-storyboard-packet-review" -> createStoryboardPacketReview(options)
+                "validate-storyboard-packet-human-review-preflight" -> validateStoryboardPacketHumanReviewPreflight(options)
+                "validate-storyboard-packet-human-review-decision" -> validateStoryboardPacketHumanReviewDecision(options)
+                "validate-asset-candidate-preflight" -> validateAssetCandidatePreflight(options)
+                "create-asset-candidate-brief" -> createAssetCandidateBrief(options)
+                "create-asset-candidate-draft" -> createAssetCandidateDraft(options)
+                "validate-asset-candidate-draft" -> validateAssetCandidateDraft(options)
+                "validate-asset-candidate-review-preflight" -> validateAssetCandidateReviewPreflight(options)
+                "validate-asset-candidate-human-review-decision" -> validateAssetCandidateHumanReviewDecision(options)
+                "validate-image-candidate-preflight" -> validateImageCandidatePreflight(options)
+                "create-image-candidate-brief" -> createImageCandidateBrief(options)
+                "create-image-candidate-prompt-preparation" -> createImageCandidatePromptPreparation(options)
+                "validate-image-candidate-prompt-preparation" -> validateImageCandidatePromptPreparation(options)
+                "validate-image-candidate-provider-handoff-preflight" -> validateImageCandidateProviderHandoffPreflight(options)
+                "validate-image-candidate-provider-handoff-decision" -> validateImageCandidateProviderHandoffDecision(options)
+                "create-image-candidate-provider-handoff-packet" -> createImageCandidateProviderHandoffPacket(options)
+                "validate-image-candidate-provider-handoff-packet" -> validateImageCandidateProviderHandoffPacket(options)
+                "validate-image-candidate-external-result-intake" -> validateImageCandidateExternalResultIntake(options)
+                "validate-image-candidate-result-review-preflight" -> validateImageCandidateResultReviewPreflight(options)
+                "validate-image-candidate-result-human-review-decision" -> validateImageCandidateResultHumanReviewDecision(options)
+                "create-image-candidate-reference-packet" -> createImageCandidateReferencePacket(options)
+                "validate-image-candidate-reference-packet" -> validateImageCandidateReferencePacket(options)
+                "validate-candidate-reference-human-acceptance-decision" -> validateCandidateReferenceHumanAcceptanceDecision(options)
+                "validate-candidate-reference-registry-preflight" -> validateCandidateReferenceRegistryPreflight(options)
+                "create-candidate-reference-registry-packet" -> createCandidateReferenceRegistryPacket(options)
+                "validate-candidate-reference-registry-packet" -> validateCandidateReferenceRegistryPacket(options)
+                "validate-candidate-reference-registry-human-acceptance-decision" -> validateCandidateReferenceRegistryHumanAcceptanceDecision(options)
+                "create-candidate-reference-acceptance-packet" -> createCandidateReferenceAcceptancePacket(options)
+                "create-character-nuwa-card-template" -> createCharacterNuwaCardTemplate(options)
+                "validate-character-nuwa-gate" -> validateCharacterNuwaGate(options)
+                "validate-novelization-preflight" -> validateNovelizationPreflight(options)
+                "create-novelization-writer-brief-template" -> createNovelizationWriterBriefTemplate(options)
+                "validate-novelization-writer-brief" -> validateNovelizationWriterBrief(options)
+                "validate-novelization-draft-intake" -> validateNovelizationDraftIntake(options)
+                "audit-novelization-prose-quality" -> auditNovelizationProseQuality(options)
+                "create-novelization-revision-brief" -> createNovelizationRevisionBrief(options)
+                "validate-novelization-revised-draft-intake" -> validateNovelizationRevisedDraftIntake(options)
+                "create-novelization-accepted-draft-packet" -> createNovelizationAcceptedDraftPacket(options)
+                "validate-novelization-script-packet-preflight" -> validateNovelizationScriptPacketPreflight(options)
                 "export-session-evidence" -> exportSessionEvidence(options)
                 "pilot-preflight" -> pilotPreflight(options)
                 "explain-context-budget" -> explainContextBudget(options)
@@ -493,6 +644,1469 @@ class Cli {
             println("${it.ruleId}:${it.severity}:${it.message}")
         }
         return 0
+    }
+
+    private fun validateScriptPacketDraft(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("packet"))
+        val packet = readJson<ScriptPacketDraft>(packetPath)
+        val report = ScriptPacketDraftValidationService().validate(
+            packet = packet,
+            packetFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("segments=${report.segmentCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateScriptPacketSourceBinding(options: Map<String, String>): Int {
+        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
+        val preflightPath = Path.of(options.required("script-packet-preflight"))
+        val acceptedPacketPath = Path.of(options.required("accepted-draft-packet"))
+        val report = ScriptPacketDraftSourceBindingValidationService().validate(
+            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
+            scriptPacketPreflight = readJson<NovelizationScriptPacketPreflightReport>(preflightPath),
+            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
+            scriptPacketDraftFile = scriptPacketPath.toString(),
+            scriptPacketPreflightFile = preflightPath.toString(),
+            acceptedDraftPacketFile = acceptedPacketPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("scriptPacketId=${report.scriptPacketId}")
+        println("acceptedDraftPacketId=${report.acceptedDraftPacketId}")
+        println("bindingMatchedBy=${report.evidence.bindingMatchedBy.joinToString(",")}")
+        println("continuityAnchors=${report.evidence.referencedContinuityAnchorCount}/${report.evidence.protectedContinuityAnchorCount}")
+        println("boundaryClaims=${report.evidence.boundaryClaimCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateScriptPacketStructureBridge(options: Map<String, String>): Int {
+        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
+        val preflightPath = Path.of(options.required("script-packet-preflight"))
+        val acceptedPacketPath = Path.of(options.required("accepted-draft-packet"))
+        val report = ScriptPacketDraftStructureBridgeService().validate(
+            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
+            scriptPacketPreflight = readJson<NovelizationScriptPacketPreflightReport>(preflightPath),
+            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(acceptedPacketPath),
+            scriptPacketDraftFile = scriptPacketPath.toString(),
+            scriptPacketPreflightFile = preflightPath.toString(),
+            acceptedDraftPacketFile = acceptedPacketPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("scriptPacketId=${report.scriptPacketId}")
+        println("sourceBindingVerdict=${report.sourceBindingVerdict}")
+        println("structureVerdict=${report.structureVerdict}")
+        println("downstreamAllowed=${report.downstreamAllowed}")
+        println("blockedReason=${report.blockedReason}")
+        println("sourceBindingFindings=${report.sourceBindingFindingCount}")
+        println("structureFindings=${report.structureFindingCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createAcceptedScriptPacketHandoffPacket(options: Map<String, String>): Int {
+        val scriptPacketPath = Path.of(options.required("script-packet-draft"))
+        val bridgeReportPath = Path.of(options.required("structure-bridge-report"))
+        val scriptPacketText = Files.readString(scriptPacketPath).removePrefix("\uFEFF")
+        val report = AcceptedScriptPacketHandoffPacketService().build(
+            scriptPacketDraftText = scriptPacketText,
+            scriptPacketDraft = readJson<ScriptPacketDraft>(scriptPacketPath),
+            structureBridgeReport = readJson<ScriptPacketDraftStructureBridgeReport>(bridgeReportPath),
+            scriptPacketDraftFile = scriptPacketPath.toString(),
+            structureBridgeReportFile = bridgeReportPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("bridgeVerdict=${report.sourceReports.structureBridgeVerdict}")
+        println("sourceBindingVerdict=${report.sourceReports.sourceBindingVerdict}")
+        println("structureVerdict=${report.sourceReports.structureVerdict}")
+        println("protectedContinuityAnchors=${report.protectedContinuityAnchorsSummary.protectedContinuityAnchorCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateStoryboardPlanningPreflight(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("accepted-script-packet"))
+        val report = StoryboardPlanningPreflightService().validate(
+            acceptedScriptPacket = readJson<AcceptedScriptPacketHandoffPacket>(packetPath),
+            preflightId = options["preflight"] ?: "",
+            acceptedScriptPacketFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("packetVerdict=${report.evidence.packetVerdict}")
+        println("sourceReportFiles=${report.evidence.sourceReportFileCount}")
+        println("sourceReportVerdicts=${report.evidence.sourceReportVerdictCount}")
+        println("protectedContinuityAnchors=${report.evidence.protectedContinuityAnchorCount}")
+        println("residualRisks=${report.evidence.residualRiskCount}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createStoryboardPlanningBrief(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("accepted-script-packet"))
+        val preflightPath = Path.of(options.required("storyboard-planning-preflight"))
+        val report = StoryboardPlanningBriefService().build(
+            acceptedScriptPacket = readJson<AcceptedScriptPacketHandoffPacket>(packetPath),
+            storyboardPlanningPreflight = readJson<StoryboardPlanningPreflightReport>(preflightPath),
+            briefId = options["brief"] ?: "",
+            acceptedScriptPacketFile = packetPath.toString(),
+            storyboardPlanningPreflightFile = preflightPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("briefId=${report.briefId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("preflightVerdict=${report.sourceReports.storyboardPlanningPreflightVerdict}")
+        println("protectedContinuityAnchors=${report.protectedContinuityAnchorsSummary.protectedContinuityAnchorCount}")
+        println("residualRisks=${report.remainingResidualRisks.size}")
+        println("reviewChecklist=${report.reviewChecklist.size}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateStoryboardPacketDraft(options: Map<String, String>): Int {
+        val briefPath = Path.of(options.required("storyboard-planning-brief"))
+        val draftPath = Path.of(options.required("storyboard-packet-draft"))
+        val report = StoryboardPacketDraftValidationService().validate(
+            storyboardPlanningBrief = readJson<StoryboardPlanningBrief>(briefPath),
+            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
+            storyboardPlanningBriefFile = briefPath.toString(),
+            storyboardPacketDraftFile = draftPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("storyboardPlanningBriefId=${report.storyboardPlanningBriefId}")
+        println("storyboardPacketDraftId=${report.storyboardPacketDraftId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("frames=${report.evidence.frameCount}")
+        println("protectedContinuityAnchors=${report.evidence.protectedContinuityAnchorReferencedCount}/${report.evidence.protectedContinuityAnchorCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenOutputPaths=${report.evidence.forbiddenOutputPathCount}")
+        println("externalGenerationApiHints=${report.evidence.externalGenerationApiHitCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createStoryboardPacketReview(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("storyboard-packet-draft"))
+        val reportPath = Path.of(options.required("storyboard-packet-draft-report"))
+        val review = StoryboardPacketReviewService().create(
+            storyboardPacketDraft = readJson<StoryboardPacketDraft>(draftPath),
+            storyboardPacketDraftReport = readJson<StoryboardPacketDraftValidationReport>(reportPath),
+            reviewId = options["review"] ?: "",
+            storyboardPacketDraftFile = draftPath.toString(),
+            storyboardPacketDraftReportFile = reportPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), review) }
+        println("verdict=${review.verdict}")
+        println("reviewId=${review.reviewId}")
+        println("reviewStatus=${review.reviewStatus}")
+        println("storyboardPacketDraftId=${review.storyboardPacketDraftId}")
+        println("storyboardPlanningBriefId=${review.storyboardPlanningBriefId}")
+        println("acceptedScriptPacketId=${review.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${review.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${review.scriptPacketDraftContentSha256}")
+        println("frames=${review.frameCount}")
+        println("assetCandidateRequirements=${review.assetCandidateRequirements.size}")
+        println("protectedContinuityAnchors=${review.protectedContinuityAnchorsSummary.protectedContinuityAnchorCount}")
+        println("residualRisks=${review.remainingResidualRisks.size}")
+        println("reviewChecklist=${review.reviewChecklist.size}")
+        println("nextAllowedDownstreamStep=${review.nextAllowedDownstreamStep}")
+        println("blockedReason=${review.blockedReason}")
+        println("findings=${review.findingCount}")
+        review.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (review.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateStoryboardPacketHumanReviewPreflight(options: Map<String, String>): Int {
+        val reviewPath = Path.of(options.required("storyboard-packet-review"))
+        val report = StoryboardPacketHumanReviewPreflightService().validate(
+            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
+            preflightId = options["preflight"] ?: "",
+            storyboardPacketReviewFile = reviewPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("reviewStatus=${report.reviewStatus}")
+        println("reviewVerdict=${report.evidence.reviewPacketVerdict}")
+        println("frames=${report.evidence.frameIdCount}/${report.evidence.frameCount}")
+        println("reviewChecklist=${report.evidence.reviewChecklistCount}")
+        println("protectedContinuityAnchors=${report.evidence.protectedContinuityAnchorCount}")
+        println("residualRisks=${report.evidence.residualRiskCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateStoryboardPacketHumanReviewDecision(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("human-review-preflight"))
+        val decisionPath = Path.of(options.required("human-review-decision"))
+        val report = StoryboardPacketHumanReviewDecisionIntakeService().validate(
+            humanReviewPreflight = readJson<StoryboardPacketHumanReviewPreflightReport>(preflightPath),
+            humanReviewDecision = readJson<StoryboardPacketHumanReviewDecision>(decisionPath),
+            humanReviewPreflightFile = preflightPath.toString(),
+            humanReviewDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("preflightId=${report.preflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("decisionSource=${report.evidence.decisionSource}")
+        println("checklist=${report.evidence.checklistPassedCount}/${report.evidence.checklistItemCount}")
+        println("unresolvedBlockingIssues=${report.evidence.unresolvedBlockingIssueCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateAssetCandidatePreflight(options: Map<String, String>): Int {
+        val intakePath = Path.of(options.required("human-review-decision-intake"))
+        val reviewPath = Path.of(options.required("storyboard-packet-review"))
+        val report = AssetCandidatePreflightService().validate(
+            humanReviewDecisionIntake = readJson<StoryboardPacketHumanReviewDecisionIntakeReport>(intakePath),
+            storyboardPacketReview = readJson<StoryboardPacketReviewPacket>(reviewPath),
+            preflightId = options["preflight"] ?: "",
+            humanReviewDecisionIntakeFile = intakePath.toString(),
+            storyboardPacketReviewFile = reviewPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("decisionId=${report.decisionId}")
+        println("humanReviewPreflightId=${report.humanReviewPreflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("assetCandidateRequirements=${report.evidence.assetCandidateRequirementCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createAssetCandidateBrief(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("asset-candidate-preflight"))
+        val brief = AssetCandidateBriefService().create(
+            assetCandidatePreflight = readJson<AssetCandidatePreflightReport>(preflightPath),
+            briefId = options["brief"] ?: "",
+            assetCandidatePreflightFile = preflightPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), brief) }
+        println("verdict=${brief.verdict}")
+        println("briefId=${brief.briefId}")
+        println("assetCandidatePreflightId=${brief.assetCandidatePreflightId}")
+        println("decisionId=${brief.humanReviewDecisionId}")
+        println("storyboardPacketReviewId=${brief.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${brief.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${brief.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${brief.scriptPacketDraftContentSha256}")
+        println("assetCandidateRequirements=${brief.evidence.assetCandidateRequirementCount}")
+        println("preparationChecklist=${brief.evidence.preparationChecklistCount}")
+        println("forbiddenClaims=${brief.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${brief.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${brief.nextAllowedDownstreamStep}")
+        println("blockedReason=${brief.blockedReason}")
+        println("findings=${brief.findingCount}")
+        brief.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (brief.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createAssetCandidateDraft(options: Map<String, String>): Int {
+        val briefPath = Path.of(options.required("asset-candidate-brief"))
+        val draft = AssetCandidateDraftService().create(
+            assetCandidateBrief = readJson<AssetCandidateBrief>(briefPath),
+            draftId = options["draft"] ?: "",
+            assetCandidateBriefFile = briefPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), draft) }
+        println("verdict=${draft.verdict}")
+        println("draftId=${draft.draftId}")
+        println("assetCandidateBriefId=${draft.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${draft.assetCandidatePreflightId}")
+        println("decisionId=${draft.humanReviewDecisionId}")
+        println("storyboardPacketReviewId=${draft.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${draft.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${draft.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${draft.scriptPacketDraftContentSha256}")
+        println("candidateItems=${draft.evidence.candidateItemCount}")
+        println("forbiddenClaims=${draft.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${draft.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${draft.nextAllowedDownstreamStep}")
+        println("blockedReason=${draft.blockedReason}")
+        println("findings=${draft.findingCount}")
+        draft.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (draft.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateAssetCandidateDraft(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("asset-candidate-draft"))
+        val report = AssetCandidateDraftValidationService().validate(
+            assetCandidateDraft = readJson<AssetCandidateDraft>(draftPath),
+            assetCandidateDraftFile = draftPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("decisionId=${report.humanReviewDecisionId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("candidateItems=${report.evidence.candidateItemCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateAssetCandidateReviewPreflight(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("asset-candidate-draft-validation"))
+        val report = AssetCandidateReviewPreflightService().validate(
+            assetCandidateDraftValidation = readJson<AssetCandidateDraftValidationReport>(validationPath),
+            preflightId = options["preflight"] ?: "",
+            assetCandidateDraftValidationReportFile = validationPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("decisionId=${report.humanReviewDecisionId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("candidateItems=${report.evidence.candidateItemCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateAssetCandidateHumanReviewDecision(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("asset-candidate-review-preflight"))
+        val decisionPath = Path.of(options.required("asset-candidate-human-review-decision"))
+        val report = AssetCandidateHumanReviewDecisionIntakeService().validate(
+            assetCandidateReviewPreflight = readJson<AssetCandidateReviewPreflightReport>(preflightPath),
+            assetCandidateHumanReviewDecision = readJson<AssetCandidateHumanReviewDecision>(decisionPath),
+            assetCandidateReviewPreflightFile = preflightPath.toString(),
+            assetCandidateHumanReviewDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("preflightId=${report.preflightId}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageCandidateRequirements=${report.evidence.imageCandidateRequirementCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidatePreflight(options: Map<String, String>): Int {
+        val intakePath = Path.of(options.required("asset-candidate-human-review-decision-intake"))
+        val report = ImageCandidatePreflightService().validate(
+            decisionIntake = readJson<AssetCandidateHumanReviewDecisionIntakeReport>(intakePath),
+            preflightId = options["preflight"] ?: "",
+            decisionIntakeFile = intakePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("decisionId=${report.decisionId}")
+        println("assetCandidateReviewPreflightId=${report.assetCandidateReviewPreflightId}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageCandidateRequirements=${report.evidence.imageCandidateRequirementCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createImageCandidateBrief(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("image-candidate-preflight"))
+        val brief = ImageCandidateBriefService().create(
+            imageCandidatePreflight = readJson<ImageCandidatePreflightReport>(preflightPath),
+            briefId = options["brief"] ?: "",
+            imageCandidatePreflightFile = preflightPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), brief) }
+        println("verdict=${brief.verdict}")
+        println("briefId=${brief.briefId}")
+        println("imageCandidatePreflightId=${brief.imageCandidatePreflightId}")
+        println("decisionId=${brief.decisionId}")
+        println("assetCandidateReviewPreflightId=${brief.assetCandidateReviewPreflightId}")
+        println("assetCandidateDraftId=${brief.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${brief.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${brief.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${brief.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${brief.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${brief.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${brief.scriptPacketDraftContentSha256}")
+        println("imageCandidateRequirements=${brief.evidence.imageCandidateRequirementCount}")
+        println("preparationChecklist=${brief.evidence.preparationChecklistCount}")
+        println("forbiddenClaims=${brief.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${brief.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${brief.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${brief.nextAllowedDownstreamStep}")
+        println("blockedReason=${brief.blockedReason}")
+        println("findings=${brief.findingCount}")
+        brief.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (brief.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createImageCandidatePromptPreparation(options: Map<String, String>): Int {
+        val briefPath = Path.of(options.required("image-candidate-brief"))
+        val preparation = ImageCandidatePromptPreparationService().create(
+            imageCandidateBrief = readJson<ImageCandidateBrief>(briefPath),
+            preparationId = options["preparation"] ?: "",
+            imageCandidateBriefFile = briefPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), preparation) }
+        println("verdict=${preparation.verdict}")
+        println("preparationId=${preparation.preparationId}")
+        println("imageCandidateBriefId=${preparation.imageCandidateBriefId}")
+        println("imageCandidatePreflightId=${preparation.imageCandidatePreflightId}")
+        println("decisionId=${preparation.decisionId}")
+        println("assetCandidateReviewPreflightId=${preparation.assetCandidateReviewPreflightId}")
+        println("assetCandidateDraftId=${preparation.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${preparation.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${preparation.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${preparation.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${preparation.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${preparation.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${preparation.scriptPacketDraftContentSha256}")
+        println("promptItems=${preparation.evidence.promptItemCount}")
+        println("forbiddenClaims=${preparation.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${preparation.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${preparation.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${preparation.nextAllowedDownstreamStep}")
+        println("blockedReason=${preparation.blockedReason}")
+        println("findings=${preparation.findingCount}")
+        preparation.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (preparation.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidatePromptPreparation(options: Map<String, String>): Int {
+        val preparationPath = Path.of(options.required("image-candidate-prompt-preparation"))
+        val report = ImageCandidatePromptValidationService().validate(
+            promptPreparation = readJson<ImageCandidatePromptPreparation>(preparationPath),
+            promptPreparationFile = preparationPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preparationId=${report.preparationId}")
+        println("imageCandidateBriefId=${report.imageCandidateBriefId}")
+        println("imageCandidatePreflightId=${report.imageCandidatePreflightId}")
+        println("decisionId=${report.decisionId}")
+        println("assetCandidateReviewPreflightId=${report.assetCandidateReviewPreflightId}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("promptItems=${report.evidence.promptItemCount}")
+        println("authorOnlyLeaks=${report.evidence.authorOnlyLeakCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateProviderHandoffPreflight(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("image-candidate-prompt-validation"))
+        val report = ImageCandidateProviderHandoffPreflightService().validate(
+            promptValidationReport = readJson<ImageCandidatePromptValidationReport>(validationPath),
+            preflightId = options["preflight"] ?: "",
+            promptValidationReportFile = validationPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("preparationId=${report.preparationId}")
+        println("imageCandidateBriefId=${report.imageCandidateBriefId}")
+        println("imageCandidatePreflightId=${report.imageCandidatePreflightId}")
+        println("decisionId=${report.decisionId}")
+        println("assetCandidateReviewPreflightId=${report.assetCandidateReviewPreflightId}")
+        println("assetCandidateDraftId=${report.assetCandidateDraftId}")
+        println("assetCandidateBriefId=${report.assetCandidateBriefId}")
+        println("assetCandidatePreflightId=${report.assetCandidatePreflightId}")
+        println("storyboardPacketReviewId=${report.storyboardPacketReviewId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("promptItems=${report.evidence.promptItemCount}")
+        println("authorOnlyLeaks=${report.evidence.authorOnlyLeakCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateProviderHandoffDecision(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("provider-handoff-preflight"))
+        val decisionPath = Path.of(options.required("provider-handoff-decision"))
+        val report = ImageCandidateProviderHandoffDecisionIntakeService().validate(
+            providerHandoffPreflight = readJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
+            providerHandoffDecision = readJson<ImageCandidateProviderHandoffDecision>(decisionPath),
+            providerHandoffPreflightFile = preflightPath.toString(),
+            providerHandoffDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("preflightId=${report.preflightId}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("preparationId=${report.preparationId}")
+        println("imageCandidateBriefId=${report.imageCandidateBriefId}")
+        println("imageCandidatePreflightId=${report.imageCandidatePreflightId}")
+        println("promptItems=${report.evidence.promptItemCount}")
+        println("checklist=${report.evidence.checklistPassedCount}/${report.evidence.checklistItemCount}")
+        println("unresolvedBlockingIssues=${report.evidence.unresolvedBlockingIssueCount}")
+        println("authorOnlyLeaks=${report.evidence.authorOnlyLeakCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createImageCandidateProviderHandoffPacket(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("provider-handoff-preflight"))
+        val intakePath = Path.of(options.required("provider-handoff-decision-intake"))
+        val packet = ImageCandidateProviderHandoffPacketService().create(
+            providerHandoffPreflight = readJson<ImageCandidateProviderHandoffPreflightReport>(preflightPath),
+            decisionIntake = readJson<ImageCandidateProviderHandoffDecisionIntakeReport>(intakePath),
+            packetId = options["packet"] ?: "",
+            providerHandoffPreflightFile = preflightPath.toString(),
+            providerHandoffDecisionIntakeFile = intakePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("verdict=${packet.verdict}")
+        println("packetId=${packet.packetId}")
+        println("decisionId=${packet.decisionId}")
+        println("preflightId=${packet.preflightId}")
+        println("preparationId=${packet.preparationId}")
+        println("imageCandidateBriefId=${packet.imageCandidateBriefId}")
+        println("imageCandidatePreflightId=${packet.imageCandidatePreflightId}")
+        println("promptItems=${packet.evidence.promptItemCount}")
+        println("manualInstructions=${packet.evidence.manualInstructionCount}")
+        println("authorOnlyLeaks=${packet.evidence.authorOnlyLeakCount}")
+        println("forbiddenClaims=${packet.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${packet.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${packet.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("blockedReason=${packet.blockedReason}")
+        println("findings=${packet.findingCount}")
+        packet.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (packet.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateProviderHandoffPacket(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("provider-handoff-packet"))
+        val report = ImageCandidateProviderHandoffPacketValidationService().validate(
+            providerHandoffPacket = readJson<ImageCandidateProviderHandoffPacket>(packetPath),
+            providerHandoffPacketFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("decisionId=${report.decisionId}")
+        println("preflightId=${report.preflightId}")
+        println("preparationId=${report.preparationId}")
+        println("promptItems=${report.evidence.promptItemCount}")
+        println("manualInstructions=${report.evidence.manualInstructionCount}")
+        println("authorOnlyLeaks=${report.evidence.authorOnlyLeakCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("forbiddenOutputFields=${report.evidence.forbiddenOutputFieldCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateExternalResultIntake(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("provider-handoff-packet-validation"))
+        val externalResultPath = Path.of(options.required("external-result"))
+        val report = ImageCandidateExternalResultIntakeService().validate(
+            providerHandoffPacketValidation = readJson<ImageCandidateProviderHandoffPacketValidationReport>(validationPath),
+            externalResult = readJson<ImageCandidateExternalResult>(externalResultPath),
+            providerHandoffPacketValidationReportFile = validationPath.toString(),
+            externalResultFile = externalResultPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("resultId=${report.resultId}")
+        println("packetId=${report.packetId}")
+        println("decisionId=${report.decisionId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("resultStatus=${report.resultStatus}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("localImageReferences=${report.evidence.localImageReferenceCount}")
+        println("metadataOnlyReferences=${report.evidence.metadataOnlyReferenceCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateResultReviewPreflight(options: Map<String, String>): Int {
+        val intakePath = Path.of(options.required("external-result-intake"))
+        val report = ImageCandidateResultReviewPreflightService().validate(
+            externalResultIntake = readJson<ImageCandidateExternalResultIntakeReport>(intakePath),
+            preflightId = options["preflight"] ?: "",
+            externalResultIntakeFile = intakePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("resultId=${report.resultId}")
+        println("packetId=${report.packetId}")
+        println("decisionId=${report.decisionId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("localImageReferences=${report.evidence.localImageReferenceCount}")
+        println("metadataOnlyReferences=${report.evidence.metadataOnlyReferenceCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateResultHumanReviewDecision(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("result-review-preflight"))
+        val decisionPath = Path.of(options.required("result-review-decision"))
+        val report = ImageCandidateResultHumanReviewDecisionIntakeService().validate(
+            resultReviewPreflight = readJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
+            resultReviewDecision = readJson<ImageCandidateResultReviewDecision>(decisionPath),
+            resultReviewPreflightFile = preflightPath.toString(),
+            resultReviewDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("resultReviewPreflightId=${report.resultReviewPreflightId}")
+        println("resultId=${report.resultId}")
+        println("packetId=${report.packetId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("checklistItems=${report.evidence.checklistItemCount}")
+        println("checklistPassed=${report.evidence.checklistPassedCount}")
+        println("unresolvedBlockingIssues=${report.evidence.unresolvedBlockingIssueCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createImageCandidateReferencePacket(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("result-review-preflight"))
+        val intakePath = Path.of(options.required("result-review-decision-intake"))
+        val packet = ImageCandidateReferencePacketService().create(
+            resultReviewPreflight = readJson<ImageCandidateResultReviewPreflightReport>(preflightPath),
+            decisionIntake = readJson<ImageCandidateResultReviewDecisionIntakeReport>(intakePath),
+            packetId = options["packet"] ?: "",
+            resultReviewPreflightFile = preflightPath.toString(),
+            resultReviewDecisionIntakeFile = intakePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("verdict=${packet.verdict}")
+        println("packetId=${packet.packetId}")
+        println("packetStatus=${packet.packetStatus}")
+        println("decisionId=${packet.decisionId}")
+        println("resultReviewPreflightId=${packet.resultReviewPreflightId}")
+        println("resultId=${packet.resultId}")
+        println("providerHandoffPacketId=${packet.providerHandoffPacketId}")
+        println("acceptedScriptPacketId=${packet.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${packet.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${packet.scriptPacketDraftContentSha256}")
+        println("imageResults=${packet.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${packet.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${packet.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${packet.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("blockedReason=${packet.blockedReason}")
+        println("findings=${packet.findingCount}")
+        packet.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (packet.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateImageCandidateReferencePacket(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("candidate-reference-packet"))
+        val report = ImageCandidateReferencePacketValidationService().validate(
+            referencePacket = readJson<ImageCandidateReferencePacket>(packetPath),
+            referencePacketFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("packetStatus=${report.packetStatus}")
+        println("decisionId=${report.decisionId}")
+        println("resultReviewPreflightId=${report.resultReviewPreflightId}")
+        println("resultId=${report.resultId}")
+        println("providerHandoffPacketId=${report.providerHandoffPacketId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateCandidateReferenceHumanAcceptanceDecision(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("candidate-reference-packet-validation"))
+        val decisionPath = Path.of(options.required("human-acceptance-decision"))
+        val report = CandidateReferenceHumanAcceptanceDecisionIntakeService().validate(
+            candidateReferencePacketValidation = readJson<ImageCandidateReferencePacketValidationReport>(validationPath),
+            humanAcceptanceDecision = readJson<CandidateReferenceHumanAcceptanceDecision>(decisionPath),
+            candidateReferencePacketValidationReportFile = validationPath.toString(),
+            humanAcceptanceDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("packetId=${report.packetId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("checklistItems=${report.evidence.checklistItemCount}")
+        println("checklistPassed=${report.evidence.checklistPassedCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateCandidateReferenceRegistryPreflight(options: Map<String, String>): Int {
+        val intakePath = Path.of(options.required("human-acceptance-decision-intake"))
+        val validationPath = Path.of(options.required("candidate-reference-packet-validation"))
+        val report = CandidateReferenceRegistryPreflightService().validate(
+            humanAcceptanceDecisionIntake = readJson<CandidateReferenceHumanAcceptanceDecisionIntakeReport>(intakePath),
+            candidateReferencePacketValidation = readJson<ImageCandidateReferencePacketValidationReport>(validationPath),
+            preflightId = options["preflight"] ?: "",
+            humanAcceptanceDecisionIntakeFile = intakePath.toString(),
+            candidateReferencePacketValidationReportFile = validationPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("decisionId=${report.decisionId}")
+        println("packetId=${report.packetId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createCandidateReferenceRegistryPacket(options: Map<String, String>): Int {
+        val preflightPath = Path.of(options.required("registry-preflight"))
+        val packet = CandidateReferenceRegistryPacketService().create(
+            registryPreflight = readJson<CandidateReferenceRegistryPreflightReport>(preflightPath),
+            packetId = options["packet"] ?: "",
+            registryPreflightFile = preflightPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("verdict=${packet.verdict}")
+        println("packetId=${packet.packetId}")
+        println("packetStatus=${packet.packetStatus}")
+        println("preflightId=${packet.preflightId}")
+        println("decisionId=${packet.decisionId}")
+        println("referencePacketId=${packet.referencePacketId}")
+        println("acceptedScriptPacketId=${packet.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${packet.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${packet.scriptPacketDraftContentSha256}")
+        println("imageResults=${packet.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${packet.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${packet.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${packet.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("blockedReason=${packet.blockedReason}")
+        println("findings=${packet.findingCount}")
+        packet.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (packet.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateCandidateReferenceRegistryPacket(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("candidate-reference-registry-packet"))
+        val report = CandidateReferenceRegistryPacketValidationService().validate(
+            registryPacket = readJson<CandidateReferenceRegistryPacket>(packetPath),
+            registryPacketFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("packetStatus=${report.packetStatus}")
+        println("preflightId=${report.preflightId}")
+        println("decisionId=${report.decisionId}")
+        println("referencePacketId=${report.referencePacketId}")
+        println("resultReviewPreflightId=${report.resultReviewPreflightId}")
+        println("resultReviewDecisionId=${report.resultReviewDecisionId}")
+        println("providerHandoffPacketId=${report.providerHandoffPacketId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateCandidateReferenceRegistryHumanAcceptanceDecision(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("registry-packet-validation"))
+        val decisionPath = Path.of(options.required("human-acceptance-decision"))
+        val report = CandidateReferenceRegistryHumanAcceptanceDecisionIntakeService().validate(
+            registryPacketValidation = readJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
+            humanAcceptanceDecision = readJson<CandidateReferenceRegistryHumanAcceptanceDecision>(decisionPath),
+            registryPacketValidationReportFile = validationPath.toString(),
+            humanAcceptanceDecisionFile = decisionPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("decisionId=${report.decisionId}")
+        println("registryPacketId=${report.registryPacketId}")
+        println("registryPreflightId=${report.registryPreflightId}")
+        println("priorHumanAcceptanceDecisionId=${report.priorHumanAcceptanceDecisionId}")
+        println("referencePacketId=${report.referencePacketId}")
+        println("resultReviewPreflightId=${report.resultReviewPreflightId}")
+        println("resultReviewDecisionId=${report.resultReviewDecisionId}")
+        println("providerHandoffPacketId=${report.providerHandoffPacketId}")
+        println("acceptedScriptPacketId=${report.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${report.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${report.scriptPacketDraftContentSha256}")
+        println("decisionStatus=${report.decisionStatus}")
+        println("decisionAllowedDownstream=${report.decisionAllowedDownstream}")
+        println("imageResults=${report.evidence.imageResultCount}")
+        println("checklistItems=${report.evidence.checklistItemCount}")
+        println("checklistPassed=${report.evidence.checklistPassedCount}")
+        println("forbiddenRemoteOrProviderFields=${report.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${report.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${report.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("blockedReason=${report.blockedReason}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createCandidateReferenceAcceptancePacket(options: Map<String, String>): Int {
+        val validationPath = Path.of(options.required("registry-packet-validation"))
+        val intakePath = Path.of(options.required("human-acceptance-decision-intake"))
+        val packet = CandidateReferenceAcceptancePacketService().create(
+            registryPacketValidation = readJson<CandidateReferenceRegistryPacketValidationReport>(validationPath),
+            decisionIntake = readJson<CandidateReferenceRegistryHumanAcceptanceDecisionIntakeReport>(intakePath),
+            packetId = options["packet"] ?: "",
+            registryPacketValidationReportFile = validationPath.toString(),
+            humanAcceptanceDecisionIntakeFile = intakePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), packet) }
+        println("verdict=${packet.verdict}")
+        println("packetId=${packet.packetId}")
+        println("packetStatus=${packet.packetStatus}")
+        println("decisionId=${packet.decisionId}")
+        println("registryPacketId=${packet.registryPacketId}")
+        println("registryPreflightId=${packet.registryPreflightId}")
+        println("referencePacketId=${packet.referencePacketId}")
+        println("resultReviewPreflightId=${packet.resultReviewPreflightId}")
+        println("resultReviewDecisionId=${packet.resultReviewDecisionId}")
+        println("providerHandoffPacketId=${packet.providerHandoffPacketId}")
+        println("acceptedScriptPacketId=${packet.acceptedScriptPacketId}")
+        println("scriptPacketDraftFile=${packet.scriptPacketDraftFile}")
+        println("scriptPacketSha256=${packet.scriptPacketDraftContentSha256}")
+        println("imageResults=${packet.evidence.imageResultCount}")
+        println("forbiddenRemoteOrProviderFields=${packet.evidence.forbiddenRemoteOrProviderFieldCount}")
+        println("forbiddenClaims=${packet.evidence.forbiddenClaimCount}")
+        println("forbiddenStatuses=${packet.evidence.forbiddenStatusCount}")
+        println("nextAllowedDownstreamStep=${packet.nextAllowedDownstreamStep}")
+        println("blockedReason=${packet.blockedReason}")
+        println("findings=${packet.findingCount}")
+        packet.findings.forEach { println("${it.ruleId}:${it.severity}:${it.path}:${it.message}") }
+        return if (packet.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createCharacterNuwaCardTemplate(options: Map<String, String>): Int {
+        val projectId = options["project"] ?: "project-id"
+        val gateId = options["gate"] ?: "$projectId-character-nuwa-gate"
+        val out = Path.of(options.required("out"))
+        val template = CharacterNuwaGateFile(
+            gateId = gateId,
+            projectId = projectId,
+            sourceChapter = options["chapter"] ?: "",
+            requiredSpeakingCharacters = listOf(
+                CharacterNuwaRequiredSpeaker(
+                    characterId = "char-protagonist",
+                    displayName = "Protagonist",
+                    requiredDepth = "full_nuwa",
+                    reason = "Point-of-view or emotionally important speaker.",
+                ),
+                CharacterNuwaRequiredSpeaker(
+                    characterId = "char-background-speaker",
+                    displayName = "Background speaker",
+                    requiredDepth = "light_voice",
+                    reason = "One-off speaker with a line in this scene.",
+                ),
+            ),
+            characterCards = listOf(
+                CharacterNuwaCard(
+                    cardId = "card-char-protagonist",
+                    characterId = "char-protagonist",
+                    displayName = "Protagonist",
+                    cardDepth = "full_nuwa",
+                    gateStatus = "draft",
+                    narrativeFunction = "pov",
+                    socialPosition = "Replace with social position.",
+                    currentPressure = "Replace with the pressure acting on this character now.",
+                    relationshipToProtagonist = "self",
+                    knowledgeBoundary = listOf("Replace with what this character can observe or infer."),
+                    wantsFromScene = "Replace with what this character wants from this scene.",
+                    fearsInScene = "Replace with what this character is avoiding.",
+                    speechRegister = "Replace with speech register.",
+                    sentenceLengthBias = "mixed",
+                    directness = "restrained",
+                    silencePattern = "Replace with when this character goes silent.",
+                    pressureResponse = "Replace with how pressure changes this character's speech.",
+                    allowedTells = listOf("Replace with allowed visible or verbal tell."),
+                    forbiddenTells = listOf("Replace with forbidden tell."),
+                    favoriteMoves = listOf("asks_back", "deflects"),
+                    neverDo = listOf("recite_world_lore", "reveal_author_only_truth", "use_calibration_slogan"),
+                    sampleLines = CharacterNuwaSampleLines(
+                        accepted = listOf(
+                            "Replace with accepted line 1.",
+                            "Replace with accepted line 2.",
+                            "Replace with accepted line 3.",
+                        ),
+                        rejected = listOf(
+                            "Replace with rejected generic line 1.",
+                            "Replace with rejected generic line 2.",
+                            "Replace with rejected generic line 3.",
+                        ),
+                    ),
+                    bannedStructures = listOf(
+                        "這不是XX，這是XXX",
+                        "這不是 X，這是 Y",
+                        "不是XX，而是XXX",
+                        "不是 X，而是 Y",
+                        "not X, but Y",
+                    ),
+                ),
+                CharacterNuwaCard(
+                    cardId = "card-char-background-speaker",
+                    characterId = "char-background-speaker",
+                    displayName = "Background speaker",
+                    cardDepth = "light_voice",
+                    gateStatus = "draft",
+                    narrativeFunction = "passerby",
+                    currentPressure = "Replace with immediate pressure.",
+                    relationshipToProtagonist = "stranger",
+                    knowledgeBoundary = listOf("Replace with what this one-off speaker can know."),
+                    speechRegister = "plain",
+                    directness = "blunt",
+                    pressureResponse = "Replace with how pressure shapes the line.",
+                    neverDo = listOf("recite_world_lore", "use_calibration_slogan"),
+                    sampleLines = CharacterNuwaSampleLines(
+                        accepted = listOf("Replace with one acceptable line."),
+                        rejected = listOf("Replace with one rejected line."),
+                    ),
+                ),
+            ),
+            bannedCalibrationStructures = listOf(
+                "這不是XX，這是XXX",
+                "這不是 X，這是 Y",
+                "不是XX，而是XXX",
+                "不是 X，而是 Y",
+                "not X, but Y",
+                "not X, only Y",
+            ),
+            reviewerNotes = "Fill this template before drafting accepted dialogue. No character card means no accepted dialogue.",
+        )
+        writeJson(out, template)
+        println("wrote=$out")
+        println("gateId=${template.gateId}")
+        println("cards=${template.characterCards.size}")
+        return 0
+    }
+
+    private fun validateCharacterNuwaGate(options: Map<String, String>): Int {
+        val gatePath = options["file"]?.let { Path.of(it) }
+            ?: options["character-dir"]?.let { Path.of(it).resolve("character_nuwa_gate.json") }
+            ?: error("Missing required option --file or --character-dir")
+        val gate = readJson<CharacterNuwaGateFile>(gatePath)
+        val report = CharacterNuwaGateValidationService().validate(
+            gate = gate,
+            gateFile = gatePath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("gateId=${report.gateId}")
+        println("requiredSpeakingCharacters=${report.requiredSpeakingCharacterCount}")
+        println("cards=${report.cardCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateNovelizationPreflight(options: Map<String, String>): Int {
+        val reportPath = options["character-nuwa-report"]?.let { Path.of(it) }
+        val gatePath = options["character-nuwa-gate"]?.let { Path.of(it) }
+        if ((reportPath == null) == (gatePath == null)) {
+            error("Provide exactly one of --character-nuwa-report or --character-nuwa-gate")
+        }
+        val characterNuwaReport = reportPath?.let {
+            readJson<CharacterNuwaGateValidationReport>(it)
+        } ?: CharacterNuwaGateValidationService().validate(
+            gate = readJson<CharacterNuwaGateFile>(gatePath!!),
+            gateFile = gatePath.toString(),
+        )
+        val report = NovelizationPreflightValidationService().validate(
+            characterNuwaReport = characterNuwaReport,
+            characterNuwaReportFile = reportPath?.toString().orEmpty(),
+            characterNuwaGateFile = gatePath?.toString().orEmpty(),
+            preflightId = options["preflight"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("characterNuwaGateId=${report.characterNuwaGateId}")
+        println("characterNuwaVerdict=${report.evidence.characterNuwaVerdict}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createNovelizationWriterBriefTemplate(options: Map<String, String>): Int {
+        val projectId = options["project"] ?: "project-id"
+        val out = Path.of(options.required("out"))
+        val template = NovelizationWriterBrief(
+            briefId = options["brief"] ?: "$projectId-writer-brief",
+            projectId = projectId,
+            targetChapter = options["chapter"] ?: "chapter-id",
+            sourcePreflightReport = options["preflight-report"] ?: "path/to/novelization_preflight_report.json",
+            previousChapterRefs = listOf("path/to/accepted_previous_chapter.md"),
+            acceptedChapterFacts = listOf("Replace with a fact that the next chapter must not contradict."),
+            characterStates = listOf("Replace with a current character state that affects the next chapter."),
+            openThreads = listOf("Replace with an unresolved thread the next chapter must respect."),
+            mustAdvance = listOf("Replace with one concrete progression target."),
+            mustNotRepeat = listOf("Replace with one completed beat that must not be replayed."),
+            allowedScenes = listOf("Replace with allowed scene or location id."),
+            knownUnknowns = listOf("Replace with a fact the draft must not invent."),
+            tonePacingTarget = "Replace with tone and pacing target.",
+            styleContract = "Replace with style contract or expression DNA reference.",
+            characterNuwaReferences = listOf("Replace with Character Nuwa gate report or card id."),
+            antiAiProseConstraints = listOf("No generic calibration slogans; use concrete pressure, action, cost, or refusal."),
+            authorOnlyExcluded = true,
+            reviewerNotes = "Draft planning only. This brief is not accepted canon and does not generate prose.",
+        )
+        writeJson(out, template)
+        println("wrote=$out")
+        println("briefId=${template.briefId}")
+        println("targetChapter=${template.targetChapter}")
+        return 0
+    }
+
+    private fun validateNovelizationWriterBrief(options: Map<String, String>): Int {
+        val briefPath = Path.of(options.required("brief"))
+        val brief = readJson<NovelizationWriterBrief>(briefPath)
+        val preflightReportPath = options["preflight-report"]?.let { Path.of(it) }
+        val report = NovelizationWriterBriefValidationService().validate(
+            brief = brief,
+            briefFile = briefPath.toString(),
+            sourcePreflightReport = preflightReportPath?.let { readJson<NovelizationPreflightReport>(it) },
+            sourcePreflightReportFile = preflightReportPath?.toString().orEmpty(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("briefId=${report.briefId}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateNovelizationDraftIntake(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val writerBriefReportPath = Path.of(options.required("writer-brief-report"))
+        val report = NovelizationDraftIntakeValidationService().validate(
+            draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
+            writerBriefReport = readJson<NovelizationWriterBriefValidationReport>(writerBriefReportPath),
+            draftFile = draftPath.toString(),
+            writerBriefReportFile = writerBriefReportPath.toString(),
+            sourceType = options.required("source-type"),
+            sourceLabel = options["source-label"] ?: "",
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("sourceType=${report.sourceType}")
+        println("sourceLabel=${report.sourceLabel}")
+        println("writerBriefVerdict=${report.evidence.writerBriefVerdict}")
+        println("draftCharacters=${report.evidence.draftCharacters}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun auditNovelizationProseQuality(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val draftIntakeReportPath = Path.of(options.required("draft-intake-report"))
+        val report = NovelizationProseQualityAuditService().audit(
+            draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
+            draftIntakeReport = readJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
+            draftFile = draftPath.toString(),
+            draftIntakeReportFile = draftIntakeReportPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("draftIntakeVerdict=${report.evidence.draftIntakeVerdict}")
+        println("draftCharacters=${report.evidence.draftCharacters}")
+        println("dialogueLines=${report.evidence.dialogueLineCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createNovelizationRevisionBrief(options: Map<String, String>): Int {
+        val draftPath = Path.of(options.required("draft"))
+        val draftIntakeReportPath = Path.of(options.required("draft-intake-report"))
+        val proseQualityReportPath = Path.of(options.required("prose-quality-report"))
+        val continuityAnchorsPath = Path.of(options.required("continuity-anchors"))
+        val report = NovelizationRevisionBriefService().build(
+            draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
+            draftIntakeReport = readJson<NovelizationDraftIntakeReport>(draftIntakeReportPath),
+            proseQualityReport = readJson<NovelizationProseQualityAuditReport>(proseQualityReportPath),
+            continuityAnchors = readJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
+            briefId = options["brief"] ?: "",
+            draftFile = draftPath.toString(),
+            draftIntakeReportFile = draftIntakeReportPath.toString(),
+            proseQualityAuditReportFile = proseQualityReportPath.toString(),
+            continuityAnchorsFile = continuityAnchorsPath.toString(),
+        )
+        val out = Path.of(options.required("out"))
+        writeJson(out, report)
+        println("verdict=${report.verdict}")
+        println("briefId=${report.briefId}")
+        println("revisionRequired=${report.revisionRequired}")
+        println("requiredFixes=${report.requiredFixes.size}")
+        println("continuityAnchors=${report.continuityAnchors.size}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateNovelizationRevisedDraftIntake(options: Map<String, String>): Int {
+        val originalDraftPath = Path.of(options.required("original-draft"))
+        val revisedDraftPath = Path.of(options.required("revised-draft"))
+        val revisionBriefReportPath = Path.of(options.required("revision-brief-report"))
+        val declaredHandlingPath = options["declared-handling"]?.let { Path.of(it) }
+        val report = NovelizationRevisedDraftIntakeValidationService().validate(
+            originalDraftText = Files.readString(originalDraftPath).removePrefix("\uFEFF"),
+            revisedDraftText = Files.readString(revisedDraftPath).removePrefix("\uFEFF"),
+            revisionBriefReport = readJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
+            declaredHandling = declaredHandlingPath?.let { readJson<NovelizationRevisionHandlingDeclaration>(it) }
+                ?: NovelizationRevisionHandlingDeclaration(),
+            originalDraftFile = originalDraftPath.toString(),
+            revisedDraftFile = revisedDraftPath.toString(),
+            revisionBriefReportFile = revisionBriefReportPath.toString(),
+            declaredHandlingFile = declaredHandlingPath?.toString().orEmpty(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("revisionBriefId=${report.revisionBriefId}")
+        println("revisionBriefVerdict=${report.evidence.revisionBriefVerdict}")
+        println("originalCharacters=${report.evidence.originalCharacters}")
+        println("revisedCharacters=${report.evidence.revisedCharacters}")
+        println("declaredChecklist=${report.evidence.declaredChecklistCount}/${report.evidence.mandatoryChecklistCount}")
+        println("declaredFixes=${report.evidence.declaredFixCount}/${report.evidence.requiredFixCount}")
+        println("bannedResiduals=${report.evidence.bannedResidualCount}")
+        println("continuityAnchors=${report.evidence.continuityAnchorPreservedCount}/${report.evidence.continuityAnchorCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun createNovelizationAcceptedDraftPacket(options: Map<String, String>): Int {
+        val revisedDraftPath = Path.of(options.required("revised-draft"))
+        val revisedDraftIntakeReportPath = Path.of(options.required("revised-draft-intake-report"))
+        val revisionBriefReportPath = Path.of(options.required("revision-brief-report"))
+        val continuityAnchorsPath = Path.of(options.required("continuity-anchors"))
+        val report = NovelizationAcceptedDraftPacketService().build(
+            revisedDraftText = Files.readString(revisedDraftPath).removePrefix("\uFEFF"),
+            revisedDraftIntakeReport = readJson<NovelizationRevisedDraftIntakeReport>(revisedDraftIntakeReportPath),
+            revisionBriefReport = readJson<NovelizationRevisionBriefReport>(revisionBriefReportPath),
+            continuityAnchors = readJson<NovelizationRevisionContinuityAnchors>(continuityAnchorsPath),
+            packetId = options["packet"] ?: "",
+            revisedDraftFile = revisedDraftPath.toString(),
+            revisedDraftIntakeReportFile = revisedDraftIntakeReportPath.toString(),
+            revisionBriefReportFile = revisionBriefReportPath.toString(),
+            continuityAnchorsFile = continuityAnchorsPath.toString(),
+        )
+        val out = Path.of(options.required("out"))
+        writeJson(out, report)
+        println("verdict=${report.verdict}")
+        println("packetId=${report.packetId}")
+        println("revisedDraftSha256=${report.revisedDraftContentSha256}")
+        println("revisedDraftIntakeVerdict=${report.sourceReports.revisedDraftIntakeVerdict}")
+        println("revisionBriefVerdict=${report.sourceReports.revisionBriefVerdict}")
+        println("requiredFixesHandled=${report.requiredFixesHandledSummary.size}")
+        println("protectedContinuityAnchors=${report.protectedContinuityAnchors.size}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun validateNovelizationScriptPacketPreflight(options: Map<String, String>): Int {
+        val packetPath = Path.of(options.required("accepted-draft-packet"))
+        val report = NovelizationScriptPacketPreflightService().validate(
+            acceptedDraftPacket = readJson<NovelizationAcceptedDraftPacket>(packetPath),
+            preflightId = options["preflight"] ?: "",
+            acceptedDraftPacketFile = packetPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("preflightId=${report.preflightId}")
+        println("acceptedDraftPacketId=${report.acceptedDraftPacketId}")
+        println("nextAllowedDownstreamStep=${report.nextAllowedDownstreamStep}")
+        println("packetVerdict=${report.evidence.packetVerdict}")
+        println("sourceReportFiles=${report.evidence.sourceReportFileCount}")
+        println("sourceReportVerdicts=${report.evidence.sourceReportVerdictCount}")
+        println("protectedContinuityAnchors=${report.evidence.protectedContinuityAnchorCount}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.path}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
+    }
+
+    private fun auditChapterContinuity(options: Map<String, String>): Int {
+        val previousPath = Path.of(options.required("previous"))
+        val draftPath = Path.of(options.required("draft"))
+        val anchorPath = Path.of(options.required("anchors"))
+        val report = ChapterContinuityAuditService().audit(
+            previousText = Files.readString(previousPath).removePrefix("\uFEFF"),
+            draftText = Files.readString(draftPath).removePrefix("\uFEFF"),
+            anchors = readJson<ChapterContinuityAnchorFile>(anchorPath),
+            previousFile = previousPath.toString(),
+            draftFile = draftPath.toString(),
+            anchorFile = anchorPath.toString(),
+        )
+        options["out"]?.let { writeJson(Path.of(it), report) }
+        println("verdict=${report.verdict}")
+        println("auditId=${report.auditId}")
+        println("previous=${report.previousFile}")
+        println("draft=${report.draftFile}")
+        println("findings=${report.findingCount}")
+        report.findings.forEach {
+            println("${it.ruleId}:${it.severity}:${it.checkId}:${it.message}")
+        }
+        return if (report.verdict == "FAIL") 1 else 0
     }
 
     private fun explainContextBudget(options: Map<String, String>): Int {
@@ -907,6 +2521,53 @@ class Cli {
               validate-project-canon [--db <path>] --project <id> [--out <path>]
               audit-context --file <path> [--out <path>]
               audit-narrative-quality --context <path> --result <path> [--evidence <path>] [--out <path>]
+              audit-chapter-continuity --previous <path> --draft <path> --anchors <path> [--out <path>]
+              validate-script-packet-draft --packet <path> [--out <path>]
+              validate-script-packet-source-binding --script-packet-draft <path> --script-packet-preflight <path> --accepted-draft-packet <path> [--out <path>]
+              validate-script-packet-structure-bridge --script-packet-draft <path> --script-packet-preflight <path> --accepted-draft-packet <path> [--out <path>]
+              create-accepted-script-packet-handoff-packet --script-packet-draft <path> --structure-bridge-report <path> [--out <path>]
+              validate-storyboard-planning-preflight --accepted-script-packet <path> [--preflight <id>] [--out <path>]
+              create-storyboard-planning-brief --accepted-script-packet <path> --storyboard-planning-preflight <path> [--brief <id>] [--out <path>]
+              validate-storyboard-packet-draft --storyboard-planning-brief <path> --storyboard-packet-draft <path> [--out <path>]
+              create-storyboard-packet-review --storyboard-packet-draft <path> --storyboard-packet-draft-report <path> [--review <id>] [--out <path>]
+              validate-storyboard-packet-human-review-preflight --storyboard-packet-review <path> [--preflight <id>] [--out <path>]
+              validate-storyboard-packet-human-review-decision --human-review-preflight <path> --human-review-decision <path> [--out <path>]
+              validate-asset-candidate-preflight --human-review-decision-intake <path> --storyboard-packet-review <path> [--preflight <id>] [--out <path>]
+              create-asset-candidate-brief --asset-candidate-preflight <path> [--brief <id>] [--out <path>]
+              create-asset-candidate-draft --asset-candidate-brief <path> [--draft <id>] [--out <path>]
+              validate-asset-candidate-draft --asset-candidate-draft <path> [--out <path>]
+              validate-asset-candidate-review-preflight --asset-candidate-draft-validation <path> [--preflight <id>] [--out <path>]
+              validate-asset-candidate-human-review-decision --asset-candidate-review-preflight <path> --asset-candidate-human-review-decision <path> [--out <path>]
+              validate-image-candidate-preflight --asset-candidate-human-review-decision-intake <path> [--preflight <id>] [--out <path>]
+              create-image-candidate-brief --image-candidate-preflight <path> [--brief <id>] [--out <path>]
+              create-image-candidate-prompt-preparation --image-candidate-brief <path> [--preparation <id>] [--out <path>]
+              validate-image-candidate-prompt-preparation --image-candidate-prompt-preparation <path> [--out <path>]
+              validate-image-candidate-provider-handoff-preflight --image-candidate-prompt-validation <path> [--preflight <id>] [--out <path>]
+              validate-image-candidate-provider-handoff-decision --provider-handoff-preflight <path> --provider-handoff-decision <path> [--out <path>]
+              create-image-candidate-provider-handoff-packet --provider-handoff-preflight <path> --provider-handoff-decision-intake <path> [--packet <id>] [--out <path>]
+              validate-image-candidate-provider-handoff-packet --provider-handoff-packet <path> [--out <path>]
+              validate-image-candidate-external-result-intake --provider-handoff-packet-validation <path> --external-result <path> [--out <path>]
+              validate-image-candidate-result-review-preflight --external-result-intake <path> [--preflight <id>] [--out <path>]
+              validate-image-candidate-result-human-review-decision --result-review-preflight <path> --result-review-decision <path> [--out <path>]
+              create-image-candidate-reference-packet --result-review-preflight <path> --result-review-decision-intake <path> [--packet <id>] [--out <path>]
+              validate-image-candidate-reference-packet --candidate-reference-packet <path> [--out <path>]
+              validate-candidate-reference-human-acceptance-decision --candidate-reference-packet-validation <path> --human-acceptance-decision <path> [--out <path>]
+              validate-candidate-reference-registry-preflight --human-acceptance-decision-intake <path> --candidate-reference-packet-validation <path> [--preflight <id>] [--out <path>]
+              create-candidate-reference-registry-packet --registry-preflight <path> [--packet <id>] [--out <path>]
+              validate-candidate-reference-registry-packet --candidate-reference-registry-packet <path> [--out <path>]
+              validate-candidate-reference-registry-human-acceptance-decision --registry-packet-validation <path> --human-acceptance-decision <path> [--out <path>]
+              create-candidate-reference-acceptance-packet --registry-packet-validation <path> --human-acceptance-decision-intake <path> [--packet <id>] [--out <path>]
+              create-character-nuwa-card-template [--project <id>] [--gate <id>] [--chapter <path>] --out <path>
+              validate-character-nuwa-gate (--file <path> | --character-dir <dir>) [--out <path>]
+              validate-novelization-preflight (--character-nuwa-report <path> | --character-nuwa-gate <path>) [--preflight <id>] [--out <path>]
+              create-novelization-writer-brief-template [--project <id>] [--brief <id>] [--chapter <id>] [--preflight-report <path>] --out <path>
+              validate-novelization-writer-brief --brief <path> [--preflight-report <path>] [--out <path>]
+              validate-novelization-draft-intake --draft <path> --writer-brief-report <path> --source-type <codex|gpt|quarterfull|manual|mixed|other> [--source-label <text>] [--out <path>]
+              audit-novelization-prose-quality --draft <path> --draft-intake-report <path> [--out <path>]
+              create-novelization-revision-brief --draft <path> --draft-intake-report <path> --prose-quality-report <path> --continuity-anchors <path> [--brief <id>] --out <path>
+              validate-novelization-revised-draft-intake --original-draft <path> --revised-draft <path> --revision-brief-report <path> [--declared-handling <path>] [--out <path>]
+              create-novelization-accepted-draft-packet --revised-draft <path> --revised-draft-intake-report <path> --revision-brief-report <path> --continuity-anchors <path> [--packet <id>] --out <path>
+              validate-novelization-script-packet-preflight --accepted-draft-packet <path> [--preflight <id>] [--out <path>]
               export-session-evidence [--db <path>] --session <id> --out <path>
               pilot-preflight [--db <path>] --project <id> --session <id> [--out <path>]
               explain-context-budget [--db <path>] --session <id> (--input <text> | --input-file <path>) [--out <path>]
