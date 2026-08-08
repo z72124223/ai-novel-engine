@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_response_v1.schema.json",
+  "title": "NPC Actor Response V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "requestId",
+    "actorId",
+    "targetIds",
+    "speechAct",
+    "immediateGoal",
+    "beliefClaimIds",
+    "memoryIds",
+    "emotionShown",
+    "emotionHidden",
+    "withheldInformationIds",
+    "actionType",
+    "actionIntent",
+    "visibleAction",
+    "utterance",
+    "nonverbalAction",
+    "interruptible",
+    "silenceAllowed",
+    "capabilityUseChecks",
+    "predictedCost",
+    "observableConsequence",
+    "confidence",
+    "decisionSummary"
+  ],
+  "properties": {
+    "protocolVersion": { "const": "1.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "actorId": { "type": "string", "minLength": 1 },
+    "targetIds": { "$ref": "#/$defs/idList" },
+    "speechAct": {
+      "enum": ["ANSWER", "PARTIAL_ANSWER", "QUESTION", "REFUSE", "EVADE", "WARN", "REASSURE", "DECEIVE", "COMMAND", "SILENCE", "NONVERBAL"]
+    },
+    "immediateGoal": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "beliefClaimIds": { "$ref": "#/$defs/idList" },
+    "memoryIds": { "$ref": "#/$defs/idList" },
+    "emotionShown": { "type": "string", "maxLength": 120 },
+    "emotionHidden": { "type": "string", "maxLength": 120 },
+    "withheldInformationIds": { "$ref": "#/$defs/idList" },
+    "actionType": { "enum": ["inspect_local_pressure", "protect_local_resource", "seek_local_evidence"] },
+    "actionIntent": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "visibleAction": { "type": "string", "maxLength": 240 },
+    "utterance": { "type": "string", "maxLength": 160 },
+    "nonverbalAction": { "type": "string", "maxLength": 240 },
+    "interruptible": { "type": "boolean" },
+    "silenceAllowed": { "type": "boolean" },
+    "capabilityUseChecks": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/capabilityUseCheck" } },
+    "predictedCost": { "type": "string", "maxLength": 240 },
+    "observableConsequence": { "type": "string", "maxLength": 320 },
+    "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "decisionSummary": { "$ref": "#/$defs/decisionSummary" }
+  },
+  "$defs": {
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "decisionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceIds", "selectedActionLabel", "rejectedActionLabels"],
+      "properties": {
+        "evidenceIds": { "$ref": "#/$defs/idList" },
+        "selectedActionLabel": { "type": "string", "minLength": 1 },
+        "rejectedActionLabels": { "$ref": "#/$defs/idList" }
+      }
+    },
+    "capabilityUseCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actorId",
+        "entityType",
+        "entityId",
+        "intendedUse",
+        "eligibilityClaim",
+        "satisfiedPrerequisites",
+        "unsatisfiedPrerequisites",
+        "appliedCosts",
+        "observedLimitations",
+        "resultScope",
+        "evidenceStateDeltaIds",
+        "reason"
+      ],
+      "properties": {
+        "actorId": { "type": "string", "minLength": 1 },
+        "entityType": { "type": "string", "minLength": 1 },
+        "entityId": { "type": "string", "minLength": 1 },
+        "intendedUse": { "type": "string" },
+        "eligibilityClaim": { "type": "string" },
+        "satisfiedPrerequisites": { "type": "array", "items": { "type": "string" } },
+        "unsatisfiedPrerequisites": { "type": "array", "items": { "type": "string" } },
+        "appliedCosts": { "type": "array", "items": { "type": "string" } },
+        "observedLimitations": { "type": "array", "items": { "type": "string" } },
+        "resultScope": { "type": "string" },
+        "evidenceStateDeltaIds": { "type": "array", "items": { "type": "string" } },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

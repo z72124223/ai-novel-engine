@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_evaluation_suite_v1.schema.json",
+  "title": "NPC Actor Evaluation Suite V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "suiteId", "status", "scenarios"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "suiteId": { "type": "string", "minLength": 1 },
+    "status": { "const": "NON_CANON_EVALUATION_READY" },
+    "scenarios": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scenarioId", "title", "category", "boundary", "request", "baselineResponse", "actorResponse", "expectedBehavior"],
+        "properties": {
+          "scenarioId": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "category": { "enum": ["ORDINARY", "URGENT", "RELATIONSHIP", "KNOWLEDGE_BOUNDARY", "DECEPTION", "SILENCE_NONVERBAL"] },
+          "boundary": { "const": "NON_CANON_EVALUATION" },
+          "request": { "$ref": "npc_actor_request_v1.schema.json" },
+          "baselineResponse": { "$ref": "npc_actor_response_v1.schema.json" },
+          "actorResponse": { "$ref": "npc_actor_response_v1.schema.json" },
+          "expectedBehavior": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["preferredSpeechActs", "silenceOrEvasionAppropriate", "nonverbalAppropriate"],
+            "properties": {
+              "preferredSpeechActs": { "type": "array", "items": { "type": "string" } },
+              "silenceOrEvasionAppropriate": { "type": "boolean" },
+              "nonverbalAppropriate": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

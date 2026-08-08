@@ -1,0 +1,265 @@
+{
+    "status": "LOCAL_RENDER_PACKAGE_DRAFT",
+    "packageId": "local-story-input-chenxing-v0-001-chain-local-render-package-v0",
+    "sourceStoryInputPackFile": "samples\\chenxing\\chenxing_story_input_pack_sample.json",
+    "sourceAssetPromptCardsFile": "samples\\chenxing\\pipeline\\chain_outputs\\local_asset_prompt_cards_draft.json",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "sourceAssetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+    "sourceAssetPromptCardsDraftId": "local-story-input-chenxing-v0-001-chain-asset-prompt-cards-v0",
+    "sourceTitle": "塵行第一話本地故事輸入包",
+    "locale": "zh-TW",
+    "localOnlyConstraints": {
+        "localOnly": true,
+        "noExternalPaidProviderTools": true,
+        "fileProtocolJsonOnly": true,
+        "notes": [
+            "active creative world: 塵行 / 灰關",
+            "Rain Gate samples remain test/demo only",
+            "local-only story input for this repo CLI",
+            "local render package draft only",
+            "no media generation"
+        ]
+    },
+    "timelinePlan": [
+        {
+            "itemId": "local-render-timeline-beat-market-opening",
+            "sourceBeatId": "beat-market-opening",
+            "sourceSceneId": "scene-huiguan-market",
+            "startMillis": 0,
+            "endMillis": 3000,
+            "durationMillis": 3000,
+            "narrativeIntent": "建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。",
+            "dialogueIntent": "老太太請他修鋤頭，陸知行只確認損壞位置與工錢。",
+            "audioIntent": "清晨市集底噪、金屬摩擦聲、遠處腳步。"
+        },
+        {
+            "itemId": "local-render-timeline-beat-share-bread",
+            "sourceBeatId": "beat-share-bread",
+            "sourceSceneId": "scene-huiguan-market",
+            "startMillis": 3000,
+            "endMillis": 6000,
+            "durationMillis": 3000,
+            "narrativeIntent": "用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。",
+            "dialogueIntent": "陸知行沒有多說話，只把半塊餅放到愛醬面前。",
+            "audioIntent": "咀嚼與鼻息細節，市集聲音略退後。"
+        },
+        {
+            "itemId": "local-render-timeline-beat-disciple-glance",
+            "sourceBeatId": "beat-disciple-glance",
+            "sourceSceneId": "scene-huiguan-market",
+            "startMillis": 6000,
+            "endMillis": 9000,
+            "durationMillis": 3000,
+            "narrativeIntent": "修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。",
+            "dialogueIntent": "弟子不說話，只用眼神掃過。",
+            "audioIntent": "腳步停頓一瞬，然後離去。"
+        }
+    ],
+    "scenePlan": [
+        {
+            "scenePlanId": "local-render-scene-scene-huiguan-market",
+            "sourceSceneId": "scene-huiguan-market",
+            "sceneCardId": "local-scene-card-scene-huiguan-market",
+            "title": "灰關外城市集",
+            "location": "灰關外城清晨市集攤位",
+            "mood": "生計壓力、底層秩序、淡淡戒備",
+            "panelIds": [
+                "local-render-panel-beat-market-opening",
+                "local-render-panel-beat-share-bread",
+                "local-render-panel-beat-disciple-glance"
+            ],
+            "sceneBoundary": "local_scene_render_plan_only"
+        }
+    ],
+    "panelPlan": [
+        {
+            "panelId": "local-render-panel-beat-market-opening",
+            "timelineItemId": "local-render-timeline-beat-market-opening",
+            "sourceBeatId": "beat-market-opening",
+            "sourceSceneId": "scene-huiguan-market",
+            "sceneTitle": "灰關外城市集",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang",
+                "local-character-card-char-old-woman"
+            ],
+            "visualPromptCardId": "local-visual-prompt-beat-market-opening",
+            "audioCueCardId": "local-audio-cue-beat-market-opening",
+            "durationMillis": 3000,
+            "visualIntent": "中景，攤位、農具、愛醬趴在腳邊，市集人流從背景掠過。",
+            "audioIntent": "清晨市集底噪、金屬摩擦聲、遠處腳步。",
+            "panelBoundary": "local_panel_render_plan_only"
+        },
+        {
+            "panelId": "local-render-panel-beat-share-bread",
+            "timelineItemId": "local-render-timeline-beat-share-bread",
+            "sourceBeatId": "beat-share-bread",
+            "sourceSceneId": "scene-huiguan-market",
+            "sceneTitle": "灰關外城市集",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang"
+            ],
+            "visualPromptCardId": "local-visual-prompt-beat-share-bread",
+            "audioCueCardId": "local-audio-cue-beat-share-bread",
+            "durationMillis": 3000,
+            "visualIntent": "近景，愛醬嗅了嗅，決定吃或拒絕，陸知行繼續整理工具。",
+            "audioIntent": "咀嚼與鼻息細節，市集聲音略退後。",
+            "panelBoundary": "local_panel_render_plan_only"
+        },
+        {
+            "panelId": "local-render-panel-beat-disciple-glance",
+            "timelineItemId": "local-render-timeline-beat-disciple-glance",
+            "sourceBeatId": "beat-disciple-glance",
+            "sourceSceneId": "scene-huiguan-market",
+            "sceneTitle": "灰關外城市集",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang"
+            ],
+            "visualPromptCardId": "local-visual-prompt-beat-disciple-glance",
+            "audioCueCardId": "local-audio-cue-beat-disciple-glance",
+            "durationMillis": 3000,
+            "visualIntent": "過肩鏡頭，弟子視線落在愛醬與攤位上，陸知行抬眼但不挑釁。",
+            "audioIntent": "腳步停頓一瞬，然後離去。",
+            "panelBoundary": "local_panel_render_plan_only"
+        }
+    ],
+    "assetPromptReferences": [
+        {
+            "sourceBeatId": "beat-market-opening",
+            "sourceSceneId": "scene-huiguan-market",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang",
+                "local-character-card-char-old-woman"
+            ],
+            "sceneCardId": "local-scene-card-scene-huiguan-market",
+            "beatCardId": "local-beat-card-beat-market-opening",
+            "visualPromptCardId": "local-visual-prompt-beat-market-opening",
+            "audioCueCardId": "local-audio-cue-beat-market-opening"
+        },
+        {
+            "sourceBeatId": "beat-share-bread",
+            "sourceSceneId": "scene-huiguan-market",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang"
+            ],
+            "sceneCardId": "local-scene-card-scene-huiguan-market",
+            "beatCardId": "local-beat-card-beat-share-bread",
+            "visualPromptCardId": "local-visual-prompt-beat-share-bread",
+            "audioCueCardId": "local-audio-cue-beat-share-bread"
+        },
+        {
+            "sourceBeatId": "beat-disciple-glance",
+            "sourceSceneId": "scene-huiguan-market",
+            "characterCardIds": [
+                "local-character-card-char-luozhixing",
+                "local-character-card-char-aijiang"
+            ],
+            "sceneCardId": "local-scene-card-scene-huiguan-market",
+            "beatCardId": "local-beat-card-beat-disciple-glance",
+            "visualPromptCardId": "local-visual-prompt-beat-disciple-glance",
+            "audioCueCardId": "local-audio-cue-beat-disciple-glance"
+        }
+    ],
+    "qaChecklist": [
+        {
+            "checkId": "story-pack-match",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards sourceStoryInputPackId matches story input pack id.",
+            "evidence": [
+                "story=local-story-input-chenxing-v0-001",
+                "cards=local-story-input-chenxing-v0-001"
+            ]
+        },
+        {
+            "checkId": "card-status",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Asset/prompt cards status is LOCAL_ASSET_PROMPT_CARDS_DRAFT.",
+            "evidence": [
+                "LOCAL_ASSET_PROMPT_CARDS_DRAFT"
+            ]
+        },
+        {
+            "checkId": "duration-positive",
+            "status": "PASS",
+            "category": "timeline",
+            "message": "Timeline duration is positive and equals the story duration target.",
+            "evidence": [
+                "target=9000",
+                "timelineTotal=9000"
+            ]
+        },
+        {
+            "checkId": "local-only-constraints",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Story input and card draft preserve local-only/no-external/file-protocol constraints.",
+            "evidence": [
+                "story.localOnly=true",
+                "cards.localOnly=true",
+                "story.noExternal=true",
+                "cards.noExternal=true",
+                "story.fileProtocol=true",
+                "cards.fileProtocol=true"
+            ]
+        },
+        {
+            "checkId": "no-provider-api",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Visual prompt cards have no provider/API invocation.",
+            "evidence": [
+                "local-visual-prompt-beat-market-opening:none",
+                "local-visual-prompt-beat-share-bread:none",
+                "local-visual-prompt-beat-disciple-glance:none"
+            ]
+        },
+        {
+            "checkId": "no-media-generation",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Audio cue cards have no TTS/media generation invocation.",
+            "evidence": [
+                "local-audio-cue-beat-market-opening:none",
+                "local-audio-cue-beat-share-bread:none",
+                "local-audio-cue-beat-disciple-glance:none"
+            ]
+        },
+        {
+            "checkId": "no-final-approval-release-production-lock",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Render package is draft-only: no final approval, no release, no canon/registry, no production lock.",
+            "evidence": [
+                "local_render_package_draft_only_not_media_generation",
+                "local_render_package_draft_only",
+                "no production lock"
+            ]
+        }
+    ],
+    "renderBoundary": "local_render_package_draft_only_not_media_generation",
+    "downstreamBoundary": "local_render_package_draft_only",
+    "nextAllowedDownstreamStep": "local_render_package_review",
+    "findingCount": 0,
+    "findings": [],
+    "evidence": {
+        "assetPromptCardsStatus": "LOCAL_ASSET_PROMPT_CARDS_DRAFT",
+        "timelineItemCount": 3,
+        "scenePlanCount": 1,
+        "panelPlanCount": 3,
+        "assetPromptReferenceCount": 3,
+        "qaCheckCount": 7,
+        "qaPassCount": 7,
+        "qaFailCount": 0,
+        "targetDurationMillis": 9000,
+        "timelineTotalDurationMillis": 9000,
+        "localOnlyDeclared": true,
+        "noExternalPaidProviderToolsDeclared": true,
+        "fileProtocolJsonOnlyDeclared": true
+    }
+}

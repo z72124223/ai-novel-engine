@@ -1,0 +1,10 @@
+{
+  "npcId": "char-lin-yao-sandbox",
+  "deepMotivation": "Preserve evidence so powerful people cannot rewrite what happened",
+  "falseBelief": "Anyone entering the ruin without documenting it first intends to steal or erase evidence",
+  "fear": "Arriving too late and being forced to accept somebody else's version",
+  "relationshipDebts": ["Owes Zhou Ke for a past rescue but distrusts his silence"],
+  "offscreenAgenda": ["Document fresh footprints while Lu Chenxing is away", "Secure one trace without becoming the player's guide"],
+  "resourceIds": [],
+  "sandboxCandidateOnly": true
+}

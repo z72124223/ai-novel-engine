@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.invalid/schemas/npc_actor/npc_actor_internal_review_v1.schema.json",
+  "title": "NPC-ACTOR-04A internal review artifacts",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/review"
+    },
+    {
+      "$ref": "#/$defs/aggregate"
+    }
+  ],
+  "$defs": {
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "ENVIRONMENT_AWARENESS",
+        "SPATIAL_COHERENCE",
+        "PRIORITY_AND_TIMING",
+        "SOCIAL_REALISM",
+        "VOICE_NATURALNESS",
+        "STATE_CONTINUITY",
+        "KNOWLEDGE_BOUNDARY"
+      ]
+    },
+    "selection": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "TIE",
+        "BOTH_FAIL"
+      ]
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "optionA",
+        "optionB"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "optionA": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "optionB": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      }
+    },
+    "rating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewId",
+        "selection",
+        "dimensionScores",
+        "evidence",
+        "issueTags",
+        "rationale"
+      ],
+      "properties": {
+        "reviewId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selection": {
+          "$ref": "#/$defs/selection"
+        },
+        "dimensionScores": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "$ref": "#/$defs/score"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "issueTags": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "packetId",
+        "status",
+        "reviewerId",
+        "reviewerRole",
+        "answerKeyReadBeforeCompletion",
+        "revisionNumber",
+        "ratings",
+        "claimBoundary"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "artifactType": {
+          "const": "NPC_ACTOR04_INTERNAL_REVIEW"
+        },
+        "packetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE"
+        },
+        "reviewerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewerRole": {
+          "type": "string",
+          "enum": [
+            "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+            "CHARACTER_AND_DIALOGUE_REVIEWER",
+            "ADVERSARIAL_BOUNDARY_REVIEWER"
+          ]
+        },
+        "answerKeyReadBeforeCompletion": {
+          "const": false
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ratings": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/rating"
+          }
+        },
+        "claimBoundary": {
+          "const": "Internal agent review only; not human preference or live-model proof."
+        }
+      }
+    },
+    "reviewerSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewerId",
+        "reviewerRole",
+        "selection"
+      ],
+      "properties": {
+        "reviewerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewerRole": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selection": {
+          "$ref": "#/$defs/selection"
+        }
+      }
+    },
+    "sceneAggregate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewId",
+        "reviewerSelections",
+        "consensusSelection",
+        "embodiedActorOption",
+        "outcome",
+        "issueTags"
+      ],
+      "properties": {
+        "reviewId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewerSelections": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/reviewerSelection"
+          }
+        },
+        "consensusSelection": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "TIE",
+            "BOTH_FAIL",
+            "NO_CONSENSUS"
+          ]
+        },
+        "embodiedActorOption": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "ACTOR_PREFERRED",
+            "CONTROL_PREFERRED",
+            "TIE",
+            "BOTH_FAIL",
+            "NO_CONSENSUS"
+          ]
+        },
+        "issueTags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          }
+        }
+      }
+    },
+    "aggregate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "packetId",
+        "status",
+        "reviewerIds",
+        "reviewerRoles",
+        "packetSha256",
+        "answerKeySha256",
+        "reviewContentSha256",
+        "revisionCount",
+        "scenes",
+        "actorWins",
+        "controlWins",
+        "ties",
+        "bothFail",
+        "noConsensus",
+        "overallDecision",
+        "claimBoundary"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "artifactType": {
+          "const": "NPC_ACTOR04_INTERNAL_REVIEW_AGGREGATE"
+        },
+        "packetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "COMPLETE_AFTER_ANSWER_KEY_DISCLOSURE"
+        },
+        "reviewerIds": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reviewerRoles": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "packetSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "answerKeySha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "reviewContentSha256": {
+          "type": "object",
+          "minProperties": 3,
+          "maxProperties": 3,
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "revisionCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scenes": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/sceneAggregate"
+          }
+        },
+        "actorWins": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "controlWins": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "ties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "bothFail": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "noConsensus": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "overallDecision": {
+          "type": "string",
+          "enum": [
+            "INTERNAL_REVIEW_COMPLETE",
+            "NO_INTERNAL_ADVANTAGE",
+            "INSUFFICIENT_INTERNAL_CONSENSUS"
+          ]
+        },
+        "claimBoundary": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

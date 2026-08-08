@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/production/location_bible_handoff_v1.schema.json",
+  "title": "Location Bible Handoff V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "handoffId", "status", "createdAt", "projectId", "worldId",
+    "branch", "sourceCommitSha", "handoffCommitSha", "handoffContentSha256",
+    "locationId", "sceneIds", "storyPhase", "sourceArtifacts",
+    "foundationGenerationRule", "referenceUploadChecklistFile", "tasks",
+    "sharedSpatialRules", "sharedNegativeConstraints", "visibilityAndSecretBoundary",
+    "reviewContract", "returnToCodexContract", "validationSummary"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "location-bible-handoff-v1" },
+    "handoffId": { "$ref": "#/$defs/nonBlank" },
+    "status": {
+      "enum": [
+        "DRAFT", "VALIDATED", "READY_FOR_COMMIT", "READY_FOR_GPT",
+        "REFERENCE_UPLOAD_REQUIRED", "GENERATION_IN_PROGRESS",
+        "CANDIDATE_REVIEW_REQUIRED", "CODEX_INTAKE_READY",
+        "LOCATION_REFERENCE_ACCEPTED", "BLOCKED"
+      ]
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "projectId": { "$ref": "#/$defs/nonBlank" },
+    "worldId": { "$ref": "#/$defs/nonBlank" },
+    "branch": { "$ref": "#/$defs/nonBlank" },
+    "sourceCommitSha": { "$ref": "#/$defs/gitSha" },
+    "handoffCommitSha": {
+      "oneOf": [{ "$ref": "#/$defs/gitSha" }, { "type": "null" }]
+    },
+    "handoffContentSha256": { "$ref": "#/$defs/sha256" },
+    "locationId": { "$ref": "#/$defs/nonBlank" },
+    "sceneIds": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonBlank" }
+    },
+    "storyPhase": { "$ref": "#/$defs/nonBlank" },
+    "sourceArtifacts": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["artifactId", "artifactType", "repositoryPath", "contentSha256", "byteSize", "visibility"],
+        "properties": {
+          "artifactId": { "$ref": "#/$defs/nonBlank" },
+          "artifactType": {
+            "enum": ["FORMAL_WORLD_SOURCE", "STORYBOARD", "VISUAL_STYLE", "VISUAL_INVENTORY", "LOCKED_VISUAL_REFERENCE", "OTHER"]
+          },
+          "repositoryPath": { "$ref": "#/$defs/repositoryPath" },
+          "contentSha256": { "$ref": "#/$defs/sha256" },
+          "byteSize": { "type": "integer", "minimum": 1 },
+          "visibility": { "enum": ["USER_FACING", "PRODUCTION_ONLY", "REVIEW_ONLY"] }
+        }
+      }
+    },
+    "foundationGenerationRule": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "priorLocationReferenceRequired", "outputIsFoundationCandidate",
+        "storyShotGenerationAllowed", "userVisualApprovalRequired",
+        "codexHashAndReferenceIntakeRequired"
+      ],
+      "properties": {
+        "priorLocationReferenceRequired": { "const": false },
+        "outputIsFoundationCandidate": { "const": true },
+        "storyShotGenerationAllowed": { "const": false },
+        "userVisualApprovalRequired": { "const": true },
+        "codexHashAndReferenceIntakeRequired": { "const": true }
+      }
+    },
+    "referenceUploadChecklistFile": { "$ref": "#/$defs/repositoryPath" },
+    "tasks": {
+      "type": "array", "minItems": 1,
+      "items": { "$ref": "#/$defs/task" }
+    },
+    "deferredOptionalWork": {
+      "type": "array", "items": { "$ref": "#/$defs/nonBlank" }
+    },
+    "sharedSpatialRules": { "$ref": "#/$defs/nonEmptyStringList" },
+    "sharedNegativeConstraints": { "$ref": "#/$defs/nonEmptyStringList" },
+    "visibilityAndSecretBoundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorOnlyExcluded", "publicFactsOnly", "excludedContentClasses"],
+      "properties": {
+        "authorOnlyExcluded": { "const": true },
+        "publicFactsOnly": { "const": true },
+        "excludedContentClasses": { "$ref": "#/$defs/nonEmptyStringList" }
+      }
+    },
+    "reviewContract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["humanReviewRequired", "candidateOnly", "technicalPassIsNotApproval", "allowedReviewStates"],
+      "properties": {
+        "humanReviewRequired": { "const": true },
+        "candidateOnly": { "const": true },
+        "technicalPassIsNotApproval": { "const": true },
+        "allowedReviewStates": {
+          "type": "array", "minItems": 5, "uniqueItems": true,
+          "items": {
+            "enum": ["PENDING_USER_REVIEW", "APPROVE_CANDIDATE", "REJECT_DRIFT", "REQUEST_VARIATION", "CHANGE_VISUAL_DIRECTION"]
+          }
+        }
+      }
+    },
+    "returnToCodexContract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schemaPath", "templatePath", "sourceFileSha256Required", "existingCliChainRequired", "noCanonOrSqliteWrite"],
+      "properties": {
+        "schemaPath": { "$ref": "#/$defs/repositoryPath" },
+        "templatePath": { "$ref": "#/$defs/repositoryPath" },
+        "sourceFileSha256Required": { "const": true },
+        "existingCliChainRequired": { "const": true },
+        "noCanonOrSqliteWrite": { "const": true }
+      }
+    },
+    "validationSummary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["verdict", "schemaValidation", "pathValidation", "hashValidation", "dependencyValidation", "secretBoundaryValidation", "notes"],
+      "properties": {
+        "verdict": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "schemaValidation": { "enum": ["NOT_RUN", "PASS", "FAIL", "SCHEMA_META_VALIDATION_NOT_AVAILABLE"] },
+        "pathValidation": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "hashValidation": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "dependencyValidation": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "secretBoundaryValidation": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "exampleOnly": { "type": "boolean" }
+  },
+  "$defs": {
+    "nonBlank": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "gitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "repositoryPath": { "type": "string", "minLength": 1, "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/])(?!.*://).+" },
+    "nonEmptyStringList": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonBlank" } },
+    "task": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "taskId", "componentType", "phase", "status", "dependsOn", "locationId",
+        "sceneIds", "sourceArtifacts", "textualAuthority", "requiredReferenceIds",
+        "optionalReferenceIds", "projectionOrCamera", "aspectRatio", "spatialAnchors",
+        "fixedGeometryRules", "scaleEntities", "weatherAndLighting",
+        "allowedCreativeFreedom", "negativeConstraints", "authorOnlyExclusions",
+        "expectedFileName", "candidateOnly", "reviewState"
+      ],
+      "properties": {
+        "taskId": { "$ref": "#/$defs/nonBlank" },
+        "componentType": {
+          "enum": ["MASTER_PANORAMA", "TOP_DOWN_ZONE_PLAN", "DIRECTIONAL_VIEW", "ANCHOR_DETAIL", "SCALE_REFERENCE", "WEATHER_LIGHTING_REFERENCE", "OPTIONAL_360_PANORAMA"]
+        },
+        "phase": { "$ref": "#/$defs/nonBlank" },
+        "status": {
+          "enum": ["READY_FOR_GPT", "REFERENCE_UPLOAD_REQUIRED", "BLOCKED_BY_PRIOR_TASK_APPROVAL", "CANDIDATE_GENERATED", "USER_APPROVED_CANDIDATE", "REJECTED_DRIFT", "VARIATION_REQUESTED", "CODEX_INTAKE_READY"]
+        },
+        "dependsOn": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "locationId": { "$ref": "#/$defs/nonBlank" },
+        "sceneIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "sourceArtifacts": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "textualAuthority": { "$ref": "#/$defs/nonEmptyStringList" },
+        "requiredReferenceIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "optionalReferenceIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "projectionOrCamera": { "$ref": "#/$defs/nonBlank" },
+        "aspectRatio": { "type": "string", "pattern": "^[1-9][0-9]*:[1-9][0-9]*$" },
+        "spatialAnchors": { "$ref": "#/$defs/nonEmptyStringList" },
+        "fixedGeometryRules": { "$ref": "#/$defs/nonEmptyStringList" },
+        "scaleEntities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonBlank" } },
+        "weatherAndLighting": { "$ref": "#/$defs/nonEmptyStringList" },
+        "allowedCreativeFreedom": { "$ref": "#/$defs/nonEmptyStringList" },
+        "negativeConstraints": { "$ref": "#/$defs/nonEmptyStringList" },
+        "authorOnlyExclusions": { "$ref": "#/$defs/nonEmptyStringList" },
+        "expectedFileName": { "type": "string", "pattern": "^[^\\\\/:*?\"<>|]+\\.(png|jpg|jpeg|webp)$" },
+        "candidateOnly": { "const": true },
+        "reviewState": { "const": "PENDING_USER_REVIEW" }
+      }
+    }
+  }
+}

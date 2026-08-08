@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-04 EMBODIED SCENE ROLLOUT OFFLINE HOLDOUT",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "samples/npc_actor03/npc_actor03_adaptive_expression_policy_v1.json",
+      "sha256": "555de8e433209777e62ca0eab7cba42e55da72e5db35c4aa9c6e650f3ffce6dc",
+      "bytes": 1652
+    },
+    {
+      "path": "samples/npc_actor04/npc_actor04_embodied_suite_v1.json",
+      "sha256": "8a899f134862cf0aea381d9fe3eb350e1a21c8dfd2effb0f3f8167954410e853",
+      "bytes": 74293
+    },
+    {
+      "path": "samples/npc_actor04/npc_actor04_technical_report_v1.json",
+      "sha256": "54ce759c8e0a275079f6cb4b8df31c6208e5712c933c9d228dc6379b293d6ebf",
+      "bytes": 1132
+    },
+    {
+      "path": "samples/npc_actor04/npc_actor04_blind_review_packet_v1.json",
+      "sha256": "948bc341cfca25d56f3098b6e97e2ad12cc7b87d4d5484e8bcc1e27763d22ebd",
+      "bytes": 35031
+    },
+    {
+      "path": "samples/npc_actor04/npc_actor04_blind_review_answer_key_v1.json",
+      "sha256": "78455267919e62c732715a16dbe631ef8bfb3a40d4cf76bc35f8931ce7551fd3",
+      "bytes": 708
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_embodied_rollout_v1.schema.json",
+      "sha256": "55f9817003c9e89f32341faac913d06407acdc5399b3a2395442843bce0e032d",
+      "bytes": 14051
+    }
+  ]
+}

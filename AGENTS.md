@@ -1,57 +1,287 @@
-# AGENTS.md
+# AGENTS.md — 現行規則
 
-本 repo 是「本地單進程互動小說引擎」。長期規則：
+## 0. NPC-ACTOR-06 Local Model Override（2026-07-14）
 
-- 只做 Kotlin/JVM CLI、SQLite、JSON 檔案協議。
-- 不建立 web server，不開 port。
-- 不使用 FastAPI、Express、Ktor server、Spring server、React、Next.js、Docker、Android UI 或 Rust。
-- 不接 OpenAI API；AI 回合結果由人工或外部工具產生 JSON 檔案。
-- 所有狀態變更必須走 `AiTurnResultValidator` 和 `StateReducer`。
-- 多回合 runtime 的協議、驗收與限制見 `docs/MVP2_RELIABLE_MULTI_TURN_SPEC.md`。
-- 角色記憶、知識邊界、context budget 與情緒因果規則見 `docs/MVP3_MEMORY_KNOWLEDGE_SPEC.md` 與 `docs/MEMORY_AND_KNOWLEDGE.md`。
-- AI 只能提出 `memoryCandidates` / `knowledgeUpdates`；正式 memory、knowledge、recall log 與 emotion 變化只可由 `resolve-turn` 在 validator 通過後寫入。
+- 現行工作 `NPC-ACTOR-06_LOCAL_MODEL_PILOT` 已完成；先讀 `PROJECT_STATE.md`、`PLANS.md` Current
+  Plan Window V15 與 `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`，不得被下方
+  SCREEN-01 歷史路線覆蓋。
+- Codex 負責工程、測試與評審；ChatGPT 只作人工角色試演；正式 Runtime 的未來演員接口是 provider-neutral `NpcActorGateway`。
+- Product Owner 已授權一個本機 7B／8B 模型 Pilot；只允許直接 `llama.cpp` CLI 程序，不得
+  啟動 server、port、OpenAI Responses adapter 或付費／雲端請求。
+- 本機模型只能提出結構化 NPC proposal，不得直接寫 SQLite、Canon、Memory、Knowledge 或繞過 Validator／StateReducer／Transaction。
+- 目前停在正式 Runtime 自動調用授權 Gate；不得因 Pilot 通過就自行啟動下一包。
+- 模型與 reasoning effort 必須依工作路由；最後 utterance 預設 Low／Medium，重要決策才比較 Medium／High，不得以 High／Max 冒充自然對白。
 
-常用檢查：
+## 1. 先讀什麼
 
-```powershell
-./gradlew.bat clean test
+每個 Agent 依序讀：
+
+1. `PROJECT_STATE.md`
+2. `.codex/project_controller.md`
+3. `PLANS.md` Current Plan Window V15
+4. `docs/work-packages/NPC-ACTOR-06_LOCAL_MODEL_PILOT.md`
+5. `docs/NPC_ACTOR_AND_MODEL_ROUTING_BLUEPRINT_V1.md`
+6. `docs/npc_actor/NPC_ACTOR05_IMPLEMENTATION_REPORT.md`
+7. `docs/CODEX_MODEL_AND_BUDGET_POLICY_V2.md`
+8. 本檔
+9. NPC-ACTOR-06 必要程式、測試與資料
+
+舊 REBOOT、圖片 Work Package、Route Gate V1–V3、HANDOFF、README 狀態和歷史 `PLANS.md` 只作歷史證據。
+
+## 2. 現在目標
+
+```text
+STORY-01 小說試作
+→ 故事生產主檔
+→ 繁體中文影視劇本
+→ 自然華語對白
+→ 場景表
+→ 鏡頭表
+→ 60–90 秒影片 Pilot 規格
+→ 未來圖片／影片交接
 ```
 
-## MVP-4 Scene Thread Runtime
+現在不生成圖片或影片。
 
-- Use only additive migration `004_scene_thread_runtime.sql`; do not edit `001`, `002`, or `003`.
-- Keep scene, thread, world-event, time and transition writes behind `resolve-turn` validation and the SQLite transaction.
-- Do not let `story_threads.director_goal` become a character goal, character knowledge, action intent, visible action, or hidden motive.
-- Scene `READY_TO_CLOSE` means a transition is allowed, not forced.
-- Characters may only act from their own goals, emotions, memories, knowledge, current location, reachable items and available actions.
-- AI/Codex may draft JSON result files, but must not write SQLite directly or bypass `contextHash`, `stateVersion`, `TransitionValidator`, or `NarrativeContinuityValidator`.
+## 3. 最終產品
 
-## MVP-5 Setting Pack Runtime
+主要終點是動畫／影片。
 
-- Use only additive migration `005_setting_pack_runtime.sql`; do not edit `001`, `002`, `003`, or `004`.
-- Setting packs must flow through parse, validate, diff, impact preview and transaction apply.
-- Codex may generate setting pack JSON, but must not directly modify formal SQLite data with SQL, `sqlite3`, or ad hoc scripts.
-- Do not let `author_only` secrets enter character initial knowledge or character-facing turn context.
-- Do not silently patch existing canon while a session is active; preview must report blockers and apply must reject.
-- Turn context may include relevant setting excerpts only, never the full setting pack or full dependency graph.
-- See `docs/MVP5_SETTING_PACK_DEPENDENCY_SPEC.md` and `docs/SETTING_PACKS_AND_DEPENDENCIES.md`.
+小說是故事來源、測試或衍生品，不是唯一最終產品。
 
-## Pilot-1 Stabilization
+不得把 SCREEN-01 做成第二次小說生產工作。
 
-- Do not move to MVP-6 while Pilot-1 is FAIL.
-- Keep final `ContextPacket` JSON at or below `24576` actual UTF-8 bytes; do not raise the limit.
-- Setting-pack opening characters must provide `initialRuntimeTemplate`; `start-session` initializes missing opening runtime states from it inside the session transaction.
-- Use `audit-context` before drafting a manual AI result.
-- Use `pilot-preflight` before handing a fresh Pilot session to the author.
-- Use `export-session-evidence` for read-only Pilot evidence.
-- Use `explain-context-budget` when `prepare-turn` is close to or over the 24576-byte ceiling; it is read-only and reports section bytes, duplicate fragments, mandatory bytes and trimming simulation.
-- Context budget fixes must use deterministic trimming, compact mandatory views and dynamic allocation; never raise `contextBudget.maxBytes` above 24576.
-- Final `ContextPacket` output must pass the top-level allowlist and must not include diagnostics such as largest paths, duplicate groups, removed/retained items, or budget-forensics traces. Those belong in `explain-context-budget` or `audit-context` sidecar reports.
-- Do not output legacy aliases beside canonical fields; `retrievedMemories` is the runtime memory surface and the old `characterMemories` alias is omitted from finalized turn context.
-- `contextHash` and `contextBudget.actualBytes` must be computed after normalization and after empty/default fields, legacy aliases, and diagnostics have been removed from the final payload.
-- A turn context that fits bytes but drops a required semantic floor is not acceptable. Explicit memory cues must be satisfied by real `retrievedMemories`, relevant beliefs by `knowledgeClaims`, transition questions by location/continuity constraints, and referenced items/techniques by visible requirements/costs/limitations.
-- If the semantic floor cannot fit, fail with `CONTEXT_QUALITY_UNSATISFIABLE` before creating a pending context. Do not use recent facts/events as fake recalled memories, do not load unrelated settings to fill a quota, and do not raise the `24576` byte hard max.
-- If a turn explicitly uses a technique, item, or weapon, final context must include a Tier 1 `activeCapabilityContracts` card. Names/descriptions alone do not authorize use; `resolve-turn` must validate `capabilityUseChecks` and cost state deltas.
-- Do not reuse old Pilot sessions as formal rerun evidence.
-- Codex must not directly write SQLite or bypass Validator, `contextHash`, `stateVersion`, or transactions.
-- See `docs/PILOT1_STABILIZATION_SPEC.md`, `docs/PILOT1_STABILIZATION.md`, and `docs/CONTEXT_RELEVANCE_FLOOR.md`.
+## 4. GitHub 優先
+
+GitHub 遠端是團隊最高權威。
+
+本機電腦、Worktree、SQLite、`out/**`、終端和模型 Session 都是可替換執行環境。
+
+重要成果必須 Commit／Push：
+
+- 故事主檔；
+- 劇本；
+- 對白；
+- 場景／鏡頭；
+- 評審；
+- 修訂；
+- 字幕；
+- 決策；
+- 媒體交接；
+- Hash；
+- 報告與測試。
+
+交接使用：
+
+```text
+Repository + Branch + Commit SHA + Repo-relative Path + SHA-256
+```
+
+禁止以本機絕對路徑、未 Push Worktree 或「本機最新版」作正式交接。
+
+## 5. 分支與 Git 安全
+
+- 先 `git fetch --prune origin`。
+- 從最新遠端預設分支建立乾淨 `codex/screen01-video-first-pilot`。
+- 記錄 Base SHA。
+- 保留舊髒工作樹。
+- 使用聚焦 Commit。
+- 檢查 Diff 並執行 `git diff --check`。
+
+預設禁止：
+
+```text
+git add .
+git add -A
+git commit -a
+git push --force
+git push --force-with-lease
+git reset --hard
+git clean -fd
+```
+
+## 6. 主角
+
+陸塵行可以保持聰明、有能力與可靠。
+
+禁止靠角色降智推劇情。
+
+他的成長重點是新世界適應：
+
+- 文化；
+- 制度；
+- 階級；
+- 人情；
+- 力量規則；
+- 政治；
+- 責任；
+- 從保護自己／愛醬到承擔更大局勢。
+
+戲劇來自資訊不足、價值兩難、對手學習和正確選擇的代價。
+
+## 7. 語言
+
+正式母稿：
+
+```text
+Traditional Chinese / zh-Hant-TW
+```
+
+陸塵行口語：自然台灣華語。
+
+同時要讓台灣、中國大陸、香港、馬來西亞、新加坡等華語讀者容易理解。
+
+### 禁止 AI 式對話
+
+- 完整論文式對話；
+- 兩人輪流說對稱觀點；
+- 每句都解釋價值；
+- 每句都像金句；
+- 全員同一聲線；
+- 危急時說長句；
+- 過多「不是 A，而是 B」；
+- 同一母稿亂混地區詞彙。
+
+### 優先
+
+- 短句；
+- 打斷；
+- 停頓；
+- 未完整回答；
+- 誤解；
+- 逃避；
+- 沉默；
+- 動作代替說明；
+- 不同年齡、職業、地區和關係有不同口氣。
+
+## 8. SCREEN-01 必要成果
+
+追蹤檔案至少包括：
+
+```text
+samples/screen01/screen01_story_production_master.json
+samples/screen01/screen01_screenplay_initial_zh-Hant-TW.md
+samples/screen01/screen01_dialogue_bible_zh-Hant-TW.json
+samples/screen01/screen01_dialogue_track_initial_zh-Hant-TW.json
+samples/screen01/reviews/*.json
+samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md
+samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json
+samples/screen01/screen01_scene_list.json
+samples/screen01/screen01_shot_list.json
+samples/screen01/screen01_video_pilot_60_90s.json
+samples/screen01/screen01_video_pilot_zh-Hant-TW.srt
+samples/screen01/screen01_locale_release_matrix.json
+samples/screen01/screen01_video_handoff.json
+docs/screen01/*.md
+```
+
+若增加 SQL／作者工作台，選定結果也必須輸出成 Git 追蹤檔案。
+
+## 9. 三個獨立評審
+
+### 台灣口語評審
+
+檢查真實台灣華語、角色聲線、急迫對話與 AI 味。
+
+### 泛華語可讀性評審
+
+檢查台灣、中國大陸、香港、馬來西亞／新加坡的理解與需要在地化的詞。
+
+### 可表演／可拍性評審
+
+檢查演員能否自然說出口、對白時長、動作與對話是否重複，以及資訊能否用畫面呈現。
+
+評審必須綁定來源 Hash、引用原文並給具體修改。
+
+最多一次影視劇本／對白修訂。
+
+## 10. 模型
+
+一般工程：
+
+```text
+gpt-5.6-sol / medium
+```
+
+限定劇本／對白生成與修訂可按需要：
+
+```text
+gpt-5.6-sol / high
+```
+
+三個評審：
+
+```text
+gpt-5.6-sol / medium
+```
+
+搜尋／測試：Terra Low／Medium。
+
+Hash、JSON、字幕、Diff、統計：程式工具。
+
+Max／Ultra 預設禁止。
+
+## 11. 核心安全
+
+仍然保留：
+
+- SQLite Transaction；
+- `stateVersion`／`contextHash`／idempotency；
+- Knowledge Boundary；
+- project/source allowlist；
+- source／content Hash；
+- Canon 與正式資產人類批准；
+- API Key 不進 Git；
+- AI 不直接寫正式 Canon。
+
+## 12. 現在禁止
+
+- 第二、第三章小說；
+- 第二次修改 STORY-01 小說；
+- 圖片生成；
+- 影片生成；
+- Provider/API 花費；
+- Provider 冠軍決定；
+- Canon 升格；
+- 永久死亡／戀愛決定；
+- 互動 RPG；
+- 公開部署；
+- 本機獨有的重要成果。
+
+## 13. 停止條件
+
+只在以下情況停止：
+
+- 必須決定正式 Canon；
+- 必須決定永久命運／戀愛；
+- 必須決定正式美術；
+- 必須使用付費 Provider/API Key；
+- 無法避免破壞性 Git／資料操作；
+- 必須弱化 Transaction、Knowledge、Hash 或批准安全；
+- 同一核心問題經 Medium、High 各一次有證據修復仍失敗。
+
+普通劇本、對白、Shot 數、字幕、UI、格式、測試和 additive migration 由 Codex 自行決定。
+
+## 14. 完成
+
+完成後普通 Push：
+
+```text
+origin/codex/screen01-video-first-pilot
+```
+
+最終報告要提供：
+
+- Base SHA；
+- Final SHA；
+- Commit chain；
+- 重要檔案路徑與 SHA-256；
+- 選定劇本／對白；
+- 三份評審；
+- 場景／鏡頭／Pilot／字幕；
+- 測試；
+- 模型／High 使用；
+- Canon、圖片、影片、Provider 變更數；
+- 剩餘問題與下一步。
+
+未 Push 的本機成果不算完成。

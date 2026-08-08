@@ -1,0 +1,23 @@
+{
+    "evaluationId": "slice-drama-5-26d26f5b-c1bc-4629-86c0-0e2724ca6a3f",
+    "rawScores": {
+        "sarcasmVoiceFit": 65,
+        "banterNaturalness": 60,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 75,
+        "fairSurprise": 35,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 35,
+        "antagonistAdaptation": 35,
+        "emotionalWaveCoverage": 70,
+        "readerAttachment": 55,
+        "overall": 59
+    },
+    "findings": [],
+    "revisionSuggestion": "",
+    "revisionCount": 0,
+    "selectedDraft": "碎石落下時，陸塵行只來得及拉回愛醬。拾潮者護住證據的手被壓在石縫裡，從此再也無法像以前那樣用力。海浪沒有替任何人辯解。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

@@ -59,6 +59,12 @@ If audit fails, stop and report the audit violations. Do not raise the context b
 
 4. Read only `<contextPath>` for story generation.
 
+Pay special attention when `readerMode=true` or `narrativeDelivery.deliveryMode` is `PLAIN_ORAL`:
+
+- `narrativeDelivery.activeBeatId` and `beatKeywords` define the current shot beat.
+- `oralLineCandidates` are the locked spoken-line slots for this beat.
+- Quoted dialogue in `narrative` must come from `oralLineCandidates` dialogue rows. Do not invent technical jargon lines such as `退潮窗口`.
+
 5. Write `<resultPath>` using protocol version `2`. Copy identity fields exactly from context:
 
 - `projectId`
@@ -75,27 +81,54 @@ Include a fresh `resultId`, `narrative`, `turnSummary`, `characterActions`, `sta
 
 7. Produce at least one meaningful legal state or runtime change unless the context explicitly allows no state change. Include reasoned payloads for review.
 
-8. Resolve the turn:
+7b. Oral editor self-review before validation. Re-read only `<resultPath>` as an oral editor, not as the writer:
+
+- Every `「...」` dialogue line must match a `oralLineCandidates` dialogue line with only minor wording edits.
+- Replace technical or AI-like spoken phrases (`退潮窗口`, `時間窗口`, `敘事`, `語義`) with plain speech from candidates.
+- Each sentence must advance action or state a hearable fact; delete atmosphere-only filler.
+- Do not add beats from later shots; stay on `narrativeDelivery.activeBeatId`.
+- If any check fails, edit only `<resultPath>` and repeat this self-review.
+
+7c. Logic editor self-review and auto-rule sidecar. Re-read only `<resultPath>` as a logic editor:
+
+- Flag any AI-like spoken phrase, technical jargon in dialogue, or oral-line mismatch.
+- Write `<logicAuditPath>` as `LogicAuditReport` JSON (`schemaVersion=logic-audit-v1`) with `findings[]` using `ruleId`, `category`, `severity`, `message`, `evidence`, `suggestedFix`.
+- Put the exact blocked phrase in `evidence`, e.g. `quote=退潮窗口` or `「退潮窗口還在」`.
+- Do not wait for the author to promote rules manually. The engine auto-promotes findings into learned rules on validate/resolve unless `--no-auto-promote-learned-rules` is used.
+
+8. Validate the result through the formal protocol and narrative quality gate:
 
 ```powershell
-.\gradlew.bat run --no-daemon --args="resolve-turn --db <db> --session <sessionId> --result <resultPath>"
+.\gradlew.bat run --no-daemon --args="validate-result --db <db> --context <contextPath> --result <resultPath> --logic-audit <logicAuditPath> [--evidence <evidencePath>] [--narrative-quality-out <auditPath>] [--promotion-out <promotionPath>]"
 ```
 
-If rejected, read errors, edit only `<resultPath>`, and retry this step.
+If validation fails because a phrase was auto-promoted into a learned rule, edit only `<resultPath>` to remove the blocked phrase and retry. Do not disable auto-promotion unless the user explicitly asks.
 
-9. Export read-only session evidence when doing Pilot work:
+If validation fails, edit only `<resultPath>`, and retry from this step.
+
+9. Resolve the turn:
+
+```powershell
+.\gradlew.bat run --no-daemon --args="resolve-turn --db <db> --session <sessionId> --result <resultPath> --logic-audit <logicAuditPath> [--evidence <evidencePath>] [--narrative-quality-out <auditPath>] [--promotion-out <promotionPath>]"
+```
+
+Use `--require-narrative-quality-acknowledgement --acknowledge-narrative-quality-warnings` when advisory findings must be explicitly acknowledged before resolve.
+
+If rejected, read errors, edit only `<resultPath>`, and retry from step 8.
+
+10. Export read-only session evidence when doing Pilot work:
 
 ```powershell
 .\gradlew.bat run --no-daemon --args="export-session-evidence --db <db> --session <sessionId> --out <evidencePath>"
 ```
 
-10. Show the session again:
+11. Show the session again:
 
 ```powershell
 .\gradlew.bat run --no-daemon --args="show-session --db <db> --session <sessionId>"
 ```
 
-11. For Pilot work, append a concise row or section to `docs/PILOT1_TURN_LOG.md` without copying author-only secrets.
+12. For Pilot work, append a concise row or section to `docs/PILOT1_TURN_LOG.md` without copying author-only secrets.
 
 ## Report
 

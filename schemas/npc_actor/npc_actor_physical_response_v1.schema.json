@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_physical_response_v1.schema.json",
+  "title": "NPC Actor Physical Response V1 - Local Pilot Surface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "actorResponse", "physicalActionProposal"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "requestId": { "type": "string" },
+    "actorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestId",
+        "actorId",
+        "speechAct",
+        "immediateGoal",
+        "beliefClaimIds",
+        "memoryIds",
+        "emotionShown",
+        "emotionHidden",
+        "actionType",
+        "actionIntent",
+        "visibleAction",
+        "utterance",
+        "nonverbalAction",
+        "predictedCost",
+        "observableConsequence",
+        "confidence",
+        "decisionSummary"
+      ],
+      "properties": {
+        "requestId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "targetIds": { "type": "array", "items": { "type": "string" } },
+        "speechAct": {
+          "enum": [
+            "ANSWER",
+            "PARTIAL_ANSWER",
+            "QUESTION",
+            "REFUSE",
+            "EVADE",
+            "WARN",
+            "REASSURE",
+            "DECEIVE",
+            "COMMAND",
+            "SILENCE",
+            "NONVERBAL"
+          ]
+        },
+        "immediateGoal": { "type": "string" },
+        "beliefClaimIds": { "type": "array", "items": { "type": "string" } },
+        "memoryIds": { "type": "array", "items": { "type": "string" } },
+        "emotionShown": { "type": "string" },
+        "emotionHidden": { "type": "string" },
+        "withheldInformationIds": { "type": "array", "items": { "type": "string" } },
+        "actionType": {
+          "enum": ["inspect_local_pressure", "protect_local_resource", "seek_local_evidence"]
+        },
+        "actionIntent": { "type": "string" },
+        "visibleAction": { "type": "string" },
+        "utterance": { "type": "string" },
+        "nonverbalAction": { "type": "string" },
+        "interruptible": { "type": "boolean" },
+        "silenceAllowed": { "type": "boolean" },
+        "predictedCost": { "type": "string" },
+        "observableConsequence": { "type": "string" },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "decisionSummary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evidenceIds", "selectedActionLabel"],
+          "properties": {
+            "evidenceIds": { "type": "array", "items": { "type": "string" } },
+            "selectedActionLabel": { "type": "string" },
+            "rejectedActionLabels": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "physicalActionProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actionId", "actionType", "actorId", "targetId"],
+      "properties": {
+        "actionId": { "type": "string" },
+        "actionType": {
+          "enum": [
+            "USE_AS_SUPPORT",
+            "LIFT",
+            "PUSH",
+            "REACH",
+            "PLACE_ON",
+            "DROP",
+            "ENTER_CONTAINER",
+            "PASS_THROUGH"
+          ]
+        },
+        "actorId": { "type": "string" },
+        "targetId": { "type": "string" },
+        "secondaryTargetId": { "type": ["string", "null"] },
+        "supportSurfaceId": { "type": ["string", "null"] },
+        "supportUse": {
+          "type": ["string", "null"],
+          "enum": ["LIGHT_CONTACT", "STAND_UP_ASSIST", "FULL_BODY_SUPPORT", "OBJECT_PLACEMENT", null]
+        },
+        "destinationCenterCm": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["x", "y", "z"],
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "z": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}

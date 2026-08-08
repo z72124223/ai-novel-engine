@@ -21,3 +21,17 @@ temp/
 jdk/
 jdk-*/
 codex-jdk*/
+
+# Local-only memory support files.
+/memory/project_directory_memory.json
+/memory/quarterfull_world_memory_capsule.json
+
+# IDE / agent terminal session artifacts.
+/terminals/
+/agent-tools/
+
+# Node tooling for frozen audio-novel preview scripts.
+node_modules/
+
+# Local engine runtime databases (not canon).
+app/data/

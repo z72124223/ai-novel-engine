@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "prompt-manifest-v1",
+  "handoffId": "handoff-example-wp002a",
+  "manifestStatus": "DRAFT",
+  "promptItems": [
+    {
+      "promptItemId": "prompt-example-not-for-production-001",
+      "shotId": "example-shot-not-for-production-001",
+      "factualSceneContent": {
+        "visibleFacts": [
+          "This is a schema-only placeholder composition.",
+          "No real Shot 01-03 content is assigned in WP-002A."
+        ],
+        "visibleCharacters": [
+          "char-lu-chenxing",
+          "char-aijiang"
+        ],
+        "visibleAction": "Neutral placeholder blocking with no story progression.",
+        "locationAndTime": "Placeholder location and time; not authoritative story data.",
+        "visibleProps": [
+          "prop-example-handheld-item"
+        ]
+      },
+      "visualStyle": {
+        "mode": "cinematic-misty-example",
+        "styleReferenceIds": [
+          "ref-style-cinematic-misty-v1"
+        ],
+        "renderingNotes": [
+          "Use the style reference for atmosphere only.",
+          "Likeness, body, costume, and animal markings come only from their own bindings."
+        ]
+      },
+      "referenceBindings": [
+        {
+          "referenceId": "ref-lu-chenxing-body-v2",
+          "entityId": "char-lu-chenxing",
+          "version": "photo-set-123123-closest-body-v2",
+          "usage": "adult face, stocky opening body, buzz cut, glasses, and scale"
+        },
+        {
+          "referenceId": "ref-lu-chenxing-opening-costume-v1",
+          "entityId": "char-lu-chenxing",
+          "version": "coastal-practical-modern-v1",
+          "usage": "2026 opening costume only"
+        },
+        {
+          "referenceId": "ref-aijiang-appearance-v1",
+          "entityId": "char-aijiang",
+          "version": "author-production-turnaround-v1",
+          "usage": "husky coat markings, eyes, build, and scale"
+        },
+        {
+          "referenceId": "ref-location-geometry-placeholder",
+          "entityId": "loc-example-not-authoritative",
+          "version": "placeholder-v0",
+          "usage": "formal generation blocked until real location geometry exists"
+        }
+      ],
+      "cameraAndComposition": {
+        "camera": "Medium, eye-level, locked placeholder camera.",
+        "composition": "Two-character scale test with explicit left/right blocking.",
+        "continuityIntent": "Demonstrate stable IDs and versions without creating a production shot."
+      },
+      "allowedCreativeFreedom": [
+        "minor natural variation in non-identity background texture",
+        "subtle atmospheric haze that does not obscure locked traits"
+      ],
+      "negativeConstraints": [
+        "no face, body, age, hair, glasses, costume, animal-marking, or scale drift",
+        "no unbound props, characters, architecture, fantasy clothing, or approval language",
+        "no formal generation while required visual references are absent from the current conversation"
+      ],
+      "authorOnlyExclusions": [
+        "exclude all author-only causal answers",
+        "exclude later plot answers",
+        "exclude any hidden knowledge unavailable in the visible shot"
+      ],
+      "output": {
+        "aspectRatio": "16:9",
+        "use": "STORYBOARD_CANDIDATE",
+        "expectedFileName": "example_shot_candidate.png",
+        "candidateOnly": true
+      },
+      "assembledPromptPreview": "EXAMPLE ONLY: Bind the listed references, preserve all locked traits and scale, use neutral placeholder blocking, and output a candidate image for schema validation only.",
+      "placeholder": true
+    }
+  ],
+  "secretAndApprovalGuard": {
+    "authorOnlySecretContentIncluded": false,
+    "laterPlotAnswersIncluded": false,
+    "unapprovedAppearanceIncluded": false,
+    "approvalOrCanonClaimsIncluded": false,
+    "providerCredentialOrRemoteJobDataIncluded": false
+  },
+  "exampleOnly": true
+}

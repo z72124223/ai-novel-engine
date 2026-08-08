@@ -108,6 +108,22 @@ active scene contract 的 `forbiddenReveals` 片語也不得出現在 narrative�
 - Relevant belief requirements must be satisfied by context-visible `knowledgeClaims`.
 - Transition/location questions must retain current scene, current location, character locations, and continuity constraints.
 - Referenced item or technique requirements must retain visible requirements, costs, limitations, prerequisites, or forbidden-use metadata when such setting data exists.
+
+## MVP-8 試用層規則
+
+見 `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`。
+
+- 試用提案必須指定**啟用中**的留白區，且類型符合該區允許範圍。
+- 不得與**鎖定層**事實、角色、地點衝突。
+- 不得洩漏**作者限定秘密**到敘事或提案欄位。
+- 臨時人物須填：想要什麼、怕什麼/代價、不知道什麼、如何說不。
+- **工具人**型提案擋下，不允許 `resolve-turn`。
+- 試用內容僅在 `resolve-turn` 成功時寫入。
+- 升格須走設定包補丁流程，禁止試用直接變鎖定層。
+- **升格建議**可由作者或 AI 發起；AI 建議須滿「四選三」資格（有靈魂、不可替換、讀者想再見、敘事已落地）。
+- AI 升格建議須附：理由、讀者價值、不可替換性、正式身份草稿、若不升格則退場方式。
+- 草率升格建議（工具人、戲份不足硬提名）擋下。
+- 作者可確認或駁回 AI 升格建議；駁回後 AI 依退場方式收掉試用存在。
 - Author-only settings cannot satisfy character-facing requirements.
 - If the semantic floor cannot fit under the hard max, `prepare-turn` and preview fail with `CONTEXT_QUALITY_UNSATISFIABLE` and must not create a pending context.
 

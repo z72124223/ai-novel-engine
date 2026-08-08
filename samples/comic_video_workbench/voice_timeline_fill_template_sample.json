@@ -1,0 +1,79 @@
+{
+    "fillId": "voice-timeline-fill-template-sample-001",
+    "sourceComicVideoPacketId": "comic-video-sample-packet-001",
+    "voiceCast": [
+        {
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "displayName": "Lin",
+            "voiceLabel": "local-lin-clear",
+            "notes": "Editable local voice plan. Replace cue text before validation."
+        }
+    ],
+    "audioCues": [
+        {
+            "cueId": "audio-001",
+            "panelId": "panel-frame-lantern-arrival",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "text": "Replace with spoken line for panel-frame-lantern-arrival.",
+            "durationMillis": 2600
+        },
+        {
+            "cueId": "audio-002",
+            "panelId": "panel-frame-mark-check",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "text": "Replace with spoken line for panel-frame-mark-check.",
+            "startMillis": 2600,
+            "durationMillis": 2600
+        },
+        {
+            "cueId": "audio-003",
+            "panelId": "panel-frame-choice",
+            "voiceId": "voice-lin",
+            "characterId": "char-lin",
+            "text": "Replace with spoken line for panel-frame-choice.",
+            "startMillis": 5200,
+            "durationMillis": 2600
+        }
+    ],
+    "subtitleCues": [
+        {
+            "cueId": "subtitle-001",
+            "panelId": "panel-frame-lantern-arrival",
+            "audioCueId": "audio-001",
+            "text": "Replace with subtitle text for panel-frame-lantern-arrival.",
+            "endMillis": 2600
+        },
+        {
+            "cueId": "subtitle-002",
+            "panelId": "panel-frame-mark-check",
+            "audioCueId": "audio-002",
+            "text": "Replace with subtitle text for panel-frame-mark-check.",
+            "startMillis": 2600,
+            "endMillis": 5200
+        },
+        {
+            "cueId": "subtitle-003",
+            "panelId": "panel-frame-choice",
+            "audioCueId": "audio-003",
+            "text": "Replace with subtitle text for panel-frame-choice.",
+            "startMillis": 5200,
+            "endMillis": 7800
+        }
+    ],
+    "timing": {
+        "totalDurationMillis": 7800
+    },
+    "boundaryChecklist": [
+        "metadata_only",
+        "voice_timeline_fill_template",
+        "media_execution_absent",
+        "remote_payload_absent"
+    ],
+    "notes": [
+        "Template created from comic video packet panel tracks.",
+        "Replace placeholder spoken/subtitle text before validation."
+    ]
+}

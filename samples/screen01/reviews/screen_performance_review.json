@@ -1,0 +1,39 @@
+{
+  "reviewerRole": "SCREEN_PERFORMANCE",
+  "reviewerInstanceId": "SCREEN-01-PERFORMANCE-20260712-01",
+  "sourceScreenplaySha256": "376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4",
+  "sourceDialogueSha256": "01672b1be3ba2d3340977dc42dfc9d41a25bccfba095cdd6be34a58686a16c1b",
+  "verdict": "REVISE",
+  "summary": "危機升級、角色關係與聲音敘事成立；救援空間、手機小字依賴與 10 分 20 秒時長估算需修正，完成局部重寫後可拍。",
+  "quotedEvidence": [
+    "手機特寫：距滿潮 **01:47**。一滴雨砸在螢幕上。",
+    "有人搬過。還不只一趟。",
+    "陸塵行立即放開撬桿，轉身抱住愛醬胸腹，拖上半步。",
+    "撬桿彈開。上方石塊下沉，箱角再次咬住拾潮者左手。",
+    "陸塵行的手微微發抖。他握一下愛醬肩側，站起來。",
+    "手，還是箱子？"
+  ],
+  "strengths": [
+    "短句符合風雨與救援壓力下的呼吸。",
+    "陸塵行從玩笑到手抖可由表演完成。",
+    "短哨、金屬聲、浪聲、繩索與回鈴推動情節。",
+    "救人優先與保護愛醬的代價形成可表演選擇。"
+  ],
+  "findings": [
+    {"severity": "MAJOR", "evidence": "救援前未完整建立入口、浪向、愛醬、支點、箱子與傷者相對位置。", "required": "加入空間建立節拍並明確每次位移因果。"},
+    {"severity": "MAJOR", "evidence": "結尾兩個新謎團主要依賴手機標註小字。", "required": "至少把第二串鞋印轉成現場可見發現。"},
+    {"severity": "MAJOR", "evidence": "四場標示合計 10 分 20 秒，但對白僅 49.1 秒。", "required": "重算逐場節拍與全劇時長。"},
+    {"severity": "MODERATE", "evidence": "手機 01:47 到 01:29 與台詞十八分鐘重複。", "required": "刪除純資訊重複，讓台詞承擔決策。"},
+    {"severity": "MODERATE", "evidence": "潮溝已到膝下未指明參照物。", "required": "改為固定岩柱刻痕或明確人物位置。"},
+    {"severity": "MODERATE", "evidence": "值守室通話在傷勢後中斷。", "required": "讓背景通話持續提供意識與出血狀況。"},
+    {"severity": "MINOR", "evidence": "明顯變形手部的夾板處置。", "required": "明寫不復位、不壓變形處並註記顧問確認。"}
+  ],
+  "requiredChanges": [
+    "建立低處凹壁救援空間與連續動作。",
+    "讓至少一項結尾線索脫離手機小字。",
+    "依讀排節拍修正全劇時長。",
+    "消除時間資訊重複並補強救援通話。",
+    "標示手部急救不復位。"
+  ],
+  "scorecard": {"naturalSpeakability": 87, "durationCredibility": 62, "actionDialogueEconomy": 75, "cameraPresentability": 68, "emotionalPerformability": 86, "shotDecomposability": 74, "productionClarity": 65, "overall": 74}
+}

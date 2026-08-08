@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "chenxing-character-visual-appearance-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "updatedAt": "2026-07-08T02:00:00+08:00",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "purpose": "Author-locked production visual baseline for 陸塵行 and 愛醬.",
+  "activeVisualStyle": {
+    "label": "cinematic_realistic_dark_fantasy",
+    "formalCover": "world/chenxing/formal/24_series_cover_v1.json",
+    "coverImage": "world/chenxing/assets/cover/chenxing_cover_v1.png",
+    "summary": "與正式封面同一套寫實電影感暗黑奇幻風格。"
+  },
+  "turnaroundStatus": {
+    "陸塵行": "photo_set_123123_closest_body_v2_locked",
+    "愛醬": "author_production_turnaround_v1_locked"
+  },
+  "productionTurnaroundPair": {
+    "rule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
+    "luChenxing": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+  },
+  "photoSet123123": {
+    "path": "world/chenxing/assets/reference/photo_set_123123/",
+    "photoCount": 6,
+    "rule": "同一真人參考組；臉部極像優先以此組照片為準。",
+    "metrics": {
+      "heightCm": 174,
+      "weightKg": 80
+    }
+  },
+  "referenceImagePolicy": {
+    "toolLimitation": "Current image generation in this workspace cannot attach the author reference file directly, so text-only AI redraws are approximations only and must not be treated as canon frames.",
+    "frameGenerationRule": "任何分鏡畫面必須 reference-first：先綁定 productionTurnaroundPair、開場服裝三視圖與 photo_set_123123，再出圖；純文字出圖視為飄移試稿。",
+    "aijiangLikenessAuthority": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+    "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+    "rule": "愛醬以作者新生產之三視圖為正式基準；舊概念稿僅作歷史參考。"
+  },
+  "supersededAssets": {
+    "note": "舊 2D 扁平漫畫三視圖保留作歷史試稿，不再作正式視覺基準。",
+    "luChenxing2dTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png",
+    "aijiang2dTurnaround": "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"
+  },
+  "productionAssets": {
+    "style": "cinematic_realistic_dark_fantasy",
+    "turnaroundDirectory": "world/chenxing/assets/turnaround/",
+    "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+    "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+  },
+  "陸塵行": {
+    "age": 36,
+    "sex": "male",
+    "bodyType": "stocky_slight_overweight",
+    "bodyTypeNote": "開場期偏壯略胖；故事後期會變瘦。",
+    "bodyReferencePolicy": {
+      "preferred": "nude_turnaround_for_body_proportion_reference",
+      "reason": "裸體或最小遮蔽的三視圖最直觀顯示身材，方便之後疊衣服。",
+      "clothingRule": "服裝另做分層素材，不與身材基準綁死。",
+      "generationNote": "若自動出圖被審核擋下，改以泳褲/緊身短褲身材參考圖或人工補圖。"
+    },
+    "metrics": {
+      "heightCm": 174,
+      "weightKg": 80,
+      "note": "作者指定開場身材數據。"
+    },
+    "photoClosestMatch": {
+      "label": "photo_set_123123_closest_body_v2",
+      "rule": "臉部極像 123123 照片組；正式基準僅保留全身三視圖一張。",
+      "productionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
+    },
+    "faceReference": {
+      "primaryPhotoSet": "world/chenxing/assets/reference/photo_set_123123/",
+      "path": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+      "sourcePath": "C:\\Users\\f7212\\OneDrive\\桌面\\482052296_9222150221199888_7678538151390743485_n.jpg",
+      "lockedTraits": [
+        "oval_round_face",
+        "soft_jaw_with_handsome_potential_when_lean",
+        "straight_medium_nose",
+        "full_lips",
+        "thick_straight_eyebrows",
+        "fair_skin"
+      ],
+      "canonOverrides": [
+        "age_36_not_teen",
+        "buzz_cut_not_messy_top",
+        "glasses_required",
+        "no_facial_hair"
+      ]
+    },
+    "facialBoneStructure": {
+      "designIntent": "以作者臉型參考為骨相基準，先定瘦版，再從同一骨相變胖。",
+      "leanBase": "瘦版時骨相較清楚，可帥。",
+      "openingStocky": "同一骨相加臉頰與腹部脂肪，變普通甚至略不好看。",
+      "rule": "帥與不帥來自同一張臉與同一副骨架的脂肪分布變化。"
+    },
+    "bodyProgressionPlan": {
+      "workflow": "lean_base_first_then_fatten_for_opening",
+      "phaseB_leanBase": {
+        "label": "lean_base_standard",
+        "body": "偏瘦、線條清楚",
+        "face": "骨相較清楚，可帥",
+        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png",
+        "status": "locked"
+      },
+      "phaseA_opening": {
+        "label": "opening_stocky_from_lean_base",
+        "body": "在瘦版基準上增加腹部、臉頰、腰臂軟肉；偏壯略胖，不是肥胖。",
+        "face": "同一臉型加脂肪後變普通偏略不好看",
+        "bodyReferenceTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png",
+        "clothedTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png",
+        "status": "locked"
+      }
+    },
+    "hair": {
+      "style": "buzz_cut",
+      "label": "平頭"
+    },
+    "facialHair": "none",
+    "facialHairRule": "沒有鬍渣",
+    "eyewear": {
+      "wearsGlasses": true,
+      "label": "戴眼鏡"
+    },
+    "openingModernCostume": {
+      "formalPath": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "label": "coastal_practical_modern",
+      "summary": "2026 開場：黑色背心汗衫 + 短袖外套 + 短褲 + 登山鞋 + 側背包。",
+      "productionAsset": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "rule": "第一卷台灣開場穿現代裝，不穿古裝。"
+    },
+    "costumeInCinematicStyle": {
+      "label": "dark_hooded_traveler",
+      "summary": "封面與穿越後意象用；不作 2026 開場穿衣基準。",
+      "usage": "cover_and_post_crossing_imagery_only"
+    },
+    "productionNotes": [
+      "身材基準優先用裸體或最小遮蔽三視圖；服裝後疊。",
+      "開場略胖時不帥，變瘦後同一骨架可變帥。",
+      "平頭、無鬍渣、眼鏡在正面與側面必須可辨識。",
+      "寫實電影感風格與正式封面一致。"
+    ],
+    "turnaroundRequirement": {
+      "views": [
+        "front",
+        "side",
+        "back"
+      ],
+      "status": "photo_set_123123_closest_body_v2_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
+    }
+  },
+  "愛醬": {
+    "role": "co-protagonist",
+    "species": "Siberian husky",
+    "sex": "female",
+    "reproductiveStatus": "spayed",
+    "authorReference": {
+      "path": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "sourcePath": "C:\\Users\\f7212\\Downloads\\mraxl1nh_1c4282a541b9a9af.jpg",
+      "type": "production_turnaround_sheet"
+    },
+    "priorConceptSheet": {
+      "path": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "status": "superseded_historical_reference"
+    },
+    "lockedAppearanceFromReference": {
+      "build": "athletic_well_balanced_husky",
+      "coatPattern": "black_dark_gray_silver_gray_and_white",
+      "markings": "symmetrical_facial_mask_white_cheeks_dark_cap_and_saddle",
+      "eyes": "ice_blue",
+      "ears": "upright_triangular",
+      "tail": "fluffy_plume",
+      "fur": "dense_double_coat"
+    },
+    "accessoriesPolicy": {
+      "defaultStoryUse": "no_collar_no_harness_in_default_reference",
+      "rule": "寫實版三視圖默認不佩戴項圈或挽具。"
+    },
+    "turnaroundRequirement": {
+      "views": [
+        "front",
+        "side",
+        "back"
+      ],
+      "status": "author_production_turnaround_v1_locked",
+      "productionAsset": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "likenessAuthority": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+    }
+  },
+  "linkedDocuments": [
+    "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "world/chenxing/formal/24_series_cover_v1.json",
+    "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json"
+  ]
+}

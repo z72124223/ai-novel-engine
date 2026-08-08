@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "chenxing-cultivation-system-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "title": "塵行修煉體系正式版 v1",
+  "corePrinciple": "Cultivation is the process of building successive links between the human body and worldly spiritual energy. Each major breakthrough changes how the cultivator perceives reality, not only how strong they are.",
+  "entryGate": {
+    "name": "感氣",
+    "isFormalRealm": false,
+    "description": "Can sense spiritual energy but cannot draw it into the body.",
+    "prevalence": "About one in twenty people can reach this gate.",
+    "socialStatus": "Still counted as mortal; sects may call them root-bearing but unopened."
+  },
+  "formalRealms": [
+    {
+      "order": 1,
+      "name": "引氣境",
+      "layers": 9,
+      "essence": "Open the body so spiritual energy can enter and circulate.",
+      "breakthroughRisk": "Low at early layers; most failures stall progress rather than kill.",
+      "socialRole": "Largest cultivator population; army backbone and outer-sect disciples.",
+      "populationNote": "About seventy percent of cultivators never leave this realm.",
+      "keyThresholds": {
+        "layers1to3": "Perception only; many stall here for years.",
+        "layers4to6": "Fixed internal circulation; body clearly beyond mortal limits.",
+        "layers7to9": "Brief external release; practical mortal-versus-cultivator boundary; minimum threshold for inner disciples."
+      }
+    },
+    {
+      "order": 2,
+      "name": "凝元境",
+      "layers": 9,
+      "essence": "Condense a personal core of refined spiritual power in the dantian.",
+      "breakthroughRisk": "Core-formation failure can cause violent backlash; death or crippling is common without guardian elders.",
+      "socialRole": "True cultivator status; squad leaders, core disciples, voices in fortress politics.",
+      "populationNote": "Roughly two to three hundred in a medium fortress of two hundred thousand people.",
+      "keyThresholds": {
+        "layers1to3": "Turbid core forms; highest danger zone.",
+        "layers4to6": "Stable core with elemental tendency; sect recruitment intensifies.",
+        "layers7to9": "Spirit shell, brief body suspension, can solo-clear low-tier beast tides."
+      }
+    },
+    {
+      "order": 3,
+      "name": "鑄魄境",
+      "layers": 9,
+      "essence": "Fuse spiritual power with mind to forge the divine soul.",
+      "breakthroughRisk": "Heart-demon tribulation; failure can leave a living shell trapped in illusion.",
+      "socialRole": "Great cultivators; elders, garrison commanders, named powers in a fortress.",
+      "populationNote": "Usually no more than twenty to thirty in a medium fortress.",
+      "keyThresholds": {
+        "layers1to3": "Divine sense appears; true internal diagnosis begins for healers.",
+        "layers4to6": "Soul can briefly leave the body after fatal wounds.",
+        "layers7to9": "Soul-core resonance; intent alone can crush weaker minds."
+      }
+    },
+    {
+      "order": 4,
+      "name": "通玄境",
+      "layers": 9,
+      "essence": "Touch and locally rewrite the rules by which spiritual energy and the world operate.",
+      "breakthroughRisk": "Dao deviation; misunderstanding a rule can destroy cultivation foundation.",
+      "socialRole": "Fortress pillars; sect leaders, supreme commanders.",
+      "populationNote": "Usually three to five in a medium fortress; small fortresses may have none.",
+      "keyThresholds": {
+        "layers1to3": "Local rule rewrite in a limited area.",
+        "layers4to6": "Personal dao becomes visible and inevitable, not chosen casually.",
+        "layers7to9": "Half-step return-to-truth; will directly warps reality."
+      }
+    },
+    {
+      "order": 5,
+      "name": "歸真境",
+      "layers": 9,
+      "essence": "Personal dao becomes part of the world; presence alone alters environment.",
+      "breakthroughRisk": "Extreme; failed ascents are legendary disasters.",
+      "socialRole": "Strategic assets of nations and alliances, not ordinary fortress residents.",
+      "populationNote": "Fewer than forty confirmed living across the known world.",
+      "keyThresholds": {
+        "layers1to3": "Domain: personal dao becomes local law.",
+        "layers4to6": "Space, time, and similar apex abilities with enormous cost.",
+        "layers7to9": "Half-step sky-break; full exertion can destroy a fortress."
+      }
+    },
+    {
+      "order": 6,
+      "name": "破天境",
+      "layers": null,
+      "essence": "Unknown apex. No reliable public description exists.",
+      "breakthroughRisk": "Unknown",
+      "socialRole": "Mythic strategic existence; almost never seen.",
+      "populationNote": "Only a handful are known to be alive; legends exceed evidence.",
+      "knownFacts": [
+        "No observed natural death in the last millennium.",
+        "Past interventions could seal continent-scale disasters.",
+        "Popular names vary: ancient immortal, outsider, deathless one."
+      ]
+    }
+  ],
+  "lifespanTable": {
+    "mortal": "70-90 years",
+    "引氣境": "120-150 years",
+    "凝元境": "200-250 years",
+    "鑄魄境": "400-500 years",
+    "通玄境": "800-1000 years",
+    "歸真境": "2000+ years; no confirmed natural end observed",
+    "破天境": "unknown"
+  },
+  "sidePath": {
+    "name": "術修",
+    "rule": "Main combat realm may remain low while mastery in forging, alchemy, formations, talismans, medicine, or beast-handling reaches elite status.",
+    "storyUse": "Supports profession dignity: cook, apothecary, and doctor remain distinct and socially necessary."
+  },
+  "namingConvention": {
+    "publicSpeech": "Use realm name only, e.g. 凝元修士.",
+    "formalMeasurement": "Use realm plus layer, e.g. 凝元七重.",
+    "firstVolumeRule": "Prefer social labels over layer counts unless a scene needs precision."
+  },
+  "firstVolumeVisibility": {
+    "commonOnPage": [
+      "引氣境四至九重",
+      "凝元境一至六重"
+    ],
+    "occasionalPresence": [
+      "鑄魄境名字 and reputation"
+    ],
+    "mostlyOffstage": [
+      "通玄境 as rumor, family backing, or distant threat"
+    ],
+    "notDirectCombatYet": [
+      "歸真境",
+      "破天境"
+    ],
+    "protagonistState": "陸塵行 does not cultivate in volume one; he observes social faces of the system, not the full metaphysics."
+  },
+  "supersededDrafts": {
+    "removedRealmName": "問道",
+    "replacedBy": "破天境",
+    "mergedFrom": [
+      "world/chenxing/raw/01_world_core_settings.md preliminary table",
+      "world/chenxing/raw/06_cultivation_geography_secret_realms.md detailed ladder"
+    ]
+  }
+}

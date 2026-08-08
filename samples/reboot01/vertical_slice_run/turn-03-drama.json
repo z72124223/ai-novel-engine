@@ -1,0 +1,23 @@
+{
+    "evaluationId": "slice-drama-3-00bc89f0-e354-4bbc-834e-86b248c50acd",
+    "rawScores": {
+        "sarcasmVoiceFit": 90,
+        "banterNaturalness": 85,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 75,
+        "fairSurprise": 35,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 35,
+        "antagonistAdaptation": 35,
+        "emotionalWaveCoverage": 70,
+        "readerAttachment": 85,
+        "overall": 66
+    },
+    "findings": [],
+    "revisionSuggestion": "",
+    "revisionCount": 0,
+    "selectedDraft": "周克在海岸吹了聲短哨。陸塵行折返時瞥他一眼：『你這個安全哨，保固是不是只到退潮？』周克沒笑，只把沾鹽的繩結塞進他手裡：『想活就先學會聽一次。』愛醬靠過來蹭了蹭他的膝側；林遙的標記還在，原本的碎片卻少了一塊。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

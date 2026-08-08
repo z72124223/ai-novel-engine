@@ -1,0 +1,1734 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor04-embodied-holdout-4-v1",
+    "status": "NON_CANON_EMBODIED_HOLDOUT_READY",
+    "fixtureOrigin": "MANUALLY_AUTHORED_OFFLINE_EMBODIED_FIXTURE",
+    "frozenPolicyId": "npc-actor-adaptive-expression-v1",
+    "randomizationSeed": "npc-actor04-balanced-embodied-seed-v1",
+    "scenarios": [
+        {
+            "scenarioId": "npc-actor04-mira-fire",
+            "title": "失火的旅店前廳",
+            "category": "CROWD_FIRE_RESPONSE",
+            "boundary": "NON_CANON_EVALUATION",
+            "actorId": "npc-eval-mira",
+            "actorLabel": "米拉",
+            "reviewerCharacterBrief": "警覺、務實，遇到混亂先處理人與出口，不靠長篇命令建立威信。",
+            "worldBrief": "狹長旅店由前廳、備餐通道、廚房與兩個出口相連；煙、碎玻璃和堵路酒箱同時造成壓力。",
+            "zones": [
+                {
+                    "zoneId": "hall",
+                    "label": "前廳",
+                    "adjacentZoneIds": [
+                        "service",
+                        "front"
+                    ],
+                    "visibleZoneIds": [
+                        "service",
+                        "kitchen",
+                        "front"
+                    ]
+                },
+                {
+                    "zoneId": "service",
+                    "label": "備餐通道",
+                    "adjacentZoneIds": [
+                        "hall",
+                        "kitchen",
+                        "back"
+                    ],
+                    "visibleZoneIds": [
+                        "hall",
+                        "kitchen",
+                        "back"
+                    ]
+                },
+                {
+                    "zoneId": "kitchen",
+                    "label": "廚房",
+                    "adjacentZoneIds": [
+                        "service"
+                    ],
+                    "visibleZoneIds": [
+                        "service"
+                    ]
+                },
+                {
+                    "zoneId": "front",
+                    "label": "前門廊",
+                    "adjacentZoneIds": [
+                        "hall"
+                    ],
+                    "visibleZoneIds": [
+                        "hall"
+                    ]
+                },
+                {
+                    "zoneId": "back",
+                    "label": "後門",
+                    "adjacentZoneIds": [
+                        "service"
+                    ],
+                    "visibleZoneIds": [
+                        "service"
+                    ]
+                }
+            ],
+            "initialEntities": [
+                {
+                    "entityId": "npc-eval-mira",
+                    "label": "米拉",
+                    "entityType": "ACTOR",
+                    "zoneId": "hall",
+                    "state": "警覺地巡視前廳"
+                },
+                {
+                    "entityId": "server",
+                    "label": "阿澄",
+                    "entityType": "ACTOR",
+                    "zoneId": "service",
+                    "state": "端著托盤"
+                },
+                {
+                    "entityId": "child",
+                    "label": "咳嗽的孩子",
+                    "entityType": "ACTOR",
+                    "zoneId": "hall",
+                    "state": "受煙嗆而僵住"
+                },
+                {
+                    "entityId": "patron",
+                    "label": "酒客",
+                    "entityType": "ACTOR",
+                    "zoneId": "hall",
+                    "state": "不知所措"
+                },
+                {
+                    "entityId": "cook",
+                    "label": "廚工",
+                    "entityType": "ACTOR",
+                    "zoneId": "kitchen",
+                    "state": "高聲求援"
+                },
+                {
+                    "entityId": "bucket",
+                    "label": "水桶",
+                    "entityType": "OBJECT",
+                    "zoneId": "service",
+                    "state": "裝滿水"
+                },
+                {
+                    "entityId": "blanket",
+                    "label": "濕毯",
+                    "entityType": "OBJECT",
+                    "zoneId": "service",
+                    "state": "摺好放著"
+                },
+                {
+                    "entityId": "crate",
+                    "label": "酒箱",
+                    "entityType": "OBJECT",
+                    "zoneId": "service",
+                    "state": "堵住通道"
+                },
+                {
+                    "entityId": "oil-pan",
+                    "label": "油鍋",
+                    "entityType": "OBJECT",
+                    "zoneId": "kitchen",
+                    "state": "鍋面起火"
+                },
+                {
+                    "entityId": "smoke",
+                    "label": "濃煙",
+                    "entityType": "HAZARD",
+                    "zoneId": "kitchen",
+                    "state": "持續湧入通道"
+                },
+                {
+                    "entityId": "shards",
+                    "label": "碎玻璃",
+                    "entityType": "HAZARD",
+                    "zoneId": "hall",
+                    "state": "散在孩子腳邊"
+                }
+            ],
+            "environmentBeats": [
+                {
+                    "beatId": "mira-b1",
+                    "tick": 10,
+                    "eventSummary": "廚房傳出爆響，煙從備餐通道湧出；孩子被碎玻璃困在原地。",
+                    "visibleEntityIdsAdded": [
+                        "smoke",
+                        "oil-pan",
+                        "cook"
+                    ]
+                },
+                {
+                    "beatId": "mira-b2",
+                    "tick": 20,
+                    "eventSummary": "酒箱被慌亂的人撞歪，後方通道只剩一人寬。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "mira-b3",
+                    "tick": 30,
+                    "eventSummary": "油鍋火舌抬高，濃煙開始壓低到肩膀高度。",
+                    "visibleEntityIdsAdded": []
+                }
+            ],
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor04-mira-fire",
+                    "kind": "PROFILE",
+                    "summary": "警覺、務實，遇到混亂先處理人與出口，不靠長篇命令建立威信。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "world-npc-actor04-mira-fire",
+                    "kind": "PERCEPTION",
+                    "summary": "狹長旅店由前廳、備餐通道、廚房與兩個出口相連；煙、碎玻璃和堵路酒箱同時造成壓力。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "secret-npc-actor04-mira-fire",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "AUTHOR_ONLY_MIRA_LEDGER_91",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "naturalControlTrajectory": {
+                "sourceType": "CONCISE_CONTROL_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "mira-b1",
+                        "perceivedEntityIds": [
+                            "child",
+                            "shards",
+                            "smoke"
+                        ],
+                        "chosenPriority": "先把孩子移出碎玻璃區",
+                        "actionType": "ASSIST",
+                        "targetEntityIds": [
+                            "child"
+                        ],
+                        "actionDescription": "米拉跨過碎玻璃邊緣，把孩子拉向前門方向。",
+                        "utterance": "",
+                        "nonverbal": "她用身體擋住孩子回望廚房的視線。",
+                        "stateChanges": [
+                            {
+                                "entityId": "child",
+                                "field": "state",
+                                "before": "受煙嗆而僵住",
+                                "after": "被拉離碎玻璃區"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "酒客終於讓出一條路。"
+                        ],
+                        "resultingStateSummary": "孩子離開碎玻璃，前廳仍受煙影響。"
+                    },
+                    {
+                        "beatId": "mira-b2",
+                        "perceivedEntityIds": [
+                            "crate",
+                            "server",
+                            "bucket"
+                        ],
+                        "chosenPriority": "清出撤離通道",
+                        "actionType": "CLEAR_PATH",
+                        "targetEntityIds": [
+                            "crate",
+                            "server"
+                        ],
+                        "actionDescription": "米拉把酒箱拖到牆邊，示意阿澄帶孩子出去。",
+                        "utterance": "阿澄，把前門打開，帶孩子出去。",
+                        "nonverbal": "她沒有停下解釋。",
+                        "stateChanges": [
+                            {
+                                "entityId": "crate",
+                                "field": "state",
+                                "before": "堵住通道",
+                                "after": "被拖到牆邊"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "阿澄放下托盤，跑向前門。"
+                        ],
+                        "resultingStateSummary": "備餐通道恢復一人通行。"
+                    },
+                    {
+                        "beatId": "mira-b3",
+                        "perceivedEntityIds": [
+                            "bucket",
+                            "oil-pan",
+                            "smoke"
+                        ],
+                        "chosenPriority": "壓住火勢並阻止旁人接近",
+                        "actionType": "SUPPRESS_FIRE",
+                        "targetEntityIds": [
+                            "bucket",
+                            "smoke"
+                        ],
+                        "actionDescription": "米拉把水潑向油鍋周圍的燃燒木面，壓低蔓延範圍。",
+                        "utterance": "退後，別碰油鍋。",
+                        "nonverbal": "她側身守住廚房入口。",
+                        "stateChanges": [
+                            {
+                                "entityId": "bucket",
+                                "field": "state",
+                                "before": "裝滿水",
+                                "after": "已用盡"
+                            },
+                            {
+                                "entityId": "smoke",
+                                "field": "state",
+                                "before": "持續湧入通道",
+                                "after": "湧出速度稍緩"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "酒客退到前門，廚工轉身關閉爐火。"
+                        ],
+                        "resultingStateSummary": "人群撤離中，火仍未完全熄滅但不再外竄。"
+                    }
+                ]
+            },
+            "embodiedActorTrajectory": {
+                "sourceType": "EMBODIED_ACTOR_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "mira-b1",
+                        "perceivedEntityIds": [
+                            "child",
+                            "shards",
+                            "crate",
+                            "smoke"
+                        ],
+                        "chosenPriority": "同時打開通道並讓孩子有出口",
+                        "actionType": "MOVE_AND_CLEAR",
+                        "targetEntityIds": [
+                            "npc-eval-mira",
+                            "crate"
+                        ],
+                        "actionDescription": "米拉先踢開酒箱的一角，從前廳跨入備餐通道。",
+                        "utterance": "",
+                        "nonverbal": "她用手背掩住口鼻，視線先掃孩子再掃油鍋。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-mira",
+                                "field": "zoneId",
+                                "before": "hall",
+                                "after": "service"
+                            },
+                            {
+                                "entityId": "crate",
+                                "field": "state",
+                                "before": "堵住通道",
+                                "after": "被推開一半"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "酒客看見出口後開始扶孩子往前門移動。"
+                        ],
+                        "resultingStateSummary": "米拉進入通道，前廳到前門的撤離線被打開。"
+                    },
+                    {
+                        "beatId": "mira-b2",
+                        "perceivedEntityIds": [
+                            "bucket",
+                            "blanket",
+                            "oil-pan",
+                            "cook"
+                        ],
+                        "chosenPriority": "先封住油鍋再讓廚工斷火",
+                        "actionType": "COORDINATE",
+                        "targetEntityIds": [
+                            "blanket",
+                            "oil-pan",
+                            "cook"
+                        ],
+                        "actionDescription": "米拉抽出濕毯壓住油鍋，指向爐閥。",
+                        "utterance": "孩子先走，阿澄開前門。",
+                        "nonverbal": "她用下巴示意廚工靠近爐閥。",
+                        "stateChanges": [
+                            {
+                                "entityId": "blanket",
+                                "field": "state",
+                                "before": "摺好放著",
+                                "after": "覆住油鍋"
+                            },
+                            {
+                                "entityId": "oil-pan",
+                                "field": "state",
+                                "before": "鍋面起火",
+                                "after": "火焰被濕毯壓住"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "廚工照指示關閉爐火；阿澄帶孩子離開。"
+                        ],
+                        "resultingStateSummary": "油鍋主火被壓住，撤離與斷火同時進行。"
+                    },
+                    {
+                        "beatId": "mira-b3",
+                        "perceivedEntityIds": [
+                            "smoke",
+                            "oil-pan",
+                            "cook"
+                        ],
+                        "chosenPriority": "確認火源後從後門換氣",
+                        "actionType": "VERIFY_AND_VENT",
+                        "targetEntityIds": [
+                            "npc-eval-mira",
+                            "smoke"
+                        ],
+                        "actionDescription": "確認油鍋不再竄火後，米拉退回通道並推開後門。",
+                        "utterance": "關火，其他人別進來。",
+                        "nonverbal": "她仍守在廚房與通道交界。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-mira",
+                                "field": "zoneId",
+                                "before": "service",
+                                "after": "back"
+                            },
+                            {
+                                "entityId": "smoke",
+                                "field": "state",
+                                "before": "持續湧入通道",
+                                "after": "開始由後門排出"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "廚工留在爐閥旁，酒客與阿澄在前門清點人數。"
+                        ],
+                        "resultingStateSummary": "人員分流完成，濃煙有出口，現場仍維持警戒。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ]
+        },
+        {
+            "scenarioId": "npc-actor04-yan-storm-gate",
+            "title": "暴雨中的城門泥坡",
+            "category": "SPATIAL_RESCUE_AND_ACCESS_CONTROL",
+            "boundary": "NON_CANON_EVALUATION",
+            "actorId": "npc-eval-yan",
+            "actorLabel": "嚴",
+            "reviewerCharacterBrief": "寡言、判斷快，不逞強；在公共危險中會先改變位置與路線，再下短命令。",
+            "worldBrief": "城門、泥坡、避雨凹處與關卡棚形成高低差；板車、人流、洪水警訊和門禁必須同時處理。",
+            "zones": [
+                {
+                    "zoneId": "gate",
+                    "label": "城門內側",
+                    "adjacentZoneIds": [
+                        "slope",
+                        "checkpoint",
+                        "yard"
+                    ],
+                    "visibleZoneIds": [
+                        "slope",
+                        "checkpoint",
+                        "yard"
+                    ]
+                },
+                {
+                    "zoneId": "slope",
+                    "label": "泥坡",
+                    "adjacentZoneIds": [
+                        "gate",
+                        "alcove"
+                    ],
+                    "visibleZoneIds": [
+                        "gate",
+                        "alcove"
+                    ]
+                },
+                {
+                    "zoneId": "alcove",
+                    "label": "避雨凹處",
+                    "adjacentZoneIds": [
+                        "slope"
+                    ],
+                    "visibleZoneIds": [
+                        "slope"
+                    ]
+                },
+                {
+                    "zoneId": "checkpoint",
+                    "label": "關卡棚",
+                    "adjacentZoneIds": [
+                        "gate"
+                    ],
+                    "visibleZoneIds": [
+                        "gate"
+                    ]
+                },
+                {
+                    "zoneId": "yard",
+                    "label": "門後空地",
+                    "adjacentZoneIds": [
+                        "gate"
+                    ],
+                    "visibleZoneIds": [
+                        "gate"
+                    ]
+                }
+            ],
+            "initialEntities": [
+                {
+                    "entityId": "npc-eval-yan",
+                    "label": "嚴",
+                    "entityType": "ACTOR",
+                    "zoneId": "gate",
+                    "state": "正在檢查門閂"
+                },
+                {
+                    "entityId": "courier",
+                    "label": "急遞員",
+                    "entityType": "ACTOR",
+                    "zoneId": "slope",
+                    "state": "護著防水信筒"
+                },
+                {
+                    "entityId": "guard",
+                    "label": "守衛",
+                    "entityType": "ACTOR",
+                    "zoneId": "checkpoint",
+                    "state": "等候命令"
+                },
+                {
+                    "entityId": "refugee",
+                    "label": "避雨婦人",
+                    "entityType": "ACTOR",
+                    "zoneId": "gate",
+                    "state": "抱著包袱"
+                },
+                {
+                    "entityId": "child",
+                    "label": "坡上的孩子",
+                    "entityType": "ACTOR",
+                    "zoneId": "slope",
+                    "state": "被車聲嚇住"
+                },
+                {
+                    "entityId": "cart",
+                    "label": "失控板車",
+                    "entityType": "OBJECT",
+                    "zoneId": "slope",
+                    "state": "向城門滑動"
+                },
+                {
+                    "entityId": "rope",
+                    "label": "粗繩",
+                    "entityType": "OBJECT",
+                    "zoneId": "alcove",
+                    "state": "盤成一圈"
+                },
+                {
+                    "entityId": "gatebar",
+                    "label": "門閂",
+                    "entityType": "OBJECT",
+                    "zoneId": "gate",
+                    "state": "完全落下"
+                },
+                {
+                    "entityId": "lantern",
+                    "label": "信號燈",
+                    "entityType": "OBJECT",
+                    "zoneId": "checkpoint",
+                    "state": "亮著白光"
+                },
+                {
+                    "entityId": "mud",
+                    "label": "濕滑泥面",
+                    "entityType": "HAZARD",
+                    "zoneId": "slope",
+                    "state": "無法穩定站立"
+                },
+                {
+                    "entityId": "ditch",
+                    "label": "積水溝",
+                    "entityType": "HAZARD",
+                    "zoneId": "slope",
+                    "state": "水位快速上升"
+                }
+            ],
+            "environmentBeats": [
+                {
+                    "beatId": "yan-b1",
+                    "tick": 5,
+                    "eventSummary": "板車沿泥坡滑下，孩子僵在車道中間。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "yan-b2",
+                    "tick": 15,
+                    "eventSummary": "急遞員喊出洪水警訊，門外仍有人朝城門靠近。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "yan-b3",
+                    "tick": 25,
+                    "eventSummary": "雨勢加重，積水溝漫過坡腳，板車再次鬆動。",
+                    "visibleEntityIdsAdded": [
+                        "rope",
+                        "guard"
+                    ]
+                }
+            ],
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor04-yan-storm-gate",
+                    "kind": "PROFILE",
+                    "summary": "寡言、判斷快，不逞強；在公共危險中會先改變位置與路線，再下短命令。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "world-npc-actor04-yan-storm-gate",
+                    "kind": "PERCEPTION",
+                    "summary": "城門、泥坡、避雨凹處與關卡棚形成高低差；板車、人流、洪水警訊和門禁必須同時處理。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "secret-npc-actor04-yan-storm-gate",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "AUTHOR_ONLY_YAN_BRIBE_42",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "naturalControlTrajectory": {
+                "sourceType": "CONCISE_CONTROL_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "yan-b1",
+                        "perceivedEntityIds": [
+                            "cart",
+                            "child",
+                            "mud"
+                        ],
+                        "chosenPriority": "讓孩子離開板車路徑",
+                        "actionType": "RESCUE",
+                        "targetEntityIds": [
+                            "child",
+                            "cart"
+                        ],
+                        "actionDescription": "嚴把孩子拽到城門牆邊，用肩抵住板車。",
+                        "utterance": "",
+                        "nonverbal": "他的靴底在泥上打滑一下。",
+                        "stateChanges": [
+                            {
+                                "entityId": "child",
+                                "field": "state",
+                                "before": "被車聲嚇住",
+                                "after": "靠在城門牆邊"
+                            },
+                            {
+                                "entityId": "cart",
+                                "field": "state",
+                                "before": "向城門滑動",
+                                "after": "暫時被肩抵住"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "避雨婦人伸手把孩子接到身後。"
+                        ],
+                        "resultingStateSummary": "孩子安全，板車只是暫停。"
+                    },
+                    {
+                        "beatId": "yan-b2",
+                        "perceivedEntityIds": [
+                            "courier",
+                            "gatebar",
+                            "lantern"
+                        ],
+                        "chosenPriority": "核實警訊並開出窄縫",
+                        "actionType": "CONTROL_ENTRY",
+                        "targetEntityIds": [
+                            "gatebar",
+                            "guard"
+                        ],
+                        "actionDescription": "嚴抬起半截門閂，叫守衛只放急遞員進入。",
+                        "utterance": "只開一人寬，先驗信筒。",
+                        "nonverbal": "他仍用腳卡著板車輪。",
+                        "stateChanges": [
+                            {
+                                "entityId": "gatebar",
+                                "field": "state",
+                                "before": "完全落下",
+                                "after": "抬起一人寬"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "守衛接過信筒核對封印，其他人停在門外。"
+                        ],
+                        "resultingStateSummary": "城門未全開，警訊進入核驗流程。"
+                    },
+                    {
+                        "beatId": "yan-b3",
+                        "perceivedEntityIds": [
+                            "cart",
+                            "rope",
+                            "ditch"
+                        ],
+                        "chosenPriority": "固定板車避免撞門",
+                        "actionType": "SECURE",
+                        "targetEntityIds": [
+                            "cart",
+                            "rope"
+                        ],
+                        "actionDescription": "嚴把粗繩套上車軸，另一端繫到門柱。",
+                        "utterance": "守住門縫，別讓人往坡上擠。",
+                        "nonverbal": "他拉緊繩結後才鬆開肩膀。",
+                        "stateChanges": [
+                            {
+                                "entityId": "rope",
+                                "field": "state",
+                                "before": "盤成一圈",
+                                "after": "繫住板車與門柱"
+                            },
+                            {
+                                "entityId": "cart",
+                                "field": "state",
+                                "before": "暫時被肩抵住",
+                                "after": "固定在門柱旁"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "守衛守住門縫，急遞員開始報告上游情況。"
+                        ],
+                        "resultingStateSummary": "板車固定，城門維持受控通行。"
+                    }
+                ]
+            },
+            "embodiedActorTrajectory": {
+                "sourceType": "EMBODIED_ACTOR_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "yan-b1",
+                        "perceivedEntityIds": [
+                            "cart",
+                            "child",
+                            "mud"
+                        ],
+                        "chosenPriority": "先改變孩子與板車的相對位置",
+                        "actionType": "INTERCEPT",
+                        "targetEntityIds": [
+                            "npc-eval-yan",
+                            "child"
+                        ],
+                        "actionDescription": "嚴斜切進泥坡，把孩子推進避雨凹處，自己留在板車側面。",
+                        "utterance": "",
+                        "nonverbal": "他不正面硬接，而是抓住車側框讓車頭偏向積水溝。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-yan",
+                                "field": "zoneId",
+                                "before": "gate",
+                                "after": "slope"
+                            },
+                            {
+                                "entityId": "child",
+                                "field": "zoneId",
+                                "before": "slope",
+                                "after": "alcove"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "急遞員貼牆讓路；避雨婦人在城門內招呼孩子。"
+                        ],
+                        "resultingStateSummary": "孩子脫離車道，板車仍滑動但方向偏離城門正中。"
+                    },
+                    {
+                        "beatId": "yan-b2",
+                        "perceivedEntityIds": [
+                            "rope",
+                            "cart",
+                            "courier",
+                            "ditch"
+                        ],
+                        "chosenPriority": "先固定危險，再處理警訊",
+                        "actionType": "ANCHOR",
+                        "targetEntityIds": [
+                            "rope",
+                            "cart"
+                        ],
+                        "actionDescription": "嚴從凹處扯出粗繩，繞過板車橫梁並踩住繩尾。",
+                        "utterance": "把信筒給守衛，門先別全開。",
+                        "nonverbal": "他向城門抬了一下下巴，手上沒有停。",
+                        "stateChanges": [
+                            {
+                                "entityId": "rope",
+                                "field": "state",
+                                "before": "盤成一圈",
+                                "after": "套住板車橫梁"
+                            },
+                            {
+                                "entityId": "cart",
+                                "field": "state",
+                                "before": "向城門滑動",
+                                "after": "被繩索牽制"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "急遞員把信筒拋給守衛；守衛開始驗封。"
+                        ],
+                        "resultingStateSummary": "板車被牽制，洪水警訊同步核驗。"
+                    },
+                    {
+                        "beatId": "yan-b3",
+                        "perceivedEntityIds": [
+                            "gatebar",
+                            "cart",
+                            "ditch",
+                            "guard"
+                        ],
+                        "chosenPriority": "退回城門建立受控入口",
+                        "actionType": "REPOSITION",
+                        "targetEntityIds": [
+                            "npc-eval-yan",
+                            "gatebar"
+                        ],
+                        "actionDescription": "確認繩結吃力後，嚴退回城門，把門閂抬到只容一人的高度。",
+                        "utterance": "一個一個進，別踩坡中央。",
+                        "nonverbal": "他用手指向較高的牆邊路線。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-yan",
+                                "field": "zoneId",
+                                "before": "slope",
+                                "after": "gate"
+                            },
+                            {
+                                "entityId": "gatebar",
+                                "field": "state",
+                                "before": "完全落下",
+                                "after": "抬起一人寬"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "守衛沿牆引導人流；避雨婦人牽住孩子。"
+                        ],
+                        "resultingStateSummary": "危險物受控，人流改走高處，警訊進入城內。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ]
+        },
+        {
+            "scenarioId": "npc-actor04-lian-market-collapse",
+            "title": "市場布棚塌落",
+            "category": "STRUCTURAL_RESCUE_AND_CROWD_FLOW",
+            "boundary": "NON_CANON_EVALUATION",
+            "actorId": "npc-eval-lian",
+            "actorLabel": "蓮",
+            "reviewerCharacterBrief": "細心、有同理心但不會只安慰；她會先找受力點與可用的人，再用簡短話語建立合作。",
+            "worldBrief": "市場走道連接攤位、藥鋪與側巷；塌棚、碎瓷、哭泣孩子和流血傷者會爭奪注意力。",
+            "zones": [
+                {
+                    "zoneId": "aisle",
+                    "label": "市場走道",
+                    "adjacentZoneIds": [
+                        "stall",
+                        "clinic",
+                        "alley"
+                    ],
+                    "visibleZoneIds": [
+                        "stall",
+                        "clinic",
+                        "alley"
+                    ]
+                },
+                {
+                    "zoneId": "stall",
+                    "label": "布棚攤位",
+                    "adjacentZoneIds": [
+                        "aisle"
+                    ],
+                    "visibleZoneIds": [
+                        "aisle",
+                        "clinic"
+                    ]
+                },
+                {
+                    "zoneId": "clinic",
+                    "label": "藥鋪門口",
+                    "adjacentZoneIds": [
+                        "aisle"
+                    ],
+                    "visibleZoneIds": [
+                        "aisle"
+                    ]
+                },
+                {
+                    "zoneId": "alley",
+                    "label": "側巷",
+                    "adjacentZoneIds": [
+                        "aisle",
+                        "yard"
+                    ],
+                    "visibleZoneIds": [
+                        "aisle",
+                        "yard"
+                    ]
+                },
+                {
+                    "zoneId": "yard",
+                    "label": "卸貨小院",
+                    "adjacentZoneIds": [
+                        "alley"
+                    ],
+                    "visibleZoneIds": [
+                        "alley"
+                    ]
+                }
+            ],
+            "initialEntities": [
+                {
+                    "entityId": "npc-eval-lian",
+                    "label": "蓮",
+                    "entityType": "ACTOR",
+                    "zoneId": "aisle",
+                    "state": "正在挑選布料"
+                },
+                {
+                    "entityId": "vendor",
+                    "label": "受傷攤販",
+                    "entityType": "ACTOR",
+                    "zoneId": "stall",
+                    "state": "手臂流血且壓在棚布下"
+                },
+                {
+                    "entityId": "apprentice",
+                    "label": "藥鋪學徒",
+                    "entityType": "ACTOR",
+                    "zoneId": "clinic",
+                    "state": "抱著藥箱發愣"
+                },
+                {
+                    "entityId": "constable",
+                    "label": "巡市差役",
+                    "entityType": "ACTOR",
+                    "zoneId": "alley",
+                    "state": "正往市場趕"
+                },
+                {
+                    "entityId": "child",
+                    "label": "找母親的孩子",
+                    "entityType": "ACTOR",
+                    "zoneId": "aisle",
+                    "state": "哭著擋在走道中"
+                },
+                {
+                    "entityId": "awning",
+                    "label": "塌落棚布",
+                    "entityType": "OBJECT",
+                    "zoneId": "stall",
+                    "state": "壓住攤販肩膀"
+                },
+                {
+                    "entityId": "pole",
+                    "label": "支棚木桿",
+                    "entityType": "OBJECT",
+                    "zoneId": "stall",
+                    "state": "底座鬆脫"
+                },
+                {
+                    "entityId": "cloth",
+                    "label": "成捆布料",
+                    "entityType": "OBJECT",
+                    "zoneId": "stall",
+                    "state": "散落一地"
+                },
+                {
+                    "entityId": "medicine",
+                    "label": "止血藥箱",
+                    "entityType": "OBJECT",
+                    "zoneId": "clinic",
+                    "state": "封扣完整"
+                },
+                {
+                    "entityId": "glass",
+                    "label": "碎瓷片",
+                    "entityType": "HAZARD",
+                    "zoneId": "aisle",
+                    "state": "散在主要通道"
+                },
+                {
+                    "entityId": "beam",
+                    "label": "搖晃橫梁",
+                    "entityType": "HAZARD",
+                    "zoneId": "stall",
+                    "state": "仍可能再次下落"
+                }
+            ],
+            "environmentBeats": [
+                {
+                    "beatId": "lian-b1",
+                    "tick": 8,
+                    "eventSummary": "布棚突然塌下一角，攤販被壓住，碎瓷片飛入走道。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "lian-b2",
+                    "tick": 18,
+                    "eventSummary": "橫梁發出裂聲，孩子逆著人流尋找母親。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "lian-b3",
+                    "tick": 28,
+                    "eventSummary": "側巷傳來差役呼聲，攤販出血加快。",
+                    "visibleEntityIdsAdded": [
+                        "constable"
+                    ]
+                }
+            ],
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor04-lian-market-collapse",
+                    "kind": "PROFILE",
+                    "summary": "細心、有同理心但不會只安慰；她會先找受力點與可用的人，再用簡短話語建立合作。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "world-npc-actor04-lian-market-collapse",
+                    "kind": "PERCEPTION",
+                    "summary": "市場走道連接攤位、藥鋪與側巷；塌棚、碎瓷、哭泣孩子和流血傷者會爭奪注意力。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "secret-npc-actor04-lian-market-collapse",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "AUTHOR_ONLY_LIAN_PARENTAGE_73",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "naturalControlTrajectory": {
+                "sourceType": "CONCISE_CONTROL_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "lian-b1",
+                        "perceivedEntityIds": [
+                            "vendor",
+                            "awning",
+                            "glass"
+                        ],
+                        "chosenPriority": "避免第二次砸落並接近傷者",
+                        "actionType": "STABILIZE",
+                        "targetEntityIds": [
+                            "pole",
+                            "awning"
+                        ],
+                        "actionDescription": "蓮扶正木桿，讓棚布暫時不再下沉。",
+                        "utterance": "",
+                        "nonverbal": "她先試了兩次受力才把肩膀頂上去。",
+                        "stateChanges": [
+                            {
+                                "entityId": "pole",
+                                "field": "state",
+                                "before": "底座鬆脫",
+                                "after": "由蓮抵住"
+                            },
+                            {
+                                "entityId": "awning",
+                                "field": "state",
+                                "before": "壓住攤販肩膀",
+                                "after": "停止繼續下沉"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "旁邊商販開始把碎瓷片踢離人群。"
+                        ],
+                        "resultingStateSummary": "棚布暫穩，但蓮無法離手。"
+                    },
+                    {
+                        "beatId": "lian-b2",
+                        "perceivedEntityIds": [
+                            "child",
+                            "glass",
+                            "apprentice",
+                            "medicine"
+                        ],
+                        "chosenPriority": "清出孩子與救援路線",
+                        "actionType": "DIRECT",
+                        "targetEntityIds": [
+                            "child",
+                            "apprentice"
+                        ],
+                        "actionDescription": "蓮叫孩子停下，讓學徒沿牆把孩子帶到藥鋪門口。",
+                        "utterance": "你牽住他，沿牆走，藥箱帶過來。",
+                        "nonverbal": "她的肩膀仍頂著木桿。",
+                        "stateChanges": [
+                            {
+                                "entityId": "child",
+                                "field": "state",
+                                "before": "哭著擋在走道中",
+                                "after": "被帶往藥鋪門口"
+                            },
+                            {
+                                "entityId": "apprentice",
+                                "field": "state",
+                                "before": "抱著藥箱發愣",
+                                "after": "開始協助疏散"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "學徒回過神，牽起孩子並拿穩藥箱。"
+                        ],
+                        "resultingStateSummary": "主要走道不再被孩子堵住，藥箱正在靠近。"
+                    },
+                    {
+                        "beatId": "lian-b3",
+                        "perceivedEntityIds": [
+                            "vendor",
+                            "medicine",
+                            "constable",
+                            "beam"
+                        ],
+                        "chosenPriority": "讓差役接手支撐並止血",
+                        "actionType": "HANDOFF",
+                        "targetEntityIds": [
+                            "constable",
+                            "vendor",
+                            "medicine"
+                        ],
+                        "actionDescription": "差役抵住木桿後，蓮跪到攤販身側壓住傷口。",
+                        "utterance": "你頂住這裡；藥箱給我。",
+                        "nonverbal": "她確認橫梁不再移動才鬆肩。",
+                        "stateChanges": [
+                            {
+                                "entityId": "pole",
+                                "field": "state",
+                                "before": "由蓮抵住",
+                                "after": "由差役固定"
+                            },
+                            {
+                                "entityId": "vendor",
+                                "field": "state",
+                                "before": "手臂流血且壓在棚布下",
+                                "after": "傷口受到加壓止血"
+                            },
+                            {
+                                "entityId": "medicine",
+                                "field": "state",
+                                "before": "封扣完整",
+                                "after": "已開啟使用"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "差役接手支撐；學徒遞出繃帶。"
+                        ],
+                        "resultingStateSummary": "結構與傷者各有人處理，救援形成分工。"
+                    }
+                ]
+            },
+            "embodiedActorTrajectory": {
+                "sourceType": "EMBODIED_ACTOR_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "lian-b1",
+                        "perceivedEntityIds": [
+                            "beam",
+                            "pole",
+                            "vendor",
+                            "glass"
+                        ],
+                        "chosenPriority": "先取得能看見橫梁與傷者的位置",
+                        "actionType": "MOVE_AND_BRACE",
+                        "targetEntityIds": [
+                            "npc-eval-lian",
+                            "pole"
+                        ],
+                        "actionDescription": "蓮繞開碎瓷，進到棚布側邊，用木桿斜撐橫梁。",
+                        "utterance": "",
+                        "nonverbal": "她蹲低身體，讓視線保持在橫梁接點。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-lian",
+                                "field": "zoneId",
+                                "before": "aisle",
+                                "after": "stall"
+                            },
+                            {
+                                "entityId": "pole",
+                                "field": "state",
+                                "before": "底座鬆脫",
+                                "after": "斜撐住橫梁"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "攤販停止掙扎；旁人退開棚架正下方。"
+                        ],
+                        "resultingStateSummary": "橫梁受力改變，傷者仍受壓但不再被二次砸落。"
+                    },
+                    {
+                        "beatId": "lian-b2",
+                        "perceivedEntityIds": [
+                            "child",
+                            "apprentice",
+                            "medicine",
+                            "beam"
+                        ],
+                        "chosenPriority": "讓可移動的人先完成疏散與取藥",
+                        "actionType": "COORDINATE",
+                        "targetEntityIds": [
+                            "child",
+                            "apprentice",
+                            "medicine"
+                        ],
+                        "actionDescription": "蓮從棚內指向沒有碎瓷的藥鋪牆邊路線。",
+                        "utterance": "牽孩子走牆邊，再把藥箱滑過來。",
+                        "nonverbal": "她用鞋跟卡住木桿底端。",
+                        "stateChanges": [
+                            {
+                                "entityId": "child",
+                                "field": "state",
+                                "before": "哭著擋在走道中",
+                                "after": "沿牆移往藥鋪"
+                            },
+                            {
+                                "entityId": "apprentice",
+                                "field": "state",
+                                "before": "抱著藥箱發愣",
+                                "after": "開始引導孩子"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "學徒牽走孩子，接著把藥箱沿地面推向攤位。"
+                        ],
+                        "resultingStateSummary": "孩子離開危險走道，藥箱抵達棚邊。"
+                    },
+                    {
+                        "beatId": "lian-b3",
+                        "perceivedEntityIds": [
+                            "constable",
+                            "vendor",
+                            "medicine",
+                            "beam"
+                        ],
+                        "chosenPriority": "在不失去支撐的前提下完成接手",
+                        "actionType": "TRANSFER_LOAD",
+                        "targetEntityIds": [
+                            "npc-eval-lian",
+                            "constable",
+                            "vendor"
+                        ],
+                        "actionDescription": "蓮讓差役從外側接住木桿，確認受力後退回走道，立刻替攤販止血。",
+                        "utterance": "先接我的力，再抬棚布。",
+                        "nonverbal": "她等差役點頭才換手。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-lian",
+                                "field": "zoneId",
+                                "before": "stall",
+                                "after": "aisle"
+                            },
+                            {
+                                "entityId": "pole",
+                                "field": "state",
+                                "before": "斜撐住橫梁",
+                                "after": "由差役穩定支撐"
+                            },
+                            {
+                                "entityId": "vendor",
+                                "field": "state",
+                                "before": "手臂流血且壓在棚布下",
+                                "after": "傷口受到加壓止血"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "差役承接木桿；學徒打開藥箱；其他商販準備抬棚布。"
+                        ],
+                        "resultingStateSummary": "支撐交接沒有空窗，止血與抬升可同時開始。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ]
+        },
+        {
+            "scenarioId": "npc-actor04-ren-dock-surge",
+            "title": "漲潮時的斷纜碼頭",
+            "category": "MOVING_PLATFORM_AND_CARGO_RISK",
+            "boundary": "NON_CANON_EVALUATION",
+            "actorId": "npc-eval-ren",
+            "actorLabel": "任",
+            "reviewerCharacterBrief": "沉著、懂勞動現場，不拿命換進度；他會看受力方向、站位與人群動線。",
+            "worldBrief": "石碼頭、斜板、甲板、倉門與港務亭構成移動作業面；潮水、斷纜和滑動貨物會連鎖改變安全路線。",
+            "zones": [
+                {
+                    "zoneId": "quay",
+                    "label": "石砌碼頭",
+                    "adjacentZoneIds": [
+                        "ramp",
+                        "warehouse",
+                        "office"
+                    ],
+                    "visibleZoneIds": [
+                        "ramp",
+                        "warehouse",
+                        "office"
+                    ]
+                },
+                {
+                    "zoneId": "ramp",
+                    "label": "登船斜板",
+                    "adjacentZoneIds": [
+                        "quay",
+                        "deck"
+                    ],
+                    "visibleZoneIds": [
+                        "quay",
+                        "deck",
+                        "warehouse",
+                        "office"
+                    ]
+                },
+                {
+                    "zoneId": "deck",
+                    "label": "貨船甲板",
+                    "adjacentZoneIds": [
+                        "ramp"
+                    ],
+                    "visibleZoneIds": [
+                        "ramp"
+                    ]
+                },
+                {
+                    "zoneId": "warehouse",
+                    "label": "倉門",
+                    "adjacentZoneIds": [
+                        "quay"
+                    ],
+                    "visibleZoneIds": [
+                        "quay"
+                    ]
+                },
+                {
+                    "zoneId": "office",
+                    "label": "港務亭",
+                    "adjacentZoneIds": [
+                        "quay"
+                    ],
+                    "visibleZoneIds": [
+                        "quay"
+                    ]
+                }
+            ],
+            "initialEntities": [
+                {
+                    "entityId": "npc-eval-ren",
+                    "label": "任",
+                    "entityType": "ACTOR",
+                    "zoneId": "quay",
+                    "state": "正在核對卸貨次序"
+                },
+                {
+                    "entityId": "buyer",
+                    "label": "催貨買主",
+                    "entityType": "ACTOR",
+                    "zoneId": "quay",
+                    "state": "要求立刻交貨"
+                },
+                {
+                    "entityId": "deckhand",
+                    "label": "甲板水手",
+                    "entityType": "ACTOR",
+                    "zoneId": "deck",
+                    "state": "扶著滑動木箱"
+                },
+                {
+                    "entityId": "porter",
+                    "label": "腳夫",
+                    "entityType": "ACTOR",
+                    "zoneId": "ramp",
+                    "state": "進退兩難"
+                },
+                {
+                    "entityId": "harbor-master",
+                    "label": "港務員",
+                    "entityType": "ACTOR",
+                    "zoneId": "office",
+                    "state": "準備敲響警鐘"
+                },
+                {
+                    "entityId": "rope",
+                    "label": "磨損纜繩",
+                    "entityType": "OBJECT",
+                    "zoneId": "quay",
+                    "state": "纖維逐條斷裂"
+                },
+                {
+                    "entityId": "gangplank",
+                    "label": "登船斜板",
+                    "entityType": "OBJECT",
+                    "zoneId": "ramp",
+                    "state": "右側下沉"
+                },
+                {
+                    "entityId": "crate",
+                    "label": "重木箱",
+                    "entityType": "OBJECT",
+                    "zoneId": "deck",
+                    "state": "朝斜板滑動"
+                },
+                {
+                    "entityId": "hook",
+                    "label": "吊貨鉤",
+                    "entityType": "OBJECT",
+                    "zoneId": "warehouse",
+                    "state": "掛在牆架"
+                },
+                {
+                    "entityId": "tide",
+                    "label": "急漲潮水",
+                    "entityType": "HAZARD",
+                    "zoneId": "ramp",
+                    "state": "拍擊船身"
+                },
+                {
+                    "entityId": "slick",
+                    "label": "濕滑石面",
+                    "entityType": "HAZARD",
+                    "zoneId": "quay",
+                    "state": "靠近繫纜柱最滑"
+                }
+            ],
+            "environmentBeats": [
+                {
+                    "beatId": "ren-b1",
+                    "tick": 12,
+                    "eventSummary": "漲潮把船身推離碼頭，磨損纜繩開始斷股。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "ren-b2",
+                    "tick": 22,
+                    "eventSummary": "重木箱滑向斜板，腳夫被夾在進退路線中。",
+                    "visibleEntityIdsAdded": [
+                        "crate",
+                        "deckhand"
+                    ]
+                },
+                {
+                    "beatId": "ren-b3",
+                    "tick": 32,
+                    "eventSummary": "船身再次外擺，登船斜板右側離開石階。",
+                    "visibleEntityIdsAdded": []
+                }
+            ],
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor04-ren-dock-surge",
+                    "kind": "PROFILE",
+                    "summary": "沉著、懂勞動現場，不拿命換進度；他會看受力方向、站位與人群動線。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "world-npc-actor04-ren-dock-surge",
+                    "kind": "PERCEPTION",
+                    "summary": "石碼頭、斜板、甲板、倉門與港務亭構成移動作業面；潮水、斷纜和滑動貨物會連鎖改變安全路線。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "secret-npc-actor04-ren-dock-surge",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "AUTHOR_ONLY_REN_SMUGGLING_18",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "naturalControlTrajectory": {
+                "sourceType": "CONCISE_CONTROL_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "ren-b1",
+                        "perceivedEntityIds": [
+                            "rope",
+                            "tide",
+                            "slick",
+                            "buyer"
+                        ],
+                        "chosenPriority": "避免斷繩掃到人群",
+                        "actionType": "CLEAR_HAZARD",
+                        "targetEntityIds": [
+                            "buyer",
+                            "rope"
+                        ],
+                        "actionDescription": "任把買主推離繫纜柱，叫碼頭邊的人後退。",
+                        "utterance": "",
+                        "nonverbal": "他站在繩索可能回彈的外側。",
+                        "stateChanges": [
+                            {
+                                "entityId": "buyer",
+                                "field": "state",
+                                "before": "要求立刻交貨",
+                                "after": "退到安全線後"
+                            },
+                            {
+                                "entityId": "rope",
+                                "field": "state",
+                                "before": "纖維逐條斷裂",
+                                "after": "無人靠近回彈區"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "港務員舉起警鐘槌；腳夫停在斜板中段。"
+                        ],
+                        "resultingStateSummary": "回彈區清空，纜繩仍未替換。"
+                    },
+                    {
+                        "beatId": "ren-b2",
+                        "perceivedEntityIds": [
+                            "crate",
+                            "porter",
+                            "gangplank"
+                        ],
+                        "chosenPriority": "阻止木箱撞上腳夫",
+                        "actionType": "BLOCK_CARGO",
+                        "targetEntityIds": [
+                            "crate",
+                            "porter"
+                        ],
+                        "actionDescription": "任衝上斜板邊緣，用肩頂住木箱下角，叫腳夫退回碼頭。",
+                        "utterance": "先退回來，貨晚一刻不會死。",
+                        "nonverbal": "他把重心壓向靠碼頭的一側。",
+                        "stateChanges": [
+                            {
+                                "entityId": "crate",
+                                "field": "state",
+                                "before": "朝斜板滑動",
+                                "after": "被任暫時頂住"
+                            },
+                            {
+                                "entityId": "porter",
+                                "field": "state",
+                                "before": "進退兩難",
+                                "after": "退回碼頭"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "甲板水手抓住箱後繩環，腳夫退下斜板。"
+                        ],
+                        "resultingStateSummary": "人員離開夾擊線，木箱暫停滑動。"
+                    },
+                    {
+                        "beatId": "ren-b3",
+                        "perceivedEntityIds": [
+                            "gangplank",
+                            "hook",
+                            "tide"
+                        ],
+                        "chosenPriority": "收回失去支撐的斜板",
+                        "actionType": "RETRACT",
+                        "targetEntityIds": [
+                            "gangplank",
+                            "hook"
+                        ],
+                        "actionDescription": "任取下吊貨鉤，勾住斜板內側讓甲板水手把它拉回船上。",
+                        "utterance": "拉回去，碼頭這邊清空。",
+                        "nonverbal": "他退到石階上維持鉤索角度。",
+                        "stateChanges": [
+                            {
+                                "entityId": "hook",
+                                "field": "state",
+                                "before": "掛在牆架",
+                                "after": "勾住斜板內側"
+                            },
+                            {
+                                "entityId": "gangplank",
+                                "field": "state",
+                                "before": "右側下沉",
+                                "after": "被拉回船上"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "甲板水手收回斜板；港務員敲鐘封閉臨時通道。"
+                        ],
+                        "resultingStateSummary": "船岸連接中止，所有人留在各自安全側。"
+                    }
+                ]
+            },
+            "embodiedActorTrajectory": {
+                "sourceType": "EMBODIED_ACTOR_TRAJECTORY",
+                "steps": [
+                    {
+                        "beatId": "ren-b1",
+                        "perceivedEntityIds": [
+                            "rope",
+                            "tide",
+                            "slick",
+                            "harbor-master"
+                        ],
+                        "chosenPriority": "先把人與斷繩回彈面分開",
+                        "actionType": "MARK_AND_SIGNAL",
+                        "targetEntityIds": [
+                            "rope",
+                            "harbor-master"
+                        ],
+                        "actionDescription": "任把卸貨粉筆線延長成禁入線，抬手示意港務員敲鐘。",
+                        "utterance": "",
+                        "nonverbal": "他沿繩索受力方向看了一眼，選在側後方移動。",
+                        "stateChanges": [
+                            {
+                                "entityId": "rope",
+                                "field": "state",
+                                "before": "纖維逐條斷裂",
+                                "after": "回彈區已標示"
+                            },
+                            {
+                                "entityId": "harbor-master",
+                                "field": "state",
+                                "before": "準備敲響警鐘",
+                                "after": "開始敲警示鐘"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "買主被鐘聲逼停；腳夫抓住斜板扶手。"
+                        ],
+                        "resultingStateSummary": "碼頭人流停止進入斷繩回彈區。"
+                    },
+                    {
+                        "beatId": "ren-b2",
+                        "perceivedEntityIds": [
+                            "crate",
+                            "deckhand",
+                            "porter",
+                            "gangplank"
+                        ],
+                        "chosenPriority": "讓腳夫先退，甲板端再改變木箱方向",
+                        "actionType": "COORDINATE_LOAD",
+                        "targetEntityIds": [
+                            "porter",
+                            "deckhand",
+                            "crate"
+                        ],
+                        "actionDescription": "任踏上斜板靠碼頭的一端，用手勢讓水手把木箱轉向船艏。",
+                        "utterance": "你退；甲板那邊，把箱角往左帶。",
+                        "nonverbal": "他沒有站進木箱正下方。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-ren",
+                                "field": "zoneId",
+                                "before": "quay",
+                                "after": "ramp"
+                            },
+                            {
+                                "entityId": "porter",
+                                "field": "state",
+                                "before": "進退兩難",
+                                "after": "退回碼頭"
+                            },
+                            {
+                                "entityId": "crate",
+                                "field": "state",
+                                "before": "朝斜板滑動",
+                                "after": "被水手轉向船艏"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "腳夫倒退下斜板；水手改拉左側繩環。"
+                        ],
+                        "resultingStateSummary": "木箱離開斜板軸線，人員退出夾擊區。"
+                    },
+                    {
+                        "beatId": "ren-b3",
+                        "perceivedEntityIds": [
+                            "gangplank",
+                            "tide",
+                            "hook",
+                            "harbor-master"
+                        ],
+                        "chosenPriority": "撤離斜板並切斷船岸通行",
+                        "actionType": "WITHDRAW",
+                        "targetEntityIds": [
+                            "npc-eval-ren",
+                            "gangplank",
+                            "hook"
+                        ],
+                        "actionDescription": "任退回碼頭，取吊鉤勾住斜板，讓船上收板。",
+                        "utterance": "收板，這一潮先停工。",
+                        "nonverbal": "他等雙腳回到乾石面才開始拉鉤。",
+                        "stateChanges": [
+                            {
+                                "entityId": "npc-eval-ren",
+                                "field": "zoneId",
+                                "before": "ramp",
+                                "after": "quay"
+                            },
+                            {
+                                "entityId": "hook",
+                                "field": "state",
+                                "before": "掛在牆架",
+                                "after": "勾住斜板內側"
+                            },
+                            {
+                                "entityId": "gangplank",
+                                "field": "state",
+                                "before": "右側下沉",
+                                "after": "被拉回甲板"
+                            }
+                        ],
+                        "otherActorReactions": [
+                            "水手收板；港務員封住碼頭入口；買主不再催人上船。"
+                        ],
+                        "resultingStateSummary": "船岸動線完全斷開，漲潮期間停止卸貨。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ]
+        }
+    ]
+}

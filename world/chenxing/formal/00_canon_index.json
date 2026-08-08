@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "chenxing-formal-canon-index-v1",
+  "status": "CHENXING_FORMAL_CANON_INDEX_ACTIVE",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "purpose": "Author-approved formal world canon for 塵行. This layer sits above frozen raw archive and below foundation cards / setting pack / runtime SQLite.",
+  "authorityOrder": [
+    "world/chenxing/formal/",
+    "memory/active_world_source.json",
+    "memory/quarterfull_world_memory_capsule.json",
+    "world/chenxing/raw/"
+  ],
+  "rawArchiveRule": "world/chenxing/raw/ is byte-frozen source material. Where raw conflicts with formal/, formal/ wins.",
+  "formalDocuments": [
+    {
+      "id": "chenxing-formal-01-author-canon",
+      "path": "world/chenxing/formal/01_author_canon_decisions.json",
+      "status": "author_locked",
+      "topic": "series title, protagonist, companion, location order, non-formal raw policy"
+    },
+    {
+      "id": "chenxing-formal-02-cultivation",
+      "path": "world/chenxing/formal/02_cultivation_system_v1.json",
+      "status": "author_locked",
+      "topic": "cultivation realms, social meaning, first-volume visibility"
+    },
+    {
+      "id": "chenxing-formal-03-completion-register",
+      "path": "world/chenxing/formal/03_world_completion_register.json",
+      "status": "active_planning",
+      "topic": "world completion roadmap, gaps, one-question-per-session workflow"
+    },
+    {
+      "id": "chenxing-formal-04-foundation-cards",
+      "path": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json",
+      "status": "validator_compliant_planning_derivative",
+      "topic": "foundation cards derived from locked formal canon; engine contract surface only"
+    },
+    {
+      "id": "chenxing-formal-10-huiguan",
+      "path": "world/chenxing/formal/10_huiguan_fortress_v1.json",
+      "status": "provisional_author_assigned",
+      "topic": "temporary opening fortress placement; rewriteable"
+    },
+    {
+      "id": "chenxing-formal-11-macro-skeleton",
+      "path": "world/chenxing/formal/11_macro_world_skeleton_v1.json",
+      "status": "author_assigned_skeleton",
+      "topic": "durable five-domain macro world skeleton"
+    },
+    {
+      "id": "chenxing-formal-12-rewrite-direction",
+      "path": "world/chenxing/formal/12_rewrite_direction_v1.json",
+      "status": "author_locked",
+      "topic": "reader attraction model: exploration, curiosity, visible progress"
+    },
+    {
+      "id": "chenxing-formal-20-protagonist-pair",
+      "path": "world/chenxing/formal/20_protagonist_pair_v1.json",
+      "status": "author_locked",
+      "topic": "陸塵行 and 愛醬 dual protagonist backgrounds and relationship"
+    },
+    {
+      "id": "chenxing-formal-23-visual-appearance",
+      "path": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "status": "author_locked",
+      "topic": "陸塵行 and 愛醬 cinematic visual baseline matching formal cover"
+    },
+    {
+      "id": "chenxing-formal-24-series-cover",
+      "path": "world/chenxing/formal/24_series_cover_v1.json",
+      "status": "author_locked",
+      "topic": "formal 塵行 cover and cinematic dark-fantasy style lock"
+    },
+    {
+      "id": "chenxing-formal-25-opening-modern-costume",
+      "path": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "status": "author_locked",
+      "topic": "陸塵行 2026 台灣開場現代服裝：背心汗衫、短袖外套、短褲、登山鞋、側背包"
+    },
+    {
+      "id": "chenxing-formal-26-opening-storyboard",
+      "path": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+      "status": "author_locked",
+      "topic": "第一卷開場 9 拍分鏡試看：大坪海岸至山坡廢墟"
+    },
+    {
+      "id": "chenxing-formal-27-opening-preview-style",
+      "path": "world/chenxing/formal/27_opening_preview_visual_style_v1.json",
+      "status": "author_locked",
+      "topic": "試看畫面風格鎖：黑白分鏡、霧氣電影感、暗雨青綠插畫（與角色長相鎖分離）"
+    },
+    {
+      "id": "chenxing-formal-28-ruin-interior-storyboard",
+      "path": "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json",
+      "status": "author_locked",
+      "topic": "第一卷廢墟內部慢推進分鏡：beats 10-18，門檻、玻璃瓶、黃金，穿越尚未發生"
+    },
+    {
+      "id": "chenxing-formal-29-script-first-charter",
+      "path": "world/chenxing/formal/29_project_script_first_charter_v1.json",
+      "status": "author_locked",
+      "topic": "專案立項：產出劇本與 shot 文字；Seedance 2.0 影片為下游，有聲漫畫非終點"
+    },
+    {
+      "id": "chenxing-formal-35-provisional-layer",
+      "path": "world/chenxing/formal/35_provisional_layer_charter_v1.json",
+      "status": "author_locked",
+      "topic": "MVP-8 試用層章程：讀者優先、留白區、試用提案、延後 promote"
+    },
+    {
+      "id": "chenxing-formal-13-exploration-cadence",
+      "path": "world/chenxing/formal/13_exploration_progress_cadence_v1.json",
+      "status": "author_locked",
+      "topic": "long-term learning themes vs volume-one linear delivery"
+    },
+    {
+      "id": "chenxing-formal-21-volume-one-opening",
+      "path": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+      "status": "author_locked",
+      "topic": "volume one Taiwan opening: 基隆八斗子大坪海岸, typhoon Bavi arc"
+    },
+    {
+      "id": "chenxing-formal-22-opening-prologue",
+      "path": "world/chenxing/formal/22_volume_one_opening_prologue_v1.json",
+      "status": "author_locked",
+      "topic": "ghost-story prologue: Japanese northern power legacy and hidden deposit hook"
+    },
+    {
+      "id": "chenxing-formal-30-volume-one-secrets",
+      "path": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json",
+      "status": "author_locked",
+      "topic": "逆行門計畫：封存實驗、别界裂缝、日方先遣队有进无出"
+    },
+    {
+      "id": "chenxing-formal-32-crossing-experience",
+      "path": "world/chenxing/formal/32_crossing_experience_v1.json",
+      "status": "author_locked",
+      "topic": "slow atmospheric entry, suspense buildup, ambiguous crossing time"
+    },
+    {
+      "id": "chenxing-formal-33-ruin-discoveries",
+      "path": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json",
+      "status": "author_locked",
+      "topic": "experiment remnants, preserved dead, grey bottles, gold, no return"
+    },
+    {
+      "id": "chenxing-formal-34-spatial-pocket",
+      "path": "world/chenxing/formal/34_spatial_pocket_two_doors_v1.json",
+      "status": "author_locked",
+      "topic": "two-door independent spatial segment explains hidden ruin"
+    }
+  ],
+  "notYetFormal": [
+    "蒼梧關要塞卡",
+    "蘇橋正式人設",
+    "前四十七天空白定稿",
+    "第一卷配角網（譚霧、薛家、甄嵐等）"
+  ],
+  "provisionalLayerNote": "配角網等缺口已列入 MVP-8 INTENTIONALLY_THIN 留白區；可先試用後 promote，不必事前 formal 定稿。",
+  "nextSessionRule": "Ask exactly one completion-register question, resolve exactly one block, then update formal JSON.",
+  "rewritePolicy": "Opening fortress drafts are replaceable. Macro skeleton, protagonist, companion, and cultivation system are the durable foundation."
+}

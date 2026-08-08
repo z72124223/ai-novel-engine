@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "chenxing-visual-asset-inventory-v1",
+  "inventoryId": "wp003-chenxing-visual-assets-v1",
+  "status": "WP003_EVIDENCE_INVENTORY",
+  "createdAt": "2026-07-11T00:00:00+08:00",
+  "worldId": "chenxing",
+  "sourceCommitSha": "02c32925ed5c2dc5101f429fda2e6fa9184d732a",
+  "scope": "WP-003 inventory only; no image generation, visual approval, Canon write, or ChatGPT attachment claim.",
+  "characters": [
+    {
+      "recordId": "lu-production-body-v2", "entityId": "char-lu-chenxing", "assetRole": "PRODUCTION_BODY_LIKENESS_TURNAROUND",
+      "repositoryPath": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:productionTurnaroundPair.luChenxing", "world/chenxing/formal/23_character_visual_appearance_v1.json:陸塵行.turnaroundRequirement"],
+      "authorityStatus": "AUTHOR_LOCKED_REFERENCE", "integrityStatus": "EXISTS_HASHED", "version": "photo_set_123123_closest_body_v2", "storyPhase": "volume_one_taiwan_opening", "mediaType": "image/png", "byteSize": 212727,
+      "sha256": "500dd5480a6c61c5b335ee446d178fec1766e42761e7447c6fca1de6a63d199f", "width": 1248, "height": 832, "aspectRatio": "3:2",
+      "lockedTraits": ["age_36", "height_174_cm", "weight_80_kg", "stocky_slight_overweight", "buzz_cut", "glasses_required", "no_facial_hair", "same_face_and_bone_structure_across_weight_change"],
+      "forbiddenDrift": ["teen", "lean_opening_body", "messy_hair", "missing_glasses", "facial_hair", "different_face_structure"],
+      "allowedUsage": ["opening body and full-body likeness reference"], "forbiddenUsage": ["proof of ChatGPT attachment", "automatic visual approval"],
+      "requiredForPilot": true, "requirementCategory": "BODY", "chatGptUploadPolicy": "UPLOAD_REQUIRED", "supersedes": ["world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png"], "supersededBy": null, "notes": "Formal authority is documentary; integrity metadata does not add visual approval."
+    },
+    {
+      "recordId": "lu-face-reference-v1", "entityId": "char-lu-chenxing", "assetRole": "FACE_REFERENCE", "repositoryPath": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:productionAssets.luChenxingFaceReference", "world/chenxing/formal/23_character_visual_appearance_v1.json:陸塵行.faceReference"],
+      "authorityStatus": "AUTHOR_LOCKED_REFERENCE", "integrityStatus": "EXISTS_HASHED", "version": "v1", "storyPhase": "all_lu_chenxing_phases", "mediaType": "image/jpeg", "byteSize": 179593,
+      "sha256": "7f4635f99fa64c709a07a71edf8da677d42ceac3f5f28c2e44952ffcf5436142", "width": 1440, "height": 1799, "aspectRatio": "1440:1799",
+      "lockedTraits": ["oval_round_face", "soft_jaw", "straight_medium_nose", "full_lips", "thick_straight_eyebrows", "fair_skin"], "forbiddenDrift": ["different_identity", "teen", "missing_glasses"],
+      "allowedUsage": ["face likeness binding"], "forbiddenUsage": ["body proportion authority"], "requiredForPilot": true, "requirementCategory": "LIKENESS", "chatGptUploadPolicy": "UPLOAD_REQUIRED", "supersedes": [], "supersededBy": null,
+      "notes": "Byte-identical to photo_set member 482052296_9222150221199888_7678538151390743485_n.jpg."
+    },
+    {
+      "recordId": "lu-photo-set-123123", "entityId": "char-lu-chenxing", "assetRole": "PRIMARY_FACE_PHOTO_SET",
+      "repositoryPaths": [
+        "world/chenxing/assets/reference/photo_set_123123/462589348_8363975343684051_3800811169738595423_n.jpg",
+        "world/chenxing/assets/reference/photo_set_123123/481769929_9222150107866566_59662058392256850_n.jpg",
+        "world/chenxing/assets/reference/photo_set_123123/481977282_9222155441199366_3747273738581420530_n.jpg",
+        "world/chenxing/assets/reference/photo_set_123123/481999308_9222150117866565_5763106164171178365_n.jpg",
+        "world/chenxing/assets/reference/photo_set_123123/482030129_9222150061199904_7789602603531454160_n.jpg",
+        "world/chenxing/assets/reference/photo_set_123123/482052296_9222150221199888_7678538151390743485_n.jpg"
+      ],
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:photoSet123123", "world/chenxing/preview/opening_v1/DRIFT_NOTICE.json:requiredWorkflowForRealFrames.luChenxingRefs"],
+      "authorityStatus": "AUTHOR_LOCKED_REFERENCE", "integrityStatus": "EXISTS_HASHED", "version": "photo_set_123123", "storyPhase": "all_lu_chenxing_phases", "mediaType": "image/jpeg", "byteSize": 1192524,
+      "sha256": ["0f3c0d62601e0352195598f323479e98d0a93ae9301e55f95fd7a3628a7e95cb", "9daee317acd3ecd8e1ed323d281446d08bec13b30bd015d4a66231e8ef41683b", "dc19935012f937b987b09c6120ff5a19434a86cf6fb05564ccff771de9d6529e", "1f0c247836bf5ecc39f7e37b5f0fb8a44b40eccc200cde14208fb9daf27da209", "f867614b52dab19d808be26a4a836fdbe8db5d4910d832f0ac07970617b84ede", "7f4635f99fa64c709a07a71edf8da677d42ceac3f5f28c2e44952ffcf5436142"],
+      "width": [1080,1440,1024,1440,1440,1440], "height": [1080,1800,1281,1800,1800,1799], "aspectRatio": "mixed",
+      "lockedTraits": ["same real-person face set", "face likeness priority"], "forbiddenDrift": ["identity blending", "using the set as opening costume authority"], "allowedUsage": ["face likeness reference set"], "forbiddenUsage": ["costume authority", "ChatGPT attachment inference"],
+      "requiredForPilot": true, "requirementCategory": "LIKENESS", "chatGptUploadPolicy": "UPLOAD_REQUIRED_ALL_MEMBERS", "supersedes": [], "supersededBy": null, "notes": "Six files present; one duplicates lu_chenxing_face_reference_v1.jpg by content hash."
+    },
+    {
+      "recordId": "aijiang-production-turnaround-v1", "entityId": "char-aijiang", "assetRole": "ANIMAL_APPEARANCE_TURNAROUND", "repositoryPath": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:productionTurnaroundPair.aijiang", "world/chenxing/formal/23_character_visual_appearance_v1.json:愛醬.turnaroundRequirement"],
+      "authorityStatus": "AUTHOR_LOCKED_REFERENCE", "integrityStatus": "EXISTS_HASHED", "version": "author_production_turnaround_v1", "storyPhase": "all_aijiang_phases", "mediaType": "image/jpeg", "byteSize": 446178,
+      "sha256": "1cac692b31cf469e06c3249c3fdd19dd9693129bc3698ec4d81255f697f1adcb", "width": 2560, "height": 1440, "aspectRatio": "16:9",
+      "lockedTraits": ["athletic_well_balanced_husky", "black_dark_gray_silver_gray_and_white", "symmetrical_facial_mask", "ice_blue_eyes", "upright_triangular_ears", "fluffy_plume_tail", "dense_double_coat", "no_collar_no_harness_default"],
+      "forbiddenDrift": ["marking_drift", "eye_color_drift", "default_collar_or_harness"], "allowedUsage": ["authoritative Aijiang appearance"], "forbiddenUsage": ["automatic approval of generated candidates"],
+      "requiredForPilot": true, "requirementCategory": "ANIMAL_APPEARANCE", "chatGptUploadPolicy": "UPLOAD_REQUIRED", "supersedes": ["world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg", "world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png"], "supersededBy": null, "notes": "Authoritative Aijiang reference."
+    },
+    {
+      "recordId": "aijiang-prior-concept", "entityId": "char-aijiang", "assetRole": "HISTORICAL_CONCEPT_SHEET", "repositoryPath": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:referenceImagePolicy.aijiangPriorConceptSheet", "world/chenxing/formal/23_character_visual_appearance_v1.json:愛醬.priorConceptSheet.status"],
+      "authorityStatus": "SUPERSEDED_HISTORICAL", "integrityStatus": "EXISTS_HASHED", "version": "historical", "storyPhase": "historical_only", "mediaType": "image/jpeg", "byteSize": 411326, "sha256": "1d67993ca199d0e8439a626550ee19ed5579161f45e41af3494927fd71dde9db", "width": 1706, "height": 960, "aspectRatio": "853:480",
+      "lockedTraits": [], "forbiddenDrift": ["must_not_seed_formal_generation"], "allowedUsage": ["historical evidence"], "forbiddenUsage": ["formal generation reference"], "requiredForPilot": false, "requirementCategory": "OPTIONAL_CONTEXT", "chatGptUploadPolicy": "DO_NOT_UPLOAD_FOR_FORMAL_GENERATION", "supersedes": [], "supersededBy": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg", "notes": "Not an authoritative likeness source."
+    },
+    {
+      "recordId": "lu-missing-phase-turnarounds", "entityId": "char-lu-chenxing", "assetRole": "REFERENCED_PHASE_TURNAROUNDS", "repositoryPaths": ["world/chenxing/assets/turnaround/lu_chenxing_lean_base_turnaround_v1.png", "world/chenxing/assets/turnaround/lu_chenxing_opening_stocky_turnaround_v1.png", "world/chenxing/assets/turnaround/lu_chenxing_cinematic_turnaround_v2.png"],
+      "formalAuthoritySources": ["world/chenxing/formal/23_character_visual_appearance_v1.json:陸塵行.bodyProgressionPlan"], "authorityStatus": "MISSING_REFERENCED_FILE", "integrityStatus": "MISSING", "version": "v1-v2_referenced", "storyPhase": "body_progression_and_cover_imagery", "mediaType": null, "byteSize": null, "sha256": null, "width": null, "height": null, "aspectRatio": null,
+      "lockedTraits": ["same face and bone structure across weight change"], "forbiddenDrift": ["substitute missing paths with guessed images"], "allowedUsage": ["missing-file evidence"], "forbiddenUsage": ["formal generation binding"], "requiredForPilot": false, "requirementCategory": "BODY", "chatGptUploadPolicy": "NOT_APPLICABLE_MISSING", "supersedes": [], "supersededBy": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png", "notes": "Opening Pilot uses the present production turnaround; these referenced phase assets are not required for Shot 01-03."
+    }
+  ],
+  "costumes": [{
+    "recordId": "lu-opening-modern-costume-v1", "entityId": "char-lu-chenxing", "assetRole": "OPENING_COSTUME_TURNAROUND", "repositoryPath": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+    "formalAuthoritySources": ["world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json:productionAsset", "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json:productionAssets.luChenxingCostume"], "authorityStatus": "AUTHOR_LOCKED_REFERENCE", "integrityStatus": "EXISTS_HASHED", "version": "opening_modern_costume_v1", "storyPhase": "volume_one_taiwan_opening_2026", "mediaType": "image/png", "byteSize": 207845, "sha256": "e11757d2bfb5589ae4f7e78f982618110c9a908d4c8cfee9bce1ba3d26cd72f3", "width": 1248, "height": 832, "aspectRatio": "3:2",
+    "lockedTraits": ["black_tank_undershirt", "charcoal_short_sleeve_utility_jacket", "dark_outdoor_shorts", "hiking_boots", "black_crossbody_bag_left_shoulder_to_right_hip", "thin_black_rectangular_glasses", "small_silver_hoop_earring_left_ear"], "forbiddenDrift": ["ancient_costume", "cultivation_robes", "hooded_dark_fantasy_traveler", "formal_suit"],
+    "allowedUsage": ["2026 Daping Coast opening"], "forbiddenUsage": ["treat cover or post-crossing clothing as opening costume"], "requiredForPilot": true, "requirementCategory": "COSTUME", "chatGptUploadPolicy": "UPLOAD_REQUIRED", "supersedes": ["dark_hooded_traveler_for_opening"], "supersededBy": null, "notes": "Cover/post-crossing clothing remains phase-specific, not deleted."
+  }],
+  "styles": [
+    {"recordId":"style-opening-cinematic-misty","entityId":"style-chenxing","assetRole":"RENDER_STYLE_REFERENCE","repositoryPath":"world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png","formalAuthoritySources":["world/chenxing/formal/27_opening_preview_visual_style_v1.json:authorStyleReferences.projectPaths.cinematicMistyGrid"],"authorityStatus":"STYLE_REFERENCE_ONLY","integrityStatus":"EXISTS_HASHED","version":"v1","storyPhase":"volume_one_taiwan_opening","mediaType":"image/png","byteSize":3010320,"sha256":"a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a","width":1536,"height":1024,"aspectRatio":"3:2","lockedTraits":["heavy_fog","atmospheric_perspective","cinematic_depth","muted_desaturated_color"],"forbiddenDrift":["borrow_character_likeness_or_costume"],"allowedUsage":["opening cinematic render style"],"forbiddenUsage":["likeness authority","costume authority"],"requiredForPilot":true,"requirementCategory":"STYLE_ONLY","chatGptUploadPolicy":"UPLOAD_REQUIRED","supersedes":[],"supersededBy":null,"notes":"Permitted for Taiwan opening."},
+    {"recordId":"style-opening-bw-storyboard","entityId":"style-chenxing","assetRole":"STORYBOARD_STYLE_REFERENCE","repositoryPath":"world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png","formalAuthoritySources":["world/chenxing/formal/27_opening_preview_visual_style_v1.json:authorStyleReferences.projectPaths.bwStoryboardGrid"],"authorityStatus":"STYLE_REFERENCE_ONLY","integrityStatus":"EXISTS_HASHED","version":"v1","storyPhase":"volume_one_taiwan_opening","mediaType":"image/png","byteSize":2957475,"sha256":"8bb277303004ffa7445bc94f8d3203e42e911c07dcda4919b4fc3c24c6b70898","width":1536,"height":1024,"aspectRatio":"3:2","lockedTraits":["high_contrast_bw_ink","graphic_novel_storyboard"],"forbiddenDrift":["borrow_character_likeness_or_costume"],"allowedUsage":["opening storyboard pass"],"forbiddenUsage":["likeness authority","costume authority"],"requiredForPilot":false,"requirementCategory":"STYLE_ONLY","chatGptUploadPolicy":"OPTIONAL_ALTERNATE_STYLE","supersedes":[],"supersededBy":null,"notes":"Permitted opening style; not needed if cinematic misty mode is selected."},
+    {"recordId":"style-dark-rain-teal","entityId":"style-chenxing","assetRole":"POST_CROSSING_STYLE_REFERENCE","repositoryPath":"world/chenxing/assets/style_reference/chenxing_style_dark_rain_teal_cinematic_v1.png","formalAuthoritySources":["world/chenxing/formal/27_opening_preview_visual_style_v1.json:styleModeByStoryPhase"],"authorityStatus":"STYLE_REFERENCE_ONLY","integrityStatus":"EXISTS_HASHED","version":"v1","storyPhase":"post_crossing_fortress_and_fantasy","mediaType":"image/png","byteSize":2403772,"sha256":"8eaf080c28fde118e65b7d2e7d8f410d8920158632365395d41f532ec8912c56","width":1672,"height":941,"aspectRatio":"1672:941","lockedTraits":["dark_rain","teal_cyan_rim_light","wet_reflections"],"forbiddenDrift":["use_as_primary_opening_style","borrow_character_or_costume"],"allowedUsage":["post-crossing fantasy phase"],"forbiddenUsage":["Shot 01-03 style authority"],"requiredForPilot":false,"requirementCategory":"STYLE_ONLY","chatGptUploadPolicy":"DO_NOT_UPLOAD_FOR_OPENING_PILOT","supersedes":[],"supersededBy":null,"notes":"Phase-specific."},
+    {"recordId":"style-formal-cover","entityId":"style-chenxing","assetRole":"FORMAL_COVER_STYLE_REFERENCE","repositoryPath":"world/chenxing/assets/cover/chenxing_cover_v1.png","formalAuthoritySources":["world/chenxing/formal/24_series_cover_v1.json:formalCover","world/chenxing/formal/23_character_visual_appearance_v1.json:activeVisualStyle"],"authorityStatus":"AUTHOR_LOCKED_REFERENCE","integrityStatus":"EXISTS_HASHED","version":"v1","storyPhase":"series_cover_and_fortress_key_art","mediaType":"image/png","byteSize":2468316,"sha256":"0c7febcebc5a61856288dfba4b65b4f194575d3d3c27f8f8da5d42d9f0c0c190","width":1055,"height":1491,"aspectRatio":"1055:1491","lockedTraits":["cinematic_realistic_dark_fantasy"],"forbiddenDrift":["use_cover_clothing_as_2026_opening_costume"],"allowedUsage":["series cover and broad style context"],"forbiddenUsage":["opening costume authority"],"requiredForPilot":false,"requirementCategory":"STYLE_ONLY","chatGptUploadPolicy":"OPTIONAL_CONTEXT","supersedes":[],"supersededBy":null,"notes":"Relevant as formal series style, but opening phase rules are narrower."},
+    {
+      "recordId": "style-candidates-v2-group",
+      "entityId": "style-chenxing",
+      "assetRole": "STYLE_CANDIDATES_GROUP",
+      "repositoryPaths": [
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f1_hyperreal_storm_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f1_hyperreal_storm_v2.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f2_ink_wash_rain_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f2_ink_wash_rain_v2.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f3_film_grain_sepia_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f3_film_grain_sepia_v2.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f4_neon_teal_rain_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f4_neon_teal_rain_v2.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f5_graphite_noir_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f5_graphite_noir_v2.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f6_2d_manga_cover_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f7_jp_manga_bold_line_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f7b_jp_manga_extra_bold_line_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f7c_jp_manga_round_face_v1.jpg",
+        "world/chenxing/assets/style_reference/candidates_v2/style_candidate_f7d_jp_manga_extra_round_face_v1.jpg"
+      ],
+      "formalAuthoritySources": [
+        "world/chenxing/formal/27_opening_preview_visual_style_v1.json:styleModeByStoryPhase"
+      ],
+      "authorityStatus": "CANDIDATE_ONLY",
+      "integrityStatus": "EXISTS_HASHED",
+      "version": "candidates_v2",
+      "storyPhase": "unselected_style_exploration",
+      "mediaType": "image/jpeg",
+      "byteSize": 6427152,
+      "sha256": [
+        "3390a219952d151124a3294de2d017331aba1de8bbd6a9f13d0c79fc125904d7",
+        "03dfaa81d9295db17db42c87b55ec8bbff96f597e1370179968ceef3ab8ede45",
+        "549ddbed5f82d8f5fe79eaa15458b7bb99428149b8cff7874d1d834c81c79658",
+        "cf336c1a14cef5591d09ab3c51d8a2f553a9da1fed42b50e6c12448287f14df9",
+        "ae76059ae7db7805e6084e7fab5a10b38a9a8506c89d73fdf2ed14b1cb526354",
+        "353d63680f57fdaf9f66519c73ba055818efea261f3f034d43a2ea702d6271a4",
+        "838c86b63659552f2a3dca2254032c81d75ac41b8009a8580daebf29b39cd117",
+        "564fd519d617ed617457bcd367e4df4ebf45cd7dbf8f4761e7b2a3a8ae71cf72",
+        "1c19d811c461bb80cdbf4db6a521bc39274aeafa5990eb29b9c155bddb67dbfc",
+        "a17b79a54b718a07a7df8a608dee6cac6a0af3f43e0d4f25fcd0ad9ee8cc6d19",
+        "b43e5ffda88c0007fa0569102119ae23c0936bcf8937446a52994d490a5a8411",
+        "7c0d953df803000b8f9badae1c6a102e2aca42a680a0b56c7d5abeb5f94aa151",
+        "23f639d472e5d221b8fb81400bf102e8555f28927dc3a39e1b80f4e77888cec1",
+        "79d22278402c96edbef0a22dc5d993db8a48597554082a6bb291e975a60f47c3",
+        "9e2096002fdae05e65673324a29a59f3b9e9952a581d404b5a0c8fdca9d77758"
+      ],
+      "width": [1280, 864, 864, 864, 864, 864, 864, 1152, 864, 864, 864, 864, 864, 864, 864],
+      "height": [720, 1152, 1152, 1152, 1152, 1152, 1152, 864, 1152, 1152, 1152, 1152, 1152, 1152, 1152],
+      "aspectRatio": "mixed",
+      "lockedTraits": [],
+      "forbiddenDrift": ["treat_as_selected_authority"],
+      "allowedUsage": ["candidate evidence only"],
+      "forbiddenUsage": ["formal Shot 01-03 reference"],
+      "requiredForPilot": false,
+      "requirementCategory": "STYLE_ONLY",
+      "chatGptUploadPolicy": "DO_NOT_UPLOAD_FOR_FORMAL_PILOT",
+      "supersedes": [],
+      "supersededBy": null,
+      "notes": "Fifteen files exist and are individually hashed and dimensioned; no formal source selects them."
+    }
+  ],
+  "props": [
+    {"recordId":"prop-phone","entityId":"prop-phone","assetRole":"SHOT_PROP","repositoryPath":null,"formalAuthoritySources":["world/chenxing/formal/26_volume_one_opening_storyboard_v1.json:shots[shot-01-tide-check].visual"],"authorityStatus":"TEXTUAL_AUTHORITY_ONLY","integrityStatus":"NOT_APPLICABLE","version":"text-v1","storyPhase":"shot-01","mediaType":null,"byteSize":null,"sha256":null,"width":null,"height":null,"aspectRatio":null,"lockedTraits":["phone used to check tide"],"forbiddenDrift":[],"allowedUsage":["prompt-visible prop"],"forbiddenUsage":["claim dedicated prop image exists"],"requiredForPilot":true,"requirementCategory":"PROP_GEOMETRY","chatGptUploadPolicy":"NO_FILE_TEXT_BINDING","supersedes":[],"supersededBy":null,"notes":"No dedicated visual reference."},
+    {"recordId":"prop-tide-notes","entityId":"prop-tide-notes","assetRole":"SHOT_PROP","repositoryPath":null,"formalAuthoritySources":["world/chenxing/formal/26_volume_one_opening_storyboard_v1.json:shots[shot-01-tide-check].visual"],"authorityStatus":"TEXTUAL_AUTHORITY_ONLY","integrityStatus":"NOT_APPLICABLE","version":"text-v1","storyPhase":"shot-01","mediaType":null,"byteSize":null,"sha256":null,"width":null,"height":null,"aspectRatio":null,"lockedTraits":["tide notes visible with phone"],"forbiddenDrift":[],"allowedUsage":["prompt-visible prop"],"forbiddenUsage":["claim dedicated prop image exists"],"requiredForPilot":true,"requirementCategory":"PROP_GEOMETRY","chatGptUploadPolicy":"NO_FILE_TEXT_BINDING","supersedes":[],"supersededBy":null,"notes":"No dedicated visual reference."},
+    {"recordId":"prop-glasses-bag-boots","entityId":"char-lu-chenxing","assetRole":"COSTUME_CONTINUITY_PROPS","repositoryPath":"world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png","formalAuthoritySources":["world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json:openingModernCostume"],"authorityStatus":"AUTHOR_LOCKED_REFERENCE","integrityStatus":"EXISTS_HASHED","version":"opening_modern_costume_v1","storyPhase":"shots-01-03","mediaType":"image/png","byteSize":207845,"sha256":"e11757d2bfb5589ae4f7e78f982618110c9a908d4c8cfee9bce1ba3d26cd72f3","width":1248,"height":832,"aspectRatio":"3:2","lockedTraits":["glasses_required","black_crossbody_bag","hiking_boots"],"forbiddenDrift":["missing_glasses","military_tactical_bag","non_outdoor_footwear"],"allowedUsage":["costume and prop continuity"],"forbiddenUsage":["phone or tide-note geometry authority"],"requiredForPilot":true,"requirementCategory":"COSTUME","chatGptUploadPolicy":"UPLOAD_REQUIRED","supersedes":[],"supersededBy":null,"notes":"Same physical file as costume record; upload once."},
+    {"recordId":"prop-rock-platform-seam","entityId":"loc-daping-coast","assetRole":"LOCATION_CONTINUITY_ANCHOR","repositoryPath":null,"formalAuthoritySources":["world/chenxing/formal/26_volume_one_opening_storyboard_v1.json:shots[shot-02-strange-find]","world/chenxing/formal/26_volume_one_opening_storyboard_v1.json:shots[shot-03-overfocus]"],"authorityStatus":"TEXTUAL_AUTHORITY_ONLY","integrityStatus":"NOT_APPLICABLE","version":"storyboard-v1","storyPhase":"shots-02-03","mediaType":null,"byteSize":null,"sha256":null,"width":null,"height":null,"aspectRatio":null,"lockedTraits":["coastal rock platform","unnatural seam","artificial edge","finger comparison continuity"],"forbiddenDrift":["natural-only rock texture","seam location changes between shots"],"allowedUsage":["textual location anchor"],"forbiddenUsage":["claim location image exists"],"requiredForPilot":true,"requirementCategory":"LOCATION_GEOMETRY","chatGptUploadPolicy":"BLOCKED_NO_FILE","supersedes":[],"supersededBy":null,"notes":"Blocking Location Bible gap."
+    }
+  ],
+  "rejectedOrSupersededEvidence": [
+    {"path":"world/chenxing/preview/opening_v1/DRIFT_NOTICE.json","authorityStatus":"REJECTED_DRIFT","evidence":"whatFailed.authorVerdict and requiredWorkflowForRealFrames","rule":"Ten text-only preview frames cannot seed formal shots unless the user explicitly reverses the decision."},
+    {"path":"world/chenxing/assets/turnaround/lu_chenxing_2d_turnaround_v1.png","authorityStatus":"SUPERSEDED_HISTORICAL","integrityStatus":"MISSING","evidence":"world/chenxing/formal/23_character_visual_appearance_v1.json:supersededAssets"},
+    {"path":"world/chenxing/assets/turnaround/aijiang_2d_turnaround_v1.png","authorityStatus":"SUPERSEDED_HISTORICAL","integrityStatus":"MISSING","evidence":"world/chenxing/formal/23_character_visual_appearance_v1.json:supersededAssets"}
+  ],
+  "integritySummary": {"presentImageFilesInventoried": 30, "presentRequiredPilotUploadFiles": 10, "missingReferencedCharacterFiles": 5, "dimensionReader": "System.Drawing already available; no dependency installed", "fileExistenceDoesNotEqualVisualApproval": true},
+  "warnings": ["No private sourcePath values were copied from formal JSON.", "No location image exists for Daping Coast or ruin geometry.", "Repository paths do not establish ChatGPT attachment state."]
+}

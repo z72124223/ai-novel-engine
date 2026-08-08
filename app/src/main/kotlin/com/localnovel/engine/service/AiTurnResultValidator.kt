@@ -4,9 +4,11 @@ import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DeltaOperation
 import com.localnovel.engine.model.DeltaOperationType
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.ValidationError
 import com.localnovel.engine.model.ValidationReport
 import com.localnovel.engine.repository.StoryRepository
+import com.localnovel.engine.repository.SqliteStoryRepository
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -14,7 +16,11 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
 class AiTurnResultValidator(private val repository: StoryRepository) {
-    fun validate(context: ContextPacket, result: AiTurnResult): ValidationReport {
+    fun validate(
+        context: ContextPacket,
+        result: AiTurnResult,
+        physicalContext: FormalTurnPhysicalValidationContext? = null,
+    ): ValidationReport {
         val errors = mutableListOf<ValidationError>()
 
         if (result.projectId != context.project.id) {
@@ -77,6 +83,11 @@ class AiTurnResultValidator(private val repository: StoryRepository) {
             if (phrase.isNotBlank() && operationPayloadText.any { it.contains(phrase) }) {
                 errors += ValidationError("forbidden_reveal", "State delta contains forbidden reveal phrase: '$phrase'.")
             }
+        }
+
+        errors += FormalTurnPhysicalGateValidator().validate(context, result, physicalContext)
+        if (repository is SqliteStoryRepository) {
+            errors += FormalPhysicalStatePersistenceValidator(repository).validate(context, result, physicalContext)
         }
 
         return ValidationReport(errors)

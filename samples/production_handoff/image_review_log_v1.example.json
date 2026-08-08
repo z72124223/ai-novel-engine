@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "image-review-log-v1",
+  "handoffId": "handoff-example-wp002a",
+  "logStatus": "PENDING_USER_REVIEW",
+  "candidateReviews": [
+    {
+      "reviewId": "review-example-not-for-production-001",
+      "shotId": "example-shot-not-for-production-001",
+      "candidateId": "candidate-example-not-yet-generated-001",
+      "candidateFilePath": null,
+      "sourceFileSha256": null,
+      "reviewState": "PENDING_USER_REVIEW",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "driftFindings": [],
+      "decisionReason": "No candidate has been generated or reviewed; this row demonstrates the pending state only.",
+      "exactCandidateIdentity": {
+        "expectedFileName": "example_shot_candidate.png",
+        "hashStatus": "PENDING_CODEX_INTAKE"
+      }
+    }
+  ],
+  "approvalBoundary": {
+    "approvalAppliesToCandidateOnly": true,
+    "candidateReferenceAcceptanceStillRequired": true,
+    "technicalPassIsNotApproval": true
+  },
+  "exampleOnly": true
+}

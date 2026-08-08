@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0",
+  "status": "RETRIEVAL_01_OFFLINE_DUAL_MODEL_BENCHMARK_COMPLETE",
+  "verdict": "PASS",
+  "querySetId": "chenxing-retrieval-benchmark-v1",
+  "querySetSha256": "64bbc5ca0b9cd88624cf6f93a47754fb6f2a45988962fbd46058c40403006a76",
+  "databaseLogicalContentHash": "30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32",
+  "queryCount": 50,
+  "retrievableCount": 38,
+  "blockedByPolicyCount": 6,
+  "corpusGapCount": 6,
+  "chunkCount": 255,
+  "labelGranularity": "EXPECTED_SOURCE_ID",
+  "modelLock": {
+    "embedding": {
+      "repository": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "modelSha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+      "tokenizerSha256": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a"
+    },
+    "reranker": {
+      "repository": "Qwen/Qwen3-Reranker-0.6B",
+      "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+      "modelSha256": "27cd75a405b9c1b46b59abfd88aaa209e6fed2a1972cde9b70e7659537c5e65b",
+      "tokenizerSha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    }
+  },
+  "runtime": {
+    "python": "3.13.9",
+    "torch": "2.7.1+cu118",
+    "transformers": "4.53.3",
+    "cudaRuntime": "11.8",
+    "gpu": "NVIDIA GeForce GTX 1080 Ti",
+    "gpuComputeCapability": "6.1",
+    "totalVramMiB": 11263.75
+  },
+  "metrics": {
+    "embeddingTop50HitCount": 38,
+    "embeddingTop50HitRate": 1.0,
+    "embeddingTop8HitCount": 38,
+    "embeddingTop8HitRate": 1.0,
+    "finalTop8HitCount": 38,
+    "finalTop8HitRate": 1.0,
+    "semanticLikeTop8BaselineRate": 0.0,
+    "semanticFinalTop8Rate": 1.0,
+    "semanticImprovementPoints": 100.0,
+    "exactLikeTop8BaselineRate": 1.0,
+    "exactFinalTop8Rate": 1.0,
+    "exactRegressionPoints": 0.0,
+    "visibilityLeakCount": 0,
+    "indexLatencyMs": 39215.52480000537,
+    "indexBatchP50Ms": 539.4734500150662,
+    "indexBatchP95Ms": 1332.4925600201823,
+    "embeddingQueryP50Ms": 120.37595003494062,
+    "embeddingQueryP95Ms": 125.46206998522393,
+    "rerankQueryP50Ms": 5246.67860000045,
+    "rerankQueryP95Ms": 6923.6628950049635,
+    "embeddingPeakVramMiB": 2204.380859375,
+    "rerankerPeakVramMiB": 1988.85693359375,
+    "maxPeakVramMiB": 2204.380859375,
+    "modelAllocationHeadroomMiB": 9059.369140625,
+    "observedMinimumSystemFreeVramMiB": 1821.0
+  },
+  "acceptance": {
+    "queryCountAtLeast50": true,
+    "zeroVisibilityLeaks": true,
+    "allHitsHaveEvidence": true,
+    "embeddingTop50RecallAtLeast90Percent": true,
+    "semanticTop8ImprovementAtLeast5PointsOverLike": true,
+    "exactSubsetRegressionAtMost2Points": true,
+    "deterministicTieOrdering": true,
+    "vramHeadroomAtLeast1GiB": true
+  },
+  "categorySummaries": [
+    {
+      "category": "CAUSAL",
+      "queryCount": 6,
+      "retrievableCount": 6,
+      "embeddingTop50HitCount": 6,
+      "embeddingTop8HitCount": 6,
+      "finalTop8HitCount": 6,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 6
+    },
+    {
+      "category": "CHAPTER_CONTINUITY",
+      "queryCount": 6,
+      "retrievableCount": 6,
+      "embeddingTop50HitCount": 6,
+      "embeddingTop8HitCount": 6,
+      "finalTop8HitCount": 6,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 6
+    },
+    {
+      "category": "CODE_DEVELOPMENT_DOC",
+      "queryCount": 6,
+      "retrievableCount": 0,
+      "embeddingTop50HitCount": 0,
+      "embeddingTop8HitCount": 0,
+      "finalTop8HitCount": 0,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 0
+    },
+    {
+      "category": "EXACT_ENTITY",
+      "queryCount": 10,
+      "retrievableCount": 10,
+      "embeddingTop50HitCount": 10,
+      "embeddingTop8HitCount": 10,
+      "finalTop8HitCount": 10,
+      "likeTop8HitCount": 10,
+      "lexicalTop8HitCount": 10
+    },
+    {
+      "category": "KNOWLEDGE_BOUNDARY",
+      "queryCount": 6,
+      "retrievableCount": 0,
+      "embeddingTop50HitCount": 0,
+      "embeddingTop8HitCount": 0,
+      "finalTop8HitCount": 0,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 0
+    },
+    {
+      "category": "SEMANTIC_PARAPHRASE",
+      "queryCount": 10,
+      "retrievableCount": 10,
+      "embeddingTop50HitCount": 10,
+      "embeddingTop8HitCount": 10,
+      "finalTop8HitCount": 10,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 10
+    },
+    {
+      "category": "TEMPORAL_CURRENT_STATE",
+      "queryCount": 6,
+      "retrievableCount": 6,
+      "embeddingTop50HitCount": 6,
+      "embeddingTop8HitCount": 6,
+      "finalTop8HitCount": 6,
+      "likeTop8HitCount": 0,
+      "lexicalTop8HitCount": 6
+    }
+  ],
+  "verification": {
+    "focusedTests": "4/4 PASS",
+    "fullTests": "876/876 PASS",
+    "jsonParse": "PASS",
+    "sourcePathHashAndQuoteCheck": "PASS",
+    "privateAbsolutePathAndSecretScan": "PASS",
+    "gitDiffCheck": "PASS"
+  },
+  "limitations": [
+    "Current labels identify answer-bearing source documents, not individual answer-bearing chunks.",
+    "The broad lexical source-level baseline covers all nine indexed sources and remains contextual evidence, not a semantic-quality claim.",
+    "The model benchmark is offline evidence only; no runtime integration, Canon write, or character-visible retrieval path was enabled."
+  ]
+}

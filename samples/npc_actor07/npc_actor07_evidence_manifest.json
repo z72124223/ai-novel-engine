@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-07 FORMAL RUNTIME SHADOW",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "schemas/npc_actor/npc_actor_formal_runtime_shadow_v1.schema.json",
+      "sha256": "4e0202e7d4f487194d95fa2a394abb93665715a2a1aef8961529ae3a30351a1f",
+      "bytes": 9113
+    },
+    {
+      "path": "samples/npc_actor07/pilot/npc_actor07_formal_runtime_shadow_input.json",
+      "sha256": "36cfed9024f9f957c019dcc778eb8329199f765be782ca5e09b7ce869f9e120e",
+      "bytes": 3499
+    },
+    {
+      "path": "samples/npc_actor07/pilot/npc_actor07_formal_runtime_shadow_report.json",
+      "sha256": "98ce61a35d1f2ec5b876b7987ce941160f126f4051ae841d15b868999dd2be45",
+      "bytes": 17401
+    }
+  ]
+}

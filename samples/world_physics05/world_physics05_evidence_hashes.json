@@ -1,0 +1,28 @@
+{
+    "schemaVersion": "1.0",
+    "hashAlgorithm": "SHA-256",
+    "scope": "WORLD-PHYSICS-05 EMBODIED SCENE PILOT",
+    "selfHashExcluded": true,
+    "files": [
+        {
+            "path": "samples/world_physics05/screen01_scene03_embodied_physical_pilot_v1.json",
+            "sha256": "899f342e87ee5e1209a721f19266bddbe9683700172d66fc0512a38e126708e7",
+            "bytes": 9086
+        },
+        {
+            "path": "schemas/world_physics/embodied_scene_physical_pilot_v1.schema.json",
+            "sha256": "07e19a1f04802a7be8b9415d8b9433afdd168bcaeb78abd87b1801e748881f1e",
+            "bytes": 5749
+        },
+        {
+            "path": "samples/screen01/screen01_story_production_master.json",
+            "sha256": "ca44bc8b0b5f12cfadb774e24c3cf7518a0b6e124d18a712ecacd305c63108ce",
+            "bytes": 7732
+        },
+        {
+            "path": "samples/screen01/screen01_scene_list.json",
+            "sha256": "3cbf6394d14c339c940442b24cc7db63db11ebb678e4ecc9ce1e362dd3442463",
+            "bytes": 4401
+        }
+    ]
+}

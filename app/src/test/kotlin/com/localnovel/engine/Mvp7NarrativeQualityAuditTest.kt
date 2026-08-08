@@ -374,6 +374,129 @@ class Mvp7NarrativeQualityAuditTest {
     }
 
     @Test
+    fun auditIncludesFindingSummaryByCategoryAndSampleLabel() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = readJson<AiTurnResult>(samplePath("sample_ai_turn_result.json"))
+
+        val report = NarrativeQualityAuditService().audit(
+            context = context,
+            result = result,
+            input = NarrativeQualityAuditInput(
+                contextFile = "samples/sample_context_packet.json",
+                resultFile = "samples/sample_ai_turn_result.json",
+                sampleLabel = "pilot2:turn_001",
+            ),
+        )
+
+        assertEquals("pilot2:turn_001", report.evidence.sampleLabel)
+        assertTrue(report.findingSummaryByCategory.isNotEmpty())
+        assertEquals(
+            report.findings.groupingBy { it.category }.eachCount(),
+            report.findingSummaryByCategory,
+        )
+    }
+
+    @Test
+    fun auditFlagsCausalChainStacking() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "因為沉默，所以恐懼；因為恐懼，所以焦慮；因為焦慮，所以所有人都退後半步。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "維持距離",
+                    visibleAction = "沈霜退後半步。",
+                    hiddenMotive = "避免衝突。",
+                    characterFitScore = 78,
+                    storyProgressScore = 30,
+                ),
+            ),
+            stateDelta = eventDelta("event-causal-chain", "因果鏈堆疊測試。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("AI_FEELING_CAUSAL_CHAIN_STACKING" in ruleIds)
+    }
+
+    @Test
+    fun auditFlagsNotButReframePattern() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "這不是選擇，而是宿命；雨聲裡，眾人仍停在粉線外。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "維持距離",
+                    visibleAction = "沈霜停在粉線外。",
+                    hiddenMotive = "避免衝突。",
+                    characterFitScore = 78,
+                    storyProgressScore = 30,
+                ),
+            ),
+            stateDelta = eventDelta("event-not-but-reframe", "不是而是測試。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("STYLE_NOT_BUT_REFRAME" in ruleIds)
+    }
+
+    @Test
+    fun auditDoesNotFlagWhetherQuestionPattern() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "我不知道是不是他留下的腳印，只先蹲下身查看泥裡的紋路。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "查證腳印",
+                    visibleAction = "沈霜蹲下身查看泥印。",
+                    hiddenMotive = "避免誤判。",
+                    characterFitScore = 84,
+                    storyProgressScore = 36,
+                ),
+            ),
+            stateDelta = eventDelta("event-whether-question", "是不是疑問測試。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("STYLE_NOT_BUT_REFRAME" !in ruleIds)
+    }
+
+    @Test
+    fun auditDoesNotFlagSingleCausalExplanation() {
+        val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
+        val result = AiTurnResult(
+            projectId = context.project.id,
+            turnId = context.turnId,
+            narrative = "因為雨勢未停，所以眾人只能先退到廊下，等巡查重新點名。",
+            characterActions = listOf(
+                CharacterAction(
+                    characterId = "char-shen-shuang",
+                    intent = "維持秩序",
+                    visibleAction = "沈霜示意眾人退到廊下。",
+                    hiddenMotive = "避免混亂。",
+                    characterFitScore = 84,
+                    storyProgressScore = 36,
+                ),
+            ),
+            stateDelta = eventDelta("event-single-causal", "單一因果說明測試。"),
+        )
+
+        val ruleIds = NarrativeQualityAuditService().audit(context, result).findings.map { it.ruleId }.toSet()
+
+        assertTrue("AI_FEELING_CAUSAL_CHAIN_STACKING" !in ruleIds)
+    }
+
+    @Test
     fun auditFlagsBodyInjuryCrackWithoutCostDelta() {
         val context = readJson<ContextPacket>(samplePath("sample_context_packet.json"))
         val result = AiTurnResult(

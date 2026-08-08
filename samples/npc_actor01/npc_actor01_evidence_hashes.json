@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-01 OFFLINE FAKE/FILE PILOT",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "samples/npc_actor01/npc_actor_evaluation_suite_v1.json",
+      "sha256": "699f91f458b36d47ce6e9cb824f57d4e0ac265e73b43841028c72274b3145937",
+      "bytes": 155225
+    },
+    {
+      "path": "samples/npc_actor01/npc_actor01_evaluation_report.json",
+      "sha256": "e4ff5a1e09cadf96533851a9781d1bfefd33c863ea0672836f2f2f1b0b824e6d",
+      "bytes": 1236
+    },
+    {
+      "path": "samples/npc_actor01/npc_actor01_blind_review_packet.json",
+      "sha256": "bcf53bd9344de6bbc8f425cd55f3a9efdfb11dea44efb65e8ecc9d514a4c73de",
+      "bytes": 13167
+    },
+    {
+      "path": "samples/npc_actor01/npc_actor01_blind_review_answer_key.json",
+      "sha256": "3103615a1ce98c6afaf61a668faddaccdcddb540e1e6c077d11c3486e7221fe8",
+      "bytes": 2123
+    },
+    {
+      "path": "samples/npc_actor01/npc_actor01_human_blind_review_result.json",
+      "sha256": "b7ca7f9064f8688a040c682a4e5634415459207e681f89ccb5fcd38278802b93",
+      "bytes": 5372
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_request_v1.schema.json",
+      "sha256": "2208ea309e61a9ddaceb64ada637eeff0d67f8a7245d6307e5977d618f498d65",
+      "bytes": 3865
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_response_v1.schema.json",
+      "sha256": "6eb0a91fd85260bc97895686495cb8ff6b4a390da1e9d508af257e59c7de5348",
+      "bytes": 4100
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_evaluation_suite_v1.schema.json",
+      "sha256": "c2f7bc4949d126c6063bcb9a9010aa8c34fb4b31a3b07e788cffb9b2001b7d72",
+      "bytes": 1866
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_human_blind_review_result_v1.schema.json",
+      "sha256": "abac186eb6547cfb1806b7c9e516dd6fde80ecf3c882f7edac61fc2deaa38fc0",
+      "bytes": 3061
+    }
+  ]
+}

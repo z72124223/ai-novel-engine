@@ -1,0 +1,31 @@
+{
+    "evaluationId": "slice-drama-4-0a4848d5-6960-46ec-9fad-59732615a05e",
+    "rawScores": {
+        "sarcasmVoiceFit": 90,
+        "banterNaturalness": 85,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 35,
+        "fairSurprise": 90,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 90,
+        "antagonistAdaptation": 90,
+        "emotionalWaveCoverage": 30,
+        "readerAttachment": 55,
+        "overall": 79
+    },
+    "findings": [
+        {
+            "code": "EMOTIONAL_WAVE_FLAT",
+            "critic": "ProsePacingCritic",
+            "severity": "major",
+            "message": "No warm or serious emotional movement is marked.",
+            "suggestedFix": "Create a contrast beat before the next escalation."
+        }
+    ],
+    "revisionSuggestion": "Create a contrast beat before the next escalation.",
+    "revisionCount": 0,
+    "selectedDraft": "陸塵行認出假足跡，繞開最明顯的追蹤線；拾潮者卻利用這段延遲，把真正證據推入另一條潮溝。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

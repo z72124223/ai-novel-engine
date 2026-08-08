@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "screen01-scene-list-v1",
+  "productionId": "screen01-tideline-beyond",
+  "sourceScreenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+  "estimatedTotalSeconds": 440,
+  "scenes": [
+    {
+      "sceneId": "scene-01",
+      "locationId": "loc-daping-coast-upper-rock",
+      "timeOfDay": "陰雨午後",
+      "estimatedDuration": 110,
+      "characters": ["character-lu-chenxing", "character-aijiang", "character-zhou-ke"],
+      "sceneGoal": "建立海況異常、人為碎片與撤退倒數",
+      "valueConflict": "多取證一分鐘 vs 保留安全撤退窗口",
+      "entryState": "陸塵行依潮表判斷仍有時間；愛醬先感到異常",
+      "exitState": "人為搬運成立；周克要求撤退；陸塵行收起玩笑",
+      "props": ["prop-phone-waterproof", "prop-dark-fragment", "prop-rope-sling"],
+      "continuity": ["手機顯示01:47", "愛醬毛流朝海、鼻尖朝山坡", "黃色警示漆尚未被水淹沒"],
+      "sound": ["風壓", "長周期浪低頻", "短哨"],
+      "requiredAssets": ["陸塵行外觀與海岸服裝參考", "愛醬正式外觀參考", "大坪海岸主全景與潮溝幾何", "灰黑碎片候選設計"]
+    },
+    {
+      "sceneId": "scene-02",
+      "locationId": "loc-daping-coast-lower-platform",
+      "timeOfDay": "連續",
+      "estimatedDuration": 120,
+      "characters": ["character-lu-chenxing", "character-aijiang", "character-zhou-ke", "character-tide-picker"],
+      "sceneGoal": "沿痕跡找到受困者並確認生命優先",
+      "valueConflict": "追查山坡線索 vs 回應眼前咳嗽與受困者",
+      "entryState": "照片上傳失敗、潮溝升高",
+      "exitState": "拾潮者被發現；陸塵行要求先救人、箱子延後",
+      "props": ["prop-phone-waterproof", "prop-metal-case", "prop-pry-bar", "prop-rope-sling"],
+      "continuity": ["黃色警示漆被淹", "高處路線在裂縫內側", "傷者左手被箱與落石夾住"],
+      "sound": ["金屬撞岩", "短咳", "水灌潮溝", "繩索張緊"],
+      "requiredAssets": ["裂縫上方安全路線圖", "凹壁入口幾何", "拾潮者服裝與傷勢安全參考", "金屬箱候選設計"]
+    },
+    {
+      "sceneId": "scene-03",
+      "locationId": "loc-daping-coast-recess",
+      "timeOfDay": "連續",
+      "estimatedDuration": 100,
+      "characters": ["character-lu-chenxing", "character-aijiang", "character-zhou-ke", "character-tide-picker"],
+      "sceneGoal": "完成救援，付出手傷與證物控制權代價",
+      "valueConflict": "保護愛醬與救出傷者 vs 維持撬點與箱子控制",
+      "entryState": "救援位置與角色分工建立",
+      "exitState": "傷者脫困、手傷惡化、原路即將封閉、陸塵行停止玩笑",
+      "props": ["prop-phone-waterproof", "prop-metal-case", "prop-pry-bar", "prop-rope-sling", "prop-first-aid"],
+      "continuity": ["入口朝海、浪自左後方", "愛醬在入口內側高台", "鬆石在右側斜坡", "撬點在陸塵行左腳前", "手機顯示01:29"],
+      "sound": ["低吼", "浪撞斜坡", "撬桿彈開", "叫聲被浪切斷", "急促呼吸"],
+      "requiredAssets": ["凹壁俯視 blocking 圖", "落石安全替身規格", "手部傷勢化妝級別", "急救動作顧問註記"]
+    },
+    {
+      "sceneId": "scene-04",
+      "locationId": "loc-abandoned-watch-room",
+      "timeOfDay": "稍後",
+      "estimatedDuration": 110,
+      "characters": ["character-lu-chenxing", "character-aijiang", "character-zhou-ke", "character-tide-picker"],
+      "sceneGoal": "完成醫療交接並把第二名行動者維持為可見但未證實的工作假設",
+      "valueConflict": "立刻追線索 vs 先守住傷者與安全窗口",
+      "entryState": "原潮路封閉，箱子留在凹壁",
+      "exitState": "救護聯繫成立；較小鞋印通往窄徑；陸塵行選擇等雨稍歇",
+      "props": ["prop-phone-waterproof", "prop-rope-sling", "prop-first-aid"],
+      "continuity": ["三人一狗撤離", "陸塵行殿後", "傷者有意識且已止血固定", "較小鞋印尺寸不同且朝窄徑"],
+      "sound": ["擴音回鈴", "接線員斷續聲", "屋簷雨水", "遠處浪低頻"],
+      "requiredAssets": ["值守室內外連續空間", "窄徑與排水溝鞋印參考", "手機標記 UI 候選"]
+    }
+  ]
+}

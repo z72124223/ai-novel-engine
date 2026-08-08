@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "screen01-future-media-handoff-v1",
+  "handoffId": "screen01-future-visual-video-handoff",
+  "repository": "z72124223/ai-novel-engine",
+  "branch": "codex/screen01-video-first-pilot",
+  "handoffCommitSha": "TO_BE_REPORTED_AFTER_FINAL_PUSH",
+  "productionId": "screen01-tideline-beyond",
+  "canonBoundary": "NON_CANON_PILOT",
+  "status": "READY_FOR_FUTURE_VISUAL_PREPRODUCTION_NOT_GENERATION",
+  "authoritativeInputs": [
+    {"path":"samples/screen01/screen01_story_production_master.json","sha256":"f8cd061bf9b57f0e923839bd386dc11bec2cbd1b722fc18a7457f9406555579f"},
+    {"path":"samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md","sha256":"4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c"},
+    {"path":"samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json","sha256":"6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"},
+    {"path":"samples/screen01/screen01_scene_list.json","sha256":"3f87270c0a3da6769a0d8d5946a4df257f43aa20f271713b9cb5963b1915e009"},
+    {"path":"samples/screen01/screen01_shot_list.json","sha256":"646d58feeffd565214cd361b6123c1e41857fd88c68b12d846946fbce45950f9"},
+    {"path":"samples/screen01/screen01_video_pilot_60_90s.json","sha256":"057dba23288248a8b2997c6325f71b54a779ff137018c449c2b7ddbbf76752b5"}
+  ],
+  "pilot": {"pilotId":"screen01-pilot-rescue-choice-82s","shotRange":"shot-015..shot-023","durationSeconds":82,"subtitlePath":"samples/screen01/screen01_video_pilot_zh-Hant-TW.srt"},
+  "imagePreproductionTasks": [
+    {"taskId":"screen01-visual-01","purpose":"確認陸塵行與愛醬正式參考是否足以支撐濕雨海岸鏡頭","status":"BLOCKED_UNTIL_HUMAN_VISUAL_APPROVAL"},
+    {"taskId":"screen01-visual-02","purpose":"建立凹壁俯視 blocking 與安全替身圖","status":"BLOCKED_BY_VISUAL_01"},
+    {"taskId":"screen01-visual-03","purpose":"建立 shot-015 至 shot-023 關鍵影格候選","status":"BLOCKED_BY_VISUAL_02"}
+  ],
+  "videoPreproductionTasks": [
+    {"taskId":"screen01-video-01","purpose":"以核准關鍵影格規劃單鏡 motion tests","status":"BLOCKED_BY_APPROVED_KEYFRAMES"},
+    {"taskId":"screen01-video-02","purpose":"Provider-neutral 82秒剪輯與聲音節拍測試","status":"BLOCKED_BY_VIDEO_01"}
+  ],
+  "referenceRequirements": [
+    "陸塵行正式臉部／全身／海岸服裝版本",
+    "愛醬正式外觀、毛色、眼色與人犬比例",
+    "大坪海岸主全景、潮溝、黃色警示漆與凹壁幾何",
+    "周克與拾潮者候選外觀須先經人類批准",
+    "撬桿、繩套、金屬箱、灰黑碎片與急救道具比例"
+  ],
+  "lockedContinuity": [
+    "愛醬在入口內側高台預警，不可改成被動等待。",
+    "陸塵行離開撬點救愛醬，才造成撬桿彈開與手傷惡化。",
+    "拾潮者左手受傷，右手原本抓箱。",
+    "浪從入口左後方灌入，鬆石由右斜坡滑向高台。",
+    "不展示箱內內容，不證實第二名行動者。"
+  ],
+  "forbidden": ["自動生成媒體", "呼叫或購買Provider", "自動批准圖片", "升格Canon", "改變角色永久命運", "移除人類視覺批准", "保證百分之百不飄移"],
+  "imageGenerationAuthorized": false,
+  "videoGenerationAuthorized": false,
+  "providerAuthorized": false
+}

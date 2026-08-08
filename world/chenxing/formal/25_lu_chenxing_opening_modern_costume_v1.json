@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "chenxing-opening-modern-costume-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "characterId": "char-lu-chenxing",
+  "characterName": "陸塵行",
+  "purpose": "2026 台灣開場現代服裝定稿。第一卷大坪海岸段不穿古裝，後續穿越後服裝另定。",
+  "storyPhase": {
+    "label": "volume_one_taiwan_opening",
+    "year": 2026,
+    "location": "基隆八斗子大坪海岸",
+    "rule": "開場為現代地球日常裝備，不是奇幻旅人裝或古裝。"
+  },
+  "bodyBaseline": {
+    "productionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "metrics": {
+      "heightCm": 174,
+      "weightKg": 80
+    },
+    "layeringRule": "服裝疊在身材三視圖之上；臉型、身材、平頭、眼鏡、無鬍渣不變。"
+  },
+  "openingModernCostume": {
+    "label": "coastal_practical_modern",
+    "summary": "黑色背心汗衫 + 短袖外套 + 短褲 + 登山鞋 + 側背包。",
+    "layers": [
+      {
+        "order": 1,
+        "id": "layer-tank-top",
+        "name": "黑色背心汗衫",
+        "type": "undershirt_tank",
+        "color": "black",
+        "material": "cotton_blend",
+        "fit": "slightly_tight_on_stocky_torso",
+        "visibility": "visible_at_neckline_and_sleeves_when_jacket_open"
+      },
+      {
+        "order": 2,
+        "id": "layer-short-jacket",
+        "name": "短袖外套",
+        "type": "short_sleeve_utility_jacket",
+        "color": "charcoal_gray",
+        "material": "lightweight_nylon_or_canvas",
+        "fit": "relaxed_practical",
+        "details": [
+          "front_zip_partially_open",
+          "simple_pockets",
+          "no_logo",
+          "slightly_worn_outdoor_use"
+        ]
+      },
+      {
+        "order": 3,
+        "id": "layer-shorts",
+        "name": "短褲",
+        "type": "outdoor_shorts",
+        "color": "dark_olive_gray",
+        "material": "quick_dry_fabric",
+        "fit": "above_knee_practical",
+        "details": [
+          "side_pockets",
+          "comfortable_for_coastal_rock_walking"
+        ]
+      },
+      {
+        "order": 4,
+        "id": "layer-hiking-boots",
+        "name": "登山鞋",
+        "type": "trail_hiking_boots",
+        "color": "brown_gray",
+        "material": "suede_and_rubber_sole",
+        "details": [
+          "mid_ankle_support",
+          "worn_but_functional",
+          "good_for_wet_rocks"
+        ]
+      },
+      {
+        "order": 5,
+        "id": "layer-crossbody-bag",
+        "name": "側背包",
+        "type": "crossbody_sling_bag",
+        "color": "black",
+        "material": "nylon",
+        "wear": "crossbody_from_left_shoulder_to_right_hip",
+        "contentsHint": [
+          "phone",
+          "tide_notes",
+          "small_tools"
+        ],
+        "details": [
+          "compact",
+          "practical",
+          "not_tactical_military_style"
+        ]
+      }
+    ],
+    "fixedTraits": [
+      "buzz_cut",
+      "thin_black_rectangular_glasses",
+      "no_facial_hair",
+      "small_silver_hoop_earring_left_ear"
+    ],
+    "notIncluded": [
+      "ancient_costume",
+      "cultivation_robes",
+      "hooded_dark_fantasy_traveler_outfit",
+      "formal_suit"
+    ]
+  },
+  "supersededCostumeNotes": {
+    "cinematicDarkTraveler": "world/chenxing/formal/23_character_visual_appearance_v1.json 內舊 dark_hooded_traveler 描述改為穿越後或封面意象用，不作 2026 開場穿衣基準。"
+  },
+  "productionAsset": {
+    "status": "locked",
+    "path": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+    "views": [
+      "front",
+      "side",
+      "back"
+    ]
+  },
+  "linkedDocuments": [
+    "world/chenxing/formal/23_character_visual_appearance_v1.json",
+    "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "world/chenxing/formal/20_protagonist_pair_v1.json"
+  ]
+}

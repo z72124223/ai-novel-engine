@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "artifactType": "NPC_ACTOR04_INTERNAL_REVIEW",
+  "packetId": "npc-actor04-embodied-31462b8a7d2a",
+  "status": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE",
+  "reviewerId": "internal-adversarial-boundary-01",
+  "reviewerRole": "ADVERSARIAL_BOUNDARY_REVIEWER",
+  "answerKeyReadBeforeCompletion": false,
+  "revisionNumber": 1,
+  "ratings": [
+    {
+      "reviewId": "review-npc-actor04-mira-fire",
+      "selection": "B",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 4, "optionB": 5 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 4, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 4, "optionB": 5 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 4, "optionB": 4 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 3, "optionB": 3 }
+      ],
+      "evidence": [
+        "A先移走受碎玻璃困住的孩子，再清理酒箱。",
+        "A第三拍引入封包未建立的「燃燒木面」。",
+        "B以濕毯覆蓋油鍋，並讓廚工關閉爐火。",
+        "B開後門便宣稱濃煙有出口，但封包沒有氣流依據。"
+      ],
+      "issueTags": ["UNSUPPORTED_FIRE_SPREAD", "UNVERIFIED_VENTILATION", "OPTION_BIAS_RISK"],
+      "rationale": "B對油鍋、撤離與斷火的整體排序較安全完整；但後門換氣效果屬未驗證因果。A的水未直接潑油鍋，仍以新增的燃燒木面支撐結果，邊界較弱。"
+    },
+    {
+      "reviewId": "review-npc-actor04-yan-storm-gate",
+      "selection": "BOTH_FAIL",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 3, "optionB": 2 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 3, "optionB": 2 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 2, "optionB": 3 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 4, "optionB": 4 }
+      ],
+      "evidence": [
+        "A第二拍只以腳踩繩尾牽制板車，第三拍卻出現未建立的「繩結」。",
+        "A在濕滑泥坡以人力改變失控板車方向，缺乏可靠受力支點。",
+        "B以肩抵車、腳卡車輪，同時又抬門閂處理入口。",
+        "第三拍明示板車再次鬆動，證明前兩拍控制並不可靠。"
+      ],
+      "issueTags": ["UNSUPPORTED_RESTRAINT", "MISSING_STATE_TRANSITION", "UNSAFE_BRACING", "SPATIAL_OVERREACH"],
+      "rationale": "兩案都先救孩子且命令簡短，但核心制動方案不可接受。A從踩繩跳接到既成繩結；B讓同一人跨位置維持板車並操作城門。兩條軌跡皆以隱藏的物理能力換取成功。"
+    },
+    {
+      "reviewId": "review-npc-actor04-lian-market-collapse",
+      "selection": "A",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 5, "optionB": 3 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 4, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 5, "optionB": 4 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 3 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 5, "optionB": 4 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 2 }
+      ],
+      "evidence": [
+        "A第一拍明確感知橫梁、木桿、傷者與碎瓷後才建立斜撐。",
+        "A先疏散孩子並取藥，等差役確認承力後才換手止血。",
+        "B未把木桿或搖晃橫梁列為第一拍感知，卻直接扶正並測試受力。",
+        "B讓商販用腳踢碎瓷，增加碎片擴散與受傷風險。"
+      ],
+      "issueTags": ["UNPERCEIVED_CRITICAL_OBJECT", "UNSAFE_DEBRIS_HANDLING", "OPTION_BIAS_RISK"],
+      "rationale": "A的三拍因果鏈完整：辨識受力、建立支撐、疏散取藥、確認交接、止血。B結果相近，但第一拍直接操作未感知的關鍵結構，且碎瓷處理欠缺安全與社會真實性。"
+    },
+    {
+      "reviewId": "review-npc-actor04-ren-dock-surge",
+      "selection": "B",
+      "dimensionScores": [
+        { "dimension": "ENVIRONMENT_AWARENESS", "optionA": 4, "optionB": 4 },
+        { "dimension": "SPATIAL_COHERENCE", "optionA": 3, "optionB": 4 },
+        { "dimension": "PRIORITY_AND_TIMING", "optionA": 2, "optionB": 5 },
+        { "dimension": "SOCIAL_REALISM", "optionA": 4, "optionB": 4 },
+        { "dimension": "VOICE_NATURALNESS", "optionA": 5, "optionB": 5 },
+        { "dimension": "STATE_CONTINUITY", "optionA": 3, "optionB": 4 },
+        { "dimension": "KNOWLEDGE_BOUNDARY", "optionA": 5, "optionB": 2 }
+      ],
+      "evidence": [
+        "A衝上失穩斜板，以肩頂住滑動重木箱。",
+        "A第三拍收回斜板，卻未交代先前木箱如何持續固定。",
+        "B避開木箱正下方，讓腳夫撤退並由甲板端改變箱體方向。",
+        "B使用未列於初始狀態的粉筆線，並自行建立「乾石面」。"
+      ],
+      "issueTags": ["CRUSH_HAZARD", "UNRESOLVED_CRATE_STATE", "UNSUPPORTED_PROP", "UNSUPPORTED_SAFE_FOOTING", "OPTION_BIAS_RISK"],
+      "rationale": "B的撤人、改變貨箱方向與停工決策明顯較符合不拿命換進度；A以身體阻擋重箱屬嚴重安全失敗。不過B依賴封包外的粉筆線與未證實乾地，因此知識邊界分數偏低。"
+    }
+  ],
+  "claimBoundary": "Internal agent review only; not human preference or live-model proof."
+}

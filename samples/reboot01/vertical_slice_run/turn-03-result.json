@@ -1,0 +1,56 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-3",
+    "narrative": "周克在海岸吹了聲短哨。陸塵行折返時瞥他一眼：『你這個安全哨，保固是不是只到退潮？』周克沒笑，只把沾鹽的繩結塞進他手裡：『想活就先學會聽一次。』愛醬靠過來蹭了蹭他的膝側；林遙的標記還在，原本的碎片卻少了一塊。",
+    "resultId": "turn-03-result",
+    "contextId": "ctx-6268b371-476c-4c26-8bd6-669e41483c92",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
+    "turnNumber": 3,
+    "baseStateVersion": 2,
+    "contextHash": "ae768280b5ebb6b6eeba9a028bf50437cdedfc3ed6fb0c801ca6c90a021e046d",
+    "turnSummary": "周克在海岸吹了聲短哨。陸塵行折返時瞥他一眼：『你這個安全哨，保固是不是只到退潮？』周克沒笑，只把沾鹽的繩結塞進他手裡：『想活就先學會聽一次。』愛醬靠過來蹭了蹭他的膝側；林遙的標記還在，原本的碎片卻少了一塊。",
+    "characterActions": [
+        {
+            "characterId": "char-zhou-ke-sandbox",
+            "intent": "發出安全折返信號",
+            "visibleAction": "發出安全折返信號",
+            "hiddenMotive": "先保人再說明真相",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-lu-chenxing",
+            "payload": {
+                "locationId": "loc-daping-coast"
+            }
+        },
+        {
+            "type": "update_character_state",
+            "targetType": "character_state",
+            "targetId": "char-aijiang",
+            "payload": {
+                "locationId": "loc-daping-coast"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "return-observes-offscreen",
+            "payload": {
+                "summary": "林遙的記號證明有人在陸塵行離場時轉移過碎片。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-3",
+            "payload": {
+                "summary": "等水線穩住再回去，看誰趁我們不在動過現場。"
+            }
+        }
+    ]
+}

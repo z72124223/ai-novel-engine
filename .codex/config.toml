@@ -1,0 +1,11 @@
+# Project-scoped Codex defaults for REBOOT-01.
+# These are cost-aware defaults, not permission to weaken validation.
+
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+model_verbosity = "medium"
+
+[agents]
+max_threads = 4
+max_depth = 1
+job_max_runtime_seconds = 1800

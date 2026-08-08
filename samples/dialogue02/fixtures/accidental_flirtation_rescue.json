@@ -1,0 +1,15 @@
+{
+  "fixtureId": "accidental-flirtation-rescue",
+  "boundary": "NON_CANON_PILOT",
+  "context": "受傷救援，高壓，拾潮者要求不要碰箱子。",
+  "lines": [
+    {"lineId":"dlg-011","sceneId":"scene-02","speakerId":"character-tide-picker","text":"別碰箱子。","pressureLevel":"HIGH"},
+    {"lineId":"dlg-012","sceneId":"scene-02","speakerId":"character-lu-chenxing","text":"好。先碰你。","pressureLevel":"HIGH"}
+  ],
+  "expectedBlockers": [
+    "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+    "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING",
+    "FORCED_WIT_UNDER_DANGER"
+  ],
+  "expectedSelection": "NOT_SELECTABLE"
+}

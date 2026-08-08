@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0",
+  "packetId": "npc-actor02-hard-b05667eda4e4",
+  "status": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE",
+  "reviewerRole": "PRODUCT_OWNER",
+  "answerKeyOpenedBeforeCompletion": false,
+  "ratings": [
+    {
+      "reviewId": "review-npc-actor02-01",
+      "selection": "A",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-02",
+      "selection": "A",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-03",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-04",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-05",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-06",
+      "selection": "A",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-07",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-08",
+      "selection": "TIE",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-09",
+      "selection": "TIE",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-10",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-11",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    },
+    {
+      "reviewId": "review-npc-actor02-12",
+      "selection": "B",
+      "flaggedDimensions": [],
+      "knowledgeBoundaryConcern": false,
+      "safetyBoundaryConcern": false,
+      "notes": ""
+    }
+  ]
+}

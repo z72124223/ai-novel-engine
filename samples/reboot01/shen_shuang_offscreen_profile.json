@@ -1,0 +1,16 @@
+{
+  "npcId": "char-shen-shuang",
+  "deepMotivation": "Protect the shrine and preserve her own bargaining power",
+  "falseBelief": "Anyone approaching the rear hall intends to expose her family",
+  "fear": "Losing control of the shrine secret and becoming expendable",
+  "relationshipDebts": [
+    "Owes the shrine keepers silence",
+    "Owes the player no automatic cooperation"
+  ],
+  "offscreenAgenda": [
+    "Inspect the corridor for traces before the player returns",
+    "Secure evidence without revealing the forbidden route"
+  ],
+  "resourceIds": [],
+  "sandboxCandidateOnly": true
+}

@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "chatgpt-image-handoff-v1",
+  "handoffId": "handoff-example-wp002a",
+  "status": "DRAFT",
+  "createdAt": "2026-07-11T00:00:00Z",
+  "projectId": "ai-novel-engine",
+  "worldId": "chenxing",
+  "branch": "feature/wp002a-gpt-image-handoff-foundation",
+  "sourceCommitSha": "7811d5975dac842755aaed3c74ed8982f64de3b7",
+  "handoffCommitSha": null,
+  "handoffContentSha256": "c62da115282f83702952f182125c0075b84c238487d8d50101076dd843a8449d",
+  "sourceArtifacts": [
+    {
+      "artifactId": "chenxing-opening-storyboard-v1",
+      "artifactType": "STORYBOARD",
+      "repositoryPath": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+      "contentSha256": "82fe9690f24a817a240b9fa4b45f89b6e72d03a14230437d1287d90170f83bd8",
+      "visibility": "PRODUCTION_ONLY",
+      "placeholderBinding": true
+    },
+    {
+      "artifactId": "chenxing-character-visual-appearance-v1",
+      "artifactType": "VISUAL_APPEARANCE",
+      "repositoryPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "contentSha256": "cc1776bb7154238e92e763914a3a98dff1e036d0fd2e8839b15f687fde82ff7f",
+      "visibility": "PRODUCTION_ONLY",
+      "placeholderBinding": true
+    },
+    {
+      "artifactId": "chenxing-opening-costume-v1",
+      "artifactType": "COSTUME",
+      "repositoryPath": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "contentSha256": "d3fee80bda147a2cabb699243a1027f016046d7e7794654f370cf34fc5b67f71",
+      "visibility": "PRODUCTION_ONLY",
+      "placeholderBinding": true
+    },
+    {
+      "artifactId": "chenxing-opening-visual-style-v1",
+      "artifactType": "VISUAL_STYLE",
+      "repositoryPath": "world/chenxing/formal/27_opening_preview_visual_style_v1.json",
+      "contentSha256": "110437095b662bcc196bbe4ae6756366cc3ec62af132eba8920035b1cf64129f",
+      "visibility": "PRODUCTION_ONLY",
+      "placeholderBinding": true
+    }
+  ],
+  "shotScope": {
+    "purpose": "Schema demonstration only; this is not the real opening Shot 01-03 handoff.",
+    "shotIds": [
+      "example-shot-not-for-production-001"
+    ],
+    "placeholderOnly": true,
+    "noActualShotHandoff": true
+  },
+  "referenceBindings": [
+    {
+      "referenceId": "ref-lu-chenxing-body-v2",
+      "entityId": "char-lu-chenxing",
+      "assetRole": "BODY_AND_LIKENESS",
+      "version": "photo-set-123123-closest-body-v2",
+      "repositoryPaths": [
+        "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png"
+      ],
+      "requiredForFormalGeneration": true
+    },
+    {
+      "referenceId": "ref-lu-chenxing-opening-costume-v1",
+      "entityId": "char-lu-chenxing",
+      "assetRole": "COSTUME",
+      "version": "coastal-practical-modern-v1",
+      "repositoryPaths": [
+        "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png"
+      ],
+      "requiredForFormalGeneration": true
+    },
+    {
+      "referenceId": "ref-aijiang-appearance-v1",
+      "entityId": "char-aijiang",
+      "assetRole": "ANIMAL_APPEARANCE",
+      "version": "author-production-turnaround-v1",
+      "repositoryPaths": [
+        "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg"
+      ],
+      "requiredForFormalGeneration": true
+    }
+  ],
+  "referenceUploadChecklistFile": "samples/production_handoff/reference_upload_checklist_v1.example.json",
+  "shotQueueFile": "samples/production_handoff/shot_queue_v1.example.json",
+  "promptManifestFile": "samples/production_handoff/prompt_manifest_v1.example.json",
+  "locationBibleRequirements": [
+    {
+      "locationId": "loc-daping-coast",
+      "requiredViews": [
+        "MASTER_PANORAMA",
+        "TOP_DOWN_PLAN",
+        "NORTH_VIEW",
+        "EAST_VIEW",
+        "SOUTH_VIEW",
+        "WEST_VIEW",
+        "ANCHOR_DETAIL",
+        "SCALE_REFERENCE"
+      ],
+      "spatialAnchorRequired": true,
+      "missingReferenceAction": "REFERENCE_UPLOAD_REQUIRED"
+    }
+  ],
+  "continuityRules": [
+    "Use stable character, costume, animal, scale, weather, and location versions across adjacent shots.",
+    "A 360 panorama is optional and cannot replace the top-down plan, directional views, or spatial anchors."
+  ],
+  "negativeConstraints": [
+    "Do not infer approval, Canon status, final-media status, or a production lock from this file.",
+    "Do not generate a formal image when required visual references are absent from the current ChatGPT conversation.",
+    "Do not include author-only secrets, later plot answers, provider credentials, remote job identifiers, or remote result URLs."
+  ],
+  "outputContract": {
+    "candidateStatus": "CANDIDATE",
+    "fileNamePattern": "<handoffId>_<shotId>_<candidateId>.png",
+    "aspectRatio": "16:9",
+    "noAutomaticApproval": true
+  },
+  "reviewContract": {
+    "humanReviewRequired": true,
+    "allowedReviewStates": [
+      "PENDING_USER_REVIEW",
+      "APPROVE_CANDIDATE",
+      "REJECT_DRIFT",
+      "REQUEST_VARIATION",
+      "CHANGE_VISUAL_DIRECTION"
+    ],
+    "technicalPassIsNotApproval": true
+  },
+  "returnToCodexContract": {
+    "schemaPath": "schemas/production/image_return_to_codex_v1.schema.json",
+    "sourceFileSha256RequiredBeforeAcceptance": true,
+    "existingCliChainRequired": true
+  },
+  "visibilityAndSecretBoundary": {
+    "authorOnlyExcluded": true,
+    "allowedVisibility": [
+      "USER_FACING",
+      "REVIEW_ONLY",
+      "PRODUCTION_ONLY"
+    ],
+    "excludedContentClasses": [
+      "author-only causal answers",
+      "director goals",
+      "future plot answers",
+      "knowledge unavailable to visible characters"
+    ]
+  },
+  "validationSummary": {
+    "verdict": "PASS",
+    "checks": [
+      "all six schemas and examples parsed as JSON",
+      "schema versions matched",
+      "internal schema references and regular expressions resolved",
+      "repository paths and explicit placeholders were checked",
+      "source file hashes and normalized handoff hash matched",
+      "no real Shot 01-03 instance was created"
+    ],
+    "schemaValidation": "SCHEMA_META_VALIDATION_NOT_AVAILABLE",
+    "pathValidation": "PASS",
+    "notes": [
+      "Example-only placeholder. WP-004 will create the first real Shot 01-03 handoff.",
+      "No preinstalled JSON Schema validator was available; no dependency was added."
+    ]
+  },
+  "exampleOnly": true
+}

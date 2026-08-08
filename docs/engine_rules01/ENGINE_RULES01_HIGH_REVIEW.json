@@ -1,0 +1,50 @@
+{
+  "reviewId": "engine-rules01-high-readonly-review-20260713",
+  "workPackage": "ENGINE-RULES-01_DIALOGUE-02",
+  "reviewModel": "gpt-5.6-sol",
+  "reasoningEffort": "high",
+  "reviewMode": "READ_ONLY",
+  "reviewedBaseCommit": "31f7072da143559c6a1280b3631ea2f70cad404d",
+  "iterations": 6,
+  "finalVerdict": "PASS_WITH_RISKS",
+  "releaseBlockers": [],
+  "resolvedFindings": [
+    "NOT_SELECTABLE_TO_SELECTED_SQL_UPDATE_BYPASS",
+    "FAKE_REVIEW_WITHOUT_LINE_COVERAGE_OR_EXACT_QUOTE",
+    "VACUOUS_ZERO_LINE_COVERAGE",
+    "MISSING_JSON_ARRAY_PATH_NULL_BYPASS",
+    "LATE_EVIDENCE_INSERT_AFTER_SELECTION",
+    "LEGACY_HASH_SCHEMA_V1_REUSE",
+    "REVIEW_VERDICT_AND_HUMAN_APPROVAL_IGNORED",
+    "LINES_ONLY_ARTIFACT_HASH",
+    "NON_ATOMIC_FINALIZATION",
+    "OLD_014_TRIGGER_NOT_UPGRADED",
+    "EARLY_NOT_SELECTABLE_DECISION_POISONED_LATER_REVIEW",
+    "NESTED_UNKNOWN_CLI_INPUT"
+  ],
+  "validatedControls": [
+    "Migration 015 replaces installed Migration 014 selection triggers",
+    "hash_schema_version 1 artifacts are audited and quarantined",
+    "hash_schema_version 2 binds artifact identity, lifecycle, Rule Set content and profile content hashes",
+    "three distinct reviewer roles and instances are required",
+    "normalized artifact lines and review coverage must match JSON line arrays and exact quotes",
+    "BLOCKER, REVISE, HUMAN_DECISION_REQUIRED and requiresHumanApproval cannot be hidden by score",
+    "selection evidence and authority rows are immutable after their permitted lifecycle",
+    "review intake and selection are atomic during finalization",
+    "blocked CLI finalization returns exit code 2 and does not print a selected hash"
+  ],
+  "residualRisks": [
+    "Reviewer independence is represented by distinct instance IDs rather than cryptographic identities.",
+    "An actor with unrestricted raw SQLite write authority can fabricate a fully self-consistent evidence set; the project boundary continues to prohibit bypassing the official Repository.",
+    "The migration parser remains format-constrained rather than a complete SQL tokenizer."
+  ],
+  "primaryAgentVerification": {
+    "focusedTests": "PASS",
+    "fullTests": 872,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "releaseRecommendation": "APPROVE_RELEASE",
+  "reviewerModifiedFiles": false
+}

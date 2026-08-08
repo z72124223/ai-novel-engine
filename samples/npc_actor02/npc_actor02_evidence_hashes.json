@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-02 HARD BLIND MULTI-TURN OFFLINE EVALUATION",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "samples/npc_actor02/npc_actor02_hard_blind_suite_v1.json",
+      "sha256": "855e6bcd9b16311f1658b3d885d4f94a442f7e52354dc923427f97a86148cc9b",
+      "bytes": 51818
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_hard_blind_technical_report_v1.json",
+      "sha256": "caf4516fe65cae4ec409c39327d9b5c2f523547bf00a3a55de56bd4953e5ce60",
+      "bytes": 1224
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_hard_blind_review_packet_v1.json",
+      "sha256": "9af174880ae253dc658c849fa78cb1be47fcd72cc2bb633da5ac97f050b904eb",
+      "bytes": 36709
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_hard_blind_answer_key_v1.json",
+      "sha256": "c6aecaa7299ed3e9a6e72e120ddf6b9e12cb49d3b11b8fbd6eaebd32d0894d48",
+      "bytes": 1422
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_human_blind_review_result.json",
+      "sha256": "fe638b3ef037dfe4db2aa2383d50319e2e6539b643b9332978b255cc3652d2fd",
+      "bytes": 2727
+    },
+    {
+      "path": "samples/npc_actor02/npc_actor02_human_blind_review_summary.json",
+      "sha256": "1c67ab99ea87b4528dabb387002795b6297113413f530c7cfbd2daba284f649d",
+      "bytes": 2752
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_hard_blind_v1.schema.json",
+      "sha256": "72132c8bd1aae538ff4fa323f5d1f3c8f8e93de949be0e5f8a470d8e1586bec2",
+      "bytes": 12027
+    }
+  ]
+}

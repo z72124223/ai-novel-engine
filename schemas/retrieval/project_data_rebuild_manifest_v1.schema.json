@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/retrieval/project_data_rebuild_manifest_v1.schema.json",
+  "title": "Project Data Rebuild Manifest V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "manifestId", "status", "projectId", "migrationInputs",
+    "settingPackInputs", "worldSourceInputs", "governedRoots", "classificationRules",
+    "logicalTables", "volatileColumns", "requiredTrackedPaths", "boundary"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "manifestId": { "type": "string", "minLength": 1 },
+    "status": { "const": "RETRIEVAL_00_REBUILD_READY" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "migrationInputs": { "$ref": "#/$defs/inputArray" },
+    "settingPackInputs": { "$ref": "#/$defs/inputArray" },
+    "worldSourceInputs": { "$ref": "#/$defs/inputArray" },
+    "governedRoots": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/relativePath" } },
+    "classificationRules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pathPrefix", "primaryClass", "retentionStatus", "reason"],
+        "properties": {
+          "pathPrefix": { "$ref": "#/$defs/relativePath" },
+          "primaryClass": { "enum": ["AUTHORITATIVE_SOURCE", "FORMAL_STRUCTURED_DATA", "REBUILDABLE_INDEX", "TEST_OR_REVIEW_EVIDENCE", "EPHEMERAL_OR_ARCHIVE_CANDIDATE"] },
+          "retentionStatus": { "enum": ["CURRENT", "HISTORICAL_REFERENCED", "REBUILDABLE_CACHE", "ARCHIVE_CANDIDATE", "DELETE_CANDIDATE", "UNKNOWN_REQUIRES_REVIEW"] },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "logicalTables": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[A-Za-z_]+$" } },
+    "volatileColumns": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z_]+$" } },
+    "volatileColumnsByTable": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "pattern": "^[A-Za-z_]+$" }
+      }
+    },
+    "requiredTrackedPaths": { "type": "array", "items": { "$ref": "#/$defs/relativePath" } },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowExistingDatabaseOverwrite", "allowAbsoluteRepositoryInputs", "allowCanonPromotion", "allowRuntimeStateMutation", "allowDeletion", "allowProviderCalls"],
+      "properties": {
+        "allowExistingDatabaseOverwrite": { "const": false },
+        "allowAbsoluteRepositoryInputs": { "const": false },
+        "allowCanonPromotion": { "const": false },
+        "allowRuntimeStateMutation": { "const": false },
+        "allowDeletion": { "const": false },
+        "allowProviderCalls": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "relativePath": { "type": "string", "minLength": 1, "not": { "pattern": "^(?:[A-Za-z]:[\\\\/]|/|\\\\\\\\|.*(?:^|[\\\\/])\\.\\.(?:[\\\\/]|$))" } },
+    "inputArray": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/input" } },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "inputType", "order", "sha256", "byteSize"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativePath" },
+        "inputType": { "enum": ["MIGRATION", "SETTING_PACK", "WORLD_SOURCE_MANIFEST"] },
+        "order": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "byteSize": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

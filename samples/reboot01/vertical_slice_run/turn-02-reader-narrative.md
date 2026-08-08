@@ -1,0 +1,1 @@
+Elsewhere, Inspects the immediate area and secures evidence before anyone returns. Signs of a careful off-screen search remain at loc-daping-coast.

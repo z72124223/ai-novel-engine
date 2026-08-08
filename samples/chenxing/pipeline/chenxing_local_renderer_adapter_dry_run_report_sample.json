@@ -1,0 +1,281 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_ADAPTER_DRY_RUN_PASS",
+    "dryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffFile": "samples\\chenxing\\pipeline\\chenxing_story_video_preview_handoff_draft_sample.json",
+    "sourceReviewFile": "samples\\chenxing\\pipeline\\chenxing_story_video_preview_handoff_review_report_sample.json",
+    "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+    "sourceReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "checks": [
+        {
+            "checkId": "explicit-source-files",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter dry-run requires explicit handoff and review report files.",
+            "evidence": [
+                "handoffFile=samples\\chenxing\\pipeline\\chenxing_story_video_preview_handoff_draft_sample.json",
+                "reviewFile=samples\\chenxing\\pipeline\\chenxing_story_video_preview_handoff_review_report_sample.json"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "handoff-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter dry-run requires the Phase 5 handoff draft state and no-media downstream boundary.",
+            "evidence": [
+                "status=LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT",
+                "downstreamBoundary=local_story_video_preview_handoff_draft_only_not_media_generation",
+                "nextAllowedDownstreamStep=local_preview_handoff_review"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "review-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter dry-run requires PASS Phase 6 review and nextAllowedDownstreamStep=local_renderer_adapter_dry_run.",
+            "evidence": [
+                "verdict=PASS",
+                "downstreamBoundary=local_story_video_preview_handoff_review_only_not_media_generation",
+                "nextAllowedDownstreamStep=local_renderer_adapter_dry_run"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "source-id-match",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Adapter dry-run requires matching handoff id, story input pack id, and reviewed handoff status.",
+            "evidence": [
+                "handoffId=chenxing-story-video-preview-handoff-v0-001",
+                "review.sourceHandoffId=chenxing-story-video-preview-handoff-v0-001",
+                "handoffStory=local-story-input-chenxing-v0-001",
+                "reviewStory=local-story-input-chenxing-v0-001",
+                "review.handoffStatus=LOCAL_STORY_VIDEO_PREVIEW_HANDOFF_DRAFT"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Adapter dry-run requires local-only boundaries with no provider/API, renderer, TTS, media generation, release, or production lock.",
+            "evidence": [
+                "handoff.mediaGenerated=false",
+                "handoff.rendererInvocation=none",
+                "handoff.providerInvocation=none",
+                "handoff.ttsInvocation=none",
+                "review.mediaGenerated=false",
+                "review.rendererInvocation=none",
+                "review.providerInvocation=none",
+                "review.ttsInvocation=none"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "renderer-compatibility-not-ready",
+            "status": "PASS",
+            "category": "renderer_compatibility",
+            "message": "Adapter dry-run requires ready=false to remain preserved as the not-yet-direct-renderable signal.",
+            "evidence": [
+                "handoff.ready=false",
+                "review.ready=false",
+                "review.readyFalseAccepted=true"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "review-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Adapter dry-run requires all required Phase 6 review checks to remain PASS with no findings.",
+            "evidence": [
+                "reviewChecks=10",
+                "requiredReviewFail=0",
+                "findingCount=0"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "preview-plan-mappable",
+            "status": "PASS",
+            "category": "adapter_mapping",
+            "message": "Adapter dry-run requires ordered panels with positive duration, cue text, visual refs, and audio refs.",
+            "evidence": [
+                "panelCount=3",
+                "targetDurationMillis=9000",
+                "mappedPanelCount=3",
+                "unmappedPanelCount=0",
+                "missingRequiredFieldCount=0"
+            ],
+            "requiredForDryRun": true
+        },
+        {
+            "checkId": "qa-summary-pass",
+            "status": "PASS",
+            "category": "qa",
+            "message": "Adapter dry-run requires QA summary with no failed checks.",
+            "evidence": [
+                "qaChecks=7",
+                "qaPass=7",
+                "qaFail=0"
+            ],
+            "requiredForDryRun": true
+        }
+    ],
+    "adapterMappingSummary": {
+        "sceneCount": 1,
+        "panelCount": 3,
+        "targetDurationMillis": 9000,
+        "mappedPanelCount": 3,
+        "unmappedPanelCount": 0,
+        "missingRequiredFieldCount": 0,
+        "visualPromptReferenceCount": 3,
+        "audioCueReferenceCount": 3,
+        "qaChecks": 7,
+        "qaPass": 7,
+        "qaFail": 0
+    },
+    "dryRunMappingPlan": [
+        {
+            "order": 1,
+            "panelId": "local-render-panel-beat-market-opening",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-market-opening",
+            "startMillis": 0,
+            "endMillis": 3000,
+            "durationMillis": 3000,
+            "proposedPanelTimelineFields": {
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[1].panelId",
+                "wouldMapSourceFrameIdFrom": "$.previewPlan.panelOrdering[1].visualPromptCardId",
+                "wouldMapSceneReferenceFrom": "$.previewPlan.panelOrdering[1].sourceSceneId",
+                "wouldMapBeatReferenceFrom": "$.previewPlan.panelOrdering[1].sourceBeatId",
+                "wouldMapVisualIntentFrom": "$.previewPlan.panelOrdering[1].visualIntent + visualPromptSeed",
+                "wouldMapCameraIntentFrom": "future adapter implementation required; not present as renderer-ready camera intent",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[1].startMillis/endMillis/durationMillis",
+                "wouldMapAssetCandidateRefsFrom": "$.previewPlan.panelOrdering[1].assetPromptReference.characterCardIds"
+            },
+            "proposedVoiceTimelineFields": {
+                "wouldMapCueIdFrom": "$.previewPlan.panelOrdering[1].audioCueCardId",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[1].panelId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[1].dialogueCue or audioCueSummary",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[1].startMillis/endMillis/durationMillis",
+                "wouldNeedVoiceLabelsFrom": "future adapter implementation must choose voice labels from local story/card data"
+            },
+            "proposedSubtitleTimelineFields": {
+                "wouldMapCueIdFrom": "subtitle-local-render-panel-beat-market-opening",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[1].panelId",
+                "wouldMapAudioCueIdFrom": "$.previewPlan.panelOrdering[1].audioCueCardId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[1].captionCue or dialogueCue",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[1].startMillis/endMillis"
+            },
+            "canMapForFutureAdapter": true,
+            "manifestGenerated": false,
+            "note": "Dry-run mapping note only; ComicVideoRenderHandoffManifest is not generated in Phase 7."
+        },
+        {
+            "order": 2,
+            "panelId": "local-render-panel-beat-share-bread",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-share-bread",
+            "startMillis": 3000,
+            "endMillis": 6000,
+            "durationMillis": 3000,
+            "proposedPanelTimelineFields": {
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[2].panelId",
+                "wouldMapSourceFrameIdFrom": "$.previewPlan.panelOrdering[2].visualPromptCardId",
+                "wouldMapSceneReferenceFrom": "$.previewPlan.panelOrdering[2].sourceSceneId",
+                "wouldMapBeatReferenceFrom": "$.previewPlan.panelOrdering[2].sourceBeatId",
+                "wouldMapVisualIntentFrom": "$.previewPlan.panelOrdering[2].visualIntent + visualPromptSeed",
+                "wouldMapCameraIntentFrom": "future adapter implementation required; not present as renderer-ready camera intent",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[2].startMillis/endMillis/durationMillis",
+                "wouldMapAssetCandidateRefsFrom": "$.previewPlan.panelOrdering[2].assetPromptReference.characterCardIds"
+            },
+            "proposedVoiceTimelineFields": {
+                "wouldMapCueIdFrom": "$.previewPlan.panelOrdering[2].audioCueCardId",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[2].panelId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[2].dialogueCue or audioCueSummary",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[2].startMillis/endMillis/durationMillis",
+                "wouldNeedVoiceLabelsFrom": "future adapter implementation must choose voice labels from local story/card data"
+            },
+            "proposedSubtitleTimelineFields": {
+                "wouldMapCueIdFrom": "subtitle-local-render-panel-beat-share-bread",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[2].panelId",
+                "wouldMapAudioCueIdFrom": "$.previewPlan.panelOrdering[2].audioCueCardId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[2].captionCue or dialogueCue",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[2].startMillis/endMillis"
+            },
+            "canMapForFutureAdapter": true,
+            "manifestGenerated": false,
+            "note": "Dry-run mapping note only; ComicVideoRenderHandoffManifest is not generated in Phase 7."
+        },
+        {
+            "order": 3,
+            "panelId": "local-render-panel-beat-disciple-glance",
+            "sourceSceneId": "scene-huiguan-market",
+            "sourceBeatId": "beat-disciple-glance",
+            "startMillis": 6000,
+            "endMillis": 9000,
+            "durationMillis": 3000,
+            "proposedPanelTimelineFields": {
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[3].panelId",
+                "wouldMapSourceFrameIdFrom": "$.previewPlan.panelOrdering[3].visualPromptCardId",
+                "wouldMapSceneReferenceFrom": "$.previewPlan.panelOrdering[3].sourceSceneId",
+                "wouldMapBeatReferenceFrom": "$.previewPlan.panelOrdering[3].sourceBeatId",
+                "wouldMapVisualIntentFrom": "$.previewPlan.panelOrdering[3].visualIntent + visualPromptSeed",
+                "wouldMapCameraIntentFrom": "future adapter implementation required; not present as renderer-ready camera intent",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[3].startMillis/endMillis/durationMillis",
+                "wouldMapAssetCandidateRefsFrom": "$.previewPlan.panelOrdering[3].assetPromptReference.characterCardIds"
+            },
+            "proposedVoiceTimelineFields": {
+                "wouldMapCueIdFrom": "$.previewPlan.panelOrdering[3].audioCueCardId",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[3].panelId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[3].dialogueCue or audioCueSummary",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[3].startMillis/endMillis/durationMillis",
+                "wouldNeedVoiceLabelsFrom": "future adapter implementation must choose voice labels from local story/card data"
+            },
+            "proposedSubtitleTimelineFields": {
+                "wouldMapCueIdFrom": "subtitle-local-render-panel-beat-disciple-glance",
+                "wouldMapPanelIdFrom": "$.previewPlan.panelOrdering[3].panelId",
+                "wouldMapAudioCueIdFrom": "$.previewPlan.panelOrdering[3].audioCueCardId",
+                "wouldMapTextFrom": "$.previewPlan.panelOrdering[3].captionCue or dialogueCue",
+                "wouldMapTimingFrom": "$.previewPlan.panelOrdering[3].startMillis/endMillis"
+            },
+            "canMapForFutureAdapter": true,
+            "manifestGenerated": false,
+            "note": "Dry-run mapping note only; ComicVideoRenderHandoffManifest is not generated in Phase 7."
+        }
+    ],
+    "rendererCompatibilitySummary": {
+        "ready": false,
+        "currentRendererExpectedInput": "ComicVideoRenderHandoffManifest",
+        "currentDraftInput": "LocalStoryVideoPreviewHandoffDraft",
+        "adapterImplementationRequired": true,
+        "manifestGenerated": false,
+        "requiredImplementationWork": [
+            "Design adapter fields for ComicVideoRenderHandoffManifest in a future explicit task.",
+            "Choose local sourceFrameId, mustShow, doNotShow, and continuityAnchors policy.",
+            "Choose local voice labels and subtitle text policy.",
+            "Run a later renderer dry-run/preflight before any media generation."
+        ],
+        "summary": "Dry-run only: mapping data is present, but adapter implementation and renderer dry-run remain required before any MP4 generation."
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "finalMediaApproval": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false
+    },
+    "downstreamBoundary": "local_renderer_adapter_dry_run_only_not_media_generation",
+    "nextAllowedDownstreamStep": "local_renderer_adapter_implementation_plan",
+    "findingCount": 0
+}

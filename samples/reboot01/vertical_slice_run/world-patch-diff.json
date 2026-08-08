@@ -1,0 +1,55 @@
+{
+    "packId": "reboot01-chenxing-world-patch-candidate-v1",
+    "packVersion": 1,
+    "entries": [
+        {
+            "action": "ADD",
+            "entityType": "character",
+            "entityId": "char-lin-yao-sandbox",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "character",
+            "entityId": "char-zhou-ke-sandbox",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "character",
+            "entityId": "char-tide-scavenger-sandbox",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "world_rule",
+            "entityId": "rule-sandbox-evidence-has-social-cost",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "world_rule",
+            "entityId": "rule-sandbox-humor-yields-to-harm",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "fact",
+            "entityId": "fact-sandbox-fresh-footprints",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "fact",
+            "entityId": "fact-sandbox-shelter-key",
+            "newVersion": 1
+        },
+        {
+            "action": "ADD",
+            "entityType": "fact",
+            "entityId": "fact-sandbox-shelter-pressure",
+            "newVersion": 1
+        }
+    ],
+    "canonicalHash": "2813cf1e000a08d4eb3c782bc8498548149c133f1142d3c03113802a75d54ae6"
+}

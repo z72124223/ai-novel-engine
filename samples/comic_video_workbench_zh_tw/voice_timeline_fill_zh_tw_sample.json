@@ -1,0 +1,109 @@
+﻿{
+  "fillId": "voice-timeline-fill-zh-tw-sample-001",
+  "sourceComicVideoPacketId": "comic-video-zh-tw-sample-packet-001",
+  "fillStatus": "comic_video_voice_timeline_fill_candidate",
+  "voiceCast": [
+    {
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "displayName": "林",
+      "voiceLabel": "local-hanhan-lin",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "本機預覽語音規劃。"
+    },
+    {
+      "voiceId": "voice-gate-guard",
+      "characterId": "char-gate-guard",
+      "displayName": "守衛",
+      "voiceLabel": "local-hanhan-guard",
+      "voiceBoundary": "voice_cast_plan_only",
+      "notes": "本機預覽語音規劃。"
+    }
+  ],
+  "audioCues": [
+    {
+      "cueId": "audio-001",
+      "panelId": "panel-frame-market-scene-arrival",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "我把封緘信帶到雨門了，雨還沒漫進檔案室。",
+      "startMillis": 0,
+      "durationMillis": 2600,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-002",
+      "panelId": "panel-frame-wax-mark-check",
+      "voiceId": "voice-gate-guard",
+      "characterId": "char-gate-guard",
+      "text": "停一下。我只看蠟印，不拆信。",
+      "startMillis": 3000,
+      "durationMillis": 2400,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    },
+    {
+      "cueId": "audio-003",
+      "panelId": "panel-frame-side-passage-choice",
+      "voiceId": "voice-lin",
+      "characterId": "char-lin",
+      "text": "那我走側廊，信會保持封好。",
+      "startMillis": 6000,
+      "durationMillis": 2400,
+      "audioAssetPath": "",
+      "remoteAudioUrl": "",
+      "providerJobId": "",
+      "generatedStatus": ""
+    }
+  ],
+  "subtitleCues": [
+    {
+      "cueId": "subtitle-001",
+      "panelId": "panel-frame-market-scene-arrival",
+      "audioCueId": "audio-001",
+      "text": "林：我把封緘信帶到雨門了，雨還沒漫進檔案室。",
+      "startMillis": 0,
+      "endMillis": 2600
+    },
+    {
+      "cueId": "subtitle-002",
+      "panelId": "panel-frame-wax-mark-check",
+      "audioCueId": "audio-002",
+      "text": "守衛：停一下。我只看蠟印，不拆信。",
+      "startMillis": 3000,
+      "endMillis": 5400
+    },
+    {
+      "cueId": "subtitle-003",
+      "panelId": "panel-frame-side-passage-choice",
+      "audioCueId": "audio-003",
+      "text": "林：那我走側廊，信會保持封好。",
+      "startMillis": 6000,
+      "endMillis": 8400
+    }
+  ],
+  "timing": {
+    "timelineStatus": "metadata_only_timing_plan",
+    "totalDurationMillis": 9000,
+    "frameRate": "24",
+    "resolution": "1920x1080",
+    "backgroundPolicy": "panel_track_only",
+    "outputVideoPath": "",
+    "renderedVideoPath": ""
+  },
+  "boundaryChecklist": [
+    "metadata_only",
+    "manual_voice_plan",
+    "media_execution_absent",
+    "remote_payload_absent"
+  ],
+  "notes": [
+    "繁體中文樣本，僅供本機預覽輸出驗證。",
+    "此樣本只用於本機預覽流程測試。"
+  ]
+}

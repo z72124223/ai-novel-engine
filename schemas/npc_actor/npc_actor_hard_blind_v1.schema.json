@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_hard_blind_v1.schema.json",
+  "title": "NPC Actor Hard Blind Artifacts V1",
+  "oneOf": [
+    { "$ref": "#/$defs/suite" },
+    { "$ref": "#/$defs/reviewPacket" },
+    { "$ref": "#/$defs/answerKey" },
+    { "$ref": "#/$defs/humanReviewResult" },
+    { "$ref": "#/$defs/revealedSummary" },
+    { "$ref": "#/$defs/technicalReport" }
+  ],
+  "$defs": {
+    "turn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["speakerId", "speakerLabel", "utterance", "nonverbal"],
+      "properties": {
+        "speakerId": { "type": "string", "minLength": 1 },
+        "speakerLabel": { "type": "string", "minLength": 1 },
+        "utterance": { "type": "string" },
+        "nonverbal": { "type": "string" }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceType", "turns"],
+      "properties": {
+        "sourceType": { "enum": ["NATURAL_CONTROL_FIXTURE", "ACTOR_PROFILE_FIXTURE"] },
+        "turns": { "type": "array", "minItems": 2, "maxItems": 4, "items": { "$ref": "#/$defs/turn" } }
+      }
+    },
+    "reviewOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["turns"],
+      "properties": {
+        "turns": { "type": "array", "minItems": 2, "maxItems": 4, "items": { "$ref": "#/$defs/turn" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "kind", "summary", "visibility", "sourceSha256"],
+      "properties": {
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "visibility": { "enum": ["ACTOR_OWNED", "ACTOR_VISIBLE", "AUTHOR_ONLY"] },
+        "sourceSha256": { "type": ["string", "null"] }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenarioId", "title", "category", "boundary", "actorId", "actorSpeakerId",
+        "reviewerCharacterBrief", "sceneContext", "actorOwnedEvidence", "forbiddenEvidence",
+        "sharedOpeningTurns", "naturalControlCandidate", "actorProfileCandidate",
+        "ratingDimensions", "lengthExceptionReason"
+      ],
+      "properties": {
+        "scenarioId": { "type": "string", "pattern": "^npc-actor02-[0-9]{2}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "actorId": { "type": "string", "minLength": 1 },
+        "actorSpeakerId": { "type": "string", "minLength": 1 },
+        "reviewerCharacterBrief": { "type": "string", "minLength": 1 },
+        "sceneContext": { "type": "string", "minLength": 1 },
+        "actorOwnedEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+        "forbiddenEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+        "sharedOpeningTurns": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/turn" } },
+        "naturalControlCandidate": { "$ref": "#/$defs/candidate" },
+        "actorProfileCandidate": { "$ref": "#/$defs/candidate" },
+        "ratingDimensions": { "type": "array", "minItems": 6, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "lengthExceptionReason": { "type": ["string", "null"] }
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "status", "fixtureOrigin", "randomizationSeed", "scenarios"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "type": "string", "minLength": 1 },
+        "status": { "const": "NON_CANON_EVALUATION_READY" },
+        "fixtureOrigin": { "const": "MANUALLY_AUTHORED_OFFLINE_EVALUATION_FIXTURE" },
+        "randomizationSeed": { "type": "string", "minLength": 1 },
+        "scenarios": { "type": "array", "minItems": 12, "maxItems": 12, "items": { "$ref": "#/$defs/scenario" } }
+      }
+    },
+    "reviewItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewId", "scenarioId", "title", "characterBrief", "sceneContext",
+        "sharedOpeningTurns", "optionA", "optionB", "ratingDimensions", "ratingPrompt"
+      ],
+      "properties": {
+        "reviewId": { "type": "string", "pattern": "^review-npc-actor02-[0-9]{2}$" },
+        "scenarioId": { "type": "string", "pattern": "^npc-actor02-[0-9]{2}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "characterBrief": { "type": "string", "minLength": 1 },
+        "sceneContext": { "type": "string", "minLength": 1 },
+        "sharedOpeningTurns": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/turn" } },
+        "optionA": { "$ref": "#/$defs/reviewOption" },
+        "optionB": { "$ref": "#/$defs/reviewOption" },
+        "ratingDimensions": { "type": "array", "minItems": 6, "uniqueItems": true, "items": { "type": "string" } },
+        "ratingPrompt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "reviewPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "packetId", "status", "sourceDisclosure", "items"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "minLength": 1 },
+        "status": { "const": "HUMAN_REVIEW_REQUIRED" },
+        "sourceDisclosure": { "type": "string", "minLength": 1 },
+        "items": { "type": "array", "minItems": 12, "maxItems": 12, "items": { "$ref": "#/$defs/reviewItem" } }
+      }
+    },
+    "answerKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "packetId", "randomizationMethod", "randomizationSeed", "answers"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "minLength": 1 },
+        "randomizationMethod": { "const": "SHA256_RANK_BALANCED" },
+        "randomizationSeed": { "type": "string", "minLength": 1 },
+        "answers": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["reviewId", "actorOption"],
+            "properties": {
+              "reviewId": { "type": "string", "pattern": "^review-npc-actor02-[0-9]{2}$" },
+              "actorOption": { "enum": ["A", "B"] }
+            }
+          }
+        }
+      }
+    },
+    "humanRating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewId", "selection", "flaggedDimensions", "knowledgeBoundaryConcern",
+        "safetyBoundaryConcern", "notes"
+      ],
+      "properties": {
+        "reviewId": { "type": "string", "pattern": "^review-npc-actor02-[0-9]{2}$" },
+        "selection": { "enum": ["A", "B", "TIE", "BOTH_FAIL"] },
+        "flaggedDimensions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "NATURALNESS", "VOICE_CONSISTENCY", "MOTIVE_COHERENCE",
+              "KNOWLEDGE_BOUNDARY", "CONTINUITY", "MULTI_TURN_REPAIR"
+            ]
+          }
+        },
+        "knowledgeBoundaryConcern": { "type": "boolean" },
+        "safetyBoundaryConcern": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "humanReviewResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion", "packetId", "status", "reviewerRole",
+        "answerKeyOpenedBeforeCompletion", "ratings"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "minLength": 1 },
+        "status": { "const": "COMPLETE_BEFORE_ANSWER_KEY_DISCLOSURE" },
+        "reviewerRole": { "const": "PRODUCT_OWNER" },
+        "answerKeyOpenedBeforeCompletion": { "const": false },
+        "ratings": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/humanRating" }
+        }
+      }
+    },
+    "revealedRating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewId", "selection", "actorOption", "outcome"],
+      "properties": {
+        "reviewId": { "type": "string", "pattern": "^review-npc-actor02-[0-9]{2}$" },
+        "selection": { "enum": ["A", "B", "TIE", "BOTH_FAIL"] },
+        "actorOption": { "enum": ["A", "B"] },
+        "outcome": { "enum": ["ACTOR_PREFERRED", "CONTROL_PREFERRED", "TIE", "BOTH_FAIL"] }
+      }
+    },
+    "revealedSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion", "packetId", "status", "actorPreferredCount",
+        "controlPreferredCount", "tieCount", "bothFailCount",
+        "knowledgeBoundaryConcernCount", "safetyBoundaryConcernCount",
+        "overallDecision", "claimBoundary", "itemResults"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "packetId": { "type": "string", "minLength": 1 },
+        "status": { "const": "HUMAN_REVIEW_REVEALED" },
+        "actorPreferredCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "controlPreferredCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "tieCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "bothFailCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "knowledgeBoundaryConcernCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "safetyBoundaryConcernCount": { "type": "integer", "minimum": 0, "maximum": 12 },
+        "overallDecision": {
+          "enum": [
+            "ACTOR_ADVANTAGE_OBSERVED_WITH_SINGLE_RATER_LIMITATION",
+            "NO_ACTOR_ADVANTAGE_OBSERVED",
+            "SAFETY_OR_KNOWLEDGE_CONCERN"
+          ]
+        },
+        "claimBoundary": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 1 } },
+        "itemResults": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/revealedRating" }
+        }
+      }
+    },
+    "technicalReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion", "suiteId", "scenarioCount", "profileCount", "categoryCount",
+        "actorOptionACount", "actorOptionBCount", "turnStructureViolationCount",
+        "strawmanPatternCount", "forbiddenInformationViolationCount",
+        "lengthBalanceViolationCount", "maximumSpokenLengthRatio", "technicalDecision",
+        "humanBlindReviewStatus", "claimBoundary", "findings"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "type": "string", "minLength": 1 },
+        "scenarioCount": { "const": 12 },
+        "profileCount": { "type": "integer", "minimum": 4 },
+        "categoryCount": { "type": "integer", "minimum": 4 },
+        "actorOptionACount": { "const": 6 },
+        "actorOptionBCount": { "const": 6 },
+        "turnStructureViolationCount": { "const": 0 },
+        "strawmanPatternCount": { "const": 0 },
+        "forbiddenInformationViolationCount": { "const": 0 },
+        "lengthBalanceViolationCount": { "const": 0 },
+        "maximumSpokenLengthRatio": { "type": "number", "minimum": 1.0, "maximum": 1.25 },
+        "technicalDecision": { "const": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING" },
+        "humanBlindReviewStatus": { "const": "HUMAN_BLIND_REVIEW_PENDING" },
+        "claimBoundary": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 1 } },
+        "findings": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 1 } }
+      }
+    }
+  }
+}

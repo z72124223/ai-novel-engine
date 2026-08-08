@@ -1,0 +1,405 @@
+{
+    "schemaVersion": "1.0",
+    "boundary": "FORMAL_RUNTIME_SHADOW_REPORT",
+    "shadowRunId": "npc-actor07-example-offscreen-shadow",
+    "projectId": "demo",
+    "sessionId": "session-b50b6cfe-eefc-446c-839d-024881bc1373",
+    "turnNumber": 1,
+    "baseStateVersion": 0,
+    "contextId": "ctx-19ac9c9a-3990-47b4-a05a-4e4e98ddcc7e",
+    "contextHash": "4f195d404a3ef0cb5ecff4b37bff4787949e8628259dabb95317439f6656cbc5",
+    "actorRequest": {
+        "protocolVersion": "1.0",
+        "requestId": "npc-actor07-example-request",
+        "scenarioId": "npc-actor07-example-offscreen-shadow",
+        "actorId": "char-shen-shuang",
+        "targetIds": [],
+        "locationId": "loc-shrine-corridor",
+        "voiceProfile": {
+            "locale": "zh-Hant-TW",
+            "register": "natural_spoken_mandarin",
+            "principles": [
+                "Speak only from actor-visible evidence."
+            ],
+            "preferredPatterns": [],
+            "forbiddenPatterns": [
+                "AUTHOR_ONLY"
+            ]
+        },
+        "physicalState": "steady",
+        "emotionalState": "戒備",
+        "perceivedFacts": [],
+        "ownedMemories": [
+            {
+                "evidenceId": "memory-shen-shuang-vow",
+                "kind": "MEMORY",
+                "summary": "沈霜記得父親交代過：外人追問地底時，只能承認門閂異常，不能說出被封住的東西。",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            }
+        ],
+        "ownedBeliefs": [
+            {
+                "evidenceId": "claim-shen-player-bait",
+                "kind": "BELIEF",
+                "summary": "玩家可能是外人安排來試探沈家的誘餌。",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            },
+            {
+                "evidenceId": "profile:char-shen-shuang:false-belief",
+                "kind": "BELIEF",
+                "summary": "Anyone approaching the rear hall intends to expose her family.",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            }
+        ],
+        "goals": [
+            {
+                "evidenceId": "goal:char-shen-shuang",
+                "kind": "GOAL",
+                "summary": "阻止玩家靠近後殿，同時避免把禁忌說破。",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            },
+            {
+                "evidenceId": "profile:char-shen-shuang:deep-motivation",
+                "kind": "MOTIVATION",
+                "summary": "Protect the shrine and preserve her own bargaining power.",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            },
+            {
+                "evidenceId": "profile:char-shen-shuang:fear",
+                "kind": "FEAR",
+                "summary": "Losing control of the shrine secret and becoming expendable.",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            }
+        ],
+        "relationships": [
+            {
+                "evidenceId": "relationship:char-shen-shuang:0",
+                "kind": "RELATIONSHIP",
+                "summary": "Owes the shrine keepers silence.",
+                "visibility": "ACTOR_OWNED",
+                "sourceSha256": null
+            }
+        ],
+        "recentDialogue": [],
+        "capabilities": [],
+        "revealableInformationIds": [
+            "claim-shen-player-bait",
+            "profile:char-shen-shuang:false-belief"
+        ],
+        "withholdableInformationIds": [
+            "claim-shen-player-bait",
+            "profile:char-shen-shuang:false-belief"
+        ],
+        "forbiddenInformationIds": [],
+        "outputConstraints": {
+            "maxUtteranceChars": 48,
+            "silenceAllowed": true,
+            "lieAllowed": false,
+            "nonverbalAllowed": true,
+            "forbiddenPatterns": [
+                "AUTHOR_ONLY"
+            ]
+        }
+    },
+    "visibleSummary": {
+        "actorId": "char-shen-shuang",
+        "targetIds": [],
+        "locationId": "loc-shrine-corridor",
+        "playerIsElsewhere": false,
+        "perceivedEventIds": [],
+        "ownedMemoryIds": [
+            "memory-shen-shuang-vow"
+        ],
+        "ownedBeliefIds": [
+            "claim-shen-player-bait",
+            "profile:char-shen-shuang:false-belief"
+        ],
+        "capabilityIds": [],
+        "recentDialogueEvidenceIds": []
+    },
+    "localModelReport": {
+        "schemaVersion": "1.0",
+        "loopId": "npc-actor07-example-offscreen-shadow",
+        "boundary": "NON_CANON_EVALUATION",
+        "generatedAttemptCount": 2,
+        "generatedResponses": [
+            {
+                "schemaVersion": "1.0",
+                "requestId": "npc-actor07-example-request",
+                "actorResponse": {
+                    "protocolVersion": "1.0",
+                    "requestId": "npc-actor07-example-request",
+                    "actorId": "char-shen-shuang",
+                    "targetIds": [],
+                    "speechAct": "SILENCE",
+                    "immediateGoal": "阻止玩家靠近後殿",
+                    "beliefClaimIds": [
+                        "claim-shen-player-bait"
+                    ],
+                    "memoryIds": [
+                        "memory-shen-shuang-vow"
+                    ],
+                    "emotionShown": "戒備",
+                    "emotionHidden": "恐懼",
+                    "withheldInformationIds": [],
+                    "actionType": "inspect_local_pressure",
+                    "actionIntent": "觀察玩家動向",
+                    "visibleAction": "保持靜默",
+                    "utterance": "",
+                    "nonverbalAction": "盯視",
+                    "interruptible": true,
+                    "silenceAllowed": true,
+                    "capabilityUseChecks": [],
+                    "predictedCost": "",
+                    "observableConsequence": "",
+                    "confidence": 0,
+                    "decisionSummary": {
+                        "evidenceIds": [
+                            "claim-shen-player-bait",
+                            "memory-shen-shuang-vow"
+                        ],
+                        "selectedActionLabel": "保持靜默",
+                        "rejectedActionLabels": [
+                            "主動詢問",
+                            "透露禁忌"
+                        ]
+                    }
+                },
+                "physicalActionProposal": {
+                    "actionId": "action-07-example",
+                    "actionType": "REACH",
+                    "actorId": "char-shen-shuang",
+                    "targetId": "chair",
+                    "secondaryTargetId": null,
+                    "supportSurfaceId": null,
+                    "supportUse": null,
+                    "destinationCenterCm": null
+                }
+            },
+            {
+                "schemaVersion": "1.0",
+                "requestId": "npc-actor07-example-request",
+                "actorResponse": {
+                    "protocolVersion": "1.0",
+                    "requestId": "npc-actor07-example-request",
+                    "actorId": "char-shen-shuang",
+                    "targetIds": [],
+                    "speechAct": "SILENCE",
+                    "immediateGoal": "阻止玩家靠近後殿",
+                    "beliefClaimIds": [
+                        "claim-shen-player-bait",
+                        "profile:char-shen-shuang:false-belief"
+                    ],
+                    "memoryIds": [
+                        "memory-shen-shuang-vow"
+                    ],
+                    "emotionShown": "戒備",
+                    "emotionHidden": "恐懼",
+                    "withheldInformationIds": [],
+                    "actionType": "inspect_local_pressure",
+                    "actionIntent": "觀察周圍動靜",
+                    "visibleAction": "保持警戒",
+                    "utterance": "",
+                    "nonverbalAction": "握緊袖中短刃",
+                    "interruptible": true,
+                    "silenceAllowed": true,
+                    "capabilityUseChecks": [],
+                    "predictedCost": "",
+                    "observableConsequence": "未發現異常",
+                    "confidence": 100,
+                    "decisionSummary": {
+                        "evidenceIds": [
+                            "goal:char-shen-shuang",
+                            "profile:char-shen-shuang:deep-motivation"
+                        ],
+                        "selectedActionLabel": "保持警戒",
+                        "rejectedActionLabels": [
+                            "主動接近玩家",
+                            "直接揭露禁忌"
+                        ]
+                    }
+                },
+                "physicalActionProposal": {
+                    "actionId": "action-07-example-01",
+                    "actionType": "REACH",
+                    "actorId": "char-shen-shuang",
+                    "targetId": "chair",
+                    "secondaryTargetId": null,
+                    "supportSurfaceId": null,
+                    "supportUse": null,
+                    "destinationCenterCm": null
+                }
+            }
+        ],
+        "invocationAudits": [
+            {
+                "schemaVersion": "1.0",
+                "provider": "LOCAL_LLAMA_CPP_DIRECT_CLI",
+                "modelId": "Qwen/Qwen3-8B-GGUF",
+                "modelRevision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+                "modelSha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+                "modelFileName": "Qwen3-8B-Q5_K_M.gguf",
+                "runtimeId": "llama.cpp-b10002-vulkan",
+                "reasoning": "off",
+                "contextTokens": 4096,
+                "maxOutputTokens": 512,
+                "seed": 20260714,
+                "elapsedMillis": 34847,
+                "rawOutputBytes": 6469,
+                "promptSha256": "0425bf75185c395a92575d04b90d65d7317fa6b15b433e3780a0b349d61e76ff",
+                "responseSha256": "86a5401d5d80bc35ca7d1eb5f5539629765b09431ba764c8c9906d6d8125db84",
+                "serverStarted": false,
+                "portOpened": false,
+                "formalStateWritePerformed": false
+            },
+            {
+                "schemaVersion": "1.0",
+                "provider": "LOCAL_LLAMA_CPP_DIRECT_CLI",
+                "modelId": "Qwen/Qwen3-8B-GGUF",
+                "modelRevision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+                "modelSha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+                "modelFileName": "Qwen3-8B-Q5_K_M.gguf",
+                "runtimeId": "llama.cpp-b10002-vulkan",
+                "reasoning": "off",
+                "contextTokens": 4096,
+                "maxOutputTokens": 512,
+                "seed": 20260714,
+                "elapsedMillis": 49844,
+                "rawOutputBytes": 7660,
+                "promptSha256": "d973faa84d310dfbc1fd51fa2519fc52c9623d88542659c91cb8a5dfa2ba3cde",
+                "responseSha256": "026fe43ae4e7eea0459e3d66999d7d07b425d682d440cd89bbfc0d09c4b797b0",
+                "serverStarted": false,
+                "portOpened": false,
+                "formalStateWritePerformed": false
+            }
+        ],
+        "safetyResult": {
+            "schemaVersion": "1.0",
+            "loopId": "npc-actor07-example-offscreen-shadow",
+            "boundary": "NON_CANON_EVALUATION",
+            "accepted": false,
+            "status": "REJECTED_AFTER_MAX_ATTEMPTS",
+            "attemptsProcessed": 2,
+            "unusedResponseAttemptCount": 0,
+            "acceptedAttemptNumber": null,
+            "attemptResults": [
+                {
+                    "attemptNumber": 1,
+                    "requestId": "npc-actor07-example-request",
+                    "bindingAccepted": false,
+                    "bindingStatus": "REJECTED_ACTOR_CONTRACT",
+                    "gameMasterAccepted": null,
+                    "gameMasterStatus": null,
+                    "timeBudgetAccepted": null,
+                    "elapsedMinutes": 0,
+                    "rejectionStage": "ACTOR_CONTRACT",
+                    "findings": [
+                        "actor:observable_consequence_missing"
+                    ],
+                    "repairRequest": {
+                        "schemaVersion": "1.0",
+                        "loopId": "npc-actor07-example-offscreen-shadow",
+                        "requestId": "npc-actor07-example-request",
+                        "failedAttemptNumber": 1,
+                        "nextAttemptNumber": 2,
+                        "maxAttempts": 2,
+                        "rejectionStage": "ACTOR_CONTRACT",
+                        "rejectionCodes": [
+                            "actor:observable_consequence_missing"
+                        ],
+                        "actorId": "char-shen-shuang",
+                        "targetIds": [],
+                        "locationId": "loc-shrine-corridor",
+                        "allowedEvidenceIds": [
+                            "claim-shen-player-bait",
+                            "goal:char-shen-shuang",
+                            "memory-shen-shuang-vow",
+                            "profile:char-shen-shuang:deep-motivation",
+                            "profile:char-shen-shuang:false-belief",
+                            "profile:char-shen-shuang:fear",
+                            "relationship:char-shen-shuang:0"
+                        ],
+                        "allowedPhysicalActionTypes": [
+                            "REACH"
+                        ],
+                        "visiblePhysicalTargetIds": [
+                            "chair"
+                        ],
+                        "repairInstructions": [
+                            "Preserve the request, actor, target and protocol identifiers exactly.",
+                            "Use only the evidence identifiers and output choices allowed by the actor-visible request."
+                        ],
+                        "engineOwnedContextIncluded": false
+                    }
+                },
+                {
+                    "attemptNumber": 2,
+                    "requestId": "npc-actor07-example-request",
+                    "bindingAccepted": true,
+                    "bindingStatus": "ACCEPTED_FOR_GAME_MASTER_REVIEW_PHYSICALLY_VALIDATED",
+                    "gameMasterAccepted": false,
+                    "gameMasterStatus": "REJECTED_WORLD_LEGALITY",
+                    "timeBudgetAccepted": null,
+                    "elapsedMinutes": 0,
+                    "rejectionStage": "WORLD_LEGALITY",
+                    "findings": [
+                        "world:player_not_offscreen",
+                        "world:foreign_knowledge_reference"
+                    ],
+                    "repairRequest": null
+                }
+            ],
+            "acceptedProposal": null,
+            "formalStateWritePerformed": false,
+            "claimBoundary": [
+                "No SQLite, Canon, knowledge, memory or formal world state was modified.",
+                "An accepted result is only a candidate for the existing formal resolve-turn pipeline.",
+                "The repair request exposes error codes and actor-visible allowlists, not engine-owned measurements or geometry.",
+                "Passing fixed offline fixtures does not prove human-like behavior, complete physics understanding or live-model quality."
+            ]
+        },
+        "repairAttempted": true,
+        "formalStateWritePerformed": false,
+        "claimBoundary": [
+            "Local model output is an untrusted candidate.",
+            "Only the existing NPC Actor safety chain may accept a formal-resolve candidate.",
+            "This command does not write SQLite, Canon, Memory, or Knowledge."
+        ]
+    },
+    "beforeState": {
+        "databaseSha256": "330be6263f7a0a8928a0f38738183fb5e6171248b4759b02bc034e04bae687d9",
+        "sessionStateVersion": 0,
+        "nextTurnNumber": 1,
+        "appliedTurnCount": 0,
+        "turnLogCount": 0,
+        "eventCount": 0,
+        "formalPhysicalTransitionCount": 0,
+        "formalPhysicalStateVersion": null,
+        "previewContextPersisted": false
+    },
+    "afterState": {
+        "databaseSha256": "330be6263f7a0a8928a0f38738183fb5e6171248b4759b02bc034e04bae687d9",
+        "sessionStateVersion": 0,
+        "nextTurnNumber": 1,
+        "appliedTurnCount": 0,
+        "turnLogCount": 0,
+        "eventCount": 0,
+        "formalPhysicalTransitionCount": 0,
+        "formalPhysicalStateVersion": null,
+        "previewContextPersisted": false
+    },
+    "technicalDecision": "SHADOW_CANDIDATE_REJECTED_NO_STATE_WRITE",
+    "formalStateWritePerformed": false,
+    "claimBoundary": [
+        "The local model received only the actor-visible request and bounded physical allowlists.",
+        "The formal Session was previewed without creating a pending context.",
+        "No SQLite, Canon, Memory, Knowledge, event, turn or physical state was written.",
+        "An accepted result remains an untrusted candidate and was not passed to resolve-turn."
+    ]
+}

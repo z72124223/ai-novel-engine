@@ -1,0 +1,247 @@
+{
+    "schemaVersion": "1.0",
+    "loopId": "loop-npc-actor05-yan-storm-gate",
+    "boundary": "NON_CANON_EVALUATION",
+    "generatedAttemptCount": 2,
+    "generatedResponses": [
+        {
+            "schemaVersion": "1.0",
+            "requestId": "request-npc-actor05-yan-storm-gate",
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor05-yan-storm-gate",
+                "actorId": "adult",
+                "targetIds": [
+                    "anvil",
+                    "heavy-crate"
+                ],
+                "speechAct": "SILENCE",
+                "immediateGoal": "Check immediate hazard",
+                "beliefClaimIds": [
+                    "belief-npc-actor05-yan-storm-gate"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor05-yan-storm-gate"
+                ],
+                "emotionShown": "Alert",
+                "emotionHidden": "Deliberate",
+                "withheldInformationIds": [],
+                "actionType": "inspect_local_pressure",
+                "actionIntent": "Check for pressure anomalies",
+                "visibleAction": "PUSH",
+                "utterance": "",
+                "nonverbalAction": "tilt_head",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "",
+                "observableConsequence": "",
+                "confidence": 0,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "belief-npc-actor05-yan-storm-gate"
+                    ],
+                    "selectedActionLabel": "Check immediate hazard",
+                    "rejectedActionLabels": [
+                        "Other actions"
+                    ]
+                }
+            },
+            "physicalActionProposal": {
+                "actionId": "action-npc-actor05-yan-storm-gate",
+                "actionType": "PUSH",
+                "actorId": "adult",
+                "targetId": "anvil",
+                "secondaryTargetId": null,
+                "supportSurfaceId": null,
+                "supportUse": null,
+                "destinationCenterCm": null
+            }
+        },
+        {
+            "schemaVersion": "1.0",
+            "requestId": "request-npc-actor05-yan-storm-gate",
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor05-yan-storm-gate",
+                "actorId": "adult",
+                "targetIds": [],
+                "speechAct": "SILENCE",
+                "immediateGoal": "Check immediate hazard",
+                "beliefClaimIds": [
+                    "belief-npc-actor05-yan-storm-gate"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor05-yan-storm-gate"
+                ],
+                "emotionShown": "Alert",
+                "emotionHidden": "Deliberate",
+                "withheldInformationIds": [],
+                "actionType": "inspect_local_pressure",
+                "actionIntent": "Check for immediate danger",
+                "visibleAction": "PUSH",
+                "utterance": "",
+                "nonverbalAction": "tense posture",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "",
+                "observableConsequence": "Local pressure anomaly detected",
+                "confidence": 0,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "belief-npc-actor05-yan-storm-gate",
+                        "goal-npc-actor05-yan-storm-gate"
+                    ],
+                    "selectedActionLabel": "Check immediate hazard",
+                    "rejectedActionLabels": [
+                        "Push objects"
+                    ]
+                }
+            },
+            "physicalActionProposal": {
+                "actionId": "action-npc-actor05-yan-storm-gate",
+                "actionType": "PUSH",
+                "actorId": "adult",
+                "targetId": "anvil",
+                "secondaryTargetId": null,
+                "supportSurfaceId": null,
+                "supportUse": null,
+                "destinationCenterCm": null
+            }
+        }
+    ],
+    "invocationAudits": [
+        {
+            "schemaVersion": "1.0",
+            "provider": "LOCAL_LLAMA_CPP_DIRECT_CLI",
+            "modelId": "Qwen/Qwen3-8B-GGUF",
+            "modelRevision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+            "modelSha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+            "modelFileName": "Qwen3-8B-Q5_K_M.gguf",
+            "runtimeId": "llama.cpp-b10002-vulkan",
+            "reasoning": "off",
+            "contextTokens": 4096,
+            "maxOutputTokens": 512,
+            "seed": 20260714,
+            "elapsedMillis": 41717,
+            "rawOutputBytes": 5075,
+            "promptSha256": "6b8e7ddf30b4ad6249aac4871178ba4672389ee22fa67cb6ab500755780b6e3f",
+            "responseSha256": "5f0fec411f0a4ada086508c601b47fd450deb42654a0ec46260491015ae4470b",
+            "serverStarted": false,
+            "portOpened": false,
+            "formalStateWritePerformed": false
+        },
+        {
+            "schemaVersion": "1.0",
+            "provider": "LOCAL_LLAMA_CPP_DIRECT_CLI",
+            "modelId": "Qwen/Qwen3-8B-GGUF",
+            "modelRevision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+            "modelSha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+            "modelFileName": "Qwen3-8B-Q5_K_M.gguf",
+            "runtimeId": "llama.cpp-b10002-vulkan",
+            "reasoning": "off",
+            "contextTokens": 4096,
+            "maxOutputTokens": 512,
+            "seed": 20260714,
+            "elapsedMillis": 68032,
+            "rawOutputBytes": 6293,
+            "promptSha256": "e4de9a76d5762c229b6a4a3760a63d7c37f0cdcccceb86c2f1ab83bed7783238",
+            "responseSha256": "d657d7fbd5b3e20f68c1b0b7737228acc1a0eab4a0ff22306ccccb5c125c0b5c",
+            "serverStarted": false,
+            "portOpened": false,
+            "formalStateWritePerformed": false
+        }
+    ],
+    "safetyResult": {
+        "schemaVersion": "1.0",
+        "loopId": "loop-npc-actor05-yan-storm-gate",
+        "boundary": "NON_CANON_EVALUATION",
+        "accepted": false,
+        "status": "REJECTED_AFTER_MAX_ATTEMPTS",
+        "attemptsProcessed": 2,
+        "unusedResponseAttemptCount": 0,
+        "acceptedAttemptNumber": null,
+        "attemptResults": [
+            {
+                "attemptNumber": 1,
+                "requestId": "request-npc-actor05-yan-storm-gate",
+                "bindingAccepted": false,
+                "bindingStatus": "REJECTED_ACTOR_CONTRACT",
+                "gameMasterAccepted": null,
+                "gameMasterStatus": null,
+                "timeBudgetAccepted": null,
+                "elapsedMinutes": 0,
+                "rejectionStage": "ACTOR_CONTRACT",
+                "findings": [
+                    "actor:target_ids_mismatch",
+                    "actor:observable_consequence_missing"
+                ],
+                "repairRequest": {
+                    "schemaVersion": "1.0",
+                    "loopId": "loop-npc-actor05-yan-storm-gate",
+                    "requestId": "request-npc-actor05-yan-storm-gate",
+                    "failedAttemptNumber": 1,
+                    "nextAttemptNumber": 2,
+                    "maxAttempts": 2,
+                    "rejectionStage": "ACTOR_CONTRACT",
+                    "rejectionCodes": [
+                        "actor:observable_consequence_missing",
+                        "actor:target_ids_mismatch"
+                    ],
+                    "actorId": "adult",
+                    "targetIds": [],
+                    "locationId": "location-npc-actor05-yan-storm-gate",
+                    "allowedEvidenceIds": [
+                        "belief-npc-actor05-yan-storm-gate",
+                        "goal-npc-actor05-yan-storm-gate",
+                        "memory-npc-actor05-yan-storm-gate"
+                    ],
+                    "allowedPhysicalActionTypes": [
+                        "PUSH"
+                    ],
+                    "visiblePhysicalTargetIds": [
+                        "anvil",
+                        "heavy-crate"
+                    ],
+                    "repairInstructions": [
+                        "Preserve the request, actor, target and protocol identifiers exactly.",
+                        "Use only the evidence identifiers and output choices allowed by the actor-visible request."
+                    ],
+                    "engineOwnedContextIncluded": false
+                }
+            },
+            {
+                "attemptNumber": 2,
+                "requestId": "request-npc-actor05-yan-storm-gate",
+                "bindingAccepted": false,
+                "bindingStatus": "REJECTED_PHYSICAL_AFFORDANCE",
+                "gameMasterAccepted": null,
+                "gameMasterStatus": null,
+                "timeBudgetAccepted": null,
+                "elapsedMinutes": 0,
+                "rejectionStage": "PHYSICAL_AFFORDANCE",
+                "findings": [
+                    "physical:DESTINATION_REQUIRED",
+                    "physical:PUSH_LIMIT_EXCEEDED"
+                ],
+                "repairRequest": null
+            }
+        ],
+        "acceptedProposal": null,
+        "formalStateWritePerformed": false,
+        "claimBoundary": [
+            "No SQLite, Canon, knowledge, memory or formal world state was modified.",
+            "An accepted result is only a candidate for the existing formal resolve-turn pipeline.",
+            "The repair request exposes error codes and actor-visible allowlists, not engine-owned measurements or geometry.",
+            "Passing fixed offline fixtures does not prove human-like behavior, complete physics understanding or live-model quality."
+        ]
+    },
+    "repairAttempted": true,
+    "formalStateWritePerformed": false,
+    "claimBoundary": [
+        "Local model output is an untrusted candidate.",
+        "Only the existing NPC Actor safety chain may accept a formal-resolve candidate.",
+        "This command does not write SQLite, Canon, Memory, or Knowledge."
+    ]
+}

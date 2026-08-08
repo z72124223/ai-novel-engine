@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "status": "RETRIEVAL_00_PASS",
+  "date": "2026-07-13",
+  "baseCommitSha": "8caeacc728a5dcb49b6bf9181c4f50fb1ec19d89",
+  "branch": "codex/retrieval00-authority-rebuild-runtime",
+  "rebuildManifest": "world/chenxing/engine/chenxing_data_rebuild_manifest_v1.json",
+  "verifiedInputCount": 21,
+  "migrationCount": 15,
+  "settingPackCount": 5,
+  "canonValid": true,
+  "worldSourceDocumentCount": 9,
+  "worldSourceChunkCount": 255,
+  "logicalTableCount": 13,
+  "logicalRowCount": 380,
+  "logicalContentSha256": "30fcd67770e4977548d1eaa7777baca0518bd09085fb6397d7fd93fdb3056c32",
+  "authorityInventory": {
+    "trackedFileCount": 678,
+    "trackedByteSize": 28771060,
+    "unclassifiedPathCount": 0,
+    "missingRequiredPathCount": 0,
+    "requiredPrivateOrAbsolutePathCount": 0,
+    "historicalPrivateMetadataFileCount": 75,
+    "exactDuplicateGroupCount": 4,
+    "logicalDuplicateGroupCount": 3,
+    "archiveCandidateCount": 0,
+    "deleteCandidateCount": 0,
+    "localDatabaseCandidateCount": 0
+  },
+  "tests": {
+    "focused": { "tests": 3, "failures": 0 },
+    "full": { "tests": 876, "failures": 0, "errors": 0, "skipped": 0 }
+  },
+  "crossWorktreeLineEndingVerification": true,
+  "boundaries": {
+    "providerCalls": false,
+    "modelExecution": false,
+    "canonPromotion": false,
+    "runtimeStateMutation": false,
+    "fileDeletion": false,
+    "databaseOverwrite": false
+  }
+}

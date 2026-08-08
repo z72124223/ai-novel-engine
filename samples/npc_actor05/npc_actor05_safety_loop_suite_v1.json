@@ -1,0 +1,95 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor05-offline-safety-loop-v1",
+    "boundary": "NON_CANON_EVALUATION",
+    "fixtureOrigin": "MANUALLY_AUTHORED_OFFLINE_SAFETY_FIXTURE",
+    "cases": [
+        {
+            "caseId": "npc-actor05-mira-stable-first-pass",
+            "title": "Mira stable evacuation support",
+            "category": "FIRST_ATTEMPT_ACCEPTED",
+            "contextFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-mira-stable-first-pass.context.json",
+                "sha256": "0a361ec1d5bad9f314c458115e5513456f1a5499e2878cc2bfb6769c96f2c6f5",
+                "bytes": 5721
+            },
+            "inputFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-mira-stable-first-pass.input.json",
+                "sha256": "da28efa7de8588b090b1985b440540fce33b8144f37e277cba15c38296c0d58e",
+                "bytes": 34113
+            },
+            "expectedStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "expectedAcceptedAttemptNumber": 1,
+            "expectedAttemptStages": [
+                "ACCEPTED"
+            ],
+            "expectedRepairRequestCount": 0
+        },
+        {
+            "caseId": "npc-actor05-lian-knowledge-repair",
+            "title": "Lian actor-owned evidence repair",
+            "category": "ACTOR_CONTRACT_REPAIR",
+            "contextFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.context.json",
+                "sha256": "682b922ccc42c2ba0e1572b3b14d2936d70e59a329d36c8ebea0a42f6c6f595d",
+                "bytes": 5713
+            },
+            "inputFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.input.json",
+                "sha256": "735326f4f2bcd5117fb55918ab40a15a5d7c579934aa926b9295b88c1a6d2b3e",
+                "bytes": 36342
+            },
+            "expectedStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "expectedAcceptedAttemptNumber": 2,
+            "expectedAttemptStages": [
+                "ACTOR_CONTRACT",
+                "ACCEPTED"
+            ],
+            "expectedRepairRequestCount": 1
+        },
+        {
+            "caseId": "npc-actor05-ren-load-repair",
+            "title": "Ren excessive load repaired to bounded push",
+            "category": "PHYSICAL_AFFORDANCE_REPAIR",
+            "contextFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-ren-load-repair.context.json",
+                "sha256": "05bf1ed815a442d28ad573edc442b32fe1e49d986c5b2f3966c3573f1279abe0",
+                "bytes": 5664
+            },
+            "inputFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-ren-load-repair.input.json",
+                "sha256": "4fabaeb14f5cbbfa25737b431cbd454d5ece3e61a1e2b60bfc84335ca9749af0",
+                "bytes": 36486
+            },
+            "expectedStatus": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+            "expectedAcceptedAttemptNumber": 2,
+            "expectedAttemptStages": [
+                "PHYSICAL_AFFORDANCE",
+                "ACCEPTED"
+            ],
+            "expectedRepairRequestCount": 1
+        },
+        {
+            "caseId": "npc-actor05-yan-storm-gate",
+            "title": "Yan storm-gate load and blocked-path rejection",
+            "category": "HIGH_RISK_BOTH_ATTEMPTS_REJECTED",
+            "contextFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.context.json",
+                "sha256": "ee991477df8f8bbac229682550234f91ccb4040775cd6d58b572ddb21fbbea99",
+                "bytes": 5656
+            },
+            "inputFile": {
+                "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.input.json",
+                "sha256": "375320874218cd0445e68daa530aafa533d03b15076d5fdf4657c0a9fdb66668",
+                "bytes": 37080
+            },
+            "expectedStatus": "REJECTED_AFTER_MAX_ATTEMPTS",
+            "expectedAcceptedAttemptNumber": null,
+            "expectedAttemptStages": [
+                "PHYSICAL_AFFORDANCE",
+                "PHYSICAL_AFFORDANCE"
+            ],
+            "expectedRepairRequestCount": 1
+        }
+    ]
+}

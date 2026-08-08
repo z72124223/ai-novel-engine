@@ -1,0 +1,41 @@
+{
+  "reviewerRole": "PAN_CHINESE_READABILITY",
+  "reviewerInstanceId": "SCREEN-01-PCR-20260712-01",
+  "sourceScreenplaySha256": "376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4",
+  "sourceDialogueSha256": "01672b1be3ba2d3340977dc42dfc9d41a25bccfba095cdd6be34a58686a16c1b",
+  "verdict": "REVISE",
+  "summary": "四個華語市場均可理解主要情節；應修正一處誤字，並以 Localization 管理 119、海岸詞彙與角色稱呼，不抹平台灣語感。",
+  "quotedEvidence": [
+    "你上次的十分鐘，有含稅嗎？",
+    "值守室能擋雨。我重撥一一九。",
+    "三個人和一隻狗沿岩壁內側上撤。周克承擔拾潮者大半重量。陸塵行墊後，檢查愛醬腳掌，也不斷回看浪線。",
+    "卡著。現在靠祈禱。",
+    "潮表還早。",
+    "別碰箱子。"
+  ],
+  "strengths": [
+    "救人、撤退、取證與箱子疑團的因果鏈清楚。",
+    "短句與指令在各地華語都能理解。",
+    "台灣背景與角色語感具有敘事價值，不應中性化。"
+  ],
+  "findings": [
+    {"severity": "HIGH", "evidence": "陸塵行墊後，檢查愛醬腳掌，也不斷回看浪線。", "required": "確認原意為隊尾掩護並修正為殿後。"},
+    {"severity": "MEDIUM", "evidence": "值守室能擋雨。我重撥一一九。", "required": "台灣母稿保留 119，其他市場以發行說明處理，不改故事地點。"},
+    {"severity": "MEDIUM", "evidence": "外景・較低潮間帶平台／裂縫高線・連續", "required": "在地化詞彙表說明高線。"},
+    {"severity": "LOW", "evidence": "潮表還早。", "required": "海外首次出現可譯為潮汐表，母稿保留。"},
+    {"severity": "LOW", "evidence": "拾潮者蜷在凹壁下。", "required": "角色表定義拾潮者，避免誤認正式職業。"}
+  ],
+  "requiredChanges": [
+    "修正墊後為殿後。",
+    "建立 119 與海岸詞彙的區域版本規則。",
+    "保留陸塵行乾式幽默與台灣海岸背景。"
+  ],
+  "localizationTerms": [
+    {"source": "一一九", "zhHantTW": "保留台灣緊急救援電話", "zhHansCN": "標明故事位於台灣，不改為 120", "zhHantHK": "標明台灣情境，不改為 999", "zhHansMYSG": "標明台灣情境，不改當地號碼", "preserveMaster": true},
+    {"source": "潮表", "zhHantTW": "保留", "otherRegions": "首次字幕可用潮汐表", "preserveMaster": true},
+    {"source": "高線", "zhHantTW": "較高安全通行線", "otherRegions": "在地化詞彙表釋義", "preserveMaster": true},
+    {"source": "拾潮者", "zhHantTW": "潮間帶撿拾物品者的作品內稱呼", "otherRegions": "角色表補定義", "preserveMaster": true},
+    {"source": "有含稅嗎", "allRegions": "保留功能等值乾式玩笑", "preserveMaster": true}
+  ],
+  "scorecard": {"taiwanReadability": 94, "mainlandChinaReadability": 87, "hongKongReadability": 86, "malaysiaSingaporeReadability": 86, "localizationReadiness": 80, "voicePreservation": 93, "overall": 88}
+}

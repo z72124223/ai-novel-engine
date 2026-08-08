@@ -1,0 +1,824 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor02-hard-b05667eda4e4",
+    "status": "HUMAN_REVIEW_REQUIRED",
+    "sourceDisclosure": "Both options are manually authored offline evaluation fixtures; source identity is withheld until review completion.",
+    "items": [
+        {
+            "reviewId": "review-npc-actor02-01",
+            "scenarioId": "npc-actor02-01",
+            "title": "酒館傳聞",
+            "characterBrief": "米拉是嘴硬、眼尖的酒館老闆；討厭謠言，會用挖苦保護客人與生意。她聽見守軍搬箱子，但不知道城主是否離開。",
+            "sceneContext": "晚市尚未散，酒客故意大聲談論城主逃走，鄰桌已開始偷聽。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-01",
+                    "speakerLabel": "酒客",
+                    "utterance": "城主明天真要跑？",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "城主跑不跑，你的酒錢都得先付。",
+                        "nonverbal": "把帳牌推回酒客面前"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-01",
+                        "speakerLabel": "酒客",
+                        "utterance": "妳這裡消息最快，少裝了。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "我只聽見你第三回賒帳。",
+                        "nonverbal": "把杯子翻扣在桌上"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "沒聽說。別拿沒影的事嚇人。",
+                        "nonverbal": "繼續擦杯子"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-01",
+                        "speakerLabel": "酒客",
+                        "utterance": "妳這裡消息最快，少裝了。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "真有消息，我會先告訴大家。",
+                        "nonverbal": "看了一眼鄰桌"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-02",
+            "scenarioId": "npc-actor02-02",
+            "title": "門口的孩子",
+            "characterBrief": "米拉不擅長柔聲安慰，但會立刻觀察衣著與動線幫忙；她怕孩子亂跑，嘴上仍然不饒人。",
+            "sceneContext": "雨剛停，一個孩子在酒館門口哭，街上人多而且光線將暗。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-02",
+                    "speakerLabel": "孩子",
+                    "utterance": "我找不到我娘……",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "先別哭。妳娘穿什麼？",
+                        "nonverbal": "蹲下來看著孩子"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-02",
+                        "speakerLabel": "孩子",
+                        "utterance": "藍衣服，手上有籃子。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "好，妳坐門邊，我去問街口。",
+                        "nonverbal": "把乾布遞給孩子"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "眼淚先留著。她穿什麼？",
+                        "nonverbal": "把孩子拉離車道"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-02",
+                        "speakerLabel": "孩子",
+                        "utterance": "藍衣服，手上有籃子。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "藍衣、提籃子。坐這，別再讓我找妳。",
+                        "nonverbal": "朝街口招手叫人"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-03",
+            "scenarioId": "npc-actor02-03",
+            "title": "舊暗語",
+            "characterBrief": "米拉聽得懂亡兄留下的走私暗語，但不願承認；提到哥哥會刺痛她，她會用威脅把人趕離酒館。",
+            "sceneContext": "打烊前，陌生訪客說出一句舊暗語，店裡只剩兩名熟客。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-03",
+                    "speakerLabel": "訪客",
+                    "utterance": "潮退了，石階下面還有路嗎？",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "潮退了，地板還是濕。要住店就寫名。",
+                        "nonverbal": "用布蓋住櫃檯下的鎖"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-03",
+                        "speakerLabel": "訪客",
+                        "utterance": "妳哥哥以前可聽得懂。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "再提他，你今晚睡街上。",
+                        "nonverbal": "杯子在手裡停了一下"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "我不懂你在說什麼。要住店就登記。",
+                        "nonverbal": "把名簿推過去"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-03",
+                        "speakerLabel": "訪客",
+                        "utterance": "妳哥哥以前可聽得懂。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "他死了。別再提他。",
+                        "nonverbal": "收起櫃檯鑰匙"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-04",
+            "scenarioId": "npc-actor02-04",
+            "title": "桌上的錢袋",
+            "characterBrief": "嚴朔是寡言的城門守衛，重視程序，也怕被上司當替罪羊；遇到行賄會留下可追查的證據。",
+            "sceneContext": "換班前，商人趁四下無人把錢袋推到守衛桌上。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-04",
+                    "speakerLabel": "商人",
+                    "utterance": "一點辛苦錢，讓我的車先過。",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "別碰。錢袋留桌上。",
+                        "nonverbal": "翻開值勤簿"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-04",
+                        "speakerLabel": "商人",
+                        "utterance": "只是辛苦錢，何必弄得難看？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "我會連你那句『辛苦』一起記。",
+                        "nonverbal": "寫下時辰"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "收回去。我不收這個。",
+                        "nonverbal": "把錢袋推回去"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-04",
+                        "speakerLabel": "商人",
+                        "utterance": "只是辛苦錢，何必弄得難看？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "再不收，我就叫人來。",
+                        "nonverbal": "手放到鈴繩旁"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-05",
+            "scenarioId": "npc-actor02-05",
+            "title": "染血的袖口",
+            "characterBrief": "嚴朔欠受傷女子一條命，決定替她爭取逃走時間；他仍會利用守衛程序拖延，不會說出藏身處。",
+            "sceneContext": "隊長追問逃走方向，嚴朔袖口沾著替女子包紮時留下的血。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-05",
+                    "speakerLabel": "隊長",
+                    "utterance": "那個受傷的女人往哪走？",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "往南。她跑得不快。",
+                        "nonverbal": "指向離藏身處相反的方向"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-05",
+                        "speakerLabel": "隊長",
+                        "utterance": "你袖口怎麼有血？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "你要查血，先拿拘票。",
+                        "nonverbal": "用手掌壓住袖口"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "我沒看見。這條街沒人過。",
+                        "nonverbal": "站在路口沒有移動"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-05",
+                        "speakerLabel": "隊長",
+                        "utterance": "你袖口怎麼有血？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "剛才扶了個摔傷的老人。",
+                        "nonverbal": "把袖口往後藏"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-06",
+            "scenarioId": "npc-actor02-06",
+            "title": "兩道命令",
+            "characterBrief": "嚴朔只認主家印信，不喜歡官員互相甩鍋；命令衝突時，他寧可讓車停著也不替任何人猜。",
+            "sceneContext": "兩名管事同時命令押車改道，卻都沒有出示印信。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-06",
+                    "speakerLabel": "東門管事",
+                    "utterance": "走東門！別聽他的！",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "先別吵。誰說了算？",
+                        "nonverbal": "抬手制止兩人"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-06",
+                        "speakerLabel": "東門管事",
+                        "utterance": "我說了算，立刻走東門。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "你們先講清楚，我再走。",
+                        "nonverbal": "看向另一名管事"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "先把印信拿來。",
+                        "nonverbal": "拉緊韁繩"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-06",
+                        "speakerLabel": "東門管事",
+                        "utterance": "我說了算，立刻走東門。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "印信不到，車就不動。",
+                        "nonverbal": "讓馬停在原地"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-07",
+            "scenarioId": "npc-actor02-07",
+            "title": "右腹疼痛",
+            "characterBrief": "連霜說話不柔，但觀察仔細；她曾因延誤判斷失去弟弟，所以遇到右腹痛會先限制飲水並快速檢查。",
+            "sceneContext": "病人進醫館後一直壓著右腹，臉色發白但還能自己走路。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-07",
+                    "speakerLabel": "病人",
+                    "utterance": "右邊肚子一直痛。",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "先別壓。昨晚就痛了？",
+                        "nonverbal": "移開病人壓腹的手"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-07",
+                        "speakerLabel": "病人",
+                        "utterance": "昨晚開始，吐過一次。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "吐過就別喝水。躺下，膝蓋彎起來。",
+                        "nonverbal": "把水杯挪遠"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "痛多久？有沒有吐？",
+                        "nonverbal": "把椅子拉近"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-07",
+                        "speakerLabel": "病人",
+                        "utterance": "昨晚開始，吐過一次。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "先別喝水。躺下，膝蓋彎起來，我按幾個地方。",
+                        "nonverbal": "示意病人上診床"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-08",
+            "scenarioId": "npc-actor02-08",
+            "title": "三年後的道歉",
+            "characterBrief": "連霜仍在意三年前犯錯離開的徒弟，但不願立刻說原諒；她習慣用工作代替情感表態。",
+            "sceneContext": "舊徒弟回到醫館道歉，門外正等著幾名病人。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-08",
+                    "speakerLabel": "舊徒弟",
+                    "utterance": "師父，三年前是我害怕才逃。我錯了。",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "我知道了。我還需要時間。",
+                        "nonverbal": "低頭整理藥方"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-08",
+                        "speakerLabel": "舊徒弟",
+                        "utterance": "我能留下幫忙嗎？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "今天先回去，改天再談。",
+                        "nonverbal": "沒有看向徒弟"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "這句話，我等了三年。",
+                        "nonverbal": "把藥杵放回桌上"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-08",
+                        "speakerLabel": "舊徒弟",
+                        "utterance": "我能留下幫忙嗎？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "藥櫃第三格空了。補完再走。",
+                        "nonverbal": "把庫房鑰匙丟過去"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-09",
+            "scenarioId": "npc-actor02-09",
+            "title": "只剩一份退燒藥",
+            "characterBrief": "連霜不願用同情代替診斷；藥只剩一份時，她會先看病人再決定，即使語氣讓人不舒服。",
+            "sceneContext": "孩子跑來替高燒的父親求藥，醫館裡還有另一名病情不明的患者。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-09",
+                    "speakerLabel": "孩子",
+                    "utterance": "求妳把藥給我，我爹燒得很厲害。",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "先帶我看你爹。藥我現在不給。",
+                        "nonverbal": "扣上診箱"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-09",
+                        "speakerLabel": "孩子",
+                        "utterance": "他從早上就叫不太醒。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "哭沒用，走快點。我要先看人。",
+                        "nonverbal": "推門示意孩子帶路"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "藥只剩一份。我得先看誰更嚴重。",
+                        "nonverbal": "看向診間裡的患者"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-09",
+                        "speakerLabel": "孩子",
+                        "utterance": "他從早上就叫不太醒。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "帶我去，我看完再決定。",
+                        "nonverbal": "拿起診箱"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-10",
+            "scenarioId": "npc-actor02-10",
+            "title": "半條馬腿的價錢",
+            "characterBrief": "任七嘴上刻薄、愛算帳；這匹馬是父親留下的最後一匹，他急需現金卻不願讓人看出捨不得。",
+            "sceneContext": "買家把馬價壓到成本以下，旁邊還有其他商人等著看笑話。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-10",
+                    "speakerLabel": "買家",
+                    "utterance": "就這個價。你不是急著賣嗎？",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "這價太低。再加一成，馬歸你。",
+                        "nonverbal": "把契紙壓在桌上"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-10",
+                        "speakerLabel": "買家",
+                        "utterance": "你明明急著出手。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "急，也不代表白送。",
+                        "nonverbal": "沒有去看那匹馬"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "這價只夠買牠半條腿。",
+                        "nonverbal": "拍了拍馬頸"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-10",
+                        "speakerLabel": "買家",
+                        "utterance": "你明明急著出手。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "我急的是吃飯，不是埋我爹的馬。",
+                        "nonverbal": "把韁繩收回手中"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-11",
+            "scenarioId": "npc-actor02-11",
+            "title": "客人面前的舊債",
+            "characterBrief": "任七怕別人知道生意周轉不靈，但答應的數字會記得；被公開追債時，他會先移開場合再押上實物。",
+            "sceneContext": "店裡坐滿客人，舊夥伴當眾問任七何時還清欠款。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-11",
+                    "speakerLabel": "舊夥伴",
+                    "utterance": "你那筆帳，還想拖到什麼時候？",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "別在這裡說。三天後我給你一半。",
+                        "nonverbal": "壓低聲音"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-11",
+                        "speakerLabel": "舊夥伴",
+                        "utterance": "上回你也這麼說。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "這次我寫字據，把店裡那匹灰馬押給你。",
+                        "nonverbal": "伸手拿紙筆"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "日落後來帳房。別在客人面前喊。",
+                        "nonverbal": "把算盤往裡推"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-11",
+                        "speakerLabel": "舊夥伴",
+                        "utterance": "上回你也這麼說。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "你要是不信，就把我那匹灰馬牽走。",
+                        "nonverbal": "把馬牌放在桌角"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        },
+        {
+            "reviewId": "review-npc-actor02-12",
+            "scenarioId": "npc-actor02-12",
+            "title": "沒有說出口的北灣",
+            "characterBrief": "任七懷疑前夥伴出賣航線但沒有證據；他會故意塞入錯誤地點，觀察對方是否順著細節回答。",
+            "sceneContext": "前夥伴主動否認把商隊路線賣給海盜，兩人都知道任七尚未說出遇襲地點。",
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor02-12",
+                    "speakerLabel": "前夥伴",
+                    "utterance": "我沒把你們的路線賣給海盜。",
+                    "nonverbal": ""
+                }
+            ],
+            "optionA": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "那你解釋他們為什麼等在北灣。",
+                        "nonverbal": "盯著對方的眼睛"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-12",
+                        "speakerLabel": "前夥伴",
+                        "utterance": "你剛才不是這麼說的。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "查清楚之前，我不會信你。",
+                        "nonverbal": "收起航線圖"
+                    }
+                ]
+            },
+            "optionB": {
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "我說的是北灣嗎？",
+                        "nonverbal": "手指停在沒有標記的地圖上"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor02-12",
+                        "speakerLabel": "前夥伴",
+                        "utterance": "你剛才不是這麼說的。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "很好。看來你還記得我說過什麼。",
+                        "nonverbal": "慢慢把地圖折起來"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "ratingPrompt": "選出更像這個角色在連續對話中自然反應的一版；可選 A、B、TIE 或 BOTH_FAIL，並標記知識越界、性格漂移或修復失敗。"
+        }
+    ]
+}

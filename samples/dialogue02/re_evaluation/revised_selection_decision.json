@@ -1,0 +1,17 @@
+{
+    "decisionId": "dialogue01-engine-rules-v1-revised-decision",
+    "productionId": "screen01-tideline-beyond-dialogue02",
+    "artifactId": "dialogue01-engine-rules-v1-revised",
+    "selectedArtifactSha256": "0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2",
+    "ruleSetId": "engine-production-rules",
+    "ruleSetVersion": "1.0.0",
+    "status": "SELECTED",
+    "blockerCount": 0,
+    "warningCount": 1,
+    "reasons": [
+        "ALL_HARD_GATES_PASS"
+    ],
+    "decisionActorId": "codex-engine-rules01",
+    "sourceCommitSha": "31f7072da143559c6a1280b3631ea2f70cad404d",
+    "decisionSha256": "3927b17faeab988943c6833fe3011dfd7b6e54f2e4dc5b3118bd823648d183b0"
+}

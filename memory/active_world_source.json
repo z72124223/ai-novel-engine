@@ -1,0 +1,151 @@
+{
+  "sourceLockId": "active-world-source-lock-v0",
+  "status": "ACTIVE_WORLD_SOURCE_LOCK",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "canonicalWorkspace": "C:\\Users\\f7212\\Projects\\AI 劇本",
+  "authorCanonDecisions": {
+    "decidedAt": "2026-07-07",
+    "seriesTitle": "塵行",
+    "protagonistName": "陸塵行",
+    "supersededProtagonistNames": [
+      "陸知行",
+      "衛昭"
+    ],
+    "protagonistPairFormal": "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "companion": {
+      "name": "愛醬",
+      "species": "long-haired husky",
+      "sex": "female",
+      "reproductiveStatus": "spayed"
+    },
+    "locationOrder": {
+      "firstFortress": "灰關",
+      "laterDistinctFortress": "蒼梧關",
+      "rule": "灰關是陸塵行最先抵達的要塞；蒼梧關是另一座城，不可混用。"
+    },
+    "rawArchivePolicy": {
+      "formalCreativeBaseline": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+        "world/chenxing/raw/09_aijiang_detailed_setting.md"
+      ],
+      "nonFormalHistoricalOnly": [
+        "world/chenxing/raw/07_core_character_ensemble.md"
+      ],
+      "note": "raw/07 與其他舊稱呼、舊地名衝突內容僅作歷史素材，不作正式版依據。"
+    },
+    "cultivationSystem": {
+      "status": "author_locked",
+      "formalPath": "world/chenxing/formal/02_cultivation_system_v1.json"
+    },
+    "formalCanonRoot": "world/chenxing/formal/",
+    "formalCanonIndex": "world/chenxing/formal/00_canon_index.json",
+    "worldCompletionRegister": "world/chenxing/formal/03_world_completion_register.json",
+    "foundationCardPack": "world/chenxing/formal/chenxing_foundation_card_pack_v1.json",
+    "characterVisualAppearance": {
+      "status": "author_locked",
+      "formalPath": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+      "formalCoverPath": "world/chenxing/formal/24_series_cover_v1.json",
+      "formalCoverImage": "world/chenxing/assets/cover/chenxing_cover_v1.png",
+      "visualStyle": "cinematic_realistic_dark_fantasy",
+      "productionTurnaroundPairRule": "正式製作基準僅保留兩張三視圖：陸塵行全身、愛醬全身。",
+      "luChenxingSummary": "36歲、平頭、174cm/80kg、沒有鬍渣、戴眼鏡",
+      "luChenxingPhotoSet123123": "world/chenxing/assets/reference/photo_set_123123/",
+      "luChenxingOpeningModernCostume": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "luChenxingOpeningModernCostumeFormal": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+      "luChenxingProductionTurnaround": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "luChenxingFaceReference": "world/chenxing/assets/reference/lu_chenxing_face_reference_v1.jpg",
+      "aijiangProductionTurnaround": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "aijiangPriorConceptSheet": "world/chenxing/assets/reference/aijiang_character_concept_sheet_reference.jpg",
+      "visualTurnaroundSqlImportResult": "memory/chenxing_visual_turnaround_sql_import_result.json",
+      "openingPreviewManifest": "world/chenxing/preview/opening_v1/opening_preview_manifest_v1.json",
+      "openingStoryboardFormal": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+      "openingPreviewSqlImportResult": "memory/chenxing_opening_preview_sql_import_result.json",
+      "ruinInteriorStoryboardFormal": "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json",
+      "ruinInteriorSqlImportResult": "memory/chenxing_ruin_interior_sql_import_result.json",
+      "openingPreviewVisualStyle": "world/chenxing/formal/27_opening_preview_visual_style_v1.json",
+      "openingStyleRefBwStoryboard": "world/chenxing/assets/style_reference/chenxing_opening_style_bw_storyboard_v1.png",
+      "openingStyleRefCinematicMisty": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png",
+      "styleRefDarkRainTealCinematic": "world/chenxing/assets/style_reference/chenxing_style_dark_rain_teal_cinematic_v1.png"
+    }
+  },
+  "activeCreativeWorld": {
+    "series": "塵行",
+    "chapter": "第一話　塵",
+    "protagonist": "陸塵行",
+    "companion": "愛醬",
+    "firstMajorLocation": "灰關",
+    "providedSourceTitle": "穿越4000年",
+    "titleRelationshipStatus": "resolved_series_title_is_塵行",
+    "memoryCapsule": "memory/quarterfull_world_memory_capsule.json",
+    "rawSourceManifest": "memory/chenxing_world_source_manifest.json",
+    "officialSqlImportResult": "memory/chenxing_world_source_sql_import_result.json",
+    "officialSqlDatabase": "data/story.db",
+    "officialSqlTables": [
+      "world_source_archives",
+      "world_source_documents",
+      "world_source_chunks"
+    ],
+    "requiredQueryEntrypoint": "query-world-source --db data/story.db --q <text>",
+    "formalCanonRoot": "world/chenxing/formal",
+    "rawArchiveRoot": "world/chenxing/raw",
+    "alignmentDoc": "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+    "sourceRootHint": "C:\\Users\\f7212\\OneDrive\\文件\\小說朗讀\\quarterfull\\塵行\\"
+  },
+  "allowedCreativeWorldSources": [
+    "memory/active_world_source.json",
+    "memory/chenxing_world_source_manifest.json",
+    "world/chenxing/raw",
+    "data/story.db:world_source_archives/world_source_documents/world_source_chunks",
+    "memory/chenxing_world_source_sql_import_result.json",
+    "memory/quarterfull_world_memory_capsule.json",
+    "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+    "samples/chenxing"
+  ],
+  "disallowedCreativeWorldSources": [
+    {
+      "pattern": "pilot turn logs and pilot stress evidence",
+      "classification": "runtime/stress evidence only",
+      "reason": "Useful for engine behavior, not for replacing the active creative worldview."
+    }
+  ],
+  "cleanupPolicy": {
+    "physicalDeletionAllowedNow": true,
+    "reason": "Rain Gate sample files were migrated to chenxing equivalents and physically removed from samples/, tests, and default HANDOFF pointers.",
+    "completedCleanup": [
+      "lock active source authority to 塵行",
+      "create chenxing 09 foundation card pack",
+      "replace story-facing Rain Gate samples with chenxing equivalents",
+      "migrate focused tests to ChenxingStoryTestFixtures",
+      "delete obsolete rain_gate sample files"
+    ]
+  },
+  "nextAllowedContentStep": "chenxing_script_content_polish_opening_and_ruin_interior",
+  "projectCharter": {
+    "status": "author_locked",
+    "formalPath": "world/chenxing/formal/29_project_script_first_charter_v1.json",
+    "primaryDeliverable": "interactive_script_and_shot_packets",
+    "downstreamVideo": "seedance_2_external_products_only",
+    "pausedLanes": [
+      "art_style_candidate_selection",
+      "opening_preview_image_generation",
+      "comic_video_local_renderer",
+      "asset_registry_implementation"
+    ]
+  },
+  "boundaryFlags": {
+    "canonApproved": false,
+    "settingPackData": true,
+    "runtimeSqliteData": true,
+    "approvedAssetData": true,
+    "providerApiCalls": false,
+    "rendererInvocation": "none",
+    "ffmpegInvocation": "none",
+    "ttsInvocation": "none",
+    "mediaGenerated": false,
+    "finalMediaApproval": false,
+    "releaseApproved": false,
+    "productionLock": false
+  }
+}

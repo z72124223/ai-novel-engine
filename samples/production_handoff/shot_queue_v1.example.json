@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "shot-queue-v1",
+  "handoffId": "handoff-example-wp002a",
+  "queueStatus": "DRAFT",
+  "sourceCommitSha": "7811d5975dac842755aaed3c74ed8982f64de3b7",
+  "shots": [
+    {
+      "shotId": "example-shot-not-for-production-001",
+      "sequenceNumber": 0,
+      "sourceArtifact": {
+        "repositoryPath": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+        "sourceShotId": "EXAMPLE_ONLY_NO_ACTUAL_SHOT_BINDING"
+      },
+      "sceneId": "scene-example-not-authoritative",
+      "locationId": "loc-example-not-authoritative",
+      "locationZone": "zone-example-not-authoritative",
+      "characters": [
+        {
+          "characterId": "char-lu-chenxing",
+          "appearanceVersion": "photo-set-123123-closest-body-v2",
+          "costumeVersion": "coastal-practical-modern-v1",
+          "position": "left-midground-example",
+          "scale": 1.0,
+          "pose": "neutral-standing-example",
+          "emotion": "observant-example",
+          "visibleProps": [
+            "prop-example-handheld-item"
+          ]
+        },
+        {
+          "characterId": "char-aijiang",
+          "appearanceVersion": "author-production-turnaround-v1",
+          "costumeVersion": "not-applicable-v1",
+          "position": "right-midground-example",
+          "scale": 0.55,
+          "pose": "alert-standing-example",
+          "emotion": "watchful-example",
+          "visibleProps": []
+        }
+      ],
+      "props": [
+        {
+          "propId": "prop-example-handheld-item",
+          "version": "placeholder-v1",
+          "position": "in-character-hand-example",
+          "visible": true
+        }
+      ],
+      "camera": {
+        "shotSize": "medium-example",
+        "angle": "eye-level-example",
+        "movement": "locked-example",
+        "lensIntent": "preserve-character-and-location-scale"
+      },
+      "composition": {
+        "foreground": "empty-safety-margin-example",
+        "midground": "two-character-blocking-example",
+        "background": "location-anchor-placeholder",
+        "spatialAnchors": [
+          "anchor-example-left",
+          "anchor-example-right"
+        ]
+      },
+      "action": "Placeholder blocking only; no real story action is assigned.",
+      "emotion": "Neutral schema demonstration.",
+      "weatherAndLighting": {
+        "weather": "example-overcast",
+        "timeOfDay": "example-day",
+        "keyLight": "example-soft-left",
+        "continuityState": "example-only-not-authoritative"
+      },
+      "continuityFrom": null,
+      "continuityTo": null,
+      "firstFrameRef": null,
+      "lastFrameRef": null,
+      "requiredReferences": [
+        "ref-lu-chenxing-body-v2",
+        "ref-lu-chenxing-opening-costume-v1",
+        "ref-aijiang-appearance-v1",
+        "ref-location-geometry-placeholder"
+      ],
+      "forbiddenElements": [
+        "automatic approval claims",
+        "unapproved appearance changes",
+        "author-only story answers",
+        "extra characters or objects"
+      ],
+      "outputFileName": "example_shot_candidate.png",
+      "reviewStatus": "PENDING_USER_REVIEW",
+      "placeholder": true
+    }
+  ],
+  "exampleOnly": true
+}

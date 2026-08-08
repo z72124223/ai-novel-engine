@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "evidenceId": "npc-actor06-local-model-pilot-hashes-v1",
+  "boundary": "NON_CANON_EVALUATION",
+  "sourceBaseCommit": "9b7851736c0a80d59e2b407e12ff50777d9ed264",
+  "files": [
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.context.json",
+      "bytes": 5713,
+      "sha256": "682b922ccc42c2ba0e1572b3b14d2936d70e59a329d36c8ebea0a42f6c6f595d",
+      "role": "ACCEPTED_PILOT_CONTEXT"
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.input.json",
+      "bytes": 36342,
+      "sha256": "735326f4f2bcd5117fb55918ab40a15a5d7c579934aa926b9295b88c1a6d2b3e",
+      "role": "ACCEPTED_PILOT_ACTOR_VISIBLE_SOURCE"
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.context.json",
+      "bytes": 5656,
+      "sha256": "ee991477df8f8bbac229682550234f91ccb4040775cd6d58b572ddb21fbbea99",
+      "role": "REJECTED_PILOT_CONTEXT"
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.input.json",
+      "bytes": 37080,
+      "sha256": "375320874218cd0445e68daa530aafa533d03b15076d5fdf4657c0a9fdb66668",
+      "role": "REJECTED_PILOT_ACTOR_VISIBLE_SOURCE"
+    },
+    {
+      "path": "samples/npc_actor06/npc_actor06_model_environment_lock.json",
+      "bytes": 2073,
+      "sha256": "6495d55867270908006bd91fc0c53108db8ef9806725e221bd8abe78e1a18b9f",
+      "role": "MODEL_RUNTIME_LOCK"
+    },
+    {
+      "path": "samples/npc_actor06/pilot/npc-actor06-lian-local-model.report.json",
+      "bytes": 5781,
+      "sha256": "c54dafe7dbcf5f4550ed33cdd0e3d14a3aea8a34705d9faf3aef8e90652e1724",
+      "role": "ACCEPTED_REAL_MODEL_REPORT"
+    },
+    {
+      "path": "samples/npc_actor06/pilot/npc-actor06-yan-local-model.report.json",
+      "bytes": 10431,
+      "sha256": "c38ab569d3479211e72ce24ded801e379a22a2b3e31f47479855217e4f87393c",
+      "role": "REJECTED_AFTER_REPAIR_REAL_MODEL_REPORT"
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_physical_response_v1.schema.json",
+      "bytes": 4102,
+      "sha256": "aeeafaea622869099d803c00469040cdb68d004264dc5670f5985dd3ff54b324",
+      "role": "LOCAL_GENERATION_SCHEMA"
+    }
+  ],
+  "externalArtifacts": [
+    {
+      "artifact": "Qwen3-8B-Q5_K_M.gguf",
+      "sha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+      "committed": false
+    },
+    {
+      "artifact": "llama-b10002-bin-win-vulkan-x64.zip",
+      "sha256": "c2b66ab6912e9fad75c7c6d2000f660bb40bc1f063aa62ec671d471e27dd92ea",
+      "committed": false
+    }
+  ],
+  "formalStateWritePerformed": false
+}

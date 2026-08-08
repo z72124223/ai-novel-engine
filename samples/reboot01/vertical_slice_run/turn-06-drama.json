@@ -1,0 +1,23 @@
+{
+    "evaluationId": "slice-drama-6-6dd1e7d7-8d99-4149-b837-466e6f33bbc7",
+    "rawScores": {
+        "sarcasmVoiceFit": 65,
+        "banterNaturalness": 60,
+        "genreAwarenessWithoutOmniscience": 95,
+        "stupidityDrivenPlotRisk": 10,
+        "audiencePredictionRisk": 35,
+        "fairSurprise": 90,
+        "cheapTwistRisk": 10,
+        "secondOrderConsequence": 90,
+        "antagonistAdaptation": 35,
+        "emotionalWaveCoverage": 95,
+        "readerAttachment": 85,
+        "overall": 78
+    },
+    "findings": [],
+    "revisionSuggestion": "",
+    "revisionCount": 0,
+    "selectedDraft": "陸塵行把布條遞給周克，自己壓住傷口。愛醬靠著他的小腿，沒有叫。遠處還有一串腳印，朝山坡更深處去。",
+    "selectedVersion": "RAW",
+    "stallDetected": false
+}

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0",
+  "boundary": "FORMAL_RUNTIME_SHADOW_INPUT",
+  "shadowRunId": "npc-actor07-example-offscreen-shadow",
+  "sessionId": "session-b50b6cfe-eefc-446c-839d-024881bc1373",
+  "playerInput": "[SHADOW_NPC_TICK] Perform one read-only offscreen observation without changing formal state.",
+  "profile": {
+    "npcId": "char-shen-shuang",
+    "deepMotivation": "Protect the shrine and preserve her own bargaining power.",
+    "falseBelief": "Anyone approaching the rear hall intends to expose her family.",
+    "fear": "Losing control of the shrine secret and becoming expendable.",
+    "relationshipDebts": [
+      "Owes the shrine keepers silence."
+    ],
+    "offscreenAgenda": [
+      "Inspect the corridor for traces before the player returns."
+    ],
+    "resourceIds": [],
+    "voiceProfile": {
+      "locale": "zh-Hant-TW",
+      "register": "natural_spoken_mandarin",
+      "principles": [
+        "Speak only from actor-visible evidence."
+      ],
+      "preferredPatterns": [],
+      "forbiddenPatterns": [
+        "AUTHOR_ONLY"
+      ]
+    },
+    "sandboxCandidateOnly": true
+  },
+  "targetIds": [],
+  "physicalContext": {
+    "schemaVersion": "1.0",
+    "boundary": "NON_CANON_EVALUATION",
+    "requestId": "npc-actor07-example-request",
+    "physicalArchetypes": [
+      {
+        "archetypeId": "adult-human",
+        "entityKind": "ACTOR",
+        "bodyPlan": "ADULT_HUMANOID",
+        "massKg": 70.0,
+        "dimensionsCm": { "width": 45.0, "depth": 30.0, "height": 175.0 },
+        "movable": true,
+        "canGrasp": true,
+        "maxReachCm": 75.0,
+        "maxLiftKg": 30.0,
+        "maxPushKg": 120.0,
+        "supportSurfaces": [],
+        "containerInteriorCm": null,
+        "openingCm": null,
+        "maxContainedLoadKg": null
+      },
+      {
+        "archetypeId": "chair",
+        "entityKind": "OBJECT",
+        "bodyPlan": "FURNITURE",
+        "massKg": 7.0,
+        "dimensionsCm": { "width": 55.0, "depth": 55.0, "height": 90.0 },
+        "movable": true,
+        "canGrasp": false,
+        "maxReachCm": 0.0,
+        "maxLiftKg": 0.0,
+        "maxPushKg": 0.0,
+        "supportSurfaces": [],
+        "containerInteriorCm": null,
+        "openingCm": null,
+        "maxContainedLoadKg": null
+      }
+    ],
+    "physicalSnapshot": {
+      "snapshotId": "npc-actor07-example-snapshot",
+      "boundary": "NON_CANON_EVALUATION",
+      "gravityMps2": 9.80665,
+      "entities": [
+        {
+          "entityId": "char-shen-shuang",
+          "label": "Shen Shuang",
+          "archetypeId": "adult-human",
+          "centerCm": { "x": 0.0, "y": 0.0, "z": 87.5 },
+          "heldByEntityId": null,
+          "supportedByEntityId": null,
+          "containedByEntityId": null,
+          "supportLoadKgBySurface": {}
+        },
+        {
+          "entityId": "chair",
+          "label": "Wooden chair",
+          "archetypeId": "chair",
+          "centerCm": { "x": 50.0, "y": 0.0, "z": 45.0 },
+          "heldByEntityId": null,
+          "supportedByEntityId": null,
+          "containedByEntityId": null,
+          "supportLoadKgBySurface": {}
+        }
+      ],
+      "barriers": []
+    },
+    "allowedPhysicalActionTypes": [
+      "REACH"
+    ],
+    "allowedPhysicalTargetIds": [
+      "chair"
+    ]
+  },
+  "outputConstraints": {
+    "maxUtteranceChars": 48,
+    "silenceAllowed": true,
+    "lieAllowed": false,
+    "nonverbalAllowed": true,
+    "forbiddenPatterns": [
+      "AUTHOR_ONLY"
+    ]
+  },
+  "maxAttempts": 2,
+  "maxElapsedMinutes": 10
+}

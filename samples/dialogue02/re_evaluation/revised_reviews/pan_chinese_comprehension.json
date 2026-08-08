@@ -1,0 +1,272 @@
+{
+    "reviewId":  "review-dialogue01-revised-pan-chinese-20260713",
+    "artifactId":  "dialogue01-engine-rules-v1-revised",
+    "artifactSha256":  "0d7c137a5180d87f32f88d8a42b9475ec8a6a4e12b185ca1abedbebd0b69c0f2",
+    "ruleSetId":  "engine-production-rules",
+    "ruleSetVersion":  "1.0.0",
+    "reviewerRole":  "PAN_CHINESE_COMPREHENSION",
+    "reviewerInstanceId":  "pan-chinese-revised-20260713-a7c4",
+    "lineReviews":  [
+                        {
+                            "lineId":  "dlg-001",
+                            "exactQuote":  "好。今天還有別的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "語意清楚，可由上下文理解為另有異常線索。"
+                        },
+                        {
+                            "lineId":  "dlg-002",
+                            "exactQuote":  "又不肯直接講。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "口語自然，跨地區理解無礙。"
+                        },
+                        {
+                            "lineId":  "dlg-003",
+                            "exactQuote":  "有人搬過。還不只一趟。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "觀察結論簡潔清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-004",
+                            "exactQuote":  "十分鐘！走人！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離命令明確。"
+                        },
+                        {
+                            "lineId":  "dlg-005",
+                            "exactQuote":  "你上次的十分鐘，有含稅嗎？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "以含稅調侃時間估算，泛華語觀眾可理解其乾式幽默。"
+                        },
+                        {
+                            "lineId":  "dlg-006",
+                            "exactQuote":  "今天不要賭。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "風險警告明確，並非字面賭博。"
+                        },
+                        {
+                            "lineId":  "dlg-007",
+                            "exactQuote":  "照片呢？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "指涉由前後畫面充分建立。"
+                        },
+                        {
+                            "lineId":  "dlg-008",
+                            "exactQuote":  "卡住了。看它賞不賞臉。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "上傳停滯與擬人化說法均可清楚理解。"
+                        },
+                        {
+                            "lineId":  "dlg-009",
+                            "exactQuote":  "山坡在另一邊。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "路線資訊清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-010",
+                            "exactQuote":  "先看得到的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "上下文清楚指向先處理眼前可見線索。"
+                        },
+                        {
+                            "lineId":  "dlg-011",
+                            "exactQuote":  "別碰箱子。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "禁止事項明確。"
+                        },
+                        {
+                            "lineId":  "dlg-012",
+                            "exactQuote":  "先救你。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "救援優先順序直接明確，沒有雙關或調情誤讀。"
+                        },
+                        {
+                            "lineId":  "dlg-013",
+                            "exactQuote":  "那是我的。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "代詞由緊鄰對話清楚指向箱子。"
+                        },
+                        {
+                            "lineId":  "dlg-014",
+                            "exactQuote":  "先上去。箱子等等再說。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離優先順序明確。"
+                        },
+                        {
+                            "lineId":  "dlg-015",
+                            "exactQuote":  "我抬石頭。你拉人。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "分工可執行且跨地區理解無礙。"
+                        },
+                        {
+                            "lineId":  "dlg-016",
+                            "exactQuote":  "箱子？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "承接現場分工，意圖是確認箱子如何處置。"
+                        },
+                        {
+                            "lineId":  "dlg-017",
+                            "exactQuote":  "不管。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "上下文清楚表示暫不處理箱子。"
+                        },
+                        {
+                            "lineId":  "dlg-018",
+                            "exactQuote":  "不行！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "反對清楚，符合受傷者碎裂表達。"
+                        },
+                        {
+                            "lineId":  "dlg-019",
+                            "exactQuote":  "手，還是箱子？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "逼迫傷者在保手與保箱之間選擇，語意明確且無意外雙關。"
+                        },
+                        {
+                            "lineId":  "dlg-020",
+                            "exactQuote":  "現在！",
+                            "findings":  [
+
+                                         ],
+                            "note":  "立即行動指令清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-021",
+                            "exactQuote":  "太快了。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "由白水與滿潮計時畫面可理解為浪勢變化過快。"
+                        },
+                        {
+                            "lineId":  "dlg-022",
+                            "exactQuote":  "潮表還沒到。",
+                            "findings":  [
+                                             {
+                                                 "findingId":  "finding-revised-pan-001",
+                                                 "lineId":  "dlg-022",
+                                                 "exactQuote":  "潮表還沒到。",
+                                                 "ruleCode":  "UNNATURAL_SPOKEN_CHINESE",
+                                                 "severity":  "WARNING",
+                                                 "explanation":  "「潮表」及「還沒到」都省略了關鍵成分，跨地區觀眾可能短暫不確定是潮汐表尚未顯示該時點，還是潮位尚未到達；不影響整體情節理解，因此僅為警告。",
+                                                 "suggestedText":  "潮汐表上還沒到時間。",
+                                                 "requiresHumanApproval":  false
+                                             }
+                                         ],
+                            "note":  "主要意思可由下一句補足，但措辭可更明確。"
+                        },
+                        {
+                            "lineId":  "dlg-023",
+                            "exactQuote":  "是浪。下一波不知道什麼時候來。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "清楚區分長浪與潮汐表時刻，危險資訊可執行。"
+                        },
+                        {
+                            "lineId":  "dlg-024",
+                            "exactQuote":  "固定。抬高。布給我。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "在急救動作上下文中，固定傷肢、抬高並索取布料的指令可理解。"
+                        },
+                        {
+                            "lineId":  "dlg-025",
+                            "exactQuote":  "裡面什麼？",
+                            "findings":  [
+
+                                         ],
+                            "note":  "由視線與前文清楚指向箱內物品。"
+                        },
+                        {
+                            "lineId":  "dlg-026",
+                            "exactQuote":  "好。先不問。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "表示暫停追問，語意清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-027",
+                            "exactQuote":  "回不去了。走上面。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離路線清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-028",
+                            "exactQuote":  "值守室能擋雨。我重撥一一九。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "值守室與緊急電話號碼具有地區色彩，但在救援上下文中意思清楚，無須升級為問題。"
+                        },
+                        {
+                            "lineId":  "dlg-029",
+                            "exactQuote":  "走。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "撤離命令清楚。"
+                        },
+                        {
+                            "lineId":  "dlg-030",
+                            "exactQuote":  "大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——",
+                            "findings":  [
+
+                                         ],
+                            "note":  "地點、傷者狀況與處置結果均清楚，符合緊急通報語域。"
+                        },
+                        {
+                            "lineId":  "dlg-031",
+                            "exactQuote":  "等雨小一點。",
+                            "findings":  [
+
+                                         ],
+                            "note":  "可理解為等待雨勢減弱後再行動，收尾語意成立。"
+                        }
+                    ],
+    "overallScore":  96,
+    "verdict":  "PASS",
+    "summary":  "修訂稿維持 NON_CANON_PILOT 邊界。31 句均完成獨立泛華語理解審查；救援關鍵句「先救你」清楚移除了意外雙關與表演依賴風險。僅「潮表還沒到」因省略過多列為一項 WARNING，沒有 BLOCKER，整體可通過。",
+    "sourceCommitSha":  "31f7072da143559c6a1280b3631ea2f70cad404d"
+}

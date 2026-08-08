@@ -1,0 +1,48 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-4",
+    "narrative": "陸塵行認出假足跡，繞開最明顯的追蹤線；拾潮者卻利用這段延遲，把真正證據推入另一條潮溝。",
+    "resultId": "turn-04-result",
+    "contextId": "ctx-b398cb07-8c2c-49f1-acaf-9c87d8663d0d",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
+    "turnNumber": 4,
+    "baseStateVersion": 3,
+    "contextHash": "e97253938dd082479013e84c1dc016b71159e81dbd4dacb9ef9ea40b3bf233bd",
+    "turnSummary": "陸塵行認出假足跡，繞開最明顯的追蹤線；拾潮者卻利用這段延遲，把真正證據推入另一條潮溝。",
+    "characterActions": [
+        {
+            "characterId": "char-lu-chenxing",
+            "intent": "辨認假足跡並改走安全線",
+            "visibleAction": "辨認假足跡並改走安全線",
+            "hiddenMotive": "不為追線索犧牲愛醬",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        },
+        {
+            "characterId": "char-tide-scavenger-sandbox",
+            "intent": "趁延遲轉移證據",
+            "visibleAction": "趁延遲轉移證據",
+            "hiddenMotive": "維持先占者優勢",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "fair-second-order",
+            "payload": {
+                "summary": "主角避開明顯陷阱，但拾潮者利用延遲轉移了真正證據。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-4",
+            "payload": {
+                "summary": "先找退路，再追碎片。明知道是陷阱還直走，那叫替對方省事。"
+            }
+        }
+    ]
+}

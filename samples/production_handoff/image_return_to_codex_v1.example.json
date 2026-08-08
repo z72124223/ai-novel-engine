@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "image-return-to-codex-v1",
+  "handoffId": "handoff-example-wp002a",
+  "returnStatus": "DRAFT",
+  "candidates": [
+    {
+      "handoffId": "handoff-example-wp002a",
+      "shotId": "example-shot-not-for-production-001",
+      "candidateId": "candidate-example-not-yet-generated-001",
+      "localFilePath": null,
+      "expectedFileName": "example_shot_candidate.png",
+      "userDecision": "PENDING_USER_REVIEW",
+      "userDecisionReason": "No image exists; example demonstrates the pre-intake placeholder state.",
+      "sourceConversationNote": "Caller must identify the ChatGPT conversation and exact candidate without storing private URLs or credentials.",
+      "sourceFileSha256": null,
+      "intakeStatus": "PENDING_FILE_TRANSFER",
+      "nextRequiredCliStages": [
+        "validate-image-candidate-external-result-intake",
+        "validate-image-candidate-result-review-preflight",
+        "validate-image-candidate-result-human-review-decision",
+        "create-image-candidate-reference-packet",
+        "validate-image-candidate-reference-packet",
+        "validate-candidate-reference-human-acceptance-decision",
+        "validate-candidate-reference-registry-preflight",
+        "create-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-packet",
+        "validate-candidate-reference-registry-human-acceptance-decision",
+        "create-candidate-reference-acceptance-packet",
+        "validate-candidate-reference-acceptance-packet"
+      ]
+    }
+  ],
+  "intakeBoundary": {
+    "sourceFileSha256RequiredBeforeExternalResultIntake": true,
+    "sourceFileSha256RequiredBeforeCandidateReferenceAcceptance": true,
+    "userDecisionDoesNotWriteCanon": true,
+    "existingCliChainMustRun": true
+  },
+  "exampleOnly": true
+}

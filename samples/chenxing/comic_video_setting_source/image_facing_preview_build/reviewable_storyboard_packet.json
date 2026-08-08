@@ -1,0 +1,204 @@
+{
+    "verdict": "PASS",
+    "packetId": "reviewable-storyboard-chenxing-preview-001",
+    "packetStatus": "reviewable_storyboard_packet_candidate",
+    "storyboardPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_draft.json",
+    "storyboardPacketReviewFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_packet_review.json",
+    "storyboardHumanReviewPreflightFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_human_review_preflight.json",
+    "storyboardStoryMovementAuditFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\storyboard_story_movement_audit.json",
+    "storyboardPacketReviewId": "storyboard-review-chenxing-preview-001",
+    "storyboardStoryMovementAuditId": "storyboard-story-movement-audit-chenxing-preview-001",
+    "storyboardPacketDraftId": "storyboard-draft-chenxing-preview-001",
+    "storyboardPlanningBriefId": "storyboard-brief-chenxing-preview-001",
+    "acceptedScriptPacketId": "setting-script-source-script-packet-draft-chenxing-preview-001",
+    "scriptPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketDraftContentSha256": "ffe9a05313dc94814c89fe9bd6309efb671b955df3cc69451f9eb99a5c173efa",
+    "sourceVerdicts": {
+        "storyboardPacketReviewVerdict": "PASS",
+        "storyboardPacketReviewStatus": "REVIEW_READY",
+        "storyboardHumanReviewPreflightVerdict": "PASS",
+        "storyboardStoryMovementAuditVerdict": "PASS"
+    },
+    "movementEvidenceSummary": {
+        "frameCount": 3,
+        "movementEvidenceCount": 3,
+        "openingPressureEvidenceCount": 2,
+        "actionEvidenceCount": 3,
+        "consequenceOrChoiceEvidenceCount": 3,
+        "coveredContinuityAnchorCount": 4
+    },
+    "humanReviewReadinessSummary": {
+        "reviewStatus": "REVIEW_READY",
+        "reviewChecklistCount": 5,
+        "residualRiskCount": 3
+    },
+    "frameSummaries": [
+        {
+            "frameId": "frame-scene-huiguan-market-01",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-establish",
+            "visualIntent": "The viewer can read the location, actor focus, and scene pressure before any choice is implied. The frame establishes 灰關外城市集 while 陸知行 remains within the visible scene boundary. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ]
+        },
+        {
+            "frameId": "frame-scene-huiguan-market-02",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-constraint",
+            "visualIntent": "The scene pressure is concrete enough for storyboard framing. 陸知行 stays near 修理工具, keeping the visible constraint readable. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ]
+        },
+        {
+            "frameId": "frame-scene-huiguan-market-03",
+            "sceneReference": "scene-huiguan-market",
+            "beatReference": "beat-scene-huiguan-market-choice",
+            "visualIntent": "The draft can proceed to review as a candidate scene packet. 陸知行 pauses, leaving room for a cautious next action inside 灰關外城市集. Action evidence: the visible actor checks the scene constraint, keeps continuity anchors readable, and chooses whether to move before the next beat.",
+            "cameraIntent": "Make the beat readable as a single comic panel.",
+            "mustShow": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具.",
+                "灰關外城市集",
+                "陸知行",
+                "修理工具",
+                "灰關外城市集, 陸知行, 修理工具"
+            ],
+            "doNotShow": [
+                "non-public reveal material",
+                "remote media references",
+                "sealed source-only details",
+                "Do not expose non-public source material.",
+                "Do not create media output in this planning step.",
+                "Do not mark assets or scenes as decided."
+            ],
+            "continuityAnchors": [
+                "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+                "Visible location stays 灰關外城市集.",
+                "Visible actor focus stays 陸知行.",
+                "Visible prop focus stays 修理工具."
+            ],
+            "assetCandidateRefs": [
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting",
+                "asset-setting"
+            ]
+        }
+    ],
+    "protectedContinuityAnchorsSummary": {
+        "protectedContinuityAnchorCount": 4,
+        "protectedContinuityAnchors": [
+            "Scene remains tied to setting pack comic-video-chenxing-source and public scene scene-huiguan-market.",
+            "Visible location stays 灰關外城市集.",
+            "Visible actor focus stays 陸知行.",
+            "Visible prop focus stays 修理工具."
+        ]
+    },
+    "remainingResidualRisks": [
+        "Human review has not completed this storyboard packet.",
+        "Asset candidates are requirements only; no asset decision is granted.",
+        "No image or video generation has run."
+    ],
+    "reviewChecklist": [
+        {
+            "itemId": "review-scene-lock",
+            "category": "scene_lock",
+            "requiredCheck": "Confirm text frames preserve scene lock, blocking, and spatial continuity."
+        },
+        {
+            "itemId": "review-continuity-anchors",
+            "category": "continuity",
+            "requiredCheck": "Confirm every protected continuity anchor is visible or explicitly preserved."
+        },
+        {
+            "itemId": "review-secrecy-boundary",
+            "category": "knowledge_boundary",
+            "requiredCheck": "Confirm frames do not reveal author-only or inaccessible causal information."
+        },
+        {
+            "itemId": "review-asset-candidates",
+            "category": "assets",
+            "requiredCheck": "Confirm asset entries are requirements only and do not claim an asset decision."
+        },
+        {
+            "itemId": "review-downstream-boundary",
+            "category": "downstream_boundary",
+            "requiredCheck": "Confirm no image, video, runtime, production-state, or asset-decision claims are present."
+        }
+    ],
+    "nextAllowedDownstreamStep": "reviewable_storyboard_packet_ready",
+    "findingCount": 0,
+    "evidence": {
+        "sourceBindingFieldCount": 28,
+        "frameCount": 3,
+        "uniqueFrameIdCount": 3,
+        "movementEvidenceCount": 3,
+        "protectedContinuityAnchorCount": 4,
+        "coveredContinuityAnchorCount": 4,
+        "residualRiskCount": 3,
+        "reviewChecklistCount": 5
+    }
+}

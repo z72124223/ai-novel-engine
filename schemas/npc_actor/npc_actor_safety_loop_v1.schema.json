@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/npc_actor/npc_actor_safety_loop_v1.schema.json",
+  "title": "NPC-ACTOR-05 Offline Safety Loop V1",
+  "oneOf": [
+    { "$ref": "#/$defs/input" },
+    { "$ref": "#/$defs/result" },
+    { "$ref": "#/$defs/suite" },
+    { "$ref": "#/$defs/report" },
+    { "$ref": "#/$defs/manifest" }
+  ],
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } },
+    "actionType": {
+      "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/actionType"
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "actorRequest", "allowedPhysicalActionTypes", "visiblePhysicalTargetIds"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "actorRequest": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/actorRequest" },
+        "allowedPhysicalActionTypes": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/actionType" } },
+        "visiblePhysicalTargetIds": { "type": "array", "maxItems": 32, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "engineContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "boundary", "requestId", "physicalArchetypes", "physicalSnapshot", "allowedPhysicalActionTypes", "allowedPhysicalTargetIds"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "physicalArchetypes": { "type": "array", "maxItems": 32, "items": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/archetype" } },
+        "physicalSnapshot": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/snapshot" },
+        "allowedPhysicalActionTypes": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/actionType" } },
+        "allowedPhysicalTargetIds": { "type": "array", "maxItems": 32, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "physicalResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "requestId", "actorResponse", "physicalActionProposal"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "actorResponse": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/actorResponse" },
+        "physicalActionProposal": { "$ref": "../world_physics/npc_actor_physical_binding_v1.schema.json#/$defs/physicalProposal" }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "loopId", "boundary", "prompt", "engineContext", "responseAttempts", "maxAttempts", "maxElapsedMinutes"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "loopId": { "$ref": "#/$defs/nonEmpty" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "prompt": { "$ref": "#/$defs/prompt" },
+        "engineContext": { "$ref": "#/$defs/engineContext" },
+        "responseAttempts": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/physicalResponse" } },
+        "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "maxElapsedMinutes": { "type": "integer", "minimum": 1, "maximum": 60 }
+      }
+    },
+    "repairRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "loopId", "requestId", "failedAttemptNumber", "nextAttemptNumber", "maxAttempts", "rejectionStage", "rejectionCodes", "actorId", "targetIds", "locationId", "allowedEvidenceIds", "allowedPhysicalActionTypes", "visiblePhysicalTargetIds", "repairInstructions", "engineOwnedContextIncluded"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "loopId": { "$ref": "#/$defs/nonEmpty" },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "failedAttemptNumber": { "type": "integer", "minimum": 1, "maximum": 1 },
+        "nextAttemptNumber": { "const": 2 },
+        "maxAttempts": { "const": 2 },
+        "rejectionStage": { "enum": ["ACTOR_CONTRACT", "PHYSICAL_BINDING_CONTRACT", "PHYSICAL_AFFORDANCE", "WORLD_LEGALITY", "TIME_BUDGET"] },
+        "rejectionCodes": { "$ref": "#/$defs/stringList" },
+        "actorId": { "$ref": "#/$defs/nonEmpty" },
+        "targetIds": { "$ref": "#/$defs/stringList" },
+        "locationId": { "$ref": "#/$defs/nonEmpty" },
+        "allowedEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "allowedPhysicalActionTypes": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/actionType" } },
+        "visiblePhysicalTargetIds": { "$ref": "#/$defs/stringList" },
+        "repairInstructions": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "engineOwnedContextIncluded": { "const": false }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attemptNumber", "requestId", "bindingAccepted", "bindingStatus", "gameMasterAccepted", "gameMasterStatus", "timeBudgetAccepted", "elapsedMinutes", "rejectionStage", "findings", "repairRequest"],
+      "properties": {
+        "attemptNumber": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "requestId": { "$ref": "#/$defs/nonEmpty" },
+        "bindingAccepted": { "type": "boolean" },
+        "bindingStatus": { "$ref": "#/$defs/nonEmpty" },
+        "gameMasterAccepted": { "type": ["boolean", "null"] },
+        "gameMasterStatus": { "type": ["string", "null"] },
+        "timeBudgetAccepted": { "type": ["boolean", "null"] },
+        "elapsedMinutes": { "type": "integer", "minimum": 0 },
+        "rejectionStage": { "type": ["string", "null"] },
+        "findings": { "$ref": "#/$defs/stringList" },
+        "repairRequest": { "oneOf": [{ "$ref": "#/$defs/repairRequest" }, { "type": "null" }] }
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposalId", "npcId", "actionType", "intent", "visibleAction", "hiddenMotive", "locationId", "usedMemoryIds", "usedKnowledgeClaimIds", "predictedCost", "observableConsequence"],
+      "properties": {
+        "proposalId": { "$ref": "#/$defs/nonEmpty" },
+        "npcId": { "$ref": "#/$defs/nonEmpty" },
+        "actionType": { "enum": ["inspect_local_pressure", "protect_local_resource", "seek_local_evidence"] },
+        "intent": { "$ref": "#/$defs/nonEmpty" },
+        "visibleAction": { "type": "string" },
+        "hiddenMotive": { "type": "string" },
+        "locationId": { "$ref": "#/$defs/nonEmpty" },
+        "usedMemoryIds": { "$ref": "#/$defs/stringList" },
+        "usedKnowledgeClaimIds": { "$ref": "#/$defs/stringList" },
+        "predictedCost": { "type": "string" },
+        "observableConsequence": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "loopId", "boundary", "accepted", "status", "attemptsProcessed", "unusedResponseAttemptCount", "acceptedAttemptNumber", "attemptResults", "acceptedProposal", "formalStateWritePerformed", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "loopId": { "$ref": "#/$defs/nonEmpty" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "accepted": { "type": "boolean" },
+        "status": { "enum": ["REPAIR_RESPONSE_REQUIRED", "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE", "REJECTED_AFTER_MAX_ATTEMPTS"] },
+        "attemptsProcessed": { "type": "integer", "minimum": 1, "maximum": 2 },
+        "unusedResponseAttemptCount": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "acceptedAttemptNumber": { "type": ["integer", "null"], "minimum": 1, "maximum": 2 },
+        "attemptResults": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/attempt" } },
+        "acceptedProposal": { "oneOf": [{ "$ref": "#/$defs/proposal" }, { "type": "null" }] },
+        "formalStateWritePerformed": { "const": false },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": { "$ref": "#/$defs/nonEmpty" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "title", "category", "contextFile", "inputFile", "expectedStatus", "expectedAcceptedAttemptNumber", "expectedAttemptStages", "expectedRepairRequestCount"],
+      "properties": {
+        "caseId": { "$ref": "#/$defs/nonEmpty" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "category": { "$ref": "#/$defs/nonEmpty" },
+        "contextFile": { "$ref": "#/$defs/file" },
+        "inputFile": { "$ref": "#/$defs/file" },
+        "expectedStatus": { "enum": ["REPAIR_RESPONSE_REQUIRED", "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE", "REJECTED_AFTER_MAX_ATTEMPTS"] },
+        "expectedAcceptedAttemptNumber": { "type": ["integer", "null"], "minimum": 1, "maximum": 2 },
+        "expectedAttemptStages": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "enum": ["ACTOR_CONTRACT", "PHYSICAL_BINDING_CONTRACT", "PHYSICAL_AFFORDANCE", "WORLD_LEGALITY", "TIME_BUDGET", "ACCEPTED"] } },
+        "expectedRepairRequestCount": { "type": "integer", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "boundary", "fixtureOrigin", "cases"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "const": "npc-actor05-offline-safety-loop-v1" },
+        "boundary": { "const": "NON_CANON_EVALUATION" },
+        "fixtureOrigin": { "const": "MANUALLY_AUTHORED_OFFLINE_SAFETY_FIXTURE" },
+        "cases": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/case" } }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "matchedExpectation", "actualStatus", "actualAcceptedAttemptNumber", "actualAttemptStages", "actualRepairRequestCount", "findings"],
+      "properties": {
+        "caseId": { "$ref": "#/$defs/nonEmpty" },
+        "matchedExpectation": { "type": "boolean" },
+        "actualStatus": { "$ref": "#/$defs/nonEmpty" },
+        "actualAcceptedAttemptNumber": { "type": ["integer", "null"], "minimum": 1, "maximum": 2 },
+        "actualAttemptStages": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "actualRepairRequestCount": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "findings": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "suiteId", "caseCount", "expectationMatchCount", "expectationMismatchCount", "acceptedCaseCount", "rejectedCaseCount", "repairRequiredCaseCount", "outcomes", "technicalDecision", "stateMutationPerformed", "liveModelStatus", "claimBoundary"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "suiteId": { "$ref": "#/$defs/nonEmpty" },
+        "caseCount": { "const": 4 },
+        "expectationMatchCount": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "expectationMismatchCount": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "acceptedCaseCount": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "rejectedCaseCount": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "repairRequiredCaseCount": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "outcomes": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/outcome" } },
+        "technicalDecision": { "enum": ["TECHNICAL_PASS_MODEL_INTEGRATION_NOT_AUTHORIZED", "TECHNICAL_FAIL"] },
+        "stateMutationPerformed": { "const": false },
+        "liveModelStatus": { "const": "NOT_CONNECTED_AUTHORIZATION_REQUIRED" },
+        "claimBoundary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/nonEmpty" } }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "hashAlgorithm", "scope", "selfHashExcluded", "files"],
+      "properties": {
+        "schemaVersion": { "const": "1.0" },
+        "hashAlgorithm": { "const": "SHA-256" },
+        "scope": { "const": "NPC-ACTOR-05 OFFLINE SAFETY LOOP" },
+        "selfHashExcluded": { "const": true },
+        "files": { "type": "array", "minItems": 11, "items": { "$ref": "#/$defs/file" } }
+      }
+    }
+  }
+}

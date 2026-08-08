@@ -1,0 +1,858 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor03-adaptive-holdout-8-v1",
+    "status": "NON_CANON_HOLDOUT_READY",
+    "fixtureOrigin": "MANUALLY_AUTHORED_OFFLINE_HOLDOUT_FIXTURE",
+    "policyId": "npc-actor-adaptive-expression-v1",
+    "randomizationSeed": "npc-actor03-balanced-holdout-seed-v1",
+    "scenarios": [
+        {
+            "scenarioId": "npc-actor03-01",
+            "title": "打碎的酒罈",
+            "category": "PUBLIC_MISTAKE_REPAIR",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-mira",
+            "actorSpeakerId": "npc-eval-mira",
+            "reviewerCharacterBrief": "米拉嘴硬、眼尖，重視酒館秩序；人多時會先止損，也會用自己的方式護住手下。",
+            "sceneContext": "晚市客滿，跑堂失手打碎最後一罈陳酒，幾桌客人都看了過來。",
+            "calibrationSignals": {
+                "immediateNeed": "清掉碎片並處理客人",
+                "relationshipDistance": "WORKING_ALLY",
+                "audiencePressure": "HIGH",
+                "urgency": "HIGH",
+                "expressionLevel": "RESTRAINED"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-01",
+                    "kind": "PROFILE",
+                    "summary": "米拉嘴硬、眼尖，重視酒館秩序；人多時會先止損，也會用自己的方式護住手下。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-01",
+                    "kind": "PERCEPTION",
+                    "summary": "晚市客滿，跑堂失手打碎最後一罈陳酒，幾桌客人都看了過來。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-01",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "跑堂其實受人指使打碎酒罈",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-01",
+                    "speakerLabel": "跑堂",
+                    "utterance": "掌櫃，我把最後那罈打了。",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "先拿掃帚，別讓人踩到。",
+                        "nonverbal": "攔住想靠近的客人"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-01",
+                        "speakerLabel": "跑堂",
+                        "utterance": "可那是今晚最貴的一罈。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "損失晚點再算，先把桌上的酒補齊。",
+                        "nonverbal": "指向後廚"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "先掃乾淨。割傷人，帳算你頭上。",
+                        "nonverbal": "把客人擋在碎片外"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-01",
+                        "speakerLabel": "跑堂",
+                        "utterance": "可那是今晚最貴的一罈。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "貴的是酒，不是命。去拿備用小罈。",
+                        "nonverbal": "自己蹲下撿大塊陶片"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-02",
+            "title": "雨夜欠房錢",
+            "category": "PRACTICAL_MERCY",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-mira",
+            "actorSpeakerId": "npc-eval-mira",
+            "reviewerCharacterBrief": "米拉不愛空泛同情，但看得出人快撐不住時會提供能落地的交換。",
+            "sceneContext": "深夜大雨，一名渾身濕透的旅人請求賒住一晚，酒館只剩柴房可用。",
+            "calibrationSignals": {
+                "immediateNeed": "避免失溫並決定住宿交換",
+                "relationshipDistance": "STRANGER",
+                "audiencePressure": "LOW",
+                "urgency": "MEDIUM",
+                "expressionLevel": "LOW"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-02",
+                    "kind": "PROFILE",
+                    "summary": "米拉不愛空泛同情，但看得出人快撐不住時會提供能落地的交換。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-02",
+                    "kind": "PERCEPTION",
+                    "summary": "深夜大雨，一名渾身濕透的旅人請求賒住一晚，酒館只剩柴房可用。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-02",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "旅人攜帶失竊的城防圖",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-02",
+                    "speakerLabel": "旅人",
+                    "utterance": "我沒錢，能讓我躲一晚嗎？",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "柴房還有位置。先把濕衣服換下來。",
+                        "nonverbal": "遞出一條乾布"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-02",
+                        "speakerLabel": "旅人",
+                        "utterance": "我明早一定會走。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "明早劈完門口那堆柴，就算房錢。",
+                        "nonverbal": "把柴房鑰匙放上桌"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "先擦乾。你病倒了，我還得多洗一床被子。",
+                        "nonverbal": "把乾布丟過去"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-02",
+                        "speakerLabel": "旅人",
+                        "utterance": "我明早一定會走。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-mira",
+                        "speakerLabel": "米拉",
+                        "utterance": "明早劈柴抵房錢，劈完再走。",
+                        "nonverbal": "推過柴房鑰匙"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-03",
+            "title": "夜間藥車",
+            "category": "EMERGENCY_PROCEDURE",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-yan",
+            "actorSpeakerId": "npc-eval-yan",
+            "reviewerCharacterBrief": "嚴朔寡言、守程序；緊急時允許有記錄、有見證的例外，不用口氣代替查核。",
+            "sceneContext": "宵禁後，一輛藥車要進城救治高燒孩童，但通行印章尚未補蓋，值勤同僚在場。",
+            "calibrationSignals": {
+                "immediateNeed": "在可追溯條件下讓急救藥通行",
+                "relationshipDistance": "KNOWN_PROFESSIONAL",
+                "audiencePressure": "MEDIUM",
+                "urgency": "HIGH",
+                "expressionLevel": "MINIMAL"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-03",
+                    "kind": "PROFILE",
+                    "summary": "嚴朔寡言、守程序；緊急時允許有記錄、有見證的例外，不用口氣代替查核。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-03",
+                    "kind": "PERCEPTION",
+                    "summary": "宵禁後，一輛藥車要進城救治高燒孩童，但通行印章尚未補蓋，值勤同僚在場。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-03",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "藥箱底層藏有逃犯",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-03",
+                    "speakerLabel": "藥師",
+                    "utterance": "城南孩子等著退燒藥，印章明早才能補。",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "開箱驗藥。同僚作證，我記下車號。",
+                        "nonverbal": "示意同僚過來"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-03",
+                        "speakerLabel": "藥師",
+                        "utterance": "再拖半刻，孩子可能撐不住。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "驗完先進，天亮前補印章。",
+                        "nonverbal": "翻開夜間通行簿"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "箱子打開。車號、藥名、去處都報一遍。",
+                        "nonverbal": "把燈提近封條"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-03",
+                        "speakerLabel": "藥師",
+                        "utterance": "再拖半刻，孩子可能撐不住。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "驗完放行。你天亮前回來補章。",
+                        "nonverbal": "讓同僚在簿上簽名"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-04",
+            "title": "新兵漏鎖",
+            "category": "ACCOUNTABLE_REPAIR",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-yan",
+            "actorSpeakerId": "npc-eval-yan",
+            "reviewerCharacterBrief": "嚴朔先控制風險，再留下責任紀錄；他不靠羞辱新兵維持紀律。",
+            "sceneContext": "清晨交班前，新兵發現北側門閂整夜沒扣好，幸而沒有入侵跡象。",
+            "calibrationSignals": {
+                "immediateNeed": "立即封鎖、檢查並留下紀錄",
+                "relationshipDistance": "SUBORDINATE",
+                "audiencePressure": "LOW",
+                "urgency": "HIGH",
+                "expressionLevel": "RESTRAINED"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-04",
+                    "kind": "PROFILE",
+                    "summary": "嚴朔先控制風險，再留下責任紀錄；他不靠羞辱新兵維持紀律。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-04",
+                    "kind": "PERCEPTION",
+                    "summary": "清晨交班前，新兵發現北側門閂整夜沒扣好，幸而沒有入侵跡象。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-04",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "隊長昨夜偷偷打開北門",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-04",
+                    "speakerLabel": "新兵",
+                    "utterance": "昨晚北側門閂……我可能沒扣。別寫進簿裡行嗎？",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "先把門鎖上，再查腳印。",
+                        "nonverbal": "拿起巡檢燈"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-04",
+                        "speakerLabel": "新兵",
+                        "utterance": "真的沒出事，能不能算了？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "沒出事也要記。你簽名，我複核。",
+                        "nonverbal": "翻開值勤簿"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "扣門。你查內側，我查外側。",
+                        "nonverbal": "把另一盞燈交給新兵"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-04",
+                        "speakerLabel": "新兵",
+                        "utterance": "真的沒出事，能不能算了？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-yan",
+                        "speakerLabel": "嚴朔",
+                        "utterance": "不是結果替你值勤。照實寫，我在後面簽。",
+                        "nonverbal": "把筆放到紀錄欄旁"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-05",
+            "title": "不肯喝藥",
+            "category": "PATIENT_AUTONOMY",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-lian",
+            "actorSpeakerId": "npc-eval-lian",
+            "reviewerCharacterBrief": "連霜直白、重診斷，也尊重清醒病人的拒絕；她用替代方案處理問題，不把關心說成訓話。",
+            "sceneContext": "老病人嫌藥苦，把藥碗推開；他意識清楚，病情穩定但需要退熱。",
+            "calibrationSignals": {
+                "immediateNeed": "確認拒絕並提供可行替代",
+                "relationshipDistance": "LONG_TERM_PATIENT",
+                "audiencePressure": "LOW",
+                "urgency": "LOW",
+                "expressionLevel": "RESTRAINED"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-05",
+                    "kind": "PROFILE",
+                    "summary": "連霜直白、重診斷，也尊重清醒病人的拒絕；她用替代方案處理問題，不把關心說成訓話。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-05",
+                    "kind": "PERCEPTION",
+                    "summary": "老病人嫌藥苦，把藥碗推開；他意識清楚，病情穩定但需要退熱。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-05",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "病人其實對藥材過敏",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-05",
+                    "speakerLabel": "老病人",
+                    "utterance": "太苦了，我不喝。",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "你可以不喝，但熱不會自己退。",
+                        "nonverbal": "摸了摸病人的額頭"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-05",
+                        "speakerLabel": "老病人",
+                        "utterance": "妳別又說我像小孩。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "我改成藥粉，分兩次吞。你選。",
+                        "nonverbal": "把藥碗移到一旁"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "不說。你清醒，拒絕是你的事。",
+                        "nonverbal": "重新量了一次脈"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-05",
+                        "speakerLabel": "老病人",
+                        "utterance": "妳別又說我像小孩。",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "但燒要退。藥粉分兩次，或這碗一次喝完。",
+                        "nonverbal": "拿出兩張藥紙"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-06",
+            "title": "學徒手抖",
+            "category": "SKILL_SUPPORT",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-lian",
+            "actorSpeakerId": "npc-eval-lian",
+            "reviewerCharacterBrief": "連霜要求精準，發現學徒緊張時會先穩住操作條件，再決定是否接手。",
+            "sceneContext": "傷口已清潔，學徒第一次在病人清醒時縫合，拿針的手開始發抖。",
+            "calibrationSignals": {
+                "immediateNeed": "確保縫合安全並讓學徒恢復控制",
+                "relationshipDistance": "APPRENTICE",
+                "audiencePressure": "MEDIUM",
+                "urgency": "MEDIUM",
+                "expressionLevel": "LOW"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-06",
+                    "kind": "PROFILE",
+                    "summary": "連霜要求精準，發現學徒緊張時會先穩住操作條件，再決定是否接手。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-06",
+                    "kind": "PERCEPTION",
+                    "summary": "傷口已清潔，學徒第一次在病人清醒時縫合，拿針的手開始發抖。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-06",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "病人的傷口已經感染入骨",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-06",
+                    "speakerLabel": "學徒",
+                    "utterance": "師父，我的手一直抖。",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "先放下針，呼吸慢一點。",
+                        "nonverbal": "托住學徒的手腕"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-06",
+                        "speakerLabel": "學徒",
+                        "utterance": "要不還是妳來？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "第一針我示範，第二針你來。",
+                        "nonverbal": "重新調整燈的位置"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "針先放下。手抖時別逞強。",
+                        "nonverbal": "把針接過來放回盤中"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-06",
+                        "speakerLabel": "學徒",
+                        "utterance": "要不還是妳來？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-lian",
+                        "speakerLabel": "連霜",
+                        "utterance": "第一針我來。下一針你縫，我托住腕骨。",
+                        "nonverbal": "把燈移到傷口正上方"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-07",
+            "title": "帳冊少一頁",
+            "category": "PUBLIC_ACCOUNTABILITY",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-ren",
+            "actorSpeakerId": "npc-eval-ren",
+            "reviewerCharacterBrief": "任七嘴利但懂生意；投資人在場時，他先補證據鏈，不把手下當表演用的替罪羊。",
+            "sceneContext": "投資人正在查帳，帳房低聲承認上月帳冊少了一頁，桌上仍有收據副本。",
+            "calibrationSignals": {
+                "immediateNeed": "重建缺頁並控制公開損害",
+                "relationshipDistance": "EMPLOYEE",
+                "audiencePressure": "HIGH",
+                "urgency": "MEDIUM",
+                "expressionLevel": "RESTRAINED"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-07",
+                    "kind": "PROFILE",
+                    "summary": "任七嘴利但懂生意；投資人在場時，他先補證據鏈，不把手下當表演用的替罪羊。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-07",
+                    "kind": "PERCEPTION",
+                    "summary": "投資人正在查帳，帳房低聲承認上月帳冊少了一頁，桌上仍有收據副本。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-07",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "投資人已收買帳房刪除證據",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-07",
+                    "speakerLabel": "帳房",
+                    "utterance": "東家，上月帳冊少了一頁。",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "把那日的收據和庫單都找出來。",
+                        "nonverbal": "闔上缺頁的帳冊"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-07",
+                        "speakerLabel": "帳房",
+                        "utterance": "投資人就在旁邊，現在怎麼辦？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "你重抄，我逐筆核。先別讓別人碰原冊。",
+                        "nonverbal": "把原冊收進抽屜"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "少一頁不會死人，少錢才會。先找收據。",
+                        "nonverbal": "把缺頁處夾上紙籤"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-07",
+                        "speakerLabel": "帳房",
+                        "utterance": "投資人就在旁邊，現在怎麼辦？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "你重建，我核對。原冊鎖起來。",
+                        "nonverbal": "把抽屜鑰匙交給帳房"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        },
+        {
+            "scenarioId": "npc-actor03-08",
+            "title": "舊船漏水",
+            "category": "HONEST_BARGAINING",
+            "boundary": "NON_CANON_EVALUATION",
+            "policyId": "npc-actor-adaptive-expression-v1",
+            "actorId": "npc-eval-ren",
+            "actorSpeakerId": "npc-eval-ren",
+            "reviewerCharacterBrief": "任七會算也會挖苦，但知道隱瞞船況只會讓交易日後反咬；他把缺陷轉成可議價的明細。",
+            "sceneContext": "買船人看見船腹一處新補的漏縫，碼頭工人都在旁邊聽價。",
+            "calibrationSignals": {
+                "immediateNeed": "說明修補狀態並重新議價",
+                "relationshipDistance": "CUSTOMER",
+                "audiencePressure": "MEDIUM",
+                "urgency": "LOW",
+                "expressionLevel": "MEDIUM"
+            },
+            "actorOwnedEvidence": [
+                {
+                    "evidenceId": "profile-npc-actor03-08",
+                    "kind": "PROFILE",
+                    "summary": "任七會算也會挖苦，但知道隱瞞船況只會讓交易日後反咬；他把缺陷轉成可議價的明細。",
+                    "visibility": "ACTOR_OWNED",
+                    "sourceSha256": null
+                },
+                {
+                    "evidenceId": "scene-npc-actor03-08",
+                    "kind": "PERCEPTION",
+                    "summary": "買船人看見船腹一處新補的漏縫，碼頭工人都在旁邊聽價。",
+                    "visibility": "ACTOR_VISIBLE",
+                    "sourceSha256": null
+                }
+            ],
+            "forbiddenEvidence": [
+                {
+                    "evidenceId": "author-secret-npc-actor03-08",
+                    "kind": "AUTHOR_SECRET",
+                    "summary": "船底龍骨已經腐爛",
+                    "visibility": "AUTHOR_ONLY",
+                    "sourceSha256": null
+                }
+            ],
+            "sharedOpeningTurns": [
+                {
+                    "speakerId": "interlocutor-npc-actor03-08",
+                    "speakerLabel": "買船人",
+                    "utterance": "這裡剛補過。你原本怎麼沒說？",
+                    "nonverbal": ""
+                }
+            ],
+            "naturalControlCandidate": {
+                "sourceType": "NATURAL_CONTROL_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "三天前補的，工單和木料都在。",
+                        "nonverbal": "把修船單遞過去"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-08",
+                        "speakerLabel": "買船人",
+                        "utterance": "補過的船還敢開這個價？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "你可以請別的船匠驗。驗完再談價。",
+                        "nonverbal": "敲了敲補板邊緣"
+                    }
+                ]
+            },
+            "adaptiveActorCandidate": {
+                "sourceType": "ADAPTIVE_ACTOR_FIXTURE",
+                "turns": [
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "舊船不是神話。補縫寫在工單上。",
+                        "nonverbal": "把修船單展開"
+                    },
+                    {
+                        "speakerId": "interlocutor-npc-actor03-08",
+                        "speakerLabel": "買船人",
+                        "utterance": "補過的船還敢開這個價？",
+                        "nonverbal": ""
+                    },
+                    {
+                        "speakerId": "npc-eval-ren",
+                        "speakerLabel": "任七",
+                        "utterance": "找船匠驗。再漏，我替你罵木板。",
+                        "nonverbal": "把槌子遞給旁邊船匠"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "NATURALNESS",
+                "VOICE_CONSISTENCY",
+                "MOTIVE_COHERENCE",
+                "KNOWLEDGE_BOUNDARY",
+                "CONTINUITY",
+                "MULTI_TURN_REPAIR"
+            ],
+            "lengthExceptionReason": null
+        }
+    ]
+}

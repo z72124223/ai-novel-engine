@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localnovel.example/schemas/production/chatgpt_image_handoff_v1.schema.json",
+  "title": "ChatGPT Image Handoff V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "handoffId",
+    "status",
+    "createdAt",
+    "projectId",
+    "worldId",
+    "branch",
+    "sourceCommitSha",
+    "handoffContentSha256",
+    "sourceArtifacts",
+    "shotScope",
+    "referenceBindings",
+    "referenceUploadChecklistFile",
+    "shotQueueFile",
+    "promptManifestFile",
+    "locationBibleRequirements",
+    "continuityRules",
+    "negativeConstraints",
+    "outputContract",
+    "reviewContract",
+    "returnToCodexContract",
+    "visibilityAndSecretBoundary",
+    "validationSummary"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "chatgpt-image-handoff-v1"
+    },
+    "handoffId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "VALIDATED",
+        "READY_FOR_COMMIT",
+        "READY_FOR_GPT",
+        "REFERENCE_UPLOAD_REQUIRED",
+        "GENERATION_READY",
+        "CANDIDATE_GENERATED",
+        "USER_APPROVED",
+        "REJECTED_DRIFT",
+        "VARIATION_REQUESTED",
+        "CODEX_INTAKE_READY",
+        "INTAKE_VALIDATED",
+        "REFERENCE_ACCEPTED",
+        "VIDEO_HANDOFF_READY"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "projectId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "worldId": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "branch": {
+      "$ref": "#/$defs/nonBlank"
+    },
+    "sourceCommitSha": {
+      "$ref": "#/$defs/gitSha"
+    },
+    "handoffCommitSha": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/gitSha"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Caller-supplied metadata only. It is not required when committing the handoff."
+    },
+    "handoffContentSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "sourceArtifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifactId",
+          "artifactType",
+          "repositoryPath",
+          "contentSha256",
+          "visibility",
+          "placeholderBinding"
+        ],
+        "properties": {
+          "artifactId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "artifactType": {
+            "enum": [
+              "SCRIPT_PACKET",
+              "STORYBOARD",
+              "VISUAL_APPEARANCE",
+              "COSTUME",
+              "VISUAL_STYLE",
+              "LOCATION_BIBLE",
+              "CONTINUITY_REPORT",
+              "OTHER"
+            ]
+          },
+          "repositoryPath": {
+            "$ref": "#/$defs/repositoryPath"
+          },
+          "contentSha256": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/sha256"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "visibility": {
+            "enum": [
+              "USER_FACING",
+              "REVIEW_ONLY",
+              "PRODUCTION_ONLY"
+            ]
+          },
+          "placeholderBinding": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "shotScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "shotIds",
+        "placeholderOnly",
+        "noActualShotHandoff"
+      ],
+      "properties": {
+        "purpose": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "shotIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        },
+        "placeholderOnly": {
+          "type": "boolean"
+        },
+        "noActualShotHandoff": {
+          "type": "boolean"
+        }
+      }
+    },
+    "referenceBindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "referenceId",
+          "entityId",
+          "assetRole",
+          "version",
+          "repositoryPaths",
+          "requiredForFormalGeneration"
+        ],
+        "properties": {
+          "referenceId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "entityId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "assetRole": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "version": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "repositoryPaths": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/repositoryPath"
+            }
+          },
+          "requiredForFormalGeneration": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "referenceUploadChecklistFile": {
+      "$ref": "#/$defs/repositoryPath"
+    },
+    "shotQueueFile": {
+      "$ref": "#/$defs/repositoryPath"
+    },
+    "promptManifestFile": {
+      "$ref": "#/$defs/repositoryPath"
+    },
+    "locationBibleRequirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "locationId",
+          "requiredViews",
+          "spatialAnchorRequired",
+          "missingReferenceAction"
+        ],
+        "properties": {
+          "locationId": {
+            "$ref": "#/$defs/nonBlank"
+          },
+          "requiredViews": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "MASTER_PANORAMA",
+                "TOP_DOWN_PLAN",
+                "NORTH_VIEW",
+                "EAST_VIEW",
+                "SOUTH_VIEW",
+                "WEST_VIEW",
+                "ANCHOR_DETAIL",
+                "SCALE_REFERENCE",
+                "OPTIONAL_360_PANORAMA"
+              ]
+            }
+          },
+          "spatialAnchorRequired": {
+            "type": "boolean"
+          },
+          "missingReferenceAction": {
+            "enum": [
+              "REFERENCE_UPLOAD_REQUIRED",
+              "ALLOW_ROUGH_CONCEPT_ONLY",
+              "BLOCK"
+            ]
+          }
+        }
+      }
+    },
+    "continuityRules": {
+      "$ref": "#/$defs/nonEmptyStringList"
+    },
+    "negativeConstraints": {
+      "$ref": "#/$defs/nonEmptyStringList"
+    },
+    "outputContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateStatus",
+        "fileNamePattern",
+        "aspectRatio",
+        "noAutomaticApproval"
+      ],
+      "properties": {
+        "candidateStatus": {
+          "const": "CANDIDATE"
+        },
+        "fileNamePattern": {
+          "$ref": "#/$defs/nonBlank"
+        },
+        "aspectRatio": {
+          "pattern": "^[1-9][0-9]*:[1-9][0-9]*$",
+          "type": "string"
+        },
+        "noAutomaticApproval": {
+          "const": true
+        }
+      }
+    },
+    "reviewContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "humanReviewRequired",
+        "allowedReviewStates",
+        "technicalPassIsNotApproval"
+      ],
+      "properties": {
+        "humanReviewRequired": {
+          "const": true
+        },
+        "allowedReviewStates": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "PENDING_USER_REVIEW",
+              "APPROVE_CANDIDATE",
+              "REJECT_DRIFT",
+              "REQUEST_VARIATION",
+              "CHANGE_VISUAL_DIRECTION"
+            ]
+          }
+        },
+        "technicalPassIsNotApproval": {
+          "const": true
+        }
+      }
+    },
+    "returnToCodexContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaPath",
+        "sourceFileSha256RequiredBeforeAcceptance",
+        "existingCliChainRequired"
+      ],
+      "properties": {
+        "schemaPath": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sourceFileSha256RequiredBeforeAcceptance": {
+          "const": true
+        },
+        "existingCliChainRequired": {
+          "const": true
+        }
+      }
+    },
+    "visibilityAndSecretBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorOnlyExcluded",
+        "allowedVisibility",
+        "excludedContentClasses"
+      ],
+      "properties": {
+        "authorOnlyExcluded": {
+          "const": true
+        },
+        "allowedVisibility": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "USER_FACING",
+              "REVIEW_ONLY",
+              "PRODUCTION_ONLY"
+            ]
+          }
+        },
+        "excludedContentClasses": {
+          "$ref": "#/$defs/nonEmptyStringList"
+        }
+      }
+    },
+    "validationSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "checks",
+        "schemaValidation",
+        "pathValidation",
+        "notes"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "NOT_RUN",
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonBlank"
+          }
+        },
+        "schemaValidation": {
+          "enum": [
+            "NOT_RUN",
+            "PASS",
+            "FAIL",
+            "SCHEMA_META_VALIDATION_NOT_AVAILABLE"
+          ]
+        },
+        "pathValidation": {
+          "enum": [
+            "NOT_RUN",
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "nonBlank": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "gitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?![\\\\/])(?!.*://).+"
+    },
+    "nonEmptyStringList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/nonBlank"
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+    "schemaVersion": "1.0",
+    "loopId": "loop-npc-actor05-lian-knowledge-repair",
+    "boundary": "NON_CANON_EVALUATION",
+    "generatedAttemptCount": 1,
+    "generatedResponses": [
+        {
+            "schemaVersion": "1.0",
+            "requestId": "request-npc-actor05-lian-knowledge-repair",
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor05-lian-knowledge-repair",
+                "actorId": "adult",
+                "targetIds": [],
+                "speechAct": "REASSURE",
+                "immediateGoal": "Check immediate hazard",
+                "beliefClaimIds": [
+                    "belief-npc-actor05-lian-knowledge-repair"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor05-lian-knowledge-repair"
+                ],
+                "emotionShown": "Alert",
+                "emotionHidden": "Deliberate",
+                "withheldInformationIds": [],
+                "actionType": "inspect_local_pressure",
+                "actionIntent": "Check for immediate hazards",
+                "visibleAction": "REACH",
+                "utterance": "有異常壓力嗎？",
+                "nonverbalAction": "傾身觀察",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "",
+                "observableConsequence": "可能發現壓力源",
+                "confidence": 0,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "belief-npc-actor05-lian-knowledge-repair"
+                    ],
+                    "selectedActionLabel": "Check immediate hazard",
+                    "rejectedActionLabels": []
+                }
+            },
+            "physicalActionProposal": {
+                "actionId": "action-npc-actor05-lian-knowledge-repair",
+                "actionType": "REACH",
+                "actorId": "adult",
+                "targetId": "chair",
+                "secondaryTargetId": null,
+                "supportSurfaceId": null,
+                "supportUse": null,
+                "destinationCenterCm": null
+            }
+        }
+    ],
+    "invocationAudits": [
+        {
+            "schemaVersion": "1.0",
+            "provider": "LOCAL_LLAMA_CPP_DIRECT_CLI",
+            "modelId": "Qwen/Qwen3-8B-GGUF",
+            "modelRevision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+            "modelSha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+            "modelFileName": "Qwen3-8B-Q5_K_M.gguf",
+            "runtimeId": "llama.cpp-b10002-vulkan",
+            "reasoning": "off",
+            "contextTokens": 4096,
+            "maxOutputTokens": 384,
+            "seed": 20260714,
+            "elapsedMillis": 34533,
+            "rawOutputBytes": 4892,
+            "promptSha256": "a59154bb00d820f7f5ce67a92af666c203aa919a3a225cdd1b3348084bd14c2c",
+            "responseSha256": "608d72b718d834313921254144bbce68f1df01684276e706161dd2624ef87170",
+            "serverStarted": false,
+            "portOpened": false,
+            "formalStateWritePerformed": false
+        }
+    ],
+    "safetyResult": {
+        "schemaVersion": "1.0",
+        "loopId": "loop-npc-actor05-lian-knowledge-repair",
+        "boundary": "NON_CANON_EVALUATION",
+        "accepted": true,
+        "status": "ACCEPTED_FOR_FORMAL_RESOLVE_CANDIDATE",
+        "attemptsProcessed": 1,
+        "unusedResponseAttemptCount": 0,
+        "acceptedAttemptNumber": 1,
+        "attemptResults": [
+            {
+                "attemptNumber": 1,
+                "requestId": "request-npc-actor05-lian-knowledge-repair",
+                "bindingAccepted": true,
+                "bindingStatus": "ACCEPTED_FOR_GAME_MASTER_REVIEW_PHYSICALLY_VALIDATED",
+                "gameMasterAccepted": true,
+                "gameMasterStatus": "ACCEPTED_FOR_FORMAL_RESOLVE",
+                "timeBudgetAccepted": true,
+                "elapsedMinutes": 10,
+                "rejectionStage": null,
+                "findings": [],
+                "repairRequest": null
+            }
+        ],
+        "acceptedProposal": {
+            "proposalId": "npc-actor-proposal-request-npc-actor05-lian-knowledge-repair",
+            "npcId": "adult",
+            "actionType": "inspect_local_pressure",
+            "intent": "Check for immediate hazards",
+            "visibleAction": "REACH",
+            "hiddenMotive": "Check immediate hazard",
+            "locationId": "location-npc-actor05-lian-knowledge-repair",
+            "usedMemoryIds": [
+                "memory-npc-actor05-lian-knowledge-repair"
+            ],
+            "usedKnowledgeClaimIds": [
+                "belief-npc-actor05-lian-knowledge-repair"
+            ],
+            "predictedCost": "",
+            "observableConsequence": "可能發現壓力源"
+        },
+        "formalStateWritePerformed": false,
+        "claimBoundary": [
+            "No SQLite, Canon, knowledge, memory or formal world state was modified.",
+            "An accepted result is only a candidate for the existing formal resolve-turn pipeline.",
+            "The repair request exposes error codes and actor-visible allowlists, not engine-owned measurements or geometry.",
+            "Passing fixed offline fixtures does not prove human-like behavior, complete physics understanding or live-model quality."
+        ]
+    },
+    "repairAttempted": false,
+    "formalStateWritePerformed": false,
+    "claimBoundary": [
+        "Local model output is an untrusted candidate.",
+        "Only the existing NPC Actor safety chain may accept a formal-resolve candidate.",
+        "This command does not write SQLite, Canon, Memory, or Knowledge."
+    ]
+}

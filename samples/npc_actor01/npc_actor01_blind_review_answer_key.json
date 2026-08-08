@@ -1,0 +1,86 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor01-blind-192126ab8b13",
+    "answers": [
+        {
+            "reviewId": "review-npc-actor01-01",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-02",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-03",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-04",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-05",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-06",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-07",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-08",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-09",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-10",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-11",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-12",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-13",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-14",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-15",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-16",
+            "actorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor01-17",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-18",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-19",
+            "actorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor01-20",
+            "actorOption": "A"
+        }
+    ]
+}

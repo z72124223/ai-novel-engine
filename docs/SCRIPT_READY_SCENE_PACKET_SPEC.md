@@ -37,6 +37,8 @@ For storyboard-oriented work, a packet should reference future registered asset 
 
 For future new-world production, 04 should not read a full world bible or full story arc by default. The docs-only future query layer in `docs/DEMAND_DRIVEN_QUERY_LAYER_BLUEPRINT.md` defines World Card Queryer, Story Card Queryer / Situation-Continuity-Pressure Queryer, and Asset Queryer as scoped retrieval contracts for packet drafting, review, asset handoff, and storyboard pickup. Those queryers are not implemented runtime enforcement.
 
+Alignment note: `docs/CODEX_SCRIPT_READY_SCENE_PACKET_ALIGNMENT_V0.md` connects this packet spec to `docs/CODEX_DEMAND_DRIVEN_QUERY_CONTRACT_SPEC_V0.md` and its `QueryRequest`, `QueryResponse`, and `QueryScopeReviewReport` shapes. It explains how `author_only`, `review_only`, `production_only`, and `user_facing` query evidence may feed packet sections while preserving no 04/05/06/07/08 restart, no provider/API, no SQLite, no runtime data, and no production lock.
+
 The packet should carry enough information for review and display without leaking author-only world causality, director goals, sealed answers, culprit identity, or knowledge a character should not have. This is a perspective-safety rule, not a fixed reveal schedule.
 
 ## 3. Packet Status

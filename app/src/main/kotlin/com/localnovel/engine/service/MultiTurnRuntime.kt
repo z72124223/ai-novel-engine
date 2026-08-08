@@ -2,11 +2,13 @@ package com.localnovel.engine.service
 
 import com.localnovel.engine.model.AiTurnResult
 import com.localnovel.engine.model.ApplyResult
+import com.localnovel.engine.model.LogicAuditReport
 import com.localnovel.engine.model.CharacterAction
 import com.localnovel.engine.model.CharacterMemory
 import com.localnovel.engine.model.ContextBudgetForensicsReport
 import com.localnovel.engine.model.ContextPacket
 import com.localnovel.engine.model.DirectorPressure
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.OutputRequirements
 import com.localnovel.engine.model.StorySession
 import com.localnovel.engine.model.ValidationError
@@ -22,14 +24,16 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import java.nio.file.Files
+import java.nio.file.Path
 import java.security.MessageDigest
 import java.time.Instant
 
 class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
-    fun startSession(projectId: String, sceneId: String): StorySession {
+    fun startSession(projectId: String, sceneId: String, readerMode: Boolean = false): StorySession {
         require(repository.getProject(projectId) != null) { "Project not found: $projectId" }
         require(repository.targetExists(projectId, "scene", sceneId)) { "Scene not found: $sceneId" }
-        return repository.startSession(projectId, sceneId)
+        return repository.startSession(projectId, sceneId, readerMode)
     }
 
     fun prepareTurn(sessionId: String, playerInput: String): ContextPacket {
@@ -61,7 +65,94 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
 
     private fun buildTurnContext(sessionId: String, playerInput: String): ContextPacket {
         val prepared = prepareContextForFinalization(sessionId, playerInput)
-        return ContextPacketFinalizer().finalize(prepared.budgetedContext, ::hashContext)
+        val context = ContextPacketFinalizer().finalize(
+            ProvisionalLayerService(repository).enrichContext(prepared.budgetedContext),
+            ::hashContext,
+        )
+        enforceSceneContextFloorAtPrepare(context)
+        return context
+    }
+
+    private fun enforceSceneContextFloorAtPrepare(context: ContextPacket) {
+        if (!projectHasAppliedSettingPack(context.project.id)) {
+            return
+        }
+        if (context.turnNumber < 4) {
+            return
+        }
+        if (context.activeStoryThreads.isEmpty() && context.pendingWorldEvents.isEmpty()) {
+            return
+        }
+        val gateResult = NarrativeQualityGateService().evaluate(
+            context = context,
+            result = prepareTurnGateStubResult(context),
+            options = NarrativeQualityGateOptions(enforceSceneContextFloor = true),
+            input = NarrativeQualityAuditInput(
+                contextFile = "pending://${context.contextId}",
+                resultFile = "prepare-turn-context-gate",
+            ),
+        )
+        val thinSetting = gateResult.blockingFindings.any { it.ruleId == "CONTEXT_SETTING_TOO_THIN" }
+        if (thinSetting) {
+            error(
+                "narrative_quality_gate: CONTEXT_SETTING_TOO_THIN (WARNING): " +
+                    "場景設定資訊不足，這一回合尚未具備足夠寫作材料。請先補齊設定上下文後再開始寫稿。",
+            )
+        }
+    }
+
+    private fun prepareTurnGateStubResult(context: ContextPacket): AiTurnResult =
+        AiTurnResult(
+            protocolVersion = SUPPORTED_PROTOCOL_VERSION,
+            projectId = context.project.id,
+            turnId = context.turnId,
+            resultId = "prepare-turn-context-gate",
+            contextId = context.contextId,
+            sessionId = context.sessionId,
+            turnNumber = context.turnNumber,
+            baseStateVersion = context.baseStateVersion,
+            contextHash = context.contextHash,
+            narrative = "待寫入。",
+            turnSummary = "待寫入。",
+        )
+
+    private fun projectHasAppliedSettingPack(projectId: String): Boolean =
+        repository.settingPackRows(projectId).isNotEmpty()
+
+    private fun narrativeQualityGateOptions(
+        context: ContextPacket,
+        options: ResolveTurnOptions,
+    ): NarrativeQualityGateOptions =
+        NarrativeQualityGateOptions(
+            strictMode = options.strictNarrativeQuality,
+            enforceSceneContextFloor = projectHasAppliedSettingPack(context.project.id),
+            sampleLabel = options.narrativeQualitySampleLabel,
+            evidenceText = options.narrativeQualityEvidenceText,
+            autoPromoteLearnedRules = options.autoPromoteLearnedRules,
+        )
+
+    private fun narrativeQualityAuditInput(
+        context: ContextPacket,
+        result: AiTurnResult,
+        options: ResolveTurnOptions,
+    ): NarrativeQualityAuditInput {
+        val logicAuditFindings = options.logicAuditFile
+            .takeIf { it.isNotBlank() }
+            ?.let { path ->
+                JsonSupport.json.decodeFromString<LogicAuditReport>(
+                    Files.readString(Path.of(path)).removePrefix("\uFEFF"),
+                ).findings
+            }
+            .orEmpty()
+        val dbPath = options.dbPath.ifBlank { repository.databasePath().toString() }
+        return NarrativeQualityAuditInput(
+            contextFile = "pending://${context.contextId}",
+            resultFile = result.resultId,
+            evidenceText = options.narrativeQualityEvidenceText,
+            sampleLabel = options.narrativeQualitySampleLabel,
+            dbPath = dbPath,
+            logicAuditFindings = logicAuditFindings,
+        )
     }
 
     private fun prepareContextForFinalization(sessionId: String, playerInput: String): PreparedContextForBudget {
@@ -149,12 +240,82 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         return PreparedContextForBudget(enrichedContext, contextWithoutHash)
     }
 
-    fun resolveTurn(sessionId: String, result: AiTurnResult): ApplyResult {
+    fun resolveTurn(
+        sessionId: String,
+        result: AiTurnResult,
+        options: ResolveTurnOptions = ResolveTurnOptions(),
+    ): ApplyResult {
+        val startedAtNanos = System.nanoTime()
         val context = repository.getPendingContext(sessionId, result.contextId)
-            ?: error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
-        val report = validate(context, result)
+        if (context == null) {
+            RebootRunEvidenceService(repository).persistProtocolEnvelope(
+                cliSessionId = sessionId,
+                rawResultText = JsonSupport.json.encodeToString(result),
+                parsedResult = result,
+                options = options,
+                code = "pending_context_not_found",
+                message = "Pending context not found for session '$sessionId' and context '${result.contextId}'.",
+                startedAtNanos = startedAtNanos,
+            )
+            error("Pending context not found for session '$sessionId' and context '${result.contextId}'.")
+        }
+        val report = validate(context, result, options.formalTurnPhysicalContext)
         if (!report.isValid) {
+            RebootRunEvidenceService(repository).persistAttempt(
+                context = context,
+                result = result,
+                options = options,
+                auditReport = null,
+                findings = RebootValidationClassifier.fromValidationErrors(report.errors),
+                status = "REJECTED",
+                startedAtNanos = startedAtNanos,
+            )
             error(report.errors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        val irreversibleFindings = IrreversibleChangeBoundaryValidator.validate(context, result, options)
+        if (irreversibleFindings.isNotEmpty()) {
+            RebootRunEvidenceService(repository).persistAttempt(
+                context = context,
+                result = result,
+                options = options,
+                auditReport = null,
+                findings = irreversibleFindings,
+                status = "REJECTED",
+                startedAtNanos = startedAtNanos,
+            )
+            error(irreversibleFindings.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        val auditRun = NarrativeQualityGateService().evaluateRun(
+            context = context,
+            result = result,
+            options = narrativeQualityGateOptions(context, options),
+            input = narrativeQualityAuditInput(context, result, options),
+        )
+        val gateResult = auditRun.gateResult ?: error("Narrative quality gate result missing.")
+        auditRun.promotionReport?.let { promotion ->
+            if (promotion.promotedCount > 0) {
+                println("learnedRulesPromoted=${promotion.promotedCount}")
+                promotion.promotedRuleIds.forEach { println("learned_rule_promoted=$it") }
+                println("learnedRulesStore=${promotion.storePath}")
+            }
+        }
+        val gateErrors = NarrativeQualityGateService().toValidationErrors(gateResult)
+        val evidenceFindings = RebootValidationClassifier.fromNarrativeFindings(gateResult.auditReport.findings)
+        val evidenceService = RebootRunEvidenceService(repository)
+        val evidenceRunId = evidenceService.persistAttempt(
+            context = context,
+            result = result,
+            options = options,
+            auditReport = gateResult.auditReport,
+            findings = evidenceFindings,
+            status = if (gateErrors.isEmpty()) "EVALUATED" else "REJECTED",
+            startedAtNanos = startedAtNanos,
+        )
+        if (gateErrors.isNotEmpty()) {
+            error(gateErrors.joinToString(separator = "\n") { "${it.code}: ${it.message}" })
+        }
+        gateResult.advisoryFindings.forEach { finding ->
+            println("narrative_quality_advisory:${finding.ruleId}:${finding.severity}:${finding.message}")
         }
         val hasStateChange = result.allDeltaOperations().any { it.type != com.localnovel.engine.model.DeltaOperationType.NOOP } ||
             result.revealedFacts.isNotEmpty() ||
@@ -164,15 +325,38 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
             result.transitionProposal != null ||
             result.worldEventAcknowledgements.isNotEmpty() ||
             result.timeAdvanceProposal != null ||
-            result.capabilityUseChecks.isNotEmpty()
-        return repository.resolvePendingTurn(context, result, hasStateChange)
+            result.capabilityUseChecks.isNotEmpty() ||
+            result.entityProposals.isNotEmpty() ||
+            result.promotionRecommendations.isNotEmpty() ||
+            result.physicalActionProposals.any { it.actionType in PhysicalStateReducer.STATEFUL_ACTIONS }
+        return try {
+            repository.resolvePendingTurn(
+                context = context,
+                result = result,
+                hasStateChange = hasStateChange,
+                rebootRunEvidenceId = evidenceRunId,
+                rebootRunElapsedTimeMs = evidenceService.elapsedMillis(startedAtNanos),
+                npcDecisionTrace = options.npcDecisionTrace,
+                npcGameMasterResolution = options.npcGameMasterResolution,
+                formalTurnPhysicalContext = options.formalTurnPhysicalContext,
+            )
+        } catch (error: Throwable) {
+            evidenceService.markFailed(evidenceRunId, error, startedAtNanos)
+            throw error
+        }
     }
 
-    fun validate(context: ContextPacket, result: AiTurnResult): ValidationReport {
+    fun validate(
+        context: ContextPacket,
+        result: AiTurnResult,
+        physicalContext: FormalTurnPhysicalValidationContext? = null,
+    ): ValidationReport {
         val errors = mutableListOf<ValidationError>()
         if (context.protocolVersion != SUPPORTED_PROTOCOL_VERSION || result.protocolVersion != SUPPORTED_PROTOCOL_VERSION) {
             errors += ValidationError("unsupported_protocol", "Only protocolVersion $SUPPORTED_PROTOCOL_VERSION is supported for multi-turn runtime.")
         }
+        if (result.projectId != context.project.id) errors += ValidationError("project_mismatch", "projectId does not match context project.")
+        if (result.turnId != context.turnId) errors += ValidationError("turn_id_mismatch", "turnId does not match context turn.")
         if (result.sessionId != context.sessionId) errors += ValidationError("session_mismatch", "sessionId does not match context.")
         if (result.contextId != context.contextId) errors += ValidationError("context_mismatch", "contextId does not match context.")
         if (result.turnNumber != context.turnNumber) errors += ValidationError("turn_mismatch", "turnNumber does not match context.")
@@ -218,6 +402,9 @@ class MultiTurnRuntime(private val repository: SqliteStoryRepository) {
         errors += KnowledgeBoundaryValidator(repository).validate(context, result)
         errors += MemoryLifecycleService(repository).validate(context, result)
         errors += EmotionReducer().validate(context, result)
+        errors += ProvisionalLayerValidator(repository).validate(context, result)
+        errors += FormalTurnPhysicalGateValidator().validate(context, result, physicalContext)
+        errors += FormalPhysicalStatePersistenceValidator(repository).validate(context, result, physicalContext)
         if (result.characterActions.isEmpty()) {
             errors += ValidationError("missing_character_actions", "At least one characterAction is required.")
         }

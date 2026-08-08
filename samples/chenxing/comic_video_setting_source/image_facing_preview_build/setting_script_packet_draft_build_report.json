@@ -1,0 +1,31 @@
+{
+    "verdict": "PASS",
+    "buildId": "setting-image-facing-chenxing-preview-001-setting-script-draft",
+    "settingPackFile": "samples\\chenxing\\comic_video_setting_source\\setting_pack_chenxing_preview_sample.json",
+    "scriptPacketDraftFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft.json",
+    "scriptPacketValidationFile": "samples\\chenxing\\comic_video_setting_source\\image_facing_preview_build\\script_packet_draft_validation.json",
+    "packId": "comic-video-chenxing-source",
+    "packVersion": 1,
+    "projectId": "comic-video-workbench",
+    "selectedSceneId": "scene-huiguan-market",
+    "selectedLocationId": "loc-huiguan-market",
+    "outputPacketId": "script-packet-draft-chenxing-preview-001",
+    "validationVerdict": "PASS",
+    "nextAllowedDownstreamStep": "script_packet_draft_review",
+    "findingCount": 0,
+    "evidence": {
+        "publicSceneCount": 1,
+        "publicLocationCount": 1,
+        "publicCharacterCount": 3,
+        "publicItemCount": 2,
+        "publicFactCount": 2,
+        "publicWorldRuleCount": 1,
+        "selectedCharacterCount": 3,
+        "selectedItemCount": 2,
+        "sceneContractCount": 1,
+        "excludedSecretCount": 1,
+        "generatedSegmentCount": 1,
+        "generatedBeatCount": 3,
+        "generatedFrameCandidateCount": 3
+    }
+}

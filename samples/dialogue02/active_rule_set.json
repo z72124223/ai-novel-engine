@@ -1,0 +1,115 @@
+{
+    "ruleSetId":  "engine-production-rules",
+    "version":  "1.0.0",
+    "rules":  [
+                  {
+                      "code":  "UNNATURAL_SPOKEN_CHINESE",
+                      "category":  "LANGUAGE_LOCALE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "unnatural spoken chinese"
+                  },
+                  {
+                      "code":  "ESSAY_LIKE_DIALOGUE",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "essay like dialogue"
+                  },
+                  {
+                      "code":  "SYMMETRIC_ARGUMENT_EXCHANGE",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "symmetric argument exchange"
+                  },
+                  {
+                      "code":  "CHARACTER_VOICE_COLLAPSE",
+                      "category":  "CHARACTER_VOICE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "character voice collapse"
+                  },
+                  {
+                      "code":  "HIGH_PRESSURE_OVERLONG_LINE",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "high pressure overlong line"
+                  },
+                  {
+                      "code":  "FORCED_WIT_UNDER_DANGER",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "BLOCKER",
+                      "hardBlocker":  true,
+                      "description":  "High-pressure dialogue sacrifices executable rescue information for a clever line."
+                  },
+                  {
+                      "code":  "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "BLOCKER",
+                      "hardBlocker":  true,
+                      "description":  "A rescue or trauma line creates accidental flirtation or a consequential double meaning."
+                  },
+                  {
+                      "code":  "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "BLOCKER",
+                      "hardBlocker":  true,
+                      "description":  "The text requires acting or staging to avoid a major misreading."
+                  },
+                  {
+                      "code":  "DIALOGUE_ACTION_REDUNDANCY",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "dialogue action redundancy"
+                  },
+                  {
+                      "code":  "EXPOSITION_AS_SPEECH",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "exposition as speech"
+                  },
+                  {
+                      "code":  "AMBIGUOUS_PRONOUN_OR_OBJECT",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "ambiguous pronoun or object"
+                  },
+                  {
+                      "code":  "MEMORABLE_LINE_DENSITY_EXCEEDED",
+                      "category":  "DIALOGUE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "memorable line density exceeded"
+                  },
+                  {
+                      "code":  "UNSUPPORTED_REGIONAL_TERM",
+                      "category":  "LANGUAGE_LOCALE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "unsupported regional term"
+                  },
+                  {
+                      "code":  "TRANSLATION_LIKE_PHRASING",
+                      "category":  "LANGUAGE_LOCALE",
+                      "defaultSeverity":  "WARNING",
+                      "hardBlocker":  false,
+                      "description":  "translation like phrasing"
+                  }
+              ],
+    "requiredReviewerRoles":  [
+                                  "TAIWAN_SPOKEN_DIALOGUE",
+                                  "ACTOR_BREATH_AND_PERFORMANCE",
+                                  "PAN_CHINESE_COMPREHENSION"
+                              ],
+    "hardBlockerCodes":  [
+                             "ACCIDENTAL_FLIRTATION_OR_DOUBLE_MEANING",
+                             "FORCED_WIT_UNDER_DANGER",
+                             "REQUIRES_PERFORMANCE_TO_AVOID_MISREADING"
+                         ],
+    "contentSha256":  "0bcf00b5081a7b34dd0936c146d499e5ed2620184a5ec22e7cfc9a28ffb701ac"
+}

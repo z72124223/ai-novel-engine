@@ -1,0 +1,621 @@
+{
+  "schemaVersion": "foundation-card-pack-v0",
+  "status": "FOUNDATION_CARD_PACK_DRAFT_NON_CANON",
+  "sampleId": "chenxing_09_foundation_card_pack_contract_sample",
+  "packId": "09-foundation-pack-chenxing-v0-001",
+  "title": "Chenxing / 塵行 09 foundation card pack contract sample",
+  "locale": "zh-TW",
+  "reviewOnlyMarker": "draft/review-only",
+  "canonStatus": "non_canon_candidate",
+  "approvalStatus": "not_approved",
+  "settingPackReadiness": "not_ready",
+  "runtimeStatus": "not runtime SQLite data",
+  "assetApprovalStatus": "not approved assets",
+  "registryStatus": "not registry",
+  "releaseStatus": "not release",
+  "productionLockStatus": "not production lock",
+  "activeWorldLabel": {
+    "series": "塵行",
+    "verificationMarker": "塵行",
+    "providedSourceTitle": "穿越4000年",
+    "titleRelationshipStatus": "unresolved_title_alias_or_working_title"
+  },
+  "activeWorldNote": "Chenxing / 塵行 is the default story-facing 09 foundation card contract sample for the active creative world.",
+  "sourceNotes": [
+    "Review-only sample derived from memory/active_world_source.json, memory/chenxing_world_source_manifest.json, memory/quarterfull_world_memory_capsule.json, docs/QUARTERFULL_WORLD_ALIGNMENT.md, and cited raw archive paths.",
+    "Raw archive files under world/chenxing/raw/ are citation authority only and are not edited, rewritten, summarized, retitled, normalized, or copied as raw prose into this sample.",
+    "This sample supports future ScriptReadyScenePacket source-basis planning shape only; it is not an actual ScriptReadyScenePacket."
+  ],
+  "sourceCitations": [
+    {
+      "sourceId": "active-world-source-lock-v0",
+      "path": "memory/active_world_source.json",
+      "use": "active creative world lock and boundary flags"
+    },
+    {
+      "sourceId": "chenxing-world-source-manifest-v0",
+      "path": "memory/chenxing_world_source_manifest.json",
+      "use": "raw source id, raw path, copy-mode, and raw-integrity metadata"
+    },
+    {
+      "sourceId": "quarterfull-world-memory-capsule-v0.1",
+      "path": "memory/quarterfull_world_memory_capsule.json",
+      "use": "reviewed memory capsule for public card summaries and limits"
+    },
+    {
+      "sourceId": "quarterfull-world-alignment-v0",
+      "path": "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+      "use": "active baseline alignment and non-runtime boundary"
+    },
+    {
+      "sourceId": "chenxing-world-raw-01-core-settings",
+      "path": "world/chenxing/raw/01_world_core_settings.md",
+      "use": "world premise and opening constraints"
+    },
+    {
+      "sourceId": "chenxing-world-raw-02-systems-civilization",
+      "path": "world/chenxing/raw/02_systems_and_civilization.md",
+      "use": "systems and civilization source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-03-systems-deepening",
+      "path": "world/chenxing/raw/03_systems_deepening_weapon_cultivation_profession_factions.md",
+      "use": "weapons, cultivation, professions, and factions source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-04-economy-items",
+      "path": "world/chenxing/raw/04_economy_items_treasures_mounts.md",
+      "use": "economy, items, treasures, and mounts source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-05-power-map-politics",
+      "path": "world/chenxing/raw/05_power_map_fortress_politics.md",
+      "use": "power map, fortress politics, and social pressure source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-06-cultivation-geography",
+      "path": "world/chenxing/raw/06_cultivation_geography_secret_realms.md",
+      "use": "cultivation geography and forbidden-land source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-07-core-characters",
+      "path": "world/chenxing/raw/07_core_character_ensemble.md",
+      "use": "core character ensemble source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-08-volume-opening",
+      "path": "world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+      "use": "opening sequence, scene pressure, and situation source authority"
+    },
+    {
+      "sourceId": "chenxing-world-raw-09-aijiang-detail",
+      "path": "world/chenxing/raw/09_aijiang_detailed_setting.md",
+      "use": "Ai-chan companion detail source authority"
+    }
+  ],
+  "retrievalTags": [
+    "chenxing",
+    "塵行",
+    "09-foundation",
+    "contract-sample",
+    "draft/review-only",
+    "non-canon",
+    "scene-packet-source-basis",
+    "prompt-asset-card-planning",
+    "storyboard-camera-planning"
+  ],
+  "downstreamUse": {
+    "queryEligible": false,
+    "scriptReadyScenePacketEligible": false,
+    "settingPackConversionEligible": false,
+    "assetRegistryEligible": false
+  },
+  "sourceBasisPlanningSupport": {
+    "futureScriptReadyScenePacketSupport": "shape-only planning support; not an actual ScriptReadyScenePacket",
+    "primaryFinalProductChainReduced": "scene packet",
+    "secondaryFinalProductChainsReduced": [
+      "prompt/asset cards",
+      "storyboard/camera",
+      "human approval gates"
+    ],
+    "supportedSlots": [
+      "world premise baseline",
+      "viewpoint protagonist foundation",
+      "companion behavior and limits",
+      "opening location foundation",
+      "visible system constraints",
+      "asset seed candidates",
+      "situation pressure seed"
+    ],
+    "reviewGate": "future review required before query, scene-packet, setting-pack, asset-registry, storyboard, voice/SFX, renderer, or media use"
+  },
+  "boundaryFlags": {
+    "canonApproved": false,
+    "settingPackData": false,
+    "runtimeSqliteData": false,
+    "approvedAssetData": false,
+    "providerApiCalls": false,
+    "rendererInvocation": "none",
+    "ffmpegInvocation": "none",
+    "ttsInvocation": "none",
+    "mediaGenerated": false,
+    "finalMediaApproval": false,
+    "releaseApproved": false,
+    "productionLock": false
+  },
+  "cards": [
+    {
+      "id": "09-world-premise-chenxing-v0-001",
+      "family": "world_premise",
+      "title": "塵行 opening world premise candidate",
+      "sourceNotes": [
+        "Cites active world lock, QuarterFull memory capsule, alignment doc, and raw source ids chenxing-world-raw-01-core-settings and chenxing-world-raw-08-volume-opening.",
+        "Public summary is a review-only synthesis, not raw prose and not canon approval."
+      ],
+      "sourceCitations": [
+        "memory/active_world_source.json",
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-01-core-settings -> world/chenxing/raw/01_world_core_settings.md",
+        "chenxing-world-raw-08-volume-opening -> world/chenxing/raw/08_volume1_opening_skeleton_luochen.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "world-premise",
+        "chenxing",
+        "scene-packet-source-basis"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "塵行 opens with survival pressure, language barrier, frontier scarcity, and slow evidence-based discovery around 陸知行 and 愛醬.",
+      "reviewOnlyNotes": [
+        "Use only as a source-basis planning card for future review.",
+        "Do not treat this premise as a setting pack, runtime state, or approved canon."
+      ],
+      "constraints": [
+        "Do not invent power ranks or full metaphysics.",
+        "Do not reveal hidden mysteries through narration.",
+        "Do not replace the raw archive or memory capsule."
+      ],
+      "forbiddenImplications": [
+        "No final world truth is approved.",
+        "No scene packet is created.",
+        "No production source lock is created."
+      ]
+    },
+    {
+      "id": "09-character-chenxing-lu-zhixing-v0-001",
+      "family": "character_foundation",
+      "title": "陸知行 protagonist foundation candidate",
+      "sourceNotes": [
+        "Cites active world lock, memory capsule, alignment doc, and raw source id chenxing-world-raw-07-core-characters.",
+        "Name and role remain review-only until later source-basis review."
+      ],
+      "sourceCitations": [
+        "memory/active_world_source.json",
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-07-core-characters -> world/chenxing/raw/07_core_character_ensemble.md",
+        "chenxing-world-raw-08-volume-opening -> world/chenxing/raw/08_volume1_opening_skeleton_luochen.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "character-foundation",
+        "lu-zhixing",
+        "scene-packet-source-basis"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "陸知行 is a practical, observant displaced protagonist who survives by inference, repair sense, caution, and protection of 愛醬.",
+      "reviewOnlyNotes": [
+        "Knowledge limits remain part of the card: he does not know the local language or full power system at opening.",
+        "This card does not approve likeness, voice casting, or runtime character state."
+      ],
+      "constraints": [
+        "Do not grant hidden knowledge not supported by visible evidence.",
+        "Do not turn practical reasoning into omniscience.",
+        "Do not create an asset registry entry."
+      ],
+      "forbiddenImplications": [
+        "No character canon is approved.",
+        "No actor, voice, portrait, or model is approved."
+      ]
+    },
+    {
+      "id": "09-character-chenxing-aijiang-v0-001",
+      "family": "character_foundation",
+      "title": "愛醬 companion foundation candidate",
+      "sourceNotes": [
+        "Cites memory capsule, alignment doc, and raw source id chenxing-world-raw-09-aijiang-detail.",
+        "Companion behavior remains dog-like and sensory, not a human-shaped clue machine."
+      ],
+      "sourceCitations": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-09-aijiang-detail -> world/chenxing/raw/09_aijiang_detailed_setting.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "character-foundation",
+        "aijiang",
+        "companion-boundary"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "愛醬 is a loyal long-haired husky / snow-dog companion whose danger signals come through scent, ears, posture, hesitation, returning glances, and pressure behavior.",
+      "reviewOnlyNotes": [
+        "This card helps future scene-packet planning preserve companion boundaries.",
+        "No animal design, voice/SFX, or animation behavior is approved."
+      ],
+      "constraints": [
+        "Do not make 愛醬 explain abstract truths.",
+        "Do not use 愛醬 as an all-purpose clue machine.",
+        "Do not approve a production asset."
+      ],
+      "forbiddenImplications": [
+        "No companion canon is approved.",
+        "No voice/subtitle/SFX or animation track is created."
+      ]
+    },
+    {
+      "id": "09-location-chenxing-huiguan-v0-001",
+      "family": "location_foundation",
+      "title": "灰關 frontier fortress foundation candidate",
+      "sourceNotes": [
+        "Cites memory capsule, alignment doc, and raw source ids chenxing-world-raw-05-power-map-politics and chenxing-world-raw-08-volume-opening.",
+        "Location summary is review-only and does not select a concrete scene packet."
+      ],
+      "sourceCitations": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-05-power-map-politics -> world/chenxing/raw/05_power_map_fortress_politics.md",
+        "chenxing-world-raw-08-volume-opening -> world/chenxing/raw/08_volume1_opening_skeleton_luochen.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "location-foundation",
+        "huiguan",
+        "storyboard-camera-planning"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "灰關 is a dirty, functional, hierarchical frontier fortress with scarcity, patrols, workshops, harsh smells, and unusual craft materials.",
+      "reviewOnlyNotes": [
+        "This card can support future scene location sourcing only after review.",
+        "No map, layout, shot list, or storyboard is approved."
+      ],
+      "constraints": [
+        "Do not infer full map topology.",
+        "Do not approve scene geography or camera blocking.",
+        "Do not generate storyboard/camera output."
+      ],
+      "forbiddenImplications": [
+        "No production location asset is approved.",
+        "No runtime location state is written."
+      ]
+    },
+    {
+      "id": "09-system-chenxing-visible-power-and-materials-v0-001",
+      "family": "system_foundation",
+      "title": "Visible power and frontier material culture candidate",
+      "sourceNotes": [
+        "Cites raw source ids chenxing-world-raw-02-systems-civilization, chenxing-world-raw-03-systems-deepening, chenxing-world-raw-04-economy-items, and chenxing-world-raw-06-cultivation-geography.",
+        "The card only records visible system boundaries for future review."
+      ],
+      "sourceCitations": [
+        "chenxing-world-raw-02-systems-civilization -> world/chenxing/raw/02_systems_and_civilization.md",
+        "chenxing-world-raw-03-systems-deepening -> world/chenxing/raw/03_systems_deepening_weapon_cultivation_profession_factions.md",
+        "chenxing-world-raw-04-economy-items -> world/chenxing/raw/04_economy_items_treasures_mounts.md",
+        "chenxing-world-raw-06-cultivation-geography -> world/chenxing/raw/06_cultivation_geography_secret_realms.md",
+        "memory/quarterfull_world_memory_capsule.json"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "system-foundation",
+        "visible-power",
+        "material-culture"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "Power is visible but not explained; frontier craft includes unusual materials such as glowing stones, repair adhesive, dried moss powder, black mineral blue flame, weapons, and tool racks.",
+      "reviewOnlyNotes": [
+        "System ranks, metaphysics, costs, and institutions remain unresolved unless future reviewed evidence defines them.",
+        "This card does not authorize runtime mechanics or validator rules."
+      ],
+      "constraints": [
+        "Do not invent cultivation ranks.",
+        "Do not create capability-use rules.",
+        "Do not implement schema, runtime, or SQLite data."
+      ],
+      "forbiddenImplications": [
+        "No world system is approved.",
+        "No mechanic or validator implementation is created."
+      ]
+    },
+    {
+      "id": "09-constraint-chenxing-source-boundary-v0-001",
+      "family": "constraint",
+      "title": "Chenxing source boundary and non-approval candidate",
+      "sourceNotes": [
+        "Cites active world lock, manifest boundary flags, memory capsule, and alignment doc.",
+        "This card exists to prevent source confusion with Rain Gate test/demo-only / non-active-world sample data and runtime data."
+      ],
+      "sourceCitations": [
+        "memory/active_world_source.json",
+        "memory/chenxing_world_source_manifest.json",
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "constraint",
+        "source-boundary",
+        "non-canon"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "This sample is a review-only Chenxing contract surface; Rain Gate remains test/demo-only / non-active-world evidence and old demo files are not deleted.",
+      "reviewOnlyNotes": [
+        "Use this card to keep future source-basis planning from promoting review-only material.",
+        "Do not convert this sample into canon, registry, release, or runtime state."
+      ],
+      "constraints": [
+        "Do not edit world/chenxing/raw/.",
+        "Do not treat JSON parse success as approval.",
+        "Do not use Rain Gate test/demo-only / non-active-world sample data as active creative worldview."
+      ],
+      "forbiddenImplications": [
+        "No production lock exists.",
+        "No setting-pack apply has occurred.",
+        "No direct SQLite write is authorized."
+      ]
+    },
+    {
+      "id": "09-asset-seed-chenxing-visible-cues-v0-001",
+      "family": "asset_seed",
+      "title": "Chenxing visible and audio cue seed candidate",
+      "sourceNotes": [
+        "Cites memory capsule, alignment doc, and raw source ids chenxing-world-raw-04-economy-items, chenxing-world-raw-05-power-map-politics, chenxing-world-raw-08-volume-opening, and chenxing-world-raw-09-aijiang-detail.",
+        "Seed cues are prompt/asset-card planning inputs only, not approved assets."
+      ],
+      "sourceCitations": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-04-economy-items -> world/chenxing/raw/04_economy_items_treasures_mounts.md",
+        "chenxing-world-raw-05-power-map-politics -> world/chenxing/raw/05_power_map_fortress_politics.md",
+        "chenxing-world-raw-08-volume-opening -> world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+        "chenxing-world-raw-09-aijiang-detail -> world/chenxing/raw/09_aijiang_detailed_setting.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "asset-seed",
+        "prompt-asset-cards",
+        "voice-subtitle-sfx-planning"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "Review-only seed cues include grey-white moss, fortress walls, repair workshop heat, blue-flamed black-mineral furnace, industrial-looking pendant clue, and 愛醬 sensory behavior.",
+      "reviewOnlyNotes": [
+        "Supports future prompt/asset card thinking only.",
+        "No image, audio, voice, subtitle, SFX, model, registry, or media artifact is approved."
+      ],
+      "constraints": [
+        "Do not call provider/API.",
+        "Do not generate media.",
+        "Do not create asset registry entries."
+      ],
+      "forbiddenImplications": [
+        "No approved asset exists.",
+        "No renderer package exists.",
+        "No voice/subtitle/SFX timeline exists."
+      ]
+    },
+    {
+      "id": "09-situation-seed-chenxing-market-pressure-v0-001",
+      "family": "situation_seed",
+      "title": "Market pressure and companion-protection situation seed candidate",
+      "sourceNotes": [
+        "Cites memory capsule, alignment doc, and raw source ids chenxing-world-raw-07-core-characters, chenxing-world-raw-08-volume-opening, and chenxing-world-raw-09-aijiang-detail.",
+        "Situation seed is not a script-ready scene packet and not a story continuation."
+      ],
+      "sourceCitations": [
+        "memory/quarterfull_world_memory_capsule.json",
+        "docs/QUARTERFULL_WORLD_ALIGNMENT.md",
+        "chenxing-world-raw-07-core-characters -> world/chenxing/raw/07_core_character_ensemble.md",
+        "chenxing-world-raw-08-volume-opening -> world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+        "chenxing-world-raw-09-aijiang-detail -> world/chenxing/raw/09_aijiang_detailed_setting.md"
+      ],
+      "visibility": "review_only",
+      "canonStatus": "non_canon_candidate",
+      "approvalStatus": "not_approved",
+      "settingPackReadiness": "not_ready",
+      "retrievalTags": [
+        "situation-seed",
+        "scene-packet-planning",
+        "human-approval-gate"
+      ],
+      "downstreamUse": {
+        "queryEligible": false,
+        "scriptReadyScenePacketEligible": false,
+        "settingPackConversionEligible": false,
+        "assetRegistryEligible": false
+      },
+      "boundaryFlags": {
+        "canonApproved": false,
+        "settingPackData": false,
+        "runtimeSqliteData": false,
+        "approvedAssetData": false,
+        "providerApiCalls": false,
+        "rendererInvocation": "none",
+        "ffmpegInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "finalMediaApproval": false,
+        "releaseApproved": false,
+        "productionLock": false
+      },
+      "publicSummary": "A future scene-planning pressure point may involve 陸知行 protecting 愛醬 after a status-pressure incident in 灰關, but this sample does not continue the story.",
+      "reviewOnlyNotes": [
+        "This preserves a possible source-basis planning slot without writing the scene.",
+        "Future human approval may be needed for conflict severity and consequence direction."
+      ],
+      "constraints": [
+        "Do not force story direction.",
+        "Do not write scene prose.",
+        "Do not create an actual ScriptReadyScenePacket."
+      ],
+      "forbiddenImplications": [
+        "No scene is approved.",
+        "No storyboard route is resumed.",
+        "No human approval gate is satisfied."
+      ]
+    }
+  ]
+}

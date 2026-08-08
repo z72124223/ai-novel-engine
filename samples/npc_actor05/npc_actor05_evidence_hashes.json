@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-05 OFFLINE SAFETY LOOP",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-mira-stable-first-pass.context.json",
+      "sha256": "0a361ec1d5bad9f314c458115e5513456f1a5499e2878cc2bfb6769c96f2c6f5",
+      "bytes": 5721
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-mira-stable-first-pass.input.json",
+      "sha256": "da28efa7de8588b090b1985b440540fce33b8144f37e277cba15c38296c0d58e",
+      "bytes": 34113
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.context.json",
+      "sha256": "682b922ccc42c2ba0e1572b3b14d2936d70e59a329d36c8ebea0a42f6c6f595d",
+      "bytes": 5713
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-lian-knowledge-repair.input.json",
+      "sha256": "735326f4f2bcd5117fb55918ab40a15a5d7c579934aa926b9295b88c1a6d2b3e",
+      "bytes": 36342
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-ren-load-repair.context.json",
+      "sha256": "05bf1ed815a442d28ad573edc442b32fe1e49d986c5b2f3966c3573f1279abe0",
+      "bytes": 5664
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-ren-load-repair.input.json",
+      "sha256": "4fabaeb14f5cbbfa25737b431cbd454d5ece3e61a1e2b60bfc84335ca9749af0",
+      "bytes": 36486
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.context.json",
+      "sha256": "ee991477df8f8bbac229682550234f91ccb4040775cd6d58b572ddb21fbbea99",
+      "bytes": 5656
+    },
+    {
+      "path": "samples/npc_actor05/cases/npc-actor05-yan-storm-gate.input.json",
+      "sha256": "375320874218cd0445e68daa530aafa533d03b15076d5fdf4657c0a9fdb66668",
+      "bytes": 37080
+    },
+    {
+      "path": "samples/npc_actor05/npc_actor05_safety_loop_suite_v1.json",
+      "sha256": "0b29b06862dd201d7e4812190392a934c08fc7b1290d6b433796ec514aaee49a",
+      "bytes": 4182
+    },
+    {
+      "path": "samples/npc_actor05/npc_actor05_safety_loop_report_v1.json",
+      "sha256": "0d506c0a8b2746f5a46b7ff62f28d977b8362bad1b5195e43821abe4473bdefd",
+      "bytes": 2626
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_safety_loop_v1.schema.json",
+      "sha256": "a130f6e039f7f40ec77eb81c75d257b90ffae1bd235bc51c78c0b78757f09af7",
+      "bytes": 13429
+    }
+  ]
+}

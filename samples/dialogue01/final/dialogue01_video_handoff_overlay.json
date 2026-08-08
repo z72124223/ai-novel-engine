@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "dialogue01-video-handoff-overlay-v2",
+  "productionId": "screen01-tideline-beyond",
+  "status": "METADATA_ONLY_READY_FOR_FUTURE_HANDOFF",
+  "boundary": "NON_CANON_PILOT",
+  "baseVideoPilotPath": "samples/screen01/screen01_video_pilot_60_90s.json",
+  "baseShotListPath": "samples/screen01/screen01_shot_list.json",
+  "finalScreenplayPath": "samples/dialogue01/final/screen01_screenplay_dialogue_final_zh-Hant-TW.md",
+  "finalScreenplaySha256": "a3816d7ab99a6aa92285f86642ef8a857ff369c030b06253d05333f7f05aa7e4",
+  "finalDialoguePath": "samples/dialogue01/final/screen01_dialogue_track_final_zh-Hant-TW.json",
+  "finalDialogueSha256": "a990cbb8e6da28c97dc59f7dfbc48defa7253f7fe3714fa99702230695abfc4d",
+  "finalSubtitlePath": "samples/dialogue01/final/screen01_video_pilot_dialogue_final_zh-Hant-TW.srt",
+  "finalSubtitleSha256": "6bbfcc86ba42001f894b27ee38576342d9647be59f80f32a4bd041e5db23e379",
+  "pilot": {"firstShotId":"shot-015","lastShotId":"shot-023","durationSeconds":82,"subtitleCueCount":11},
+  "shotDialogueBindings": [
+    {"shotId":"shot-003","dialogueIds":["dlg-001","dlg-002"]},
+    {"shotId":"shot-004","dialogueIds":["dlg-003"]},
+    {"shotId":"shot-005","dialogueIds":["dlg-004"]},
+    {"shotId":"shot-006","dialogueIds":["dlg-005","dlg-006"]},
+    {"shotId":"shot-009","dialogueIds":["dlg-007","dlg-008"]},
+    {"shotId":"shot-011","dialogueIds":["dlg-009","dlg-010"]},
+    {"shotId":"shot-013","dialogueIds":["dlg-011","dlg-012","dlg-013","dlg-014"]},
+    {"shotId":"shot-017","dialogueIds":["dlg-015","dlg-016","dlg-017","dlg-018","dlg-019"]},
+    {"shotId":"shot-021","dialogueIds":["dlg-020"]},
+    {"shotId":"shot-023","dialogueIds":["dlg-021","dlg-022","dlg-023"]},
+    {"shotId":"shot-024","dialogueIds":["dlg-024","dlg-025","dlg-026"]},
+    {"shotId":"shot-025","dialogueIds":["dlg-027","dlg-028"]},
+    {"shotId":"shot-026","dialogueIds":["dlg-029"]},
+    {"shotId":"shot-028","dialogueIds":["dlg-030"]},
+    {"shotId":"shot-031","dialogueIds":["dlg-031"]}
+  ],
+  "changedBinding": {"shotId":"shot-023","dialogueId":"dlg-022","finalText":"潮表還沒到。","subtitleCue":10},
+  "continuityRules": [
+    "Shot 數、順序、時間與角色站位沿用 SCREEN-01，不由本 overlay 改寫。",
+    "所有 dialogueId 的文字以 finalDialoguePath 為準。",
+    "未來圖片或影片工作仍需獨立人工批准，不得由本檔自動啟動。"
+  ],
+  "providerAuthorization": "NONE",
+  "generatedMedia": false
+}

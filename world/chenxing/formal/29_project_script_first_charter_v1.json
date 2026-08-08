@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "chenxing-project-script-first-charter-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "purpose": "Author-approved product charter: this repo produces scripts, not final voiced comics or videos.",
+  "oneLineMission": "產出可驗證、可延續的互動劇本；影片由外部 Seedance 2.0 產品另行生成。",
+  "primaryDeliverable": {
+    "label": "interactive_script_and_shot_packets",
+    "includes": [
+      "場景與節拍",
+      "對白與旁白",
+      "鏡頭與動作說明",
+      "角色狀態與禁止揭露邊界",
+      "可選的下游 Seedance prompt 欄位（非正典必需）"
+    ],
+    "excludesAsProjectGoal": [
+      "有聲漫畫本地成片",
+      "MP4 自動產線",
+      "在引擎內接繪圖或影片 API",
+      "畫風定稿與批量出圖當主線"
+    ]
+  },
+  "downstreamVideo": {
+    "rule": "Seedance 2.0 與 DEEVID、火山方舟、AI-CanvasPro 等為下游工具，不是本 repo 開發目標。",
+    "developerNote": "Seedance 2.0 由 ByteDance Seed 開發；第三方平台僅整合接入。",
+    "handoff": "劇本包完成後，由作者選定外部工具手動或半自動出片。"
+  },
+  "productionRoles": {
+    "grokBuild": "劇情、對白、Codex 無法處理的故事段落",
+    "codex": "場景整理、分鏡文字、劇本包結構、驗證、設定包整合；不擅自改寫 Grok 故事",
+    "author": "劇本內容定稿；下游影片與畫面批准"
+  },
+  "pausedWork": [
+    "畫風候選樣本選型（F1–F7）",
+    "開場試看圖正式出圖",
+    "comic-video 本地渲染鏈",
+    "資產登錄與 registry 實作",
+    "MVP-6 以外的新引擎大功能"
+  ],
+  "activeWork": [
+    "打磨《塵行》劇本內容：開場至廢墟內部 beats",
+    "分鏡 JSON 的文字品質（對白、旁白、節拍）",
+    "必要時用 Grok/Codex handoff CLI 整理劇本包"
+  ],
+  "linkedStoryboards": [
+    "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+    "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json"
+  ]
+}

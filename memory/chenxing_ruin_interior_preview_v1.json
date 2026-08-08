@@ -1,0 +1,722 @@
+{
+    "pack": {
+        "packId": "chenxing-formal-v5-ruin-interior",
+        "projectId": "chenxing",
+        "name": "塵行廢墟內部場景擴充 v5",
+        "description": "補齊山坡廢墟內部地點、場景、連通與轉換，支援第一卷 beats 10-18 慢推進分鏡。仍在台灣 2026 敘事相位，穿越尚未發生。",
+        "mode": "PATCH_CANON",
+        "source": {
+            "author": "author-formal-canon",
+            "license": "author",
+            "notes": "Derived from world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json and 33_ruin_interior_discoveries_v1.json."
+        },
+        "dependencies": [
+            {
+                "packId": "chenxing-formal-v4-opening-scenes"
+            }
+        ],
+        "entities": {
+            "locations": [
+                {
+                    "id": "loc-ruin-threshold",
+                    "name": "廢墟門檻",
+                    "description": "山坡廢棄構造物的主入口門洞。暴風雨夜可擋風，但門內空氣與離海距離不符。",
+                    "parentLocationId": "loc-hillside-ruin"
+                },
+                {
+                    "id": "loc-ruin-first-shelter",
+                    "name": "首間避風室",
+                    "description": "破舊但足夠擋風的內部空間；手機仍無訊號，公開紀錄中幾乎找不到這處遺跡。",
+                    "parentLocationId": "loc-hillside-ruin"
+                },
+                {
+                    "id": "loc-ruin-service-corridor",
+                    "name": "傾斜服務走廊",
+                    "description": "日治火力發電相關設施的傾斜走廊，殘留舊單位標記、生鏽推床螺栓與低處中文刻痕。",
+                    "parentLocationId": "loc-hillside-ruin"
+                },
+                {
+                    "id": "loc-ruin-dead-room",
+                    "name": "開放區亡者側室",
+                    "description": "封存失敗的實驗側室：乾燥遺留、針孔叢集、編號標籤與空拘束帶，非普通戰爭炮彈痕跡。",
+                    "parentLocationId": "loc-hillside-ruin"
+                },
+                {
+                    "id": "loc-ruin-specimen-storage",
+                    "name": "標本儲存區",
+                    "description": "高大灰色玻璃瓶排架區；瓶內為二戰時期浸泡保存的人體標本，液體已呈灰褐色。",
+                    "parentLocationId": "loc-hillside-ruin"
+                },
+                {
+                    "id": "loc-ruin-gold-vault",
+                    "name": "指揮室黃金暗格",
+                    "description": "指揮室側假牆後空隙；留有日方來不及運走的軍用木箱、布捆金條與部分硬幣。",
+                    "parentLocationId": "loc-hillside-ruin"
+                }
+            ],
+            "facts": [
+                {
+                    "id": "fact-ruin-interior-missing-sea-smell",
+                    "content": "廢墟門內空氣與離海距離不符——缺少應有的海風鹹味與皮膚黏膩感。"
+                },
+                {
+                    "id": "fact-ruin-interior-experiment-traces",
+                    "content": "廢墟內部殘留量測尺、拘束帶、生鏽推床螺栓與編號標籤等戰時實驗設施痕跡，非普通炮彈破壞。"
+                },
+                {
+                    "id": "fact-ruin-grey-glass-bottles",
+                    "content": "廢墟深處有高大灰色玻璃瓶，內為二戰時期浸泡保存的人體標本；液體已呈灰褐色。"
+                },
+                {
+                    "id": "fact-ruin-japanese-gold-cache",
+                    "content": "指揮室暗格留有日方來不及運走的軍用木箱、布捆金條與部分硬幣；重量極大，難以一次帶走。"
+                }
+            ],
+            "scenes": [
+                {
+                    "id": "scene-ruin-threshold-entry",
+                    "title": "門檻進入",
+                    "summary": "愛醬在門前遲疑，陸塵行與愛醬跨入門檻；手電照見鏽栓與剝落字跡，海風味在此失效。",
+                    "locationId": "loc-ruin-threshold"
+                },
+                {
+                    "id": "scene-ruin-first-shelter",
+                    "title": "首間避風",
+                    "summary": "破舊但足夠擋風的內部空間。陸塵行蹲下喘息，愛醬貼近；他意識到這處遺跡在公開紀錄中幾乎不存在。",
+                    "locationId": "loc-ruin-first-shelter"
+                },
+                {
+                    "id": "scene-ruin-service-corridor",
+                    "title": "往深處",
+                    "summary": "手電柱狀光在傾斜走廊前移；舊日製單位標記、生鏽推床螺栓與牆上低處刻痕。好奇心壓過單純避難。",
+                    "locationId": "loc-ruin-service-corridor"
+                },
+                {
+                    "id": "scene-ruin-dead-room",
+                    "title": "開放區亡者",
+                    "summary": "實驗側室殘留：乾燥遺留、針孔叢集、編號標籤。陸塵行理解這裡不是普通廢墟。",
+                    "locationId": "loc-ruin-dead-room"
+                },
+                {
+                    "id": "scene-ruin-grey-bottles",
+                    "title": "灰色玻璃瓶",
+                    "summary": "高大灰玻璃瓶排架。陸塵行湊近一瓶，光線移過，裡面是二戰時期浸泡保存的人體；愛醬猛然後退乾嘔。",
+                    "locationId": "loc-ruin-specimen-storage"
+                },
+                {
+                    "id": "scene-ruin-gold-cache",
+                    "title": "來不及運走的黃金",
+                    "summary": "指揮室側暗格：軍用木箱與布捆金條。陸塵行掂重量後只帶走能攜帶的分量，仍打算之後再回來。",
+                    "locationId": "loc-ruin-gold-vault"
+                }
+            ],
+            "sceneContracts": [
+                {
+                    "id": "contract-ruin-threshold-entry",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-threshold-entry",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生"
+                    ]
+                },
+                {
+                    "id": "contract-ruin-first-shelter",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-first-shelter",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生"
+                    ]
+                },
+                {
+                    "id": "contract-ruin-service-corridor",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-service-corridor",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生"
+                    ]
+                },
+                {
+                    "id": "contract-ruin-dead-room",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-dead-room",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生"
+                    ]
+                },
+                {
+                    "id": "contract-ruin-grey-bottles",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-grey-bottles",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生",
+                        "奇幻世界詞彙"
+                    ]
+                },
+                {
+                    "id": "contract-ruin-gold-cache",
+                    "visibility": "director_only",
+                    "sceneId": "scene-ruin-gold-cache",
+                    "forbiddenReveals": [
+                        "逆行門計畫全貌",
+                        "别界裂縫真相",
+                        "兩道門獨立空間模型",
+                        "先遣隊全滅細節",
+                        "日本人實際封存物內容",
+                        "修煉體系完整講解",
+                        "穿越已發生",
+                        "奇幻世界詞彙"
+                    ]
+                }
+            ]
+        },
+        "locationConnections": [
+            {
+                "id": "conn-hillside-ruin-to-threshold",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-hillside-ruin",
+                "toLocationId": "loc-ruin-threshold",
+                "connectionType": "interior_entry",
+                "travelMinutes": 1,
+                "restrictions": {
+                    "weatherShelter": true,
+                    "note": "暴風雨夜從外部構造物跨入門洞。"
+                }
+            },
+            {
+                "id": "conn-threshold-to-first-shelter",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-threshold",
+                "toLocationId": "loc-ruin-first-shelter",
+                "connectionType": "interior_walk",
+                "travelMinutes": 1
+            },
+            {
+                "id": "conn-first-shelter-to-corridor",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-first-shelter",
+                "toLocationId": "loc-ruin-service-corridor",
+                "connectionType": "interior_walk",
+                "travelMinutes": 2
+            },
+            {
+                "id": "conn-corridor-to-dead-room",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-service-corridor",
+                "toLocationId": "loc-ruin-dead-room",
+                "connectionType": "side_room_entry",
+                "travelMinutes": 2
+            },
+            {
+                "id": "conn-corridor-to-specimen-storage",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-service-corridor",
+                "toLocationId": "loc-ruin-specimen-storage",
+                "connectionType": "deeper_corridor",
+                "travelMinutes": 3
+            },
+            {
+                "id": "conn-specimen-storage-to-gold-vault",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-specimen-storage",
+                "toLocationId": "loc-ruin-gold-vault",
+                "connectionType": "command_office_access",
+                "travelMinutes": 2
+            },
+            {
+                "id": "conn-dead-room-to-specimen-storage",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-dead-room",
+                "toLocationId": "loc-ruin-specimen-storage",
+                "connectionType": "continue_deeper",
+                "travelMinutes": 3
+            },
+            {
+                "id": "conn-gold-vault-to-corridor",
+                "projectId": "chenxing",
+                "fromLocationId": "loc-ruin-gold-vault",
+                "toLocationId": "loc-ruin-service-corridor",
+                "connectionType": "return_to_corridor",
+                "travelMinutes": 2
+            }
+        ],
+        "sceneTransitions": [
+            {
+                "id": "transition-hillside-to-threshold",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-hillside-ruin-retreat",
+                "toSceneId": "scene-ruin-threshold-entry",
+                "transitionType": "enter_ruin_interior",
+                "costs": {
+                    "travelMinutes": 1,
+                    "exposureRisk": "wind_shelter"
+                },
+                "requiredPlayerIntent": "進入廢墟內部"
+            },
+            {
+                "id": "transition-threshold-to-shelter",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-threshold-entry",
+                "toSceneId": "scene-ruin-first-shelter",
+                "transitionType": "interior_walk",
+                "costs": {
+                    "travelMinutes": 1
+                },
+                "requiredPlayerIntent": "往內避風"
+            },
+            {
+                "id": "transition-shelter-to-corridor",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-first-shelter",
+                "toSceneId": "scene-ruin-service-corridor",
+                "transitionType": "explore_deeper",
+                "costs": {
+                    "travelMinutes": 2
+                },
+                "requiredPlayerIntent": "往深處探索"
+            },
+            {
+                "id": "transition-corridor-to-dead-room",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-service-corridor",
+                "toSceneId": "scene-ruin-dead-room",
+                "transitionType": "side_room_entry",
+                "costs": {
+                    "travelMinutes": 2
+                },
+                "requiredPlayerIntent": "查看側室"
+            },
+            {
+                "id": "transition-dead-room-to-grey-bottles",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-dead-room",
+                "toSceneId": "scene-ruin-grey-bottles",
+                "transitionType": "continue_deeper",
+                "costs": {
+                    "travelMinutes": 3
+                },
+                "requiredPlayerIntent": "繼續往標本區"
+            },
+            {
+                "id": "transition-grey-bottles-to-gold",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-grey-bottles",
+                "toSceneId": "scene-ruin-gold-cache",
+                "transitionType": "command_office_access",
+                "costs": {
+                    "travelMinutes": 2
+                },
+                "requiredPlayerIntent": "往指揮室暗格"
+            },
+            {
+                "id": "transition-gold-to-corridor-deeper",
+                "projectId": "chenxing",
+                "fromSceneId": "scene-ruin-gold-cache",
+                "toSceneId": "scene-ruin-service-corridor",
+                "transitionType": "continue_after_gold",
+                "costs": {
+                    "travelMinutes": 2
+                },
+                "requiredPlayerIntent": "帶著部分黃金繼續往深處"
+            }
+        ],
+        "relations": [
+            {
+                "id": "rel-scene-ruin-threshold-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-threshold-entry",
+                "toType": "location",
+                "toId": "loc-ruin-threshold",
+                "relation": "LOCATED_IN",
+                "reason": "門檻進入場景發生在廢墟門洞。"
+            },
+            {
+                "id": "rel-scene-ruin-shelter-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-first-shelter",
+                "toType": "location",
+                "toId": "loc-ruin-first-shelter",
+                "relation": "LOCATED_IN",
+                "reason": "首間避風場景發生在內部避風室。"
+            },
+            {
+                "id": "rel-scene-ruin-corridor-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-service-corridor",
+                "toType": "location",
+                "toId": "loc-ruin-service-corridor",
+                "relation": "LOCATED_IN",
+                "reason": "往深處場景發生在傾斜服務走廊。"
+            },
+            {
+                "id": "rel-scene-ruin-dead-room-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-dead-room",
+                "toType": "location",
+                "toId": "loc-ruin-dead-room",
+                "relation": "LOCATED_IN",
+                "reason": "開放區亡者場景發生在實驗側室。"
+            },
+            {
+                "id": "rel-scene-ruin-grey-bottles-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-grey-bottles",
+                "toType": "location",
+                "toId": "loc-ruin-specimen-storage",
+                "relation": "LOCATED_IN",
+                "reason": "灰色玻璃瓶場景發生在標本儲存區。"
+            },
+            {
+                "id": "rel-scene-ruin-gold-location",
+                "fromType": "scene",
+                "fromId": "scene-ruin-gold-cache",
+                "toType": "location",
+                "toId": "loc-ruin-gold-vault",
+                "relation": "LOCATED_IN",
+                "reason": "黃金暗格場景發生在指揮室側空隙。"
+            },
+            {
+                "id": "rel-thread-opening-ruin-interior",
+                "fromType": "story_thread",
+                "fromId": "thread-opening-survival-curiosity",
+                "toType": "scene",
+                "toId": "scene-ruin-threshold-entry",
+                "relation": "REQUIRES",
+                "reason": "開場弧廢墟內部探索延續。"
+            },
+            {
+                "id": "rel-thread-opening-grey-bottles",
+                "fromType": "story_thread",
+                "fromId": "thread-opening-survival-curiosity",
+                "toType": "scene",
+                "toId": "scene-ruin-grey-bottles",
+                "relation": "REQUIRES",
+                "reason": "開場弧玻璃瓶發現拍。"
+            },
+            {
+                "id": "rel-thread-opening-gold-cache",
+                "fromType": "story_thread",
+                "fromId": "thread-opening-survival-curiosity",
+                "toType": "scene",
+                "toId": "scene-ruin-gold-cache",
+                "relation": "REQUIRES",
+                "reason": "開場弧黃金發現拍。"
+            }
+        ],
+        "metadata": {
+            "formalCanonSource": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json",
+            "storyboardFormalPath": "world/chenxing/formal/28_volume_one_ruin_interior_storyboard_v1.json",
+            "spatialModelPath": "world/chenxing/formal/34_spatial_pocket_two_doors_v1.json",
+            "narrativePhase": "phase_a_taiwan_2026_ruin_interior",
+            "crossingNotYet": true,
+            "appliedAt": "2026-07-08"
+        }
+    },
+    "validation": {
+        "packId": "chenxing-formal-v5-ruin-interior",
+        "packVersion": 1,
+        "valid": true
+    },
+    "diff": {
+        "packId": "chenxing-formal-v5-ruin-interior",
+        "packVersion": 1,
+        "entries": [
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-threshold",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-first-shelter",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-service-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-dead-room",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-specimen-storage",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location",
+                "entityId": "loc-ruin-gold-vault",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-ruin-interior-missing-sea-smell",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-ruin-interior-experiment-traces",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-ruin-grey-glass-bottles",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "fact",
+                "entityId": "fact-ruin-japanese-gold-cache",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-threshold-entry",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-first-shelter",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-service-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-dead-room",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-grey-bottles",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene",
+                "entityId": "scene-ruin-gold-cache",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-threshold-entry",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-first-shelter",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-service-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-dead-room",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-grey-bottles",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_contract",
+                "entityId": "contract-ruin-gold-cache",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-hillside-ruin-to-threshold",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-threshold-to-first-shelter",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-first-shelter-to-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-corridor-to-dead-room",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-corridor-to-specimen-storage",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-specimen-storage-to-gold-vault",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-dead-room-to-specimen-storage",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "location_connection",
+                "entityId": "conn-gold-vault-to-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-hillside-to-threshold",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-threshold-to-shelter",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-shelter-to-corridor",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-corridor-to-dead-room",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-dead-room-to-grey-bottles",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-grey-bottles-to-gold",
+                "newVersion": 1
+            },
+            {
+                "action": "ADD",
+                "entityType": "scene_transition",
+                "entityId": "transition-gold-to-corridor-deeper",
+                "newVersion": 1
+            }
+        ],
+        "canonicalHash": "eee933424c25e65de637b25e6d80d7be6f9543125242ac3c4d7f4091315b880a"
+    },
+    "impact": {
+        "packId": "chenxing-formal-v5-ruin-interior",
+        "packVersion": 1,
+        "changedRoots": [
+            "fact:fact-ruin-grey-glass-bottles",
+            "fact:fact-ruin-interior-experiment-traces",
+            "fact:fact-ruin-interior-missing-sea-smell",
+            "fact:fact-ruin-japanese-gold-cache",
+            "location:loc-ruin-dead-room",
+            "location:loc-ruin-first-shelter",
+            "location:loc-ruin-gold-vault",
+            "location:loc-ruin-service-corridor",
+            "location:loc-ruin-specimen-storage",
+            "location:loc-ruin-threshold",
+            "location_connection:conn-corridor-to-dead-room",
+            "location_connection:conn-corridor-to-specimen-storage",
+            "location_connection:conn-dead-room-to-specimen-storage",
+            "location_connection:conn-first-shelter-to-corridor",
+            "location_connection:conn-gold-vault-to-corridor",
+            "location_connection:conn-hillside-ruin-to-threshold",
+            "location_connection:conn-specimen-storage-to-gold-vault",
+            "location_connection:conn-threshold-to-first-shelter",
+            "scene:scene-ruin-dead-room",
+            "scene:scene-ruin-first-shelter",
+            "scene:scene-ruin-gold-cache",
+            "scene:scene-ruin-grey-bottles",
+            "scene:scene-ruin-service-corridor",
+            "scene:scene-ruin-threshold-entry",
+            "scene_contract:contract-ruin-dead-room",
+            "scene_contract:contract-ruin-first-shelter",
+            "scene_contract:contract-ruin-gold-cache",
+            "scene_contract:contract-ruin-grey-bottles",
+            "scene_contract:contract-ruin-service-corridor",
+            "scene_contract:contract-ruin-threshold-entry",
+            "scene_transition:transition-corridor-to-dead-room",
+            "scene_transition:transition-dead-room-to-grey-bottles",
+            "scene_transition:transition-gold-to-corridor-deeper",
+            "scene_transition:transition-grey-bottles-to-gold",
+            "scene_transition:transition-hillside-to-threshold",
+            "scene_transition:transition-shelter-to-corridor",
+            "scene_transition:transition-threshold-to-shelter"
+        ]
+    },
+    "canonicalHash": "eee933424c25e65de637b25e6d80d7be6f9543125242ac3c4d7f4091315b880a"
+}

@@ -210,3 +210,18 @@ Final context fitting now includes a semantic coverage sidecar. It is not part o
 - `capabilityUseChecks`: per-use validation evidence containing actor, capability ID, intended use, eligibility claim, satisfied/unsatisfied prerequisites, applied costs, observed limitations, result scope, evidence state deltas, and reason.
 
 Manual AI output may use only the capability effects in the active contract. Description text alone is not sufficient. Successful use with costs must include a legal cost state delta.
+
+## MVP-8 試用層協議
+
+見 `docs/MVP8_PROVISIONAL_LAYER_SPEC.md`（中文正文）。
+
+回合上下文新增：留白區清單、本場景相關試用內容、是否讀者模式。
+
+回合結果新增：試用提案（人物/生物/傳聞/小地點等）、可選的「為何此處要補」說明。
+
+規則：
+
+- 試用提案不會自動變成正式角色或劇情線。
+- 通過驗證後，由 `resolve-turn` 寫入試用表（同一筆交易內）。
+- 升格須走：產設定包補丁 → 驗證 → 預覽 → 正式匯入。
+- 讀者模式對使用者隱藏技術步驟，幕後仍須通過驗證。

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "chenxing-volume-one-opening-arc-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "volumeOneStructure": {
+    "mode": "linear_story",
+    "rule": "Volume one opens in 2026 Taiwan and follows cause-and-effect scene flow. Do not open with exposition lists, world lectures, or the old 灰關 market draft.",
+    "crossingPlacement": "Crossing happens inside or immediately after the Taiwan coastal survival arc, not before the story begins."
+  },
+  "openingSetting": {
+    "year": 2026,
+    "country": "台灣",
+    "city": "基隆",
+    "area": "八斗子",
+    "specificPlace": "大坪海岸",
+    "stageQualities": [
+      "intertidal zone",
+      "sea erosion platform",
+      "coastal hillside with abandoned building",
+      "rapidly changing tide and weather",
+      "nearby Japanese-era northern thermal power infrastructure echoes"
+    ],
+    "historicalEcho": "日治時期北部火力發電相關建設遺留；二戰末期倉促撤離後，可見廢墟與未知遺留並存。"
+  },
+  "openingPrologue": {
+    "formalPath": "world/chenxing/formal/22_volume_one_opening_prologue_v1.json",
+    "style": "ghost_story_hook_about_known_ruins_and_unknown_Japanese_deposit"
+  },
+  "weatherContext": {
+    "event": "颱風巴威接近台灣",
+    "forecastWindow": "2026-07-10 to 2026-07-11 closest to northern Taiwan",
+    "localRisk": [
+      "strong wind",
+      "heavy rain",
+      "long-period swell",
+      "outer circulation strengthening before landfall"
+    ],
+    "storyUse": "Realistic pressure that narrows escape options and justifies loss of phone signal, darkening sky, and flooded return routes."
+  },
+  "sceneFlow": [
+    {
+      "order": 1,
+      "beat": "tide_check",
+      "detail": "陸塵行 checks tide tables and believes he still has about two hours."
+    },
+    {
+      "order": 2,
+      "beat": "strange_find",
+      "detail": "On the sea erosion platform he discovers strange remains or structures that may connect to exposed Japanese-era infrastructure or something older hidden beneath it."
+    },
+    {
+      "order": 3,
+      "beat": "overfocus",
+      "detail": "He studies the find too long because curiosity overrides caution."
+    },
+    {
+      "order": 4,
+      "beat": "water_rises_fast",
+      "detail": "Sea level rises faster than expected; the route he used to enter is no longer passable."
+    },
+    {
+      "order": 5,
+      "beat": "return_blocked",
+      "detail": "Rocks that were walkable on the way in are now submerged by waves."
+    },
+    {
+      "order": 6,
+      "beat": "circulation_strengthens",
+      "detail": "Bavi's outer circulation intensifies; wind and surf worsen."
+    },
+    {
+      "order": 7,
+      "beat": "sky_darkens",
+      "detail": "Daylight collapses quickly under weather pressure."
+    },
+    {
+      "order": 8,
+      "beat": "no_signal",
+      "detail": "Phone has no service; modern help is unavailable."
+    },
+    {
+      "order": 9,
+      "beat": "retreat_to_hillside_ruin",
+      "detail": "陸塵行 and 愛醬 retreat toward an abandoned hillside structure tied to the old northern power-plant legacy as the only plausible shelter."
+    }
+  ],
+  "interiorAndCrossingArc": {
+    "formalPath": "world/chenxing/formal/32_crossing_experience_v1.json",
+    "rule": "Beats 10-18 are mandatory slow progression inside the ruin. Crossing time is ambiguous even to 陸塵行 and 愛醬.",
+    "notAllowed": "Single-beat immediate displacement or early fantasy world reveal."
+  },
+  "realismBasis": "Intertidal zones can become impassable during rising tide plus strengthened wind and swell. This is ordinary coastal danger, not fantasy logic.",
+  "authorBackgroundNotFrontstage": {
+    "note": "These are long-term exploration themes for later volumes or embedded learning, not volume-one lecture topics.",
+    "deferredExplorationThemes": [
+      "how language is learned in the new world",
+      "rules of leaving fortresses and sky danger",
+      "how 愛醬 is classified in the new ecology"
+    ]
+  },
+  "supersedes": {
+    "oldOpening": "灰關外城市集四十七天後開場",
+    "status": "draft_only_not_volume_one_entry"
+  }
+}

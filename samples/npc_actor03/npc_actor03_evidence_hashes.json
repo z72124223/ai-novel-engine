@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "hashAlgorithm": "SHA-256",
+  "scope": "NPC-ACTOR-03 SINGLE ADAPTIVE EXPRESSION CALIBRATION OFFLINE HOLDOUT",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": "samples/npc_actor03/npc_actor03_adaptive_expression_policy_v1.json",
+      "sha256": "555de8e433209777e62ca0eab7cba42e55da72e5db35c4aa9c6e650f3ffce6dc",
+      "bytes": 1652
+    },
+    {
+      "path": "samples/npc_actor03/npc_actor03_holdout_suite_v1.json",
+      "sha256": "637cf9704d81fa4496eabf1ff7cac09d5166aa7602555f6145f8f96512b9b263",
+      "bytes": 37844
+    },
+    {
+      "path": "samples/npc_actor03/npc_actor03_technical_report_v1.json",
+      "sha256": "2c31e4dc702c167f1b2415d0cccc9330bfebe2e2fa6f5f78a98ae295d748231c",
+      "bytes": 951
+    },
+    {
+      "path": "samples/npc_actor03/npc_actor03_blind_review_packet_v1.json",
+      "sha256": "dbd235d48be74d771620d0403c07c26f1df15ffc098fdd902105afaa8eced7e0",
+      "bytes": 24541
+    },
+    {
+      "path": "samples/npc_actor03/npc_actor03_blind_review_answer_key_v1.json",
+      "sha256": "0a48c54002334e31d480d45b3853912f9a51486f699e6cb8c1590fe290827e41",
+      "bytes": 1097
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_calibration_v1.schema.json",
+      "sha256": "36b1355170cdef4f58713ad78d760167ae686266573ec773103e23bfd4cbc03f",
+      "bytes": 12119
+    }
+  ]
+}

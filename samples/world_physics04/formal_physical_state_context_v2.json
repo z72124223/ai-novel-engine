@@ -1,0 +1,828 @@
+{
+    "schemaVersion": "2.0",
+    "boundary": "FORMAL_TURN_VALIDATION_INPUT",
+    "projectId": "wp04",
+    "sessionId": "wp04-session-1",
+    "turnId": "wp04-turn-1",
+    "contextId": "wp04-context-1",
+    "contextHash": "wp04-context-hash-v2",
+    "turnNumber": 1,
+    "baseStateVersion": 0,
+    "resultId": "wp04-evidence-result-1",
+    "resultCanonicalSha256": "d85f6239327a0c55362f8d778d4b8964ca9289c7c7d6befaa043ac1574d36013",
+    "physicalStateVersion": 0,
+    "physicalSnapshotCanonicalSha256": "8714be9991de736e3d3be353392c3a86b624c4127ca9d8e7e1132a71f4b422b0",
+    "physicalArchetypeRegistryCanonicalSha256": "d3707f597411ac3bcff573ddb82b85fc1cce294ed031c5e17d7249342d2cbae2",
+    "physicalArchetypes": [
+        {
+            "archetypeId": "adult-human",
+            "entityKind": "ACTOR",
+            "bodyPlan": "ADULT_HUMANOID",
+            "massKg": 70.0,
+            "dimensionsCm": {
+                "width": 45.0,
+                "depth": 30.0,
+                "height": 175.0
+            },
+            "movable": true,
+            "canGrasp": true,
+            "maxReachCm": 75.0,
+            "maxLiftKg": 30.0,
+            "maxPushKg": 120.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "child-human",
+            "entityKind": "ACTOR",
+            "bodyPlan": "CHILD_HUMANOID",
+            "massKg": 25.0,
+            "dimensionsCm": {
+                "width": 35.0,
+                "depth": 25.0,
+                "height": 120.0
+            },
+            "movable": true,
+            "canGrasp": true,
+            "maxReachCm": 50.0,
+            "maxLiftKg": 8.0,
+            "maxPushKg": 30.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "medium-dog",
+            "entityKind": "ACTOR",
+            "bodyPlan": "CANINE_QUADRUPED",
+            "massKg": 18.0,
+            "dimensionsCm": {
+                "width": 30.0,
+                "depth": 80.0,
+                "height": 55.0
+            },
+            "movable": true,
+            "canGrasp": false,
+            "maxReachCm": 25.0,
+            "maxLiftKg": 5.0,
+            "maxPushKg": 15.0,
+            "supportSurfaces": [
+                {
+                    "surfaceId": "shoulder",
+                    "stable": false,
+                    "maxLoadKg": 8.0,
+                    "widthCm": 20.0,
+                    "depthCm": 30.0,
+                    "allowedUses": [
+                        "LIGHT_CONTACT"
+                    ],
+                    "allowedBodyPlans": [
+                        "CANINE_QUADRUPED"
+                    ]
+                }
+            ],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "chair",
+            "entityKind": "OBJECT",
+            "bodyPlan": "FURNITURE",
+            "massKg": 7.0,
+            "dimensionsCm": {
+                "width": 55.0,
+                "depth": 55.0,
+                "height": 90.0
+            },
+            "movable": true,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [
+                {
+                    "surfaceId": "arm",
+                    "stable": true,
+                    "maxLoadKg": 80.0,
+                    "widthCm": 20.0,
+                    "depthCm": 40.0,
+                    "allowedUses": [
+                        "LIGHT_CONTACT",
+                        "STAND_UP_ASSIST"
+                    ],
+                    "allowedBodyPlans": []
+                }
+            ],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "rail",
+            "entityKind": "OBJECT",
+            "bodyPlan": "FIXED_STRUCTURE",
+            "massKg": 60.0,
+            "dimensionsCm": {
+                "width": 10.0,
+                "depth": 100.0,
+                "height": 100.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [
+                {
+                    "surfaceId": "rail",
+                    "stable": true,
+                    "maxLoadKg": 150.0,
+                    "widthCm": 10.0,
+                    "depthCm": 100.0,
+                    "allowedUses": [
+                        "LIGHT_CONTACT",
+                        "STAND_UP_ASSIST"
+                    ],
+                    "allowedBodyPlans": []
+                }
+            ],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "light-crate",
+            "entityKind": "OBJECT",
+            "bodyPlan": "RIGID_BOX",
+            "massKg": 10.0,
+            "dimensionsCm": {
+                "width": 30.0,
+                "depth": 30.0,
+                "height": 30.0
+            },
+            "movable": true,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "heavy-crate",
+            "entityKind": "OBJECT",
+            "bodyPlan": "RIGID_BOX",
+            "massKg": 80.0,
+            "dimensionsCm": {
+                "width": 60.0,
+                "depth": 60.0,
+                "height": 60.0
+            },
+            "movable": true,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "statue",
+            "entityKind": "OBJECT",
+            "bodyPlan": "FIXED_STRUCTURE",
+            "massKg": 200.0,
+            "dimensionsCm": {
+                "width": 60.0,
+                "depth": 60.0,
+                "height": 200.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "anvil",
+            "entityKind": "OBJECT",
+            "bodyPlan": "RIGID_OBJECT",
+            "massKg": 160.0,
+            "dimensionsCm": {
+                "width": 60.0,
+                "depth": 40.0,
+                "height": 60.0
+            },
+            "movable": true,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "table",
+            "entityKind": "OBJECT",
+            "bodyPlan": "FURNITURE",
+            "massKg": 40.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 60.0,
+                "height": 80.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [
+                {
+                    "surfaceId": "top",
+                    "stable": true,
+                    "maxLoadKg": 100.0,
+                    "widthCm": 100.0,
+                    "depthCm": 60.0,
+                    "allowedUses": [
+                        "OBJECT_PLACEMENT"
+                    ],
+                    "allowedBodyPlans": []
+                }
+            ],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "narrow-shelf",
+            "entityKind": "OBJECT",
+            "bodyPlan": "FIXED_STRUCTURE",
+            "massKg": 20.0,
+            "dimensionsCm": {
+                "width": 20.0,
+                "depth": 20.0,
+                "height": 120.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [
+                {
+                    "surfaceId": "shelf",
+                    "stable": true,
+                    "maxLoadKg": 100.0,
+                    "widthCm": 20.0,
+                    "depthCm": 20.0,
+                    "allowedUses": [
+                        "OBJECT_PLACEMENT"
+                    ],
+                    "allowedBodyPlans": []
+                }
+            ],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "large-container",
+            "entityKind": "CONTAINER",
+            "bodyPlan": "RIGID_CONTAINER",
+            "massKg": 50.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 100.0,
+                "height": 200.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": {
+                "width": 80.0,
+                "depth": 80.0,
+                "height": 190.0
+            },
+            "openingCm": {
+                "width": 70.0,
+                "depth": 60.0,
+                "height": 185.0
+            },
+            "maxContainedLoadKg": 120.0
+        },
+        {
+            "archetypeId": "narrow-container",
+            "entityKind": "CONTAINER",
+            "bodyPlan": "RIGID_CONTAINER",
+            "massKg": 50.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 100.0,
+                "height": 200.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": {
+                "width": 80.0,
+                "depth": 80.0,
+                "height": 190.0
+            },
+            "openingCm": {
+                "width": 20.0,
+                "depth": 20.0,
+                "height": 185.0
+            },
+            "maxContainedLoadKg": 120.0
+        },
+        {
+            "archetypeId": "small-container",
+            "entityKind": "CONTAINER",
+            "bodyPlan": "RIGID_CONTAINER",
+            "massKg": 20.0,
+            "dimensionsCm": {
+                "width": 40.0,
+                "depth": 30.0,
+                "height": 150.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": {
+                "width": 30.0,
+                "depth": 20.0,
+                "height": 150.0
+            },
+            "openingCm": {
+                "width": 60.0,
+                "depth": 40.0,
+                "height": 180.0
+            },
+            "maxContainedLoadKg": 120.0
+        },
+        {
+            "archetypeId": "weak-container",
+            "entityKind": "CONTAINER",
+            "bodyPlan": "RIGID_CONTAINER",
+            "massKg": 20.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 100.0,
+                "height": 200.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": {
+                "width": 80.0,
+                "depth": 80.0,
+                "height": 190.0
+            },
+            "openingCm": {
+                "width": 70.0,
+                "depth": 60.0,
+                "height": 185.0
+            },
+            "maxContainedLoadKg": 50.0
+        },
+        {
+            "archetypeId": "plain-box",
+            "entityKind": "OBJECT",
+            "bodyPlan": "RIGID_BOX",
+            "massKg": 15.0,
+            "dimensionsCm": {
+                "width": 60.0,
+                "depth": 60.0,
+                "height": 100.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": null,
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "wide-door",
+            "entityKind": "OPENING",
+            "bodyPlan": "ARCHITECTURAL_OPENING",
+            "massKg": 100.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 20.0,
+                "height": 210.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": {
+                "width": 90.0,
+                "depth": 20.0,
+                "height": 210.0
+            },
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "narrow-door",
+            "entityKind": "OPENING",
+            "bodyPlan": "ARCHITECTURAL_OPENING",
+            "massKg": 100.0,
+            "dimensionsCm": {
+                "width": 30.0,
+                "depth": 20.0,
+                "height": 210.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": {
+                "width": 20.0,
+                "depth": 20.0,
+                "height": 210.0
+            },
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "low-door",
+            "entityKind": "OPENING",
+            "bodyPlan": "ARCHITECTURAL_OPENING",
+            "massKg": 100.0,
+            "dimensionsCm": {
+                "width": 100.0,
+                "depth": 20.0,
+                "height": 100.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": {
+                "width": 90.0,
+                "depth": 20.0,
+                "height": 100.0
+            },
+            "maxContainedLoadKg": null
+        },
+        {
+            "archetypeId": "medium-door",
+            "entityKind": "OPENING",
+            "bodyPlan": "ARCHITECTURAL_OPENING",
+            "massKg": 100.0,
+            "dimensionsCm": {
+                "width": 40.0,
+                "depth": 20.0,
+                "height": 160.0
+            },
+            "movable": false,
+            "canGrasp": false,
+            "maxReachCm": 0.0,
+            "maxLiftKg": 0.0,
+            "maxPushKg": 0.0,
+            "supportSurfaces": [],
+            "containerInteriorCm": null,
+            "openingCm": {
+                "width": 30.0,
+                "depth": 20.0,
+                "height": 160.0
+            },
+            "maxContainedLoadKg": null
+        }
+    ],
+    "physicalSnapshot": {
+        "snapshotId": "wp04-snapshot-base-v0",
+        "boundary": "FORMAL_TURN_VALIDATION_INPUT",
+        "gravityMps2": 9.80665,
+        "entities": [
+            {
+                "entityId": "adult",
+                "label": "成年角色",
+                "archetypeId": "adult-human",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 87.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "child",
+                "label": "兒童角色",
+                "archetypeId": "child-human",
+                "centerCm": {
+                    "x": 0.0,
+                    "y": 10.0,
+                    "z": 60.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "dog",
+                "label": "中型犬",
+                "archetypeId": "medium-dog",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 27.5
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "chair",
+                "label": "木椅",
+                "archetypeId": "chair",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 45.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "rail",
+                "label": "固定扶手",
+                "archetypeId": "rail",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 10.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "light-crate",
+                "label": "輕木箱",
+                "archetypeId": "light-crate",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 15.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "heavy-crate",
+                "label": "重木箱",
+                "archetypeId": "heavy-crate",
+                "centerCm": {
+                    "x": 60.0,
+                    "y": 0.0,
+                    "z": 30.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "statue",
+                "label": "固定石像",
+                "archetypeId": "statue",
+                "centerCm": {
+                    "x": 50.0,
+                    "y": 0.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "anvil",
+                "label": "鐵砧",
+                "archetypeId": "anvil",
+                "centerCm": {
+                    "x": 60.0,
+                    "y": 0.0,
+                    "z": 30.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "table",
+                "label": "工作桌",
+                "archetypeId": "table",
+                "centerCm": {
+                    "x": 55.0,
+                    "y": 20.0,
+                    "z": 40.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-shelf",
+                "label": "窄架",
+                "archetypeId": "narrow-shelf",
+                "centerCm": {
+                    "x": 55.0,
+                    "y": -20.0,
+                    "z": 60.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "large-container",
+                "label": "大容器",
+                "archetypeId": "large-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-container",
+                "label": "窄口容器",
+                "archetypeId": "narrow-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 10.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "small-container",
+                "label": "小容器",
+                "archetypeId": "small-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -10.0,
+                    "z": 75.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "weak-container",
+                "label": "弱承重容器",
+                "archetypeId": "weak-container",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 20.0,
+                    "z": 100.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "plain-box",
+                "label": "普通箱體",
+                "archetypeId": "plain-box",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -20.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "wide-door",
+                "label": "寬門洞",
+                "archetypeId": "wide-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 0.0,
+                    "z": 105.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "narrow-door",
+                "label": "窄門洞",
+                "archetypeId": "narrow-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 10.0,
+                    "z": 105.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "low-door",
+                "label": "低門洞",
+                "archetypeId": "low-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": -10.0,
+                    "z": 50.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            },
+            {
+                "entityId": "medium-door",
+                "label": "中門洞",
+                "archetypeId": "medium-door",
+                "centerCm": {
+                    "x": 100.0,
+                    "y": 20.0,
+                    "z": 80.0
+                },
+                "heldByEntityId": null,
+                "supportedByEntityId": null,
+                "containedByEntityId": null,
+                "supportLoadKgBySurface": {}
+            }
+        ],
+        "barriers": []
+    },
+    "allowedPhysicalActionTypes": [
+        "LIFT",
+        "DROP"
+    ],
+    "allowedPhysicalActorIds": [
+        "adult"
+    ],
+    "allowedPhysicalTargetIds": [
+        "light-crate"
+    ]
+}

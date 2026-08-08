@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1.0",
+  "boundary": "FORMAL_RUNTIME_CANDIDATE_INPUT",
+  "preparationId": "npc-actor08-example-offscreen-turn",
+  "sessionId": "REPLACE_WITH_EXISTING_FORMAL_SESSION_ID",
+  "playerInput": "[NPC_ACTOR08_NON_CANON_TICK] 玩家仍在後殿，沈霜只檢查舊廊的聲響。",
+  "profile": {
+    "npcId": "char-shen-shuang",
+    "deepMotivation": "保護現場，不讓未知危險擴大。",
+    "falseBelief": "所有異聲都可能是入侵者造成。",
+    "fear": "錯過真正的危險徵兆。",
+    "relationshipDebts": [],
+    "offscreenAgenda": [
+      "確認走廊聲響來源"
+    ],
+    "resourceIds": [],
+    "voiceProfile": {
+      "locale": "zh-Hant-TW",
+      "register": "natural_spoken_mandarin",
+      "principles": [
+        "先觀察再下判斷"
+      ],
+      "preferredPatterns": [],
+      "forbiddenPatterns": [
+        "AUTHOR_ONLY"
+      ]
+    },
+    "sandboxCandidateOnly": true
+  },
+  "targetIds": [],
+  "physicalContext": {
+    "schemaVersion": "1.0",
+    "boundary": "NON_CANON_EVALUATION",
+    "requestId": "npc-actor08-example-request",
+    "physicalArchetypes": [
+      {
+        "archetypeId": "adult-human",
+        "entityKind": "ACTOR",
+        "bodyPlan": "ADULT_HUMANOID",
+        "massKg": 70.0,
+        "dimensionsCm": { "width": 45.0, "depth": 30.0, "height": 175.0 },
+        "movable": true,
+        "canGrasp": true,
+        "maxReachCm": 75.0,
+        "maxLiftKg": 30.0,
+        "maxPushKg": 120.0,
+        "supportSurfaces": [],
+        "containerInteriorCm": null,
+        "openingCm": null,
+        "maxContainedLoadKg": null
+      },
+      {
+        "archetypeId": "chair",
+        "entityKind": "OBJECT",
+        "bodyPlan": "FURNITURE",
+        "massKg": 7.0,
+        "dimensionsCm": { "width": 55.0, "depth": 55.0, "height": 90.0 },
+        "movable": true,
+        "canGrasp": false,
+        "maxReachCm": 0.0,
+        "maxLiftKg": 0.0,
+        "maxPushKg": 0.0,
+        "supportSurfaces": [],
+        "containerInteriorCm": null,
+        "openingCm": null,
+        "maxContainedLoadKg": null
+      }
+    ],
+    "physicalSnapshot": {
+      "snapshotId": "npc-actor08-example-snapshot",
+      "boundary": "NON_CANON_EVALUATION",
+      "gravityMps2": 9.80665,
+      "entities": [
+        {
+          "entityId": "char-shen-shuang",
+          "label": "沈霜",
+          "archetypeId": "adult-human",
+          "centerCm": { "x": 0.0, "y": 0.0, "z": 87.5 },
+          "heldByEntityId": null,
+          "supportedByEntityId": null,
+          "containedByEntityId": null,
+          "supportLoadKgBySurface": {}
+        },
+        {
+          "entityId": "chair",
+          "label": "木椅",
+          "archetypeId": "chair",
+          "centerCm": { "x": 50.0, "y": 0.0, "z": 45.0 },
+          "heldByEntityId": null,
+          "supportedByEntityId": null,
+          "containedByEntityId": null,
+          "supportLoadKgBySurface": {}
+        }
+      ],
+      "barriers": []
+    },
+    "allowedPhysicalActionTypes": [
+      "REACH"
+    ],
+    "allowedPhysicalTargetIds": [
+      "chair"
+    ]
+  },
+  "outputConstraints": {
+    "maxUtteranceChars": 48,
+    "silenceAllowed": true,
+    "lieAllowed": false,
+    "nonverbalAllowed": true,
+    "forbiddenPatterns": [
+      "AUTHOR_ONLY"
+    ]
+  },
+  "maxAttempts": 2,
+  "maxElapsedMinutes": 10
+}

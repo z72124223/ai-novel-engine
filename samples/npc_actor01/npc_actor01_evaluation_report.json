@@ -1,0 +1,34 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor01-fixed-20-v1",
+    "scenarioCount": 20,
+    "baseline": {
+        "outputCount": 20,
+        "validationFailureCount": 1,
+        "knowledgeLeakCount": 0,
+        "continuityViolationCount": 0,
+        "expositionPatternCount": 26,
+        "repeatedContrastPatternCount": 0,
+        "averageUtteranceChars": 37.4,
+        "p95UtteranceChars": 42,
+        "expectedBehaviorMatchCount": 0
+    },
+    "actor": {
+        "outputCount": 20,
+        "validationFailureCount": 0,
+        "knowledgeLeakCount": 0,
+        "continuityViolationCount": 0,
+        "expositionPatternCount": 0,
+        "repeatedContrastPatternCount": 0,
+        "averageUtteranceChars": 13.25,
+        "p95UtteranceChars": 20,
+        "expectedBehaviorMatchCount": 20
+    },
+    "technicalDecision": "TECHNICAL_PASS_HUMAN_REVIEW_PENDING",
+    "humanBlindReviewStatus": "HUMAN_BLIND_REVIEW_PENDING",
+    "findings": [
+        "Offline Fake/File evaluation only; no provider or network request was used.",
+        "Blind options are anonymized; the separate answer key must not be shown before rating.",
+        "Automated safety and style indicators pass, but do not replace human naturalness review."
+    ]
+}

@@ -1,0 +1,102 @@
+{
+    "packId": "local-story-input-chenxing-v0-001",
+    "title": "塵行第一話本地故事輸入包",
+    "locale": "zh-TW",
+    "worldPremise": "灰關外城清晨市集，流民陸知行靠修理農具與磨刀維生，身旁的愛醬是一隻在這個世界沒有對照物的長毛犬獸。他已在灰關待了四十七天，沒有正式身份，只能先在凡人底層想辦法活下去。",
+    "characters": [
+        {
+            "id": "char-luozhixing",
+            "name": "陸知行",
+            "role": "主角",
+            "visualCue": "不合身粗布衣服，手指有修理與磨刀留下的薄繭，神情冷靜、觀察多於情緒外露。",
+            "voiceCue": "低而穩的男聲，語句短，像在邊做事邊思考。",
+            "publicMotivation": "先掙到今天的飯錢，並觀察灰關外城的規則與機會。"
+        },
+        {
+            "id": "char-aijiang",
+            "name": "愛醬",
+            "role": "同伴",
+            "visualCue": "巨大長毛犬獸，毛色與體型都不像已知妖犬，趴在攤位旁邊打盹或抬眼觀察。",
+            "voiceCue": "非人語，以低鳴、鼻息、拒食或靠近動作表達偏好。",
+            "publicMotivation": "跟著陸知行，對陌生氣味與食物有明顯好惡。"
+        },
+        {
+            "id": "char-old-woman",
+            "name": "市集老太太",
+            "role": "凡人顧客",
+            "visualCue": "提著斷柄鋤頭，衣角沾泥，神情樸實。",
+            "voiceCue": "蒼老而客氣的短句。",
+            "publicMotivation": "把壞掉的鋤頭修好，換回能繼續幹活的工具。"
+        }
+    ],
+    "scenes": [
+        {
+            "id": "scene-huiguan-market",
+            "title": "灰關外城市集",
+            "location": "灰關外城清晨市集攤位",
+            "mood": "生計壓力、底層秩序、淡淡戒備",
+            "visibleSituation": "陸知行蹲在簡陋攤位前擺著修好的農具與短刀，愛醬趴在旁邊；幾名修仙者弟子穿過市集，攤販低頭讓路。"
+        }
+    ],
+    "beats": [
+        {
+            "id": "beat-market-opening",
+            "sceneId": "scene-huiguan-market",
+            "characterIds": [
+                "char-luozhixing",
+                "char-aijiang",
+                "char-old-woman"
+            ],
+            "narrativeIntent": "建立灰關外城凡人求生日常，讓讀者看見陸知行用技能換取微薄收入，而不是先解釋穿越來歷。",
+            "dialogueIntent": "老太太請他修鋤頭，陸知行只確認損壞位置與工錢。",
+            "visualIntent": "中景，攤位、農具、愛醬趴在腳邊，市集人流從背景掠過。",
+            "audioIntent": "清晨市集底噪、金屬摩擦聲、遠處腳步。"
+        },
+        {
+            "id": "beat-share-bread",
+            "sceneId": "scene-huiguan-market",
+            "characterIds": [
+                "char-luozhixing",
+                "char-aijiang"
+            ],
+            "narrativeIntent": "用撕餅給愛醬的動作呈現兩者之間自然的同伴關係，不把它寫成寵物或工具。",
+            "dialogueIntent": "陸知行沒有多說話，只把半塊餅放到愛醬面前。",
+            "visualIntent": "近景，愛醬嗅了嗅，決定吃或拒絕，陸知行繼續整理工具。",
+            "audioIntent": "咀嚼與鼻息細節，市集聲音略退後。"
+        },
+        {
+            "id": "beat-disciple-glance",
+            "sceneId": "scene-huiguan-market",
+            "characterIds": [
+                "char-luozhixing",
+                "char-aijiang"
+            ],
+            "narrativeIntent": "修仙者弟子注意到沒有讓路的陸知行與異質的愛醬，為後續壓力埋下伏筆。",
+            "dialogueIntent": "弟子不說話，只用眼神掃過。",
+            "visualIntent": "過肩鏡頭，弟子視線落在愛醬與攤位上，陸知行抬眼但不挑釁。",
+            "audioIntent": "腳步停頓一瞬，然後離去。"
+        }
+    ],
+    "visualStyle": {
+        "tone": "寫實、壓抑、生活感，不做英雄式開場。",
+        "colorPalette": "灰褐市集、晨光淡金、粗布與鐵器冷色。",
+        "cameraNotes": "以中景與近景為主，讓手藝、食物、眼神清楚可讀。",
+        "subtitleStyle": "繁體中文字幕，高對比，盡量單行。"
+    },
+    "audioStyle": {
+        "voiceDirection": "自然繁中口語，克制、少解釋。",
+        "musicMood": "低存在感環境音，不煽情。",
+        "soundDesign": "市集底噪、磨刀、犬獸鼻息、遠處腳步。"
+    },
+    "durationTargetMillis": 9000,
+    "constraints": {
+        "localOnly": true,
+        "noExternalPaidProviderTools": true,
+        "fileProtocolJsonOnly": true,
+        "notes": [
+            "active creative world: 塵行 / 灰關",
+            "chenxing is the active creative world sample",
+            "local-only story input for this repo CLI"
+        ]
+    }
+}

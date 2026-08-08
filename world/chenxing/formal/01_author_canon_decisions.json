@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "chenxing-author-canon-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": {
+    "title": "塵行",
+    "providedSourceTitle": "穿越4000年",
+    "titleRelationship": "穿越4000年 is source-material label only; 塵行 is the formal series title."
+  },
+  "protagonist": {
+    "name": "陸塵行",
+    "supersededNames": [
+      "陸知行",
+      "衛昭"
+    ],
+    "rule": "Only 陸塵行 is the current-facing protagonist name."
+  },
+  "protagonistPair": {
+    "primary": "陸塵行",
+    "coProtagonist": "愛醬",
+    "formalPath": "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "rule": "Dual protagonist structure must be locked before volume one writing."
+  },
+  "companion": {
+    "name": "愛醬",
+    "species": "long-haired husky",
+    "sex": "female",
+    "reproductiveStatus": "spayed",
+    "route": "ordinary dog, not spirit-beast evolution route"
+  },
+  "locationOrder": {
+    "firstFortress": "灰關",
+    "laterDistinctFortress": "蒼梧關",
+    "rule": "灰關 is where 陸塵行 first arrives. 蒼梧關 is a different fortress that appears later. Never merge them.",
+    "huiguanStatus": "provisional_opening_draft",
+    "huiguanNote": "灰關 is a casual opening draft, not the story core. It may be renamed or replaced during rewrite while preserving frontier social qualities.",
+    "volumeOneOpening": {
+      "formalPath": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+      "place": "台灣基隆八斗子大坪海岸",
+      "year": 2026,
+      "supersedes": "灰關外城市集冷開場"
+    }
+  },
+  "formalBaselineSources": [
+    "world/chenxing/raw/08_volume1_opening_skeleton_luochen.md",
+    "world/chenxing/raw/09_aijiang_detailed_setting.md",
+    "memory/quarterfull_world_memory_capsule.json"
+  ],
+  "nonFormalHistoricalOnly": [
+    {
+      "path": "world/chenxing/raw/07_core_character_ensemble.md",
+      "reason": "Contains superseded protagonist name 衛昭 and superseded location 蒼梧關 as opening site."
+    },
+    {
+      "path": "world/chenxing/raw/01_world_core_settings.md",
+      "reason": "Contains preliminary cultivation table and unnamed protagonist direction; use only where formal/ has no ruling."
+    }
+  ],
+  "authorIntent": "Focus is not old-name cleanup in raw files. Focus is building a complete formal world layer that future writing and engine work can trust."
+}

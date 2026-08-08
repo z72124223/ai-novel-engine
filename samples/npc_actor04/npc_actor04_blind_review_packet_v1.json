@@ -1,0 +1,677 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor04-embodied-31462b8a7d2a",
+    "status": "HUMAN_REVIEW_REQUIRED",
+    "sourceDisclosure": "Both options are manually authored offline scene trajectories; source identity is withheld until review completion.",
+    "items": [
+        {
+            "reviewId": "review-npc-actor04-mira-fire",
+            "scenarioId": "npc-actor04-mira-fire",
+            "title": "失火的旅店前廳",
+            "characterBrief": "警覺、務實，遇到混亂先處理人與出口，不靠長篇命令建立威信。",
+            "worldBrief": "狹長旅店由前廳、備餐通道、廚房與兩個出口相連；煙、碎玻璃和堵路酒箱同時造成壓力。",
+            "zoneMap": [
+                "前廳：相鄰 備餐通道、前門廊；可見 備餐通道、廚房、前門廊",
+                "備餐通道：相鄰 前廳、廚房、後門；可見 前廳、廚房、後門",
+                "廚房：相鄰 備餐通道；可見 備餐通道",
+                "前門廊：相鄰 前廳；可見 前廳",
+                "後門：相鄰 備餐通道；可見 備餐通道"
+            ],
+            "initialState": [
+                "米拉｜ACTOR｜前廳｜警覺地巡視前廳",
+                "阿澄｜ACTOR｜備餐通道｜端著托盤",
+                "咳嗽的孩子｜ACTOR｜前廳｜受煙嗆而僵住",
+                "酒客｜ACTOR｜前廳｜不知所措",
+                "廚工｜ACTOR｜廚房｜高聲求援",
+                "水桶｜OBJECT｜備餐通道｜裝滿水",
+                "濕毯｜OBJECT｜備餐通道｜摺好放著",
+                "酒箱｜OBJECT｜備餐通道｜堵住通道",
+                "油鍋｜OBJECT｜廚房｜鍋面起火",
+                "濃煙｜HAZARD｜廚房｜持續湧入通道",
+                "碎玻璃｜HAZARD｜前廳｜散在孩子腳邊"
+            ],
+            "sharedEnvironmentBeats": [
+                {
+                    "beatId": "mira-b1",
+                    "tick": 10,
+                    "eventSummary": "廚房傳出爆響，煙從備餐通道湧出；孩子被碎玻璃困在原地。",
+                    "visibleEntityIdsAdded": [
+                        "smoke",
+                        "oil-pan",
+                        "cook"
+                    ]
+                },
+                {
+                    "beatId": "mira-b2",
+                    "tick": 20,
+                    "eventSummary": "酒箱被慌亂的人撞歪，後方通道只剩一人寬。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "mira-b3",
+                    "tick": 30,
+                    "eventSummary": "油鍋火舌抬高，濃煙開始壓低到肩膀高度。",
+                    "visibleEntityIdsAdded": []
+                }
+            ],
+            "optionA": {
+                "steps": [
+                    {
+                        "beatId": "mira-b1",
+                        "perceived": [
+                            "咳嗽的孩子",
+                            "碎玻璃",
+                            "濃煙"
+                        ],
+                        "chosenPriority": "先把孩子移出碎玻璃區",
+                        "action": "米拉跨過碎玻璃邊緣，把孩子拉向前門方向。",
+                        "utterance": "",
+                        "nonverbal": "她用身體擋住孩子回望廚房的視線。",
+                        "otherActorReactions": [
+                            "酒客終於讓出一條路。"
+                        ],
+                        "resultingStateSummary": "孩子離開碎玻璃，前廳仍受煙影響。"
+                    },
+                    {
+                        "beatId": "mira-b2",
+                        "perceived": [
+                            "酒箱",
+                            "阿澄",
+                            "水桶"
+                        ],
+                        "chosenPriority": "清出撤離通道",
+                        "action": "米拉把酒箱拖到牆邊，示意阿澄帶孩子出去。",
+                        "utterance": "阿澄，把前門打開，帶孩子出去。",
+                        "nonverbal": "她沒有停下解釋。",
+                        "otherActorReactions": [
+                            "阿澄放下托盤，跑向前門。"
+                        ],
+                        "resultingStateSummary": "備餐通道恢復一人通行。"
+                    },
+                    {
+                        "beatId": "mira-b3",
+                        "perceived": [
+                            "水桶",
+                            "油鍋",
+                            "濃煙"
+                        ],
+                        "chosenPriority": "壓住火勢並阻止旁人接近",
+                        "action": "米拉把水潑向油鍋周圍的燃燒木面，壓低蔓延範圍。",
+                        "utterance": "退後，別碰油鍋。",
+                        "nonverbal": "她側身守住廚房入口。",
+                        "otherActorReactions": [
+                            "酒客退到前門，廚工轉身關閉爐火。"
+                        ],
+                        "resultingStateSummary": "人群撤離中，火仍未完全熄滅但不再外竄。"
+                    }
+                ]
+            },
+            "optionB": {
+                "steps": [
+                    {
+                        "beatId": "mira-b1",
+                        "perceived": [
+                            "咳嗽的孩子",
+                            "碎玻璃",
+                            "酒箱",
+                            "濃煙"
+                        ],
+                        "chosenPriority": "同時打開通道並讓孩子有出口",
+                        "action": "米拉先踢開酒箱的一角，從前廳跨入備餐通道。",
+                        "utterance": "",
+                        "nonverbal": "她用手背掩住口鼻，視線先掃孩子再掃油鍋。",
+                        "otherActorReactions": [
+                            "酒客看見出口後開始扶孩子往前門移動。"
+                        ],
+                        "resultingStateSummary": "米拉進入通道，前廳到前門的撤離線被打開。"
+                    },
+                    {
+                        "beatId": "mira-b2",
+                        "perceived": [
+                            "水桶",
+                            "濕毯",
+                            "油鍋",
+                            "廚工"
+                        ],
+                        "chosenPriority": "先封住油鍋再讓廚工斷火",
+                        "action": "米拉抽出濕毯壓住油鍋，指向爐閥。",
+                        "utterance": "孩子先走，阿澄開前門。",
+                        "nonverbal": "她用下巴示意廚工靠近爐閥。",
+                        "otherActorReactions": [
+                            "廚工照指示關閉爐火；阿澄帶孩子離開。"
+                        ],
+                        "resultingStateSummary": "油鍋主火被壓住，撤離與斷火同時進行。"
+                    },
+                    {
+                        "beatId": "mira-b3",
+                        "perceived": [
+                            "濃煙",
+                            "油鍋",
+                            "廚工"
+                        ],
+                        "chosenPriority": "確認火源後從後門換氣",
+                        "action": "確認油鍋不再竄火後，米拉退回通道並推開後門。",
+                        "utterance": "關火，其他人別進來。",
+                        "nonverbal": "她仍守在廚房與通道交界。",
+                        "otherActorReactions": [
+                            "廚工留在爐閥旁，酒客與阿澄在前門清點人數。"
+                        ],
+                        "resultingStateSummary": "人員分流完成，濃煙有出口，現場仍維持警戒。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ],
+            "ratingPrompt": "請比較整段軌跡的環境感知、空間、優先順序、多人反應、角色自然度與狀態連續性；選 A、B、TIE 或 BOTH_FAIL。"
+        },
+        {
+            "reviewId": "review-npc-actor04-yan-storm-gate",
+            "scenarioId": "npc-actor04-yan-storm-gate",
+            "title": "暴雨中的城門泥坡",
+            "characterBrief": "寡言、判斷快，不逞強；在公共危險中會先改變位置與路線，再下短命令。",
+            "worldBrief": "城門、泥坡、避雨凹處與關卡棚形成高低差；板車、人流、洪水警訊和門禁必須同時處理。",
+            "zoneMap": [
+                "城門內側：相鄰 泥坡、關卡棚、門後空地；可見 泥坡、關卡棚、門後空地",
+                "泥坡：相鄰 城門內側、避雨凹處；可見 城門內側、避雨凹處",
+                "避雨凹處：相鄰 泥坡；可見 泥坡",
+                "關卡棚：相鄰 城門內側；可見 城門內側",
+                "門後空地：相鄰 城門內側；可見 城門內側"
+            ],
+            "initialState": [
+                "嚴｜ACTOR｜城門內側｜正在檢查門閂",
+                "急遞員｜ACTOR｜泥坡｜護著防水信筒",
+                "守衛｜ACTOR｜關卡棚｜等候命令",
+                "避雨婦人｜ACTOR｜城門內側｜抱著包袱",
+                "坡上的孩子｜ACTOR｜泥坡｜被車聲嚇住",
+                "失控板車｜OBJECT｜泥坡｜向城門滑動",
+                "粗繩｜OBJECT｜避雨凹處｜盤成一圈",
+                "門閂｜OBJECT｜城門內側｜完全落下",
+                "信號燈｜OBJECT｜關卡棚｜亮著白光",
+                "濕滑泥面｜HAZARD｜泥坡｜無法穩定站立",
+                "積水溝｜HAZARD｜泥坡｜水位快速上升"
+            ],
+            "sharedEnvironmentBeats": [
+                {
+                    "beatId": "yan-b1",
+                    "tick": 5,
+                    "eventSummary": "板車沿泥坡滑下，孩子僵在車道中間。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "yan-b2",
+                    "tick": 15,
+                    "eventSummary": "急遞員喊出洪水警訊，門外仍有人朝城門靠近。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "yan-b3",
+                    "tick": 25,
+                    "eventSummary": "雨勢加重，積水溝漫過坡腳，板車再次鬆動。",
+                    "visibleEntityIdsAdded": [
+                        "rope",
+                        "guard"
+                    ]
+                }
+            ],
+            "optionA": {
+                "steps": [
+                    {
+                        "beatId": "yan-b1",
+                        "perceived": [
+                            "失控板車",
+                            "坡上的孩子",
+                            "濕滑泥面"
+                        ],
+                        "chosenPriority": "先改變孩子與板車的相對位置",
+                        "action": "嚴斜切進泥坡，把孩子推進避雨凹處，自己留在板車側面。",
+                        "utterance": "",
+                        "nonverbal": "他不正面硬接，而是抓住車側框讓車頭偏向積水溝。",
+                        "otherActorReactions": [
+                            "急遞員貼牆讓路；避雨婦人在城門內招呼孩子。"
+                        ],
+                        "resultingStateSummary": "孩子脫離車道，板車仍滑動但方向偏離城門正中。"
+                    },
+                    {
+                        "beatId": "yan-b2",
+                        "perceived": [
+                            "粗繩",
+                            "失控板車",
+                            "急遞員",
+                            "積水溝"
+                        ],
+                        "chosenPriority": "先固定危險，再處理警訊",
+                        "action": "嚴從凹處扯出粗繩，繞過板車橫梁並踩住繩尾。",
+                        "utterance": "把信筒給守衛，門先別全開。",
+                        "nonverbal": "他向城門抬了一下下巴，手上沒有停。",
+                        "otherActorReactions": [
+                            "急遞員把信筒拋給守衛；守衛開始驗封。"
+                        ],
+                        "resultingStateSummary": "板車被牽制，洪水警訊同步核驗。"
+                    },
+                    {
+                        "beatId": "yan-b3",
+                        "perceived": [
+                            "門閂",
+                            "失控板車",
+                            "積水溝",
+                            "守衛"
+                        ],
+                        "chosenPriority": "退回城門建立受控入口",
+                        "action": "確認繩結吃力後，嚴退回城門，把門閂抬到只容一人的高度。",
+                        "utterance": "一個一個進，別踩坡中央。",
+                        "nonverbal": "他用手指向較高的牆邊路線。",
+                        "otherActorReactions": [
+                            "守衛沿牆引導人流；避雨婦人牽住孩子。"
+                        ],
+                        "resultingStateSummary": "危險物受控，人流改走高處，警訊進入城內。"
+                    }
+                ]
+            },
+            "optionB": {
+                "steps": [
+                    {
+                        "beatId": "yan-b1",
+                        "perceived": [
+                            "失控板車",
+                            "坡上的孩子",
+                            "濕滑泥面"
+                        ],
+                        "chosenPriority": "讓孩子離開板車路徑",
+                        "action": "嚴把孩子拽到城門牆邊，用肩抵住板車。",
+                        "utterance": "",
+                        "nonverbal": "他的靴底在泥上打滑一下。",
+                        "otherActorReactions": [
+                            "避雨婦人伸手把孩子接到身後。"
+                        ],
+                        "resultingStateSummary": "孩子安全，板車只是暫停。"
+                    },
+                    {
+                        "beatId": "yan-b2",
+                        "perceived": [
+                            "急遞員",
+                            "門閂",
+                            "信號燈"
+                        ],
+                        "chosenPriority": "核實警訊並開出窄縫",
+                        "action": "嚴抬起半截門閂，叫守衛只放急遞員進入。",
+                        "utterance": "只開一人寬，先驗信筒。",
+                        "nonverbal": "他仍用腳卡著板車輪。",
+                        "otherActorReactions": [
+                            "守衛接過信筒核對封印，其他人停在門外。"
+                        ],
+                        "resultingStateSummary": "城門未全開，警訊進入核驗流程。"
+                    },
+                    {
+                        "beatId": "yan-b3",
+                        "perceived": [
+                            "失控板車",
+                            "粗繩",
+                            "積水溝"
+                        ],
+                        "chosenPriority": "固定板車避免撞門",
+                        "action": "嚴把粗繩套上車軸，另一端繫到門柱。",
+                        "utterance": "守住門縫，別讓人往坡上擠。",
+                        "nonverbal": "他拉緊繩結後才鬆開肩膀。",
+                        "otherActorReactions": [
+                            "守衛守住門縫，急遞員開始報告上游情況。"
+                        ],
+                        "resultingStateSummary": "板車固定，城門維持受控通行。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ],
+            "ratingPrompt": "請比較整段軌跡的環境感知、空間、優先順序、多人反應、角色自然度與狀態連續性；選 A、B、TIE 或 BOTH_FAIL。"
+        },
+        {
+            "reviewId": "review-npc-actor04-lian-market-collapse",
+            "scenarioId": "npc-actor04-lian-market-collapse",
+            "title": "市場布棚塌落",
+            "characterBrief": "細心、有同理心但不會只安慰；她會先找受力點與可用的人，再用簡短話語建立合作。",
+            "worldBrief": "市場走道連接攤位、藥鋪與側巷；塌棚、碎瓷、哭泣孩子和流血傷者會爭奪注意力。",
+            "zoneMap": [
+                "市場走道：相鄰 布棚攤位、藥鋪門口、側巷；可見 布棚攤位、藥鋪門口、側巷",
+                "布棚攤位：相鄰 市場走道；可見 市場走道、藥鋪門口",
+                "藥鋪門口：相鄰 市場走道；可見 市場走道",
+                "側巷：相鄰 市場走道、卸貨小院；可見 市場走道、卸貨小院",
+                "卸貨小院：相鄰 側巷；可見 側巷"
+            ],
+            "initialState": [
+                "蓮｜ACTOR｜市場走道｜正在挑選布料",
+                "受傷攤販｜ACTOR｜布棚攤位｜手臂流血且壓在棚布下",
+                "藥鋪學徒｜ACTOR｜藥鋪門口｜抱著藥箱發愣",
+                "巡市差役｜ACTOR｜側巷｜正往市場趕",
+                "找母親的孩子｜ACTOR｜市場走道｜哭著擋在走道中",
+                "塌落棚布｜OBJECT｜布棚攤位｜壓住攤販肩膀",
+                "支棚木桿｜OBJECT｜布棚攤位｜底座鬆脫",
+                "成捆布料｜OBJECT｜布棚攤位｜散落一地",
+                "止血藥箱｜OBJECT｜藥鋪門口｜封扣完整",
+                "碎瓷片｜HAZARD｜市場走道｜散在主要通道",
+                "搖晃橫梁｜HAZARD｜布棚攤位｜仍可能再次下落"
+            ],
+            "sharedEnvironmentBeats": [
+                {
+                    "beatId": "lian-b1",
+                    "tick": 8,
+                    "eventSummary": "布棚突然塌下一角，攤販被壓住，碎瓷片飛入走道。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "lian-b2",
+                    "tick": 18,
+                    "eventSummary": "橫梁發出裂聲，孩子逆著人流尋找母親。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "lian-b3",
+                    "tick": 28,
+                    "eventSummary": "側巷傳來差役呼聲，攤販出血加快。",
+                    "visibleEntityIdsAdded": [
+                        "constable"
+                    ]
+                }
+            ],
+            "optionA": {
+                "steps": [
+                    {
+                        "beatId": "lian-b1",
+                        "perceived": [
+                            "搖晃橫梁",
+                            "支棚木桿",
+                            "受傷攤販",
+                            "碎瓷片"
+                        ],
+                        "chosenPriority": "先取得能看見橫梁與傷者的位置",
+                        "action": "蓮繞開碎瓷，進到棚布側邊，用木桿斜撐橫梁。",
+                        "utterance": "",
+                        "nonverbal": "她蹲低身體，讓視線保持在橫梁接點。",
+                        "otherActorReactions": [
+                            "攤販停止掙扎；旁人退開棚架正下方。"
+                        ],
+                        "resultingStateSummary": "橫梁受力改變，傷者仍受壓但不再被二次砸落。"
+                    },
+                    {
+                        "beatId": "lian-b2",
+                        "perceived": [
+                            "找母親的孩子",
+                            "藥鋪學徒",
+                            "止血藥箱",
+                            "搖晃橫梁"
+                        ],
+                        "chosenPriority": "讓可移動的人先完成疏散與取藥",
+                        "action": "蓮從棚內指向沒有碎瓷的藥鋪牆邊路線。",
+                        "utterance": "牽孩子走牆邊，再把藥箱滑過來。",
+                        "nonverbal": "她用鞋跟卡住木桿底端。",
+                        "otherActorReactions": [
+                            "學徒牽走孩子，接著把藥箱沿地面推向攤位。"
+                        ],
+                        "resultingStateSummary": "孩子離開危險走道，藥箱抵達棚邊。"
+                    },
+                    {
+                        "beatId": "lian-b3",
+                        "perceived": [
+                            "巡市差役",
+                            "受傷攤販",
+                            "止血藥箱",
+                            "搖晃橫梁"
+                        ],
+                        "chosenPriority": "在不失去支撐的前提下完成接手",
+                        "action": "蓮讓差役從外側接住木桿，確認受力後退回走道，立刻替攤販止血。",
+                        "utterance": "先接我的力，再抬棚布。",
+                        "nonverbal": "她等差役點頭才換手。",
+                        "otherActorReactions": [
+                            "差役承接木桿；學徒打開藥箱；其他商販準備抬棚布。"
+                        ],
+                        "resultingStateSummary": "支撐交接沒有空窗，止血與抬升可同時開始。"
+                    }
+                ]
+            },
+            "optionB": {
+                "steps": [
+                    {
+                        "beatId": "lian-b1",
+                        "perceived": [
+                            "受傷攤販",
+                            "塌落棚布",
+                            "碎瓷片"
+                        ],
+                        "chosenPriority": "避免第二次砸落並接近傷者",
+                        "action": "蓮扶正木桿，讓棚布暫時不再下沉。",
+                        "utterance": "",
+                        "nonverbal": "她先試了兩次受力才把肩膀頂上去。",
+                        "otherActorReactions": [
+                            "旁邊商販開始把碎瓷片踢離人群。"
+                        ],
+                        "resultingStateSummary": "棚布暫穩，但蓮無法離手。"
+                    },
+                    {
+                        "beatId": "lian-b2",
+                        "perceived": [
+                            "找母親的孩子",
+                            "碎瓷片",
+                            "藥鋪學徒",
+                            "止血藥箱"
+                        ],
+                        "chosenPriority": "清出孩子與救援路線",
+                        "action": "蓮叫孩子停下，讓學徒沿牆把孩子帶到藥鋪門口。",
+                        "utterance": "你牽住他，沿牆走，藥箱帶過來。",
+                        "nonverbal": "她的肩膀仍頂著木桿。",
+                        "otherActorReactions": [
+                            "學徒回過神，牽起孩子並拿穩藥箱。"
+                        ],
+                        "resultingStateSummary": "主要走道不再被孩子堵住，藥箱正在靠近。"
+                    },
+                    {
+                        "beatId": "lian-b3",
+                        "perceived": [
+                            "受傷攤販",
+                            "止血藥箱",
+                            "巡市差役",
+                            "搖晃橫梁"
+                        ],
+                        "chosenPriority": "讓差役接手支撐並止血",
+                        "action": "差役抵住木桿後，蓮跪到攤販身側壓住傷口。",
+                        "utterance": "你頂住這裡；藥箱給我。",
+                        "nonverbal": "她確認橫梁不再移動才鬆肩。",
+                        "otherActorReactions": [
+                            "差役接手支撐；學徒遞出繃帶。"
+                        ],
+                        "resultingStateSummary": "結構與傷者各有人處理，救援形成分工。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ],
+            "ratingPrompt": "請比較整段軌跡的環境感知、空間、優先順序、多人反應、角色自然度與狀態連續性；選 A、B、TIE 或 BOTH_FAIL。"
+        },
+        {
+            "reviewId": "review-npc-actor04-ren-dock-surge",
+            "scenarioId": "npc-actor04-ren-dock-surge",
+            "title": "漲潮時的斷纜碼頭",
+            "characterBrief": "沉著、懂勞動現場，不拿命換進度；他會看受力方向、站位與人群動線。",
+            "worldBrief": "石碼頭、斜板、甲板、倉門與港務亭構成移動作業面；潮水、斷纜和滑動貨物會連鎖改變安全路線。",
+            "zoneMap": [
+                "石砌碼頭：相鄰 登船斜板、倉門、港務亭；可見 登船斜板、倉門、港務亭",
+                "登船斜板：相鄰 石砌碼頭、貨船甲板；可見 石砌碼頭、貨船甲板、倉門、港務亭",
+                "貨船甲板：相鄰 登船斜板；可見 登船斜板",
+                "倉門：相鄰 石砌碼頭；可見 石砌碼頭",
+                "港務亭：相鄰 石砌碼頭；可見 石砌碼頭"
+            ],
+            "initialState": [
+                "任｜ACTOR｜石砌碼頭｜正在核對卸貨次序",
+                "催貨買主｜ACTOR｜石砌碼頭｜要求立刻交貨",
+                "甲板水手｜ACTOR｜貨船甲板｜扶著滑動木箱",
+                "腳夫｜ACTOR｜登船斜板｜進退兩難",
+                "港務員｜ACTOR｜港務亭｜準備敲響警鐘",
+                "磨損纜繩｜OBJECT｜石砌碼頭｜纖維逐條斷裂",
+                "登船斜板｜OBJECT｜登船斜板｜右側下沉",
+                "重木箱｜OBJECT｜貨船甲板｜朝斜板滑動",
+                "吊貨鉤｜OBJECT｜倉門｜掛在牆架",
+                "急漲潮水｜HAZARD｜登船斜板｜拍擊船身",
+                "濕滑石面｜HAZARD｜石砌碼頭｜靠近繫纜柱最滑"
+            ],
+            "sharedEnvironmentBeats": [
+                {
+                    "beatId": "ren-b1",
+                    "tick": 12,
+                    "eventSummary": "漲潮把船身推離碼頭，磨損纜繩開始斷股。",
+                    "visibleEntityIdsAdded": []
+                },
+                {
+                    "beatId": "ren-b2",
+                    "tick": 22,
+                    "eventSummary": "重木箱滑向斜板，腳夫被夾在進退路線中。",
+                    "visibleEntityIdsAdded": [
+                        "crate",
+                        "deckhand"
+                    ]
+                },
+                {
+                    "beatId": "ren-b3",
+                    "tick": 32,
+                    "eventSummary": "船身再次外擺，登船斜板右側離開石階。",
+                    "visibleEntityIdsAdded": []
+                }
+            ],
+            "optionA": {
+                "steps": [
+                    {
+                        "beatId": "ren-b1",
+                        "perceived": [
+                            "磨損纜繩",
+                            "急漲潮水",
+                            "濕滑石面",
+                            "催貨買主"
+                        ],
+                        "chosenPriority": "避免斷繩掃到人群",
+                        "action": "任把買主推離繫纜柱，叫碼頭邊的人後退。",
+                        "utterance": "",
+                        "nonverbal": "他站在繩索可能回彈的外側。",
+                        "otherActorReactions": [
+                            "港務員舉起警鐘槌；腳夫停在斜板中段。"
+                        ],
+                        "resultingStateSummary": "回彈區清空，纜繩仍未替換。"
+                    },
+                    {
+                        "beatId": "ren-b2",
+                        "perceived": [
+                            "重木箱",
+                            "腳夫",
+                            "登船斜板"
+                        ],
+                        "chosenPriority": "阻止木箱撞上腳夫",
+                        "action": "任衝上斜板邊緣，用肩頂住木箱下角，叫腳夫退回碼頭。",
+                        "utterance": "先退回來，貨晚一刻不會死。",
+                        "nonverbal": "他把重心壓向靠碼頭的一側。",
+                        "otherActorReactions": [
+                            "甲板水手抓住箱後繩環，腳夫退下斜板。"
+                        ],
+                        "resultingStateSummary": "人員離開夾擊線，木箱暫停滑動。"
+                    },
+                    {
+                        "beatId": "ren-b3",
+                        "perceived": [
+                            "登船斜板",
+                            "吊貨鉤",
+                            "急漲潮水"
+                        ],
+                        "chosenPriority": "收回失去支撐的斜板",
+                        "action": "任取下吊貨鉤，勾住斜板內側讓甲板水手把它拉回船上。",
+                        "utterance": "拉回去，碼頭這邊清空。",
+                        "nonverbal": "他退到石階上維持鉤索角度。",
+                        "otherActorReactions": [
+                            "甲板水手收回斜板；港務員敲鐘封閉臨時通道。"
+                        ],
+                        "resultingStateSummary": "船岸連接中止，所有人留在各自安全側。"
+                    }
+                ]
+            },
+            "optionB": {
+                "steps": [
+                    {
+                        "beatId": "ren-b1",
+                        "perceived": [
+                            "磨損纜繩",
+                            "急漲潮水",
+                            "濕滑石面",
+                            "港務員"
+                        ],
+                        "chosenPriority": "先把人與斷繩回彈面分開",
+                        "action": "任把卸貨粉筆線延長成禁入線，抬手示意港務員敲鐘。",
+                        "utterance": "",
+                        "nonverbal": "他沿繩索受力方向看了一眼，選在側後方移動。",
+                        "otherActorReactions": [
+                            "買主被鐘聲逼停；腳夫抓住斜板扶手。"
+                        ],
+                        "resultingStateSummary": "碼頭人流停止進入斷繩回彈區。"
+                    },
+                    {
+                        "beatId": "ren-b2",
+                        "perceived": [
+                            "重木箱",
+                            "甲板水手",
+                            "腳夫",
+                            "登船斜板"
+                        ],
+                        "chosenPriority": "讓腳夫先退，甲板端再改變木箱方向",
+                        "action": "任踏上斜板靠碼頭的一端，用手勢讓水手把木箱轉向船艏。",
+                        "utterance": "你退；甲板那邊，把箱角往左帶。",
+                        "nonverbal": "他沒有站進木箱正下方。",
+                        "otherActorReactions": [
+                            "腳夫倒退下斜板；水手改拉左側繩環。"
+                        ],
+                        "resultingStateSummary": "木箱離開斜板軸線，人員退出夾擊區。"
+                    },
+                    {
+                        "beatId": "ren-b3",
+                        "perceived": [
+                            "登船斜板",
+                            "急漲潮水",
+                            "吊貨鉤",
+                            "港務員"
+                        ],
+                        "chosenPriority": "撤離斜板並切斷船岸通行",
+                        "action": "任退回碼頭，取吊鉤勾住斜板，讓船上收板。",
+                        "utterance": "收板，這一潮先停工。",
+                        "nonverbal": "他等雙腳回到乾石面才開始拉鉤。",
+                        "otherActorReactions": [
+                            "水手收板；港務員封住碼頭入口；買主不再催人上船。"
+                        ],
+                        "resultingStateSummary": "船岸動線完全斷開，漲潮期間停止卸貨。"
+                    }
+                ]
+            },
+            "ratingDimensions": [
+                "ENVIRONMENT_AWARENESS",
+                "SPATIAL_COHERENCE",
+                "PRIORITY_AND_TIMING",
+                "SOCIAL_REALISM",
+                "VOICE_NATURALNESS",
+                "STATE_CONTINUITY",
+                "KNOWLEDGE_BOUNDARY"
+            ],
+            "ratingPrompt": "請比較整段軌跡的環境感知、空間、優先順序、多人反應、角色自然度與狀態連續性；選 A、B、TIE 或 BOTH_FAIL。"
+        }
+    ]
+}

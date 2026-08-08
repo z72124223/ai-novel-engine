@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "chenxing-volume-one-opening-storyboard-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "chapter": "第一話　塵",
+  "purpose": "第一卷開場 9 拍分鏡試看稿：大坪海岸生存弧，結束於山坡廢墟避難。",
+  "linkedCanon": {
+    "openingArc": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "openingPrologue": "world/chenxing/formal/22_volume_one_opening_prologue_v1.json",
+    "visualAppearance": "world/chenxing/formal/23_character_visual_appearance_v1.json",
+    "openingCostume": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json"
+  },
+  "productionAssets": {
+    "luChenxingCostume": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+    "luChenxingBody": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+    "aijiang": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+    "coverStyle": "world/chenxing/assets/cover/chenxing_cover_v1.png"
+  },
+  "visualStyle": {
+    "label": "cinematic_realistic_2026_taiwan_coastal",
+    "rule": "寫實電影感；2026 台灣海岸現代開場，不是古裝奇幻。"
+  },
+  "sceneCoverage": {
+    "primaryScene": "scene-daping-coast-opening",
+    "closingScene": "scene-hillside-ruin-retreat",
+    "transitionIntent": "撤退到山坡廢墟"
+  },
+  "shots": [
+    {
+      "shotId": "shot-00-prologue",
+      "order": 0,
+      "beat": "prologue_hook",
+      "title": "鬼故事式前導",
+      "location": "抽象／字幕底圖可接廢墟剪影",
+      "camera": "慢推近，或黑底白字配海岸廢墟空鏡",
+      "visual": "八斗子山坡與舊混凝土結構剪影，海浪聲打底。",
+      "narration": "你知道北部火力發電廠嗎？日本人來台灣時，在北部留下很多建設。二戰結束，他們走得太急。水泥、管道、廠房、坡道，還有半完成的地基，都留在海邊山坡上。後來的人只把這些當廢墟、遺跡，或地方鬼故事。幾乎沒有人知道——當時日本人還留下了一些東西。",
+      "dialogue": [],
+      "durationHintSec": 22
+    },
+    {
+      "shotId": "shot-01-tide-check",
+      "order": 1,
+      "beat": "tide_check",
+      "title": "查潮汐",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "中景；陸塵行蹲低，愛醬在側後方警戒",
+      "visual": "陸塵行穿開場現代裝，查看手機與潮汐筆記，腳下海蝕平台潮間帶。愛醬豎耳張望。",
+      "narration": "2026年7月，颱風巴威還在海上。陸塵行照著潮汐表，估計還有兩小時。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "還來得及，潮水還沒漲上來。",
+          "delivery": "低聲自言"
+        }
+      ],
+      "durationHintSec": 8
+    },
+    {
+      "shotId": "shot-02-strange-find",
+      "order": 2,
+      "beat": "strange_find",
+      "title": "異常痕跡",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "手部特寫拉至中景；接縫入畫",
+      "visual": "岩面上一道不自然的接縫與人工邊角，像被後來的地層蓋住。",
+      "narration": "海蝕平台上，有不該出現的痕跡。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "這不是天然岩層……誰在這裡接過東西？",
+          "delivery": "疑惑、壓低聲音"
+        }
+      ],
+      "durationHintSec": 9
+    },
+    {
+      "shotId": "shot-03-overfocus",
+      "order": 3,
+      "beat": "overfocus",
+      "title": "看得太久",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "眼鏡反光特寫；切愛醬回頭看海",
+      "visual": "陸塵行蹲著不動，指尖沿接縫比對。愛醬毛微炸，前爪後挪半步，耳朵朝海不朝他。",
+      "narration": "他看得太久。好奇心壓過了時間，也壓過了狗的低聲警告。",
+      "dialogue": [
+        {
+          "speaker": "愛醬",
+          "line": "（低聲警戒鳴叫）",
+          "delivery": "非語言"
+        }
+      ],
+      "durationHintSec": 7
+    },
+    {
+      "shotId": "shot-04-water-rises",
+      "order": 4,
+      "beat": "water_rises_fast",
+      "title": "海水上漲",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "低角度；浪花漫過先前乾燥的礁石",
+      "visual": "水位明顯高於剛才，泡沫沖過腳邊石面。",
+      "narration": "海水比表上漲得快。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "不對——這不是平常漲潮。",
+          "delivery": "警覺"
+        }
+      ],
+      "durationHintSec": 7
+    },
+    {
+      "shotId": "shot-05-return-blocked",
+      "order": 5,
+      "beat": "return_blocked",
+      "title": "回頭路被封",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "過肩鏡頭望向來時路；浪頭拍擊通道",
+      "visual": "剛才還能走的岩徑已被海水覆蓋，白浪連續湧入。",
+      "narration": "來時還乾的岩徑，現在只剩白浪拍擊。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "回不去了。",
+          "delivery": "沉聲"
+        }
+      ],
+      "durationHintSec": 6
+    },
+    {
+      "shotId": "shot-06-wind-worsens",
+      "order": 6,
+      "beat": "circulation_strengthens",
+      "title": "風浪加劇",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "中景側風；外套與愛醬毛被吹亂",
+      "visual": "巴威外圍環流壓境，雨絲斜打，海面翻白。愛醬貼近他小腿，毛被雨水壓成一縷一縷。",
+      "narration": "巴威的外圍環流壓上來，浪勢一次比一次重。鹹味灌進鼻腔，皮膚開始黏。",
+      "dialogue": [],
+      "durationHintSec": 7
+    },
+    {
+      "shotId": "shot-07-sky-darkens",
+      "order": 7,
+      "beat": "sky_darkens",
+      "title": "天色驟暗",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "大遠景；海岸線被鉛灰天色吞沒",
+      "visual": "光線在數分鐘內從灰白壓成深灰，能見度下降。",
+      "narration": "白天像被擰短了一截。",
+      "dialogue": [],
+      "durationHintSec": 6
+    },
+    {
+      "shotId": "shot-08-no-signal",
+      "order": 8,
+      "beat": "no_signal",
+      "title": "沒有訊號",
+      "location": "loc-daping-coast",
+      "sceneId": "scene-daping-coast-opening",
+      "camera": "手機螢幕特寫；拇指重試通話",
+      "visual": "螢幕顯示無服務，雨水落在玻璃上。",
+      "narration": "求救鍵按了兩次，螢幕只回無服務。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……沒訊號。",
+          "delivery": "短促"
+        }
+      ],
+      "durationHintSec": 5
+    },
+    {
+      "shotId": "shot-09-hillside-retreat",
+      "order": 9,
+      "beat": "retreat_to_hillside_ruin",
+      "title": "躲入山坡廢墟",
+      "location": "loc-hillside-ruin",
+      "sceneId": "scene-hillside-ruin-retreat",
+      "camera": "跟拍上坡；終點定在頹敗混凝土建築門洞",
+      "visual": "陸塵行與愛醬冒雨攀向山坡，廢棄構造物像日治遺留的廠區殘骸。愛醬在門洞前放慢腳步，耳朵竖起，沒有立刻跟上。",
+      "narration": "唯一能躲的地方，在山坡上——日治時期留下的廢棄構造物。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "上面那棟……至少能擋風。",
+          "delivery": "喘而穩，自言"
+        }
+      ],
+      "durationHintSec": 10
+    }
+  ],
+  "previewPackage": {
+    "voiceTimelineFill": "world/chenxing/preview/opening_v1/voice_timeline_fill_v1.json",
+    "manifest": "world/chenxing/preview/opening_v1/opening_preview_manifest_v1.json"
+  },
+  "nextStepAfterPreview": "山坡廢墟內部慢推進（beats 10-18，見 28_volume_one_ruin_interior_storyboard_v1.json）"
+}

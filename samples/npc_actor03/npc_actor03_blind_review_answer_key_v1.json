@@ -1,0 +1,40 @@
+{
+    "schemaVersion": "1.0",
+    "packetId": "npc-actor03-calibration-9d78d00546e5",
+    "randomizationMethod": "SHA256_RANK_BALANCED",
+    "randomizationSeed": "npc-actor03-balanced-holdout-seed-v1",
+    "answers": [
+        {
+            "reviewId": "review-npc-actor03-01",
+            "adaptiveActorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor03-02",
+            "adaptiveActorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor03-03",
+            "adaptiveActorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor03-04",
+            "adaptiveActorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor03-05",
+            "adaptiveActorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor03-06",
+            "adaptiveActorOption": "B"
+        },
+        {
+            "reviewId": "review-npc-actor03-07",
+            "adaptiveActorOption": "A"
+        },
+        {
+            "reviewId": "review-npc-actor03-08",
+            "adaptiveActorOption": "B"
+        }
+    ]
+}

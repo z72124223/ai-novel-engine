@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "reference-upload-checklist-v1",
+  "handoffId": "chenxing-daping-location-bible-v1",
+  "status": "REFERENCE_UPLOAD_REQUIRED",
+  "items": [
+    {
+      "referenceId": "ref-daping-opening-cinematic-misty-style-v1",
+      "repositoryPath": "world/chenxing/assets/style_reference/chenxing_opening_style_cinematic_misty_v1.png",
+      "assetRole": "OPENING_RENDER_STYLE_ONLY",
+      "entityId": "style-chenxing-opening",
+      "version": "cinematic-misty-v1",
+      "required": true,
+      "requirementCategory": "STYLE_ONLY",
+      "expectedSha256": "a983170bb67dcd78961acf6deffb80068b6e2daf6387f87eb9f1720dd5288d6a",
+      "whyNeeded": "Required only for daping-lb-01-master-panorama to guide atmosphere and rendering; it is not location geometry, likeness, or costume authority.",
+      "canProceedWithoutIt": false,
+      "degradedMode": "BLOCK_FORMAL_GENERATION",
+      "uploadStatus": "UPLOAD_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-lu-production-body-v2",
+      "repositoryPath": "world/chenxing/assets/turnaround/lu_chenxing_photo_closest_174_80_turnaround_v2.png",
+      "assetRole": "PRODUCTION_BODY_AND_SCALE",
+      "entityId": "char-lu-chenxing",
+      "version": "photo-set-123123-closest-body-v2",
+      "required": false,
+      "requirementCategory": "BODY",
+      "expectedSha256": "500dd5480a6c61c5b335ee446d178fec1766e42761e7447c6fca1de6a63d199f",
+      "whyNeeded": "Not required for task 01; task 04 binds it as a mandatory body and 174 cm scale reference.",
+      "canProceedWithoutIt": true,
+      "degradedMode": "NONE",
+      "uploadStatus": "NOT_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-lu-opening-costume-v1",
+      "repositoryPath": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+      "assetRole": "OPENING_COSTUME_AND_SCALE",
+      "entityId": "char-lu-chenxing",
+      "version": "opening-modern-costume-v1",
+      "required": false,
+      "requirementCategory": "COSTUME",
+      "expectedSha256": "e11757d2bfb5589ae4f7e78f982618110c9a908d4c8cfee9bce1ba3d26cd72f3",
+      "whyNeeded": "Not required for task 01; task 04 binds it as mandatory for the later scale-reference candidate.",
+      "canProceedWithoutIt": true,
+      "degradedMode": "NONE",
+      "uploadStatus": "NOT_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    },
+    {
+      "referenceId": "ref-aijiang-production-turnaround-v1",
+      "repositoryPath": "world/chenxing/assets/turnaround/aijiang_production_turnaround_v1.jpg",
+      "assetRole": "ANIMAL_APPEARANCE_AND_SCALE",
+      "entityId": "char-aijiang",
+      "version": "author-production-turnaround-v1",
+      "required": false,
+      "requirementCategory": "ANIMAL_APPEARANCE",
+      "expectedSha256": "1cac692b31cf469e06c3249c3fdd19dd9693129bc3698ec4d81255f697f1adcb",
+      "whyNeeded": "Not required for task 01; task 04 binds it as mandatory for the later human-dog scale-reference candidate.",
+      "canProceedWithoutIt": true,
+      "degradedMode": "NONE",
+      "uploadStatus": "NOT_REQUIRED",
+      "placeholder": false,
+      "placeholderReason": ""
+    }
+  ],
+  "formalGenerationRule": {
+    "missingRequiredVisualReferenceStatus": "REFERENCE_UPLOAD_REQUIRED",
+    "textOnlyFormalGenerationAllowed": false,
+    "humanUploadConfirmationRequired": true
+  },
+  "exampleOnly": false
+}

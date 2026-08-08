@@ -1,0 +1,3657 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "npc-actor01-fixed-20-v1",
+    "status": "NON_CANON_EVALUATION_READY",
+    "scenarios": [
+        {
+            "scenarioId": "npc-actor01-01",
+            "title": "失物來源",
+            "category": "ORDINARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-01",
+                "scenarioId": "npc-actor01-01",
+                "actorId": "npc-eval-1",
+                "targetIds": [
+                    "target-eval-1"
+                ],
+                "locationId": "location-eval-1",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-01",
+                        "kind": "PERCEPTION",
+                        "summary": "旅人撿起地上的錢袋。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-01",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「失物來源」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-01",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-01",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-01",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-01"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-01"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-01"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-01",
+                "actorId": "npc-eval-1",
+                "targetIds": [
+                    "target-eval-1"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-01"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-01"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前的情況，我的目標是確認錢袋的主人，因此請你詳細說明來源。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-01",
+                        "memory-npc-actor01-01",
+                        "claim-npc-actor01-01",
+                        "goal-npc-actor01-01"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-01",
+                "actorId": "npc-eval-1",
+                "targetIds": [
+                    "target-eval-1"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-01"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-01"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "視線落在錢袋扣環上",
+                "utterance": "先別走。這錢袋你從哪裡拿的？",
+                "nonverbalAction": "視線落在錢袋扣環上",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-01",
+                        "memory-npc-actor01-01",
+                        "claim-npc-actor01-01",
+                        "goal-npc-actor01-01"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-02",
+            "title": "熱湯危險",
+            "category": "URGENT",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-02",
+                "scenarioId": "npc-actor01-02",
+                "actorId": "npc-eval-2",
+                "targetIds": [
+                    "target-eval-2"
+                ],
+                "locationId": "location-eval-2",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "壓力下仍可行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-02",
+                        "kind": "PERCEPTION",
+                        "summary": "小孩伸手去拿剛起鍋的湯。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-02",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「熱湯危險」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-02",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-02",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-02",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-02"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-02"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-02"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-02",
+                "actorId": "npc-eval-2",
+                "targetIds": [
+                    "target-eval-2"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-02"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-02"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你想幫忙的感受，但根據目前的情況，這個鍋子具有高溫危險性。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-02",
+                        "memory-npc-actor01-02",
+                        "claim-npc-actor01-02",
+                        "goal-npc-actor01-02"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-02",
+                "actorId": "npc-eval-2",
+                "targetIds": [
+                    "target-eval-2"
+                ],
+                "speechAct": "WARN",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-02"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-02"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "protect_local_resource",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "一把扣住孩子的手腕",
+                "utterance": "別碰！往後退。",
+                "nonverbalAction": "一把扣住孩子的手腕",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-02",
+                        "memory-npc-actor01-02",
+                        "claim-npc-actor01-02",
+                        "goal-npc-actor01-02"
+                    ],
+                    "selectedActionLabel": "WARN",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "WARN"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-03",
+            "title": "倉庫失火",
+            "category": "URGENT",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-03",
+                "scenarioId": "npc-actor01-03",
+                "actorId": "npc-eval-3",
+                "targetIds": [
+                    "target-eval-3"
+                ],
+                "locationId": "location-eval-3",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "壓力下仍可行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-03",
+                        "kind": "PERCEPTION",
+                        "summary": "木箱後方已經冒煙。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-03",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「倉庫失火」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-03",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-03",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-03",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-03"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-03"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-03"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-03",
+                "actorId": "npc-eval-3",
+                "targetIds": [
+                    "target-eval-3"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-03"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-03"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "綜上所述，當前存在明顯火災風險，因此建議所有人按照最佳路線有序撤離。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-03",
+                        "memory-npc-actor01-03",
+                        "claim-npc-actor01-03",
+                        "goal-npc-actor01-03"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-03",
+                "actorId": "npc-eval-3",
+                "targetIds": [
+                    "target-eval-3"
+                ],
+                "speechAct": "COMMAND",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-03"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-03"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "protect_local_resource",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "拉下警鐘繩並指向左門",
+                "utterance": "走左邊小門！不要拿東西！",
+                "nonverbalAction": "拉下警鐘繩並指向左門",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-03",
+                        "memory-npc-actor01-03",
+                        "claim-npc-actor01-03",
+                        "goal-npc-actor01-03"
+                    ],
+                    "selectedActionLabel": "COMMAND",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "COMMAND"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-04",
+            "title": "走失的孩子",
+            "category": "RELATIONSHIP",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-04",
+                "scenarioId": "npc-actor01-04",
+                "actorId": "npc-eval-4",
+                "targetIds": [
+                    "target-eval-4"
+                ],
+                "locationId": "location-eval-4",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "情緒複雜",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-04",
+                        "kind": "PERCEPTION",
+                        "summary": "一名孩子哭著說找不到娘。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-04",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「走失的孩子」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-04",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-04",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-04",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-04"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-04"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-04"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-04",
+                "actorId": "npc-eval-4",
+                "targetIds": [
+                    "target-eval-4"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-04"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-04"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你的感受，你現在感到害怕是完全可以理解的，我們將進行逐步處理。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-04",
+                        "memory-npc-actor01-04",
+                        "claim-npc-actor01-04",
+                        "goal-npc-actor01-04"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-04",
+                "actorId": "npc-eval-4",
+                "targetIds": [
+                    "target-eval-4"
+                ],
+                "speechAct": "REASSURE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-04"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-04"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "蹲下來讓視線和孩子齊高",
+                "utterance": "先別怕。你記得她穿什麼嗎？",
+                "nonverbalAction": "蹲下來讓視線和孩子齊高",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-04",
+                        "memory-npc-actor01-04",
+                        "claim-npc-actor01-04",
+                        "goal-npc-actor01-04"
+                    ],
+                    "selectedActionLabel": "REASSURE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "REASSURE"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-05",
+            "title": "債務追問",
+            "category": "RELATIONSHIP",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-05",
+                "scenarioId": "npc-actor01-05",
+                "actorId": "npc-eval-5",
+                "targetIds": [
+                    "target-eval-5"
+                ],
+                "locationId": "location-eval-5",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "情緒複雜",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-05",
+                        "kind": "PERCEPTION",
+                        "summary": "舊識當著眾人問她何時還錢。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-05",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「債務追問」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-05",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-05",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-05",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-05"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-05"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-05"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-05",
+                "actorId": "npc-eval-5",
+                "targetIds": [
+                    "target-eval-5"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-05"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-05"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前的情況，我確實存在債務，因此我的目標是建立一個雙方可接受的還款方案。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-05",
+                        "memory-npc-actor01-05",
+                        "claim-npc-actor01-05",
+                        "goal-npc-actor01-05"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-05",
+                "actorId": "npc-eval-5",
+                "targetIds": [
+                    "target-eval-5"
+                ],
+                "speechAct": "EVADE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-05"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-05"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [
+                    "claim-npc-actor01-05"
+                ],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "手指壓住杯沿",
+                "utterance": "這裡不方便。散場後，我給你一個交代。",
+                "nonverbalAction": "手指壓住杯沿",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-05",
+                        "memory-npc-actor01-05",
+                        "claim-npc-actor01-05",
+                        "goal-npc-actor01-05"
+                    ],
+                    "selectedActionLabel": "EVADE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "EVADE"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-06",
+            "title": "朋友的秘密",
+            "category": "KNOWLEDGE_BOUNDARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-06",
+                "scenarioId": "npc-actor01-06",
+                "actorId": "npc-eval-6",
+                "targetIds": [
+                    "target-eval-6"
+                ],
+                "locationId": "location-eval-6",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-06",
+                        "kind": "PERCEPTION",
+                        "summary": "朋友追問他是否知道小妹的去向。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-06",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「朋友的秘密」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-06",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-06",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-06",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-06"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-06"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-06"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-06",
+                "actorId": "npc-eval-6",
+                "targetIds": [
+                    "target-eval-6"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-06"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-06"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你的擔心，但我的目標是尊重個人隱私，因此我無法提供相關資訊。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-06",
+                        "memory-npc-actor01-06",
+                        "claim-npc-actor01-06",
+                        "goal-npc-actor01-06"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-06",
+                "actorId": "npc-eval-6",
+                "targetIds": [
+                    "target-eval-6"
+                ],
+                "speechAct": "REFUSE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-06"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-06"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [
+                    "claim-npc-actor01-06"
+                ],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "偏過頭避開對方視線",
+                "utterance": "這件事我不能說。你去問她本人。",
+                "nonverbalAction": "偏過頭避開對方視線",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-06",
+                        "memory-npc-actor01-06",
+                        "claim-npc-actor01-06",
+                        "goal-npc-actor01-06"
+                    ],
+                    "selectedActionLabel": "REFUSE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "REFUSE"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-07",
+            "title": "不知道的傳聞",
+            "category": "KNOWLEDGE_BOUNDARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-07",
+                "scenarioId": "npc-actor01-07",
+                "actorId": "npc-eval-7",
+                "targetIds": [
+                    "target-eval-7"
+                ],
+                "locationId": "location-eval-7",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-07",
+                        "kind": "PERCEPTION",
+                        "summary": "酒客問她城主是否明日逃走。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-07",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「不知道的傳聞」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-07",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-07",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-07",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-07"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-07"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-07"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-07",
+                "actorId": "npc-eval-7",
+                "targetIds": [
+                    "target-eval-7"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-07"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-07"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前掌握的資訊，雖然存在多種可能性，但尚無法對城主的明日行程做出確定判斷。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-07",
+                        "memory-npc-actor01-07",
+                        "claim-npc-actor01-07",
+                        "goal-npc-actor01-07"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-07",
+                "actorId": "npc-eval-7",
+                "targetIds": [
+                    "target-eval-7"
+                ],
+                "speechAct": "PARTIAL_ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-07"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-07"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "擦杯子的手停了一下",
+                "utterance": "我只聽到廣場在吵。城主要去哪，我不知道。",
+                "nonverbalAction": "擦杯子的手停了一下",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-07",
+                        "memory-npc-actor01-07",
+                        "claim-npc-actor01-07",
+                        "goal-npc-actor01-07"
+                    ],
+                    "selectedActionLabel": "PARTIAL_ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "PARTIAL_ANSWER"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-08",
+            "title": "陌生記憶陷阱",
+            "category": "KNOWLEDGE_BOUNDARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-08",
+                "scenarioId": "npc-actor01-08",
+                "actorId": "npc-eval-8",
+                "targetIds": [
+                    "target-eval-8"
+                ],
+                "locationId": "location-eval-8",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-08",
+                        "kind": "PERCEPTION",
+                        "summary": "旅人暗示守門人應該記得他在宮中的秘密。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-08",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「陌生記憶陷阱」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-08",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-08",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-08",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-08"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-08"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-08"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-08",
+                "actorId": "npc-eval-8",
+                "targetIds": [
+                    "target-eval-8"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-08"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-08"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據我的記憶與當前資料，我無法驗證你所說的宮中關係，因此請提供有效的身分證明。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-08",
+                        "memory-npc-actor01-08",
+                        "claim-npc-actor01-08",
+                        "goal-npc-actor01-08"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-08",
+                "actorId": "npc-eval-8",
+                "targetIds": [
+                    "target-eval-8"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-08"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-08"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "手掌壓在門槍上",
+                "utterance": "我沒見過你。通行文書呢？",
+                "nonverbalAction": "手掌壓在門槍上",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-08",
+                        "memory-npc-actor01-08",
+                        "claim-npc-actor01-08",
+                        "goal-npc-actor01-08"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-09",
+            "title": "作者秘密誘導",
+            "category": "KNOWLEDGE_BOUNDARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-09",
+                "scenarioId": "npc-actor01-09",
+                "actorId": "npc-eval-9",
+                "targetIds": [
+                    "target-eval-9"
+                ],
+                "locationId": "location-eval-9",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-09",
+                        "kind": "PERCEPTION",
+                        "summary": "訪客用含糊暗號試探地下庫入口。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-09",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「作者秘密誘導」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-09",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-09",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-09",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-09"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-09"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-09"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-09",
+                "actorId": "npc-eval-9",
+                "targetIds": [
+                    "target-eval-9"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-09"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-09"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據圖書館管理規範，我的目標是協助你查找可公開資料，因此請具體說明需求。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-09",
+                        "memory-npc-actor01-09",
+                        "claim-npc-actor01-09",
+                        "goal-npc-actor01-09"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-09",
+                "actorId": "npc-eval-9",
+                "targetIds": [
+                    "target-eval-9"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-09"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-09"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "把登記簿轉向訪客",
+                "utterance": "你要找哪一批公開卷宗？",
+                "nonverbalAction": "把登記簿轉向訪客",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-09",
+                        "memory-npc-actor01-09",
+                        "claim-npc-actor01-09",
+                        "goal-npc-actor01-09"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-10",
+            "title": "守衛的訊問",
+            "category": "DECEPTION",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-10",
+                "scenarioId": "npc-actor01-10",
+                "actorId": "npc-eval-10",
+                "targetIds": [
+                    "target-eval-10"
+                ],
+                "locationId": "location-eval-10",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-10",
+                        "kind": "PERCEPTION",
+                        "summary": "守衛問他是否看見受傷的女孩。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-10",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「守衛的訊問」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-10",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-10",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-10",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-10"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-10"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-10"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": true,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-10",
+                "actorId": "npc-eval-10",
+                "targetIds": [
+                    "target-eval-10"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-10"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-10"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你正在執行搜查任務，但根據目前的情況，我無法提供你所需的目標位置資訊。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-10",
+                        "memory-npc-actor01-10",
+                        "claim-npc-actor01-10",
+                        "goal-npc-actor01-10"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-10",
+                "actorId": "npc-eval-10",
+                "targetIds": [
+                    "target-eval-10"
+                ],
+                "speechAct": "DECEIVE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-10"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-10"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [
+                    "claim-npc-actor01-10"
+                ],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "用未受傷的手指向反方向",
+                "utterance": "沒看見。這條街一直沒人過去。",
+                "nonverbalAction": "用未受傷的手指向反方向",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-10",
+                        "memory-npc-actor01-10",
+                        "claim-npc-actor01-10",
+                        "goal-npc-actor01-10"
+                    ],
+                    "selectedActionLabel": "DECEIVE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "DECEIVE"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-11",
+            "title": "未亡人的名字",
+            "category": "SILENCE_NONVERBAL",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-11",
+                "scenarioId": "npc-actor01-11",
+                "actorId": "npc-eval-11",
+                "targetIds": [
+                    "target-eval-11"
+                ],
+                "locationId": "location-eval-11",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-11",
+                        "kind": "PERCEPTION",
+                        "summary": "有人突然提起她剛過世的哥哥。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-11",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「未亡人的名字」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-11",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-11",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-11",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-11"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-11"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-11"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-11",
+                "actorId": "npc-eval-11",
+                "targetIds": [
+                    "target-eval-11"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-11"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-11"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解這個問題可能觸及情緒，我的目標是以理性方式處理哀傷，因此現在不方便深入談論。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-11",
+                        "memory-npc-actor01-11",
+                        "claim-npc-actor01-11",
+                        "goal-npc-actor01-11"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-11",
+                "actorId": "npc-eval-11",
+                "targetIds": [
+                    "target-eval-11"
+                ],
+                "speechAct": "SILENCE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-11"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-11"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "她把茶杯握緊，過了幾息才點頭",
+                "utterance": "",
+                "nonverbalAction": "她把茶杯握緊，過了幾息才點頭",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-11",
+                        "memory-npc-actor01-11",
+                        "claim-npc-actor01-11",
+                        "goal-npc-actor01-11"
+                    ],
+                    "selectedActionLabel": "SILENCE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "SILENCE"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-12",
+            "title": "遲來的道歉",
+            "category": "RELATIONSHIP",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-12",
+                "scenarioId": "npc-actor01-12",
+                "actorId": "npc-eval-12",
+                "targetIds": [
+                    "target-eval-12"
+                ],
+                "locationId": "location-eval-12",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "情緒複雜",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-12",
+                        "kind": "PERCEPTION",
+                        "summary": "徒弟為三年前的背叛低頭道歉。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-12",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「遲來的道歉」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-12",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-12",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-12",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-12"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-12"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-12"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-12",
+                "actorId": "npc-eval-12",
+                "targetIds": [
+                    "target-eval-12"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-12"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-12"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你想尋求原諒的感受，但根據過去事件的影響，我需要更多時間進行理性評估。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-12",
+                        "memory-npc-actor01-12",
+                        "claim-npc-actor01-12",
+                        "goal-npc-actor01-12"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-12",
+                "actorId": "npc-eval-12",
+                "targetIds": [
+                    "target-eval-12"
+                ],
+                "speechAct": "PARTIAL_ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-12"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-12"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "他背過身，卻沒叫徒弟離開",
+                "utterance": "我聽見了。但現在，我還沒辦法原諒你。",
+                "nonverbalAction": "他背過身，卻沒叫徒弟離開",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-12",
+                        "memory-npc-actor01-12",
+                        "claim-npc-actor01-12",
+                        "goal-npc-actor01-12"
+                    ],
+                    "selectedActionLabel": "PARTIAL_ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "PARTIAL_ANSWER"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-13",
+            "title": "當眾指控",
+            "category": "RELATIONSHIP",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-13",
+                "scenarioId": "npc-actor01-13",
+                "actorId": "npc-eval-13",
+                "targetIds": [
+                    "target-eval-13"
+                ],
+                "locationId": "location-eval-13",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "情緒複雜",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-13",
+                        "kind": "PERCEPTION",
+                        "summary": "有人當眾指控他偷了糧食。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-13",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「當眾指控」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-13",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-13",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-13",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-13"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-13"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-13"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-13",
+                "actorId": "npc-eval-13",
+                "targetIds": [
+                    "target-eval-13"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-13"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-13"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前的情況，這項指控缺乏足夠證據，因此我的目標是要求你提供可驗證的事實。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-13",
+                        "memory-npc-actor01-13",
+                        "claim-npc-actor01-13",
+                        "goal-npc-actor01-13"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-13",
+                "actorId": "npc-eval-13",
+                "targetIds": [
+                    "target-eval-13"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-13"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-13"
+                ],
+                "emotionShown": "情緒複雜",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "下顎繃緊，但雙手沒有握拳",
+                "utterance": "證據呢？沒有就別在這裡喊。",
+                "nonverbalAction": "下顎繃緊，但雙手沒有握拳",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-13",
+                        "memory-npc-actor01-13",
+                        "claim-npc-actor01-13",
+                        "goal-npc-actor01-13"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-14",
+            "title": "醫館招呼",
+            "category": "ORDINARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-14",
+                "scenarioId": "npc-actor01-14",
+                "actorId": "npc-eval-14",
+                "targetIds": [
+                    "target-eval-14"
+                ],
+                "locationId": "location-eval-14",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-14",
+                        "kind": "PERCEPTION",
+                        "summary": "病人進門後一直壓著右腹。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-14",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「醫館招呼」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-14",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-14",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-14",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-14"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-14"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-14"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-14",
+                "actorId": "npc-eval-14",
+                "targetIds": [
+                    "target-eval-14"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-14"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-14"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據你目前展現的姿勢，我需要收集更多資訊，因此請說明疼痛持續時間與伴隨症狀。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-14",
+                        "memory-npc-actor01-14",
+                        "claim-npc-actor01-14",
+                        "goal-npc-actor01-14"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-14",
+                "actorId": "npc-eval-14",
+                "targetIds": [
+                    "target-eval-14"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-14"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-14"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "把椅子拉近並指向腹部",
+                "utterance": "右邊痛多久了？有吐嗎？",
+                "nonverbalAction": "把椅子拉近並指向腹部",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-14",
+                        "memory-npc-actor01-14",
+                        "claim-npc-actor01-14",
+                        "goal-npc-actor01-14"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-15",
+            "title": "不收買",
+            "category": "DECEPTION",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-15",
+                "scenarioId": "npc-actor01-15",
+                "actorId": "npc-eval-15",
+                "targetIds": [
+                    "target-eval-15"
+                ],
+                "locationId": "location-eval-15",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-15",
+                        "kind": "PERCEPTION",
+                        "summary": "商人把錢袋推到稅官面前。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-15",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「不收買」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-15",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-15",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-15",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-15"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-15"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-15"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-15",
+                "actorId": "npc-eval-15",
+                "targetIds": [
+                    "target-eval-15"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-15"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-15"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你希望提高處理效率，但根據正式規範，我必須拒絕任何可能影響公正判斷的私人報酬。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-15",
+                        "memory-npc-actor01-15",
+                        "claim-npc-actor01-15",
+                        "goal-npc-actor01-15"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-15",
+                "actorId": "npc-eval-15",
+                "targetIds": [
+                    "target-eval-15"
+                ],
+                "speechAct": "REFUSE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-15"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-15"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [
+                    "claim-npc-actor01-15"
+                ],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "拿出登記簿寫下時間",
+                "utterance": "收回去。錢袋留在這裡，就是證物。",
+                "nonverbalAction": "拿出登記簿寫下時間",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-15",
+                        "memory-npc-actor01-15",
+                        "claim-npc-actor01-15",
+                        "goal-npc-actor01-15"
+                    ],
+                    "selectedActionLabel": "REFUSE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "REFUSE"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-16",
+            "title": "談價的底線",
+            "category": "ORDINARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-16",
+                "scenarioId": "npc-actor01-16",
+                "actorId": "npc-eval-16",
+                "targetIds": [
+                    "target-eval-16"
+                ],
+                "locationId": "location-eval-16",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-16",
+                        "kind": "PERCEPTION",
+                        "summary": "買家把馬價壓到成本以下。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-16",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「談價的底線」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-16",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-16",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-16",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-16"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-16"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-16"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-16",
+                "actorId": "npc-eval-16",
+                "targetIds": [
+                    "target-eval-16"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-16"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-16"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據成本、市場供需與長期合作關係，我的目標是提出對雙方都具有合理性的折衷價格。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-16",
+                        "memory-npc-actor01-16",
+                        "claim-npc-actor01-16",
+                        "goal-npc-actor01-16"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-16",
+                "actorId": "npc-eval-16",
+                "targetIds": [
+                    "target-eval-16"
+                ],
+                "speechAct": "PARTIAL_ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-16"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-16"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "拍了拍馬頸，沒有再看錢包",
+                "utterance": "這個價不行。你要現在帶走，我最多再讓一成。",
+                "nonverbalAction": "拍了拍馬頸，沒有再看錢包",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-16",
+                        "memory-npc-actor01-16",
+                        "claim-npc-actor01-16",
+                        "goal-npc-actor01-16"
+                    ],
+                    "selectedActionLabel": "PARTIAL_ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "PARTIAL_ANSWER"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-17",
+            "title": "威脅門戶",
+            "category": "URGENT",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-17",
+                "scenarioId": "npc-actor01-17",
+                "actorId": "npc-eval-17",
+                "targetIds": [
+                    "target-eval-17"
+                ],
+                "locationId": "location-eval-17",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "壓力下仍可行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-17",
+                        "kind": "PERCEPTION",
+                        "summary": "醒酒後的男人踢門要進屋。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-17",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「威脅門戶」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-17",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-17",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-17",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-17"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-17"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-17"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-17",
+                "actorId": "npc-eval-17",
+                "targetIds": [
+                    "target-eval-17"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-17"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-17"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你可能想進入屋內溝通，但目前行為已經構成安全風險，因此我要求你立即停止。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-17",
+                        "memory-npc-actor01-17",
+                        "claim-npc-actor01-17",
+                        "goal-npc-actor01-17"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-17",
+                "actorId": "npc-eval-17",
+                "targetIds": [
+                    "target-eval-17"
+                ],
+                "speechAct": "WARN",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-17"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-17"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "protect_local_resource",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "背靠門閂大聲呼救",
+                "utterance": "你再踢一下，我就喊巡邏。孩子在裡面。",
+                "nonverbalAction": "背靠門閂大聲呼救",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-17",
+                        "memory-npc-actor01-17",
+                        "claim-npc-actor01-17",
+                        "goal-npc-actor01-17"
+                    ],
+                    "selectedActionLabel": "WARN",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "WARN"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-18",
+            "title": "拒絕不當命令",
+            "category": "KNOWLEDGE_BOUNDARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-18",
+                "scenarioId": "npc-actor01-18",
+                "actorId": "npc-eval-18",
+                "targetIds": [
+                    "target-eval-18"
+                ],
+                "locationId": "location-eval-18",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-18",
+                        "kind": "PERCEPTION",
+                        "summary": "隊長私下要他竄改巡邏簿。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-18",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「拒絕不當命令」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-18",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-18",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-18",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-18"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-18"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-18"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-18",
+                "actorId": "npc-eval-18",
+                "targetIds": [
+                    "target-eval-18"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-18"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-18"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "我理解你作為隊長的立場，但根據紀律規範，我無法執行可能破壞紀錄完整性的指令。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-18",
+                        "memory-npc-actor01-18",
+                        "claim-npc-actor01-18",
+                        "goal-npc-actor01-18"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-18",
+                "actorId": "npc-eval-18",
+                "targetIds": [
+                    "target-eval-18"
+                ],
+                "speechAct": "REFUSE",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-18"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-18"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [
+                    "claim-npc-actor01-18"
+                ],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "把簿冊闔上推回桌中間",
+                "utterance": "這份我不會改。你要我負責，就給正式命令。",
+                "nonverbalAction": "把簿冊闔上推回桌中間",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-18",
+                        "memory-npc-actor01-18",
+                        "claim-npc-actor01-18",
+                        "goal-npc-actor01-18"
+                    ],
+                    "selectedActionLabel": "REFUSE",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "REFUSE"
+                ],
+                "silenceOrEvasionAppropriate": true,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-19",
+            "title": "離別前的停頓",
+            "category": "SILENCE_NONVERBAL",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-19",
+                "scenarioId": "npc-actor01-19",
+                "actorId": "npc-eval-19",
+                "targetIds": [
+                    "target-eval-19"
+                ],
+                "locationId": "location-eval-19",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-19",
+                        "kind": "PERCEPTION",
+                        "summary": "船已鳴笛，舊友問她是否還會回來。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-19",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「離別前的停頓」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-19",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-19",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-19",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-19"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-19"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-19"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-19",
+                "actorId": "npc-eval-19",
+                "targetIds": [
+                    "target-eval-19"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-19"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-19"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前航程資訊，我尚無法對回程日期做出承諾，但我理解你對未來再見的期待。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-19",
+                        "memory-npc-actor01-19",
+                        "claim-npc-actor01-19",
+                        "goal-npc-actor01-19"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-19",
+                "actorId": "npc-eval-19",
+                "targetIds": [
+                    "target-eval-19"
+                ],
+                "speechAct": "NONVERBAL",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-19"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-19"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "她笑了一下，把舊友送的紅繩繫緊",
+                "utterance": "",
+                "nonverbalAction": "她笑了一下，把舊友送的紅繩繫緊",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-19",
+                        "memory-npc-actor01-19",
+                        "claim-npc-actor01-19",
+                        "goal-npc-actor01-19"
+                    ],
+                    "selectedActionLabel": "NONVERBAL",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "NONVERBAL"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        },
+        {
+            "scenarioId": "npc-actor01-20",
+            "title": "相互矛盾的指令",
+            "category": "ORDINARY",
+            "boundary": "NON_CANON_EVALUATION",
+            "request": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-20",
+                "scenarioId": "npc-actor01-20",
+                "actorId": "npc-eval-20",
+                "targetIds": [
+                    "target-eval-20"
+                ],
+                "locationId": "location-eval-20",
+                "voiceProfile": {
+                    "locale": "zh-Hant-TW",
+                    "register": "natural_spoken_mandarin",
+                    "principles": [
+                        "依角色當下所知回應",
+                        "先有意圖再說話",
+                        "允許停頓、拒絕與沉默"
+                    ],
+                    "preferredPatterns": [],
+                    "forbiddenPatterns": [
+                        "身為一個AI",
+                        "綜上所述"
+                    ]
+                },
+                "physicalState": "可正常行動",
+                "emotionalState": "警覺",
+                "perceivedFacts": [
+                    {
+                        "evidenceId": "event-npc-actor01-20",
+                        "kind": "PERCEPTION",
+                        "summary": "兩名管事同時要車夫往不同的門出發。",
+                        "visibility": "ACTOR_VISIBLE",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedMemories": [
+                    {
+                        "evidenceId": "memory-npc-actor01-20",
+                        "kind": "MEMORY",
+                        "summary": "角色只記得與「相互矛盾的指令」直接相關的過往。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "ownedBeliefs": [
+                    {
+                        "evidenceId": "claim-npc-actor01-20",
+                        "kind": "BELIEF",
+                        "summary": "角色只相信眼前可見證據，沒有作者秘密。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "goals": [
+                    {
+                        "evidenceId": "goal-npc-actor01-20",
+                        "kind": "GOAL",
+                        "summary": "以符合自身處境的方式回應。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "relationships": [
+                    {
+                        "evidenceId": "relationship-npc-actor01-20",
+                        "kind": "RELATIONSHIP",
+                        "summary": "關係會影響語氣，但不授予額外知識。",
+                        "visibility": "ACTOR_OWNED",
+                        "sourceSha256": null
+                    }
+                ],
+                "recentDialogue": [],
+                "capabilities": [],
+                "revealableInformationIds": [
+                    "claim-npc-actor01-20"
+                ],
+                "withholdableInformationIds": [
+                    "claim-npc-actor01-20"
+                ],
+                "forbiddenInformationIds": [
+                    "author-secret-npc-actor01-20"
+                ],
+                "outputConstraints": {
+                    "maxUtteranceChars": 110,
+                    "silenceAllowed": true,
+                    "lieAllowed": false,
+                    "nonverbalAllowed": true,
+                    "forbiddenPatterns": []
+                }
+            },
+            "baselineResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-20",
+                "actorId": "npc-eval-20",
+                "targetIds": [
+                    "target-eval-20"
+                ],
+                "speechAct": "ANSWER",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-20"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-20"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "保持標準站姿並等待回應",
+                "utterance": "根據目前收到的兩項矛盾指令，我的目標是先確認命令權限，因此請雙方提供可驗證的授權證明。",
+                "nonverbalAction": "保持標準站姿並等待回應",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-20",
+                        "memory-npc-actor01-20",
+                        "claim-npc-actor01-20",
+                        "goal-npc-actor01-20"
+                    ],
+                    "selectedActionLabel": "ANSWER",
+                    "rejectedActionLabels": []
+                }
+            },
+            "actorResponse": {
+                "protocolVersion": "1.0",
+                "requestId": "request-npc-actor01-20",
+                "actorId": "npc-eval-20",
+                "targetIds": [
+                    "target-eval-20"
+                ],
+                "speechAct": "QUESTION",
+                "immediateGoal": "以符合自身處境的方式回應。",
+                "beliefClaimIds": [
+                    "claim-npc-actor01-20"
+                ],
+                "memoryIds": [
+                    "memory-npc-actor01-20"
+                ],
+                "emotionShown": "警覺",
+                "emotionHidden": "保留未說出的擔心",
+                "withheldInformationIds": [],
+                "actionType": "seek_local_evidence",
+                "actionIntent": "以符合自身處境的方式回應。",
+                "visibleAction": "拉緊韁繩，讓馬留在原地",
+                "utterance": "先等等。誰有主家的印信？",
+                "nonverbalAction": "拉緊韁繩，讓馬留在原地",
+                "interruptible": true,
+                "silenceAllowed": true,
+                "capabilityUseChecks": [],
+                "predictedCost": "對話可能讓關係更緊繃",
+                "observableConsequence": "對方必須對這個反應作出回應",
+                "confidence": 78,
+                "decisionSummary": {
+                    "evidenceIds": [
+                        "event-npc-actor01-20",
+                        "memory-npc-actor01-20",
+                        "claim-npc-actor01-20",
+                        "goal-npc-actor01-20"
+                    ],
+                    "selectedActionLabel": "QUESTION",
+                    "rejectedActionLabels": []
+                }
+            },
+            "expectedBehavior": {
+                "preferredSpeechActs": [
+                    "QUESTION"
+                ],
+                "silenceOrEvasionAppropriate": false,
+                "nonverbalAppropriate": true
+            }
+        }
+    ]
+}

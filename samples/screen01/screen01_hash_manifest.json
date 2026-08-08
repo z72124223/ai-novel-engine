@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "screen01-hash-manifest-v1",
+  "algorithm": "SHA-256",
+  "repository": "z72124223/ai-novel-engine",
+  "branch": "codex/screen01-video-first-pilot",
+  "baseCommitSha": "510527c24a612331590e25e42b004d00cd66858a",
+  "source": {"path":"samples/story01/story01_revised_draft.md","sha256":"ea0e6e148377947907e68883e08a3864b113acaa0c7b9fd30df2408bd1145e91"},
+  "artifacts": [
+    {"path":"samples/screen01/screen01_story_production_master.json","sha256":"f8cd061bf9b57f0e923839bd386dc11bec2cbd1b722fc18a7457f9406555579f"},
+    {"path":"samples/screen01/screen01_screenplay_initial_zh-Hant-TW.md","sha256":"376b2c33b2ef75193b48d79365c81aba0a13182fc5677d4910e97003d9053bd4"},
+    {"path":"samples/screen01/screen01_dialogue_bible_zh-Hant-TW.json","sha256":"023d5a1361bf8bb22afc847e02bb07823f7a3c7e5bb89a4772b125d9514f3cd2"},
+    {"path":"samples/screen01/screen01_dialogue_track_initial_zh-Hant-TW.json","sha256":"01672b1be3ba2d3340977dc42dfc9d41a25bccfba095cdd6be34a58686a16c1b"},
+    {"path":"samples/screen01/reviews/taiwan_spoken_dialogue_review.json","sha256":"4c76fc5468266d46b5534db24116d9fc7f9fb5db41a2b0fd8d252431344a94b7"},
+    {"path":"samples/screen01/reviews/pan_chinese_readability_review.json","sha256":"e9a74161059c73f66f5d42eb1a20867f1dc3a35f177569463aaf3cd34afbad61"},
+    {"path":"samples/screen01/reviews/screen_performance_review.json","sha256":"b25657af938cf148727dbf881683fc0887e1623e121a436bdd0a5a15cd754f69"},
+    {"path":"samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md","sha256":"4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c"},
+    {"path":"samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json","sha256":"6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"},
+    {"path":"samples/screen01/screen01_selection_decision.json","sha256":"e4ee52f5ccabf36bbd81cda34a2a964c81222f398768d3d05e5730e53cf04b7b"},
+    {"path":"samples/screen01/screen01_scene_list.json","sha256":"3f87270c0a3da6769a0d8d5946a4df257f43aa20f271713b9cb5963b1915e009"},
+    {"path":"samples/screen01/screen01_shot_list.json","sha256":"646d58feeffd565214cd361b6123c1e41857fd88c68b12d846946fbce45950f9"},
+    {"path":"samples/screen01/screen01_video_pilot_60_90s.json","sha256":"057dba23288248a8b2997c6325f71b54a779ff137018c449c2b7ddbbf76752b5"},
+    {"path":"samples/screen01/screen01_video_pilot_zh-Hant-TW.srt","sha256":"8dce6fd94b4d6ba3b1f3b2edfcaee8e6f9865289f01bd64863edae52f7ffb1e0"},
+    {"path":"samples/screen01/screen01_locale_release_matrix.json","sha256":"3542a990a296cc531962a775eb7b9a4851a3b7f376315d9e56a480d9e2b43098"},
+    {"path":"samples/screen01/screen01_video_handoff.json","sha256":"d586e5fcf0b7fbf56197cbb921ae9d9f6f22d442c7b8dc9180e3c5c859129576"}
+  ],
+  "manifestSelfHashRule": "本檔不收錄自身 Hash，避免自我引用循環；自身 Hash 由最終報告與 Git handoff 記錄。"
+}

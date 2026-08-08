@@ -1,0 +1,54 @@
+[
+    {
+        "profileId":  "voice-lu-chenxing-v1",
+        "version":  "1.0.0",
+        "characterId":  "character-lu-chenxing",
+        "ruleSetId":  "engine-production-rules",
+        "ruleSetVersion":  "1.0.0",
+        "voiceRules":  [
+                           "短句",
+                           "觀察型乾式幽默",
+                           "高壓時減少笑話",
+                           "真實傷害後停下",
+                           "不靠降智"
+                       ],
+        "forbiddenPatterns":  [
+                                  "高壓救援中的調情雙關",
+                                  "長篇解釋證明聰明"
+                              ],
+        "profileSha256":  "da67fbbbc3e7f3b1cecf0133566fdcd3597f2c5ae8fb21688510d27f13b9ac47"
+    },
+    {
+        "profileId":  "voice-zhou-ke-v1",
+        "version":  "1.0.0",
+        "characterId":  "character-zhou-ke",
+        "ruleSetId":  "engine-production-rules",
+        "ruleSetVersion":  "1.0.0",
+        "voiceRules":  [
+                           "極短",
+                           "命令、路線、救援",
+                           "害怕時更少話"
+                       ],
+        "forbiddenPatterns":  [
+                                  "配合主角所有笑點",
+                                  "危急時完整論述"
+                              ],
+        "profileSha256":  "bde2c9bae22fef4e6705813209fb07fc63bd0654d4a1034b8e4a116137af8f60"
+    },
+    {
+        "profileId":  "voice-tide-picker-v1",
+        "version":  "1.0.0",
+        "characterId":  "character-tide-picker",
+        "ruleSetId":  "engine-production-rules",
+        "ruleSetVersion":  "1.0.0",
+        "voiceRules":  [
+                           "防衛、重複、碎裂",
+                           "受傷時只保留關鍵詞"
+                       ],
+        "forbiddenPatterns":  [
+                                  "長篇解釋箱子",
+                                  "在創傷中完整說理"
+                              ],
+        "profileSha256":  "a53e720af23156f1939a2db0758322b81160d7b70c39265167dc3bca7dd50a71"
+    }
+]

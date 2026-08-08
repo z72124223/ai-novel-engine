@@ -1,0 +1,53 @@
+{
+  "verdict": "PASS",
+  "status": "CHENXING_OPENING_MODERN_COSTUME_SQL_IMPORT_PASS",
+  "updatedAt": "2026-07-08",
+  "databasePath": "data/story.db",
+  "projectId": "chenxing",
+  "packId": "chenxing-formal-v3-opening-modern-costume",
+  "packVersion": 1,
+  "importId": "setting-import-9f0cc522-9574-44f4-9250-10774afee8cd",
+  "settingPackPath": "world/chenxing/engine/chenxing_setting_pack_v3_opening_modern_costume.json",
+  "formalCostumePath": "world/chenxing/formal/25_lu_chenxing_opening_modern_costume_v1.json",
+  "costumeTurnaround": "world/chenxing/assets/costume/lu_chenxing_opening_modern_costume_turnaround_v1.png",
+  "openingModernCostume": {
+    "summary": "黑色背心汗衫 + 短袖外套 + 短褲 + 登山鞋 + 側背包",
+    "layers": [
+      "黑色背心汗衫",
+      "炭灰短袖外套",
+      "深橄欖灰短褲",
+      "棕灰登山鞋",
+      "黑色側背包"
+    ],
+    "rule": "2026 台灣開場現代裝，不穿古裝"
+  },
+  "sqlWrites": {
+    "projectsUpdated": [
+      {
+        "id": "chenxing",
+        "entityVersion": 3
+      }
+    ],
+    "charactersUpdated": [
+      {
+        "id": "char-lu-chenxing",
+        "entityVersion": 3,
+        "profileFieldsAdded": [
+          "openingModernCostumeFormalPath",
+          "openingModernCostumeTurnaround",
+          "openingModernCostumeSummary",
+          "openingCostumePhase"
+        ]
+      }
+    ],
+    "factsAdded": [
+      "fact-lu-opening-modern-costume"
+    ]
+  },
+  "pipeline": {
+    "validate": "PASS",
+    "preview": "PASS",
+    "apply": "PASS"
+  },
+  "directSqlUsed": false
+}

@@ -1,0 +1,275 @@
+{
+    "verdict": "PASS",
+    "status": "LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN_REVIEW_PASS",
+    "reviewId": "chenxing-local-renderer-manifest-adapter-contract-plan-review-v0-001",
+    "sourcePlanFile": "samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_adapter_contract_plan_sample.json",
+    "sourcePlanId": "chenxing-local-renderer-manifest-adapter-contract-plan-v0-001",
+    "sourcePhase16DryRunId": "chenxing-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+    "sourceDraftId": "chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+    "sourceReviewId": "chenxing-local-renderer-manifest-draft-json-review-v0-001",
+    "sourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+    "sourceManifestDraftPlanReviewId": "chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+    "sourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+    "sourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+    "sourceAdapterImplementationPlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+    "sourceAdapterImplementationPlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+    "sourceLocalRendererAdapterDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+    "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+    "sourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+    "sourceStoryInputPackId": "local-story-input-chenxing-v0-001",
+    "checks": [
+        {
+            "checkId": "explicit-source-plan",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter contract plan review requires an explicit Phase 17 plan file.",
+            "evidence": [
+                "planFile=samples\\chenxing\\pipeline\\chenxing_local_renderer_manifest_adapter_contract_plan_sample.json",
+                "planId=chenxing-local-renderer-manifest-adapter-contract-plan-v0-001",
+                "sourcePhase16DryRunId=chenxing-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+                "sourceStoryInputPackId=local-story-input-chenxing-v0-001"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "plan-state",
+            "status": "PASS",
+            "category": "source_validation",
+            "message": "Adapter contract plan review requires PASS Phase 17 plan state.",
+            "evidence": [
+                "verdict=PASS",
+                "status=LOCAL_RENDERER_MANIFEST_ADAPTER_CONTRACT_PLAN",
+                "downstreamBoundary=local_renderer_manifest_adapter_contract_plan_only_not_adapter_implementation",
+                "nextAllowedDownstreamStep=local_renderer_manifest_adapter_contract_plan_review"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "source-ids-present",
+            "status": "PASS",
+            "category": "source_linkage",
+            "message": "Adapter contract plan review requires non-empty source ids.",
+            "evidence": [
+                "sourcePlanIdPresent=true",
+                "sourcePhase16DryRunIdPresent=true",
+                "sourceDraftIdPresent=true",
+                "sourceReviewIdPresent=true",
+                "sourceStoryInputPackIdPresent=true"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "plan-checks-pass",
+            "status": "PASS",
+            "category": "review_gate",
+            "message": "Adapter contract plan review requires non-empty Phase 17 checks, all required checks PASS, and no findings.",
+            "evidence": [
+                "sourceChecks=9",
+                "sourceRequiredFail=0",
+                "sourceFindingCount=0",
+                "sourceFindings=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "local-boundaries",
+            "status": "PASS",
+            "category": "boundary",
+            "message": "Adapter contract plan review requires local-only no-media boundaries.",
+            "evidence": [
+                "sourceLocalOnly=true",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "draftManifestGenerated=true",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "mediaGenerated=false",
+                "rendererInvocation=none",
+                "providerInvocation=none",
+                "ttsInvocation=none",
+                "adapterImplementationExecuted=false",
+                "adapterExecuted=false",
+                "noExternalPaidProviderTools=true",
+                "rendererReady=false",
+                "mp4ReadinessClaimed=false",
+                "draftManifestGenerated=true",
+                "productionManifestGenerated=false",
+                "productionReady=false",
+                "productionApproved=false"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "contract-content-present",
+            "status": "PASS",
+            "category": "plan_completeness",
+            "message": "Adapter contract plan review requires requirements, input mapping, work items, and verification steps.",
+            "evidence": [
+                "requirementCount=4",
+                "requiredFieldCount=26",
+                "mappingEntries=3",
+                "workItemCount=3",
+                "verificationStepCount=3"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "mapping-complete",
+            "status": "PASS",
+            "category": "adapter_mapping",
+            "message": "Adapter contract plan review requires complete mapped panel contract fields.",
+            "evidence": [
+                "mappedPanelCount=3",
+                "unmappedPanelCount=0",
+                "missingRequiredFieldCount=0",
+                "inputMappingEntries=3",
+                "inputMappingRequiredFieldCount=24",
+                "inputMappingMissingRequiredFieldCount=0"
+            ],
+            "requiredForReview": true
+        },
+        {
+            "checkId": "review-only-boundary",
+            "status": "PASS",
+            "category": "adapter_contract",
+            "message": "Adapter contract plan review is review only; no adapter implementation, execution, renderer, media, or production approval is allowed.",
+            "evidence": [
+                "planningOnly=true",
+                "adapterImplementationGenerated=false",
+                "adapterExecuted=false",
+                "workItemCount=3",
+                "verificationStepCount=3",
+                "adapter contract",
+                "no media generation",
+                "ComicVideoRenderHandoffManifest generation=false",
+                "production lock=false"
+            ],
+            "requiredForReview": true
+        }
+    ],
+    "sourceAlignmentSummary": {
+        "sourceIdsPresent": true,
+        "sourcePlanIdPresent": true,
+        "sourcePhase16DryRunIdPresent": true,
+        "sourceDraftIdPresent": true,
+        "sourceReviewIdPresent": true,
+        "sourceStoryInputPackIdPresent": true,
+        "sourcePlanId": "chenxing-local-renderer-manifest-adapter-contract-plan-v0-001",
+        "sourcePhase16DryRunId": "chenxing-local-renderer-manifest-draft-json-adapter-dry-run-v0-001",
+        "sourceDraftId": "chenxing-local-renderer-manifest-draft-json-draft-v0-001",
+        "sourceReviewId": "chenxing-local-renderer-manifest-draft-json-review-v0-001",
+        "sourceManifestDraftPlanId": "chenxing-local-renderer-manifest-draft-plan-v0-001",
+        "sourceManifestDraftPlanReviewId": "chenxing-local-renderer-manifest-draft-plan-review-v0-001",
+        "sourceImplementationDraftId": "chenxing-local-renderer-adapter-implementation-draft-v0-001",
+        "sourceImplementationDraftReviewId": "chenxing-local-renderer-adapter-implementation-draft-review-v0-001",
+        "sourceAdapterImplementationPlanId": "chenxing-local-renderer-adapter-implementation-plan-v0-001",
+        "sourceAdapterImplementationPlanReviewId": "chenxing-local-renderer-adapter-implementation-plan-review-v0-001",
+        "sourceLocalRendererAdapterDryRunId": "chenxing-local-renderer-adapter-dry-run-v0-001",
+        "sourceHandoffId": "chenxing-story-video-preview-handoff-v0-001",
+        "sourceHandoffReviewId": "chenxing-story-video-preview-handoff-review-v0-001",
+        "sourceStoryInputPackId": "local-story-input-chenxing-v0-001"
+    },
+    "adapterContractPlanReviewSummary": {
+        "sourceChecks": 9,
+        "sourceChecksPass": 9,
+        "sourceChecksFail": 0,
+        "sourceFindingCount": 0,
+        "adapterContractRequirements": 4,
+        "adapterInputMappingEntries": 3,
+        "requiredAdapterContractWorkItems": 3,
+        "verificationSteps": 3,
+        "mappedPanelCount": 3,
+        "unmappedPanelCount": 0,
+        "missingRequiredFieldCount": 0,
+        "totalDraftFields": 69,
+        "reviewOnly": true,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "reviewedContractRequirementsSummary": {
+        "requirementCount": 4,
+        "requiredFieldCount": 26,
+        "implementedNowCount": 0,
+        "adapterExecutedCount": 0,
+        "requirementIds": [
+            "explicit-input-contract",
+            "panel-mapping-contract",
+            "field-coverage-contract",
+            "local-boundary-contract"
+        ]
+    },
+    "reviewedInputMappingSummary": {
+        "planningOnly": true,
+        "mappingEntries": 3,
+        "mappedPanelCount": 3,
+        "requiredFieldCount": 24,
+        "missingRequiredFieldCount": 0,
+        "adapterImplementationGenerated": false,
+        "adapterExecuted": false,
+        "rendererInvocationCount": 0,
+        "mediaGeneratedCount": 0,
+        "productionManifestGeneratedCount": 0
+    },
+    "reviewedWorkItemsSummary": {
+        "workItemCount": 3,
+        "mustNotDoItemCount": 18,
+        "allRequireReviewGate": true
+    },
+    "verificationReviewSummary": {
+        "verificationStepCount": 3,
+        "adapterExecutionChecks": 0,
+        "rendererExecutionChecks": 0,
+        "mediaGenerationChecks": 0,
+        "productionApprovalChecks": 0
+    },
+    "boundarySummary": {
+        "sourceLocalOnly": true,
+        "mediaGenerated": false,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "boundaries": {
+        "fileProtocolJsonOnly": true,
+        "noExternalPaidProviderTools": true,
+        "providerInvocation": "none",
+        "ttsInvocation": "none",
+        "mediaGenerated": false,
+        "rendererInvocation": "none",
+        "directSqliteWrites": false,
+        "providerApiCalls": false,
+        "adapterImplementationExecuted": false,
+        "adapterExecuted": false,
+        "draftManifestGenerated": true,
+        "productionManifestGenerated": false,
+        "productionReady": false,
+        "productionApproved": false,
+        "finalMediaApproval": false,
+        "providerMediaHandoff": false,
+        "release": false,
+        "canonRegistryOrProductionLock": false,
+        "rendererReady": false,
+        "mp4ReadinessClaimed": false
+    },
+    "downstreamBoundary": "local_renderer_manifest_adapter_contract_plan_review_only_not_adapter_implementation",
+    "nextAllowedDownstreamStep": "local_renderer_manifest_adapter_contract_draft",
+    "findingCount": 0
+}

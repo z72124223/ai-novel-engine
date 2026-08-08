@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "chenxing-crossing-experience-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-07",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "pacingPolicy": {
+    "rule": "Do not rush crossing. Entering the ruin with 愛醬 must unfold through many small beats, atmosphere layers, and suspense.",
+    "supersedes": "Any prior one-beat or immediate-displacement crossing draft.",
+    "authorCorrection": "節奏太快是錯的。他們與狗一起進入時，要有大量細節、氣氛遞進、懸疑；何時穿越連他們自己都不清楚。"
+  },
+  "eventOrder": {
+    "rule": "先發生廢墟內所有事情，穿越發生在後面。",
+    "phaseA": "Inside the two-door independent segment: wrong details, experiment remnants, dead, grey bottles, gold, continued movement.",
+    "phaseB": "Crossing only after passing or approaching the departure door.",
+    "authorCorrection": "玻璃瓶、黃金、實驗遺留都發生在兩門之間的獨立空間內；穿越只在離開的門之後發生。"
+  },
+  "spatialModel": {
+    "formalPath": "world/chenxing/formal/34_spatial_pocket_two_doors_v1.json",
+    "entranceDoor": "進來的門，連接台灣側。",
+    "departureDoor": "離開的門，連接别界／另一端世界。",
+    "independentSegment": "兩門之間的獨立空間，因此從未出現在公開歷史與地圖中。"
+  },
+  "crossingKnowledgeRule": {
+    "protagonistAwareness": "陸塵行 and 愛醬 do not know the exact moment they crossed.",
+    "readerExperience": "During bottles and gold, the reader should still believe this is Taiwan 2026. Crossing comes later.",
+    "noSingleDoorReveal": "Do not resolve crossing in one scene with a visible portal explanation."
+  },
+  "atmosphericLayers": [
+    {
+      "layer": 1,
+      "name": "outer_coastal_dread",
+      "mood": "wind, swell, tide, darkening sky, trapped on platform",
+      "function": "Real-world danger is still fully believable."
+    },
+    {
+      "layer": 2,
+      "name": "approach_to_ruin",
+      "mood": "abandoned infrastructure, wrong silence between gusts, 愛醬 hesitation",
+      "function": "First hint that the hillside structure is not ordinary ruin."
+    },
+    {
+      "layer": 3,
+      "name": "threshold_entry",
+      "mood": "door, rust, concrete smell, temperature shift, echo too long or too short",
+      "function": "They enter together; every step is observable."
+    },
+    {
+      "layer": 4,
+      "name": "interior_progression",
+      "mood": "corridor, stairs, old signage, sealed bulkheads, water intrusion, failing light",
+      "function": "Suspense through accumulation of wrong details, not one jump scare."
+    },
+    {
+      "layer": 5,
+      "name": "liminal_uncertainty",
+      "mood": "time feels unmoored, sound arrives late, shadows do not match wind outside",
+      "function": "Crossing may happen here, but cannot be timestamped."
+    },
+    {
+      "layer": 6,
+      "name": "aftermath_realization",
+      "mood": "exhaustion, shelter instinct, then small inconsistencies that do not fit Taiwan 2026",
+      "function": "They only suspect something happened later, not at a clear door moment."
+    }
+  ],
+  "detailCategoriesToWrite": [
+    "footing and debris under boots",
+    "愛醬 ears, tail, pacing, refusal, and re-approach",
+    "phone battery, no signal, flashlight behavior",
+    "smell stack: rust, sea salt, old oil, then something too clean or too old",
+    "sound stack: wind outside vs silence inside vs distant drip",
+    "touch: wet concrete, cold metal, vibration through floor",
+    "light: typhoon dark outside, one usable beam inside",
+    "body: cold, hunger, adrenaline crash after entry"
+  ],
+  "firstWrongDetail": {
+    "status": "author_locked",
+    "beat": "after_entry_or_first_interior_pause",
+    "luChenxingThought": "這個廢墟為什麼以前沒有聽人說過，也沒有在網路上搜尋到相關資訊？",
+    "whyItWorks": [
+      "Fits 陸塵行's curiosity and habit of checking things online before coastal trips.",
+      "Feels realistic in 2026 Taiwan without revealing fantasy yet.",
+      "Turns unease into an active question instead of a jump scare.",
+      "Implies this place never entered public history at all, not that locals secretly warned people away."
+    ],
+    "aijiangParallel": "愛醬 may already be uneasy before he forms the thought; human doubt and animal instinct stack, not replace each other.",
+    "notYetAllowed": [
+      "Do not answer why records are missing in the same scene.",
+      "Do not use local ghost-story or 'do not approach' rumors.",
+      "Do not state crossing has happened.",
+      "Do not reveal 逆行門計畫."
+    ]
+  },
+  "secondWrongDetail": {
+    "status": "author_locked",
+    "beat": "threshold_or_first_interior_movement",
+    "sensoryHook": "海邊的人知道：海風有自己的味道，靠近海時皮膚會有黏黏的感覺。",
+    "luChenxingExperience": "這裡離海不算遠，卻聞不到應有的海風味，也沒有那種熟悉的黏膩感；像海被隔開，或像身體對海的記憶失效。",
+    "whyItWorks": [
+      "Comes from lived coastal body memory, not internet research.",
+      "Physical and immediate; reader who has been to the sea can feel it.",
+      "Does not explain fantasy yet; only makes the body disagree with location.",
+      "愛醬 may react to air dryness, wrong scent, or missing salt before 陸塵行 names it."
+    ],
+    "writingNotes": [
+      "Can compare to moments ago on the erosion platform where salt and stickiness were real.",
+      "Typhoon wind outside may still roar, but the expected sea-smell profile is wrong at the ruin.",
+      "Do not answer why in the same beat."
+    ]
+  },
+  "suspenseBeats": {
+    "principle": "Each beat adds one question, not one answer.",
+    "examples": [
+      "Why has no one mentioned this ruin, and why is there no useful online record?",
+      "Why is the sea-smell and sticky coastal air wrong here though the ocean is still nearby?",
+      "Why is this corridor drier than it should be in a typhoon night?",
+      "Why does 愛醬 stare at an empty corner?",
+      "Why does a sealed Japanese-era mark look recently disturbed?",
+      "Why does the storm sound fade before the door fully closes?",
+      "Why does his watch or phone time jump or stall?"
+    ],
+    "rule": "Keep questions open through volume one opening chapters."
+  },
+  "entrySequenceTemplate": [
+    {
+      "order": 10,
+      "beat": "approach_ruin_in_storm",
+      "detail": "陸塵行 and 愛醬 move uphill together; wind tries to push them back; only one plausible shelter."
+    },
+    {
+      "order": 11,
+      "beat": "aijiang_hesitates",
+      "detail": "愛醬 stops, ears up, does not want to enter immediately; 陸塵行 must decide whether to coax or wait."
+    },
+    {
+      "order": 12,
+      "beat": "threshold_pause",
+      "detail": "Doorframe, rust, old bolts; they enter together. 陸塵行 notices the air lacks the familiar sea-wind smell and the sticky coastal skin-feel he expects this close to the water."
+    },
+    {
+      "order": 13,
+      "beat": "first_interior_room",
+      "detail": "Enough space to escape wind; immediate physical relief, but wrong quiet. 陸塵行 remembers he has never heard locals mention this ruin and cannot recall finding useful information online."
+    },
+    {
+      "order": 14,
+      "beat": "deeper_movement",
+      "detail": "They continue into service corridors. Experimental remnants appear: gurneys, restraint bolts, measurement marks, Chinese scratchings on walls."
+    },
+    {
+      "order": 15,
+      "beat": "open_room_dead",
+      "detail": "Failed-seal remains from 1944-1945 with death time and cause readable through room design, not exposition lecture."
+    },
+    {
+      "order": 16,
+      "beat": "grey_glass_bottles",
+      "detail": "Rows of large grey glass vessels. 陸塵行 approaches one bottle, light close, and realizes a WWII-era body has been soaking inside until now. 愛醬 refuses the rack."
+    },
+    {
+      "order": 17,
+      "beat": "gold_cache",
+      "detail": "He finds hurriedly abandoned Japanese gold stores. He takes only what he can carry and keeps exploring."
+    },
+    {
+      "order": 18,
+      "beat": "continue_after_gold",
+      "detail": "Still Taiwan 2026. He keeps exploring with partial gold on his body, thinking he may return for the rest later."
+    },
+    {
+      "order": 19,
+      "beat": "phase_a_complete",
+      "detail": "All ruin discoveries are behind him. He has not crossed yet."
+    },
+    {
+      "order": 20,
+      "beat": "exhaustion_stop",
+      "detail": "Brief stop deeper in the structure; still believes he is in a Taiwan coastal ruin."
+    },
+    {
+      "order": 21,
+      "beat": "liminal_gap",
+      "detail": "Only now does time, sound, or space slip without announcement. Crossing begins here, not earlier."
+    },
+    {
+      "order": 22,
+      "beat": "no_return",
+      "detail": "After displacement, he cannot return to the Taiwan ruin, the bottles, or the gold he left behind."
+    }
+  ],
+  "writingGuards": [
+    "陸塵行 and 愛醬 must be together in every major entry beat.",
+    "No narrator statement of exact crossing time.",
+    "No immediate jump to cultivation world vocabulary or 灰關.",
+    "Atmosphere before explanation.",
+    "Curiosity can make 陸塵行 go deeper, but survival need drives initial entry."
+  ],
+  "links": {
+    "openingArc": "world/chenxing/formal/21_volume_one_opening_arc_v1.json",
+    "authorSecret": "world/chenxing/formal/30_volume_one_secrets_author_only_v1.json",
+    "protagonistPair": "world/chenxing/formal/20_protagonist_pair_v1.json",
+    "interiorDiscoveries": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json"
+  }
+}

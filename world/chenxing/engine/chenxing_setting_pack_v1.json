@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "chenxing-formal-v1",
+  "packVersion": 1,
+  "projectId": "chenxing",
+  "name": "塵行正式世界設定包 v1",
+  "description": "由 world/chenxing/formal/ 作者定稿轉入引擎的基礎設定。第一卷開場為 2026 基隆八斗子大坪海岸。",
+  "mode": "BASE",
+  "source": {
+    "author": "author-formal-canon",
+    "license": "author",
+    "notes": "Derived from world/chenxing/formal/ author_locked decisions. Author-only secrets stay author_only."
+  },
+  "dependencies": [],
+  "entities": {
+    "projects": [
+      {
+        "id": "chenxing",
+        "name": "塵行",
+        "summary": "2026 台灣海岸生存開場；主角陸塵行與愛醬在颱風與漲潮壓力下探索異常遺跡。",
+        "metadata": {
+          "activeSceneId": "scene-daping-coast-opening",
+          "seriesTitle": "塵行",
+          "formalCanonRoot": "world/chenxing/formal/"
+        }
+      }
+    ],
+    "locations": [
+      {
+        "id": "loc-daping-coast",
+        "name": "大坪海岸",
+        "description": "基隆八斗子海蝕平台與潮間帶。低潮時可進，漲潮與颱風外圍會迅速封死回頭路。",
+        "visibility": "public"
+      },
+      {
+        "id": "loc-hillside-ruin",
+        "name": "山坡廢棄構造物",
+        "description": "大坪海岸上方山坡的日治火力發電相關廢棄建築群，表面荒廢，內部結構異常。",
+        "visibility": "public"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char-lu-chenxing",
+        "name": "陸塵行",
+        "role": "player",
+        "description": "2026 台灣基隆八斗子一帶生活的實作型青年，靠多種實用技能維生，對看不懂的機制無法罷休。",
+        "startingItems": [
+          "item-phone",
+          "item-tide-notes"
+        ],
+        "metadata": {
+          "isPlayer": "true"
+        },
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "確認潮汐時間，並弄清海蝕平台上那些不該出現的結構接縫。",
+          "dominantEmotion": "專注",
+          "emotionState": {
+            "專注": 65,
+            "警覺": 35
+          },
+          "availableActions": [
+            "查看潮汐紀錄",
+            "觀察海蝕平台",
+            "安撫愛醬",
+            "檢查手機訊號"
+          ],
+          "relationshipDefaults": {
+            "char-aijiang": "家人"
+          },
+          "initiativeLevel": 55
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-aijiang",
+        "name": "愛醬",
+        "role": "co-protagonist",
+        "description": "長毛哈士奇，已絕育的雌性犬。不是妖獸或靈寵，有自己的故事線與學習上限。",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "跟在陸塵行身邊，避開危險的潮水和不穩定的岩石。",
+          "dominantEmotion": "警覺",
+          "emotionState": {
+            "警覺": 60,
+            "依戀": 70
+          },
+          "availableActions": [
+            "跟隨",
+            "警戒四周",
+            "停在安全處"
+          ],
+          "relationshipDefaults": {
+            "char-lu-chenxing": "家人"
+          },
+          "initiativeLevel": 45
+        },
+        "visibility": "public"
+      }
+    ],
+    "items": [
+      {
+        "id": "item-phone",
+        "name": "手機",
+        "description": "一般智慧型手機；颱風外圍增強後可能失去訊號。",
+        "initialOwnerId": "char-lu-chenxing",
+        "visibility": "public"
+      },
+      {
+        "id": "item-tide-notes",
+        "name": "潮汐紀錄",
+        "description": "陸塵行事先查好的潮汐與天氣筆記。",
+        "initialOwnerId": "char-lu-chenxing",
+        "visibility": "public"
+      }
+    ],
+    "worldRules": [
+      {
+        "id": "rule-curiosity-exploration",
+        "title": "好奇與探索是讀者引擎",
+        "content": "吸引力來自想要了解、想要探索，以及主角明顯多理解世界一點；抽象壓力本身不是主引擎。",
+        "priority": 9,
+        "visibility": "public"
+      },
+      {
+        "id": "rule-tidal-coastal-danger",
+        "title": "潮間帶是真實危險",
+        "content": "漲潮、長周期浪與颱風外圍可讓原本能走的路在短時間內變得無法通過。",
+        "priority": 10,
+        "visibility": "public",
+        "metadata": {
+          "severity": "hard",
+          "conflictKey": "coastal-danger"
+        }
+      },
+      {
+        "id": "rule-volume-one-no-cultivation-lecture",
+        "title": "第一卷不講修煉課",
+        "content": "第一卷以 2026 台灣線性開場，不先講修煉體系，不開灰關市集冷開場。",
+        "priority": 9,
+        "visibility": "public"
+      },
+      {
+        "id": "rule-cultivation-entry-gate",
+        "title": "感氣門檻",
+        "content": "約二十分之一的人能感氣，但尚不能引氣入體；此階段仍被視為凡人。",
+        "priority": 5,
+        "visibility": "public"
+      },
+      {
+        "id": "rule-fortress-wilderness-later",
+        "title": "要塞與荒野（穿越後世界）",
+        "content": "已知文明住在要塞群島中，要塞間荒野極度致命；此規則在穿越後才成為主角日常壓力。",
+        "priority": 6,
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-opening-year-place",
+        "content": "故事第一卷開場在 2026 年台灣基隆八斗子大坪海岸。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-bavi-approaching",
+        "content": "颱風巴威接近台灣，北部面臨強風、豪雨與長周期浪的風險。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-no-public-ruin-record",
+        "content": "大坪海岸這處遺跡在一般可查的公開紀錄、地圖與地方敘事中幾乎找不到名字。",
+        "visibility": "public"
+      }
+    ],
+    "secrets": [
+      {
+        "id": "secret-nixingmen-plan",
+        "content": "逆行門計畫：戰末日方封存實驗，企圖打開回到過去的通道，實際打開的是别界裂縫。",
+        "visibility": "author_only",
+        "revealed": false,
+        "revealCondition": "僅能透過後續遺跡證據逐步揭露，第一卷不可全說破。"
+      },
+      {
+        "id": "secret-two-door-pocket",
+        "content": "台灣側進門、别界側離門，中間是獨立空間片段；這解釋了為何遺跡長期未進入公眾歷史。",
+        "visibility": "author_only",
+        "revealed": false,
+        "revealCondition": "穿越後才逐步理解。"
+      },
+      {
+        "id": "secret-japanese-advance-team-lost",
+        "content": "1945 年先遣隊進入門後零人歸還，最後紀錄為門內腳步與非人聲回響後歸於空白。",
+        "visibility": "author_only",
+        "revealed": false,
+        "revealCondition": "遺跡深處證據揭露。"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene-daping-coast-opening",
+        "title": "大坪海岸開場",
+        "summary": "陸塵行帶愛醬在大坪海岸查潮汐，發現海蝕平台上的異常結構；颱風外圍逼近，回頭路開始被封。",
+        "locationId": "loc-daping-coast",
+        "visibility": "public"
+      }
+    ],
+    "sceneContracts": [
+      {
+        "id": "contract-daping-coast-opening",
+        "sceneId": "scene-daping-coast-opening",
+        "allowedSecretIds": [],
+        "forbiddenReveals": [
+          "逆行門計畫全貌",
+          "别界裂縫真相",
+          "兩道門獨立空間模型",
+          "先遣隊全滅細節",
+          "修煉體系完整講解"
+        ],
+        "visibility": "director_only"
+      }
+    ],
+    "storyThreads": [
+      {
+        "id": "thread-opening-survival-curiosity",
+        "title": "海岸生存與異常遺跡",
+        "threadType": "plot",
+        "publicSummary": "在真實天氣與潮汐壓力下，主角必須一邊求生一邊弄清眼前不該存在的結構。",
+        "directorGoal": "測試好奇驅動的探索是否在無修煉課的前提下仍能推進。",
+        "priority": 5,
+        "visibility": "director_only"
+      }
+    ]
+  },
+  "relations": [
+    {
+      "id": "rel-scene-daping-coast-location",
+      "fromType": "scene",
+      "fromId": "scene-daping-coast-opening",
+      "toType": "location",
+      "toId": "loc-daping-coast",
+      "relation": "LOCATED_IN",
+      "reason": "開場發生在大坪海岸。"
+    },
+    {
+      "id": "rel-lu-chenxing-daping-coast",
+      "fromType": "character",
+      "fromId": "char-lu-chenxing",
+      "toType": "location",
+      "toId": "loc-daping-coast",
+      "relation": "LOCATED_IN",
+      "reason": "陸塵行在大坪海岸。"
+    },
+    {
+      "id": "rel-aijiang-daping-coast",
+      "fromType": "character",
+      "fromId": "char-aijiang",
+      "toType": "location",
+      "toId": "loc-daping-coast",
+      "relation": "LOCATED_IN",
+      "reason": "愛醬在大坪海岸。"
+    },
+    {
+      "id": "rel-lu-chenxing-phone",
+      "fromType": "character",
+      "fromId": "char-lu-chenxing",
+      "toType": "item",
+      "toId": "item-phone",
+      "relation": "OWNS",
+      "reason": "陸塵行持有手機。"
+    },
+    {
+      "id": "rel-lu-chenxing-tide-notes",
+      "fromType": "character",
+      "fromId": "char-lu-chenxing",
+      "toType": "item",
+      "toId": "item-tide-notes",
+      "relation": "OWNS",
+      "reason": "陸塵行持有潮汐紀錄。"
+    }
+  ],
+  "assertions": [],
+  "metadata": {
+    "formalCanonSource": "world/chenxing/formal/",
+    "convertedAt": "2026-07-08",
+    "conversionNote": "First engine import from author formal canon. Author-only secrets excluded from character knowledge."
+  }
+}

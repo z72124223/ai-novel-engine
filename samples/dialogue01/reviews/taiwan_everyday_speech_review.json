@@ -1,0 +1,70 @@
+{
+  "reviewerRole": "TAIWAN_EVERYDAY_SPEECH_REVIEWER",
+  "independenceStatement": "本審查獨立進行，僅依指定劇本、對話軌與 dialogue bible（對話聖經）判斷，不沿用既有審查結論。",
+  "sourceHashes": {
+    "provided": {
+      "screenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+      "dialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c"
+    },
+    "observed": {
+      "screenplaySha256": "E06E1F7ABAF90649AD5CFA51BC28AAB6B5CDF74D76023380DC2958B299F3AA04",
+      "dialogueSha256": "C93B035F57CC50D1B427BA52C5B5B813CE6D84024D1ADA36DE790B13873DB4A"
+    },
+    "match": false
+  },
+  "boundary": "NON_CANON_PILOT",
+  "verdict": "PASS_WITH_MINOR_NOTES",
+  "score": 94,
+  "lineFindings": [
+    {"dialogueId":"dlg-001","exactQuote":"好。今天還有別的。","severity":"PASS","finding":"自然，像角色從觀察轉入判斷的短句。","recommendation":"保留。"},
+    {"dialogueId":"dlg-002","exactQuote":"又不肯直接講。","severity":"PASS","finding":"對狗的擬人化吐槽自然，沒有 AI 式解釋感。","recommendation":"保留。"},
+    {"dialogueId":"dlg-003","exactQuote":"有人搬過。還不只一趟。","severity":"PASS","finding":"口語省略自然，資訊密度符合現場觀察。","recommendation":"保留。"},
+    {"dialogueId":"dlg-004","exactQuote":"十分鐘！走人！","severity":"PASS","finding":"臺灣緊急現場可成立，命令短促；走人略帶粗硬，但符合周克聲線。","recommendation":"保留，演出時維持命令感。"},
+    {"dialogueId":"dlg-005","exactQuote":"你上次的十分鐘，有含稅嗎？","severity":"PASS","finding":"乾式玩笑自然，貼著十分鐘這個現場資訊，不像預製金句。","recommendation":"保留。"},
+    {"dialogueId":"dlg-006","exactQuote":"今天不要賭。","severity":"PASS","finding":"臺灣口語自然，且符合周克不接玩笑的角色規則。","recommendation":"保留。"},
+    {"dialogueId":"dlg-007","exactQuote":"照片呢？","severity":"PASS","finding":"簡潔自然，符合緊急狀況下的追問。","recommendation":"保留。"},
+    {"dialogueId":"dlg-008","exactQuote":"卡住了。看它賞不賞臉。","severity":"PASS","finding":"「賞不賞臉」是自然口語，角色乾式幽默清楚。","recommendation":"保留。"},
+    {"dialogueId":"dlg-009","exactQuote":"山坡在另一邊。","severity":"PASS","finding":"自然的路線提醒，語氣中性。","recommendation":"保留。"},
+    {"dialogueId":"dlg-010","exactQuote":"先看得到的。","severity":"PASS","finding":"省略句自然，保留角色先處理眼前可見事物的判斷方式。","recommendation":"保留。"},
+    {"dialogueId":"dlg-011","exactQuote":"別碰箱子。","severity":"PASS","finding":"符合拾潮者防衛性與危急時命令短句。","recommendation":"保留。"},
+    {"dialogueId":"dlg-012","exactQuote":"好。先碰你。","severity":"MINOR","finding":"口語上成立，也保留角色幽默；但在傷者情境中可能被演成過度輕佻。","recommendation":"不必改字，演出應壓低語氣並讓動作明確指向救援。"},
+    {"dialogueId":"dlg-013","exactQuote":"那是我的。","severity":"PASS","finding":"自然、直接，防衛感清楚。","recommendation":"保留。"},
+    {"dialogueId":"dlg-014","exactQuote":"先上去。箱子等等再說。","severity":"PASS","finding":"自然的救援優先順序，臺灣口語感足。","recommendation":"保留。"},
+    {"dialogueId":"dlg-015","exactQuote":"我抬石頭。你拉人。","severity":"PASS","finding":"分工指令清楚，符合危急時一句一動作。","recommendation":"保留。"},
+    {"dialogueId":"dlg-016","exactQuote":"箱子？","severity":"PASS","finding":"單詞追問自然，呈現周克對任務風險的確認。","recommendation":"保留。"},
+    {"dialogueId":"dlg-017","exactQuote":"不管。","severity":"PASS","finding":"短而有決斷，符合先救人的語境。","recommendation":"保留。"},
+    {"dialogueId":"dlg-018","exactQuote":"不行！","severity":"PASS","finding":"自然的防衛性反應，沒有多餘說明。","recommendation":"保留。"},
+    {"dialogueId":"dlg-019","exactQuote":"手，還是箱子？","severity":"PASS","finding":"口語斷句有壓迫感，且把選擇清楚交回對方。","recommendation":"保留。"},
+    {"dialogueId":"dlg-020","exactQuote":"現在！","severity":"PASS","finding":"符合拉繩時機提示，極自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-021","exactQuote":"太快了。","severity":"PASS","finding":"自然的事後反應，不朗讀資訊，符合角色沉著但受壓的聲線。","recommendation":"保留。"},
+    {"dialogueId":"dlg-022","exactQuote":"潮表還早。","severity":"MINOR","finding":"本地現場語境可理解，但「潮表還早」略為壓縮，部分演員可能不確定是在說時間還是潮勢。","recommendation":"可保留；若排演時不清楚，可改為「潮表還沒到」。"},
+    {"dialogueId":"dlg-023","exactQuote":"是浪。下一波不知道什麼時候來。","severity":"PASS","finding":"自然地修正周克的判斷，臺灣口語流暢。","recommendation":"保留。"},
+    {"dialogueId":"dlg-024","exactQuote":"固定。抬高。布給我。","severity":"PASS","finding":"危急救護指令清楚，碎句符合現場語感。","recommendation":"保留。"},
+    {"dialogueId":"dlg-025","exactQuote":"裡面什麼？","severity":"PASS","finding":"省略「是」很自然，符合短促追問。","recommendation":"保留。"},
+    {"dialogueId":"dlg-026","exactQuote":"好。先不問。","severity":"PASS","finding":"自然且克制，清楚表現先救援、暫不追問。","recommendation":"保留。"},
+    {"dialogueId":"dlg-027","exactQuote":"回不去了。走上面。","severity":"PASS","finding":"臺灣現場口語自然，指路簡短；動作已補足指涉。","recommendation":"保留。"},
+    {"dialogueId":"dlg-028","exactQuote":"值守室能擋雨。我重撥一一九。","severity":"PASS","finding":"內容符合臺灣緊急處置語境，「重撥一一九」自然。","recommendation":"保留。"},
+    {"dialogueId":"dlg-029","exactQuote":"走。","severity":"PASS","finding":"極短但有效，符合陸塵行在壓力下的聲線。","recommendation":"保留。"},
+    {"dialogueId":"dlg-030","exactQuote":"大坪海岸，舊值守室。男性，左手重傷，人清醒，血止住了——","severity":"PASS","finding":"符合臺灣報案／救護通話的資訊排列；「男性」的正式度是情境功能，不是書面腔問題。","recommendation":"保留。"},
+    {"dialogueId":"dlg-031","exactQuote":"等雨小一點。","severity":"PASS","finding":"省略句自然，符合陸塵行對愛醬的低聲提示與克制收尾。","recommendation":"保留。"}
+  ],
+  "strengths": [
+    "短句、打斷與動作資訊分配自然，沒有每句都解釋或總結。",
+    "陸塵行的乾式幽默集中在安全可承受的時機，周克與拾潮者沒有被迫配合笑點。",
+    "危急段落的語句明顯變短，角色聲線有區別。",
+    "整體使用自然臺灣華語，未依賴過度地方化網路詞或方言標記。",
+    "救援優先於追問箱子秘密，保留角色智慧與 NON_CANON 邊界。"
+  ],
+  "blockingIssues": [
+    {
+      "type": "SOURCE_HASH_MISMATCH",
+      "finding": "指定的劇本與對話 SHA-256 均未與目前讀取檔案的實際 SHA-256 相符。",
+      "recommendation": "提交前確認評審対象檔案版本；若雜湊是預期基準，應重新提供或固定正確來源檔案。"
+    }
+  ],
+  "revisionPriorities": [
+    "P0：先確認兩個來源檔案的 SHA-256 與評審版本是否一致。",
+    "P1：排演時特別確認 dlg-012 的玩笑不會壓過救援情緒。",
+    "P2：排演時確認 dlg-022「潮表還早」的指涉；若造成理解停頓，再改為「潮表還沒到」。"
+  ]
+}

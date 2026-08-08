@@ -1,0 +1,175 @@
+{
+    "schemaVersion": "1.0",
+    "artifactType": "NPC_ACTOR04_INTERNAL_REVIEW_AGGREGATE",
+    "packetId": "npc-actor04-embodied-31462b8a7d2a",
+    "status": "COMPLETE_AFTER_ANSWER_KEY_DISCLOSURE",
+    "reviewerIds": [
+        "internal-adversarial-boundary-01",
+        "internal-character-dialogue-01",
+        "internal-environment-physics-01"
+    ],
+    "reviewerRoles": [
+        "ADVERSARIAL_BOUNDARY_REVIEWER",
+        "CHARACTER_AND_DIALOGUE_REVIEWER",
+        "ENVIRONMENT_AND_PHYSICS_REVIEWER"
+    ],
+    "packetSha256": "948bc341cfca25d56f3098b6e97e2ad12cc7b87d4d5484e8bcc1e27763d22ebd",
+    "answerKeySha256": "78455267919e62c732715a16dbe631ef8bfb3a40d4cf76bc35f8931ce7551fd3",
+    "reviewContentSha256": {
+        "internal-adversarial-boundary-01": "ed60d7d757aab98a2c05dc0f6f85e303d70b814b8ee16352e5e65430637d974a",
+        "internal-character-dialogue-01": "759fdb92ad07437ff9a966822b07cc2feaeb50ea1984368be7acd6ebf6ccc58a",
+        "internal-environment-physics-01": "0cabb323cc576542f053b15be634a33fb806dc19415924fdcb68d59bc79d03ab"
+    },
+    "revisionCount": 1,
+    "scenes": [
+        {
+            "reviewId": "review-npc-actor04-mira-fire",
+            "reviewerSelections": [
+                {
+                    "reviewerId": "internal-environment-physics-01",
+                    "reviewerRole": "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+                    "selection": "A"
+                },
+                {
+                    "reviewerId": "internal-character-dialogue-01",
+                    "reviewerRole": "CHARACTER_AND_DIALOGUE_REVIEWER",
+                    "selection": "A"
+                },
+                {
+                    "reviewerId": "internal-adversarial-boundary-01",
+                    "reviewerRole": "ADVERSARIAL_BOUNDARY_REVIEWER",
+                    "selection": "B"
+                }
+            ],
+            "consensusSelection": "A",
+            "embodiedActorOption": "B",
+            "outcome": "CONTROL_PREFERRED",
+            "issueTags": [
+                "OPTION_BIAS_RISK",
+                "OPTION_B_REDUNDANT_COMMAND",
+                "OPTION_B_SPATIAL_CAUSAL_MISMATCH",
+                "UNASSESSED_CROSS_DRAFT",
+                "UNSUPPORTED_FIRE_SPREAD",
+                "UNVERIFIED_VENTILATION",
+                "WATER_NEAR_OIL_FIRE",
+                "WET_BLANKET_STEAM_RISK"
+            ]
+        },
+        {
+            "reviewId": "review-npc-actor04-yan-storm-gate",
+            "reviewerSelections": [
+                {
+                    "reviewerId": "internal-environment-physics-01",
+                    "reviewerRole": "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+                    "selection": "BOTH_FAIL"
+                },
+                {
+                    "reviewerId": "internal-character-dialogue-01",
+                    "reviewerRole": "CHARACTER_AND_DIALOGUE_REVIEWER",
+                    "selection": "A"
+                },
+                {
+                    "reviewerId": "internal-adversarial-boundary-01",
+                    "reviewerRole": "ADVERSARIAL_BOUNDARY_REVIEWER",
+                    "selection": "BOTH_FAIL"
+                }
+            ],
+            "consensusSelection": "BOTH_FAIL",
+            "embodiedActorOption": "A",
+            "outcome": "BOTH_FAIL",
+            "issueTags": [
+                "BODY_BLOCKING_MOVING_CART",
+                "MISSING_STATE_TRANSITION",
+                "MULTITASKING_ON_SLIPPERY_SLOPE",
+                "OPTION_A_ROPE_ANCHOR_GAP",
+                "OPTION_B_POSITIONAL_OVERLOAD",
+                "OPTION_B_UNSAFE_BODY_BRACING",
+                "PHANTOM_LOADED_KNOT",
+                "SPATIAL_OVERREACH",
+                "UNANCHORED_RESTRAINT",
+                "UNSAFE_BRACING",
+                "UNSUPPORTED_RESTRAINT"
+            ]
+        },
+        {
+            "reviewId": "review-npc-actor04-lian-market-collapse",
+            "reviewerSelections": [
+                {
+                    "reviewerId": "internal-environment-physics-01",
+                    "reviewerRole": "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+                    "selection": "A"
+                },
+                {
+                    "reviewerId": "internal-character-dialogue-01",
+                    "reviewerRole": "CHARACTER_AND_DIALOGUE_REVIEWER",
+                    "selection": "A"
+                },
+                {
+                    "reviewerId": "internal-adversarial-boundary-01",
+                    "reviewerRole": "ADVERSARIAL_BOUNDARY_REVIEWER",
+                    "selection": "A"
+                }
+            ],
+            "consensusSelection": "A",
+            "embodiedActorOption": "A",
+            "outcome": "ACTOR_PREFERRED",
+            "issueTags": [
+                "BODY_AS_PRIMARY_BRACE",
+                "CERAMIC_KICKING_HAZARD",
+                "LOOSE_POLE_FOOTING",
+                "OPTION_BIAS_RISK",
+                "OPTION_B_SHARD_KICKING_RISK",
+                "OPTION_B_SUPPORT_METHOD_WEAKER",
+                "UNPERCEIVED_CRITICAL_OBJECT",
+                "UNSAFE_DEBRIS_HANDLING"
+            ]
+        },
+        {
+            "reviewId": "review-npc-actor04-ren-dock-surge",
+            "reviewerSelections": [
+                {
+                    "reviewerId": "internal-environment-physics-01",
+                    "reviewerRole": "ENVIRONMENT_AND_PHYSICS_REVIEWER",
+                    "selection": "B"
+                },
+                {
+                    "reviewerId": "internal-character-dialogue-01",
+                    "reviewerRole": "CHARACTER_AND_DIALOGUE_REVIEWER",
+                    "selection": "B"
+                },
+                {
+                    "reviewerId": "internal-adversarial-boundary-01",
+                    "reviewerRole": "ADVERSARIAL_BOUNDARY_REVIEWER",
+                    "selection": "B"
+                }
+            ],
+            "consensusSelection": "B",
+            "embodiedActorOption": "B",
+            "outcome": "ACTOR_PREFERRED",
+            "issueTags": [
+                "BODY_IN_CRUSH_PATH",
+                "CRUSH_HAZARD",
+                "OPTION_A_CHARACTER_INCONSISTENCY",
+                "OPTION_A_UNSAFE_BODY_BRACING",
+                "OPTION_BIAS_RISK",
+                "OPTION_B_UNGROUNDED_CHALK_LINE",
+                "UNGROUNDED_CHALK_LINE",
+                "UNRESOLVED_CRATE_STATE",
+                "UNSTABLE_RAMP_ENTRY",
+                "UNSUPPORTED_PROP",
+                "UNSUPPORTED_SAFE_FOOTING"
+            ]
+        }
+    ],
+    "actorWins": 2,
+    "controlWins": 1,
+    "ties": 0,
+    "bothFail": 1,
+    "noConsensus": 0,
+    "overallDecision": "INTERNAL_REVIEW_COMPLETE",
+    "claimBoundary": [
+        "Three internal agent reviews do not establish human preference.",
+        "The reviewed trajectories are manually authored offline fixtures, not live model outputs.",
+        "This result does not authorize live API, production rollout, Canon promotion or media work."
+    ]
+}

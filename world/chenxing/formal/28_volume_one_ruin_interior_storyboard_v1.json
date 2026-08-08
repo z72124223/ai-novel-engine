@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "chenxing-volume-one-ruin-interior-storyboard-v1",
+  "status": "AUTHOR_LOCKED",
+  "lockedAt": "2026-07-08",
+  "updatedAt": "2026-07-08",
+  "locale": "zh-TW",
+  "series": "塵行",
+  "chapter": "第一話　塵",
+  "purpose": "山坡廢墟內部慢推進分鏡（beats 10-18）：仍在台灣 2026 敘事相位，穿越尚未發生。",
+  "linkedCanon": {
+    "openingStoryboard": "world/chenxing/formal/26_volume_one_opening_storyboard_v1.json",
+    "crossingExperience": "world/chenxing/formal/32_crossing_experience_v1.json",
+    "interiorDiscoveries": "world/chenxing/formal/33_ruin_interior_discoveries_v1.json",
+    "spatialModel": "world/chenxing/formal/34_spatial_pocket_two_doors_v1.json"
+  },
+  "narrativePhase": {
+    "label": "phase_a_taiwan_2026_ruin_interior",
+    "rule": "人物仍以為在台灣海岸廢墟中；玻璃瓶、黃金、亡者都在穿越之前發生。",
+    "crossingNotYet": true
+  },
+  "sceneCoverage": {
+    "entryScene": "scene-hillside-ruin-retreat",
+    "interiorScenes": [
+      "scene-ruin-threshold-entry",
+      "scene-ruin-first-shelter",
+      "scene-ruin-service-corridor",
+      "scene-ruin-dead-room",
+      "scene-ruin-grey-bottles",
+      "scene-ruin-gold-cache"
+    ]
+  },
+  "shots": [
+    {
+      "shotId": "shot-10-aijiang-hesitates",
+      "order": 10,
+      "beat": "aijiang_hesitates",
+      "title": "愛醬不願進門",
+      "location": "loc-ruin-threshold",
+      "sceneId": "scene-ruin-threshold-entry",
+      "camera": "低角度門框；愛醬前爪停住，耳朵竖起",
+      "visual": "暴風雨夜，頹敗混凝土門洞。愛醬在門前停步，前爪僵住，耳朵竖起，不回頭跑，但不進。陸塵行半濕，側背包貼身，手電光在門框上顫。",
+      "narration": "風在門外吼，門裡卻有一種不對的安靜。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……進來。外面撐不住了。",
+          "delivery": "對狗，低聲"
+        }
+      ],
+      "durationHintSec": 8
+    },
+    {
+      "shotId": "shot-11-threshold-pause",
+      "order": 11,
+      "beat": "threshold_pause",
+      "title": "門檻停頓",
+      "location": "loc-ruin-threshold",
+      "sceneId": "scene-ruin-threshold-entry",
+      "camera": "門框特寫；手電掃過鏽栓與剝落字跡",
+      "visual": "兩人一狗一起跨入。手電照見門框內側：海風該有的鹹味與皮膚黏膩感，在這裡不對。",
+      "narration": "離海不算遠，卻聞不到應有的海風味。身體記得的海，在這裡失效。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……怪了。",
+          "delivery": "自言，幾乎無聲"
+        }
+      ],
+      "durationHintSec": 9
+    },
+    {
+      "shotId": "shot-12-first-interior-room",
+      "order": 12,
+      "beat": "first_interior_room",
+      "title": "首間避風",
+      "location": "loc-ruin-first-shelter",
+      "sceneId": "scene-ruin-first-shelter",
+      "camera": "中景；風聲被牆壁切掉一半",
+      "visual": "破舊但足夠擋風的空間。陸塵行蹲下喘一口，愛醬貼在他腿邊。他掏出手機——仍無訊號。",
+      "narration": "他忽然想起：從沒聽人提過這裡，網上也搜不到像樣的紀錄。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "這地方……怎麼會沒人說過？",
+          "delivery": "困惑，壓低"
+        }
+      ],
+      "durationHintSec": 10
+    },
+    {
+      "shotId": "shot-13-deeper-movement",
+      "order": 13,
+      "beat": "deeper_movement",
+      "title": "往深處",
+      "location": "loc-ruin-service-corridor",
+      "sceneId": "scene-ruin-service-corridor",
+      "camera": "手電柱狀光在走廊前移；跟拍",
+      "visual": "傾斜走廊、舊日製單位標記、生鏽推床螺栓鎖在斜地板上、牆上低處中文刻痕、陶瓷水槽邊乾涸的血潮線。愛醬腳步放輕，貼在他腿側，距離比進門時更近。",
+      "narration": "鐵鏽味先來，接著是舊油和一種太乾淨的化學氣。好奇心又壓過避難——他想知道這棟建築到底是什麼。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……標記還在。有人量過這裡。",
+          "delivery": "自言，壓低"
+        }
+      ],
+      "durationHintSec": 9
+    },
+    {
+      "shotId": "shot-14-open-room-dead",
+      "order": 14,
+      "beat": "open_room_dead",
+      "title": "開放區亡者",
+      "location": "loc-ruin-dead-room",
+      "sceneId": "scene-ruin-dead-room",
+      "camera": "慢推進側室；手電先掃到編號牌與空拘束帶",
+      "visual": "不是骷髏牆。房間設計像封存失敗的實驗側室：乾燥遺留、針孔叢集、編號標籤、空拘束帶仍扣在推床邊。溫度比走廊更低。愛醬低聲乾嘔，不肯靠近門檻。陸塵行胃部一沉。",
+      "narration": "戰爭的痕跡，但不是炮彈炸過那種。是被人量過、放棄過的痕跡。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……這裡不是普通廢墟。",
+          "delivery": "發抖但壓住"
+        }
+      ],
+      "durationHintSec": 11
+    },
+    {
+      "shotId": "shot-15-grey-glass-bottles",
+      "order": 15,
+      "beat": "grey_glass_bottles",
+      "title": "灰色玻璃瓶",
+      "location": "loc-ruin-specimen-storage",
+      "sceneId": "scene-ruin-grey-bottles",
+      "camera": "手電逼近單一瓶肩；反光裡浮出輪廓",
+      "visual": "高大灰玻璃瓶排架，瓶肩泛褐灰霧。他湊近一瓶——手電光移過，液體裡浮著二戰時期浸泡保存的人體輪廓。愛醬猛然後退，乾嘔，再也不肯靠近排架。",
+      "narration": "不是試劑。太大了。光一近，他才明白那團輪廓一直在這裡泡了八十年。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……靠。",
+          "delivery": "噁心、憤怒、來不及用詞"
+        }
+      ],
+      "durationHintSec": 12
+    },
+    {
+      "shotId": "shot-16-gold-cache",
+      "order": 16,
+      "beat": "gold_cache",
+      "title": "來不及運走的黃金",
+      "location": "loc-ruin-gold-vault",
+      "sceneId": "scene-ruin-gold-cache",
+      "camera": "假牆後空隙；木箱與布包反光",
+      "visual": "指揮室側的暗格。軍用木箱、布捆金條，箱面還留著舊日運輸標記。陸塵行掂重量——手腕立刻沉下去，真東西。",
+      "narration": "傳說裡日本人來不及帶走的黃金，原來不只在傳說裡。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……真的。這麼重，難怪沒帶走。",
+          "delivery": "實務型震驚"
+        }
+      ],
+      "durationHintSec": 10
+    },
+    {
+      "shotId": "shot-17-continue-after-gold",
+      "order": 17,
+      "beat": "continue_after_gold",
+      "title": "帶走一部分",
+      "location": "loc-ruin-gold-vault",
+      "sceneId": "scene-ruin-gold-cache",
+      "camera": "中景；他把金條用布纏進腰側與包內",
+      "visual": "只拿能帶走的分量，一手仍要顧手電與愛醬。大部分金屬留在暗格。他還打算之後再回來。",
+      "narration": "他仍以為這裡是台灣。仍以為之後還能回來拿剩下的。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "夠了。先出去……不，再往裡看一下。",
+          "delivery": "對自己說"
+        }
+      ],
+      "durationHintSec": 9
+    },
+    {
+      "shotId": "shot-18-phase-a-complete",
+      "order": 18,
+      "beat": "phase_a_complete",
+      "title": "相位A收束",
+      "location": "loc-ruin-service-corridor",
+      "sceneId": "scene-ruin-service-corridor",
+      "camera": "長走廊深處；手電光柱變弱，風聲又遠又近",
+      "visual": "他帶著部分黃金繼續往更深處，腰側和包內沉甸甸地硌著。愛醬緊貼。走廊深處的風聲忽遠忽近，手電光柱像變短了。時間感開始不對，但尚未穿越。",
+      "narration": "廢墟內該看見的，他都還沒看完。穿越，還在更後面。",
+      "dialogue": [
+        {
+          "speaker": "陸塵行",
+          "line": "……再往前一點。",
+          "delivery": "對自己說，疲憊但停不下來"
+        }
+      ],
+      "durationHintSec": 8
+    }
+  ],
+  "writingGuards": [
+    "陸塵行與愛醬在主要進入拍中必須同在。",
+    "本段不得說破逆行門計畫全貌。",
+    "不得在此段宣告穿越已發生。",
+    "玻璃瓶與黃金場景禁止奇幻世界詞彙。"
+  ],
+  "nextStepAfterInterior": "beats 19-22：疲憊停歇、liminal 位移、無法回返（見 32_crossing_experience_v1.json）"
+}

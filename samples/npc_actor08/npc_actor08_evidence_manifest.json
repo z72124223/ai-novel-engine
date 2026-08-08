@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "NPC-ACTOR-08",
+  "boundary": "NON_CANON_ENGINEERING_EVIDENCE",
+  "baseCommit": "66d86467cfcdf759656d9e0d276ae8ff4008366c",
+  "technicalDecision": "TECHNICAL_PASS_REAL_CANDIDATE_APPROVAL_NOT_PERFORMED",
+  "testEvidence": {
+    "focused": { "passed": 14, "failed": 0 },
+    "related": { "passed": 129, "failed": 0 },
+    "full": { "passed": 975, "failed": 0 },
+    "jsonParse": { "passed": 4, "failed": 0 }
+  },
+  "files": [
+    {
+      "path": "app/src/main/kotlin/com/localnovel/engine/model/LocalNpcActorFormalTurnModels.kt",
+      "sha256": "072625151c6cf7cf1fddd459bb94a6990e6d8ad7ca48bd27bae8ac9f7788e4fc",
+      "bytes": 4637
+    },
+    {
+      "path": "app/src/main/kotlin/com/localnovel/engine/service/LocalNpcActorContextCompiler.kt",
+      "sha256": "0ad94fcb7518766f89b175bd3235a9422b38f3541067cf3ba1b29e516dba8980",
+      "bytes": 7960
+    },
+    {
+      "path": "app/src/main/kotlin/com/localnovel/engine/service/LocalNpcActorFormalTurnService.kt",
+      "sha256": "ea4f1dbe6ceb29cc05ea22266f29063407e646101a706755d72dc9281ee5f613",
+      "bytes": 27805
+    },
+    {
+      "path": "app/src/test/kotlin/com/localnovel/engine/LocalNpcActorFormalTurnServiceTest.kt",
+      "sha256": "9ac56670362e659734004ab8adc44192d89ea8d27707f9b8617a5ebe7c46788a",
+      "bytes": 22106
+    },
+    {
+      "path": "schemas/npc_actor/npc_actor_formal_approval_v1.schema.json",
+      "sha256": "0a5d4d6b5152a9d30b29b96a44d0c54008893cc1dd3807ee97a00c4f0c192a85",
+      "bytes": 9927
+    },
+    {
+      "path": "samples/npc_actor08/npc_actor08_formal_turn_input.example.json",
+      "sha256": "4c95e1f9c58895b20cfa9c96f0b3f0ad7898924a63cd5c0c0b48cc624e168b88",
+      "bytes": 3314
+    },
+    {
+      "path": "samples/npc_actor08/npc_actor08_human_decision.template.json",
+      "sha256": "e25bdc265bc90dcdd2e6a0d445264aa512ddb597f8cbb60b1a7cebf40207f3be",
+      "bytes": 1076
+    }
+  ],
+  "claimBoundary": [
+    "The successful approval Pilot used a test-only human decision fixture.",
+    "No unseen Qwen3-8B candidate was approved or applied.",
+    "No cloud API, server, port, Provider, Canon, Memory or Knowledge authoring was used.",
+    "The four initial full-suite failures were caused by the word approved in the Worktree path; the same tests and the complete suite passed from a neutral path without code changes."
+  ]
+}

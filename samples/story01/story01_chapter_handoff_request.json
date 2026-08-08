@@ -1,0 +1,42 @@
+{
+  "productionId": "story01-chenxing-daping-chapter-001",
+  "projectId": "chenxing",
+  "worldSourceProjectLabel": "塵行",
+  "sessionId": "session-592cff59-d320-4dc2-a34c-9a0d5701f53b",
+  "runId": "reboot-run-754a3cab-ad44-4b4e-8055-80fc976bb72b",
+  "runtimeScenarioSeed": "reboot01-chenxing-depth-v1",
+  "scenarioSeed": "story01-chenxing-daping-full-chapter-v1",
+  "sourceCommitSha": "947a727",
+  "chapterTitle": "潮線之外",
+  "premise": "2026 年颱風外圍逼近大坪海岸。陸塵行與愛醬在撤離前發現被人移動的異常碎片與另一串通往山坡的腳印；他必須在救人、保存證據與追查遺跡之間做出有代價的選擇。",
+  "targetChineseCharactersMin": 2800,
+  "targetChineseCharactersMax": 4200,
+  "worldQueries": [
+    { "text": "好奇心", "limit": 10, "allowedSourceIds": ["chenxing-world-raw-01-core-settings"] },
+    { "text": "愛醬", "limit": 10, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "長毛哈士奇", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "2026年", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-09-aijiang-detail"] },
+    { "text": "地球", "limit": 8, "allowedSourceIds": ["chenxing-world-raw-01-core-settings"] }
+  ],
+  "requiredBeats": [
+    "以真實潮汐、長周期浪與颱風外圍壓力建立倒數，而非抽象危機",
+    "愛醬主動察覺異常並影響陸塵行的判斷，不把她寫成只等口令的寵物",
+    "陸塵行以實作型觀察與工具思維辨認被移動的證據",
+    "救人與追證據形成不能兩全的選擇，選擇必須留下可見代價",
+    "結尾完成本章局部閉合，同時留下通往山坡遺跡的具體問題"
+  ],
+  "forbiddenOutcomes": [
+    "不得揭露逆行門計畫全貌、別界裂縫真相、兩道門模型或先遣隊全滅細節",
+    "不得講解完整修煉體系，不得讓角色憑空知道作者秘密",
+    "不得把 Sandbox 角色或事件升格為正式 Canon",
+    "不得讓生成文字直接修改 SQLite、Canon、角色永久命運或圖片狀態",
+    "不得以六句摘要、條列或分鏡代替完整可讀小說章節"
+  ],
+  "voiceRequirements": [
+    "繁體中文小說散文，具體動作、感官與空間連續性優先",
+    "陸塵行的幽默來自壓力下的觀察，不以玩梗破壞危險與傷勢",
+    "愛醬與陸塵行是有默契的家人式同伴，不使用跟我走或過來等口令式關係",
+    "避免 AI 式總結、抽象價值宣告、過度排比與每段都做金句",
+    "角色只依當下可見、可知、可達的資料行動"
+  ]
+}

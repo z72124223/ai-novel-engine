@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "reboot01-chenxing-world-patch-candidate-v1",
+  "packVersion": 1,
+  "projectId": "chenxing",
+  "name": "REBOOT-01 Chenxing world patch candidate v1",
+  "description": "Resettable non-Canon cast, pressure and relationship patch for the Daping Coast playable-depth sandbox.",
+  "mode": "ADD_ON",
+  "source": {
+    "author": "reboot01-sandbox",
+    "license": "test-only",
+    "notes": "Non-Canon, resettable, promotion-forbidden. It may only be applied to an isolated sandbox database."
+  },
+  "entities": {
+    "characters": [
+      {
+        "id": "char-lin-yao-sandbox",
+        "name": "林遙（Sandbox）",
+        "role": "coast observer",
+        "description": "A cautious local volunteer who values evidence over heroics and distrusts unexplained structures.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Preserve physical evidence before tide and scavengers erase it.",
+          "dominantEmotion": "戒備",
+          "availableActions": ["記錄足跡", "封存碎片", "拒絕無證據的要求"],
+          "relationshipDefaults": {"char-zhou-ke-sandbox": "互相欠人情"},
+          "initiativeLevel": 70
+        },
+        "metadata": {
+          "deepMotivation": "Preserve evidence so powerful people cannot rewrite what happened.",
+          "falseBelief": "Anyone entering without documenting the site first intends to steal or erase evidence.",
+          "offscreenAgenda": ["Document fresh footprints while Lu Chenxing is away", "Secure one trace without becoming the player's guide"],
+          "sandboxCandidateOnly": true
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-zhou-ke-sandbox",
+        "name": "周克（Sandbox）",
+        "role": "storm shelter keeper",
+        "description": "A practical caretaker who protects people first but hides his prior knowledge of the ruin.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Get everyone above the tide line without exposing his old mistake.",
+          "dominantEmotion": "焦躁",
+          "availableActions": ["關閉危險路線", "清點人員", "隱瞞舊鑰匙來源"],
+          "relationshipDefaults": {"char-lin-yao-sandbox": "欠一次救命情"},
+          "initiativeLevel": 65
+        },
+        "metadata": {
+          "deepMotivation": "Keep the coast community alive even if that requires withholding evidence about his earlier failure.",
+          "falseBelief": "Admitting the old mistake now will make evacuation impossible.",
+          "offscreenAgenda": ["Close the unsafe route", "Count evacuees and hide the key until everyone reaches shelter"],
+          "sandboxCandidateOnly": true
+        },
+        "visibility": "public"
+      },
+      {
+        "id": "char-tide-scavenger-sandbox",
+        "name": "拾潮者（Sandbox）",
+        "role": "antagonistic scavenger",
+        "description": "A rival evidence scavenger who believes survival entitles the first claimant to control scarce discoveries.",
+        "initialRuntimeTemplate": {
+          "initialLocationId": "loc-daping-coast",
+          "initialGoal": "Move the marked evidence before the returning group can secure it.",
+          "dominantEmotion": "算計",
+          "availableActions": ["轉移碎片", "製造假足跡", "觀察退路"],
+          "relationshipDefaults": {},
+          "initiativeLevel": 80
+        },
+        "metadata": {
+          "understandableValueClaim": "People who accept the physical risk should control the evidence needed to survive.",
+          "adaptationPattern": "Exploit the time cost created by the protagonist's safety precautions rather than wait at the obvious trap.",
+          "sandboxCandidateOnly": true
+        },
+        "visibility": "public"
+      }
+    ],
+    "worldRules": [
+      {
+        "id": "rule-sandbox-evidence-has-social-cost",
+        "title": "Evidence custody creates social pressure",
+        "content": "Whoever controls physical evidence can influence shelter access, public trust and later rescue decisions; no single quip or discovery resolves that pressure.",
+        "priority": 8,
+        "visibility": "public"
+      },
+      {
+        "id": "rule-sandbox-humor-yields-to-harm",
+        "title": "Warmth and humor stop at real harm",
+        "content": "Banter may build trust during ordinary friction, but visible injury, grief or another person's pain requires restraint and concrete care.",
+        "priority": 7,
+        "visibility": "public"
+      }
+    ],
+    "facts": [
+      {
+        "id": "fact-sandbox-fresh-footprints",
+        "content": "Fresh boot prints lead away from the obvious seam before the tide turns.",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-sandbox-shelter-key",
+        "content": "A corroded shelter key bears recent scrape marks.",
+        "visibility": "public"
+      },
+      {
+        "id": "fact-sandbox-shelter-pressure",
+        "content": "The storm shelter has limited dry space, so evidence custody and evacuation priority create a material and institutional conflict.",
+        "visibility": "public"
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "id": "assert-sandbox-non-canon-only",
+      "statement": "This patch must never mutate AUTHOR_LOCKED Canon or become a production asset approval.",
+      "severity": "hard",
+      "entityRefs": ["project:chenxing"],
+      "metadata": {"canonMutationAllowed": false}
+    }
+  ],
+  "metadata": {
+    "nonCanon": true,
+    "resettable": true,
+    "promotionForbidden": true,
+    "canonMutationAllowed": false,
+    "valueDilemma": "Preserve evidence or prioritize immediate rescue and shelter access.",
+    "irreversibleRuntimeConsequenceCandidate": "A sandbox actor can suffer a lasting injury only through the separate human-approval contract.",
+    "humorWarmthCondition": "Daily friction may support banter; injury and grief require GRIEF_RESTRAINT."
+  }
+}

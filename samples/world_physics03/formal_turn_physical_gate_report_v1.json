@@ -1,0 +1,79 @@
+{
+    "schemaVersion": "1.0",
+    "suiteId": "world-physics03-formal-turn-gate-v1",
+    "caseCount": 8,
+    "expectationMatchCount": 8,
+    "expectationMismatchCount": 0,
+    "outcomes": [
+        {
+            "caseId": "case-01-chair-support-pass",
+            "matchedExpectation": true,
+            "actualValid": true,
+            "actualErrorCodes": []
+        },
+        {
+            "caseId": "case-02-dog-shoulder-reject",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_affordance_rejected"
+            ]
+        },
+        {
+            "caseId": "case-03-context-required",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_context_required"
+            ]
+        },
+        {
+            "caseId": "case-04-proposal-required",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_proposal_required"
+            ]
+        },
+        {
+            "caseId": "case-05-context-binding-reject",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_context_binding_mismatch"
+            ]
+        },
+        {
+            "caseId": "case-06-result-hash-reject",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_result_hash_mismatch"
+            ]
+        },
+        {
+            "caseId": "case-07-action-allowlist-reject",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_action_not_allowlisted"
+            ]
+        },
+        {
+            "caseId": "case-08-stateful-drop-blocked",
+            "matchedExpectation": true,
+            "actualValid": false,
+            "actualErrorCodes": [
+                "physical_state_persistence_unavailable"
+            ]
+        }
+    ],
+    "technicalDecision": "FORMAL_TURN_PHYSICAL_GATE_PASS_STATEFUL_ACTIONS_BLOCKED",
+    "transactionBoundaryStatus": "VALIDATES_BEFORE_RESOLVE_PENDING_TURN",
+    "physicalStatePersistenceStatus": "NOT_IMPLEMENTED_STATEFUL_ACTIONS_FAIL_CLOSED",
+    "claimBoundary": [
+        "Only declared structured physical proposals are validated.",
+        "A V1 pass does not prove complete real-world physical realism.",
+        "No physical relation is persisted and no Canon measurement is introduced."
+    ]
+}

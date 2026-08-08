@@ -13,6 +13,8 @@ import com.localnovel.engine.model.DemoProjectSeed
 import com.localnovel.engine.model.DependencyEdge
 import com.localnovel.engine.model.Event
 import com.localnovel.engine.model.Fact
+import com.localnovel.engine.model.FormalPhysicalStateRecord
+import com.localnovel.engine.model.FormalTurnPhysicalValidationContext
 import com.localnovel.engine.model.Faction
 import com.localnovel.engine.model.InitialRuntimeTemplate
 import com.localnovel.engine.model.Item
@@ -28,6 +30,7 @@ import com.localnovel.engine.model.SettingPackPreview
 import com.localnovel.engine.model.SettingPackRelation
 import com.localnovel.engine.model.Project
 import com.localnovel.engine.model.RetrievedMemory
+import com.localnovel.engine.model.RebootRunEvidenceRecord
 import com.localnovel.engine.model.ScheduledWorldEventSeed
 import com.localnovel.engine.model.Scene
 import com.localnovel.engine.model.SceneContract
@@ -39,6 +42,11 @@ import com.localnovel.engine.model.Secret
 import com.localnovel.engine.model.SessionThreadState
 import com.localnovel.engine.model.StoryThread
 import com.localnovel.engine.model.StorySession
+import com.localnovel.engine.model.CanonThinZoneView
+import com.localnovel.engine.model.ProvisionalAgencyProfile
+import com.localnovel.engine.model.ProvisionalEntityProposal
+import com.localnovel.engine.model.ProvisionalEntityView
+import com.localnovel.engine.model.ProvisionalPromotionRecommendation
 import com.localnovel.engine.model.Task
 import com.localnovel.engine.model.Technique
 import com.localnovel.engine.model.TimelineBranch
@@ -47,6 +55,8 @@ import com.localnovel.engine.model.AvailableTransition
 import com.localnovel.engine.model.PendingWorldEventView
 import com.localnovel.engine.model.WorldRule
 import com.localnovel.engine.model.allDeltaOperations
+import com.localnovel.engine.service.FormalPhysicalStateHash
+import com.localnovel.engine.service.PhysicalStateReducer
 import com.localnovel.engine.support.JsonSupport
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -67,11 +77,12 @@ import java.time.Instant
 import java.util.UUID
 
 class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
+    fun databasePath(): Path = dbPath
+
     override fun initialize() {
         dbPath.parent?.let { Files.createDirectories(it) }
-        connect { connection ->
+        withTransaction { connection ->
             connection.createStatement().use { statement ->
-                statement.executeUpdate("PRAGMA foreign_keys = ON")
                 listOf(
                     "001_init.sql",
                     "002_multi_turn_runtime.sql",
@@ -79,6 +90,16 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                     "004_scene_thread_runtime.sql",
                     "005_setting_pack_runtime.sql",
                     "006_checkpoint_branching_runtime.sql",
+                    "007_world_source_archive.sql",
+                    "008_ai_task_queue.sql",
+                    "009_provisional_layer.sql",
+                    "010_reboot_run_evidence.sql",
+                    "011_npc_autonomy_runtime.sql",
+                    "012_reboot_drama_evaluation.sql",
+                    "013_story_chapter_production.sql",
+                    "014_production_rule_runtime.sql",
+                    "015_production_rule_authority_hardening.sql",
+                    "016_physical_state_runtime.sql",
                 ).forEach { fileName ->
                     val migration = javaClass.classLoader.getResource("migrations/$fileName")
                         ?: error("Missing migration resource: migrations/$fileName")
@@ -134,6 +155,22 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(1, projectId)
             statement.executeQuery().use { rows ->
                 if (rows.next()) rows.toProject() else null
+            }
+        }
+    }
+
+    fun getFormalPhysicalState(sessionId: String): FormalPhysicalStateRecord? = connect { connection ->
+        selectFormalPhysicalState(connection, sessionId)
+    }
+
+    fun formalPhysicalTransitionCount(sessionId: String): Int = connect { connection ->
+        connection.prepareStatement(
+            "SELECT COUNT(*) FROM formal_physical_state_transitions WHERE session_id = ?",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                check(rows.next())
+                rows.getInt(1)
             }
         }
     }
@@ -598,7 +635,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -607,6 +644,377 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.executeQuery().use { rows ->
                 if (rows.next()) rows.toStorySession() else null
             }
+        }
+    }
+
+    fun getSessionReaderMode(sessionId: String): Boolean =
+        getSession(sessionId)?.readerMode ?: false
+
+    fun upsertCanonThinZone(
+        projectId: String,
+        thinZoneId: String,
+        label: String,
+        reason: String,
+        allowedProposalTypes: List<String>,
+        status: String,
+        sourcePath: String,
+    ): Unit = connect { connection ->
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT INTO canon_thin_zones(
+                thin_zone_id, project_id, label, reason, allowed_proposal_types_json, status, source_path, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(project_id, thin_zone_id) DO UPDATE SET
+                label = excluded.label,
+                reason = excluded.reason,
+                allowed_proposal_types_json = excluded.allowed_proposal_types_json,
+                status = excluded.status,
+                source_path = excluded.source_path,
+                updated_at = excluded.updated_at
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, thinZoneId)
+            statement.setString(2, projectId)
+            statement.setString(3, label)
+            statement.setString(4, reason)
+            statement.setString(5, JsonSupport.json.encodeToString(allowedProposalTypes))
+            statement.setString(6, status)
+            statement.setString(7, sourcePath)
+            statement.setString(8, timestamp)
+            statement.setString(9, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    fun listCanonThinZones(projectId: String): List<CanonThinZoneView> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT thin_zone_id, label, reason, allowed_proposal_types_json, status
+            FROM canon_thin_zones
+            WHERE project_id = ?
+            ORDER BY thin_zone_id
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, projectId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(
+                            CanonThinZoneView(
+                                thinZoneId = rows.getString("thin_zone_id"),
+                                label = rows.getString("label"),
+                                reason = rows.getString("reason"),
+                                allowedProposalTypes = decodeList(rows.getString("allowed_proposal_types_json")),
+                                status = rows.getString("status"),
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun applyProvisionalTurnWrites(context: ContextPacket, result: AiTurnResult): Unit = connect { connection ->
+        applyProvisionalTurnWritesOnConnection(connection, context, result)
+    }
+
+    private fun applyProvisionalTurnWritesOnConnection(
+        connection: Connection,
+        context: ContextPacket,
+        result: AiTurnResult,
+    ) {
+        val sceneId = context.activeScene?.id
+        result.entityProposals.forEach { proposal ->
+            insertProvisionalEntityOnConnection(
+                connection = connection,
+                projectId = context.project.id,
+                sessionId = context.sessionId,
+                turnId = context.turnId,
+                turnNumber = context.turnNumber,
+                sceneId = sceneId,
+                proposal = proposal,
+            )
+            if (proposal.lifespan == "PROMOTION_CANDIDATE") {
+                val entityId = findProvisionalEntityIdOnConnection(connection, context.sessionId, proposal.proposalId)
+                    ?: error("Provisional entity not found after insert: ${proposal.proposalId}")
+                enqueuePromotionOnConnection(
+                    connection = connection,
+                    projectId = context.project.id,
+                    sessionId = context.sessionId,
+                    entityId = entityId,
+                    source = "AI",
+                    turnNumber = context.turnNumber,
+                    recommendation = defaultProvisionalSelfRecommendation(proposal),
+                )
+            }
+        }
+        result.promotionRecommendations.forEach { recommendation ->
+            val entityId = recommendation.entityId
+                ?: recommendation.proposalId?.let { findProvisionalEntityIdOnConnection(connection, context.sessionId, it) }
+                ?: error("Promotion recommendation missing entity target.")
+            enqueuePromotionOnConnection(
+                connection = connection,
+                projectId = context.project.id,
+                sessionId = context.sessionId,
+                entityId = entityId,
+                source = "AI",
+                turnNumber = context.turnNumber,
+                recommendation = recommendation,
+            )
+        }
+    }
+
+    fun insertProvisionalEntity(
+        projectId: String,
+        sessionId: String,
+        turnId: String,
+        turnNumber: Int,
+        sceneId: String?,
+        proposal: ProvisionalEntityProposal,
+    ): String = connect { connection ->
+        insertProvisionalEntityOnConnection(connection, projectId, sessionId, turnId, turnNumber, sceneId, proposal)
+    }
+
+    private fun insertProvisionalEntityOnConnection(
+        connection: Connection,
+        projectId: String,
+        sessionId: String,
+        turnId: String,
+        turnNumber: Int,
+        sceneId: String?,
+        proposal: ProvisionalEntityProposal,
+    ): String {
+        val entityId = newId("prov-entity")
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_entities(
+                entity_id, project_id, session_id, proposal_id, entity_type, display_name, thin_zone_id,
+                lifespan, introduction_beat, agency_profile_json, narrative_role, evidence_hooks_json,
+                perceived_by_character_ids_json, visibility, status, current_scene_id, created_turn_number,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, entityId)
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, proposal.proposalId)
+            statement.setString(5, proposal.entityType)
+            statement.setString(6, proposal.displayName)
+            statement.setString(7, proposal.thinZoneId)
+            statement.setString(8, proposal.lifespan)
+            statement.setString(9, proposal.introductionBeat)
+            statement.setString(10, JsonSupport.json.encodeToString(proposal.agencyProfile))
+            statement.setString(11, proposal.narrativeRole)
+            statement.setString(12, JsonSupport.json.encodeToString(proposal.evidenceHooks))
+            statement.setString(13, JsonSupport.json.encodeToString(proposal.perceivedByCharacterIds))
+            statement.setString(14, "session_provisional")
+            statement.setString(15, "ACTIVE")
+            statement.setString(16, sceneId)
+            statement.setInt(17, turnNumber)
+            statement.setString(18, timestamp)
+            statement.setString(19, timestamp)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_entity_evidence(evidence_id, entity_id, turn_id, turn_number, evidence_type, evidence_ref, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-evidence"))
+            statement.setString(2, entityId)
+            statement.setString(3, turnId)
+            statement.setInt(4, turnNumber)
+            statement.setString(5, "turn_introduction")
+            statement.setString(6, proposal.proposalId)
+            statement.setString(7, timestamp)
+            statement.executeUpdate()
+        }
+        return entityId
+    }
+
+    fun findProvisionalEntityId(sessionId: String, proposalId: String): String? = connect { connection ->
+        findProvisionalEntityIdOnConnection(connection, sessionId, proposalId)
+    }
+
+    private fun findProvisionalEntityIdOnConnection(
+        connection: Connection,
+        sessionId: String,
+        proposalId: String,
+    ): String? =
+        connection.prepareStatement(
+            "SELECT entity_id FROM provisional_entities WHERE session_id = ? AND proposal_id = ?",
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.setString(2, proposalId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("entity_id") else null }
+        }
+
+    fun listProvisionalEntities(sessionId: String): List<ProvisionalEntityView> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT e.entity_id, e.proposal_id, e.entity_type, e.display_name, e.thin_zone_id, e.lifespan,
+                   e.introduction_beat, e.agency_profile_json, e.narrative_role, e.status, e.current_scene_id,
+                   q.status AS queue_status
+            FROM provisional_entities e
+            LEFT JOIN provisional_promotion_queue q
+              ON q.entity_id = e.entity_id AND q.status = 'PENDING'
+            WHERE e.session_id = ?
+            ORDER BY e.created_turn_number, e.display_name
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(rows.toProvisionalEntityView())
+                    }
+                }
+            }
+        }
+    }
+
+    fun enqueuePromotion(
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        source: String,
+        turnNumber: Int,
+        recommendation: ProvisionalPromotionRecommendation,
+    ): Unit = connect { connection ->
+        enqueuePromotionOnConnection(connection, projectId, sessionId, entityId, source, turnNumber, recommendation)
+    }
+
+    private fun enqueuePromotionOnConnection(
+        connection: Connection,
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        source: String,
+        turnNumber: Int,
+        recommendation: ProvisionalPromotionRecommendation,
+    ) {
+        val existing = connection.prepareStatement(
+            "SELECT queue_id FROM provisional_promotion_queue WHERE entity_id = ? AND status = 'PENDING'",
+        ).use { statement ->
+            statement.setString(1, entityId)
+            statement.executeQuery().use { rows -> if (rows.next()) rows.getString("queue_id") else null }
+        }
+        val timestamp = now()
+        val payload = recommendation.copy(entityId = entityId)
+        if (existing != null) {
+            connection.prepareStatement(
+                """
+                UPDATE provisional_promotion_queue
+                SET source = ?, recommendation_json = ?, updated_at = ?, created_turn_number = ?
+                WHERE queue_id = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, source)
+                statement.setString(2, JsonSupport.json.encodeToString(payload))
+                statement.setString(3, timestamp)
+                statement.setInt(4, turnNumber)
+                statement.setString(5, existing)
+                statement.executeUpdate()
+            }
+            return
+        }
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_promotion_queue(
+                queue_id, project_id, session_id, entity_id, source, status, recommendation_json,
+                created_turn_number, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-promo"))
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.setString(5, source)
+            statement.setString(6, JsonSupport.json.encodeToString(payload))
+            statement.setInt(7, turnNumber)
+            statement.setString(8, timestamp)
+            statement.setString(9, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    private fun defaultProvisionalSelfRecommendation(proposal: ProvisionalEntityProposal): ProvisionalPromotionRecommendation =
+        ProvisionalPromotionRecommendation(
+            recommendationId = "self-${proposal.proposalId}",
+            proposalId = proposal.proposalId,
+            qualificationChecks = listOf("SOUL", "NARRATIVE_LANDED"),
+            reason = proposal.introductionBeat,
+            readerValue = proposal.introductionBeat,
+            irreplaceability = proposal.agencyProfile.desire,
+            formalIdentityDraft = "${proposal.displayName}｜${proposal.narrativeRole}",
+            exitIfNotPromoted = "降為傳聞或離場，不再以正式角色引用。",
+        )
+
+    fun listPendingPromotionRecommendations(sessionId: String): List<ProvisionalPromotionRecommendation> = connect { connection ->
+        connection.prepareStatement(
+            """
+            SELECT recommendation_json
+            FROM provisional_promotion_queue
+            WHERE session_id = ? AND status = 'PENDING'
+            ORDER BY created_turn_number
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, sessionId)
+            statement.executeQuery().use { rows ->
+                buildList {
+                    while (rows.next()) {
+                        add(JsonSupport.json.decodeFromString(rows.getString("recommendation_json")))
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateProvisionalEntityStatus(sessionId: String, entityId: String, status: String): Unit = connect { connection ->
+        connection.prepareStatement(
+            "UPDATE provisional_entities SET status = ?, updated_at = ? WHERE session_id = ? AND entity_id = ?",
+        ).use { statement ->
+            statement.setString(1, status)
+            statement.setString(2, now())
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.executeUpdate()
+        }
+    }
+
+    fun recordPromotionAction(
+        projectId: String,
+        sessionId: String,
+        entityId: String,
+        queueId: String?,
+        action: String,
+        actor: String,
+        note: String,
+        patchPath: String? = null,
+    ): Unit = connect { connection ->
+        connection.prepareStatement(
+            """
+            INSERT INTO provisional_promotion_records(
+                record_id, project_id, session_id, entity_id, queue_id, action, actor, note, patch_path, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, newId("prov-promo-record"))
+            statement.setString(2, projectId)
+            statement.setString(3, sessionId)
+            statement.setString(4, entityId)
+            statement.setString(5, queueId)
+            statement.setString(6, action)
+            statement.setString(7, actor)
+            statement.setString(8, note)
+            statement.setString(9, patchPath)
+            statement.setString(10, now())
+            statement.executeUpdate()
         }
     }
 
@@ -628,7 +1036,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
-    fun startSession(projectId: String, sceneId: String): StorySession = connect { connection ->
+    fun startSession(projectId: String, sceneId: String, readerMode: Boolean = false): StorySession = connect { connection ->
         connection.autoCommit = false
         try {
             val sessionId = newId("session")
@@ -675,9 +1083,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 """
                 INSERT INTO story_sessions(
                     id, project_id, current_scene_id, next_turn_number, state_version, status,
-                    current_scene_instance_id, world_time, elapsed_minutes, branch_id, created_at, updated_at
+                    current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode, created_at, updated_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """.trimIndent(),
             ).use { statement ->
                 statement.setString(1, session.id)
@@ -690,8 +1098,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.setString(8, session.worldTime)
                 statement.setInt(9, session.elapsedMinutes)
                 statement.setString(10, branchId)
-                statement.setString(11, timestamp)
+                statement.setInt(11, if (readerMode) 1 else 0)
                 statement.setString(12, timestamp)
+                statement.setString(13, timestamp)
                 statement.executeUpdate()
             }
             connection.prepareStatement("UPDATE timeline_branches SET active_session_id = ?, updated_at = ? WHERE id = ?").use { statement ->
@@ -911,6 +1320,87 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
+    fun insertRebootRunEvidence(record: RebootRunEvidenceRecord) {
+        connect { connection ->
+            val timestamp = now()
+            connection.prepareStatement(
+                """
+                INSERT INTO reboot_run_evidence(
+                    run_id, project_id, session_id, turn_number, scenario_seed, context_id,
+                    context_hash, player_input, context_snapshot_json, result_id,
+                    raw_draft, raw_result_json, critic_scores_json, revision_suggestion, revised_draft,
+                    validation_findings_json, validation_classification, state_delta_json,
+                    irreversible_change_json, irreversible_approval_json,
+                    irreversible_approval_actor, irreversible_approval_granted,
+                    apply_result_json, model_metadata_json, elapsed_time_ms, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, record.runId)
+                statement.setString(2, record.projectId)
+                statement.setString(3, record.sessionId)
+                statement.setInt(4, record.turnNumber)
+                statement.setString(5, record.scenarioSeed)
+                statement.setString(6, record.contextId)
+                statement.setString(7, record.contextHash)
+                statement.setString(8, record.playerInput)
+                statement.setString(9, record.contextSnapshotJson)
+                statement.setString(10, record.resultId)
+                statement.setString(11, record.rawDraft)
+                statement.setString(12, record.rawResultJson)
+                statement.setString(13, record.criticScoresJson)
+                statement.setString(14, record.revisionSuggestion)
+                statement.setString(15, record.revisedDraft)
+                statement.setString(16, record.validationFindingsJson)
+                statement.setString(17, record.validationClassification.name)
+                statement.setString(18, record.stateDeltaJson)
+                statement.setString(19, record.irreversibleChangeJson)
+                statement.setString(20, record.irreversibleApprovalJson)
+                statement.setString(21, record.irreversibleApprovalActor)
+                statement.setInt(22, if (record.irreversibleApprovalGranted) 1 else 0)
+                statement.setString(23, record.applyResultJson)
+                statement.setString(24, JsonSupport.json.encodeToString(record.modelMetadata))
+                statement.setLong(25, record.elapsedTimeMs)
+                statement.setString(26, record.status)
+                statement.setString(27, timestamp)
+                statement.setString(28, timestamp)
+                statement.executeUpdate()
+            }
+        }
+    }
+
+    fun updateRebootRunEvidenceOutcome(
+        runId: String,
+        status: String,
+        applyResultJson: String,
+        elapsedTimeMs: Long,
+    ) {
+        connect { connection -> updateRebootRunEvidenceOutcome(connection, runId, status, applyResultJson, elapsedTimeMs) }
+    }
+
+    private fun updateRebootRunEvidenceOutcome(
+        connection: Connection,
+        runId: String,
+        status: String,
+        applyResultJson: String,
+        elapsedTimeMs: Long,
+    ) {
+        connection.prepareStatement(
+            """
+            UPDATE reboot_run_evidence
+            SET status = ?, apply_result_json = ?, elapsed_time_ms = ?, updated_at = ?
+            WHERE run_id = ?
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, status)
+            statement.setString(2, applyResultJson)
+            statement.setLong(3, elapsedTimeMs)
+            statement.setString(4, now())
+            statement.setString(5, runId)
+            check(statement.executeUpdate() == 1) { "Run evidence not found: $runId" }
+        }
+    }
+
     fun activeSessionIds(projectId: String): List<String> = connect { connection ->
         connection.prepareStatement(
             "SELECT id FROM story_sessions WHERE project_id = ? AND status = 'active' ORDER BY id ASC",
@@ -1077,7 +1567,16 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
     }
 
-    fun resolvePendingTurn(context: ContextPacket, result: AiTurnResult, hasStateChange: Boolean): ApplyResult = connect { connection ->
+    fun resolvePendingTurn(
+        context: ContextPacket,
+        result: AiTurnResult,
+        hasStateChange: Boolean,
+        rebootRunEvidenceId: String? = null,
+        rebootRunElapsedTimeMs: Long = 0,
+        npcDecisionTrace: com.localnovel.engine.model.NpcDecisionTrace? = null,
+        npcGameMasterResolution: com.localnovel.engine.model.GameMasterResolution? = null,
+        formalTurnPhysicalContext: FormalTurnPhysicalValidationContext? = null,
+    ): ApplyResult = connect { connection ->
         connection.autoCommit = false
         try {
             val session = selectSession(connection, context.sessionId)
@@ -1087,11 +1586,20 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             }
             require(session.stateVersion == context.baseStateVersion) { "Stale baseStateVersion: expected ${session.stateVersion}, got ${context.baseStateVersion}." }
             require(session.nextTurnNumber == context.turnNumber) { "Stale turnNumber: expected ${session.nextTurnNumber}, got ${context.turnNumber}." }
+            require(result.projectId == context.project.id) { "Result projectId does not match context project." }
+            require(result.turnId == context.turnId) { "Result turnId does not match context turn." }
+            require(result.sessionId == context.sessionId) { "Result sessionId does not match context session." }
+            require(result.contextId == context.contextId) { "Result contextId does not match context." }
+            require(result.turnNumber == context.turnNumber) { "Result turnNumber does not match context." }
+            require(result.baseStateVersion == context.baseStateVersion) { "Result baseStateVersion does not match context." }
+            require(result.contextHash == context.contextHash) { "Result contextHash does not match context." }
 
             val pendingId = selectPendingTurnLogId(connection, context.sessionId, context.contextId)
                 ?: error("Pending context not found: ${context.contextId}")
             require(!result.resultId.isBlank()) { "resultId is required." }
             require(!selectResultExists(connection, result.resultId)) { "Result already applied: ${result.resultId}" }
+
+            applyFormalPhysicalStateTransitions(connection, context, result, formalTurnPhysicalContext)
 
             result.allDeltaOperations().forEach { operation ->
                 recordStateDelta(connection, context.project.id, context.turnId, operation.type.name.lowercase(), operation.targetType, operation.targetId, JsonSupport.json.encodeToString(operation.payload))
@@ -1107,6 +1615,9 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             applySceneTransition(connection, context, result)
             applyWorldClock(connection, context, result)
             recordSuccessfulRecall(connection, context)
+            if (result.entityProposals.isNotEmpty() || result.promotionRecommendations.isNotEmpty()) {
+                applyProvisionalTurnWritesOnConnection(connection, context, result)
+            }
             connection.prepareStatement(
                 """
                 UPDATE turn_logs
@@ -1135,6 +1646,28 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
                 statement.executeUpdate()
             }
             updateProjectTurn(connection, context.project.id, context.turnNumber)
+            rebootRunEvidenceId?.let { runId ->
+                val applyResultJson = JsonSupport.json.encodeToString(
+                    JsonObject(
+                        mapOf(
+                            "status" to JsonPrimitive("APPLIED"),
+                            "turnLogId" to JsonPrimitive(pendingId),
+                            "hasStateChange" to JsonPrimitive(hasStateChange),
+                        ),
+                    ),
+                )
+                updateRebootRunEvidenceOutcome(
+                    connection = connection,
+                    runId = runId,
+                    status = "APPLIED",
+                    applyResultJson = applyResultJson,
+                    elapsedTimeMs = rebootRunElapsedTimeMs,
+                )
+            }
+            npcDecisionTrace?.let { trace ->
+                require(npcGameMasterResolution?.accepted == true) { "Applied NPC trace requires an accepted Game Master resolution." }
+                insertNpcDecisionTrace(connection, trace, npcGameMasterResolution, "APPLIED")
+            }
             connection.commit()
             ApplyResult(pendingId, result.narrative, hasStateChange)
         } catch (error: Throwable) {
@@ -1142,6 +1675,282 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             throw error
         } finally {
             connection.autoCommit = true
+        }
+    }
+
+    private fun applyFormalPhysicalStateTransitions(
+        connection: Connection,
+        context: ContextPacket,
+        result: AiTurnResult,
+        physicalContext: FormalTurnPhysicalValidationContext?,
+    ) {
+        if (result.physicalActionProposals.none { it.actionType in PhysicalStateReducer.STATEFUL_ACTIONS }) return
+        val boundContext = requireNotNull(physicalContext) { "Stateful physical actions require a V2 physical context." }
+        require(boundContext.schemaVersion == PhysicalStateReducer.SCHEMA_VERSION) {
+            "Stateful physical actions require physical context schemaVersion ${PhysicalStateReducer.SCHEMA_VERSION}."
+        }
+        val persisted = selectFormalPhysicalState(connection, context.sessionId)
+        val suppliedVersion = requireNotNull(boundContext.physicalStateVersion)
+        if (persisted == null) {
+            require(suppliedVersion == 0) { "The first persisted physical turn must use physicalStateVersion 0." }
+        } else {
+            require(persisted.projectId == context.project.id) { "Persisted physical project identity mismatch." }
+            require(persisted.physicalStateVersion == suppliedVersion) { "Stale persisted physical state version." }
+            require(
+                persisted.physicalSnapshotCanonicalSha256.equals(boundContext.physicalSnapshotCanonicalSha256, ignoreCase = true),
+            ) { "Stale persisted physical snapshot Hash." }
+            require(
+                persisted.physicalArchetypeRegistryCanonicalSha256.equals(
+                    boundContext.physicalArchetypeRegistryCanonicalSha256,
+                    ignoreCase = true,
+                ),
+            ) { "Persisted physical archetype registry Hash mismatch." }
+        }
+
+        val plan = PhysicalStateReducer().plan(boundContext, result)
+        val archetypesJson = JsonSupport.json.encodeToString(
+            FormalPhysicalStateHash.normalizeArchetypes(boundContext.physicalArchetypes),
+        )
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT OR IGNORE INTO physical_archetype_registries(
+                registry_sha256, schema_version, archetypes_json, authority_boundary, created_at
+            ) VALUES (?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, plan.physicalArchetypeRegistryCanonicalSha256)
+            statement.setString(2, PhysicalStateReducer.SCHEMA_VERSION)
+            statement.setString(3, archetypesJson)
+            statement.setString(4, PhysicalStateReducer.RUNTIME_BOUNDARY)
+            statement.setString(5, timestamp)
+            statement.executeUpdate()
+        }
+        connection.prepareStatement(
+            "SELECT archetypes_json, authority_boundary FROM physical_archetype_registries WHERE registry_sha256 = ?",
+        ).use { statement ->
+            statement.setString(1, plan.physicalArchetypeRegistryCanonicalSha256)
+            statement.executeQuery().use { rows ->
+                require(rows.next()) { "Physical archetype registry was not persisted." }
+                require(rows.getString("archetypes_json") == archetypesJson) { "Physical archetype registry Hash collision or non-canonical payload." }
+                require(rows.getString("authority_boundary") == PhysicalStateReducer.RUNTIME_BOUNDARY)
+            }
+        }
+
+        plan.transitions.forEach { transition ->
+            connection.prepareStatement(
+                """
+                INSERT INTO formal_physical_state_transitions(
+                    transition_id, project_id, session_id, turn_id, result_id, context_id,
+                    action_id, action_type, before_state_version, after_state_version,
+                    before_snapshot_sha256, after_snapshot_sha256, proposal_json,
+                    applied_effects_json, authority_boundary, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, newId("physical-transition"))
+                statement.setString(2, context.project.id)
+                statement.setString(3, context.sessionId)
+                statement.setString(4, context.turnId)
+                statement.setString(5, result.resultId)
+                statement.setString(6, context.contextId)
+                statement.setString(7, transition.actionId)
+                statement.setString(8, transition.actionType.name)
+                statement.setInt(9, transition.beforeStateVersion)
+                statement.setInt(10, transition.afterStateVersion)
+                statement.setString(11, transition.beforeSnapshotCanonicalSha256)
+                statement.setString(12, transition.afterSnapshotCanonicalSha256)
+                statement.setString(13, JsonSupport.json.encodeToString(transition.proposal))
+                statement.setString(14, JsonSupport.json.encodeToString(transition.appliedEffects))
+                statement.setString(15, PhysicalStateReducer.RUNTIME_BOUNDARY)
+                statement.setString(16, timestamp)
+                statement.executeUpdate()
+            }
+        }
+
+        val finalSnapshotJson = JsonSupport.json.encodeToString(plan.finalSnapshot)
+        if (persisted == null) {
+            connection.prepareStatement(
+                """
+                INSERT INTO formal_physical_states(
+                    session_id, project_id, physical_state_version, registry_sha256,
+                    snapshot_sha256, snapshot_json, authority_boundary, source_context_id,
+                    last_turn_id, last_result_id, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, context.sessionId)
+                statement.setString(2, context.project.id)
+                statement.setInt(3, plan.finalStateVersion)
+                statement.setString(4, plan.physicalArchetypeRegistryCanonicalSha256)
+                statement.setString(5, plan.finalSnapshotCanonicalSha256)
+                statement.setString(6, finalSnapshotJson)
+                statement.setString(7, PhysicalStateReducer.RUNTIME_BOUNDARY)
+                statement.setString(8, context.contextId)
+                statement.setString(9, context.turnId)
+                statement.setString(10, result.resultId)
+                statement.setString(11, timestamp)
+                statement.setString(12, timestamp)
+                require(statement.executeUpdate() == 1) { "Physical state seed insert failed." }
+            }
+        } else {
+            connection.prepareStatement(
+                """
+                UPDATE formal_physical_states
+                SET physical_state_version = ?, snapshot_sha256 = ?, snapshot_json = ?,
+                    source_context_id = ?, last_turn_id = ?, last_result_id = ?, updated_at = ?
+                WHERE session_id = ? AND project_id = ? AND physical_state_version = ?
+                  AND registry_sha256 = ? AND snapshot_sha256 = ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setInt(1, plan.finalStateVersion)
+                statement.setString(2, plan.finalSnapshotCanonicalSha256)
+                statement.setString(3, finalSnapshotJson)
+                statement.setString(4, context.contextId)
+                statement.setString(5, context.turnId)
+                statement.setString(6, result.resultId)
+                statement.setString(7, timestamp)
+                statement.setString(8, context.sessionId)
+                statement.setString(9, context.project.id)
+                statement.setInt(10, plan.startStateVersion)
+                statement.setString(11, plan.physicalArchetypeRegistryCanonicalSha256)
+                statement.setString(12, plan.startSnapshotCanonicalSha256)
+                require(statement.executeUpdate() == 1) { "Concurrent physical state update detected." }
+            }
+        }
+    }
+
+    private fun selectFormalPhysicalState(
+        connection: Connection,
+        sessionId: String,
+    ): FormalPhysicalStateRecord? = connection.prepareStatement(
+        """
+        SELECT project_id, session_id, physical_state_version, registry_sha256,
+               snapshot_sha256, snapshot_json, authority_boundary, source_context_id,
+               last_turn_id, last_result_id
+        FROM formal_physical_states
+        WHERE session_id = ?
+        """.trimIndent(),
+    ).use { statement ->
+        statement.setString(1, sessionId)
+        statement.executeQuery().use { rows ->
+            if (rows.next()) {
+                FormalPhysicalStateRecord(
+                    boundary = rows.getString("authority_boundary"),
+                    projectId = rows.getString("project_id"),
+                    sessionId = rows.getString("session_id"),
+                    physicalStateVersion = rows.getInt("physical_state_version"),
+                    physicalArchetypeRegistryCanonicalSha256 = rows.getString("registry_sha256"),
+                    physicalSnapshotCanonicalSha256 = rows.getString("snapshot_sha256"),
+                    physicalSnapshot = JsonSupport.json.decodeFromString(rows.getString("snapshot_json")),
+                    sourceContextId = rows.getString("source_context_id"),
+                    lastTurnId = rows.getString("last_turn_id"),
+                    lastResultId = rows.getString("last_result_id"),
+                )
+            } else {
+                null
+            }
+        }
+    }
+
+    fun recordNpcDecisionTrace(
+        trace: com.localnovel.engine.model.NpcDecisionTrace,
+        resolution: com.localnovel.engine.model.GameMasterResolution,
+        status: String,
+    ) = connect { connection ->
+        insertNpcDecisionTrace(connection, trace, resolution, status)
+    }
+
+    fun recordSandboxWorldPatchCandidate(candidate: com.localnovel.engine.model.SandboxWorldPatchCandidate) = connect { connection ->
+        require(!candidate.canonMutationAllowed) { "Sandbox world patch cannot authorize Canon mutation." }
+        require(candidate.status == "SANDBOX_CANDIDATE") { "Only sandbox candidates may enter this boundary." }
+        val timestamp = now()
+        connection.prepareStatement(
+            """
+            INSERT OR REPLACE INTO sandbox_world_patch_candidates(
+                patch_id, project_id, scenario_seed, candidate_json, status,
+                canon_mutation_allowed, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, 'SANDBOX_APPLIED', 0,
+                COALESCE((SELECT created_at FROM sandbox_world_patch_candidates WHERE patch_id = ?), ?), ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, candidate.patchId)
+            statement.setString(2, candidate.projectId)
+            statement.setString(3, candidate.scenarioSeed)
+            statement.setString(4, JsonSupport.json.encodeToString(candidate))
+            statement.setString(5, candidate.patchId)
+            statement.setString(6, timestamp)
+            statement.setString(7, timestamp)
+            statement.executeUpdate()
+        }
+    }
+
+    fun recordDramaEvaluation(
+        input: com.localnovel.engine.model.DramaEvaluationInput,
+        report: com.localnovel.engine.model.DramaEvaluationReport,
+    ) = connect { connection ->
+        require(report.revisionCount in 0..1) { "Narrative revision count must remain bounded to one." }
+        connection.prepareStatement(
+            """
+            INSERT INTO reboot_drama_evaluations(
+                evaluation_id, run_id, project_id, session_id, turn_number, scenario_seed,
+                raw_draft, raw_scores_json, revision_suggestion, revised_draft, revised_scores_json,
+                revision_count, selected_draft, scene_frame_json, expectation_ledger_json,
+                findings_json, stall_status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            statement.setString(1, input.evaluationId)
+            statement.setString(2, input.runId)
+            statement.setString(3, input.projectId)
+            statement.setString(4, input.sessionId)
+            statement.setInt(5, input.turnNumber)
+            statement.setString(6, input.scenarioSeed)
+            statement.setString(7, input.rawDraft)
+            statement.setString(8, JsonSupport.json.encodeToString(report.rawScores))
+            statement.setString(9, report.revisionSuggestion)
+            statement.setString(10, input.revisedDraftCandidate)
+            statement.setString(11, report.revisedScores?.let { JsonSupport.json.encodeToString(it) } ?: "{}")
+            statement.setInt(12, report.revisionCount)
+            statement.setString(13, report.selectedDraft)
+            statement.setString(14, JsonSupport.json.encodeToString(input.sceneFrame))
+            statement.setString(15, JsonSupport.json.encodeToString(input.expectationLedger))
+            statement.setString(16, JsonSupport.json.encodeToString(report.findings))
+            statement.setString(17, if (report.stallDetected) "STALL_DETECTED" else "MOVING")
+            statement.setString(18, now())
+            statement.executeUpdate()
+        }
+    }
+
+    private fun insertNpcDecisionTrace(
+        connection: Connection,
+        trace: com.localnovel.engine.model.NpcDecisionTrace,
+        resolution: com.localnovel.engine.model.GameMasterResolution,
+        status: String,
+    ) {
+        require(trace.projectId.isNotBlank() && trace.sessionId.isNotBlank() && trace.npcId.isNotBlank())
+        connection.prepareStatement(
+            """
+            INSERT INTO npc_decision_traces(
+                trace_id, project_id, session_id, turn_number, npc_id, scenario_seed,
+                decision_trace_json, proposal_json, resolution_json, status, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """.trimIndent(),
+        ).use { statement ->
+            val timestamp = now()
+            statement.setString(1, trace.traceId)
+            statement.setString(2, trace.projectId)
+            statement.setString(3, trace.sessionId)
+            statement.setInt(4, trace.turnNumber)
+            statement.setString(5, trace.npcId)
+            statement.setString(6, trace.scenarioSeed)
+            statement.setString(7, JsonSupport.json.encodeToString(trace))
+            statement.setString(8, JsonSupport.json.encodeToString(trace.proposal))
+            statement.setString(9, JsonSupport.json.encodeToString(resolution))
+            statement.setString(10, status)
+            statement.setString(11, timestamp)
+            statement.setString(12, timestamp)
+            statement.executeUpdate()
         }
     }
 
@@ -1360,9 +2169,10 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         }
 
     internal fun insertRawRow(connection: Connection, tableName: String, row: Map<String, String?>) {
-        require(tableName.matches(Regex("[a-zA-Z_]+"))) { "Unsafe table name: $tableName" }
+        val identifierPattern = Regex("[a-zA-Z_][a-zA-Z0-9_]*")
+        require(tableName.matches(identifierPattern)) { "Unsafe table name: $tableName" }
         val columns = row.keys.toList()
-        require(columns.all { it.matches(Regex("[a-zA-Z_]+")) }) { "Unsafe column in $tableName" }
+        require(columns.all { it.matches(identifierPattern) }) { "Unsafe column in $tableName" }
         val placeholders = columns.joinToString(", ") { "?" }
         val sql = "INSERT OR REPLACE INTO $tableName(${columns.joinToString(", ")}) VALUES ($placeholders)"
         connection.prepareStatement(sql).use { statement ->
@@ -2965,7 +3775,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         connection.prepareStatement(
             """
             SELECT id, project_id, current_scene_id, next_turn_number, state_version, status,
-                   current_scene_instance_id, world_time, elapsed_minutes, branch_id
+                   current_scene_instance_id, world_time, elapsed_minutes, branch_id, reader_mode
             FROM story_sessions
             WHERE id = ?
             """.trimIndent(),
@@ -2973,6 +3783,26 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
             statement.setString(1, sessionId)
             statement.executeQuery().use { rows -> if (rows.next()) rows.toStorySession() else null }
         }
+
+    private fun ResultSet.toProvisionalEntityView(): ProvisionalEntityView {
+        val agency = runCatching {
+            JsonSupport.json.decodeFromString<ProvisionalAgencyProfile>(getString("agency_profile_json"))
+        }.getOrDefault(ProvisionalAgencyProfile())
+        return ProvisionalEntityView(
+            entityId = getString("entity_id"),
+            proposalId = getString("proposal_id"),
+            entityType = getString("entity_type"),
+            displayName = getString("display_name"),
+            thinZoneId = getString("thin_zone_id"),
+            lifespan = getString("lifespan"),
+            introductionBeat = getString("introduction_beat"),
+            agencyProfile = agency,
+            narrativeRole = getString("narrative_role"),
+            status = getString("status"),
+            currentSceneId = getString("current_scene_id"),
+            promotionQueueStatus = runCatching { getString("queue_status") }.getOrNull(),
+        )
+    }
 
     private fun selectPendingTurnLogId(connection: Connection, sessionId: String, contextId: String): String? =
         connection.prepareStatement(
@@ -3335,6 +4165,7 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         currentSceneInstanceId = runCatching { getString("current_scene_instance_id") }.getOrNull(),
         worldTime = runCatching { getString("world_time") }.getOrNull().orEmpty(),
         elapsedMinutes = runCatching { getInt("elapsed_minutes") }.getOrDefault(0),
+        readerMode = runCatching { getInt("reader_mode") == 1 }.getOrDefault(false),
     )
 
     private fun decodeJsonObject(value: String?): JsonObject =
@@ -3345,12 +4176,37 @@ class SqliteStoryRepository(private val dbPath: Path) : StoryRepository {
         value?.let { runCatching { JsonSupport.json.decodeFromString<List<String>>(it) }.getOrNull() }
             ?: emptyList()
 
-    private fun String.splitToStatements(): List<String> =
+    private fun String.splitToStatements(): List<String> {
+        val statements = mutableListOf<String>()
+        val buffer = StringBuilder()
+        var trigger = false
+
         lineSequence()
             .filterNot { it.trimStart().startsWith("--") }
-            .joinToString("\n")
-            .split(";")
-            .map { it.trim() }
+            .forEach { line ->
+                if (buffer.isEmpty() && line.isBlank()) return@forEach
+                if (buffer.isNotEmpty()) buffer.append('\n')
+                buffer.append(line)
+                if (!trigger && buffer.toString().trimStart().startsWith("CREATE TRIGGER", ignoreCase = true)) {
+                    trigger = true
+                }
+                if (trigger) {
+                    if (line.trim().equals("END;", ignoreCase = true)) {
+                        statements += buffer.toString().trim().removeSuffix(";")
+                        buffer.clear()
+                        trigger = false
+                    }
+                } else {
+                    while (';' in buffer) {
+                        val statement = buffer.substring(0, buffer.indexOf(";")).trim()
+                        if (statement.isNotEmpty()) statements += statement
+                        buffer.delete(0, buffer.indexOf(";") + 1)
+                    }
+                }
+            }
+        buffer.toString().trim().takeIf { it.isNotEmpty() }?.let(statements::add)
+        return statements
+    }
 
     private fun now(): String = Instant.now().toString()
 

@@ -1,0 +1,48 @@
+{
+    "projectId": "chenxing",
+    "turnId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac-turn-6",
+    "narrative": "陸塵行把布條遞給周克，自己壓住傷口。愛醬靠著他的小腿，沒有叫。遠處還有一串腳印，朝山坡更深處去。",
+    "resultId": "turn-06-result",
+    "contextId": "ctx-b1a9d88e-26db-411d-b921-cea324357f52",
+    "sessionId": "session-1758b0f0-d501-4f2b-b3af-ab94e4d3b9ac",
+    "turnNumber": 6,
+    "baseStateVersion": 5,
+    "contextHash": "cfa5fa139f1bd39edcf5166399666d09c2f889b45331da9822dd1493f4dca375",
+    "turnSummary": "陸塵行把布條遞給周克，自己壓住傷口。愛醬靠著他的小腿，沒有叫。遠處還有一串腳印，朝山坡更深處去。",
+    "characterActions": [
+        {
+            "characterId": "char-lu-chenxing",
+            "intent": "先救治對手再追問",
+            "visibleAction": "先救治對手再追問",
+            "hiddenMotive": "不讓求真變成合理化殘酷",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        },
+        {
+            "characterId": "char-zhou-ke-sandbox",
+            "intent": "接手固定傷處",
+            "visibleAction": "接手固定傷處",
+            "hiddenMotive": "償還過去欠下的人情",
+            "characterFitScore": 90,
+            "storyProgressScore": 80
+        }
+    ],
+    "stateDeltas": [
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "local-closure-open-question",
+            "payload": {
+                "summary": "眾人暫時穩住傷勢，但另一串腳印通往山坡深處。"
+            }
+        },
+        {
+            "type": "add_event",
+            "targetType": "event",
+            "targetId": "player-intent-6",
+            "payload": {
+                "summary": "先救人，再問他把東西交給了誰。線索可以追，手接不回來。"
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "screen01-selection-decision-v1",
+  "productionId": "screen01-tideline-beyond",
+  "decision": "SELECT_REVISED_FOR_SCREEN01_PREPRODUCTION",
+  "selectedScreenplayPath": "samples/screen01/screen01_screenplay_revised_zh-Hant-TW.md",
+  "selectedScreenplaySha256": "4b2ac13f84541dfa904096fe650ed99a9f8d58e1519ba9f0b0816d85e56a554c",
+  "selectedDialoguePath": "samples/screen01/screen01_dialogue_track_revised_zh-Hant-TW.json",
+  "selectedDialogueSha256": "6936ec2099f5a61ab07db631e9d19ef2bb49a8154f572fb5f360e0f7fdcec65c",
+  "revisionCount": 1,
+  "revisionLimit": 1,
+  "basis": [
+    "三份獨立初版全文評審均要求局部修訂。",
+    "修訂處理台灣口語、誤字、救援空間、手機小字、時長、急救與背景通話。",
+    "Story Production Master、故事結果與 NON_CANON 邊界未改變。"
+  ],
+  "approvalBoundary": "PILOT_DERIVATION_ONLY",
+  "canonStatus": "NON_CANON_PILOT",
+  "humanFinalApproval": "NOT_REQUESTED_IN_SCREEN01",
+  "imageGenerationAuthorized": false,
+  "videoGenerationAuthorized": false
+}

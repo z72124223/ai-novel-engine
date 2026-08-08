@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "screen01-dialogue-bible-v1",
+  "productionId": "screen01-tideline-beyond",
+  "languageMaster": "zh-Hant-TW",
+  "globalRules": {
+    "preferred": ["短句", "打斷", "停頓", "動作代替解釋", "危急時只留可執行資訊", "角色可拒絕配合玩笑"],
+    "avoid": ["論文式輪流發言", "每句都總結價值", "過多不是A而是B", "同一母稿混用地區詞彙", "人人同樣機智", "危急時長句"]
+  },
+  "characters": [
+    {
+      "characterId": "character-lu-chenxing",
+      "name": "陸塵行",
+      "speechLength": "短至中；危急時壓到一句一動作",
+      "sentenceRhythm": "先觀察，再給結論；偶爾用半句吐槽卸壓",
+      "commonResponses": ["先看得到的。", "等一下。", "走。", "可以。"],
+      "avoidPatterns": ["連續金句", "為了顯聰明解釋全部推理", "受傷後仍拿人命開玩笑"],
+      "humorStyle": "乾、短、貼著現場物件；對方不接就收",
+      "silenceBehavior": "真正看見傷害後不補話，改以處置與記錄表態",
+      "pressureBehavior": "聲量下降、指令變短、把未知標成可能",
+      "relationshipChanges": "對愛醬用動作確認；對周克信任專業；對拾潮者先救命再追問",
+      "regionalLanguageNotes": "自然台灣華語；避免只有台灣觀眾才懂的網路梗"
+    },
+    {
+      "characterId": "character-zhou-ke",
+      "name": "周克",
+      "speechLength": "極短",
+      "sentenceRhythm": "命令與倒數；害怕時更少話",
+      "commonResponses": ["今天不要賭。", "先走。", "給我。"],
+      "avoidPatterns": ["配合主角每個笑點", "完整解釋潮汐知識"],
+      "humorStyle": "幾乎沒有；以不回應製造落差",
+      "silenceBehavior": "用拉繩、看海、承重代替發言",
+      "pressureBehavior": "報時間、路線與下一個動作",
+      "relationshipChanges": "把主角視為能分工的人，不哄、不捧",
+      "regionalLanguageNotes": "中性自然華語，保留台灣緊急現場語感"
+    },
+    {
+      "characterId": "character-tide-picker",
+      "name": "拾潮者",
+      "speechLength": "短、重複、帶防衛",
+      "sentenceRhythm": "先否定與命令；受傷後只剩關鍵詞",
+      "commonResponses": ["別碰。", "那是我的。", "不行。"],
+      "avoidPatterns": ["主動說明箱子背景", "受傷時長篇辯護"],
+      "humorStyle": "無",
+      "silenceBehavior": "以抓緊提把、盯住箱子與閉嘴表達執念",
+      "pressureBehavior": "語句碎裂、呼吸取代完整回答",
+      "relationshipChanges": "接受救援不等於交出秘密",
+      "regionalLanguageNotes": "不標定地區，避免方言化造成不必要身分暗示"
+    },
+    {
+      "characterId": "character-aijiang",
+      "name": "愛醬",
+      "speechLength": "無人類對白",
+      "sentenceRhythm": "以停步、退半步、低吼、抵住小腿與選路表達",
+      "commonResponses": ["視線", "耳位", "鼻尖方向", "重心變化"],
+      "avoidPatterns": ["擬人旁白", "翻譯成完整人類句子", "只等待命令"],
+      "humorStyle": "不配合陸塵行的笑話本身形成關係感",
+      "silenceBehavior": "沉默就是判斷，不需旁白解釋",
+      "pressureBehavior": "壓低身體、主動避線、先看危險方向",
+      "relationshipChanges": "與陸塵行互相確認，不是單向服從",
+      "regionalLanguageNotes": "不適用"
+    }
+  ]
+}
